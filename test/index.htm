@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html dir="ltr" xml:lang="fr" 
+xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+
+<head>
+
+</head>
+
+<body>
+
+	<div style="width:650px;font-family: 'Trebuchet MS', 'Helvetica', 'Arial',  'Verdana', 'sans-serif';">
+	<h1>SimplePlayer </h1>
+	Iri SimplePlayer is a javascript's Widget interface to augment existing flash or html5 video player. 
+	It's made to show time annotation and different metadata on video.
+	To implement it on your website it's 's really simple.
+	You just need to insert a div and a script, like the exemple under this lines.<br/><br/>
+	This player was test on : firefox 3.6.9 / Chrome 6.0.472.55 / Safari 5.0.2 / Internet Explore 8<br/><br/>
+	This Player is a freeSoftware under <a href="http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html"/> CeCILL-C</a> license.
+	This program is made by <a href="http://www.iri.centrepompidou.fr/" >Institut de recherche et d innovation</a>
+	more information on <a href="http://www.iri.centrepompidou.fr/outils/agmented-player/" >this page</a>.
+	<br/><br/>
+	</div>
+	
+ <!-- START Integration  ###################################### -->
+ <!-- SIMPLE PLAYER EXPERIMENTATION -->
+	<script type="text/javascript" src="../src/js/LdtPlayer.js"></script> 
+
+	<div id="LdtPlayer"></div>
+	
+	<script  type="text/javascript">	
+		var config = {
+						metadata:{
+							format:'cinelab',
+							src:'http://exp.iri.centrepompidou.fr/franceculture/franceculture/ldt/cljson/id/ef4dcc2e-8d3b-11df-8a24-00145ea4a2be',
+							load:'jsonp'},
+						gui:{
+							width:650,
+							height:1,
+							mode:'radio',
+							container:'LdtPlayer',
+							debug:false,
+							css:'../src/css/LdtPlayer.css'},
+						player:{
+							type:'jwplayer',
+							src:'../res/swf/player.swf'}
+					};
+		__IriSP.init(config);     
+	</script>
+
+
+<!-- END  ################  ###################################### -->
+ </body>
+ </html>

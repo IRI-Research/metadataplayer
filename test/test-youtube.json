@@ -1,0 +1,461 @@
+{
+  "tags": [
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.147547", 
+        "dc:title": "suffrage universel", 
+        "dc:modified": "2010-09-15T15:28:02.147547", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d4000614-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.148547", 
+        "dc:title": "Patrick Rogiers", 
+        "dc:modified": "2010-09-15T15:28:02.148547", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d4002126-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.145004", 
+        "dc:title": "Kirgistan", 
+        "dc:modified": "2010-09-15T15:28:02.145004", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d3ff94ae-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.146232", 
+        "dc:title": "Alphonse Baudin", 
+        "dc:modified": "2010-09-15T15:28:02.146232", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d3ffbf06-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.147547", 
+        "dc:title": "mandats rétribués", 
+        "dc:modified": "2010-09-15T15:28:02.147547", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d3fffa02-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.148547", 
+        "dc:title": "Belgique", 
+        "dc:modified": "2010-09-15T15:28:02.148547", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d400197e-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.146745", 
+        "dc:title": "18juin", 
+        "dc:modified": "2010-09-15T15:28:02.146745", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d3ffd32e-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.148547", 
+        "dc:title": "Wallons", 
+        "dc:modified": "2010-09-15T15:28:02.148547", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d4002874-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.149993", 
+        "dc:title": "theatre.doc", 
+        "dc:modified": "2010-09-15T15:28:02.149993", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d40051f0-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.146745", 
+        "dc:title": "marée noire", 
+        "dc:modified": "2010-09-15T15:28:02.146745", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d3ffde82-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.148547", 
+        "dc:title": "Flamands", 
+        "dc:modified": "2010-09-15T15:28:02.148547", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d4001d70-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.147547", 
+        "dc:title": "Auguste Baudin", 
+        "dc:modified": "2010-09-15T15:28:02.147547", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d3fff26e-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.145004", 
+        "dc:title": "retraite", 
+        "dc:modified": "2010-09-15T15:28:02.145004", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d3ff9d3c-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.147547", 
+        "dc:title": "financement politique", 
+        "dc:modified": "2010-09-15T15:28:02.147547", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d3fff656-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.146745", 
+        "dc:title": "Bloody Sunday", 
+        "dc:modified": "2010-09-15T15:28:02.146745", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d3ffd716-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.148547", 
+        "dc:title": "éléction", 
+        "dc:modified": "2010-09-15T15:28:02.148547", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d4002c2a-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.147547", 
+        "dc:title": "suffrage directs", 
+        "dc:modified": "2010-09-15T15:28:02.147547", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d400022c-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.148547", 
+        "dc:title": "vuvuzela", 
+        "dc:modified": "2010-09-15T15:28:02.148547", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d40024c8-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.146745", 
+        "dc:title": "Domenech", 
+        "dc:modified": "2010-09-15T15:28:02.146745", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d3ffdacc-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.149511", 
+        "dc:title": "sociologie du sport", 
+        "dc:modified": "2010-09-15T15:28:02.149511", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d4003f12-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.145004", 
+        "dc:title": "Mondiale", 
+        "dc:modified": "2010-09-15T15:28:02.145004", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d3ff997c-c0dd-11df-bfff-00145ea4a2be"
+    }, 
+    {
+      "meta": {
+        "dc:contributor": "IRI", 
+        "dc:created": "2010-09-15T15:28:02.147547", 
+        "dc:title": "professionalisation de la politique", 
+        "dc:modified": "2010-09-15T15:28:02.147547", 
+        "dc:creator": "IRI"
+      }, 
+      "id": "d3fffdae-c0dd-11df-bfff-00145ea4a2be"
+    }
+  ], 
+  "views": null, 
+  "lists": [
+    {
+      "items": [
+        {
+          "id-ref": "c_1F07824B-F512-78A9-49DB-6FB51DAB9560"
+        }, 
+        {
+          "id-ref": "c_F6BB72C6-686E-1E8A-D775-B2B91B97C795"
+        }, 
+        {
+          "id-ref": "c_393E05F0-80CC-9D29-A42B-B293F1478831"
+        }, 
+        {
+          "id-ref": "c_DE60F95E-73B8-922D-3AC7-6FB197A1BF16"
+        }
+      ], 
+      "meta": {
+        "dc:contributor": "undefined", 
+        "dc:created": "2010-09-15T15:28:02.144361", 
+        "dc:creator": "perso", 
+        "id-ref": "franceculture_retourdudimanche20100620", 
+        "dc:title": "Découpages personnels", 
+        "editable": "false", 
+        "dc:modified": "2010-09-15T15:28:02.144361", 
+        "dc:description": ""
+      }, 
+      "id": "ens_perso"
+    }
+  ], 
+  "medias": [
+    {
+      "origin": "0", 
+      "http://advene.liris.cnrs.fr/ns/frame_of_reference/ms": "o=0", 
+      "href": "rtmp://media.iri.centrepompidou.fr/ddc_player/video/franceculture/franceculture_retourdudimanche20100620.flv", 
+      "meta": {
+        "dc:contributor": "IRI", 
+        "item": {
+          "name": "streamer", 
+          "value": "rtmp://media.iri.centrepompidou.fr/ddc_player/"
+        }, 
+        "dc:created": "2010-06-25T16:58:36.186952", 
+        "dc:duration": 603000, 
+        "dc:creator": "onubufonu", 
+        "dc:created.contents": "2010-06-25", 
+        "dc:title": "Andrei Tarkovsky interview part 1 ", 
+        "dc:creator.contents": "IRI", 
+        "dc:modified": "2010-06-25T16:58:36.187009", 
+        "dc:description": "Test Youtube local example with Json"
+      }, 
+      "id": "franceculture_retourdudimanche20100620", 
+      "unit": "ms"
+    }
+  ], 
+  "meta": {
+    "dc:contributor": "admin", 
+    "dc:created": "2010-07-12T00:30:40.272719", 
+    "dc:creator": "admin", 
+    "main_media": {
+      "id-ref": "franceculture_retourdudimanche20100620"
+    }, 
+    "dc:description": "", 
+    "dc:title": "RetourDimanche20juin_decoupageChronique", 
+    "id": "ef4dcc2e-8d3b-11df-8a24-00145ea4a2be", 
+    "dc:modified": "2010-09-13T11:07:51.331011"
+  }, 
+  "annotations": [
+  {
+      "begin": 202000, 
+      "end": 252000, 
+      "tags": [
+        {
+          "id-ref": "d3ff94ae-c0dd-11df-bfff-00145ea4a2be"
+        }, 
+        {
+          "id-ref": "d3ff997c-c0dd-11df-bfff-00145ea4a2be"
+        }, 
+        {
+          "id-ref": "d3ff9d3c-c0dd-11df-bfff-00145ea4a2be"
+        }
+      ], 
+      "media": "franceculture_retourdudimanche20100620", 
+      "content": {
+        "mimetype": "application/x-ldt-structured", 
+        "color": "6684774", 
+        "audio": {
+          "mimetype": "audio/mp3", 
+          "src": "", 
+          "href": null
+        }, 
+        "description": "", 
+        "title": "Générique"
+      },
+	  "meta": {
+        "dc:contributor": "perso", 
+        "id-ref": "c_1F07824B-F512-78A9-49DB-6FB51DAB9560", 
+        "dc:created": "2010-09-15T15:28:02.144394", 
+        "dc:modified": "2010-09-15T15:28:02.144394", 
+        "dc:creator": "perso"
+      }, 
+	   "id": "s_38948-15F4-E7CB-EBC5-6FB51DAC635C"
+    }, 
+    {
+      "begin": 50000, 
+      "end": 182000, 
+      "tags": [
+        {
+          "id-ref": "d3ff94ae-c0dd-11df-bfff-00145ea4a2be"
+        }, 
+        {
+          "id-ref": "d3ff997c-c0dd-11df-bfff-00145ea4a2be"
+        }, 
+        {
+          "id-ref": "d3ff9d3c-c0dd-11df-bfff-00145ea4a2be"
+        }
+      ], 
+      "media": "franceculture_retourdudimanche20100620", 
+      "content": {
+        "mimetype": "application/x-ldt-structured", 
+        "color": "16776960", 
+        "audio": {
+          "mimetype": "audio/mp3", 
+          "src": "", 
+          "href": null
+        }, 
+        "description": "", 
+        "title": "Générique"
+      }, 
+      "meta": {
+        "dc:contributor": "perso", 
+        "id-ref": "c_1F07824B-F512-78A9-49DB-6FB51DAB9560", 
+        "dc:created": "2010-09-15T15:28:02.144394", 
+        "dc:modified": "2010-09-15T15:28:02.144394", 
+        "dc:creator": "perso"
+      }, 
+      "id": "s_38978-15F4-E7CB-EBC5-6FB51DAC635C"
+    }, 
+	{
+      "begin": 2, 
+      "end": 12000, 
+      "tags": [
+        {
+          "id-ref": "d3ff94ae-c0dd-11df-bfff-00145ea4a2be"
+        }, 
+        {
+          "id-ref": "d3ff997c-c0dd-11df-bfff-00145ea4a2be"
+        }, 
+        {
+          "id-ref": "d3ff9d3c-c0dd-11df-bfff-00145ea4a2be"
+        }
+      ], 
+      "media": "franceculture_retourdudimanche20100620", 
+      "content": {
+        "mimetype": "application/x-ldt-structured", 
+        "color": "16776960", 
+        "audio": {
+          "mimetype": "audio/mp3", 
+          "src": "", 
+          "href": null
+        }, 
+        "description": "", 
+        "title": "Générique"
+      }, 
+      "meta": {
+        "dc:contributor": "perso", 
+        "id-ref": "c_1F07824B-F512-78A9-49DB-6FB51DAB9560", 
+        "dc:created": "2010-09-15T15:28:02.144394", 
+        "dc:modified": "2010-09-15T15:28:02.144394", 
+        "dc:creator": "perso"
+      }, 
+      "id": "s_32C565F4-15F4-E7CB-EBC5-6FB51DAC635C"
+    }, 
+    {
+      "begin": 25000, 
+      "end": 35000, 
+      "tags": null, 
+      "media": "franceculture_retourdudimanche20100620", 
+      "content": {
+        "mimetype": "application/x-ldt-structured", 
+        "color": "6684774", 
+        "audio": {
+          "mimetype": "audio/mp3", 
+          "src": "", 
+          "href": null
+        }, 
+        "description": "description de test ...", 
+        "title": "Sommaire"
+      }, 
+      "meta": {
+        "dc:contributor": "perso", 
+        "id-ref": "c_1F07824B-F512-78A9-49DB-6FB51DAB9560", 
+        "dc:created": "2010-09-15T15:28:02.144394", 
+        "dc:modified": "2010-09-15T15:28:02.144394", 
+        "dc:creator": "perso"
+      }, 
+      "id": "s_8F385150-64B3-7539-AB94-6FB51DAC40B4"
+    }
+
+ ], 
+  "annotation-types": [
+    {
+      "dc:contributor": "perso", 
+      "dc:creator": "perso", 
+      "dc:title": "Chapitrage Notes", 
+      "id": "c_1F07824B-F512-78A9-49DB-6FB51DAB9560", 
+      "dc:created": "2010-09-15T15:28:02.144394", 
+      "dc:description": "", 
+      "dc:modified": "2010-09-15T15:28:02.144394"
+    }, 
+    {
+      "dc:contributor": "perso", 
+      "dc:creator": "perso", 
+      "dc:title": "Mes notes", 
+      "id": "c_F6BB72C6-686E-1E8A-D775-B2B91B97C795", 
+      "dc:created": "2010-09-15T15:28:02.150138", 
+      "dc:description": "", 
+      "dc:modified": "2010-09-15T15:28:02.150138"
+    }, 
+    {
+      "dc:contributor": "perso", 
+      "dc:creator": "perso", 
+      "dc:title": "Mes notes", 
+      "id": "c_393E05F0-80CC-9D29-A42B-B293F1478831", 
+      "dc:created": "2010-09-15T15:28:02.159006", 
+      "dc:description": "", 
+      "dc:modified": "2010-09-15T15:28:02.159006"
+    }, 
+    {
+      "dc:contributor": "perso", 
+      "dc:creator": "perso", 
+      "dc:title": "Chapitrage", 
+      "id": "c_DE60F95E-73B8-922D-3AC7-6FB197A1BF16", 
+      "dc:created": "2010-09-15T15:28:02.163372", 
+      "dc:description": "", 
+      "dc:modified": "2010-09-15T15:28:02.163372"
+    }
+  ]
+}

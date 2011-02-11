@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile">
+  <taskdef name="jscomp" classname="com.google.javascript.jscomp.ant.CompileTask">
+    <classpath>
+      <pathelement location="../res/compiler.jar"/>
+    </classpath>
+  </taskdef>
+  <target name="compile">
+    <jscomp compilationLevel="simple" warning="quiet" 
+            debug="false" output="${basedir}/../../client/player/src/js/LdtPlayer.min.raw.js">
+      <externs dir="${basedir}/../../client/player/res/">
+      	<file name="js/jquery.min.js"/>
+      	<file name="js/jquery.tools.min.js"/>
+      	<file name="js/jquery-ui.min.js"/>
+      	<file name="js/swfobject.js"/>      		
+      </externs>
+      <sources dir="${basedir}/../../client/player/src/js">
+          <file name="LdtPlayer.js"/>
+      </sources>
+    </jscomp>
+  	<concat destfile="${basedir}/../../client/player/src/js/LdtPlayer.min.js"
+  	   append="false">
+  	   <filelist dir="${basedir}/../../client/player/src/js/" files="header.js,LdtPlayer.min.raw.js" />
+  	</concat>
+  	<delete file="${basedir}/../../client/player/src/js/LdtPlayer.min.raw.js"/>
+  </target>
+</project>
