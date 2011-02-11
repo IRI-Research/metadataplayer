@@ -1,0 +1,3 @@
+
+syntax: regexp
+^src/js/LdtPlayer\.min\.js$

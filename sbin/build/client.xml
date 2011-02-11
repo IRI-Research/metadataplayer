@@ -7,21 +7,21 @@
   </taskdef>
   <target name="compile">
     <jscomp compilationLevel="simple" warning="quiet" 
-            debug="false" output="${basedir}/../../client/player/src/js/LdtPlayer.min.raw.js">
-      <externs dir="${basedir}/../../client/player/res/">
+            debug="false" output="${basedir}/../../src/js/LdtPlayer.min.raw.js">
+      <externs dir="${basedir}/../../res/">
       	<file name="js/jquery.min.js"/>
       	<file name="js/jquery.tools.min.js"/>
       	<file name="js/jquery-ui.min.js"/>
       	<file name="js/swfobject.js"/>      		
       </externs>
-      <sources dir="${basedir}/../../client/player/src/js">
+      <sources dir="${basedir}/../../src/js">
           <file name="LdtPlayer.js"/>
       </sources>
     </jscomp>
-  	<concat destfile="${basedir}/../../client/player/src/js/LdtPlayer.min.js"
+  	<concat destfile="${basedir}/../../src/js/LdtPlayer.min.js"
   	   append="false">
-  	   <filelist dir="${basedir}/../../client/player/src/js/" files="header.js,LdtPlayer.min.raw.js" />
+  	   <filelist dir="${basedir}/../../src/js/" files="header.js,LdtPlayer.min.raw.js" />
   	</concat>
-  	<delete file="${basedir}/../../client/player/src/js/LdtPlayer.min.raw.js"/>
+  	<delete file="${basedir}/../../src/js/LdtPlayer.min.raw.js"/>
   </target>
 </project>
