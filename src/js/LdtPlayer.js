@@ -47,7 +47,7 @@ __IriSP.configDefault = {
 				streamer:"streamer",
 				file:"file", 
 				live:"true",
-				autostart:"true",
+				autostart:"false",
 				controlbar:"none",
 				playerready:"__IriSP.playerReady"
 			},
@@ -340,7 +340,7 @@ __IriSP.createMyHtml = function(){
 			"			<div id='slider-range-min'></div>\n"+
 			"	</div>\n"+
 			"		<div class='Ldt-Control2'>\n"+
-			"			<button id='ldt-CtrlLink'> Partager </button>\n"+
+			"			<button id='ldt-CtrlLink'  onclick='__IriSP.searchblock()'> Rechercher </button>\n"+
 			"			<button id='ldt-CtrlSound' onclick='__IriSP.MyApiPlayer.mute()'>Sound</button>\n"+
 			"		</div>\n"+
 			"  <div class='cleaner'>&nbsp\;</div> \n"+
@@ -383,7 +383,7 @@ __IriSP.createMyHtml = function(){
 			"			<div id='slider-range-min'></div>\n"+
 			"	</div>\n"+
 			"		<div class='Ldt-Control2'>\n"+
-			"			<button id='ldt-CtrlLink'> Partager </button>\n"+
+			"			<button id='ldt-CtrlLink'  onclick='__IriSP.searchblock()'> Rechercher </button>\n"+
 			"			<button id='ldt-CtrlSound' onclick='__IriSP.MyApiPlayer.mute()'>Sound</button>\n"+
 			"		</div>\n"+
 			"  <div class='cleaner'>&nbsp\;</div> \n"+
@@ -506,7 +506,7 @@ __IriSP.createInterface = function(width,height,duration){
 		});
 		__IriSP.jQuery(".Ldt-Control2 button:first").button({
 			icons: {
-				primary: 'ui-icon-transferthick-e-w'//,
+				primary: 'ui-icon-search'//,
 				//secondary: 'ui-icon-volume-off'
 			},
 			text: false
@@ -532,6 +532,7 @@ __IriSP.createInterface = function(width,height,duration){
 		__IriSP.trace("__IriSP.createInterface","END");
 		
 	}
+
 
 
 /*  API player - work in progress ... need refactoring of code */ 
@@ -599,6 +600,12 @@ __IriSP.APIplayer.prototype.ready = function(player){
 		  }
 		}, false);
 	}
+	
+	// Search
+	//__IriSP.jQuery("#LdtSearchInput").change(function() {__IriSP.Search(this.value);});
+	//__IriSP.jQuery("#LdtSearchInput").live('change', function(event) {__IriSP.Search(this.value);}); 
+	__IriSP.jQuery("#LdtSearchInput").keydown(function() {__IriSP.Search(this.value);});
+	__IriSP.jQuery("#LdtSearchInput").keyup(function() {__IriSP.Search(this.value);});
 	
 }
 __IriSP.APIplayer.prototype.pause = function(){
@@ -963,6 +970,114 @@ __IriSP.DEC_HEXA_COLOR = function (dec){
 }
 
 
+/* Search  	*/
+__IriSP.SearchOldValue="";
+__IriSP.searchblock = function (){
+	if (__IriSP.jQuery(".ui-icon-search").css("background-position")=="-160px -112px"){
+		__IriSP.jQuery(".ui-icon-search").css("background-position","-144px -112px");
+		//__IriSP.jQuery("#LdtSearch").animate({height:26},250);
+		__IriSP.jQuery("#LdtSearch").show(250);
+		__IriSP.jQuery("#LdtSearchInput").css('background-color','#fff');
+		__IriSP.jQuery("#LdtSearchInput").focus();
+		__IriSP.jQuery("#LdtSearchInput").attr('value',__IriSP.SearchOldValue);
+		__IriSP.Search(__IriSP.SearchOldValue);
+	} else {
+		__IriSP.SearchOldValue = __IriSP.jQuery("#LdtSearchInput").attr('value');
+		__IriSP.jQuery("#LdtSearchInput").attr('value','');
+		__IriSP.SearchClean();
+		__IriSP.jQuery(".ui-icon-search").css("background-position","-160px -112px");
+		//__IriSP.jQuery("#LdtSearch").animate({height:0},250);
+		__IriSP.jQuery("#LdtSearch").hide(250);
+	}
+}
+__IriSP.Search = function (value){
+
+	annotations = __IriSP.LDTligne.annotations;
+	
+	__IriSP.trace("__IriSP.Search",annotations.length+" "+value);
+	var finded=0;
+	var findmem=0;
+	var factor=0;
+	__IriSP.trace(value,value.length);
+	if(value.length>=3){
+		
+		for (var i=0; i < annotations.length; ++i){
+			annotation = annotations[i];
+			
+			__IriSP.jQuery("#output2").text(annotation.title+" ?= "+value);
+			chaine1 = annotation.title.toLowerCase();
+			chaine2 = annotation.description.toLowerCase();
+			chaine3 = annotation.htmlTags.toLowerCase();
+			
+			if(chaine1.indexOf(value,0) !=-1){
+				finded+=1;	
+			}
+			if(chaine2.indexOf(value,0) !=-1){
+				finded+=1;	
+			}
+			if(chaine3.indexOf(value,0) !=-1){
+				finded+=1;	
+			}
+			
+			findmem += finded;
+			if(finded>0){
+				factor = finded*8;
+				__IriSP.jQuery("#"+annotation.id).dequeue();
+				__IriSP.jQuery("#"+annotation.id).animate({height:factor},200);
+				__IriSP.jQuery("#"+annotation.id).css('border','2px');
+				__IriSP.jQuery("#"+annotation.id).css('border-color','red');
+				__IriSP.jQuery("#"+annotation.id).animate({opacity:0.6},200);
+				
+				__IriSP.trace("!!!!!!!!!!!!!!!!!!"," ?= "+annotation.id);
+				__IriSP.jQuery("#LdtSearchInput").css('background-color','#e1ffe1');
+			}else {
+				__IriSP.jQuery("#"+annotation.id).dequeue();
+				__IriSP.jQuery("#"+annotation.id).animate({height:0},250);
+				__IriSP.jQuery("#"+annotation.id).animate({opacity:0.3},200);
+			}
+			
+			finded = 0;
+		}
+		if(findmem==0){
+				__IriSP.jQuery("#LdtSearchInput").css('background-color','#f6f6f6');
+		}
+		
+	} else if(value.length==0){
+		__IriSP.SearchClean();
+		__IriSP.jQuery("#LdtSearchInput").css('background-color','#fff');		
+	} else {
+		__IriSP.SearchClean();
+		__IriSP.jQuery("#LdtSearchInput").css('background-color','#f6f6f6');
+	}
+}
+
+__IriSP.SearchClean = function (){
+	for (var i=0; i < annotations.length; ++i){
+			annotation = annotations[i];
+			__IriSP.jQuery("#"+annotation.id).dequeue();
+			__IriSP.jQuery("#"+annotation.id).animate({height:0},100);	
+			__IriSP.jQuery("#"+annotation.id).css('border','0px');
+			__IriSP.jQuery("#"+annotation.id).css('border-color','red');
+			__IriSP.jQuery("#"+annotation.id).animate({opacity:0.3},100);
+		}
+}
+
+__IriSP.SearchCleanString = function (value){
+	var reg = new RegExp("(chien)", "g");
+	value.replace(reg,"")
+	return value;
+}
+
+
+
+	
+__IriSP.SearchThisSegment  = function (annotation){
+					__IriSP.jQuery("#LdtSearchInput").text(annotation.title);
+					__IriSP.trace("__IriSP.Ligne.prototype.checkTimeLigne",annotation.title);
+					/*__IriSP.jQuery("#Ldt-SaDescription").text(annotationTempo.description);
+					__IriSP.jQuery("#Ldt-SaKeywordText").html("Mots clefs : "+annotationTempo.htmlTags);*/
+}
+
 
 /* CLASS Ligne (annotationType) 	*/
 
@@ -1017,24 +1132,21 @@ __IriSP.Ligne.prototype.numAnnotation = function (annotationCible){
 	}
 }
 __IriSP.Ligne.prototype.checkTime = function(time){
+	
 	var annotationTempo = -1;
 	//__IriSP.trace("__IriSP.Ligne.prototype.checkTimeLigne",time);
 	//__IriSP.trace("__IriSP.Ligne.prototype.checkTimeLigne",this.annotations.length);
 	
 	for (var i=0; i < this.annotations.length; ++i){
 		annotationTempo = this.annotations[i];	
+		
+		//__IriSP.SearchThisSegment(annotationTempo);
+		
 		if (time>annotationTempo.begin/1000 && time<annotationTempo.end/1000){
 			
 				// different form the previous
 				if(annotationTempo!=this.annotationOldRead){
 					this.annotationOldRead = annotationTempo;
-					//__IriSP.trace("Check : ","annotation ici : "+i+" title "+annotationTempo.title);
-					//__IriSP.jQuery('#Ldt-ShowAnnotation').slideUp();
-					//http://api.jquery.com/delay/  -> 1.4
-					//__IriSP.jQuery("#Ldt-SaTitle").delay(100).text(annotationTempo.title);
-					//__IriSP.jQuery("#Ldt-SaDescription").delay(100).text(annotationTempo.description);
-					//__IriSP.jQuery('#Ldt-ShowAnnotation').delay(100).slideDown();
-					//__IriSP.trace("__IriSP.Ligne.prototype.checkTimeLigne",annotationTempo.title+" "+annotationTempo.description );
 					__IriSP.jQuery("#Ldt-SaTitle").text(annotationTempo.title);
 					__IriSP.jQuery("#Ldt-SaDescription").text(annotationTempo.description);
 					__IriSP.jQuery("#Ldt-SaKeywordText").html("Mots clefs : "+annotationTempo.htmlTags);
@@ -1067,7 +1179,7 @@ __IriSP.Ligne.prototype.checkTime = function(time){
 			this.annotationOldRead = annotationTempo;
 		}
 	}
-	__IriSP.trace("__IriSP.Ligne.prototype.checkTimeLigne",annotationTempo);
+	//__IriSP.trace("__IriSP.Ligne.prototype.checkTimeLigne",annotationTempo);
 }
 
 

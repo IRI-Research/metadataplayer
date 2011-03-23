@@ -78,6 +78,7 @@
 			height:13px;
 			margin-top:12px;
 			margin-left:-10px;
+			z-index:999999999;
 		}
 
 		#Ldt-output{
@@ -122,6 +123,12 @@
 		#Ldt-PlaceHolder{
 			position:absolue;
 			float:none;
+		}
+		.Ldt-Search-select{
+			padding-top:25px;
+		}
+		.Ldt-Search-unselect{
+			border-top:0px;
 		}
 		
 		.Ldt-mode-radio{
