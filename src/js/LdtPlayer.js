@@ -2,7 +2,8 @@
  * 	
  *	Copyright 2010 Institut de recherche et d'innovation 
  *	contributor(s) : Samuel Huron 
- *	 
+ *	Use Silvia Pfeiffer 's javascript mediafragment implementation
+ *
  *	contact@iri.centrepompidou.fr
  *	http://www.iri.centrepompidou.fr 
  *	 
@@ -323,11 +324,15 @@ __IriSP.init = function (config){
 
 __IriSP.createMyHtml = function(){
 		var width = __IriSP.config.gui.width;
+		var height = __IriSP.config.gui.height;
 		
 		// AUDIO  */
 		// PB dans le html : ; 
 		if(__IriSP.config.gui.mode=="radio"){
 		__IriSP.jQuery(  "<div id='Ldt-Root'>\n"+
+			"<div id='LdtSearchContainer'  style='margin-left:445px;'>\n"+
+			"<div id='LdtSearch' style='background-color:#EEE;display:block;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;display:none;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
+			"</div>\n"+
 			"	<div id='Ldt-PlaceHolder'>\n"+
 			"		<a href='http://www.adobe.com/go/getflashplayer'>Get flash</a> to see this player	\n"+
 			"	</div>\n"+
@@ -374,6 +379,11 @@ __IriSP.createMyHtml = function(){
 			"	<div id='Ldt-PlaceHolder'>\n"+
 			"		<a href='http://www.adobe.com/go/getflashplayer'>Get flash</a> to see this player	\n"+
 			"	</div>\n"+
+			"<div id='LdtSearchContainer'  style='margin-left:445px;margin-top:-30px;position:absolute;'>\n"+
+			"<div id='LdtSearch' style='background-color:#EEE;display:block;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;display:none;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
+			"</div>\n"+
+			
+			
 			"	<div id='Ldt-controler' class='demo'>\n"+
 			"		<div class='Ldt-Control1' >\n"+
 			"			<button id='ldt-CtrlPlay' onclick='__IriSP.MyApiPlayer.play()'>Lecture / Pause </button>\n"+
@@ -580,6 +590,7 @@ __IriSP.APIplayer.prototype.ready = function(player){
 		  __IriSP.trace("__IriSP.APIplayer.prototype.ready",time);
 		  if(__IriSP.MyApiPlayer.hashchangeUpdate==null){
 			__IriSP.MyApiPlayer.seek(time);
+			
 		  }else{
 			__IriSP.MyApiPlayer.hashchangeUpdate=null;
 		  }
@@ -665,8 +676,10 @@ __IriSP.APIplayer.prototype.share = function(network){
 	//window.location.href = shareURL+encodeURIComponent(MyURLNow);
 }
 __IriSP.APIplayer.prototype.seek  = function (time){
+	if(time==0){time=1}
 	__IriSP.trace("__IriSP.APIplayer.prototype.seek",time);
 	if(__IriSP.config.player.type=='jwplayer'){
+		//__IriSP.MyApiPlayer.play()
 		__IriSP.player.sendEvent('SEEK', time);
 	} else if(__IriSP.config.player.type=='dailymotion'
 			|| __IriSP.config.player.type=='youtube') {
@@ -675,17 +688,22 @@ __IriSP.APIplayer.prototype.seek  = function (time){
 	this.changePageUrlOffset(time);
 }	
 __IriSP.APIplayer.prototype.update = function (time){
+	if(time!=0){
 	this.hashchangeUpdate = true;
+	__IriSP.trace("__IriSP.APIplayer.prototype.update",time);
 	__IriSP.player.sendEvent('SEEK', time);
+	}
 }
 __IriSP.APIplayer.prototype.changePageUrlOffset = function (time) {
 	//alert(time);
   __IriSP.trace("__IriSP.APIplayer.prototype.changePageUrlOffset","CHANGE URL "+time);
+  
   window.location.hash = "#t=" + time;
   window.location.href =  window.location.href;
+  
 }
 
-/* MEDIA FRAGMENT FUNCTION */
+/* MEDIA FRAGMENT FUNCTION by Silvia Pfeiffer */ 
 
 __IriSP.jumpToTimeoffset = function (form) {
 	var time = form.time.value;
@@ -717,6 +735,7 @@ __IriSP.currentPosition 	= 0;
 __IriSP.currentVolume   	= 50; 
 __IriSP.player 				= null;
 __IriSP.startPosition 		= null;
+__IriSP.firstplay	 		= false;
 
 
 
@@ -732,12 +751,15 @@ __IriSP.createPlayer = function (url,streamerPath) {
 	__IriSP.trace("__IriSP.createPlayer","start");			
 	
 	__IriSP.myUrlFragment = url.split(streamerPath);	
-	__IriSP.config.player.flashvars.streamer =	streamerPath;
-	__IriSP.config.player.flashvars.file =	__IriSP.myUrlFragment[1];
 	
-	var flashvars 		  = __IriSP.config.player.flashvars;
-	var params 			  = __IriSP.config.player.params;
-	var attributes 		  = __IriSP.config.player.attributes;
+	var configTemp = __IriSP.jQuery.extend(true, {}, __IriSP.config);
+	configTemp.player.flashvars.autostart =	"true";
+	configTemp.player.flashvars.streamer =	streamerPath;
+	configTemp.player.flashvars.file =	__IriSP.myUrlFragment[1];
+	
+	var flashvars 		  = configTemp.player.flashvars;
+	var params 			  = configTemp.player.params;
+	var attributes 		  = configTemp.player.attributes;
 	
 	__IriSP.trace(
 				  "__IriSP.createPlayer",
@@ -762,6 +784,89 @@ __IriSP.createPlayer = function (url,streamerPath) {
 	// need a methode to 
 	// re execute if this swf call does'nt work 
 }
+
+
+/* API JW PLAYER 	*/
+__IriSP.playerReady  = function (thePlayer) {
+
+	//__IriSP.trace("__IriSP.playerReady","PLAYER READY !!!!!!!!!!!!");
+	__IriSP.player = window.document[thePlayer.id];
+	//__IriSP.trace("__IriSP.playerReady","API CALL "+__IriSP.player);
+	__IriSP.MyApiPlayer.ready(__IriSP.player);
+	//__IriSP.trace("__IriSP.playerReady","API CALL END ");
+	
+	var url = document.location.href;
+	var time = __IriSP.retrieveTimeFragment(url);
+	//__IriSP.trace("__IriSP.playerReady"," "+url+" "+time );
+	__IriSP.startPosition = time;
+	//__IriSP.trace("__IriSP.playerReady"," LISTENER LAUCHER");
+	__IriSP.addListeners();	
+	//__IriSP.trace("__IriSP.playerReady"," LISTENER END");
+	
+}
+__IriSP.addListeners = function () {
+	if (__IriSP.player) { 
+		__IriSP.trace("__IriSP.addListeners","ADD  Listener ");
+		__IriSP.player.addModelListener("TIME", "__IriSP.positionListener");
+		__IriSP.player.addControllerListener("VOLUME", "__IriSP.volumeListener");
+		__IriSP.player.addModelListener('STATE', '__IriSP.stateMonitor');
+	} else {
+		__IriSP.setTimeout("__IriSP.addListeners()",100);
+	}
+
+	// et changer les boutons
+}
+__IriSP.stateMonitor = function (obj) { 
+
+	 if(obj.newstate == 'PAUSED')
+    {
+		__IriSP.trace("__IriSP.stateMonitor","PAUSE");
+		__IriSP.MyApiPlayer.changePageUrlOffset(__IriSP.currentPosition);			
+		__IriSP.jQuery(".ui-icon-play").css("background-position","0px -160px");
+		
+	} else if (obj.newstate == 'PLAYING'){
+		
+		__IriSP.trace("__IriSP.stateMonitor","PLAYING "+__IriSP.startPosition );
+		
+		// forcer le buffering mais stop du player si dans config 
+		if (__IriSP.config.player.flashvars.autostart=="false" && __IriSP.firstplay==false && __IriSP.startPosition == 0){
+			__IriSP.trace("__IriSP.stateMonitor","first stop ???");
+			__IriSP.MyApiPlayer.play();
+			__IriSP.firstplay = true;
+			__IriSP.MyLdt.checkTime(1);
+		}
+		
+		// une fois la video prete a lire  la déplacer au bon timecode 
+		if(__IriSP.startPosition!=null){
+			__IriSP.MyApiPlayer.update(__IriSP.startPosition);
+			__IriSP.startPosition = null;
+		}
+		
+		
+		__IriSP.jQuery(".ui-icon-play").css("background-position","-16px -160px");
+	} else if (obj.newstate == 'BUFFERING'){
+		__IriSP.trace("__IriSP.stateMonitor","BUFFERING : "+__IriSP.config.player.flashvars.autostart);
+		//changePageUrlOffset(currentPosition);
+	}
+	
+}
+__IriSP.positionListener = function(obj) { 
+	//__IriSP.trace("__IriSP.positionListener",obj.position);
+	__IriSP.currentPosition = obj.position; 
+	var tmp = document.getElementById("posit");
+	if (tmp) { tmp.innerHTML = "position: " + __IriSP.currentPosition; }
+	__IriSP.jQuery("#slider-range-min").slider("value", obj.position);
+	__IriSP.jQuery("#amount").val(obj.position+" s");
+	// afficher annotation 
+	__IriSP.MyLdt.checkTime(__IriSP.currentPosition);
+	
+}
+__IriSP.volumeListener   = function (obj) { 
+	__IriSP.currentVolume = obj.percentage; 
+	var tmp = document.getElementById("vol");
+	if (tmp) { tmp.innerHTML = "volume: " + __IriSP.currentVolume; }
+}	
+
 
 /* API DAILYMOTION 	*/
 onDailymotionPlayerReady = function (playerid){
@@ -876,78 +981,6 @@ __IriSP.YouTubeStateMonitor = function (obj) {
 	
 }
 
-/* API JW PLAYER 	*/
-__IriSP.playerReady  = function (thePlayer) {
-
-	//__IriSP.trace("__IriSP.playerReady","PLAYER READY !!!!!!!!!!!!");
-	__IriSP.player = window.document[thePlayer.id];
-	//__IriSP.trace("__IriSP.playerReady","API CALL "+__IriSP.player);
-	__IriSP.MyApiPlayer.ready(__IriSP.player);
-	//__IriSP.trace("__IriSP.playerReady","API CALL END ");
-	
-	var url = document.location.href;
-	var time = __IriSP.retrieveTimeFragment(url);
-	//__IriSP.trace("__IriSP.playerReady"," "+url+" "+time );
-	__IriSP.startPosition = time;
-	//__IriSP.trace("__IriSP.playerReady"," LISTENER LAUCHER");
-	__IriSP.addListeners();	
-	//__IriSP.trace("__IriSP.playerReady"," LISTENER END");
-	
-}
-__IriSP.addListeners = function () {
-	if (__IriSP.player) { 
-		__IriSP.trace("__IriSP.addListeners","ADD  Listener ");
-		__IriSP.player.addModelListener("TIME", "__IriSP.positionListener");
-		__IriSP.player.addControllerListener("VOLUME", "__IriSP.volumeListener");
-		__IriSP.player.addModelListener('STATE', '__IriSP.stateMonitor');
-	} else {
-		__IriSP.setTimeout("__IriSP.addListeners()",100);
-	}
-
-	// et changer les boutons
-}
-__IriSP.stateMonitor = function (obj) { 
-
-
-	
-	 if(obj.newstate == 'PAUSED')
-    {
-		__IriSP.trace("__IriSP.stateMonitor","PAUSE");
-		__IriSP.MyApiPlayer.changePageUrlOffset(__IriSP.currentPosition);			
-		__IriSP.jQuery(".ui-icon-play").css("background-position","0px -160px");
-		
-	} else if (obj.newstate == 'PLAYING'){
-		// une fois la video prete a lire  la déplacer au bon timecode 
-		if(__IriSP.startPosition!=null){
-			__IriSP.MyApiPlayer.update(__IriSP.startPosition);
-			__IriSP.startPosition = null;
-		}
-		__IriSP.jQuery(".ui-icon-play").css("background-position","-16px -160px");
-	} else if (obj.newstate == 'BUFFERING'){
-		__IriSP.trace("__IriSP.stateMonitor","BUFFERING : ");
-		//changePageUrlOffset(currentPosition);
-	}
-	
-}
-__IriSP.positionListener = function(obj) { 
-	//__IriSP.trace("__IriSP.positionListener",obj.position);
-	__IriSP.currentPosition = obj.position; 
-	var tmp = document.getElementById("posit");
-	if (tmp) { tmp.innerHTML = "position: " + __IriSP.currentPosition; }
-	__IriSP.jQuery("#slider-range-min").slider("value", obj.position);
-	__IriSP.jQuery("#amount").val(obj.position+" s");
-	// afficher annotation 
-	__IriSP.MyLdt.checkTime(__IriSP.currentPosition);
-	
-	
-}
-__IriSP.volumeListener   = function (obj) { 
-	__IriSP.currentVolume = obj.percentage; 
-	var tmp = document.getElementById("vol");
-	if (tmp) { tmp.innerHTML = "volume: " + __IriSP.currentVolume; }
-}	
-
-
 
 
 /* 	UTIL */
@@ -995,9 +1028,9 @@ __IriSP.Search = function (value){
 	annotations = __IriSP.LDTligne.annotations;
 	
 	__IriSP.trace("__IriSP.Search",annotations.length+" "+value);
-	var finded=0;
-	var findmem=0;
-	var factor=0;
+	var finded  = 0;
+	var findmem = 0;
+	var factor  = 0;
 	__IriSP.trace(value,value.length);
 	if(value.length>=3){
 		
