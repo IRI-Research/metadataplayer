@@ -20,6 +20,19 @@
 
 if(window.__IriSP === undefined ){ var __IriSP={};}
 
+		
+/* CLASS TRACE */
+
+__IriSP.traceNum=0;
+__IriSP.trace = function(msg,value){
+
+	if(__IriSP.config.gui.debug===true){
+		__IriSP.traceNum += 1;
+		__IriSP.jQuery("<div>"+__IriSP.traceNum+" - "+msg+" : "+value+"</div>").appendTo("#Ldt-output");
+	}
+
+}
+
 // Player Configuration 
 __IriSP.config = undefined;
 __IriSP.configDefault = {
@@ -59,7 +72,6 @@ __IriSP.configDefault = {
 		},
 		module:null
 	};
-
 __IriSP.lib = {
 			jQuery:"http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js",
 			jQueryUI:"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js",
@@ -325,14 +337,17 @@ __IriSP.init = function (config){
 __IriSP.createMyHtml = function(){
 		var width = __IriSP.config.gui.width;
 		var height = __IriSP.config.gui.height;
+		var heightS = __IriSP.config.gui.height-20;
 		
 		// AUDIO  */
 		// PB dans le html : ; 
 		if(__IriSP.config.gui.mode=="radio"){
-		__IriSP.jQuery(  "<div id='Ldt-Root'>\n"+
-			"<div id='LdtSearchContainer'  style='margin-left:445px;'>\n"+
-			"<div id='LdtSearch' style='background-color:#EEE;display:block;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;display:none;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
-			"</div>\n"+
+		__IriSP.jQuery( 
+/*
+		"<div id='LdtSearchContainer'  style='margin-left:445px;position:absolute;'>\n"+
+		"<div id='LdtSearch' style='background-color:#EEE;display:block;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;z-index:999;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
+		"</div>\n"+*/
+		"<div id='Ldt-Root'>\n"+
 			"	<div id='Ldt-PlaceHolder'>\n"+
 			"		<a href='http://www.adobe.com/go/getflashplayer'>Get flash</a> to see this player	\n"+
 			"	</div>\n"+
@@ -375,15 +390,14 @@ __IriSP.createMyHtml = function(){
 			"<div id='Ldt-output'></div>").appendTo("#"+__IriSP.config.gui.container);
 		} else if(__IriSP.config.gui.mode=="video") {
 		
-			__IriSP.jQuery(  "<div id='Ldt-Root'>\n"+
+			__IriSP.jQuery(  "<div id='LdtSearchContainer'  style='margin-top:"+heightS+"px;margin-left:445px;position:absolute;'>\n"+
+			"<div id='LdtSearch' style='background-color:#EEE;display:block;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;z-index:999;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
+			"</div>\n"+
+			"<div id='Ldt-Root'>\n"+
 			"	<div id='Ldt-PlaceHolder'>\n"+
 			"		<a href='http://www.adobe.com/go/getflashplayer'>Get flash</a> to see this player	\n"+
 			"	</div>\n"+
-			"<div id='LdtSearchContainer'  style='margin-left:445px;margin-top:-30px;position:absolute;'>\n"+
-			"<div id='LdtSearch' style='background-color:#EEE;display:block;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;display:none;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
-			"</div>\n"+
-			
-			
+						
 			"	<div id='Ldt-controler' class='demo'>\n"+
 			"		<div class='Ldt-Control1' >\n"+
 			"			<button id='ldt-CtrlPlay' onclick='__IriSP.MyApiPlayer.play()'>Lecture / Pause </button>\n"+
@@ -1003,10 +1017,11 @@ __IriSP.DEC_HEXA_COLOR = function (dec){
 }
 
 
-/* Search  	*/
+/* Search  methodes	*/
 __IriSP.SearchOldValue="";
-__IriSP.searchblock = function (){
-	if (__IriSP.jQuery(".ui-icon-search").css("background-position")=="-160px -112px"){
+__IriSP.searchblock 		= function (){
+	__IriSP.trace("__IriSP.searchblock",__IriSP.jQuery(".ui-icon-search").css("background-position-x"));
+	if (__IriSP.jQuery(".ui-icon-search").css("background-position-x")=="-160px"){
 		__IriSP.jQuery(".ui-icon-search").css("background-position","-144px -112px");
 		//__IriSP.jQuery("#LdtSearch").animate({height:26},250);
 		__IriSP.jQuery("#LdtSearch").show(250);
@@ -1018,12 +1033,12 @@ __IriSP.searchblock = function (){
 		__IriSP.SearchOldValue = __IriSP.jQuery("#LdtSearchInput").attr('value');
 		__IriSP.jQuery("#LdtSearchInput").attr('value','');
 		__IriSP.SearchClean();
-		__IriSP.jQuery(".ui-icon-search").css("background-position","-160px -112px");
+		__IriSP.jQuery(".ui-icon-search").css("background-position-x","-160px");
 		//__IriSP.jQuery("#LdtSearch").animate({height:0},250);
 		__IriSP.jQuery("#LdtSearch").hide(250);
 	}
 }
-__IriSP.Search = function (value){
+__IriSP.Search 				= function (value){
 
 	annotations = __IriSP.LDTligne.annotations;
 	
@@ -1083,8 +1098,9 @@ __IriSP.Search = function (value){
 		__IriSP.jQuery("#LdtSearchInput").css('background-color','#f6f6f6');
 	}
 }
-
-__IriSP.SearchClean = function (){
+__IriSP.SearchClean 		= function (){
+	annotations = __IriSP.LDTligne.annotations;
+	
 	for (var i=0; i < annotations.length; ++i){
 			annotation = annotations[i];
 			__IriSP.jQuery("#"+annotation.id).dequeue();
@@ -1094,17 +1110,12 @@ __IriSP.SearchClean = function (){
 			__IriSP.jQuery("#"+annotation.id).animate({opacity:0.3},100);
 		}
 }
-
-__IriSP.SearchCleanString = function (value){
+__IriSP.SearchCleanString 	= function (value){
 	var reg = new RegExp("(chien)", "g");
 	value.replace(reg,"")
 	return value;
-}
-
-
-
-	
-__IriSP.SearchThisSegment  = function (annotation){
+}	
+__IriSP.SearchThisSegment  	= function (annotation){
 					__IriSP.jQuery("#LdtSearchInput").text(annotation.title);
 					__IriSP.trace("__IriSP.Ligne.prototype.checkTimeLigne",annotation.title);
 					/*__IriSP.jQuery("#Ldt-SaDescription").text(annotationTempo.description);
@@ -1407,21 +1418,3 @@ __IriSP.Tags.prototype.show = function (id){
 	
 }
 
-		
-/* CLASS TRACE */
-
-__IriSP.traceNum=0;
-__IriSP.trace = function(msg,value){
-
-	if(__IriSP.config.gui.debug===true){
-		__IriSP.traceNum += 1;
-		__IriSP.jQuery("<div>"+__IriSP.traceNum+" - "+msg+" : "+value+"</div>").appendTo("#Ldt-output");
-	}
-
-}
-	
-	
-	
-	
-	
-	
