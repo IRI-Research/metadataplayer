@@ -349,8 +349,9 @@ __IriSP.createMyHtml = function(){
 		
 		__IriSP.jQuery("#"+__IriSP.config.gui.container).before(
 		"<div id='LdtSearchContainer'  style='margin-left:445px;position:absolute;'>\n"+
-		"<div id='LdtSearch' style='background-color:#EEE;display:none;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;z-index:999;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
-		"</div>\n");
+		"<div id='LdtSearch' style='display:none;background-color:#EEE;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
+		"</div>\n"+
+		" <div class='cleaner'></div>");
 		__IriSP.trace("__IriSP.createHtml",__IriSP.config.gui.container);
 		
 		__IriSP.jQuery( "<div id='Ldt-Root'>\n"+
@@ -394,6 +395,13 @@ __IriSP.createMyHtml = function(){
 			//"<div id='Ldt-Tags'> Mots clefs : </div>"+
 			"</div>"+
 			"<div id='Ldt-output' style='clear:left;float:none;position:relative;height:200px;width:"+width+"px;overflow:scroll;' ></div>").appendTo("#"+__IriSP.config.gui.container);
+			// special tricks IE 7
+			if (__IriSP.jQuery.browser.msie==true && __IriSP.jQuery.browser.version=="7.0"){
+				//LdtSearchContainer
+				//__IriSP.jQuery("#LdtPlayer").attr("margin-top","50px");
+				__IriSP.jQuery("#Ldt-Root").css("padding-top","25px");
+						__IriSP.trace("__IriSP.createHtml","IE7 SPECIAL ");
+			}
 		} else if(__IriSP.config.gui.mode=="video") {
 		
 			__IriSP.jQuery(  "<div id='LdtSearchContainer'  style='margin-top:"+heightS+"px;margin-left:445px;position:absolute;'>\n"+
@@ -445,6 +453,7 @@ __IriSP.createMyHtml = function(){
 		}
 		
 		
+		__IriSP.trace("__IriSP.createHtml",__IriSP.jQuery.browser.msie+" "+__IriSP.jQuery.browser.version);		
 		__IriSP.trace("__IriSP.createHtml","end");
 		__IriSP.jQuery("#Ldt-Annotations").width(width-(75*2));
 		__IriSP.jQuery("#Ldt-Show-Arrow-container").width(width-(75*2));
