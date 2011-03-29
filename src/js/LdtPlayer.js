@@ -341,13 +341,19 @@ __IriSP.createMyHtml = function(){
 		
 		// AUDIO  */
 		// PB dans le html : ; 
+		__IriSP.trace("__IriSP.createMyHtml",__IriSP.config.gui.container);
+
+		
+		
 		if(__IriSP.config.gui.mode=="radio"){
-		__IriSP.jQuery( 
-/*
+		
+		__IriSP.jQuery("#"+__IriSP.config.gui.container).before(
 		"<div id='LdtSearchContainer'  style='margin-left:445px;position:absolute;'>\n"+
-		"<div id='LdtSearch' style='background-color:#EEE;display:block;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;z-index:999;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
-		"</div>\n"+*/
-		"<div id='Ldt-Root'>\n"+
+		"<div id='LdtSearch' style='background-color:#EEE;display:none;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;z-index:999;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
+		"</div>\n");
+		__IriSP.trace("__IriSP.createHtml",__IriSP.config.gui.container);
+		
+		__IriSP.jQuery( "<div id='Ldt-Root'>\n"+
 			"	<div id='Ldt-PlaceHolder'>\n"+
 			"		<a href='http://www.adobe.com/go/getflashplayer'>Get flash</a> to see this player	\n"+
 			"	</div>\n"+
@@ -387,11 +393,11 @@ __IriSP.createMyHtml = function(){
 			"</div>  "+
 			//"<div id='Ldt-Tags'> Mots clefs : </div>"+
 			"</div>"+
-			"<div id='Ldt-output'></div>").appendTo("#"+__IriSP.config.gui.container);
+			"<div id='Ldt-output' style='clear:left;float:none;position:relative;height:200px;width:"+width+"px;overflow:scroll;' ></div>").appendTo("#"+__IriSP.config.gui.container);
 		} else if(__IriSP.config.gui.mode=="video") {
 		
 			__IriSP.jQuery(  "<div id='LdtSearchContainer'  style='margin-top:"+heightS+"px;margin-left:445px;position:absolute;'>\n"+
-			"<div id='LdtSearch' style='background-color:#EEE;display:block;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;z-index:999;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
+			"<div id='LdtSearch' style='background-color:#EEE;display:none;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;z-index:999;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
 			"</div>\n"+
 			"<div id='Ldt-Root'>\n"+
 			"	<div id='Ldt-PlaceHolder'>\n"+
@@ -1019,9 +1025,10 @@ __IriSP.DEC_HEXA_COLOR = function (dec){
 
 /* Search  methodes	*/
 __IriSP.SearchOldValue="";
+__IriSP.searchblockOpen=false;
 __IriSP.searchblock 		= function (){
-	__IriSP.trace("__IriSP.searchblock",__IriSP.jQuery(".ui-icon-search").css("background-position-x"));
-	if (__IriSP.jQuery(".ui-icon-search").css("background-position-x")=="-160px"){
+	__IriSP.trace("__IriSP.searchblock",__IriSP.searchblockOpen);
+	if (__IriSP.searchblockOpen==false){
 		__IriSP.jQuery(".ui-icon-search").css("background-position","-144px -112px");
 		//__IriSP.jQuery("#LdtSearch").animate({height:26},250);
 		__IriSP.jQuery("#LdtSearch").show(250);
@@ -1029,13 +1036,15 @@ __IriSP.searchblock 		= function (){
 		__IriSP.jQuery("#LdtSearchInput").focus();
 		__IriSP.jQuery("#LdtSearchInput").attr('value',__IriSP.SearchOldValue);
 		__IriSP.Search(__IriSP.SearchOldValue);
+		__IriSP.searchblockOpen=true;
 	} else {
 		__IriSP.SearchOldValue = __IriSP.jQuery("#LdtSearchInput").attr('value');
 		__IriSP.jQuery("#LdtSearchInput").attr('value','');
 		__IriSP.SearchClean();
-		__IriSP.jQuery(".ui-icon-search").css("background-position-x","-160px");
+		__IriSP.jQuery(".ui-icon-search").css("background-position","-160px -112px");
 		//__IriSP.jQuery("#LdtSearch").animate({height:0},250);
 		__IriSP.jQuery("#LdtSearch").hide(250);
+		__IriSP.searchblockOpen=false;
 	}
 }
 __IriSP.Search 				= function (value){
@@ -1047,23 +1056,26 @@ __IriSP.Search 				= function (value){
 	var findmem = 0;
 	var factor  = 0;
 	__IriSP.trace(value,value.length);
-	if(value.length>=3){
+	var valueS = value.toLowerCase();
+	__IriSP.trace("__IriSP.Search",annotations.length+" "+valueS);
+	if(valueS.length>=3){
 		
 		for (var i=0; i < annotations.length; ++i){
 			annotation = annotations[i];
 			
 			__IriSP.jQuery("#output2").text(annotation.title+" ?= "+value);
+			
 			chaine1 = annotation.title.toLowerCase();
 			chaine2 = annotation.description.toLowerCase();
 			chaine3 = annotation.htmlTags.toLowerCase();
 			
-			if(chaine1.indexOf(value,0) !=-1){
+			if(chaine1.indexOf(valueS,0) !=-1){
 				finded+=1;	
 			}
-			if(chaine2.indexOf(value,0) !=-1){
+			if(chaine2.indexOf(valueS,0) !=-1){
 				finded+=1;	
 			}
-			if(chaine3.indexOf(value,0) !=-1){
+			if(chaine3.indexOf(valueS,0) !=-1){
 				finded+=1;	
 			}
 			
