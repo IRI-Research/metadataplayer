@@ -1259,7 +1259,7 @@ __IriSP.Annotation = function (){
 	var title 			= null;
 	var color 			= null;
 	var tags			= null;
-	__IriSP.trace("annotation ","r�ussi")
+	__IriSP.trace("annotation ","réussi")
 }	
 __IriSP.Annotation = function(id,begin,end,media,title,description,color,tags,duration){
 	this.id 			= id;
