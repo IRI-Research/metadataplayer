@@ -18,24 +18,27 @@
  *	knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-if(window.__IriSP === undefined ){ var __IriSP={};}
+if ( window.IriSP === undefined && window.__IriSP === undefined ) { 
+	var IriSP ={}; 
+	var __IriSP = IriSP; /* for backward compatibility */
+}
 
 		
 /* CLASS TRACE */
 
-__IriSP.traceNum=0;
-__IriSP.trace = function(msg,value){
+IriSP.traceNum=0;
+IriSP.trace = function(msg,value){
 
-	if(__IriSP.config.gui.debug===true){
-		__IriSP.traceNum += 1;
-		__IriSP.jQuery("<div>"+__IriSP.traceNum+" - "+msg+" : "+value+"</div>").appendTo("#Ldt-output");
+	if(IriSP.config.gui.debug===true){
+		IriSP.traceNum += 1;
+		IriSP.jQuery("<div>"+IriSP.traceNum+" - "+msg+" : "+value+"</div>").appendTo("#Ldt-output");
 	}
 
 }
 
 // Player Configuration 
-__IriSP.config = undefined;
-__IriSP.configDefault = {
+IriSP.config = undefined;
+IriSP.configDefault = {
 		metadata:{
 			format:'cinelab',
 			src:'',
@@ -72,7 +75,7 @@ __IriSP.configDefault = {
 		},
 		module:null
 	};
-__IriSP.lib = {
+IriSP.lib = {
 			jQuery:"http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js",
 			jQueryUI:"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js",
 			jQueryToolTip:"http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
@@ -81,61 +84,61 @@ __IriSP.lib = {
 		};
 		
 // Player Variable
-__IriSP.LdtShareTool = ""+
+IriSP.LdtShareTool = ""+
 "\n<a onclick=\"__IriSP.MyApiPlayer.share('delicious');\" title='partager avec delicious'><span class='share shareDelicious'>&nbsp;</span></a>"+		
 "\n<a onclick=\"__IriSP.MyApiPlayer.share('facebook');\" title='partager avec facebook'> <span class='share shareFacebook'>&nbsp;</span></a>"+
 "\n<a onclick=\"__IriSP.MyApiPlayer.share('twitter');\" title='partager avec twitter'>  <span class='share shareTwitter'>&nbsp;</span></a>"+
 "\n<a onclick=\"__IriSP.MyApiPlayer.share('myspace');\" title='partager avec Myspace'>  <span class='share shareMySpace'>&nbsp;</span></a>";
 
 // Official instance - to refactor ?
-__IriSP.MyLdt 		= null;
-__IriSP.MyTags 		= null;
-__IriSP.MyApiPlayer	= null;
-__IriSP.player		= null;
+IriSP.MyLdt 		= null;
+IriSP.MyTags 		= null;
+IriSP.MyApiPlayer	= null;
+IriSP.player		= null;
 
 // genral var (old code) - to refactor 
-__IriSP.Durration		= null;
-__IriSP.playerLdtWidth	= null;
-__IriSP.playerLdtHeight	= null;
+IriSP.Durration		= null;
+IriSP.playerLdtWidth	= null;
+IriSP.playerLdtHeight	= null;
 
 	
  
 
 
-__IriSP.init = function (config){
+IriSP.init = function (config){
 
 		
 		if(config === null){
 		
-			__IriSP.config 			 = __IriSP.configDefault;
+			IriSP.config 			 = IriSP.configDefault;
 			
 		} else {
 			
-			__IriSP.config 			 = config;
+			IriSP.config 			 = config;
 			
 			
 
-			if (__IriSP.config.player.params == null){
-			__IriSP.config.player.params = __IriSP.configDefault.player.params;}
+			if (IriSP.config.player.params == null){
+			IriSP.config.player.params = IriSP.configDefault.player.params;}
 			
-			if (__IriSP.config.player.flashvars == null){
-			__IriSP.config.player.flashvars = __IriSP.configDefault.player.flashvars;}
-			if (__IriSP.config.player.attributes == null){
-			__IriSP.config.player.attributes = __IriSP.configDefault.player.attributes;}
+			if (IriSP.config.player.flashvars == null){
+			IriSP.config.player.flashvars = IriSP.configDefault.player.flashvars;}
+			if (IriSP.config.player.attributes == null){
+			IriSP.config.player.attributes = IriSP.configDefault.player.attributes;}
 		}
 		
-		var metadataSrc 		 = __IriSP.config.metadata.src;
-		var guiContainer		 = __IriSP.config.gui.container;
-		var guiMode				 = __IriSP.config.gui.mode;
-		var guiLdtShareTool		 = __IriSP.LdtShareTool;
+		var metadataSrc 		 = IriSP.config.metadata.src;
+		var guiContainer		 = IriSP.config.gui.container;
+		var guiMode				 = IriSP.config.gui.mode;
+		var guiLdtShareTool		 = IriSP.LdtShareTool;
 		// Localize jQuery variable
-		__IriSP.jQuery = null;
+		IriSP.jQuery = null;
 
 		/******** Load jQuery if not present *********/
 		if (window.jQuery === undefined || window.jQuery.fn.jquery !== '1.4.2') {
 			var script_tag = document.createElement('script');
 			script_tag.setAttribute("type","text/javascript");
-			script_tag.setAttribute("src",__IriSP.lib.jQuery);
+			script_tag.setAttribute("src",IriSP.lib.jQuery);
 				//"http://cdn.jquerytools.org/1.2.4/full/jquery.tools.min.js");
 			script_tag.onload = scriptLibHandler;
 			script_tag.onreadystatechange = function () { // Same thing but for IE
@@ -148,7 +151,7 @@ __IriSP.init = function (config){
 			(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_tag);
 		} else {
 			// The jQuery version on the window is the one we want to use
-			 __IriSP.jQuery = window.jQuery;
+			 IriSP.jQuery = window.jQuery;
 			scriptLibHandler();
 		}
 
@@ -157,7 +160,7 @@ __IriSP.init = function (config){
 			
 			var script_jqUi_tooltip = document.createElement('script');
 			script_jqUi_tooltip.setAttribute("type","text/javascript");
-			script_jqUi_tooltip.setAttribute("src",__IriSP.lib.jQueryToolTip);
+			script_jqUi_tooltip.setAttribute("src",IriSP.lib.jQueryToolTip);
 			script_jqUi_tooltip.onload = scriptLoadHandler;
 			script_jqUi_tooltip.onreadystatechange = function () { // Same thing but for IE
 				if (this.readyState == 'complete' || this.readyState == 'loaded') {
@@ -167,7 +170,7 @@ __IriSP.init = function (config){
 			
 			var script_swfObj = document.createElement('script');
 			script_swfObj.setAttribute("type","text/javascript");
-			script_swfObj.setAttribute("src",__IriSP.lib.swfObject);
+			script_swfObj.setAttribute("src",IriSP.lib.swfObject);
 			script_swfObj.onload = scriptLoadHandler;
 			script_swfObj.onreadystatechange = function () { // Same thing but for IE
 				if (this.readyState == 'complete' || this.readyState == 'loaded') {
@@ -177,7 +180,7 @@ __IriSP.init = function (config){
 		
 			var script_jqUi = document.createElement('script');
 			script_jqUi.setAttribute("type","text/javascript");
-			script_jqUi.setAttribute("src",__IriSP.lib.jQueryUI);
+			script_jqUi.setAttribute("src",IriSP.lib.jQueryUI);
 			script_jqUi.onload = scriptLoadHandler;
 			script_jqUi.onreadystatechange = function () { // Same thing but for IE
 				if (this.readyState == 'complete' || this.readyState == 'loaded') {
@@ -212,21 +215,21 @@ __IriSP.init = function (config){
 			
 
 			//  Make __IriSP.jQuery and restore window.jQuery 
-			__IriSP.jQuery = window.jQuery.noConflict(true);
+			IriSP.jQuery = window.jQuery.noConflict(true);
 			// Call MY Jquery
-			__IriSP.jQuery(document).ready(function($) { 
+			IriSP.jQuery(document).ready(function($) { 
 				
 				/******* Load CSS *******/
-				var css_link_jquery = __IriSP.jQuery("<link>", { 
+				var css_link_jquery = IriSP.jQuery("<link>", { 
 					rel: "stylesheet", 
 					type: "text/css", 
-					href: __IriSP.lib.cssjQueryUI,
+					href: IriSP.lib.cssjQueryUI,
 					'class': "dynamic_css"
 				});
-				var css_link_custom = __IriSP.jQuery("<link>", { 
+				var css_link_custom = IriSP.jQuery("<link>", { 
 					rel: "stylesheet", 
 					type: "text/css", 
-					href: __IriSP.config.gui.css,
+					href: IriSP.config.gui.css,
 					'class': "dynamic_css"
 				});
 				
@@ -240,17 +243,17 @@ __IriSP.init = function (config){
 				
 				//__IriSP.trace("main","ready createMyHtml");
 				
-				__IriSP.createMyHtml();
+				IriSP.createMyHtml();
 				//__IriSP.trace("main","end createMyHtml");
 				
 				/******* Load Metadata *******/
 				
-				__IriSP.jQuery.ajax({
-					  dataType: __IriSP.config.metadata.load,
+				IriSP.jQuery.ajax({
+					  dataType: IriSP.config.metadata.load,
 					  url:metadataSrc,
 					  success : function(json){
 					  
-							__IriSP.trace("ajax","success");
+							IriSP.trace("ajax","success");
 							
 							// START PARSING ----------------------- 
 							if(json === ""){
@@ -268,39 +271,39 @@ __IriSP.init = function (config){
 																	json.medias[0]['dc:title'],
 																	json.medias[0]['dc:description']);
 								
-								__IriSP.trace("__IriSP.MyApiPlayer",
-																	__IriSP.config.gui.width+"   "
-																	+ __IriSP.config.gui.height + " "
+								IriSP.trace("__IriSP.MyApiPlayer",
+																	IriSP.config.gui.width+"   "
+																	+ IriSP.config.gui.height + " "
 																	+ json.medias[0].href + " "
 																	+ json.medias[0]['meta']['dc:duration'] + " "
 																	+ json.medias[0]['meta']['item']['value']);
 								
 								// Create APIplayer
-								__IriSP.MyApiPlayer = new __IriSP.APIplayer(
-																	__IriSP.config.gui.width,
-																	__IriSP.config.gui.height,
+								IriSP.MyApiPlayer = new __IriSP.APIplayer(
+																	IriSP.config.gui.width,
+																	IriSP.config.gui.height,
 																	json.medias[0].href,
 																	json.medias[0]['meta']['dc:duration'],
 																	json.medias[0]['meta']['item']['value']);
 							
 								// # CREATE THE FIRST LINE  				//
-								__IriSP.trace("__IriSP.init.main","__IriSP.Ligne");
-								__IriSP.MyLdt = new __IriSP.Ligne (
+								IriSP.trace("__IriSP.init.main","__IriSP.Ligne");
+								IriSP.MyLdt = new __IriSP.Ligne (
 																	json['annotation-types'][0].id,
 																	json['annotation-types'][0]['dc:title'],
 																	json['annotation-types'][0]['dc:description'],
 																	json.medias[0]['meta']['dc:duration']);			
 								
 								// CREATE THE TAG CLOUD 					//
-								__IriSP.trace("__IriSP.init.main","__IriSP.Tags");
-								__IriSP.MyTags =  new __IriSP.Tags (json.tags);
+								IriSP.trace("__IriSP.init.main","__IriSP.Tags");
+								IriSP.MyTags =  new __IriSP.Tags (json.tags);
 							
 								// CREATE THE ANNOTATIONS  				    //
 								// JUSTE FOR THE FIRST TYPE   			 	//
-								__IriSP.jQuery.each(json.annotations, function(i,item) {
-									if (item.meta['id-ref'] == __IriSP.MyLdt.id) {
+								IriSP.jQuery.each(json.annotations, function(i,item) {
+									if (item.meta['id-ref'] == IriSP.MyLdt.id) {
 										//__IriSP.trace("__IriSP.init.main","__IriSP.MyLdt.addAnnotation");
-										__IriSP.MyLdt.addAnnotation(
+										IriSP.MyLdt.addAnnotation(
 													item.id,
 													item.begin,
 													item.end,
@@ -312,11 +315,11 @@ __IriSP.init = function (config){
 									}
 										//MyTags.addAnnotation(item);
 								});	
-								__IriSP.jQuery.each(json.lists, function(i,item) {
-									__IriSP.trace("lists","");
+								IriSP.jQuery.each(json.lists, function(i,item) {
+									IriSP.trace("lists","");
 								});	
-								__IriSP.jQuery.each(json.views, function(i,item) {
-									__IriSP.trace("views","");
+								IriSP.jQuery.each(json.views, function(i,item) {
+									IriSP.trace("views","");
 								});	
 							}
 							// END PARSING ----------------------- //  
@@ -334,27 +337,27 @@ __IriSP.init = function (config){
 };
 
 
-__IriSP.createMyHtml = function(){
-		var width = __IriSP.config.gui.width;
-		var height = __IriSP.config.gui.height;
-		var heightS = __IriSP.config.gui.height-20;
+IriSP.createMyHtml = function(){
+		var width = IriSP.config.gui.width;
+		var height = IriSP.config.gui.height;
+		var heightS = IriSP.config.gui.height-20;
 		
 		// AUDIO  */
 		// PB dans le html : ; 
-		__IriSP.trace("__IriSP.createMyHtml",__IriSP.config.gui.container);
+		IriSP.trace("__IriSP.createMyHtml",IriSP.config.gui.container);
 
 		
 		
-		if(__IriSP.config.gui.mode=="radio"){
+		if(IriSP.config.gui.mode=="radio"){
 		
-		__IriSP.jQuery("#"+__IriSP.config.gui.container).before(
+		IriSP.jQuery("#"+IriSP.config.gui.container).before(
 		"<div id='LdtSearchContainer'  style='margin-left:445px;position:absolute;'>\n"+
 		"<div id='LdtSearch' style='display:none;background-color:#EEE;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
 		"</div>\n"+
 		" <div class='cleaner'></div>");
-		__IriSP.trace("__IriSP.createHtml",__IriSP.config.gui.container);
+		IriSP.trace("__IriSP.createHtml",IriSP.config.gui.container);
 		
-		__IriSP.jQuery( "<div id='Ldt-Root'>\n"+
+		IriSP.jQuery( "<div id='Ldt-Root'>\n"+
 			"	<div id='Ldt-PlaceHolder'>\n"+
 			"		<a href='http://www.adobe.com/go/getflashplayer'>Get flash</a> to see this player	\n"+
 			"	</div>\n"+
@@ -387,24 +390,24 @@ __IriSP.createMyHtml = function(){
 			" <div class='cleaner'></div>\n"+
 			" <div id='Ldt-SaShareTools'>\n"+
 			" \n"+
-			" "+__IriSP.LdtShareTool+"\n"+
+			" "+IriSP.LdtShareTool+"\n"+
 			" \n"+
 			"  </div>\n"+
 			" <div class='cleaner'></div>"+
 			"</div>  "+
 			//"<div id='Ldt-Tags'> Mots clefs : </div>"+
 			"</div>"+
-			"<div id='Ldt-output' style='clear:left;float:none;position:relative;height:200px;width:"+width+"px;overflow:scroll;' ></div>").appendTo("#"+__IriSP.config.gui.container);
+			"<div id='Ldt-output' style='clear:left;float:none;position:relative;height:200px;width:"+width+"px;overflow:scroll;' ></div>").appendTo("#"+IriSP.config.gui.container);
 			// special tricks IE 7
-			if (__IriSP.jQuery.browser.msie==true && __IriSP.jQuery.browser.version=="7.0"){
+			if (IriSP.jQuery.browser.msie==true && IriSP.jQuery.browser.version=="7.0"){
 				//LdtSearchContainer
 				//__IriSP.jQuery("#LdtPlayer").attr("margin-top","50px");
-				__IriSP.jQuery("#Ldt-Root").css("padding-top","25px");
-						__IriSP.trace("__IriSP.createHtml","IE7 SPECIAL ");
+				IriSP.jQuery("#Ldt-Root").css("padding-top","25px");
+						IriSP.trace("__IriSP.createHtml","IE7 SPECIAL ");
 			}
-		} else if(__IriSP.config.gui.mode=="video") {
+		} else if(IriSP.config.gui.mode=="video") {
 		
-			__IriSP.jQuery(  "<div id='LdtSearchContainer'  style='margin-top:"+heightS+"px;margin-left:445px;position:absolute;'>\n"+
+			IriSP.jQuery(  "<div id='LdtSearchContainer'  style='margin-top:"+heightS+"px;margin-left:445px;position:absolute;'>\n"+
 			"<div id='LdtSearch' style='background-color:#EEE;display:none;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;z-index:999;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
 			"</div>\n"+
 			"<div id='Ldt-Root'>\n"+
@@ -441,39 +444,39 @@ __IriSP.createMyHtml = function(){
 			" <div class='cleaner'></div>\n"+
 			" <div id='Ldt-SaShareTools'>\n"+
 			" \n"+
-			" "+__IriSP.LdtShareTool+"\n"+
+			" "+IriSP.LdtShareTool+"\n"+
 			" \n"+
 			"  </div>\n"+
 			" <div class='cleaner'></div>"+
 			"</div>  "+
 			//"<div id='Ldt-Tags'> Mots clefs : </div>"+
 			"</div>"+
-			"<div id='Ldt-output'></div>").appendTo("#"+__IriSP.config.gui.container);
+			"<div id='Ldt-output'></div>").appendTo("#"+IriSP.config.gui.container);
 		
 		}
 		
 		
-		__IriSP.trace("__IriSP.createHtml",__IriSP.jQuery.browser.msie+" "+__IriSP.jQuery.browser.version);		
-		__IriSP.trace("__IriSP.createHtml","end");
-		__IriSP.jQuery("#Ldt-Annotations").width(width-(75*2));
-		__IriSP.jQuery("#Ldt-Show-Arrow-container").width(width-(75*2));
-		__IriSP.jQuery("#Ldt-ShowAnnotation-audio").width(width-10);
-		__IriSP.jQuery("#Ldt-ShowAnnotation-video").width(width-10);
-		__IriSP.jQuery("#Ldt-SaKeyword").width(width-10);
-		__IriSP.jQuery("#Ldt-controler").width(width-10);
-		__IriSP.jQuery("#Ldt-Control").attr("z-index","100");
-		__IriSP.jQuery("#Ldt-controler").hide();
+		IriSP.trace("__IriSP.createHtml",IriSP.jQuery.browser.msie+" "+IriSP.jQuery.browser.version);		
+		IriSP.trace("__IriSP.createHtml","end");
+		IriSP.jQuery("#Ldt-Annotations").width(width-(75*2));
+		IriSP.jQuery("#Ldt-Show-Arrow-container").width(width-(75*2));
+		IriSP.jQuery("#Ldt-ShowAnnotation-audio").width(width-10);
+		IriSP.jQuery("#Ldt-ShowAnnotation-video").width(width-10);
+		IriSP.jQuery("#Ldt-SaKeyword").width(width-10);
+		IriSP.jQuery("#Ldt-controler").width(width-10);
+		IriSP.jQuery("#Ldt-Control").attr("z-index","100");
+		IriSP.jQuery("#Ldt-controler").hide();
 		
-		__IriSP.jQuery("<div id='Ldt-load-container'><div id='Ldt-loader'>&nbsp;</div> Chargement... </div>").appendTo("#Ldt-ShowAnnotation-audio");
+		IriSP.jQuery("<div id='Ldt-load-container'><div id='Ldt-loader'>&nbsp;</div> Chargement... </div>").appendTo("#Ldt-ShowAnnotation-audio");
 	
-		if(__IriSP.config.gui.mode=='radio'){
-			__IriSP.jQuery("#Ldt-load-container").attr("width",__IriSP.config.gui.width);
+		if(IriSP.config.gui.mode=='radio'){
+			IriSP.jQuery("#Ldt-load-container").attr("width",IriSP.config.gui.width);
 		}
 		// Show or not the output
-		if(__IriSP.config.gui.debug===true){
-			__IriSP.jQuery("#Ldt-output").show();
+		if(IriSP.config.gui.debug===true){
+			IriSP.jQuery("#Ldt-output").show();
 		} else {
-			__IriSP.jQuery("#Ldt-output").hide();
+			IriSP.jQuery("#Ldt-output").hide();
 		}
 		
 };
@@ -486,12 +489,12 @@ __IriSP.Media = function (id,url,duration,title,description){
 		this.duration 	= duration;
 		this.lignes 	  	= new Array();
 
-		__IriSP.trace("__IriSP.Media","Media ID : "+id);
-		__IriSP.trace("__IriSP.Media","Media URL : "+url);
-		__IriSP.trace("__IriSP.Media","Media title : "+title);
+		IriSP.trace("__IriSP.Media","Media ID : "+id);
+		IriSP.trace("__IriSP.Media","Media URL : "+url);
+		IriSP.trace("__IriSP.Media","Media title : "+title);
 }
 __IriSP.Media.prototype.createPlayerMedia = function (width,height,MyStreamer,MySwfPath){
-		__IriSP.MyApiPlayer = new __IriSP.APIplayer(width,height,this.url,this.duration,MyStreamer,MySwfPath);
+		IriSP.MyApiPlayer = new __IriSP.APIplayer(width,height,this.url,this.duration,MyStreamer,MySwfPath);
 		//createPlayer(width,height,this.url,this.duration,MyStreamer,MySwfPath);
 }
 __IriSP.Media.prototype.getMediaDuration = function (){
@@ -504,19 +507,19 @@ __IriSP.Media.prototype.getMediaTitle = function (){
 
 
 /* 	INTERFACE : SLIDER ( CONTROL BAR ) | BUTTON ()   */
-__IriSP.createInterface = function(width,height,duration){
+IriSP.createInterface = function(width,height,duration){
 				
-		__IriSP.jQuery("#Ldt-controler").show();
+		IriSP.jQuery("#Ldt-controler").show();
 		//__IriSP.jQuery("#Ldt-Root").css('display','visible');
-		__IriSP.trace("__IriSP.createInterface",width+","+height+","+duration+",");
+		IriSP.trace("__IriSP.createInterface",width+","+height+","+duration+",");
 		
-		__IriSP.jQuery("#Ldt-ShowAnnotation").click(function () { 
+		IriSP.jQuery("#Ldt-ShowAnnotation").click(function () { 
 			 //__IriSP.jQuery(this).slideUp(); 
 		});
 
-		var LdtpPlayerY = __IriSP.jQuery("#Ldt-PlaceHolder").attr("top");
-		var LdtpPlayerX = __IriSP.jQuery("#Ldt-PlaceHolder").attr("left");
-		__IriSP.jQuery("#slider-range-min").slider({ //range: "min",
+		var LdtpPlayerY = IriSP.jQuery("#Ldt-PlaceHolder").attr("top");
+		var LdtpPlayerX = IriSP.jQuery("#Ldt-PlaceHolder").attr("left");
+		IriSP.jQuery("#slider-range-min").slider({ //range: "min",
 			value: 0,
 			min: 1,
 			max: duration/1000,//1:54:52.66 = 3600+3240+
@@ -525,14 +528,14 @@ __IriSP.createInterface = function(width,height,duration){
 				
 				//__IriSP.jQuery("#amount").val(ui.value+" s");
 				//player.sendEvent('SEEK', ui.value)
-				__IriSP.MyApiPlayer.seek(ui.value);
+				IriSP.MyApiPlayer.seek(ui.value);
 				//changePageUrlOffset(ui.value);
 				//player.sendEvent('PAUSE')
 			}
 		});
-		__IriSP.trace("__IriSP.createInterface","ICI");
-		__IriSP.jQuery("#amount").val(__IriSP.jQuery("#slider-range-min").slider("value")+" s");
-		__IriSP.jQuery(".Ldt-Control1 button:first").button({
+		IriSP.trace("__IriSP.createInterface","ICI");
+		IriSP.jQuery("#amount").val(IriSP.jQuery("#slider-range-min").slider("value")+" s");
+		IriSP.jQuery(".Ldt-Control1 button:first").button({
 			icons: {
 				primary: 'ui-icon-play'
 			},
@@ -543,7 +546,7 @@ __IriSP.createInterface = function(width,height,duration){
 			},
 			 text: false
 		});
-		__IriSP.jQuery(".Ldt-Control2 button:first").button({
+		IriSP.jQuery(".Ldt-Control2 button:first").button({
 			icons: {
 				primary: 'ui-icon-search'//,
 				//secondary: 'ui-icon-volume-off'
@@ -558,17 +561,17 @@ __IriSP.createInterface = function(width,height,duration){
 
 		// /!\ PB A MODIFIER 
 		//__IriSP.MyTags.draw();
-		__IriSP.trace("__IriSP.createInterface","ICI2");
-		__IriSP.jQuery("#ldt-CtrlPlay").attr("style","background-color:#CD21C24;");
+		IriSP.trace("__IriSP.createInterface","ICI2");
+		IriSP.jQuery("#ldt-CtrlPlay").attr("style","background-color:#CD21C24;");
 		
-		__IriSP.jQuery("#Ldt-load-container").hide();
+		IriSP.jQuery("#Ldt-load-container").hide();
 		
-		if(__IriSP.config.gui.mode=="radio" & __IriSP.jQuery.browser.msie!=true){
-			__IriSP.jQuery("#Ldtplayer1").attr("height","0");
+		if(IriSP.config.gui.mode=="radio" & IriSP.jQuery.browser.msie!=true){
+			IriSP.jQuery("#Ldtplayer1").attr("height","0");
 		}
-		__IriSP.trace("__IriSP.createInterface","3");
+		IriSP.trace("__IriSP.createInterface","3");
 
-		__IriSP.trace("__IriSP.createInterface","END");
+		IriSP.trace("__IriSP.createInterface","END");
 		
 	}
 
@@ -588,10 +591,10 @@ __IriSP.APIplayer = function (width,height,url,duration,streamerPath,MySwfPath){
 		this.streamerPath		= streamerPath;
 		this.MySwfPath			= MySwfPath;
 		
-		__IriSP.MyApiPlayer		= this;
+		IriSP.MyApiPlayer		= this;
 		
-		__IriSP.createPlayer(this.url,this.streamerPath);
-		__IriSP.trace("__IriSP.APIplayer","__IriSP.createPlayer");
+		IriSP.createPlayer(this.url,this.streamerPath);
+		IriSP.trace("__IriSP.APIplayer","__IriSP.createPlayer");
 	
 	//__IriSP.config.player
 	/*
@@ -606,7 +609,7 @@ __IriSP.APIplayer = function (width,height,url,duration,streamerPath,MySwfPath){
 __IriSP.APIplayer.prototype.ready = function(player){
 
 	//__IriSP.trace("__IriSP.APIplayer.prototype.APIpReady"," __IriSP.createInterface");
-	__IriSP.createInterface(this.width,this.height,this.duration);
+	IriSP.createInterface(this.width,this.height,this.duration);
 	//__IriSP.trace("__IriSP.APIplayer.prototype.APIpReady","END  __IriSP.createInterface");
 
 	// hashchange EVENT
@@ -615,13 +618,13 @@ __IriSP.APIplayer.prototype.ready = function(player){
 	// pour FIREFOX  hashchange EVENT
 		window.addEventListener("hashchange", function() {
 		  var url = window.location.href;
-		  var time = __IriSP.retrieveTimeFragment(url);
-		  __IriSP.trace("__IriSP.APIplayer.prototype.ready",time);
-		  if(__IriSP.MyApiPlayer.hashchangeUpdate==null){
-			__IriSP.MyApiPlayer.seek(time);
+		  var time = IriSP.retrieveTimeFragment(url);
+		  IriSP.trace("__IriSP.APIplayer.prototype.ready",time);
+		  if(IriSP.MyApiPlayer.hashchangeUpdate==null){
+			IriSP.MyApiPlayer.seek(time);
 			
 		  }else{
-			__IriSP.MyApiPlayer.hashchangeUpdate=null;
+			IriSP.MyApiPlayer.hashchangeUpdate=null;
 		  }
 		}, false);
 	 
@@ -630,13 +633,13 @@ __IriSP.APIplayer.prototype.ready = function(player){
 	// FOR IE hashchange EVENT
 	
 		window.attachEvent("onhashchange", function() {
-		  __IriSP.trace("hashchange",time);
+		  IriSP.trace("hashchange",time);
 		  var url = window.location.href;
-		  var time = __IriSP.retrieveTimeFragment(url);
-		  if(__IriSP.MyApiPlayer.hashchangeUpdate==null){
-			__IriSP.MyApiPlayer.seek(time);
+		  var time = IriSP.retrieveTimeFragment(url);
+		  if(IriSP.MyApiPlayer.hashchangeUpdate==null){
+			IriSP.MyApiPlayer.seek(time);
 		  }else{
-			__IriSP.MyApiPlayer.hashchangeUpdate=null;
+			IriSP.MyApiPlayer.hashchangeUpdate=null;
 		  }
 		}, false);
 	}
@@ -644,41 +647,41 @@ __IriSP.APIplayer.prototype.ready = function(player){
 	// Search
 	//__IriSP.jQuery("#LdtSearchInput").change(function() {__IriSP.Search(this.value);});
 	//__IriSP.jQuery("#LdtSearchInput").live('change', function(event) {__IriSP.Search(this.value);}); 
-	__IriSP.jQuery("#LdtSearchInput").keydown(function() {__IriSP.Search(this.value);});
-	__IriSP.jQuery("#LdtSearchInput").keyup(function() {__IriSP.Search(this.value);});
+	IriSP.jQuery("#LdtSearchInput").keydown(function() {IriSP.Search(this.value);});
+	IriSP.jQuery("#LdtSearchInput").keyup(function() {IriSP.Search(this.value);});
 	
 }
 __IriSP.APIplayer.prototype.pause = function(){
 	this.hashchangeUpdate = true;
-	__IriSP.player.sendEvent('PAUSE');
+	IriSP.player.sendEvent('PAUSE');
 }
 __IriSP.APIplayer.prototype.play  = function(){
 	this.hashchangeUpdate = true;
 	//__IriSP.trace("__IriSP.config.player.type",__IriSP.config.player.type);
-	if(__IriSP.config.player.type=='jwplayer'){
+	if(IriSP.config.player.type=='jwplayer'){
 	
-		__IriSP.player.sendEvent('PLAY');
+		IriSP.player.sendEvent('PLAY');
 		
-	} else if(__IriSP.config.player.type=='dailymotion' 
-			  || __IriSP.config.player.type=='youtube') {
+	} else if(IriSP.config.player.type=='dailymotion' 
+			  || IriSP.config.player.type=='youtube') {
 			  
-		var status = __IriSP.player.getPlayerState();
-		__IriSP.trace("__IriSP.APIplayer.prototype.play.status",status);
+		var status = IriSP.player.getPlayerState();
+		IriSP.trace("__IriSP.APIplayer.prototype.play.status",status);
 		if (status!=1){
-			__IriSP.player.playVideo();
+			IriSP.player.playVideo();
 		}else{
-			__IriSP.player.pauseVideo();
+			IriSP.player.pauseVideo();
 		}
 	}
 }
 __IriSP.APIplayer.prototype.mute  = function(){
-	__IriSP.player.sendEvent('MUTE');
+	IriSP.player.sendEvent('MUTE');
 	
 	//alert(__IriSP.jQuery(".ui-icon-volume-on").css("background-position-x"));
-	if (__IriSP.jQuery(".ui-icon-volume-on").css("background-position")=="-144px -160px"){
-		__IriSP.jQuery(".ui-icon-volume-on").css("background-position","-130px -160px");
+	if (IriSP.jQuery(".ui-icon-volume-on").css("background-position")=="-144px -160px"){
+		IriSP.jQuery(".ui-icon-volume-on").css("background-position","-130px -160px");
 	} else {
-		__IriSP.jQuery(".ui-icon-volume-on").css("background-position","-144px -160px");
+		IriSP.jQuery(".ui-icon-volume-on").css("background-position","-144px -160px");
 	}
 }
 __IriSP.APIplayer.prototype.share = function(network){
@@ -706,26 +709,26 @@ __IriSP.APIplayer.prototype.share = function(network){
 }
 __IriSP.APIplayer.prototype.seek  = function (time){
 	if(time==0){time=1}
-	__IriSP.trace("__IriSP.APIplayer.prototype.seek",time);
-	if(__IriSP.config.player.type=='jwplayer'){
+	IriSP.trace("__IriSP.APIplayer.prototype.seek",time);
+	if(IriSP.config.player.type=='jwplayer'){
 		//__IriSP.MyApiPlayer.play()
-		__IriSP.player.sendEvent('SEEK', time);
-	} else if(__IriSP.config.player.type=='dailymotion'
-			|| __IriSP.config.player.type=='youtube') {
-		__IriSP.player.seekTo(time);
+		IriSP.player.sendEvent('SEEK', time);
+	} else if(IriSP.config.player.type=='dailymotion'
+			|| IriSP.config.player.type=='youtube') {
+		IriSP.player.seekTo(time);
 	}
 	this.changePageUrlOffset(time);
 }	
 __IriSP.APIplayer.prototype.update = function (time){
 	if(time!=0){
 	this.hashchangeUpdate = true;
-	__IriSP.trace("__IriSP.APIplayer.prototype.update",time);
-	__IriSP.player.sendEvent('SEEK', time);
+	IriSP.trace("__IriSP.APIplayer.prototype.update",time);
+	IriSP.player.sendEvent('SEEK', time);
 	}
 }
 __IriSP.APIplayer.prototype.changePageUrlOffset = function (time) {
 	//alert(time);
-  __IriSP.trace("__IriSP.APIplayer.prototype.changePageUrlOffset","CHANGE URL "+time);
+  IriSP.trace("__IriSP.APIplayer.prototype.changePageUrlOffset","CHANGE URL "+time);
   
   window.location.hash = "#t=" + time;
   window.location.href =  window.location.href;
@@ -734,11 +737,11 @@ __IriSP.APIplayer.prototype.changePageUrlOffset = function (time) {
 
 /* MEDIA FRAGMENT FUNCTION by Silvia Pfeiffer */ 
 
-__IriSP.jumpToTimeoffset = function (form) {
+IriSP.jumpToTimeoffset = function (form) {
 	var time = form.time.value;
-	__IriSP.MyApiPlayer.changePageUrlOffset(time);
+	IriSP.MyApiPlayer.changePageUrlOffset(time);
 }
-__IriSP.retrieveTimeFragment = function (url) {
+IriSP.retrieveTimeFragment = function (url) {
   var pageoffset = 0;
   var offsettime = 0;
   
@@ -750,7 +753,7 @@ __IriSP.retrieveTimeFragment = function (url) {
 	}
 	return offsettime;
 }  
-__IriSP.ignoreTimeFragment = function(url){
+IriSP.ignoreTimeFragment = function(url){
  if (url.split("#")[1] != null) {
 	var pageurl= url.split("#")[0];
  }
@@ -760,49 +763,49 @@ __IriSP.ignoreTimeFragment = function(url){
 
 /* CODE SPECIAL JW PLAYER  creation + listener */
 
-__IriSP.currentPosition 	= 0; 
-__IriSP.currentVolume   	= 50; 
-__IriSP.player 				= null;
-__IriSP.startPosition 		= null;
-__IriSP.firstplay	 		= false;
+IriSP.currentPosition 	= 0; 
+IriSP.currentVolume   	= 50; 
+IriSP.player 				= null;
+IriSP.startPosition 		= null;
+IriSP.firstplay	 		= false;
 
 
 
-__IriSP.createPlayer = function (url,streamerPath) {
+IriSP.createPlayer = function (url,streamerPath) {
 
 
-	if(__IriSP.config.player.type=='dailymotion'){
-		__IriSP.config.player.src = __IriSP.config.player.src+"&chromeless=1&enableApi=1";
-	} else if (__IriSP.config.player.type=='youtube'){
-		__IriSP.config.player.src = __IriSP.config.player.src+"&enablejsapi=1&version=3";
+	if(IriSP.config.player.type=='dailymotion'){
+		IriSP.config.player.src = IriSP.config.player.src+"&chromeless=1&enableApi=1";
+	} else if (IriSP.config.player.type=='youtube'){
+		IriSP.config.player.src = IriSP.config.player.src+"&enablejsapi=1&version=3";
 	}
 	
-	__IriSP.trace("__IriSP.createPlayer","start");			
+	IriSP.trace("__IriSP.createPlayer","start");			
 	
-	__IriSP.myUrlFragment = url.split(streamerPath);	
+	IriSP.myUrlFragment = url.split(streamerPath);	
 	
-	var configTemp = __IriSP.jQuery.extend(true, {}, __IriSP.config);
+	var configTemp = IriSP.jQuery.extend(true, {}, IriSP.config);
 	configTemp.player.flashvars.autostart =	"true";
 	configTemp.player.flashvars.streamer =	streamerPath;
-	configTemp.player.flashvars.file =	__IriSP.myUrlFragment[1];
+	configTemp.player.flashvars.file =	IriSP.myUrlFragment[1];
 	
 	var flashvars 		  = configTemp.player.flashvars;
 	var params 			  = configTemp.player.params;
 	var attributes 		  = configTemp.player.attributes;
 	
-	__IriSP.trace(
+	IriSP.trace(
 				  "__IriSP.createPlayer",
 				  "SWFOBJECT src:"+
-				  __IriSP.config.player.src+
-				  " " +__IriSP.config.gui.width+
-				  " " +__IriSP.config.gui.height
+				  IriSP.config.player.src+
+				  " " +IriSP.config.gui.width+
+				  " " +IriSP.config.gui.height
 				  );
 	
 	swfobject.embedSWF(
-						__IriSP.config.player.src,
+						IriSP.config.player.src,
 						"Ldt-PlaceHolder",
-						__IriSP.config.gui.width,
-						__IriSP.config.gui.height,
+						IriSP.config.gui.width,
+						IriSP.config.gui.height,
 						"9.0.115",
 						false,
 						flashvars,
@@ -816,84 +819,84 @@ __IriSP.createPlayer = function (url,streamerPath) {
 
 
 /* API JW PLAYER 	*/
-__IriSP.playerReady  = function (thePlayer) {
+IriSP.playerReady  = function (thePlayer) {
 
 	//__IriSP.trace("__IriSP.playerReady","PLAYER READY !!!!!!!!!!!!");
-	__IriSP.player = window.document[thePlayer.id];
+	IriSP.player = window.document[thePlayer.id];
 	//__IriSP.trace("__IriSP.playerReady","API CALL "+__IriSP.player);
-	__IriSP.MyApiPlayer.ready(__IriSP.player);
+	IriSP.MyApiPlayer.ready(IriSP.player);
 	//__IriSP.trace("__IriSP.playerReady","API CALL END ");
 	
 	var url = document.location.href;
-	var time = __IriSP.retrieveTimeFragment(url);
+	var time = IriSP.retrieveTimeFragment(url);
 	//__IriSP.trace("__IriSP.playerReady"," "+url+" "+time );
-	__IriSP.startPosition = time;
+	IriSP.startPosition = time;
 	//__IriSP.trace("__IriSP.playerReady"," LISTENER LAUCHER");
-	__IriSP.addListeners();	
+	IriSP.addListeners();	
 	//__IriSP.trace("__IriSP.playerReady"," LISTENER END");
 	
 }
-__IriSP.addListeners = function () {
-	if (__IriSP.player) { 
-		__IriSP.trace("__IriSP.addListeners","ADD  Listener ");
-		__IriSP.player.addModelListener("TIME", "__IriSP.positionListener");
-		__IriSP.player.addControllerListener("VOLUME", "__IriSP.volumeListener");
-		__IriSP.player.addModelListener('STATE', '__IriSP.stateMonitor');
+IriSP.addListeners = function () {
+	if (IriSP.player) { 
+		IriSP.trace("__IriSP.addListeners","ADD  Listener ");
+		IriSP.player.addModelListener("TIME", "__IriSP.positionListener");
+		IriSP.player.addControllerListener("VOLUME", "__IriSP.volumeListener");
+		IriSP.player.addModelListener('STATE', '__IriSP.stateMonitor');
 	} else {
-		__IriSP.setTimeout("__IriSP.addListeners()",100);
+		IriSP.setTimeout("__IriSP.addListeners()",100);
 	}
 
 	// et changer les boutons
 }
-__IriSP.stateMonitor = function (obj) { 
+IriSP.stateMonitor = function (obj) { 
 
 	 if(obj.newstate == 'PAUSED')
     {
-		__IriSP.trace("__IriSP.stateMonitor","PAUSE");
-		__IriSP.MyApiPlayer.changePageUrlOffset(__IriSP.currentPosition);			
-		__IriSP.jQuery(".ui-icon-play").css("background-position","0px -160px");
+		IriSP.trace("__IriSP.stateMonitor","PAUSE");
+		IriSP.MyApiPlayer.changePageUrlOffset(IriSP.currentPosition);			
+		IriSP.jQuery(".ui-icon-play").css("background-position","0px -160px");
 		
 	} else if (obj.newstate == 'PLAYING'){
 		
-		__IriSP.trace("__IriSP.stateMonitor","PLAYING "+__IriSP.startPosition );
+		IriSP.trace("__IriSP.stateMonitor","PLAYING "+IriSP.startPosition );
 		
 		// forcer le buffering mais stop du player si dans config 
-		if (__IriSP.config.player.flashvars.autostart=="false" && __IriSP.firstplay==false && __IriSP.startPosition == 0){
-			__IriSP.trace("__IriSP.stateMonitor","first stop ???");
-			__IriSP.MyApiPlayer.play();
-			__IriSP.firstplay = true;
-			__IriSP.MyLdt.checkTime(1);
+		if (IriSP.config.player.flashvars.autostart=="false" && IriSP.firstplay==false && IriSP.startPosition == 0){
+			IriSP.trace("__IriSP.stateMonitor","first stop ???");
+			IriSP.MyApiPlayer.play();
+			IriSP.firstplay = true;
+			IriSP.MyLdt.checkTime(1);
 		}
 		
 		// une fois la video prete a lire  la déplacer au bon timecode 
-		if(__IriSP.startPosition!=null){
-			__IriSP.MyApiPlayer.update(__IriSP.startPosition);
-			__IriSP.startPosition = null;
+		if(IriSP.startPosition!=null){
+			IriSP.MyApiPlayer.update(IriSP.startPosition);
+			IriSP.startPosition = null;
 		}
 		
 		
-		__IriSP.jQuery(".ui-icon-play").css("background-position","-16px -160px");
+		IriSP.jQuery(".ui-icon-play").css("background-position","-16px -160px");
 	} else if (obj.newstate == 'BUFFERING'){
-		__IriSP.trace("__IriSP.stateMonitor","BUFFERING : "+__IriSP.config.player.flashvars.autostart);
+		IriSP.trace("__IriSP.stateMonitor","BUFFERING : "+IriSP.config.player.flashvars.autostart);
 		//changePageUrlOffset(currentPosition);
 	}
 	
 }
-__IriSP.positionListener = function(obj) { 
+IriSP.positionListener = function(obj) { 
 	//__IriSP.trace("__IriSP.positionListener",obj.position);
-	__IriSP.currentPosition = obj.position; 
+	IriSP.currentPosition = obj.position; 
 	var tmp = document.getElementById("posit");
-	if (tmp) { tmp.innerHTML = "position: " + __IriSP.currentPosition; }
-	__IriSP.jQuery("#slider-range-min").slider("value", obj.position);
-	__IriSP.jQuery("#amount").val(obj.position+" s");
+	if (tmp) { tmp.innerHTML = "position: " + IriSP.currentPosition; }
+	IriSP.jQuery("#slider-range-min").slider("value", obj.position);
+	IriSP.jQuery("#amount").val(obj.position+" s");
 	// afficher annotation 
-	__IriSP.MyLdt.checkTime(__IriSP.currentPosition);
+	IriSP.MyLdt.checkTime(IriSP.currentPosition);
 	
 }
-__IriSP.volumeListener   = function (obj) { 
-	__IriSP.currentVolume = obj.percentage; 
+IriSP.volumeListener   = function (obj) { 
+	IriSP.currentVolume = obj.percentage; 
 	var tmp = document.getElementById("vol");
-	if (tmp) { tmp.innerHTML = "volume: " + __IriSP.currentVolume; }
+	if (tmp) { tmp.innerHTML = "volume: " + IriSP.currentVolume; }
 }	
 
 
@@ -901,36 +904,36 @@ __IriSP.volumeListener   = function (obj) {
 onDailymotionPlayerReady = function (playerid){
 
 	//alert(playerid);
-	__IriSP.player = document.getElementById(__IriSP.config.player.attributes.id);
-	__IriSP.MyApiPlayer.ready(__IriSP.player);
+	IriSP.player = document.getElementById(IriSP.config.player.attributes.id);
+	IriSP.MyApiPlayer.ready(IriSP.player);
 	
 	var url = document.location.href;
-	var time = __IriSP.retrieveTimeFragment(url);
-	__IriSP.startPosition = time;
-	__IriSP.DailymotionAddListeners();	
+	var time = IriSP.retrieveTimeFragment(url);
+	IriSP.startPosition = time;
+	IriSP.DailymotionAddListeners();	
 	
-	__IriSP.MyApiPlayer.ready(playerid);
+	IriSP.MyApiPlayer.ready(playerid);
 }
-__IriSP.DailymotionAddListeners = function () {
-	if (__IriSP.player) { 
-		__IriSP.trace("__IriSP.addListeners","ADD  Listener ");
+IriSP.DailymotionAddListeners = function () {
+	if (IriSP.player) { 
+		IriSP.trace("__IriSP.addListeners","ADD  Listener ");
 		//__IriSP.player.addEventListener("onStateChange", "__IriSP.DailymotionPositionListener");
 		setTimeout("__IriSP.DailymotionPositionListener()",100);
-		__IriSP.DailymotionPositionListener();
-		__IriSP.player.addModelListener("VOLUME", "__IriSP.volumeListener");
+		IriSP.DailymotionPositionListener();
+		IriSP.player.addModelListener("VOLUME", "__IriSP.volumeListener");
 		//__IriSP.player.addModelListener('STATE', '__IriSP.stateMonitor');
 	} else {
-		__IriSP.setTimeout("__IriSP.DailymotionAddListeners()",100);
+		IriSP.setTimeout("__IriSP.DailymotionAddListeners()",100);
 	}
 }
-__IriSP.DailymotionPositionListener = function() { 
+IriSP.DailymotionPositionListener = function() { 
 	
-	__IriSP.currentPosition = __IriSP.player.getCurrentTime();
+	IriSP.currentPosition = IriSP.player.getCurrentTime();
 	//__IriSP.trace("__IriSP.DailymotionPositionListener",__IriSP.currentPosition);
 	//__IriSP.trace("__IriSP.currentPosition",__IriSP.currentPosition);
 	
-	__IriSP.jQuery("#slider-range-min").slider("value",__IriSP.currentPosition);
-	__IriSP.jQuery("#amount").val(__IriSP.currentPosition+" s");
+	IriSP.jQuery("#slider-range-min").slider("value",IriSP.currentPosition);
+	IriSP.jQuery("#amount").val(IriSP.currentPosition+" s");
 	// afficher annotation 
 	/*__IriSP.MyLdt.checkTime(__IriSP.currentPosition);
 	*/
@@ -942,69 +945,69 @@ __IriSP.DailymotionPositionListener = function() {
 onYouTubePlayerReady= function (playerid){
 
 	var url = document.location.href;
-	var time = __IriSP.retrieveTimeFragment(url);
-	__IriSP.player = document.getElementById(__IriSP.config.player.attributes.id);
-	__IriSP.startPosition = time;
+	var time = IriSP.retrieveTimeFragment(url);
+	IriSP.player = document.getElementById(IriSP.config.player.attributes.id);
+	IriSP.startPosition = time;
 	
-	__IriSP.MyApiPlayer.ready(__IriSP.player);
+	IriSP.MyApiPlayer.ready(IriSP.player);
 	
-	__IriSP.MyApiPlayer.seek(time);
-	__IriSP.MyApiPlayer.play();
+	IriSP.MyApiPlayer.seek(time);
+	IriSP.MyApiPlayer.play();
 	
 	
-	__IriSP.YouTubeAddListeners();	
-	__IriSP.trace("onYouTubePlayerReady=",time);
+	IriSP.YouTubeAddListeners();	
+	IriSP.trace("onYouTubePlayerReady=",time);
 	//__IriSP.MyApiPlayer.ready(playerid);
 }
-__IriSP.YouTubeAddListeners = function () {
-	if (__IriSP.player) { 
-		__IriSP.trace("__IriSP.addListeners","ADD  Listener ");
-		__IriSP.player.addEventListener("onStateChange", "__IriSP.YouTubeStateMonitor");
+IriSP.YouTubeAddListeners = function () {
+	if (IriSP.player) { 
+		IriSP.trace("__IriSP.addListeners","ADD  Listener ");
+		IriSP.player.addEventListener("onStateChange", "__IriSP.YouTubeStateMonitor");
 		setTimeout("__IriSP.YouTubePositionListener()",100);
-		__IriSP.player.addModelListener("VOLUME", "__IriSP.volumeListener");
+		IriSP.player.addModelListener("VOLUME", "__IriSP.volumeListener");
 		//__IriSP.player.addModelListener('STATE', '__IriSP.stateMonitor');
 	} else {
-		__IriSP.setTimeout("__IriSP.YouTubePositionListener()",100);
+		IriSP.setTimeout("__IriSP.YouTubePositionListener()",100);
 	}
 }
-__IriSP.YouTubePositionListener = function() { 
+IriSP.YouTubePositionListener = function() { 
 	
-	__IriSP.currentPosition = __IriSP.player.getCurrentTime();
+	IriSP.currentPosition = IriSP.player.getCurrentTime();
 	//__IriSP.trace("__IriSP.YouTubePositionListener",__IriSP.currentPosition);
 	//__IriSP.trace("__IriSP.currentPosition",__IriSP.currentPosition);
 	
-	__IriSP.MyLdt.checkTime(__IriSP.currentPosition);
-	__IriSP.jQuery("#slider-range-min").slider("value",__IriSP.currentPosition);
-	__IriSP.jQuery("#amount").val(__IriSP.currentPosition+" s");
+	IriSP.MyLdt.checkTime(IriSP.currentPosition);
+	IriSP.jQuery("#slider-range-min").slider("value",IriSP.currentPosition);
+	IriSP.jQuery("#amount").val(IriSP.currentPosition+" s");
 	// afficher annotation 
-	__IriSP.MyLdt.checkTime(__IriSP.currentPosition);
+	IriSP.MyLdt.checkTime(IriSP.currentPosition);
 	
 	
 	setTimeout("__IriSP.YouTubePositionListener()",10);
 }
-__IriSP.YouTubeStateMonitor = function (obj) { 
-	__IriSP.player.addModelListener('__IriSP.YouTubeStateMonitor ', newstate);
+IriSP.YouTubeStateMonitor = function (obj) { 
+	IriSP.player.addModelListener('__IriSP.YouTubeStateMonitor ', newstate);
 	//alert(newstate+" "+obj.newstate);
 	 if(newstate == '2')
     {
-		__IriSP.trace("__IriSP.stateMonitor","PAUSE");
-		__IriSP.MyApiPlayer.changePageUrlOffset(__IriSP.currentPosition);			
+		IriSP.trace("__IriSP.stateMonitor","PAUSE");
+		IriSP.MyApiPlayer.changePageUrlOffset(IriSP.currentPosition);			
 		
 	}else if (newstate == '1'){
 		// une fois la video prete a lire  la déplacer au bon timecode 
-		if(__IriSP.startPosition!=null){
-			__IriSP.MyApiPlayer.update(__IriSP.startPosition);
-			__IriSP.startPosition = null;
+		if(IriSP.startPosition!=null){
+			IriSP.MyApiPlayer.update(IriSP.startPosition);
+			IriSP.startPosition = null;
 		}
 	} 
 	else if (newstate == '-1'){
 		// une fois la video prete a lire  la déplacer au bon timecode 
-		if(__IriSP.startPosition!=null){
-			__IriSP.MyApiPlayer.update(__IriSP.startPosition);
-			__IriSP.startPosition = null;
+		if(IriSP.startPosition!=null){
+			IriSP.MyApiPlayer.update(IriSP.startPosition);
+			IriSP.startPosition = null;
 		}
 	} else if (newstate == '3'){
-		__IriSP.trace("__IriSP.stateMonitor","BUFFERING : ");
+		IriSP.trace("__IriSP.stateMonitor","BUFFERING : ");
 		//changePageUrlOffset(currentPosition);
 	}
 	
@@ -1014,11 +1017,11 @@ __IriSP.YouTubeStateMonitor = function (obj) {
 
 /* 	UTIL */
 // code from http://stackoverflow.com/questions/822452/strip-html-from-text-javascript
-__IriSP.stripHtml = function(s){
+IriSP.stripHtml = function(s){
 	return s.replace(/\\&/g, '&amp;').replace(/\\</g, '&lt;').replace(/\\>/g, '&gt;').replace(/\\t/g, '&nbsp;&nbsp;&nbsp;').replace(/\\n/g, '<br />').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
 }
 // conversion de couleur Decimal vers HexaDecimal || 000 si fff 
-__IriSP.DEC_HEXA_COLOR = function (dec){
+IriSP.DEC_HEXA_COLOR = function (dec){
 	 var hexa='0123456789ABCDEF',hex='';
 	 var tmp;
 	 while (dec>15){
@@ -1033,46 +1036,46 @@ __IriSP.DEC_HEXA_COLOR = function (dec){
 
 
 /* Search  methodes	*/
-__IriSP.SearchOldValue="";
-__IriSP.searchblockOpen=false;
-__IriSP.searchblock 		= function (){
-	__IriSP.trace("__IriSP.searchblock",__IriSP.searchblockOpen);
-	if (__IriSP.searchblockOpen==false){
-		__IriSP.jQuery(".ui-icon-search").css("background-position","-144px -112px");
+IriSP.SearchOldValue="";
+IriSP.searchblockOpen=false;
+IriSP.searchblock 		= function (){
+	IriSP.trace("__IriSP.searchblock",IriSP.searchblockOpen);
+	if (IriSP.searchblockOpen==false){
+		IriSP.jQuery(".ui-icon-search").css("background-position","-144px -112px");
 		//__IriSP.jQuery("#LdtSearch").animate({height:26},250);
-		__IriSP.jQuery("#LdtSearch").show(250);
-		__IriSP.jQuery("#LdtSearchInput").css('background-color','#fff');
-		__IriSP.jQuery("#LdtSearchInput").focus();
-		__IriSP.jQuery("#LdtSearchInput").attr('value',__IriSP.SearchOldValue);
-		__IriSP.Search(__IriSP.SearchOldValue);
-		__IriSP.searchblockOpen=true;
+		IriSP.jQuery("#LdtSearch").show(250);
+		IriSP.jQuery("#LdtSearchInput").css('background-color','#fff');
+		IriSP.jQuery("#LdtSearchInput").focus();
+		IriSP.jQuery("#LdtSearchInput").attr('value',IriSP.SearchOldValue);
+		IriSP.Search(IriSP.SearchOldValue);
+		IriSP.searchblockOpen=true;
 	} else {
-		__IriSP.SearchOldValue = __IriSP.jQuery("#LdtSearchInput").attr('value');
-		__IriSP.jQuery("#LdtSearchInput").attr('value','');
-		__IriSP.SearchClean();
-		__IriSP.jQuery(".ui-icon-search").css("background-position","-160px -112px");
+		IriSP.SearchOldValue = IriSP.jQuery("#LdtSearchInput").attr('value');
+		IriSP.jQuery("#LdtSearchInput").attr('value','');
+		IriSP.SearchClean();
+		IriSP.jQuery(".ui-icon-search").css("background-position","-160px -112px");
 		//__IriSP.jQuery("#LdtSearch").animate({height:0},250);
-		__IriSP.jQuery("#LdtSearch").hide(250);
-		__IriSP.searchblockOpen=false;
+		IriSP.jQuery("#LdtSearch").hide(250);
+		IriSP.searchblockOpen=false;
 	}
 }
-__IriSP.Search 				= function (value){
+IriSP.Search 				= function (value){
 
-	annotations = __IriSP.LDTligne.annotations;
+	annotations = IriSP.LDTligne.annotations;
 	
-	__IriSP.trace("__IriSP.Search",annotations.length+" "+value);
+	IriSP.trace("__IriSP.Search",annotations.length+" "+value);
 	var finded  = 0;
 	var findmem = 0;
 	var factor  = 0;
-	__IriSP.trace(value,value.length);
+	IriSP.trace(value,value.length);
 	var valueS = value.toLowerCase();
-	__IriSP.trace("__IriSP.Search",annotations.length+" "+valueS);
+	IriSP.trace("__IriSP.Search",annotations.length+" "+valueS);
 	if(valueS.length>=3){
 		
 		for (var i=0; i < annotations.length; ++i){
 			annotation = annotations[i];
 			
-			__IriSP.jQuery("#output2").text(annotation.title+" ?= "+value);
+			IriSP.jQuery("#output2").text(annotation.title+" ?= "+value);
 			
 			chaine1 = annotation.title.toLowerCase();
 			chaine2 = annotation.description.toLowerCase();
@@ -1091,54 +1094,54 @@ __IriSP.Search 				= function (value){
 			findmem += finded;
 			if(finded>0){
 				factor = finded*8;
-				__IriSP.jQuery("#"+annotation.id).dequeue();
-				__IriSP.jQuery("#"+annotation.id).animate({height:factor},200);
-				__IriSP.jQuery("#"+annotation.id).css('border','2px');
-				__IriSP.jQuery("#"+annotation.id).css('border-color','red');
-				__IriSP.jQuery("#"+annotation.id).animate({opacity:0.6},200);
+				IriSP.jQuery("#"+annotation.id).dequeue();
+				IriSP.jQuery("#"+annotation.id).animate({height:factor},200);
+				IriSP.jQuery("#"+annotation.id).css('border','2px');
+				IriSP.jQuery("#"+annotation.id).css('border-color','red');
+				IriSP.jQuery("#"+annotation.id).animate({opacity:0.6},200);
 				
-				__IriSP.trace("!!!!!!!!!!!!!!!!!!"," ?= "+annotation.id);
-				__IriSP.jQuery("#LdtSearchInput").css('background-color','#e1ffe1');
+				IriSP.trace("!!!!!!!!!!!!!!!!!!"," ?= "+annotation.id);
+				IriSP.jQuery("#LdtSearchInput").css('background-color','#e1ffe1');
 			}else {
-				__IriSP.jQuery("#"+annotation.id).dequeue();
-				__IriSP.jQuery("#"+annotation.id).animate({height:0},250);
-				__IriSP.jQuery("#"+annotation.id).animate({opacity:0.3},200);
+				IriSP.jQuery("#"+annotation.id).dequeue();
+				IriSP.jQuery("#"+annotation.id).animate({height:0},250);
+				IriSP.jQuery("#"+annotation.id).animate({opacity:0.3},200);
 			}
 			
 			finded = 0;
 		}
 		if(findmem==0){
-				__IriSP.jQuery("#LdtSearchInput").css('background-color','#f6f6f6');
+				IriSP.jQuery("#LdtSearchInput").css('background-color','#f6f6f6');
 		}
 		
 	} else if(value.length==0){
-		__IriSP.SearchClean();
-		__IriSP.jQuery("#LdtSearchInput").css('background-color','#fff');		
+		IriSP.SearchClean();
+		IriSP.jQuery("#LdtSearchInput").css('background-color','#fff');		
 	} else {
-		__IriSP.SearchClean();
-		__IriSP.jQuery("#LdtSearchInput").css('background-color','#f6f6f6');
+		IriSP.SearchClean();
+		IriSP.jQuery("#LdtSearchInput").css('background-color','#f6f6f6');
 	}
 }
-__IriSP.SearchClean 		= function (){
-	annotations = __IriSP.LDTligne.annotations;
+IriSP.SearchClean 		= function (){
+	annotations = IriSP.LDTligne.annotations;
 	
 	for (var i=0; i < annotations.length; ++i){
 			annotation = annotations[i];
-			__IriSP.jQuery("#"+annotation.id).dequeue();
-			__IriSP.jQuery("#"+annotation.id).animate({height:0},100);	
-			__IriSP.jQuery("#"+annotation.id).css('border','0px');
-			__IriSP.jQuery("#"+annotation.id).css('border-color','red');
-			__IriSP.jQuery("#"+annotation.id).animate({opacity:0.3},100);
+			IriSP.jQuery("#"+annotation.id).dequeue();
+			IriSP.jQuery("#"+annotation.id).animate({height:0},100);	
+			IriSP.jQuery("#"+annotation.id).css('border','0px');
+			IriSP.jQuery("#"+annotation.id).css('border-color','red');
+			IriSP.jQuery("#"+annotation.id).animate({opacity:0.3},100);
 		}
 }
-__IriSP.SearchCleanString 	= function (value){
+IriSP.SearchCleanString 	= function (value){
 	var reg = new RegExp("(chien)", "g");
 	value.replace(reg,"")
 	return value;
 }	
-__IriSP.SearchThisSegment  	= function (annotation){
-					__IriSP.jQuery("#LdtSearchInput").text(annotation.title);
-					__IriSP.trace("__IriSP.Ligne.prototype.checkTimeLigne",annotation.title);
+IriSP.SearchThisSegment  	= function (annotation){
+					IriSP.jQuery("#LdtSearchInput").text(annotation.title);
+					IriSP.trace("__IriSP.Ligne.prototype.checkTimeLigne",annotation.title);
 					/*__IriSP.jQuery("#Ldt-SaDescription").text(annotationTempo.description);
 					__IriSP.jQuery("#Ldt-SaKeywordText").html("Mots clefs : "+annotationTempo.htmlTags);*/
 }
@@ -1146,7 +1149,7 @@ __IriSP.SearchThisSegment  	= function (annotation){
 
 /* CLASS Ligne (annotationType) 	*/
 
-__IriSP.LDTligne 	= null;		
+IriSP.LDTligne 	= null;		
 __IriSP.Ligne = function (id,title,description,duration){
 	this.id 		 = id;
 	this.title 		 = title;
@@ -1155,8 +1158,8 @@ __IriSP.Ligne = function (id,title,description,duration){
 	this.annotations = new Array();
 	this.duration = duration;
 	this.annotationOldRead="";
-	__IriSP.LDTligne = this;
-	__IriSP.trace("__IriSP.Ligne","CREATE "+__IriSP.LDTligne);
+	IriSP.LDTligne = this;
+	IriSP.trace("__IriSP.Ligne","CREATE "+IriSP.LDTligne);
 }	
 __IriSP.Ligne.prototype.addAnnotation = function (id,begin,end,media,title,description,color,tags){
 	var myAnnotation = new __IriSP.Annotation(id,begin,end,media,title,description,color,tags,this.duration);
@@ -1181,10 +1184,10 @@ __IriSP.Ligne.prototype.nextAnnotation = function (){
 
 	if(annotationCibleNumber<this.annotations.length-1){
 		annotationCible.begin
-		__IriSP.player .sendEvent('SEEK', annotationCible.begin/1000);
-		__IriSP.trace("LIGNE  ","| next = "+annotationCibleNumber+" - "+this.annotations.length+" | seek :"+annotationCible.begin/1000);
+		IriSP.player .sendEvent('SEEK', annotationCible.begin/1000);
+		IriSP.trace("LIGNE  ","| next = "+annotationCibleNumber+" - "+this.annotations.length+" | seek :"+annotationCible.begin/1000);
 	}else{
-		__IriSP.player .sendEvent('SEEK', this.annotations[0].begin/1000);
+		IriSP.player .sendEvent('SEEK', this.annotations[0].begin/1000);
 	}
 	
 	
@@ -1212,16 +1215,16 @@ __IriSP.Ligne.prototype.checkTime = function(time){
 				// different form the previous
 				if(annotationTempo!=this.annotationOldRead){
 					this.annotationOldRead = annotationTempo;
-					__IriSP.jQuery("#Ldt-SaTitle").text(annotationTempo.title);
-					__IriSP.jQuery("#Ldt-SaDescription").text(annotationTempo.description);
-					__IriSP.jQuery("#Ldt-SaKeywordText").html("Mots clefs : "+annotationTempo.htmlTags);
+					IriSP.jQuery("#Ldt-SaTitle").text(annotationTempo.title);
+					IriSP.jQuery("#Ldt-SaDescription").text(annotationTempo.description);
+					IriSP.jQuery("#Ldt-SaKeywordText").html("Mots clefs : "+annotationTempo.htmlTags);
 					
 					//__IriSP.jQuery('#Ldt-ShowAnnotation').slideDown();
 					var startPourcent 	= annotationTempo.timeToPourcent((annotationTempo.begin*1+(annotationTempo.end*1-annotationTempo.begin*1)/2),annotationTempo.duration*1); 
-					__IriSP.jQuery("#Ldt-Show-Arrow").animate({left:startPourcent+'%'},1000);
-					__IriSP.jQuery("#"+annotationTempo.id).animate({alpha:'100%'},1000);
+					IriSP.jQuery("#Ldt-Show-Arrow").animate({left:startPourcent+'%'},1000);
+					IriSP.jQuery("#"+annotationTempo.id).animate({alpha:'100%'},1000);
 					//alert(startPourcent);
-					var tempolinkurl  =  __IriSP.ignoreTimeFragment(window.location.href)+"#t="+(this.annotations[i].begin/1000);
+					var tempolinkurl  =  IriSP.ignoreTimeFragment(window.location.href)+"#t="+(this.annotations[i].begin/1000);
 				}
 			break;
 		}else{
@@ -1232,13 +1235,13 @@ __IriSP.Ligne.prototype.checkTime = function(time){
 	// si il y en a pas : retractation du volet 
 	if( annotationTempo == -1){
 		if(annotationTempo!=this.annotationOldRead){
-			__IriSP.trace("Check : ","pas d'annotation ici ");
-			__IriSP.jQuery("#Ldt-SaTitle").text("");
-			__IriSP.jQuery("#Ldt-SaDescription").text("");
-			__IriSP.jQuery("#Ldt-SaKeywordText").html("");
-			__IriSP.jQuery('#Ldt-ShowAnnotation').slideUp();
+			IriSP.trace("Check : ","pas d'annotation ici ");
+			IriSP.jQuery("#Ldt-SaTitle").text("");
+			IriSP.jQuery("#Ldt-SaDescription").text("");
+			IriSP.jQuery("#Ldt-SaKeywordText").html("");
+			IriSP.jQuery('#Ldt-ShowAnnotation').slideUp();
 			if(this.annotationOldRead){
-				__IriSP.jQuery("#"+this.annotationOldRead.id).animate({alpha:'70%'},1000);
+				IriSP.jQuery("#"+this.annotationOldRead.id).animate({alpha:'70%'},1000);
 			}
 			//__IriSP.jQuery("#Ldt-Show-Arrow").animate({left:'0%'},1000);
 			this.annotationOldRead = annotationTempo;
@@ -1259,7 +1262,7 @@ __IriSP.Annotation = function (){
 	var title 			= null;
 	var color 			= null;
 	var tags			= null;
-	__IriSP.trace("annotation ","réussi")
+	IriSP.trace("annotation ","réussi")
 }	
 __IriSP.Annotation = function(id,begin,end,media,title,description,color,tags,duration){
 	this.id 			= id;
@@ -1276,7 +1279,7 @@ __IriSP.Annotation = function(id,begin,end,media,title,description,color,tags,du
 	this.draw();
 	this.drawTags();
 	//
-	__IriSP.trace("Annotation created : ",id);
+	IriSP.trace("Annotation created : ",id);
 }	
 __IriSP.Annotation.prototype.draw = function(){
 	//alert (this.duration);
@@ -1284,29 +1287,29 @@ __IriSP.Annotation.prototype.draw = function(){
 	var endPourcent 	= this.timeToPourcent(this.end,this.duration)-startPourcent;
 	var titleForDiv		= this.title.substr(0,55);
 	
-	__IriSP.jQueryAnnotationTemplate = "<div title='"+__IriSP.stripHtml(titleForDiv)+"' id='"+this.id+"'  class='ui-slider-range ui-slider-range-min ui-widget-header iri-chapter' width='100%' style=\"left:"+startPourcent+"%; width:"+endPourcent+"%; padding-top:15px; border-left:solid 1px #aaaaaa; border-right:solid 1px #aaaaaa; background:#"+__IriSP.DEC_HEXA_COLOR(this.color)+";\" onClick=\"__IriSP.MyApiPlayer.seek('"+Math.round(this.begin/1000)+"');__IriSP.jQuery('#Ldt-ShowAnnotation').slideDown();\"    ></div> ";
+	IriSP.jQueryAnnotationTemplate = "<div title='"+IriSP.stripHtml(titleForDiv)+"' id='"+this.id+"'  class='ui-slider-range ui-slider-range-min ui-widget-header iri-chapter' width='100%' style=\"left:"+startPourcent+"%; width:"+endPourcent+"%; padding-top:15px; border-left:solid 1px #aaaaaa; border-right:solid 1px #aaaaaa; background:#"+IriSP.DEC_HEXA_COLOR(this.color)+";\" onClick=\"__IriSP.MyApiPlayer.seek('"+Math.round(this.begin/1000)+"');__IriSP.jQuery('#Ldt-ShowAnnotation').slideDown();\"    ></div> ";
 	//alert(this.color+" : "+DEC_HEXA_COLOR(this.color));
 	
-	__IriSP.jQuerytoolTipTemplate = "<div class='Ldt-tooltip'>"
-						+"<div class='title'>"+__IriSP.stripHtml(this.title)+"</div>"
+	IriSP.jQuerytoolTipTemplate = "<div class='Ldt-tooltip'>"
+						+"<div class='title'>"+IriSP.stripHtml(this.title)+"</div>"
 						+"<div class='time'>"+this.begin+" : "+this.end+"</div>"
-						+"<div class='description'>"+__IriSP.stripHtml(this.description)+"</div>"
+						+"<div class='description'>"+IriSP.stripHtml(this.description)+"</div>"
 						+"</div>";
 	
 	
-	__IriSP.jQuery("<div>"+__IriSP.jQueryAnnotationTemplate+"</div>").appendTo("#Ldt-Annotations");
+	IriSP.jQuery("<div>"+IriSP.jQueryAnnotationTemplate+"</div>").appendTo("#Ldt-Annotations");
 	// TOOLTIP BUG ! 
 	
-	__IriSP.jQuery("#"+this.id).tooltip({ effect: 'slide'});
+	IriSP.jQuery("#"+this.id).tooltip({ effect: 'slide'});
 	
 	
-	__IriSP.jQuery("#"+this.id).fadeTo(0,0.3);
-	__IriSP.jQuery("#"+this.id).mouseover(function() {
-		__IriSP.jQuery("#"+this.id).animate({opacity: 0.6}, 5)
+	IriSP.jQuery("#"+this.id).fadeTo(0,0.3);
+	IriSP.jQuery("#"+this.id).mouseover(function() {
+		IriSP.jQuery("#"+this.id).animate({opacity: 0.6}, 5)
 	}).mouseout(function(){		
-		__IriSP.jQuery("#"+this.id).animate({opacity: 0.3}, 5)
+		IriSP.jQuery("#"+this.id).animate({opacity: 0.3}, 5)
 	});
-	__IriSP.trace("__IriSP.Annotation.prototype.draw","ADD ANOTATION : "+this.begin+" "+this.end+" "+__IriSP.stripHtml(this.title)+" | "+startPourcent+" | "+endPourcent+" | duration = "+this.duration);
+	IriSP.trace("__IriSP.Annotation.prototype.draw","ADD ANOTATION : "+this.begin+" "+this.end+" "+IriSP.stripHtml(this.title)+" | "+startPourcent+" | "+endPourcent+" | duration = "+this.duration);
 	
 }	
 __IriSP.Annotation.prototype.drawTags = function(){
@@ -1318,7 +1321,7 @@ __IriSP.Annotation.prototype.drawTags = function(){
 		for (var i = 0; i < this.tags.length; ++i){
 			
 			//this.htmlTags += '<span onclick=\"ShowTag('+this.tags[i]['id-ref']+');\"  > '+MyTags.getTitle(this.tags[i]['id-ref'])+' </span>'+" , ";
-			this.htmlTags += '<span> '+__IriSP.MyTags.getTitle(this.tags[i]['id-ref'])+' </span>'+" , ";
+			this.htmlTags += '<span> '+IriSP.MyTags.getTitle(this.tags[i]['id-ref'])+' </span>'+" , ";
 			
 		}		
 	}
@@ -1373,9 +1376,9 @@ __IriSP.Tags.prototype.getTitle = function (id){
 }
 __IriSP.Tags.prototype.draw = function (){
 
-	__IriSP.trace("__IriSP.Tags.prototype.draw"," !!! WELL START " );
+	IriSP.trace("__IriSP.Tags.prototype.draw"," !!! WELL START " );
 	for (var i = 0; i < this.myTags.length; ++i){
-		__IriSP.trace("__IriSP.Tags.prototype.draw"," ADD Tags : "+this.myTags[i]['id']);
+		IriSP.trace("__IriSP.Tags.prototype.draw"," ADD Tags : "+this.myTags[i]['id']);
 		if(this.myTags[i]['id']!=null){
 		this.htmlTags += '<span onclick=\"MyTags.show( \''+this.myTags[i]['id']
 						+'\');\" style=\"font-size:'  +((this.myTags[i].mySegments.length/this.weigthMax*10)+8)
@@ -1384,8 +1387,8 @@ __IriSP.Tags.prototype.draw = function (){
 		}
 	}
 	
-	__IriSP.jQuery('#Ldt-Tags').html(this.htmlTags);
-	__IriSP.trace("__IriSP.Tags.prototype.draw"," !!!!  END WMAX= "+this.weigthMax );
+	IriSP.jQuery('#Ldt-Tags').html(this.htmlTags);
+	IriSP.trace("__IriSP.Tags.prototype.draw"," !!!!  END WMAX= "+this.weigthMax );
 	
 }
 __IriSP.Tags.prototype.show = function (id){
@@ -1406,7 +1409,7 @@ __IriSP.Tags.prototype.show = function (id){
 	
 	for (var i = 0; i < this.myTags.length; ++i){
 		if (this.myTags[i]['id']==id){
-			__IriSP.trace("######### TAG DRAWing : "," END" );		
+			IriSP.trace("######### TAG DRAWing : "," END" );		
 			
 			for (var j = 0; j < this.myTags[i].mySegments.length; ++j){
 				if(timeStartOffset> this.myTags[i].mySegments[j][0]){
@@ -1428,11 +1431,11 @@ __IriSP.Tags.prototype.show = function (id){
 	// 
 	// -------------------------------------------------
 	
-	leftPourCent 	= __IriSP.timeToPourcent((timeStartOffsetA*1+(timeStartOffsetB-timeStartOffsetA)/2),__IriSP.MyLdt.duration); 
-	WidthPourCent	= __IriSP.timeToPourcent((timeEndOffsetA*1+(timeEndOffsetB-timeEndOffsetA)/2),__IriSP.MyLdt.duration)-leftPourCent; 			
+	leftPourCent 	= IriSP.timeToPourcent((timeStartOffsetA*1+(timeStartOffsetB-timeStartOffsetA)/2),IriSP.MyLdt.duration); 
+	WidthPourCent	= IriSP.timeToPourcent((timeEndOffsetA*1+(timeEndOffsetB-timeEndOffsetA)/2),IriSP.MyLdt.duration)-leftPourCent; 			
 	//WidthPourCent	= timeToPourcent((timeEndOffsetA*1+(timeEndOffsetB-timeEndOffsetA)/2),MyLdt.duration)-startPourcent; 			
-	__IriSP.jQuery("#Ldt-Show-Tags").css('left',leftPourCent+'%');
-	__IriSP.jQuery("#Ldt-Show-Tags").css('width',WidthPourCent+'%');
+	IriSP.jQuery("#Ldt-Show-Tags").css('left',leftPourCent+'%');
+	IriSP.jQuery("#Ldt-Show-Tags").css('width',WidthPourCent+'%');
 	// like arrow script
 	
 	
