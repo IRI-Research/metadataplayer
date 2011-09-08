@@ -28,7 +28,7 @@
 	
 	<target name="concatenate" description="Build the developer release file">
 	    <concat destfile="${basedir}/LdtPlayer-release.js">
-	        <filelist dir="${basedir}/../../src/js" files="header.js LdtPlayer.js" />
+	        <filelist dir="${basedir}/../../src/js" files="LdtPlayer.js" />
 	    </concat>
 	</target>
 </project>
