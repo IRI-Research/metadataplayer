@@ -19,22 +19,21 @@
 */
 
 if ( window.IriSP === undefined && window.__IriSP === undefined ) { 
-	var IriSP ={}; 
+	var IriSP = {}; 
 	var __IriSP = IriSP; /* for backward compatibility */
 }
 
 		
 /* CLASS TRACE */
 
-IriSP.traceNum=0;
-IriSP.trace = function(msg,value){
+IriSP.traceNum = 0;
+IriSP.trace = function( msg, value ) {
 
-	if(IriSP.config.gui.debug===true){
+	if( IriSP.config.gui.debug === true ) {
 		IriSP.traceNum += 1;
-		IriSP.jQuery("<div>"+IriSP.traceNum+" - "+msg+" : "+value+"</div>").appendTo("#Ldt-output");
+		IriSP.jQuery( "<div>"+IriSP.traceNum+" - "+msg+" : "+value+"</div>" ).appendTo( "#Ldt-output" );
 	}
-
-}
+};
 
 // Player Configuration 
 IriSP.config = undefined;
@@ -75,6 +74,7 @@ IriSP.configDefault = {
 		},
 		module:null
 	};
+
 IriSP.lib = {
 			jQuery:"http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js",
 			jQueryUI:"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js",
@@ -105,108 +105,107 @@ IriSP.playerLdtHeight	= null;
  
 
 
-IriSP.init = function (config){
+IriSP.init = function ( config ) {
 
 		
-		if(config === null){
-		
+		if ( config === null ) {
 			IriSP.config 			 = IriSP.configDefault;
-			
 		} else {
 			
 			IriSP.config 			 = config;
+						
+			if ( IriSP.config.player.params == null ) {
+				IriSP.config.player.params = IriSP.configDefault.player.params;
+			}
 			
+			if ( IriSP.config.player.flashvars == null ) {
+				IriSP.config.player.flashvars = IriSP.configDefault.player.flashvars;
+			}
 			
-
-			if (IriSP.config.player.params == null){
-			IriSP.config.player.params = IriSP.configDefault.player.params;}
-			
-			if (IriSP.config.player.flashvars == null){
-			IriSP.config.player.flashvars = IriSP.configDefault.player.flashvars;}
-			if (IriSP.config.player.attributes == null){
-			IriSP.config.player.attributes = IriSP.configDefault.player.attributes;}
+			if ( IriSP.config.player.attributes == null ) {
+				IriSP.config.player.attributes = IriSP.configDefault.player.attributes;
+			}
 		}
 		
 		var metadataSrc 		 = IriSP.config.metadata.src;
 		var guiContainer		 = IriSP.config.gui.container;
 		var guiMode				 = IriSP.config.gui.mode;
 		var guiLdtShareTool		 = IriSP.LdtShareTool;
+		
 		// Localize jQuery variable
 		IriSP.jQuery = null;
 
 		/******** Load jQuery if not present *********/
-		if (window.jQuery === undefined || window.jQuery.fn.jquery !== '1.4.2') {
-			var script_tag = document.createElement('script');
-			script_tag.setAttribute("type","text/javascript");
-			script_tag.setAttribute("src",IriSP.lib.jQuery);
-				//"http://cdn.jquerytools.org/1.2.4/full/jquery.tools.min.js");
+		if ( window.jQuery === undefined || window.jQuery.fn.jquery !== '1.4.2' ) {
+			
+			var script_tag = document.createElement( 'script' );
+			script_tag.setAttribute( "type", "text/javascript" );
+			script_tag.setAttribute( "src", IriSP.lib.jQuery );
+			
 			script_tag.onload = scriptLibHandler;
 			script_tag.onreadystatechange = function () { // Same thing but for IE
-				if (this.readyState == 'complete' || this.readyState == 'loaded') {
-					scriptLibHandler();
-					
+				if ( this.readyState == 'complete' || this.readyState == 'loaded' ) {
+					scriptLibHandler();					
 				}
 			};
+			
 			// Try to find the head, otherwise default to the documentElement
-			(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_tag);
+			( document.getElementsByTagName("head")[0] || document.documentElement ).appendChild( script_tag );
 		} else {
 			// The jQuery version on the window is the one we want to use
 			 IriSP.jQuery = window.jQuery;
-			scriptLibHandler();
+			 scriptLibHandler();
 		}
 
 		/******** Called once jQuery has loaded ******/
 		function scriptLibHandler() {
 			
-			var script_jqUi_tooltip = document.createElement('script');
-			script_jqUi_tooltip.setAttribute("type","text/javascript");
-			script_jqUi_tooltip.setAttribute("src",IriSP.lib.jQueryToolTip);
+			var script_jqUi_tooltip = document.createElement( 'script' );
+			script_jqUi_tooltip.setAttribute( "type", "text/javascript" );
+			script_jqUi_tooltip.setAttribute( "src", IriSP.lib.jQueryToolTip );
 			script_jqUi_tooltip.onload = scriptLoadHandler;
 			script_jqUi_tooltip.onreadystatechange = function () { // Same thing but for IE
-				if (this.readyState == 'complete' || this.readyState == 'loaded') {
-					scriptLoadHandler("jquery.tools.min.js loded");
+				if ( this.readyState == 'complete' || this.readyState == 'loaded' ) {
+					scriptLoadHandler( "jquery.tools.min.js loded" );
 				}
 			};
 			
 			var script_swfObj = document.createElement('script');
-			script_swfObj.setAttribute("type","text/javascript");
-			script_swfObj.setAttribute("src",IriSP.lib.swfObject);
+			script_swfObj.setAttribute( "type","text/javascript" );
+			script_swfObj.setAttribute( "src",IriSP.lib.swfObject );
 			script_swfObj.onload = scriptLoadHandler;
 			script_swfObj.onreadystatechange = function () { // Same thing but for IE
-				if (this.readyState == 'complete' || this.readyState == 'loaded') {
-					scriptLoadHandler("swfobject.js loded");
+				if ( this.readyState == 'complete' || this.readyState == 'loaded' ) {
+					scriptLoadHandler( "swfobject.js loded" );
 				}
 			};
 		
-			var script_jqUi = document.createElement('script');
-			script_jqUi.setAttribute("type","text/javascript");
-			script_jqUi.setAttribute("src",IriSP.lib.jQueryUI);
+			var script_jqUi = document.createElement( 'script' );
+			script_jqUi.setAttribute( "type","text/javascript" );
+			script_jqUi.setAttribute( "src",IriSP.lib.jQueryUI );
 			script_jqUi.onload = scriptLoadHandler;
 			script_jqUi.onreadystatechange = function () { // Same thing but for IE
-				if (this.readyState == 'complete' || this.readyState == 'loaded') {
-					scriptLoadHandler("jquery-ui.min.js loded");
+				if ( this.readyState == 'complete' || this.readyState == 'loaded' ) {
+					scriptLoadHandler( "jquery-ui.min.js loded" );
 				}
 			};
 		
 
-			
-
-			(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_jqUi_tooltip);
-			(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_jqUi);
-			(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_swfObj);
+			( document.getElementsByTagName("head")[0] || document.documentElement ).appendChild( script_jqUi_tooltip);
+			( document.getElementsByTagName("head")[0] || document.documentElement ).appendChild( script_jqUi );
+			( document.getElementsByTagName("head")[0] || document.documentElement ).appendChild( script_swfObj );
 			
 
 		};
 
 		/******** Called once all lib are loaded ******/
 		var loadLib = 0;
-		function scriptLoadHandler(Mylib) {
+		/* FIXME : ugly */
+		function scriptLoadHandler( Mylib ) {
 			//alert(Mylib);
 			loadLib +=1;
-			if(loadLib===3){ 
+			if( loadLib===3 ) { 
 				main(); 			  
-			}else {
-				// __IriSP.jQuery('#'+__IriSP.config.gui.container).html("Loading library ...");
 			}
 		};
 
@@ -214,31 +213,31 @@ IriSP.init = function (config){
 		function main() { 
 			
 
-			//  Make __IriSP.jQuery and restore window.jQuery 
-			IriSP.jQuery = window.jQuery.noConflict(true);
-			// Call MY Jquery
-			IriSP.jQuery(document).ready(function($) { 
+			//  Make our own IriSP.jQuery and restore window.jQuery if there was one. 
+			IriSP.jQuery = window.jQuery.noConflict( true );
+			// Call ours Jquery
+			IriSP.jQuery( document ).ready( function($) { 
 				
 				/******* Load CSS *******/
-				var css_link_jquery = IriSP.jQuery("<link>", { 
+				var css_link_jquery = IriSP.jQuery( "<link>", { 
 					rel: "stylesheet", 
 					type: "text/css", 
 					href: IriSP.lib.cssjQueryUI,
 					'class': "dynamic_css"
-				});
-				var css_link_custom = IriSP.jQuery("<link>", { 
+				} );
+				var css_link_custom = IriSP.jQuery( "<link>", { 
 					rel: "stylesheet", 
 					type: "text/css", 
 					href: IriSP.config.gui.css,
 					'class': "dynamic_css"
-				});
+				} );
 				
-				css_link_jquery.appendTo('head');
-				css_link_custom.appendTo('head');   
+				css_link_jquery.appendTo( 'head' );
+				css_link_custom.appendTo( 'head' );   
 
 				// to see dynamicly loaded css on IE
-				if ($.browser.msie) {
-					$('.dynamic_css').clone().appendTo('head');
+				if ( $.browser.msie ) {
+					$( '.dynamic_css' ).clone().appendTo( 'head' );
 				}
 				
 				//__IriSP.trace("main","ready createMyHtml");
@@ -247,20 +246,18 @@ IriSP.init = function (config){
 				//__IriSP.trace("main","end createMyHtml");
 				
 				/******* Load Metadata *******/
-				
+				/* FIXME : factor it in another file */
 				IriSP.jQuery.ajax({
 					  dataType: IriSP.config.metadata.load,
 					  url:metadataSrc,
-					  success : function(json){
+					  success : function( json ){
 					  
-							IriSP.trace("ajax","success");
+							IriSP.trace( "ajax", "success" );
 							
 							// START PARSING ----------------------- 
-							if(json === ""){
-								alert("ERREUR DE CHARGEMENT JSON");
-							} else {
-							  
-							  
+							if( json === "" ){
+								alert( "Json load error" );
+							} else {							  							  
 								// # CREATE MEDIA  							//
 								// # JUSTE ONE PLAYER FOR THE MOMENT		//
 								//__IriSP.jQuery("<div></div>").appendTo("#output");
@@ -271,7 +268,7 @@ IriSP.init = function (config){
 																	json.medias[0]['dc:title'],
 																	json.medias[0]['dc:description']);
 								
-								IriSP.trace("__IriSP.MyApiPlayer",
+								IriSP.trace( "__IriSP.MyApiPlayer",
 																	IriSP.config.gui.width+"   "
 																	+ IriSP.config.gui.height + " "
 																	+ json.medias[0].href + " "
@@ -279,7 +276,7 @@ IriSP.init = function (config){
 																	+ json.medias[0]['meta']['item']['value']);
 								
 								// Create APIplayer
-								IriSP.MyApiPlayer = new __IriSP.APIplayer(
+								IriSP.MyApiPlayer = new __IriSP.APIplayer (
 																	IriSP.config.gui.width,
 																	IriSP.config.gui.height,
 																	json.medias[0].href,
@@ -287,20 +284,20 @@ IriSP.init = function (config){
 																	json.medias[0]['meta']['item']['value']);
 							
 								// # CREATE THE FIRST LINE  				//
-								IriSP.trace("__IriSP.init.main","__IriSP.Ligne");
-								IriSP.MyLdt = new __IriSP.Ligne (
+								IriSP.trace( "__IriSP.init.main","__IriSP.Ligne" );
+								IriSP.MyLdt = new __IriSP.Ligne(
 																	json['annotation-types'][0].id,
 																	json['annotation-types'][0]['dc:title'],
 																	json['annotation-types'][0]['dc:description'],
 																	json.medias[0]['meta']['dc:duration']);			
 								
 								// CREATE THE TAG CLOUD 					//
-								IriSP.trace("__IriSP.init.main","__IriSP.Tags");
-								IriSP.MyTags =  new __IriSP.Tags (json.tags);
+								IriSP.trace( "__IriSP.init.main","__IriSP.Tags" );
+								IriSP.MyTags =  new __IriSP.Tags( json.tags );
 							
 								// CREATE THE ANNOTATIONS  				    //
 								// JUSTE FOR THE FIRST TYPE   			 	//
-								IriSP.jQuery.each(json.annotations, function(i,item) {
+								IriSP.jQuery.each( json.annotations, function(i,item) {
 									if (item.meta['id-ref'] == IriSP.MyLdt.id) {
 										//__IriSP.trace("__IriSP.init.main","__IriSP.MyLdt.addAnnotation");
 										IriSP.MyLdt.addAnnotation(
@@ -314,18 +311,18 @@ IriSP.init = function (config){
 													item.tags);
 									}
 										//MyTags.addAnnotation(item);
-								});	
-								IriSP.jQuery.each(json.lists, function(i,item) {
+								} );	
+								IriSP.jQuery.each( json.lists, function(i,item) {
 									IriSP.trace("lists","");
-								});	
-								IriSP.jQuery.each(json.views, function(i,item) {
+								} );	
+								IriSP.jQuery.each( json.views, function(i,item) {
 									IriSP.trace("views","");
-								});	
+								} );	
 							}
 							// END PARSING ----------------------- //  
 						
 										
-					},error : function(data){
+					}, error : function(data){
 						  alert("ERROR : "+data);
 					}
 				  });	
@@ -344,13 +341,13 @@ IriSP.createMyHtml = function(){
 		
 		// AUDIO  */
 		// PB dans le html : ; 
-		IriSP.trace("__IriSP.createMyHtml",IriSP.config.gui.container);
+		IriSP.trace( "__IriSP.createMyHtml",IriSP.config.gui.container );
 
 		
+		/* FIXME : factor this in another file */
+		if( IriSP.config.gui.mode=="radio" ){
 		
-		if(IriSP.config.gui.mode=="radio"){
-		
-		IriSP.jQuery("#"+IriSP.config.gui.container).before(
+		IriSP.jQuery( "#"+IriSP.config.gui.container ).before(
 		"<div id='LdtSearchContainer'  style='margin-left:445px;position:absolute;'>\n"+
 		"<div id='LdtSearch' style='display:none;background-color:#EEE;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
 		"</div>\n"+
@@ -481,7 +478,7 @@ IriSP.createMyHtml = function(){
 		
 };
 
-__IriSP.Media = function (id,url,duration,title,description){
+__IriSP.Media = function ( id, url, duration, title, description ) {
 		this.id 		 	= id;
 		this.url 		= url;
 		this.title 		= title;
@@ -489,37 +486,41 @@ __IriSP.Media = function (id,url,duration,title,description){
 		this.duration 	= duration;
 		this.lignes 	  	= new Array();
 
-		IriSP.trace("__IriSP.Media","Media ID : "+id);
-		IriSP.trace("__IriSP.Media","Media URL : "+url);
-		IriSP.trace("__IriSP.Media","Media title : "+title);
-}
-__IriSP.Media.prototype.createPlayerMedia = function (width,height,MyStreamer,MySwfPath){
-		IriSP.MyApiPlayer = new __IriSP.APIplayer(width,height,this.url,this.duration,MyStreamer,MySwfPath);
+		IriSP.trace( "__IriSP.Media" , "Media ID : "+id);
+		IriSP.trace( "__IriSP.Media" , "Media URL : "+url);
+		IriSP.trace( "__IriSP.Media" , "Media title : "+title);
+};
+
+__IriSP.Media.prototype.createPlayerMedia = function ( width, height, MyStreamer, MySwfPath) {
+		IriSP.MyApiPlayer = new __IriSP.APIplayer( width, height, this.url, this.duration, MyStreamer, MySwfPath);
 		//createPlayer(width,height,this.url,this.duration,MyStreamer,MySwfPath);
-}
-__IriSP.Media.prototype.getMediaDuration = function (){
+};
+
+__IriSP.Media.prototype.getMediaDuration = function () {
 		return (this.duration);
-}
+};
+
 __IriSP.Media.prototype.getMediaTitle = function (){
 		return (this.title);
-}
+};
 
 
 
 /* 	INTERFACE : SLIDER ( CONTROL BAR ) | BUTTON ()   */
-IriSP.createInterface = function(width,height,duration){
-				
-		IriSP.jQuery("#Ldt-controler").show();
-		//__IriSP.jQuery("#Ldt-Root").css('display','visible');
-		IriSP.trace("__IriSP.createInterface",width+","+height+","+duration+",");
+IriSP.createInterface = function( width, height, duration ) {
 		
-		IriSP.jQuery("#Ldt-ShowAnnotation").click(function () { 
+		IriSP.jQuery( "#Ldt-controler" ).show();
+		//__IriSP.jQuery("#Ldt-Root").css('display','visible');
+		IriSP.trace( "__IriSP.createInterface" , width+","+height+","+duration+"," );
+		
+		IriSP.jQuery( "#Ldt-ShowAnnotation").click( function () { 
 			 //__IriSP.jQuery(this).slideUp(); 
-		});
+		} );
 
 		var LdtpPlayerY = IriSP.jQuery("#Ldt-PlaceHolder").attr("top");
 		var LdtpPlayerX = IriSP.jQuery("#Ldt-PlaceHolder").attr("left");
-		IriSP.jQuery("#slider-range-min").slider({ //range: "min",
+		
+		IriSP.jQuery( "#slider-range-min" ).slider( { //range: "min",
 			value: 0,
 			min: 1,
 			max: duration/1000,//1:54:52.66 = 3600+3240+
@@ -532,7 +533,8 @@ IriSP.createInterface = function(width,height,duration){
 				//changePageUrlOffset(ui.value);
 				//player.sendEvent('PAUSE')
 			}
-		});
+		} );
+		
 		IriSP.trace("__IriSP.createInterface","ICI");
 		IriSP.jQuery("#amount").val(IriSP.jQuery("#slider-range-min").slider("value")+" s");
 		IriSP.jQuery(".Ldt-Control1 button:first").button({
@@ -562,23 +564,23 @@ IriSP.createInterface = function(width,height,duration){
 		// /!\ PB A MODIFIER 
 		//__IriSP.MyTags.draw();
 		IriSP.trace("__IriSP.createInterface","ICI2");
-		IriSP.jQuery("#ldt-CtrlPlay").attr("style","background-color:#CD21C24;");
+		IriSP.jQuery( "#ldt-CtrlPlay" ).attr( "style", "background-color:#CD21C24;" );
 		
-		IriSP.jQuery("#Ldt-load-container").hide();
+		IriSP.jQuery( "#Ldt-load-container" ).hide();
 		
-		if(IriSP.config.gui.mode=="radio" & IriSP.jQuery.browser.msie!=true){
-			IriSP.jQuery("#Ldtplayer1").attr("height","0");
+		if( IriSP.config.gui.mode=="radio" & IriSP.jQuery.browser.msie != true ) {
+			IriSP.jQuery( "#Ldtplayer1" ).attr( "height", "0" );
 		}
-		IriSP.trace("__IriSP.createInterface","3");
+		IriSP.trace( "__IriSP.createInterface" , "3" );
 
-		IriSP.trace("__IriSP.createInterface","END");
+		IriSP.trace( "__IriSP.createInterface", "END" );
 		
-	}
+	};
 
 
 
-/*  API player - work in progress ... need refactoring of code */ 
-__IriSP.APIplayer = function (width,height,url,duration,streamerPath,MySwfPath){
+/*  FIXME : API player - work in progress ... need refactoring of code */ 
+__IriSP.APIplayer = function ( width, height, url, duration, streamerPath, MySwfPath){
 		
 		
 		this.player 			= null;
@@ -593,8 +595,8 @@ __IriSP.APIplayer = function (width,height,url,duration,streamerPath,MySwfPath){
 		
 		IriSP.MyApiPlayer		= this;
 		
-		IriSP.createPlayer(this.url,this.streamerPath);
-		IriSP.trace("__IriSP.APIplayer","__IriSP.createPlayer");
+		IriSP.createPlayer( this.url, this.streamerPath );
+		IriSP.trace( "__IriSP.APIplayer", "__IriSP.createPlayer" );
 	
 	//__IriSP.config.player
 	/*
@@ -605,41 +607,40 @@ __IriSP.APIplayer = function (width,height,url,duration,streamerPath,MySwfPath){
 	- jwplayer
 	*/
 		
-}
-__IriSP.APIplayer.prototype.ready = function(player){
+};
+
+__IriSP.APIplayer.prototype.ready = function( player ) {
 
 	//__IriSP.trace("__IriSP.APIplayer.prototype.APIpReady"," __IriSP.createInterface");
-	IriSP.createInterface(this.width,this.height,this.duration);
+	IriSP.createInterface( this.width, this.height, this.duration );
 	//__IriSP.trace("__IriSP.APIplayer.prototype.APIpReady","END  __IriSP.createInterface");
 
 	// hashchange EVENT
-	if (window.addEventListener){
+	if ( window.addEventListener ){
 	
-	// pour FIREFOX  hashchange EVENT
-		window.addEventListener("hashchange", function() {
+	// for firefox  hashchange EVENT
+		window.addEventListener( "hashchange", function() {
 		  var url = window.location.href;
-		  var time = IriSP.retrieveTimeFragment(url);
-		  IriSP.trace("__IriSP.APIplayer.prototype.ready",time);
-		  if(IriSP.MyApiPlayer.hashchangeUpdate==null){
-			IriSP.MyApiPlayer.seek(time);
+		  var time = IriSP.retrieveTimeFragment( url );
+		  IriSP.trace( "__IriSP.APIplayer.prototype.ready", time );
+		  if( IriSP.MyApiPlayer.hashchangeUpdate==null ){
+			IriSP.MyApiPlayer.seek( time );
 			
-		  }else{
-			IriSP.MyApiPlayer.hashchangeUpdate=null;
+		  } else {			  
+			IriSP.MyApiPlayer.hashchangeUpdate = null;
 		  }
-		}, false);
+		}, false );
 	 
-	} 
-	else if (window.attachEvent){
-	// FOR IE hashchange EVENT
-	
-		window.attachEvent("onhashchange", function() {
-		  IriSP.trace("hashchange",time);
+	} else if (window.attachEvent){
+	// for ie hashchange EVENT
+		window.attachEvent( "onhashchange", function() {
+		  IriSP.trace( "hashchange",time );
 		  var url = window.location.href;
-		  var time = IriSP.retrieveTimeFragment(url);
-		  if(IriSP.MyApiPlayer.hashchangeUpdate==null){
+		  var time = IriSP.retrieveTimeFragment( url );
+		  if( IriSP.MyApiPlayer.hashchangeUpdate == null ){
 			IriSP.MyApiPlayer.seek(time);
-		  }else{
-			IriSP.MyApiPlayer.hashchangeUpdate=null;
+		  } else {
+			IriSP.MyApiPlayer.hashchangeUpdate = null;
 		  }
 		}, false);
 	}
@@ -647,50 +648,58 @@ __IriSP.APIplayer.prototype.ready = function(player){
 	// Search
 	//__IriSP.jQuery("#LdtSearchInput").change(function() {__IriSP.Search(this.value);});
 	//__IriSP.jQuery("#LdtSearchInput").live('change', function(event) {__IriSP.Search(this.value);}); 
-	IriSP.jQuery("#LdtSearchInput").keydown(function() {IriSP.Search(this.value);});
-	IriSP.jQuery("#LdtSearchInput").keyup(function() {IriSP.Search(this.value);});
+	IriSP.jQuery( "#LdtSearchInput" ).keydown( function() { IriSP.Search( this.value );} );
+	IriSP.jQuery("#LdtSearchInput").keyup( function() { IriSP.Search( this.value );} );
 	
-}
+};
+
 __IriSP.APIplayer.prototype.pause = function(){
 	this.hashchangeUpdate = true;
-	IriSP.player.sendEvent('PAUSE');
-}
-__IriSP.APIplayer.prototype.play  = function(){
+	IriSP.player.sendEvent( 'PAUSE' );
+};
+
+__IriSP.APIplayer.prototype.play  = function() {
 	this.hashchangeUpdate = true;
 	//__IriSP.trace("__IriSP.config.player.type",__IriSP.config.player.type);
-	if(IriSP.config.player.type=='jwplayer'){
+	if( IriSP.config.player.type=='jwplayer' ){
 	
-		IriSP.player.sendEvent('PLAY');
+		IriSP.player.sendEvent( 'PLAY' );
 		
-	} else if(IriSP.config.player.type=='dailymotion' 
-			  || IriSP.config.player.type=='youtube') {
+	} else if(IriSP.config.player.type == 'dailymotion' 
+			  || IriSP.config.player.type == 'youtube' ) {
 			  
 		var status = IriSP.player.getPlayerState();
-		IriSP.trace("__IriSP.APIplayer.prototype.play.status",status);
-		if (status!=1){
+		IriSP.trace( "__IriSP.APIplayer.prototype.play.status", status);
+		if ( status != 1 ){
 			IriSP.player.playVideo();
-		}else{
+		} else {
 			IriSP.player.pauseVideo();
 		}
 	}
-}
-__IriSP.APIplayer.prototype.mute  = function(){
-	IriSP.player.sendEvent('MUTE');
+};
+
+__IriSP.APIplayer.prototype.mute  = function() {
+	IriSP.player.sendEvent( 'MUTE' );
 	
 	//alert(__IriSP.jQuery(".ui-icon-volume-on").css("background-position-x"));
-	if (IriSP.jQuery(".ui-icon-volume-on").css("background-position")=="-144px -160px"){
-		IriSP.jQuery(".ui-icon-volume-on").css("background-position","-130px -160px");
+	/* FIXME : remove hardcoded values */
+	if ( IriSP.jQuery( ".ui-icon-volume-on" ).css( "background-position" ) == "-144px -160px" ){
+		IriSP.jQuery(" .ui-icon-volume-on ").css(" background-position ", "-130px -160px");
 	} else {
-		IriSP.jQuery(".ui-icon-volume-on").css("background-position","-144px -160px");
+		IriSP.jQuery( ".ui-icon-volume-on" ).css( "background-position", "-144px -160px" );
 	}
-}
-__IriSP.APIplayer.prototype.share = function(network){
+};
 
-	var MyMessage = encodeURIComponent("J'écoute Les Retours du Dimanche : ");
+/* FIXME : rename */
+__IriSP.APIplayer.prototype.share = function( network ) {
+
+	/* FIXME : remove hardcoded */
+	var MyMessage = encodeURIComponent( "J'écoute Les Retours du Dimanche : " );
 	var MyURLNow = window.location.href;
-	var shareURL;
+	var shareURL = null;
 	//alert(network+" : "+MyURLNow);
 	
+	/* FIXME : use a sharing library */
 	if(network == "facebook"){
 			shareURL = "http://www.facebook.com/share.php?u=";			
 		}else if(network == "twitter"){
@@ -704,87 +713,101 @@ __IriSP.APIplayer.prototype.share = function(network){
 			//alert(network+" non actif pour l'instant : "+MyURLNow);
 	}
 	
-	window.open(shareURL+encodeURIComponent(MyURLNow));
+	if (shareURL != null)
+		window.open( shareURL+encodeURIComponent(MyURLNow) );
 	//window.location.href = shareURL+encodeURIComponent(MyURLNow);
-}
-__IriSP.APIplayer.prototype.seek  = function (time){
-	if(time==0){time=1}
-	IriSP.trace("__IriSP.APIplayer.prototype.seek",time);
-	if(IriSP.config.player.type=='jwplayer'){
+};
+
+__IriSP.APIplayer.prototype.seek = function (time) {
+	
+	if( time==0 ) { time=1; }
+	
+	IriSP.trace( "__IriSP.APIplayer.prototype.seek", time );
+	
+	if( IriSP.config.player.type=='jwplayer') {
 		//__IriSP.MyApiPlayer.play()
-		IriSP.player.sendEvent('SEEK', time);
-	} else if(IriSP.config.player.type=='dailymotion'
-			|| IriSP.config.player.type=='youtube') {
-		IriSP.player.seekTo(time);
+		IriSP.player.sendEvent( 'SEEK', time );
+	} else if( IriSP.config.player.type=='dailymotion'
+			|| IriSP.config.player.type=='youtube' ) {
+		IriSP.player.seekTo( time );
 	}
-	this.changePageUrlOffset(time);
-}	
-__IriSP.APIplayer.prototype.update = function (time){
-	if(time!=0){
-	this.hashchangeUpdate = true;
-	IriSP.trace("__IriSP.APIplayer.prototype.update",time);
-	IriSP.player.sendEvent('SEEK', time);
+	
+	this.changePageUrlOffset( time );
+};
+
+__IriSP.APIplayer.prototype.update = function (time) {
+	
+	if( time != 0 ) {
+		this.hashchangeUpdate = true;
+		
+		IriSP.trace( "__IriSP.APIplayer.prototype.update" ,time);
+		IriSP.player.sendEvent( 'SEEK', time );
 	}
-}
-__IriSP.APIplayer.prototype.changePageUrlOffset = function (time) {
+};
+
+__IriSP.APIplayer.prototype.changePageUrlOffset = function ( time ) {
 	//alert(time);
-  IriSP.trace("__IriSP.APIplayer.prototype.changePageUrlOffset","CHANGE URL "+time);
+  IriSP.trace( "__IriSP.APIplayer.prototype.changePageUrlOffset" , "CHANGE URL "+ time);
   
   window.location.hash = "#t=" + time;
   window.location.href =  window.location.href;
   
-}
+};
 
-/* MEDIA FRAGMENT FUNCTION by Silvia Pfeiffer */ 
+/* Media Fragment functionality by Silvia Pfeiffer */ 
 
-IriSP.jumpToTimeoffset = function (form) {
+IriSP.jumpToTimeoffset = function ( form ) {
 	var time = form.time.value;
-	IriSP.MyApiPlayer.changePageUrlOffset(time);
-}
-IriSP.retrieveTimeFragment = function (url) {
+	IriSP.MyApiPlayer.changePageUrlOffset( time );
+};
+
+IriSP.retrieveTimeFragment = function ( url ) {
   var pageoffset = 0;
   var offsettime = 0;
   
-  if (url.split("#")[1] != null) {
-	pageoffset = url.split("#")[1];
-		if (pageoffset.substring(2) != null) {
-			offsettime = pageoffset.substring(2);
+  if ( url.split("#")[1] != null ) {
+	pageoffset = url.split( "#" )[1];
+		if ( pageoffset.substring( 2 ) != null ) {
+			offsettime = pageoffset.substring( 2 );
 		}
 	}
 	return offsettime;
-}  
-IriSP.ignoreTimeFragment = function(url){
- if (url.split("#")[1] != null) {
-	var pageurl= url.split("#")[0];
- }
- return pageurl;
-}
+};
+
+IriSP.ignoreTimeFragment = function( url ){
+
+	var pageurl = url;
+	
+	if ( url.split( "#" )[1] != null ) {
+		pageurl = url.split( "#" )[0];
+	}
+ 
+	return pageurl;
+};
 
 
-/* CODE SPECIAL JW PLAYER  creation + listener */
+/* code specific to jwplayer / creation and listener */
 
 IriSP.currentPosition 	= 0; 
 IriSP.currentVolume   	= 50; 
-IriSP.player 				= null;
-IriSP.startPosition 		= null;
+IriSP.player 			= null;
+IriSP.startPosition 	= null;
 IriSP.firstplay	 		= false;
 
 
 
-IriSP.createPlayer = function (url,streamerPath) {
-
-
-	if(IriSP.config.player.type=='dailymotion'){
+IriSP.createPlayer = function ( url, streamerPath ) {
+	if( IriSP.config.player.type=='dailymotion' ) {
 		IriSP.config.player.src = IriSP.config.player.src+"&chromeless=1&enableApi=1";
-	} else if (IriSP.config.player.type=='youtube'){
+	} else if ( IriSP.config.player.type=='youtube' ){
 		IriSP.config.player.src = IriSP.config.player.src+"&enablejsapi=1&version=3";
 	}
 	
-	IriSP.trace("__IriSP.createPlayer","start");			
+	IriSP.trace( "__IriSP.createPlayer", "start" );			
 	
-	IriSP.myUrlFragment = url.split(streamerPath);	
+	IriSP.myUrlFragment = url.split( streamerPath );	
 	
-	var configTemp = IriSP.jQuery.extend(true, {}, IriSP.config);
+	var configTemp = IriSP.jQuery.extend( true, {}, IriSP.config );
 	configTemp.player.flashvars.autostart =	"true";
 	configTemp.player.flashvars.streamer =	streamerPath;
 	configTemp.player.flashvars.file =	IriSP.myUrlFragment[1];
@@ -806,7 +829,7 @@ IriSP.createPlayer = function (url,streamerPath) {
 						"Ldt-PlaceHolder",
 						IriSP.config.gui.width,
 						IriSP.config.gui.height,
-						"9.0.115",
+						"9.0.115", // FIXME : de-hardcode version ?
 						false,
 						flashvars,
 						params,
@@ -815,161 +838,167 @@ IriSP.createPlayer = function (url,streamerPath) {
 	
 	// need a methode to 
 	// re execute if this swf call does'nt work 
-}
+};
 
 
-/* API JW PLAYER 	*/
+/* jw player api */
 IriSP.playerReady  = function (thePlayer) {
 
 	//__IriSP.trace("__IriSP.playerReady","PLAYER READY !!!!!!!!!!!!");
 	IriSP.player = window.document[thePlayer.id];
 	//__IriSP.trace("__IriSP.playerReady","API CALL "+__IriSP.player);
-	IriSP.MyApiPlayer.ready(IriSP.player);
+	IriSP.MyApiPlayer.ready( IriSP.player );
 	//__IriSP.trace("__IriSP.playerReady","API CALL END ");
 	
 	var url = document.location.href;
-	var time = IriSP.retrieveTimeFragment(url);
+	var time = IriSP.retrieveTimeFragment( url );
 	//__IriSP.trace("__IriSP.playerReady"," "+url+" "+time );
 	IriSP.startPosition = time;
 	//__IriSP.trace("__IriSP.playerReady"," LISTENER LAUCHER");
 	IriSP.addListeners();	
 	//__IriSP.trace("__IriSP.playerReady"," LISTENER END");
 	
-}
+};
+
 IriSP.addListeners = function () {
-	if (IriSP.player) { 
+	if ( IriSP.player ) { 
 		IriSP.trace("__IriSP.addListeners","ADD  Listener ");
-		IriSP.player.addModelListener("TIME", "__IriSP.positionListener");
-		IriSP.player.addControllerListener("VOLUME", "__IriSP.volumeListener");
-		IriSP.player.addModelListener('STATE', '__IriSP.stateMonitor');
+		IriSP.player.addModelListener( "TIME", "__IriSP.positionListener");
+		IriSP.player.addControllerListener( "VOLUME", "__IriSP.volumeListener" );
+		IriSP.player.addModelListener( 'STATE', '__IriSP.stateMonitor' );
 	} else {
-		IriSP.setTimeout("__IriSP.addListeners()",100);
+		IriSP.setTimeout( "__IriSP.addListeners()", 100 );
 	}
 
 	// et changer les boutons
-}
-IriSP.stateMonitor = function (obj) { 
+};
 
-	 if(obj.newstate == 'PAUSED')
-    {
-		IriSP.trace("__IriSP.stateMonitor","PAUSE");
-		IriSP.MyApiPlayer.changePageUrlOffset(IriSP.currentPosition);			
-		IriSP.jQuery(".ui-icon-play").css("background-position","0px -160px");
+IriSP.stateMonitor = function ( obj ) { 
+
+	 if(obj.newstate == 'PAUSED') {
+		IriSP.trace( "__IriSP.stateMonitor", "PAUSE" );
+		IriSP.MyApiPlayer.changePageUrlOffset( IriSP.currentPosition );			
+		IriSP.jQuery( ".ui-icon-play" ).css( "background-position","0px -160px" );
 		
-	} else if (obj.newstate == 'PLAYING'){
+	} else if (obj.newstate == 'PLAYING' ){
 		
-		IriSP.trace("__IriSP.stateMonitor","PLAYING "+IriSP.startPosition );
+		IriSP.trace( "__IriSP.stateMonitor", "PLAYING "+IriSP.startPosition );
 		
-		// forcer le buffering mais stop du player si dans config 
-		if (IriSP.config.player.flashvars.autostart=="false" && IriSP.firstplay==false && IriSP.startPosition == 0){
+		// force buffering even if autostart is disabled. 
+		if ( IriSP.config.player.flashvars.autostart == "false" && IriSP.firstplay == false && IriSP.startPosition == 0 ) {
 			IriSP.trace("__IriSP.stateMonitor","first stop ???");
 			IriSP.MyApiPlayer.play();
 			IriSP.firstplay = true;
-			IriSP.MyLdt.checkTime(1);
+			IriSP.MyLdt.checkTime( 1 );
 		}
 		
-		// une fois la video prete a lire  la déplacer au bon timecode 
-		if(IriSP.startPosition!=null){
-			IriSP.MyApiPlayer.update(IriSP.startPosition);
+		// once that the video is loaded, move it to the correct timecode
+		if( IriSP.startPosition!=null ){
+			IriSP.MyApiPlayer.update( IriSP.startPosition );
 			IriSP.startPosition = null;
 		}
 		
 		
-		IriSP.jQuery(".ui-icon-play").css("background-position","-16px -160px");
+		IriSP.jQuery( ".ui-icon-play" ).css( "background-position", "-16px -160px" );
 	} else if (obj.newstate == 'BUFFERING'){
-		IriSP.trace("__IriSP.stateMonitor","BUFFERING : "+IriSP.config.player.flashvars.autostart);
+		IriSP.trace( "__IriSP.stateMonitor", "BUFFERING : "+IriSP.config.player.flashvars.autostart );
 		//changePageUrlOffset(currentPosition);
 	}
 	
-}
+};
+
 IriSP.positionListener = function(obj) { 
 	//__IriSP.trace("__IriSP.positionListener",obj.position);
 	IriSP.currentPosition = obj.position; 
-	var tmp = document.getElementById("posit");
+	var tmp = document.getElementById( "posit" );
 	if (tmp) { tmp.innerHTML = "position: " + IriSP.currentPosition; }
-	IriSP.jQuery("#slider-range-min").slider("value", obj.position);
-	IriSP.jQuery("#amount").val(obj.position+" s");
-	// afficher annotation 
-	IriSP.MyLdt.checkTime(IriSP.currentPosition);
+	IriSP.jQuery( "#slider-range-min" ).slider( "value", obj.position);
+	IriSP.jQuery( "#amount" ).val(obj.position+" s");
+	// display annotation 
+	IriSP.MyLdt.checkTime( IriSP.currentPosition );
 	
-}
+};
+
 IriSP.volumeListener   = function (obj) { 
 	IriSP.currentVolume = obj.percentage; 
 	var tmp = document.getElementById("vol");
 	if (tmp) { tmp.innerHTML = "volume: " + IriSP.currentVolume; }
-}	
+};
 
 
-/* API DAILYMOTION 	*/
-onDailymotionPlayerReady = function (playerid){
+/* dailymotion api 	*/
+onDailymotionPlayerReady = function (playerid) {
 
 	//alert(playerid);
-	IriSP.player = document.getElementById(IriSP.config.player.attributes.id);
-	IriSP.MyApiPlayer.ready(IriSP.player);
+	IriSP.player = document.getElementById( IriSP.config.player.attributes.id );
+	IriSP.MyApiPlayer.ready( IriSP.player );
 	
 	var url = document.location.href;
-	var time = IriSP.retrieveTimeFragment(url);
+	var time = IriSP.retrieveTimeFragment( url );
 	IriSP.startPosition = time;
 	IriSP.DailymotionAddListeners();	
 	
 	IriSP.MyApiPlayer.ready(playerid);
-}
+};
+
 IriSP.DailymotionAddListeners = function () {
-	if (IriSP.player) { 
-		IriSP.trace("__IriSP.addListeners","ADD  Listener ");
+	if ( IriSP.player ) { 
+		IriSP.trace( "__IriSP.addListeners","ADD  Listener " );
 		//__IriSP.player.addEventListener("onStateChange", "__IriSP.DailymotionPositionListener");
-		setTimeout("__IriSP.DailymotionPositionListener()",100);
+		setTimeout( "__IriSP.DailymotionPositionListener()", 100);
 		IriSP.DailymotionPositionListener();
-		IriSP.player.addModelListener("VOLUME", "__IriSP.volumeListener");
+		IriSP.player.addModelListener( "VOLUME", "__IriSP.volumeListener" );
 		//__IriSP.player.addModelListener('STATE', '__IriSP.stateMonitor');
 	} else {
-		IriSP.setTimeout("__IriSP.DailymotionAddListeners()",100);
+		IriSP.setTimeout( "__IriSP.DailymotionAddListeners()", 100);
 	}
-}
+};
+
 IriSP.DailymotionPositionListener = function() { 
 	
 	IriSP.currentPosition = IriSP.player.getCurrentTime();
 	//__IriSP.trace("__IriSP.DailymotionPositionListener",__IriSP.currentPosition);
 	//__IriSP.trace("__IriSP.currentPosition",__IriSP.currentPosition);
 	
-	IriSP.jQuery("#slider-range-min").slider("value",IriSP.currentPosition);
-	IriSP.jQuery("#amount").val(IriSP.currentPosition+" s");
+	IriSP.jQuery( "#slider-range-min" ).slider( "value" , IriSP.currentPosition);
+	IriSP.jQuery( "#amount" ).val( IriSP.currentPosition+" s" );
 	// afficher annotation 
 	/*__IriSP.MyLdt.checkTime(__IriSP.currentPosition);
 	*/
 	
-	setTimeout("__IriSP.DailymotionPositionListener()",10);
-}
+	setTimeout( "__IriSP.DailymotionPositionListener()", 10 );
+};
 
-/* API YOUTUBE 	*/
+/* youtube api 	*/
 onYouTubePlayerReady= function (playerid){
 
 	var url = document.location.href;
-	var time = IriSP.retrieveTimeFragment(url);
-	IriSP.player = document.getElementById(IriSP.config.player.attributes.id);
+	var time = IriSP.retrieveTimeFragment( url );
+	IriSP.player = document.getElementById( IriSP.config.player.attributes.id );
 	IriSP.startPosition = time;
 	
-	IriSP.MyApiPlayer.ready(IriSP.player);
+	IriSP.MyApiPlayer.ready( IriSP.player );
 	
-	IriSP.MyApiPlayer.seek(time);
+	IriSP.MyApiPlayer.seek( time );
 	IriSP.MyApiPlayer.play();
 	
 	
 	IriSP.YouTubeAddListeners();	
-	IriSP.trace("onYouTubePlayerReady=",time);
+	IriSP.trace( "onYouTubePlayerReady=", time);
 	//__IriSP.MyApiPlayer.ready(playerid);
-}
+};
+
 IriSP.YouTubeAddListeners = function () {
-	if (IriSP.player) { 
-		IriSP.trace("__IriSP.addListeners","ADD  Listener ");
-		IriSP.player.addEventListener("onStateChange", "__IriSP.YouTubeStateMonitor");
-		setTimeout("__IriSP.YouTubePositionListener()",100);
-		IriSP.player.addModelListener("VOLUME", "__IriSP.volumeListener");
+	if ( IriSP.player ) { 
+		IriSP.trace( "__IriSP.addListeners", "ADD  Listener " );
+		IriSP.player.addEventListener( "onStateChange", "__IriSP.YouTubeStateMonitor" );
+		setTimeout( "__IriSP.YouTubePositionListener()", 100 );
+		IriSP.player.addModelListener( "VOLUME", "__IriSP.volumeListener" );
 		//__IriSP.player.addModelListener('STATE', '__IriSP.stateMonitor');
 	} else {
-		IriSP.setTimeout("__IriSP.YouTubePositionListener()",100);
 	}
-}
+};
+
 IriSP.YouTubePositionListener = function() { 
 	
 	IriSP.currentPosition = IriSP.player.getCurrentTime();
@@ -977,33 +1006,26 @@ IriSP.YouTubePositionListener = function() {
 	//__IriSP.trace("__IriSP.currentPosition",__IriSP.currentPosition);
 	
 	IriSP.MyLdt.checkTime(IriSP.currentPosition);
-	IriSP.jQuery("#slider-range-min").slider("value",IriSP.currentPosition);
-	IriSP.jQuery("#amount").val(IriSP.currentPosition+" s");
+	IriSP.jQuery( "#slider-range-min" ).slider( "value", IriSP.currentPosition );
+	IriSP.jQuery( "#amount" ).val( IriSP.currentPosition+" s" );
 	// afficher annotation 
-	IriSP.MyLdt.checkTime(IriSP.currentPosition);
+	IriSP.MyLdt.checkTime( IriSP.currentPosition );
 	
 	
-	setTimeout("__IriSP.YouTubePositionListener()",10);
-}
+	setTimeout( "__IriSP.YouTubePositionListener()", 10 );
+};
+
 IriSP.YouTubeStateMonitor = function (obj) { 
-	IriSP.player.addModelListener('__IriSP.YouTubeStateMonitor ', newstate);
+	IriSP.player.addModelListener( '__IriSP.YouTubeStateMonitor ', newstate );
 	//alert(newstate+" "+obj.newstate);
-	 if(newstate == '2')
-    {
+	 if(newstate == '2') {
 		IriSP.trace("__IriSP.stateMonitor","PAUSE");
-		IriSP.MyApiPlayer.changePageUrlOffset(IriSP.currentPosition);			
+		IriSP.MyApiPlayer.changePageUrlOffset( IriSP.currentPosition );
 		
-	}else if (newstate == '1'){
+	} else if (newstate == '1' || newstate == '1') {
 		// une fois la video prete a lire  la déplacer au bon timecode 
-		if(IriSP.startPosition!=null){
-			IriSP.MyApiPlayer.update(IriSP.startPosition);
-			IriSP.startPosition = null;
-		}
-	} 
-	else if (newstate == '-1'){
-		// une fois la video prete a lire  la déplacer au bon timecode 
-		if(IriSP.startPosition!=null){
-			IriSP.MyApiPlayer.update(IriSP.startPosition);
+		if( IriSP.startPosition!=null ) {
+			IriSP.MyApiPlayer.update( IriSP.startPosition );
 			IriSP.startPosition = null;
 		}
 	} else if (newstate == '3'){
@@ -1011,17 +1033,19 @@ IriSP.YouTubeStateMonitor = function (obj) {
 		//changePageUrlOffset(currentPosition);
 	}
 	
-}
+};
 
 
-
-/* 	UTIL */
+/* 	utils */
 // code from http://stackoverflow.com/questions/822452/strip-html-from-text-javascript
+/* FIXME: maybe make it a little more robust */
 IriSP.stripHtml = function(s){
 	return s.replace(/\\&/g, '&amp;').replace(/\\</g, '&lt;').replace(/\\>/g, '&gt;').replace(/\\t/g, '&nbsp;&nbsp;&nbsp;').replace(/\\n/g, '<br />').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
-}
-// conversion de couleur Decimal vers HexaDecimal || 000 si fff 
-IriSP.DEC_HEXA_COLOR = function (dec){
+};
+
+// conversion de couleur Decimal vers HexaDecimal || 000 si fff
+/* FIXME : move it somewhere else */
+IriSP.DEC_HEXA_COLOR = function (dec) {
 	 var hexa='0123456789ABCDEF',hex='';
 	 var tmp;
 	 while (dec>15){
@@ -1032,23 +1056,25 @@ IriSP.DEC_HEXA_COLOR = function (dec){
 	 hex = hexa.charAt(dec)+hex;
 	 if (hex == "FFCC00"){ hex="";/* by default color of Ldt annotation */ }
 	 return(hex);
-}
+};
 
 
-/* Search  methodes	*/
+/* Search  methods	*/
 IriSP.SearchOldValue="";
 IriSP.searchblockOpen=false;
-IriSP.searchblock 		= function (){
-	IriSP.trace("__IriSP.searchblock",IriSP.searchblockOpen);
-	if (IriSP.searchblockOpen==false){
-		IriSP.jQuery(".ui-icon-search").css("background-position","-144px -112px");
+IriSP.searchblock = function () {
+	IriSP.trace( "__IriSP.searchblock", IriSP.searchblockOpen );
+	
+	if ( IriSP.searchblockOpen == false ) {
+		IriSP.jQuery( ".ui-icon-search" ).css( "background-position", "-144px -112px" );
 		//__IriSP.jQuery("#LdtSearch").animate({height:26},250);
 		IriSP.jQuery("#LdtSearch").show(250);
+		/* FIXME : refactor this */
 		IriSP.jQuery("#LdtSearchInput").css('background-color','#fff');
 		IriSP.jQuery("#LdtSearchInput").focus();
 		IriSP.jQuery("#LdtSearchInput").attr('value',IriSP.SearchOldValue);
 		IriSP.Search(IriSP.SearchOldValue);
-		IriSP.searchblockOpen=true;
+		IriSP.searchblockOpen = true;
 	} else {
 		IriSP.SearchOldValue = IriSP.jQuery("#LdtSearchInput").attr('value');
 		IriSP.jQuery("#LdtSearchInput").attr('value','');
@@ -1056,20 +1082,22 @@ IriSP.searchblock 		= function (){
 		IriSP.jQuery(".ui-icon-search").css("background-position","-160px -112px");
 		//__IriSP.jQuery("#LdtSearch").animate({height:0},250);
 		IriSP.jQuery("#LdtSearch").hide(250);
-		IriSP.searchblockOpen=false;
+		IriSP.searchblockOpen = false;
 	}
-}
-IriSP.Search 				= function (value){
+};
+
+IriSP.Search = function ( value ){
 
 	annotations = IriSP.LDTligne.annotations;
 	
-	IriSP.trace("__IriSP.Search",annotations.length+" "+value);
+	IriSP.trace("__IriSP.Search", annotations.length+" "+value);
+	/* FIXME : rename finded => found */
 	var finded  = 0;
 	var findmem = 0;
 	var factor  = 0;
 	IriSP.trace(value,value.length);
 	var valueS = value.toLowerCase();
-	IriSP.trace("__IriSP.Search",annotations.length+" "+valueS);
+	IriSP.trace("__IriSP.Search", annotations.length+" "+valueS);
 	if(valueS.length>=3){
 		
 		for (var i=0; i < annotations.length; ++i){
@@ -1121,8 +1149,9 @@ IriSP.Search 				= function (value){
 		IriSP.SearchClean();
 		IriSP.jQuery("#LdtSearchInput").css('background-color','#f6f6f6');
 	}
-}
-IriSP.SearchClean 		= function (){
+};
+
+IriSP.SearchClean = function (){
 	annotations = IriSP.LDTligne.annotations;
 	
 	for (var i=0; i < annotations.length; ++i){
@@ -1133,72 +1162,83 @@ IriSP.SearchClean 		= function (){
 			IriSP.jQuery("#"+annotation.id).css('border-color','red');
 			IriSP.jQuery("#"+annotation.id).animate({opacity:0.3},100);
 		}
-}
-IriSP.SearchCleanString 	= function (value){
+};
+
+IriSP.SearchCleanString	= function (value){
 	var reg = new RegExp("(chien)", "g");
-	value.replace(reg,"")
+	value.replace(reg,"");
 	return value;
-}	
-IriSP.SearchThisSegment  	= function (annotation){
+};
+
+IriSP.SearchThisSegment = function (annotation){
+	/* FIXME: to implement */
 					IriSP.jQuery("#LdtSearchInput").text(annotation.title);
 					IriSP.trace("__IriSP.Ligne.prototype.checkTimeLigne",annotation.title);
 					/*__IriSP.jQuery("#Ldt-SaDescription").text(annotationTempo.description);
 					__IriSP.jQuery("#Ldt-SaKeywordText").html("Mots clefs : "+annotationTempo.htmlTags);*/
-}
+};
 
 
 /* CLASS Ligne (annotationType) 	*/
 
 IriSP.LDTligne 	= null;		
-__IriSP.Ligne = function (id,title,description,duration){
+__IriSP.Ligne = function( id, title, description, duration ) {
 	this.id 		 = id;
 	this.title 		 = title;
 	this.description = description;
 	//
 	this.annotations = new Array();
 	this.duration = duration;
-	this.annotationOldRead="";
+	this.annotationOldRead = "";
 	IriSP.LDTligne = this;
 	IriSP.trace("__IriSP.Ligne","CREATE "+IriSP.LDTligne);
-}	
-__IriSP.Ligne.prototype.addAnnotation = function (id,begin,end,media,title,description,color,tags){
+};
+
+__IriSP.Ligne.prototype.addAnnotation = function ( id, begin, end, media, title, description, color, tags ) {
 	var myAnnotation = new __IriSP.Annotation(id,begin,end,media,title,description,color,tags,this.duration);
 	this.annotations.push(myAnnotation);
 	//__IriSP.trace("__IriSP.Ligne.prototype.addAnnotation  ","add annotation "+title);
-}
-__IriSP.Ligne.prototype.onClickLigneAnnotation = function(id){
+};
+
+__IriSP.Ligne.prototype.onClickLigneAnnotation = function( id ) {
+	/* TODO implement */
 	//changePageUrlOffset(currentPosition);
 	//player.sendEvent('SEEK', this.start);
 	//__IriSP.trace("SEEK",this.start);
-}
-__IriSP.Ligne.prototype.searchLigneAnnotation = function(id){
+};
+
+__IriSP.Ligne.prototype.searchLigneAnnotation = function( id ) {
+	/* TODO implement */
 	/*for (){
 	}*/
-}
-__IriSP.Ligne.prototype.listAnnotations = function(){
+};
 
-}
-__IriSP.Ligne.prototype.nextAnnotation = function (){
+__IriSP.Ligne.prototype.listAnnotations = function() {
+	/* TODO implement */
+};
+
+__IriSP.Ligne.prototype.nextAnnotation = function () {
+	
 	var annotationCibleNumber = this.numAnnotation(this.annotationOldRead)+1;
 	var annotationCible = this.annotations[annotationCibleNumber];
 
-	if(annotationCibleNumber<this.annotations.length-1){
-		annotationCible.begin
-		IriSP.player .sendEvent('SEEK', annotationCible.begin/1000);
-		IriSP.trace("LIGNE  ","| next = "+annotationCibleNumber+" - "+this.annotations.length+" | seek :"+annotationCible.begin/1000);
-	}else{
-		IriSP.player .sendEvent('SEEK', this.annotations[0].begin/1000);
+	if( annotationCibleNumber<this.annotations.length-1 ){
+		IriSP.player.sendEvent( 'SEEK', annotationCible.begin/1000 );
+		IriSP.trace( "LIGNE  ", "| next = "+annotationCibleNumber+" - "+this.annotations.length+" | seek :"+annotationCible.begin/1000);
+	} else {
+		IriSP.player.sendEvent( 'SEEK', this.annotations[0].begin/1000);
 	}
-	
-	
-}
+		
+};
+
 __IriSP.Ligne.prototype.numAnnotation = function (annotationCible){
 	for (var i=0; i < this.annotations.length; ++i){
 		if(annotationCible == this.annotations[i]){
 			return i;
 		}
 	}
-}
+};
+
 __IriSP.Ligne.prototype.checkTime = function(time){
 	
 	var annotationTempo = -1;
@@ -1227,14 +1267,14 @@ __IriSP.Ligne.prototype.checkTime = function(time){
 					var tempolinkurl  =  IriSP.ignoreTimeFragment(window.location.href)+"#t="+(this.annotations[i].begin/1000);
 				}
 			break;
-		}else{
-		annotationTempo=-1;
+		} else {
+		annotationTempo = -1;
 		}		
 		
 	}
 	// si il y en a pas : retractation du volet 
 	if( annotationTempo == -1){
-		if(annotationTempo!=this.annotationOldRead){
+		if(annotationTempo != this.annotationOldRead){
 			IriSP.trace("Check : ","pas d'annotation ici ");
 			IriSP.jQuery("#Ldt-SaTitle").text("");
 			IriSP.jQuery("#Ldt-SaDescription").text("");
@@ -1248,13 +1288,13 @@ __IriSP.Ligne.prototype.checkTime = function(time){
 		}
 	}
 	//__IriSP.trace("__IriSP.Ligne.prototype.checkTimeLigne",annotationTempo);
-}
+};
 
 
 /* CLASS Annotation */
 
 __IriSP.Annotation = function (){
-	var id 			= null;
+	var id 	= null;
 	var begin 			= null;
 	var end 			= null;
 	var media 			= null;
@@ -1262,9 +1302,10 @@ __IriSP.Annotation = function (){
 	var title 			= null;
 	var color 			= null;
 	var tags			= null;
-	IriSP.trace("annotation ","réussi")
-}	
-__IriSP.Annotation = function(id,begin,end,media,title,description,color,tags,duration){
+	IriSP.trace("annotation ","réussi");
+};
+
+__IriSP.Annotation = function( id, begin, end, media, title, description, color, tags, duration ){
 	this.id 			= id;
 	this.begin 			= begin;
 	this.end 			= end;
@@ -1280,7 +1321,8 @@ __IriSP.Annotation = function(id,begin,end,media,title,description,color,tags,du
 	this.drawTags();
 	//
 	IriSP.trace("Annotation created : ",id);
-}	
+};
+
 __IriSP.Annotation.prototype.draw = function(){
 	//alert (this.duration);
 	var startPourcent 	= this.timeToPourcent(this.begin,this.duration); // temps du media 
@@ -1290,6 +1332,7 @@ __IriSP.Annotation.prototype.draw = function(){
 	IriSP.jQueryAnnotationTemplate = "<div title='"+IriSP.stripHtml(titleForDiv)+"' id='"+this.id+"'  class='ui-slider-range ui-slider-range-min ui-widget-header iri-chapter' width='100%' style=\"left:"+startPourcent+"%; width:"+endPourcent+"%; padding-top:15px; border-left:solid 1px #aaaaaa; border-right:solid 1px #aaaaaa; background:#"+IriSP.DEC_HEXA_COLOR(this.color)+";\" onClick=\"__IriSP.MyApiPlayer.seek('"+Math.round(this.begin/1000)+"');__IriSP.jQuery('#Ldt-ShowAnnotation').slideDown();\"    ></div> ";
 	//alert(this.color+" : "+DEC_HEXA_COLOR(this.color));
 	
+	/* FIXME: templatize this portion */
 	IriSP.jQuerytoolTipTemplate = "<div class='Ldt-tooltip'>"
 						+"<div class='title'>"+IriSP.stripHtml(this.title)+"</div>"
 						+"<div class='time'>"+this.begin+" : "+this.end+"</div>"
@@ -1305,14 +1348,16 @@ __IriSP.Annotation.prototype.draw = function(){
 	
 	IriSP.jQuery("#"+this.id).fadeTo(0,0.3);
 	IriSP.jQuery("#"+this.id).mouseover(function() {
-		IriSP.jQuery("#"+this.id).animate({opacity: 0.6}, 5)
+		IriSP.jQuery("#"+this.id).animate({opacity: 0.6}, 5);
 	}).mouseout(function(){		
-		IriSP.jQuery("#"+this.id).animate({opacity: 0.3}, 5)
+		IriSP.jQuery("#"+this.id).animate({opacity: 0.3}, 5);
 	});
 	IriSP.trace("__IriSP.Annotation.prototype.draw","ADD ANOTATION : "+this.begin+" "+this.end+" "+IriSP.stripHtml(this.title)+" | "+startPourcent+" | "+endPourcent+" | duration = "+this.duration);
 	
-}	
+};
+
 __IriSP.Annotation.prototype.drawTags = function(){
+	/* FIXME : to implement */
 	var KeywordPattern = '<a href=\"\"> '+' </a>';
 	
 	//__IriSP.trace(" !? Tags : ",this.tags);
@@ -1325,18 +1370,21 @@ __IriSP.Annotation.prototype.drawTags = function(){
 			
 		}		
 	}
-}
+};
+
 __IriSP.Annotation.prototype.tootTipAnnotation = function() {
 	// 1 chercher le div correspondant
 	// 2 y mettre les information
 	return this.color + ' ' + this.type + ' apple';
-}
+};
+
 __IriSP.Annotation.prototype.onRollOverAnnotation = function (){
 	this.tootTip();
-}		
+};
+
 __IriSP.Annotation.prototype.timeToPourcent = function(time,timetotal){
 	return (parseInt(Math.round(time/timetotal*100)));
-}
+};
  
 
 /* CLASS Tags */
@@ -1346,7 +1394,8 @@ __IriSP.Tags = function(object){
 	this.htmlTags 	= 	null;
 	this.weigthMax 	= 	0;
 	//this.mySegments  = 	new array();
-}
+};
+
 __IriSP.Tags.prototype.addAnnotation = function (annotation){
 	for (var i = 0; i < this.myTags.length; ++i){
 		this.myTags[i].mySegments = new Array(); 
@@ -1354,7 +1403,7 @@ __IriSP.Tags.prototype.addAnnotation = function (annotation){
 			for (var j = 0; j < annotation.tags.length; ++j){
 				if (this.myTags[i]['id'] == annotation.tags[j]['id-ref']){
 					this.myTags[i].mySegments.push([annotation.begin,annotation.end,annotation.id]);
-					var weigthTempo = this.myTags[i].mySegments.length
+					var weigthTempo = this.myTags[i].mySegments.length;
 					var tempo = this.myTags[i].mySegments[weigthTempo-1];
 					//__IriSP.trace ("__IriSP.Tags.prototype.addAnnotation ","  "+this.myTags[i]['meta']['dc:title']+" "+this.myTags[i]['id']+" : "+tempo[0]+" - "+tempo[1]);
 					
@@ -1365,7 +1414,8 @@ __IriSP.Tags.prototype.addAnnotation = function (annotation){
 			}
 		}
 	}
-}
+};
+
 __IriSP.Tags.prototype.getTitle = function (id){
 	for (var i = 0; i < this.myTags.length; ++i){
 		if(this.myTags[i]['id']==id){
@@ -1373,7 +1423,8 @@ __IriSP.Tags.prototype.getTitle = function (id){
 		}
 	}
 
-}
+};
+
 __IriSP.Tags.prototype.draw = function (){
 
 	IriSP.trace("__IriSP.Tags.prototype.draw"," !!! WELL START " );
@@ -1390,7 +1441,8 @@ __IriSP.Tags.prototype.draw = function (){
 	IriSP.jQuery('#Ldt-Tags').html(this.htmlTags);
 	IriSP.trace("__IriSP.Tags.prototype.draw"," !!!!  END WMAX= "+this.weigthMax );
 	
-}
+};
+
 __IriSP.Tags.prototype.show = function (id){
 	
 	var timeStartOffsetA	=	100000000000000000000;
@@ -1436,9 +1488,10 @@ __IriSP.Tags.prototype.show = function (id){
 	//WidthPourCent	= timeToPourcent((timeEndOffsetA*1+(timeEndOffsetB-timeEndOffsetA)/2),MyLdt.duration)-startPourcent; 			
 	IriSP.jQuery("#Ldt-Show-Tags").css('left',leftPourCent+'%');
 	IriSP.jQuery("#Ldt-Show-Tags").css('width',WidthPourCent+'%');
+	IriSP.jQuery("#Ldt-Show-Tags").text('joijoij');
 	// like arrow script
 	
 	
 	
-}
+};
 
