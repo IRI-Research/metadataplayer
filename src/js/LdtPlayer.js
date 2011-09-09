@@ -1,5 +1,4 @@
-﻿/* 
- * 	
+﻿/* 	
  *	Copyright 2010 Institut de recherche et d'innovation 
  *	contributor(s) : Samuel Huron 
  *	Use Silvia Pfeiffer 's javascript mediafragment implementation
@@ -24,72 +23,6 @@ if ( window.IriSP === undefined && window.__IriSP === undefined ) {
 }
 
 		
-/* CLASS TRACE */
-
-IriSP.traceNum = 0;
-IriSP.trace = function( msg, value ) {
-
-	if( IriSP.config.gui.debug === true ) {
-		IriSP.traceNum += 1;
-		IriSP.jQuery( "<div>"+IriSP.traceNum+" - "+msg+" : "+value+"</div>" ).appendTo( "#Ldt-output" );
-	}
-};
-
-// Player Configuration 
-IriSP.config = undefined;
-IriSP.configDefault = {
-		metadata:{
-			format:'cinelab',
-			src:'',
-			load:'jsonp'
-		},
-		gui:{
-			width:650,
-			height:0,
-			mode:'radio',
-			container:'LdtPlayer',
-			debug:false, 
-			css:'../src/css/LdtPlayer.css'
-		},
-		player:{
-			type:'jwplayer',
-			src:'../res/swf/player.swf',
-			params:{
-				allowfullscreen:"true", 
-				allowscriptaccess:"always",
-				wmode:"transparent"
-			},
-			flashvars:{
-				streamer:"streamer",
-				file:"file", 
-				live:"true",
-				autostart:"false",
-				controlbar:"none",
-				playerready:"__IriSP.playerReady"
-			},
-			attributes:{
-				id:"Ldtplayer1",  
-				name:"Ldtplayer1"
-			}
-		},
-		module:null
-	};
-
-IriSP.lib = {
-			jQuery:"http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js",
-			jQueryUI:"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js",
-			jQueryToolTip:"http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
-			swfObject:"http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
-			cssjQueryUI:"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css"
-		};
-		
-// Player Variable
-IriSP.LdtShareTool = ""+
-"\n<a onclick=\"__IriSP.MyApiPlayer.share('delicious');\" title='partager avec delicious'><span class='share shareDelicious'>&nbsp;</span></a>"+		
-"\n<a onclick=\"__IriSP.MyApiPlayer.share('facebook');\" title='partager avec facebook'> <span class='share shareFacebook'>&nbsp;</span></a>"+
-"\n<a onclick=\"__IriSP.MyApiPlayer.share('twitter');\" title='partager avec twitter'>  <span class='share shareTwitter'>&nbsp;</span></a>"+
-"\n<a onclick=\"__IriSP.MyApiPlayer.share('myspace');\" title='partager avec Myspace'>  <span class='share shareMySpace'>&nbsp;</span></a>";
-
 // Official instance - to refactor ?
 IriSP.MyLdt 		= null;
 IriSP.MyTags 		= null;
@@ -101,13 +34,8 @@ IriSP.Durration		= null;
 IriSP.playerLdtWidth	= null;
 IriSP.playerLdtHeight	= null;
 
-	
- 
 
-
-IriSP.init = function ( config ) {
-
-		
+IriSP.init = function ( config ) {		
 		if ( config === null ) {
 			IriSP.config 			 = IriSP.configDefault;
 		} else {
@@ -135,6 +63,7 @@ IriSP.init = function ( config ) {
 		// Localize jQuery variable
 		IriSP.jQuery = null;
 
+		/* FIXME : to refactor using popcorn.getscript ? */
 		/******** Load jQuery if not present *********/
 		if ( window.jQuery === undefined || window.jQuery.fn.jquery !== '1.4.2' ) {
 			
@@ -242,241 +171,16 @@ IriSP.init = function ( config ) {
 				
 				//__IriSP.trace("main","ready createMyHtml");
 				
-				IriSP.createMyHtml();
-				//__IriSP.trace("main","end createMyHtml");
+				IriSP.createPlayerChrome();
 				
 				/******* Load Metadata *******/
-				/* FIXME : factor it in another file */
-				IriSP.jQuery.ajax({
-					  dataType: IriSP.config.metadata.load,
-					  url:metadataSrc,
-					  success : function( json ){
-					  
-							IriSP.trace( "ajax", "success" );
-							
-							// START PARSING ----------------------- 
-							if( json === "" ){
-								alert( "Json load error" );
-							} else {							  							  
-								// # CREATE MEDIA  							//
-								// # JUSTE ONE PLAYER FOR THE MOMENT		//
-								//__IriSP.jQuery("<div></div>").appendTo("#output");
-								var MyMedia = new  __IriSP.Media(
-																	json.medias[0].id,
-																	json.medias[0].href,
-																	json.medias[0]['meta']['dc:duration'],
-																	json.medias[0]['dc:title'],
-																	json.medias[0]['dc:description']);
-								
-								IriSP.trace( "__IriSP.MyApiPlayer",
-																	IriSP.config.gui.width+"   "
-																	+ IriSP.config.gui.height + " "
-																	+ json.medias[0].href + " "
-																	+ json.medias[0]['meta']['dc:duration'] + " "
-																	+ json.medias[0]['meta']['item']['value']);
-								
-								// Create APIplayer
-								IriSP.MyApiPlayer = new __IriSP.APIplayer (
-																	IriSP.config.gui.width,
-																	IriSP.config.gui.height,
-																	json.medias[0].href,
-																	json.medias[0]['meta']['dc:duration'],
-																	json.medias[0]['meta']['item']['value']);
-							
-								// # CREATE THE FIRST LINE  				//
-								IriSP.trace( "__IriSP.init.main","__IriSP.Ligne" );
-								IriSP.MyLdt = new __IriSP.Ligne(
-																	json['annotation-types'][0].id,
-																	json['annotation-types'][0]['dc:title'],
-																	json['annotation-types'][0]['dc:description'],
-																	json.medias[0]['meta']['dc:duration']);			
-								
-								// CREATE THE TAG CLOUD 					//
-								IriSP.trace( "__IriSP.init.main","__IriSP.Tags" );
-								IriSP.MyTags =  new __IriSP.Tags( json.tags );
-							
-								// CREATE THE ANNOTATIONS  				    //
-								// JUSTE FOR THE FIRST TYPE   			 	//
-								IriSP.jQuery.each( json.annotations, function(i,item) {
-									if (item.meta['id-ref'] == IriSP.MyLdt.id) {
-										//__IriSP.trace("__IriSP.init.main","__IriSP.MyLdt.addAnnotation");
-										IriSP.MyLdt.addAnnotation(
-													item.id,
-													item.begin,
-													item.end,
-													item.media,
-													item.content.title,
-													item.content.description,
-													item.content.color,
-													item.tags);
-									}
-										//MyTags.addAnnotation(item);
-								} );	
-								IriSP.jQuery.each( json.lists, function(i,item) {
-									IriSP.trace("lists","");
-								} );	
-								IriSP.jQuery.each( json.views, function(i,item) {
-									IriSP.trace("views","");
-								} );	
-							}
-							// END PARSING ----------------------- //  
-						
-										
-					}, error : function(data){
-						  alert("ERROR : "+data);
-					}
-				  });	
-			
+				IriSP.getMetadata();
 			
 			});
 		}
 
 };
 
-
-IriSP.createMyHtml = function(){
-		var width = IriSP.config.gui.width;
-		var height = IriSP.config.gui.height;
-		var heightS = IriSP.config.gui.height-20;
-		
-		// AUDIO  */
-		// PB dans le html : ; 
-		IriSP.trace( "__IriSP.createMyHtml",IriSP.config.gui.container );
-
-		
-		/* FIXME : factor this in another file */
-		if( IriSP.config.gui.mode=="radio" ){
-		
-		IriSP.jQuery( "#"+IriSP.config.gui.container ).before(
-		"<div id='LdtSearchContainer'  style='margin-left:445px;position:absolute;'>\n"+
-		"<div id='LdtSearch' style='display:none;background-color:#EEE;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
-		"</div>\n"+
-		" <div class='cleaner'></div>");
-		IriSP.trace("__IriSP.createHtml",IriSP.config.gui.container);
-		
-		IriSP.jQuery( "<div id='Ldt-Root'>\n"+
-			"	<div id='Ldt-PlaceHolder'>\n"+
-			"		<a href='http://www.adobe.com/go/getflashplayer'>Get flash</a> to see this player	\n"+
-			"	</div>\n"+
-			"	<div id='Ldt-controler' class='demo'>\n"+
-			"		<div class='Ldt-Control1' >\n"+
-			"			<button id='ldt-CtrlPlay' onclick='__IriSP.MyApiPlayer.play()'>Lecture / Pause </button>\n"+
-			"			<button id='ldt-CtrlNext' onclick='__IriSP.MyLdt.nextAnnotation()'>Suivant</button>\n"+
-			"		</div>\n"+
-			"		<div id='Ldt-Annotations' class='ui-slider'>\n"+
-			"			<div id='slider-range-min'></div>\n"+
-			"	</div>\n"+
-			"		<div class='Ldt-Control2'>\n"+
-			"			<button id='ldt-CtrlLink'  onclick='__IriSP.searchblock()'> Rechercher </button>\n"+
-			"			<button id='ldt-CtrlSound' onclick='__IriSP.MyApiPlayer.mute()'>Sound</button>\n"+
-			"		</div>\n"+
-			"  <div class='cleaner'>&nbsp\;</div> \n"+
-			"  <div id='Ldt-Show-Arrow-container'>\n"+
-			"  	<div id='Ldt-Show-Arrow'> </div>\n"+
-			"  </div>\n"+
-			"</div>\n"+
-			"<div>\n"+
-			" <div id='ldt-Show'> </div>\n"+
-			"	<div id='Ldt-ShowAnnotation-audio' class='demo' >\n"+
-			"		<div id='Ldt-SaTitle'></div>\n"+
-			"		<div id='Ldt-SaDescription'></div>\n"+
-			" 		<div class='cleaner'><!--&nbsp\;--></div>\n"+
-			" </div>\n"+
-			" <div id='Ldt-SaKeyword'>\n"+
-			" <div id='Ldt-SaKeywordText'>  </div>\n"+
-			" <div class='cleaner'></div>\n"+
-			" <div id='Ldt-SaShareTools'>\n"+
-			" \n"+
-			" "+IriSP.LdtShareTool+"\n"+
-			" \n"+
-			"  </div>\n"+
-			" <div class='cleaner'></div>"+
-			"</div>  "+
-			//"<div id='Ldt-Tags'> Mots clefs : </div>"+
-			"</div>"+
-			"<div id='Ldt-output' style='clear:left;float:none;position:relative;height:200px;width:"+width+"px;overflow:scroll;' ></div>").appendTo("#"+IriSP.config.gui.container);
-			// special tricks IE 7
-			if (IriSP.jQuery.browser.msie==true && IriSP.jQuery.browser.version=="7.0"){
-				//LdtSearchContainer
-				//__IriSP.jQuery("#LdtPlayer").attr("margin-top","50px");
-				IriSP.jQuery("#Ldt-Root").css("padding-top","25px");
-						IriSP.trace("__IriSP.createHtml","IE7 SPECIAL ");
-			}
-		} else if(IriSP.config.gui.mode=="video") {
-		
-			IriSP.jQuery(  "<div id='LdtSearchContainer'  style='margin-top:"+heightS+"px;margin-left:445px;position:absolute;'>\n"+
-			"<div id='LdtSearch' style='background-color:#EEE;display:none;width:165px;boder:1px;border-color:#CFCFCF;position:absolute;text-align:center;z-index:999;'><input id='LdtSearchInput' style='margin-top:2px;margin-bottom:2px;' /></div>	\n"+
-			"</div>\n"+
-			"<div id='Ldt-Root'>\n"+
-			"	<div id='Ldt-PlaceHolder'>\n"+
-			"		<a href='http://www.adobe.com/go/getflashplayer'>Get flash</a> to see this player	\n"+
-			"	</div>\n"+
-						
-			"	<div id='Ldt-controler' class='demo'>\n"+
-			"		<div class='Ldt-Control1' >\n"+
-			"			<button id='ldt-CtrlPlay' onclick='__IriSP.MyApiPlayer.play()'>Lecture / Pause </button>\n"+
-			"			<button id='ldt-CtrlNext' onclick='__IriSP.MyLdt.nextAnnotation()'>Suivant</button>\n"+
-			"		</div>\n"+
-			"		<div id='Ldt-Annotations' class='ui-slider'>\n"+
-			"			<div id='slider-range-min'></div>\n"+
-			"	</div>\n"+
-			"		<div class='Ldt-Control2'>\n"+
-			"			<button id='ldt-CtrlLink'  onclick='__IriSP.searchblock()'> Rechercher </button>\n"+
-			"			<button id='ldt-CtrlSound' onclick='__IriSP.MyApiPlayer.mute()'>Sound</button>\n"+
-			"		</div>\n"+
-			"  <div class='cleaner'>&nbsp\;</div> \n"+
-			"  <div id='Ldt-Show-Arrow-container'>\n"+
-			"  	<div id='Ldt-Show-Arrow'> </div>\n"+
-			"  </div>\n"+
-			"</div>\n"+
-			"<div>\n"+
-			" <div id='ldt-Show'> </div>\n"+
-			"	<div id='Ldt-ShowAnnotation-audio' class='demo' >\n"+
-			"		<div id='Ldt-SaTitle'></div>\n"+
-			"		<div id='Ldt-SaDescription'></div>\n"+
-			" 		<div class='cleaner'><!--&nbsp\;--></div>\n"+
-			" </div>\n"+
-			" <div id='Ldt-SaKeyword'>\n"+
-			" <div id='Ldt-SaKeywordText'>  </div>\n"+
-			" <div class='cleaner'></div>\n"+
-			" <div id='Ldt-SaShareTools'>\n"+
-			" \n"+
-			" "+IriSP.LdtShareTool+"\n"+
-			" \n"+
-			"  </div>\n"+
-			" <div class='cleaner'></div>"+
-			"</div>  "+
-			//"<div id='Ldt-Tags'> Mots clefs : </div>"+
-			"</div>"+
-			"<div id='Ldt-output'></div>").appendTo("#"+IriSP.config.gui.container);
-		
-		}
-		
-		
-		IriSP.trace("__IriSP.createHtml",IriSP.jQuery.browser.msie+" "+IriSP.jQuery.browser.version);		
-		IriSP.trace("__IriSP.createHtml","end");
-		IriSP.jQuery("#Ldt-Annotations").width(width-(75*2));
-		IriSP.jQuery("#Ldt-Show-Arrow-container").width(width-(75*2));
-		IriSP.jQuery("#Ldt-ShowAnnotation-audio").width(width-10);
-		IriSP.jQuery("#Ldt-ShowAnnotation-video").width(width-10);
-		IriSP.jQuery("#Ldt-SaKeyword").width(width-10);
-		IriSP.jQuery("#Ldt-controler").width(width-10);
-		IriSP.jQuery("#Ldt-Control").attr("z-index","100");
-		IriSP.jQuery("#Ldt-controler").hide();
-		
-		IriSP.jQuery("<div id='Ldt-load-container'><div id='Ldt-loader'>&nbsp;</div> Chargement... </div>").appendTo("#Ldt-ShowAnnotation-audio");
-	
-		if(IriSP.config.gui.mode=='radio'){
-			IriSP.jQuery("#Ldt-load-container").attr("width",IriSP.config.gui.width);
-		}
-		// Show or not the output
-		if(IriSP.config.gui.debug===true){
-			IriSP.jQuery("#Ldt-output").show();
-		} else {
-			IriSP.jQuery("#Ldt-output").hide();
-		}
-		
-};
 
 __IriSP.Media = function ( id, url, duration, title, description ) {
 		this.id 		 	= id;
@@ -506,76 +210,6 @@ __IriSP.Media.prototype.getMediaTitle = function (){
 
 
 
-/* 	INTERFACE : SLIDER ( CONTROL BAR ) | BUTTON ()   */
-IriSP.createInterface = function( width, height, duration ) {
-		
-		IriSP.jQuery( "#Ldt-controler" ).show();
-		//__IriSP.jQuery("#Ldt-Root").css('display','visible');
-		IriSP.trace( "__IriSP.createInterface" , width+","+height+","+duration+"," );
-		
-		IriSP.jQuery( "#Ldt-ShowAnnotation").click( function () { 
-			 //__IriSP.jQuery(this).slideUp(); 
-		} );
-
-		var LdtpPlayerY = IriSP.jQuery("#Ldt-PlaceHolder").attr("top");
-		var LdtpPlayerX = IriSP.jQuery("#Ldt-PlaceHolder").attr("left");
-		
-		IriSP.jQuery( "#slider-range-min" ).slider( { //range: "min",
-			value: 0,
-			min: 1,
-			max: duration/1000,//1:54:52.66 = 3600+3240+
-			step: 0.1,
-			slide: function(event, ui) {
-				
-				//__IriSP.jQuery("#amount").val(ui.value+" s");
-				//player.sendEvent('SEEK', ui.value)
-				IriSP.MyApiPlayer.seek(ui.value);
-				//changePageUrlOffset(ui.value);
-				//player.sendEvent('PAUSE')
-			}
-		} );
-		
-		IriSP.trace("__IriSP.createInterface","ICI");
-		IriSP.jQuery("#amount").val(IriSP.jQuery("#slider-range-min").slider("value")+" s");
-		IriSP.jQuery(".Ldt-Control1 button:first").button({
-			icons: {
-				primary: 'ui-icon-play'
-			},
-			text: false
-		}).next().button({
-			icons: {
-				primary: 'ui-icon-seek-next'
-			},
-			 text: false
-		});
-		IriSP.jQuery(".Ldt-Control2 button:first").button({
-			icons: {
-				primary: 'ui-icon-search'//,
-				//secondary: 'ui-icon-volume-off'
-			},
-			text: false
-		}).next().button({
-			icons: {
-				primary: 'ui-icon-volume-on'
-			},
-			 text: false
-		});
-
-		// /!\ PB A MODIFIER 
-		//__IriSP.MyTags.draw();
-		IriSP.trace("__IriSP.createInterface","ICI2");
-		IriSP.jQuery( "#ldt-CtrlPlay" ).attr( "style", "background-color:#CD21C24;" );
-		
-		IriSP.jQuery( "#Ldt-load-container" ).hide();
-		
-		if( IriSP.config.gui.mode=="radio" & IriSP.jQuery.browser.msie != true ) {
-			IriSP.jQuery( "#Ldtplayer1" ).attr( "height", "0" );
-		}
-		IriSP.trace( "__IriSP.createInterface" , "3" );
-
-		IriSP.trace( "__IriSP.createInterface", "END" );
-		
-	};
 
 
 
@@ -947,6 +581,7 @@ IriSP.DailymotionAddListeners = function () {
 		//__IriSP.player.addEventListener("onStateChange", "__IriSP.DailymotionPositionListener");
 		setTimeout( "__IriSP.DailymotionPositionListener()", 100);
 		IriSP.DailymotionPositionListener();
+		/* FIXME : works only with jwplayer */
 		IriSP.player.addModelListener( "VOLUME", "__IriSP.volumeListener" );
 		//__IriSP.player.addModelListener('STATE', '__IriSP.stateMonitor');
 	} else {
@@ -993,6 +628,8 @@ IriSP.YouTubeAddListeners = function () {
 		IriSP.trace( "__IriSP.addListeners", "ADD  Listener " );
 		IriSP.player.addEventListener( "onStateChange", "__IriSP.YouTubeStateMonitor" );
 		setTimeout( "__IriSP.YouTubePositionListener()", 100 );
+		
+		/* FIXME : works only with jwplayer */
 		IriSP.player.addModelListener( "VOLUME", "__IriSP.volumeListener" );
 		//__IriSP.player.addModelListener('STATE', '__IriSP.stateMonitor');
 	} else {
