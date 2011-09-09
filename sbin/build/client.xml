@@ -30,8 +30,11 @@
 	</target>
 	
 	<target name="concatenate" description="Build the developer release file">
-	    <concat destfile="../../build/LdtPlayer-release.js">
-	        <filelist dir="../../src/js" files="LdtPlayer.js" />
+	    <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-release.js">
+	        <filelist dir="../../src/js" files="utils.js data.js LdtPlayer.js" />
+	    	<filterchain>
+	    	    <deletecharacters chars="&#xFEFF;" />
+	    	</filterchain>
 	    </concat>
 	</target>
 </project>
