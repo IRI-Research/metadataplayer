@@ -5,9 +5,12 @@
 			<pathelement location="../res/compiler.jar" />
 		</classpath>
 	</taskdef>
+	
+	<delete dir="${basedir}/../../build" />
+	<mkdir  dir="${basedir}/../../build" />
 	<target name="compile">
 		<jscomp compilationLevel="simple" warning="quiet" debug="false"
-			output="${basedir}/LdtPlayer.min.raw.js">
+			output="../../build/LdtPlayer.min.raw.js">
 			<externs dir="${basedir}/../../res/">
 				<file name="js/jquery.min.js" />
 				<file name="js/jquery.tools.min.js" />
@@ -18,17 +21,17 @@
 				<file name="LdtPlayer.js" />
 			</sources>
 		</jscomp>
-		<concat destfile="${basedir}/../../src/js/LdtPlayer.min.js"
+		<concat destfile="../../build/LdtPlayer.min.js"
 			append="false">
-			<filelist dir="${basedir}/../../src/js/" files="header.js" />
-	        <filelist dir="${basedir}" files="LdtPlayer.min.raw.js" />
+			<filelist dir="../../src/js/" files="header.js" />
+	        <filelist dir="../../build/" files="LdtPlayer.min.raw.js" />
 		</concat>
-		<delete file="${basedir}/../../src/js/LdtPlayer.min.raw.js" />
+		<delete file="../../build/LdtPlayer.min.raw.js" />
 	</target>
 	
 	<target name="concatenate" description="Build the developer release file">
-	    <concat destfile="${basedir}/LdtPlayer-release.js">
-	        <filelist dir="${basedir}/../../src/js" files="LdtPlayer.js" />
+	    <concat destfile="../../build/LdtPlayer-release.js">
+	        <filelist dir="../../src/js" files="LdtPlayer.js" />
 	    </concat>
 	</target>
 </project>
