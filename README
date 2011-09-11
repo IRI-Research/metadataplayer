@@ -1,0 +1,7 @@
+This is the README for MetaDataPlayer, an opensource web player with metadata support.
+
+Requirements
+============
+
+- jQuery 1.4
+- jQuery UI 1.4 

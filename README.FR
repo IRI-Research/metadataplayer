@@ -1,0 +1,7 @@
+Ceci est le README de MetaDataPlayer, un lecteur web écrit en Javascript qui supporte l'affichage
+
+Dépendances 
+===========
+
+- jQuery 1.4
+- jQuery UI 1.4 
