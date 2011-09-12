@@ -1,14 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="compile">
+<project basedir="." default="makeall">
+	
 	<taskdef name="jscomp" classname="com.google.javascript.jscomp.ant.CompileTask">
 		<classpath>
 			<pathelement location="../res/compiler.jar" />
 		</classpath>
 	</taskdef>
 	
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+	  <classpath>
+	    <pathelement location="../res/ant-contrib.jar"/>
+	  </classpath>
+	</taskdef>
+	
 	<delete dir="${basedir}/../../build" />
 	<mkdir  dir="${basedir}/../../build" />
-	<target name="compile">
+		
+	<target name="makeall" depends="concatenate,compile" />
+	
+	<target name="make_templates" description="Concatenate the html templates together">
+	    <for param="file">
+			<path>
+	    		<fileset dir="../../src/templates" includes="*.html" />
+			</path>
+	    	<sequential>
+	    		
+	    		<basename property="filename" file="@{file}"/>
+	    		<basename property="filehead" file="@{file}" suffix=".html"/>
+	    		
+	    		<echo file="../../build/compiled_templates.js" append="yes" 
+	    				message="${line.separator}IriSP.${filehead}_template = &quot;" />
+	    		
+	    		<concat append="yes" destfile="../../build/compiled_templates.js">
+	    			<filelist dir="../../src/templates" files="${filename}"></filelist>
+	    			<filterchain>
+	    				<striplinebreaks/>
+	    			</filterchain>
+	    		</concat>	    			    	
+	    		<echo file="../../build/compiled_templates.js" append="yes" message="&quot;;" />
+	    		
+	    		<var name="filename" unset="true" />
+	    		<var name="filehead" unset="true" />
+	    	</sequential>
+		</for>
+	</target>
+	
+	<target name="compile" depends="make_templates">
 		<jscomp compilationLevel="simple" warning="quiet" debug="false"
 			output="../../build/LdtPlayer.min.raw.js">
 			<externs dir="${basedir}/../../res/">
@@ -27,11 +64,13 @@
 	        <filelist dir="../../build/" files="LdtPlayer.min.raw.js" />
 		</concat>
 		<delete file="../../build/LdtPlayer.min.raw.js" />
+		<delete file="../../build/compiled_templates.js" />
 	</target>
-	
-	<target name="concatenate" description="Build the developer release file">
+	    	
+	<target name="concatenate" description="Build the developer release file" depends="make_templates">
 	    <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-release.js">
 	        <filelist dir="../../src/js" files="LdtPlayer.js utils.js data.js site.js ui.js" />
+	    	<filelist dir="../../build" files="compiled_templates.js" />
 	    	<filterchain>
 	    	    <deletecharacters chars="&#xFEFF;" />
 	    	</filterchain>
