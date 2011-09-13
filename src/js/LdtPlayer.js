@@ -960,11 +960,13 @@ __IriSP.Annotation.prototype.draw = function(){
 	//alert (this.duration);
 	var startPourcent 	= this.timeToPourcent(this.begin,this.duration); // temps du media 
 	var endPourcent 	= this.timeToPourcent(this.end,this.duration)-startPourcent;
-	var titleForDiv		= this.title.substr(0,55);
-	
-	IriSP.jQueryAnnotationTemplate = "<div title='"+IriSP.stripHtml(titleForDiv)+"' id='"+this.id+"'  class='ui-slider-range ui-slider-range-min ui-widget-header iri-chapter' width='100%' style=\"left:"+startPourcent+"%; width:"+endPourcent+"%; padding-top:15px; border-left:solid 1px #aaaaaa; border-right:solid 1px #aaaaaa; background:#"+IriSP.DEC_HEXA_COLOR(this.color)+";\" onClick=\"__IriSP.MyApiPlayer.seek('"+Math.round(this.begin/1000)+"');__IriSP.jQuery('#Ldt-ShowAnnotation').slideDown();\"    ></div> ";
-	//alert(this.color+" : "+DEC_HEXA_COLOR(this.color));
+	var divTitle		= this.title.substr(0,55);	
 		
+	IriSP.jQueryAnnotationTemplate = Mustache.to_html(IriSP.annotation_template,
+			{"divTitle" : divTitle, "id" : this.id, "startPourcent" : startPourcent,
+			"endPourcent" : endPourcent, "hexa_color" : IriSP.DEC_HEXA_COLOR(this.color),
+			"seekPlace" : Math.round(this.begin/1000)});
+	
 	IriSP.jQuerytoolTipTemplate = Mustache.to_html(IriSP.tooltip_template, 
 				{"title" : this.title, "begin" : this.begin, "end" : this.end,
 				"description": this.description});
