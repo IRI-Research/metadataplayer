@@ -13,6 +13,7 @@ Requirements
 
 - jQuery 1.4
 - jQuery UI 1.4
+- java and ant (for building the sources)
 
 Building the library
 ====================
@@ -25,3 +26,10 @@ Running the examples
 
 You'll have to have a web server configured to serve the metadataplayer directory, because
 of the flash cross-domain policy.
+
+The code
+========
+
+The code is scattered among several files, which are concatenated and minified during the
+build process. The html templates in the templates/ directory are also "jsified" during
+this process, to be used by the js code.
