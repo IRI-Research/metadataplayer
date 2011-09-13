@@ -52,6 +52,7 @@ IriSP.getMetadata = function() {
 				
 					// CREATE THE ANNOTATIONS  				    //
 					// JUSTE FOR THE FIRST TYPE   			 	//
+					/* FIXME: make it support more than one ligne de temps */
 					IriSP.jQuery.each( json.annotations, function(i,item) {
 						if (item.meta['id-ref'] == IriSP.MyLdt.id) {
 							//__IriSP.trace("__IriSP.init.main","__IriSP.MyLdt.addAnnotation");
