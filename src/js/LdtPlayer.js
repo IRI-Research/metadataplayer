@@ -802,6 +802,7 @@ IriSP.SearchClean = function (){
 		}
 };
 
+
 IriSP.SearchThisSegment = function (annotation){
 	/* FIXME: to implement */
 					IriSP.jQuery("#LdtSearchInput").text(annotation.title);
@@ -963,13 +964,10 @@ __IriSP.Annotation.prototype.draw = function(){
 	
 	IriSP.jQueryAnnotationTemplate = "<div title='"+IriSP.stripHtml(titleForDiv)+"' id='"+this.id+"'  class='ui-slider-range ui-slider-range-min ui-widget-header iri-chapter' width='100%' style=\"left:"+startPourcent+"%; width:"+endPourcent+"%; padding-top:15px; border-left:solid 1px #aaaaaa; border-right:solid 1px #aaaaaa; background:#"+IriSP.DEC_HEXA_COLOR(this.color)+";\" onClick=\"__IriSP.MyApiPlayer.seek('"+Math.round(this.begin/1000)+"');__IriSP.jQuery('#Ldt-ShowAnnotation').slideDown();\"    ></div> ";
 	//alert(this.color+" : "+DEC_HEXA_COLOR(this.color));
-	
-	/* FIXME: templatize this portion */
-	IriSP.jQuerytoolTipTemplate = "<div class='Ldt-tooltip'>"
-						+"<div class='title'>"+IriSP.stripHtml(this.title)+"</div>"
-						+"<div class='time'>"+this.begin+" : "+this.end+"</div>"
-						+"<div class='description'>"+IriSP.stripHtml(this.description)+"</div>"
-						+"</div>";
+		
+	IriSP.jQuerytoolTipTemplate = Mustache.to_html(IriSP.tooltip_template, 
+				{"title" : this.title, "begin" : this.begin, "end" : this.end,
+				"description": this.description});
 	
 	
 	IriSP.jQuery("<div>"+IriSP.jQueryAnnotationTemplate+"</div>").appendTo("#Ldt-Annotations");
