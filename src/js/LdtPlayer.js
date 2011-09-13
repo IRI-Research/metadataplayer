@@ -802,12 +802,6 @@ IriSP.SearchClean = function (){
 		}
 };
 
-IriSP.SearchCleanString	= function (value){
-	var reg = new RegExp("(chien)", "g");
-	value.replace(reg,"");
-	return value;
-};
-
 IriSP.SearchThisSegment = function (annotation){
 	/* FIXME: to implement */
 					IriSP.jQuery("#LdtSearchInput").text(annotation.title);
