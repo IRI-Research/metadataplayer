@@ -723,13 +723,14 @@ IriSP.searchblock = function () {
 	}
 };
 
+/* Search with typeahead */
 IriSP.Search = function ( value ){
 
 	annotations = IriSP.LDTligne.annotations;
 	
 	IriSP.trace("__IriSP.Search", annotations.length+" "+value);
-	/* FIXME : rename finded => found */
-	var finded  = 0;
+	
+	var found  = 0;
 	var findmem = 0;
 	var factor  = 0;
 	IriSP.trace(value,value.length);
@@ -747,18 +748,18 @@ IriSP.Search = function ( value ){
 			chaine3 = annotation.htmlTags.toLowerCase();
 			
 			if(chaine1.indexOf(valueS,0) !=-1){
-				finded+=1;	
+				found+=1;	
 			}
 			if(chaine2.indexOf(valueS,0) !=-1){
-				finded+=1;	
+				found+=1;	
 			}
 			if(chaine3.indexOf(valueS,0) !=-1){
-				finded+=1;	
+				found+=1;	
 			}
 			
-			findmem += finded;
-			if(finded>0){
-				factor = finded*8;
+			findmem += found;
+			if(found>0){
+				factor = found*8;
 				IriSP.jQuery("#"+annotation.id).dequeue();
 				IriSP.jQuery("#"+annotation.id).animate({height:factor},200);
 				IriSP.jQuery("#"+annotation.id).css('border','2px');
@@ -773,7 +774,7 @@ IriSP.Search = function ( value ){
 				IriSP.jQuery("#"+annotation.id).animate({opacity:0.3},200);
 			}
 			
-			finded = 0;
+			found = 0;
 		}
 		if(findmem==0){
 				IriSP.jQuery("#LdtSearchInput").css('background-color','#f6f6f6');
