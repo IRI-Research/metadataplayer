@@ -1,3 +1,6 @@
 
 syntax: regexp
 ^src/js/LdtPlayer\.min\.js$
+syntax: glob
+build/LdtPlayer-release.js
+build/LdtPlayer.min.js
