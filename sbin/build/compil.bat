@@ -1,1 +1,1 @@
-ant -f client.xml
+..\res\ant\bin\ant.bat -f client.xml
