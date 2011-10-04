@@ -13,13 +13,15 @@ Requirements
 
 - jQuery 1.4
 - jQuery UI 1.4
-- java and ant (for building the sources)
+- the java jre (for building the sources)
 
 Building the library
 ====================
 
 The library files are scattered in many files. An ant build script has been made to make the developer and
 minified versions of the player. It is located in sbin/build/client.xml.
+To build the library, simply run sbin/build/compil.bat if you are running windows, or sbin/build/compil.sh
+if you're running Unix.
 
 Running the examples
 ====================
