@@ -104,14 +104,11 @@ Popcorn.player( "jwplayer", {
 
     };
 
-    jwplayer( container.id ).setup({
-      file: options.file,
-      height: 270,
-      width: 480,
-      flashplayer: options.flashplayer,
-      events: {
+    options.events = {
         onReady: initApi
-      }});
+      };
+      
+    jwplayer( container.id ).setup(options);
 
   }
 });
