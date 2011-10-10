@@ -208,11 +208,6 @@ __IriSP.Media.prototype.getMediaTitle = function (){
 };
 
 
-
-
-
-
-/*  FIXME : API player - work in progress ... need refactoring of code */ 
 __IriSP.APIplayer = function ( width, height, url, duration, streamerPath, MySwfPath){
 		
 		
@@ -248,37 +243,6 @@ __IriSP.APIplayer.prototype.ready = function( player ) {
 	IriSP.createInterface( this.width, this.height, this.duration );
 	//__IriSP.trace("__IriSP.APIplayer.prototype.APIpReady","END  __IriSP.createInterface");
 
-  /*
-	// hashchange EVENT
-	if ( window.addEventListener ){
-	
-	// for firefox  hashchange EVENT
-		window.addEventListener( "hashchange", function() {
-		  var url = window.location.href;
-		  var time = IriSP.retrieveTimeFragment( url );
-		  IriSP.trace( "__IriSP.APIplayer.prototype.ready", time );
-		  if( IriSP.MyApiPlayer.hashchangeUpdate==null ){
-			IriSP.MyApiPlayer.seek( time );
-			
-		  } else {			  
-			IriSP.MyApiPlayer.hashchangeUpdate = null;
-		  }
-		}, false );
-	 
-	} else if (window.attachEvent){
-	// for ie hashchange EVENT
-		window.attachEvent( "onhashchange", function() {
-		  IriSP.trace( "hashchange",time );
-		  var url = window.location.href;
-		  var time = IriSP.retrieveTimeFragment( url );
-		  if( IriSP.MyApiPlayer.hashchangeUpdate == null ){
-			IriSP.MyApiPlayer.seek(time);
-		  } else {
-			IriSP.MyApiPlayer.hashchangeUpdate = null;
-		  }
-		}, false);
-	}
-	*/
 	// Search
 	//__IriSP.jQuery("#LdtSearchInput").change(function() {__IriSP.Search(this.value);});
 	//__IriSP.jQuery("#LdtSearchInput").live('change', function(event) {__IriSP.Search(this.value);}); 
@@ -304,18 +268,16 @@ __IriSP.APIplayer.prototype.play  = function() {
 };
 
 __IriSP.APIplayer.prototype.mute  = function() {
-	IriSP.player.sendEvent( 'MUTE' );
-	
-	//alert(__IriSP.jQuery(".ui-icon-volume-on").css("background-position-x"));
-	/* FIXME : remove hardcoded values */
-	if ( IriSP.jQuery( ".ui-icon-volume-on" ).css( "background-position" ) == "-144px -160px" ){
-		IriSP.jQuery(" .ui-icon-volume-on ").css(" background-position ", "-130px -160px");
-	} else {
-		IriSP.jQuery( ".ui-icon-volume-on" ).css( "background-position", "-144px -160px" );
-	}
+  if (!IriSP.player.muted()) {    
+    IriSP.player.mute(true);
+    IriSP.jQuery(" .ui-icon-volume-on ").css("background-position", "-130px -160px");    
+  } else {
+    IriSP.player.mute(false);
+    IriSP.jQuery( ".ui-icon-volume-on" ).css("background-position", "-144px -160px" );
+  }
+
 };
 
-/* FIXME : rename */
 __IriSP.APIplayer.prototype.share = function( network ) {
 
 	/* FIXME : remove hardcoded */
@@ -347,73 +309,12 @@ __IriSP.APIplayer.prototype.seek = function (time) {
 	
 	if( time==0 ) { time=1; }
 	
-	IriSP.trace( "__IriSP.APIplayer.prototype.seek", time );
-	
-	IriSP.player.currentTime( time );	
-	
-	//this.changePageUrlOffset( time );
+	IriSP.trace( "__IriSP.APIplayer.prototype.seek", time );	
+	IriSP.player.currentTime( time );		
 };
-
-__IriSP.APIplayer.prototype.update = function (time) {
-	
-	if( time != 0 ) {
-		this.hashchangeUpdate = true;
-		
-		IriSP.trace( "__IriSP.APIplayer.prototype.update" ,time);
-		IriSP.player.sendEvent( 'SEEK', time );
-	}
-};
-
-__IriSP.APIplayer.prototype.changePageUrlOffset = function ( time ) {
-	//alert(time);
-  IriSP.trace( "__IriSP.APIplayer.prototype.changePageUrlOffset" , "CHANGE URL "+ time);
-  
-  window.location.hash = "#t=" + time;
-  window.location.href =  window.location.href;
-  
-};
-
-/* Media Fragment functionality by Silvia Pfeiffer */ 
-
-IriSP.jumpToTimeoffset = function ( form ) {
-	var time = form.time.value;
-	IriSP.MyApiPlayer.changePageUrlOffset( time );
-};
-
-IriSP.retrieveTimeFragment = function ( url ) {
-  var pageoffset = 0;
-  var offsettime = 0;
-  
-  if ( url.split("#")[1] != null ) {
-	pageoffset = url.split( "#" )[1];
-		if ( pageoffset.substring( 2 ) != null ) {
-			offsettime = pageoffset.substring( 2 );
-		}
-	}
-	return offsettime;
-};
-
-IriSP.ignoreTimeFragment = function( url ){
-
-	var pageurl = url;
-	
-	if ( url.split( "#" )[1] != null ) {
-		pageurl = url.split( "#" )[0];
-	}
- 
-	return pageurl;
-};
-
-
-/* code specific to jwplayer / creation and listener */
 
 IriSP.currentPosition 	= 0; 
-IriSP.currentVolume   	= 50; 
 IriSP.player 			= null;
-IriSP.startPosition 	= null;
-IriSP.firstplay	 		= false;
-
-
 
 IriSP.createPlayer = function ( url, streamerPath ) {
   IriSP.jQuery("#Ldt-PlaceHolder").html(""); // clear the message "you need flash to display this player
@@ -440,84 +341,25 @@ IriSP.createPlayer = function ( url, streamerPath ) {
     IriSP.player = Popcorn.jwplayer( '#Ldt-PlaceHolder', "", 
                                      {file : "video/franceculture/franceculture_retourdudimanche20100620.flv", streamer: streamerPath, flashplayer : IriSP.config.player.src,
                                      live: true, "controlbar.position" : "none", height: IriSP.config.gui.height, width: IriSP.config.gui.width, provider: "rtmp"} ); 
-    
-    /*
-    IriSP.player = Popcorn.jwplayer( '#Ldt-PlaceHolder', "", 
-                                     {file : "/mdp/video.mp4", flashplayer : IriSP.config.player.src,
-                                     "controlbar.position" : "none", height: 300, width: 360, "duration" : 18} );
-    */                              
+                               
   }
  
   IriSP.player.listen("timeupdate", IriSP.positionListener);
   IriSP.player.listen("volumechange", IriSP.volumeListener);
+  IriSP.player.listen("play", IriSP.stateMonitor);
+  IriSP.player.listen("pause", IriSP.stateMonitor);
   IriSP.MyApiPlayer.ready();
 };
 
 
-/* jw player api */
-IriSP.playerReady  = function (thePlayer) {
-
-	//__IriSP.trace("__IriSP.playerReady","PLAYER READY !!!!!!!!!!!!");
-	IriSP.player = window.document[thePlayer.id];
-	//__IriSP.trace("__IriSP.playerReady","API CALL "+__IriSP.player);
-	IriSP.MyApiPlayer.ready( IriSP.player );
-	//__IriSP.trace("__IriSP.playerReady","API CALL END ");
-	
-	var url = document.location.href;
-	var time = IriSP.retrieveTimeFragment( url );
-	//__IriSP.trace("__IriSP.playerReady"," "+url+" "+time );
-	IriSP.startPosition = time;
-	//__IriSP.trace("__IriSP.playerReady"," LISTENER LAUCHER");
-	IriSP.addListeners();	
-	//__IriSP.trace("__IriSP.playerReady"," LISTENER END");
-	
-};
-
-IriSP.addListeners = function () {
-	if ( IriSP.player ) { 
-		IriSP.trace("__IriSP.addListeners","ADD  Listener ");
-		IriSP.player.addModelListener( "TIME", "__IriSP.positionListener");
-		IriSP.player.addControllerListener( "VOLUME", "__IriSP.volumeListener" );
-		IriSP.player.addModelListener( 'STATE', '__IriSP.stateMonitor' );
-	} else {
-		IriSP.setTimeout( "__IriSP.addListeners()", 100 );
-	}
-
-	// et changer les boutons
-};
-
-IriSP.stateMonitor = function ( obj ) { 
-
-	 if(obj.newstate == 'PAUSED') {
-		IriSP.trace( "__IriSP.stateMonitor", "PAUSE" );
-		IriSP.MyApiPlayer.changePageUrlOffset( IriSP.currentPosition );			
+IriSP.stateMonitor = function () {      
+	 if(IriSP.player.paused()) {				    
 		IriSP.jQuery( ".ui-icon-play" ).css( "background-position","0px -160px" );
-		
-	} else if (obj.newstate == 'PLAYING' ){
-		
-		IriSP.trace( "__IriSP.stateMonitor", "PLAYING "+IriSP.startPosition );
-		
-		// force buffering even if autostart is disabled. 
-		if ( IriSP.config.player.flashvars.autostart == "false" && IriSP.firstplay == false && IriSP.startPosition == 0 ) {
-			IriSP.trace("__IriSP.stateMonitor","first stop ???");
-			IriSP.MyApiPlayer.play();
-			IriSP.firstplay = true;
-			IriSP.MyLdt.checkTime( 1 );
-		}
-		
-		// once that the video is loaded, move it to the correct timecode
-		if( IriSP.startPosition!=null ){
-			IriSP.MyApiPlayer.update( IriSP.startPosition );
-			IriSP.startPosition = null;
-		}
-		
-		
+    IriSP.jQuery( "#ldt-CtrlPlay" ).attr("title", "Pause");
+	} else { /* playing */	
 		IriSP.jQuery( ".ui-icon-play" ).css( "background-position", "-16px -160px" );
-	} else if (obj.newstate == 'BUFFERING'){
-		IriSP.trace( "__IriSP.stateMonitor", "BUFFERING : "+IriSP.config.player.flashvars.autostart );
-		//changePageUrlOffset(currentPosition);
+    IriSP.jQuery( "#ldt-CtrlPlay" ).attr("title", "Play");
 	}
-	
 };
 
 IriSP.positionListener = function() {  	
@@ -537,52 +379,6 @@ IriSP.volumeListener   = function (obj) {
 	var tmp = document.getElementById("vol");
 	if (tmp) { tmp.innerHTML = "volume: " + IriSP.currentVolume; }
 };
-
-
-/* dailymotion api 	*/
-onDailymotionPlayerReady = function (playerid) {
-
-	//alert(playerid);
-	IriSP.player = document.getElementById( IriSP.config.player.attributes.id );
-	IriSP.MyApiPlayer.ready( IriSP.player );
-	
-	var url = document.location.href;
-	var time = IriSP.retrieveTimeFragment( url );
-	IriSP.startPosition = time;
-	IriSP.DailymotionAddListeners();	
-	
-	IriSP.MyApiPlayer.ready(playerid);
-};
-
-IriSP.DailymotionAddListeners = function () {
-	if ( IriSP.player ) { 
-		IriSP.trace( "__IriSP.addListeners","ADD  Listener " );
-		//__IriSP.player.addEventListener("onStateChange", "__IriSP.DailymotionPositionListener");
-		setTimeout( "__IriSP.DailymotionPositionListener()", 100);
-		IriSP.DailymotionPositionListener();
-		/* FIXME : works only with jwplayer */
-		IriSP.player.addModelListener( "VOLUME", "__IriSP.volumeListener" );
-		//__IriSP.player.addModelListener('STATE', '__IriSP.stateMonitor');
-	} else {
-		IriSP.setTimeout( "__IriSP.DailymotionAddListeners()", 100);
-	}
-};
-
-IriSP.DailymotionPositionListener = function() { 
-	
-	IriSP.currentPosition = IriSP.player.getCurrentTime();
-	//__IriSP.trace("__IriSP.DailymotionPositionListener",__IriSP.currentPosition);
-	//__IriSP.trace("__IriSP.currentPosition",__IriSP.currentPosition);
-	
-	IriSP.jQuery( "#slider-range-min" ).slider( "value" , IriSP.currentPosition);
-	IriSP.jQuery( "#amount" ).val( IriSP.currentPosition+" s" );
-	// afficher annotation 
-	/*__IriSP.MyLdt.checkTime(__IriSP.currentPosition);
-	*/
-	
-	setTimeout( "__IriSP.DailymotionPositionListener()", 10 );
-};
-
 
 /* 	utils */
 // code from http://stackoverflow.com/questions/822452/strip-html-from-text-javascript
