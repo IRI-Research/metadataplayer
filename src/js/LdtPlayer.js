@@ -1,4 +1,4 @@
-﻿/* 	
+/* 	
  *	Copyright 2010 Institut de recherche et d'innovation 
  *	contributor(s) : Samuel Huron 
  *	Use Silvia Pfeiffer 's javascript mediafragment implementation
@@ -170,7 +170,6 @@ IriSP.init = function ( config ) {
 				}
 				
 				//__IriSP.trace("main","ready createMyHtml");
-				
 				IriSP.createPlayerChrome();
 				
 				/******* Load Metadata *******/
@@ -249,6 +248,7 @@ __IriSP.APIplayer.prototype.ready = function( player ) {
 	IriSP.createInterface( this.width, this.height, this.duration );
 	//__IriSP.trace("__IriSP.APIplayer.prototype.APIpReady","END  __IriSP.createInterface");
 
+  /*
 	// hashchange EVENT
 	if ( window.addEventListener ){
 	
@@ -278,7 +278,7 @@ __IriSP.APIplayer.prototype.ready = function( player ) {
 		  }
 		}, false);
 	}
-	
+	*/
 	// Search
 	//__IriSP.jQuery("#LdtSearchInput").change(function() {__IriSP.Search(this.value);});
 	//__IriSP.jQuery("#LdtSearchInput").live('change', function(event) {__IriSP.Search(this.value);}); 
@@ -292,24 +292,15 @@ __IriSP.APIplayer.prototype.pause = function(){
 	IriSP.player.sendEvent( 'PAUSE' );
 };
 
-__IriSP.APIplayer.prototype.play  = function() {
-	this.hashchangeUpdate = true;
-	//__IriSP.trace("__IriSP.config.player.type",__IriSP.config.player.type);
-	if( IriSP.config.player.type=='jwplayer' ){
-	
-		IriSP.player.sendEvent( 'PLAY' );
-		
-	} else if(IriSP.config.player.type == 'dailymotion' 
-			  || IriSP.config.player.type == 'youtube' ) {
-			  
-		var status = IriSP.player.getPlayerState();
-		IriSP.trace( "__IriSP.APIplayer.prototype.play.status", status);
-		if ( status != 1 ){
-			IriSP.player.playVideo();
-		} else {
-			IriSP.player.pauseVideo();
-		}
-	}
+__IriSP.APIplayer.prototype.play  = function() {  
+	this.hashchangeUpdate = true;  
+  var status = IriSP.player.media.paused;
+      
+  if ( status == true ){        
+    IriSP.player.play();
+  } else {
+    IriSP.player.pause();
+  }
 };
 
 __IriSP.APIplayer.prototype.mute  = function() {
@@ -358,15 +349,9 @@ __IriSP.APIplayer.prototype.seek = function (time) {
 	
 	IriSP.trace( "__IriSP.APIplayer.prototype.seek", time );
 	
-	if( IriSP.config.player.type=='jwplayer') {
-		//__IriSP.MyApiPlayer.play()
-		IriSP.player.sendEvent( 'SEEK', time );
-	} else if( IriSP.config.player.type=='dailymotion'
-			|| IriSP.config.player.type=='youtube' ) {
-		IriSP.player.seekTo( time );
-	}
+	IriSP.player.currentTime( time );	
 	
-	this.changePageUrlOffset( time );
+	//this.changePageUrlOffset( time );
 };
 
 __IriSP.APIplayer.prototype.update = function (time) {
@@ -431,47 +416,41 @@ IriSP.firstplay	 		= false;
 
 
 IriSP.createPlayer = function ( url, streamerPath ) {
+  IriSP.jQuery("#Ldt-PlaceHolder").html(""); // clear the message "you need flash to display this player
+  
 	if( IriSP.config.player.type=='dailymotion' ) {
+  
 		IriSP.config.player.src = IriSP.config.player.src+"&chromeless=1&enableApi=1";
-	} else if ( IriSP.config.player.type=='youtube' ){
-		IriSP.config.player.src = IriSP.config.player.src+"&enablejsapi=1&version=3";
-	}
 	
-	IriSP.trace( "__IriSP.createPlayer", "start" );			
+  } else if ( IriSP.config.player.type=='youtube' ) {
 	
-	IriSP.myUrlFragment = url.split( streamerPath );	
-	
-	var configTemp = IriSP.jQuery.extend( true, {}, IriSP.config );
-	configTemp.player.flashvars.autostart =	"true";
-	configTemp.player.flashvars.streamer =	streamerPath;
-	configTemp.player.flashvars.file =	IriSP.myUrlFragment[1];
-	
-	var flashvars 		  = configTemp.player.flashvars;
-	var params 			  = configTemp.player.params;
-	var attributes 		  = configTemp.player.attributes;
-	
-	IriSP.trace(
-				  "__IriSP.createPlayer",
-				  "SWFOBJECT src:"+
-				  IriSP.config.player.src+
-				  " " +IriSP.config.gui.width+
-				  " " +IriSP.config.gui.height
-				  );
-	
-	swfobject.embedSWF(
-						IriSP.config.player.src,
-						"Ldt-PlaceHolder",
-						IriSP.config.gui.width,
-						IriSP.config.gui.height,
-						"9.0.115", // FIXME : de-hardcode version ?
-						false,
-						flashvars,
-						params,
-						attributes
-					);
-	
-	// need a methode to 
-	// re execute if this swf call does'nt work 
+    
+    templ = "width: {{width}}px; height: {{height}}px; margin-bottom: 5px;";
+    var str = Mustache.to_html(templ, {width: IriSP.config.gui.width, height: IriSP.config.gui.height});    
+
+    // Popcorn.youtube wants us to specify the size of the player in the style attribute of its container div.
+    IriSP.jQuery("#Ldt-PlaceHolder").attr("style", str);
+    
+    IriSP.player = Popcorn.youtube( '#Ldt-PlaceHolder', IriSP.config.player.src, {"controls": 0} );    
+    
+	} else if ( IriSP.config.player.type=='jwplayer' ) {
+    
+    // for some reason, a stream won't play when it's display: none;
+    IriSP.jQuery("#Ldt-PlaceHolder").attr("style", "visibility: hidden;");
+    IriSP.player = Popcorn.jwplayer( '#Ldt-PlaceHolder', "", 
+                                     {file : "video/franceculture/franceculture_retourdudimanche20100620.flv", streamer: streamerPath, flashplayer : IriSP.config.player.src,
+                                     live: true, "controlbar.position" : "none", height: IriSP.config.gui.height, width: IriSP.config.gui.width, provider: "rtmp"} ); 
+    
+    /*
+    IriSP.player = Popcorn.jwplayer( '#Ldt-PlaceHolder', "", 
+                                     {file : "/mdp/video.mp4", flashplayer : IriSP.config.player.src,
+                                     "controlbar.position" : "none", height: 300, width: 360, "duration" : 18} );
+    */                              
+  }
+ 
+  IriSP.player.listen("timeupdate", IriSP.positionListener);
+  IriSP.player.listen("volumechange", IriSP.volumeListener);
+  IriSP.MyApiPlayer.ready();
 };
 
 
@@ -541,20 +520,20 @@ IriSP.stateMonitor = function ( obj ) {
 	
 };
 
-IriSP.positionListener = function(obj) { 
-	//__IriSP.trace("__IriSP.positionListener",obj.position);
-	IriSP.currentPosition = obj.position; 
+IriSP.positionListener = function() {  	
+	IriSP.currentPosition = IriSP.player.currentTime(); 
+  
 	var tmp = document.getElementById( "posit" );
 	if (tmp) { tmp.innerHTML = "position: " + IriSP.currentPosition; }
-	IriSP.jQuery( "#slider-range-min" ).slider( "value", obj.position);
-	IriSP.jQuery( "#amount" ).val(obj.position+" s");
+	IriSP.jQuery( "#slider-range-min" ).slider( "value", IriSP.currentPosition);
+	IriSP.jQuery( "#amount" ).val(IriSP.currentPosition+" s");
 	// display annotation 
 	IriSP.MyLdt.checkTime( IriSP.currentPosition );
 	
 };
 
 IriSP.volumeListener   = function (obj) { 
-	IriSP.currentVolume = obj.percentage; 
+	IriSP.currentVolume = obj.volume; 
 	var tmp = document.getElementById("vol");
 	if (tmp) { tmp.innerHTML = "volume: " + IriSP.currentVolume; }
 };
@@ -602,74 +581,6 @@ IriSP.DailymotionPositionListener = function() {
 	*/
 	
 	setTimeout( "__IriSP.DailymotionPositionListener()", 10 );
-};
-
-/* youtube api 	*/
-onYouTubePlayerReady= function (playerid){
-
-	var url = document.location.href;
-	var time = IriSP.retrieveTimeFragment( url );
-	IriSP.player = document.getElementById( IriSP.config.player.attributes.id );
-	IriSP.startPosition = time;
-	
-	IriSP.MyApiPlayer.ready( IriSP.player );
-	
-	IriSP.MyApiPlayer.seek( time );
-	IriSP.MyApiPlayer.play();
-	
-	
-	IriSP.YouTubeAddListeners();	
-	IriSP.trace( "onYouTubePlayerReady=", time);
-	//__IriSP.MyApiPlayer.ready(playerid);
-};
-
-IriSP.YouTubeAddListeners = function () {
-	if ( IriSP.player ) { 
-		IriSP.trace( "__IriSP.addListeners", "ADD  Listener " );
-		IriSP.player.addEventListener( "onStateChange", "__IriSP.YouTubeStateMonitor" );
-		setTimeout( "__IriSP.YouTubePositionListener()", 100 );
-		
-		/* FIXME : works only with jwplayer */
-		IriSP.player.addModelListener( "VOLUME", "__IriSP.volumeListener" );
-		//__IriSP.player.addModelListener('STATE', '__IriSP.stateMonitor');
-	} else {
-	}
-};
-
-IriSP.YouTubePositionListener = function() { 
-	
-	IriSP.currentPosition = IriSP.player.getCurrentTime();
-	//__IriSP.trace("__IriSP.YouTubePositionListener",__IriSP.currentPosition);
-	//__IriSP.trace("__IriSP.currentPosition",__IriSP.currentPosition);
-	
-	IriSP.MyLdt.checkTime(IriSP.currentPosition);
-	IriSP.jQuery( "#slider-range-min" ).slider( "value", IriSP.currentPosition );
-	IriSP.jQuery( "#amount" ).val( IriSP.currentPosition+" s" );
-	// afficher annotation 
-	IriSP.MyLdt.checkTime( IriSP.currentPosition );
-	
-	
-	setTimeout( "__IriSP.YouTubePositionListener()", 10 );
-};
-
-IriSP.YouTubeStateMonitor = function (obj) { 
-	IriSP.player.addModelListener( '__IriSP.YouTubeStateMonitor ', newstate );
-	//alert(newstate+" "+obj.newstate);
-	 if(newstate == '2') {
-		IriSP.trace("__IriSP.stateMonitor","PAUSE");
-		IriSP.MyApiPlayer.changePageUrlOffset( IriSP.currentPosition );
-		
-	} else if (newstate == '1' || newstate == '1') {
-		// une fois la video prete a lire  la déplacer au bon timecode 
-		if( IriSP.startPosition!=null ) {
-			IriSP.MyApiPlayer.update( IriSP.startPosition );
-			IriSP.startPosition = null;
-		}
-	} else if (newstate == '3'){
-		IriSP.trace("__IriSP.stateMonitor","BUFFERING : ");
-		//changePageUrlOffset(currentPosition);
-	}
-	
 };
 
 
@@ -853,13 +764,13 @@ __IriSP.Ligne.prototype.listAnnotations = function() {
 __IriSP.Ligne.prototype.nextAnnotation = function () {
 	
 	var annotationCibleNumber = this.numAnnotation(this.annotationOldRead)+1;
-	var annotationCible = this.annotations[annotationCibleNumber];
-
+	var annotationCible = this.annotations[annotationCibleNumber];  
+  
 	if( annotationCibleNumber<this.annotations.length-1 ){
-		IriSP.player.sendEvent( 'SEEK', annotationCible.begin/1000 );
+		IriSP.player.currentTime(annotationCible.begin/1000);
 		IriSP.trace( "LIGNE  ", "| next = "+annotationCibleNumber+" - "+this.annotations.length+" | seek :"+annotationCible.begin/1000);
-	} else {
-		IriSP.player.sendEvent( 'SEEK', this.annotations[0].begin/1000);
+	} else {    
+		IriSP.player.currentTime(this.annotations[0].begin/1000);
 	}
 		
 };
@@ -872,8 +783,7 @@ __IriSP.Ligne.prototype.numAnnotation = function (annotationCible){
 	}
 };
 
-__IriSP.Ligne.prototype.checkTime = function(time){
-	
+__IriSP.Ligne.prototype.checkTime = function(time){	
 	var annotationTempo = -1;
 	//__IriSP.trace("__IriSP.Ligne.prototype.checkTimeLigne",time);
 	//__IriSP.trace("__IriSP.Ligne.prototype.checkTimeLigne",this.annotations.length);

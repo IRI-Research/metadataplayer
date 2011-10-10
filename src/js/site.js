@@ -1,8 +1,18 @@
 /* site.js - all our site-dependent config : player chrome, cdn locations, etc...*/
 
+/*
 IriSP.lib = { 
 		jQuery:"http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js",
 		jQueryUI:"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js",
+		jQueryToolTip:"http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
+		swfObject:"http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
+		cssjQueryUI:"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css"
+};
+*/
+
+IriSP.lib = { 
+		jQuery:"http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js",
+		jQueryUI:"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.js",
 		jQueryToolTip:"http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
 		swfObject:"http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
 		cssjQueryUI:"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css"

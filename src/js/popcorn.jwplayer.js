@@ -105,9 +105,9 @@ Popcorn.player( "jwplayer", {
     };
 
     options.events = {
-        onReady: initApi
-      };
-      
+        onReady: initApi,
+    };
+
     jwplayer( container.id ).setup(options);
 
   }
