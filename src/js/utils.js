@@ -11,3 +11,11 @@ IriSP.trace = function( msg, value ) {
 	}
 };
 
+/* for ie compatibility
+if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
+   Object.defineProperty=function(obj,prop,desc) {
+      if ("get" in desc) obj.__defineGetter__(prop,desc.get);
+      if ("set" in desc) obj.__defineSetter__(prop,desc.set);
+   }
+}
+*/
