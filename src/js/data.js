@@ -1,5 +1,28 @@
 /* data.js - this file deals with how the players gets and sends data */
 
+IriSP.DataLoader = function() {
+  this._cache = {};
+};
+
+IriSP.DataLoader.prototype.get = function(url, callback) {  
+  if (this._cache.hasOwnProperty(url)) {
+    callback(this._cache[url]);
+  } else {
+    /* we need a closure because this gets lost when it's called back */
+    IriSP.jQuery.get(url, (function(obj) {      
+                               return function(data) {
+                                  obj._cache[url] = data;      
+                                  callback(obj._cache[url]);
+                                }; 
+                              })(this));
+       
+  }
+}
+
+IriSP.Serializer = function(DataLoader) {
+  this.DataLoader = DataLoader;
+};
+
 IriSP.getMetadata = function() {
 	
 	IriSP.jQuery.ajax({
