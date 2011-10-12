@@ -19,9 +19,45 @@ IriSP.DataLoader.prototype.get = function(url, callback) {
   }
 }
 
-IriSP.Serializer = function(DataLoader) {
-  this.DataLoader = DataLoader;
+/* the base abstract "class" */
+IriSP.Serializer = function(DataLoader, url) {
+  this._DataLoader = DataLoader;
+  this._url = url;
 };
+
+IriSP.Serializer.prototype.serialize = function(data) { };
+IriSP.Serializer.prototype.deserialize = function(data) {};
+
+IriSP.JSONSerializer = function(DataLoader, url) {
+  IriSP.Serializer.call(this, DataLoader, url);
+}
+
+IriSP.JSONSerializer.prototype = IriSP.Serializer;
+
+IriSP.JSONSerializer.prototype.serialize = function(data) {
+  return JSON.stringify(data);
+};
+
+IriSP.JSONSerializer.prototype.deserialize = function(data) {
+  return JSON.parse(data);
+};
+
+IriSP.SerializerFactory = function(DataLoader) {
+  this._dataloader = DataLoader;
+};
+
+IriSP.SerializerFactory.prototype.getSerializer = function(config) {
+  /* This function returns serializer set-up with the correct
+     configuration
+  */
+  switch(config.metadata.load) {
+    case "json":
+      return new IriSP.JSONSerializer(this._dataloader, config.metadata.src);
+    default:
+      return undefined;
+  }
+};
+
 
 IriSP.getMetadata = function() {
 	

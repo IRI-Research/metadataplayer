@@ -1,7 +1,7 @@
 <html>
 <head>
 	<title>Unit Tests</title>
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="../res/js/jquery.min.js"></script>
 	<script src="../build/LdtPlayer-release.js"></script>
 	<script src="qunit.js" type="text/javascript"></script>
 	<script src="sinon.js" type="text/javascript"></script>
@@ -10,12 +10,15 @@
 	  <link rel="stylesheet" href="qunit.css" type="text/css" media="screen" />
 	<script src="tests/dataloader.js" type="text/javascript"></script>
 	<script src="tests/serializer.js" type="text/javascript"></script>
+	<script src="tests/JSONSerializer.js" type="text/javascript"></script>
+	<script src="tests/serializerFactory.js" type="text/javascript"></script>
 </head>
-<body>
 <script>
  $(document).ready(function(){
 		test_dataloader();
 		test_serializer();
+		test_JSONSerializer();
+		test_serializerFactory()
 });
 </script>	
 <body>
