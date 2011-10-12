@@ -42,6 +42,18 @@ IriSP.JSONSerializer.prototype.deserialize = function(data) {
   return JSON.parse(data);
 };
 
+IriSP.JSONSerializer.prototype.sync = function(callback) {
+  /* we don't have to do much because jQuery handles json for us */
+  var wrapper = function(obj) {
+    return function(data) {    
+      obj._data = data;
+      callback(data);
+    }
+  };
+  
+  this._DataLoader.get(this._url, wrapper(this));
+};
+
 IriSP.SerializerFactory = function(DataLoader) {
   this._dataloader = DataLoader;
 };
