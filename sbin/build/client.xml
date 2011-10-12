@@ -73,7 +73,7 @@
 	        <filelist dir="../../src/js" files="popcorn.js popcorn.youtube.js popcorn.jwplayer.js jwplayer.js" />
 	        <filelist dir="../../src/js" files="LdtPlayer.js" />
 	    	<filelist dir="../../build" files="compiled_templates.js" />
-	    	<filelist dir="../../src/js" files="mustache.js utils.js data.js site.js ui.js" />
+	    	<filelist dir="../../src/js" files="mustache.js utils.js data.js site.js ui.js widgets.js" />
 	    	<filterchain>
 	    	    <deletecharacters chars="&#xFEFF;" />
 	    	</filterchain>
