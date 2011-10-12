@@ -25,7 +25,7 @@ function test_dataloader() {
     var dt = new IriSP.DataLoader();
     
     var resp = dt.get("/url", spy_callback);
-    //IriSP.jQuery.get("/url", spy_callback);
+
     equals(xhr.requests.length, 1, "the mock ajax object should have received the request");
     
     xhr.requests[0].respond(200, { "Content-Type": "application/json" },
