@@ -34,32 +34,7 @@ IriSP.Durration		= null;
 IriSP.playerLdtWidth	= null;
 IriSP.playerLdtHeight	= null;
 
-
-IriSP.init = function ( config ) {		
-		if ( config === null ) {
-			IriSP.config 			 = IriSP.configDefault;
-		} else {
-			
-			IriSP.config 			 = config;
-						
-			if ( IriSP.config.player.params == null ) {
-				IriSP.config.player.params = IriSP.configDefault.player.params;
-			}
-			
-			if ( IriSP.config.player.flashvars == null ) {
-				IriSP.config.player.flashvars = IriSP.configDefault.player.flashvars;
-			}
-			
-			if ( IriSP.config.player.attributes == null ) {
-				IriSP.config.player.attributes = IriSP.configDefault.player.attributes;
-			}
-		}
-		
-		var metadataSrc 		 = IriSP.config.metadata.src;
-		var guiContainer		 = IriSP.config.gui.container;
-		var guiMode				 = IriSP.config.gui.mode;
-		var guiLdtShareTool		 = IriSP.LdtShareTool;
-		
+IriSP.loadLibs = function( libs, customCssPath, callback ) {
 		// Localize jQuery variable
 		IriSP.jQuery = null;
 
@@ -69,7 +44,7 @@ IriSP.init = function ( config ) {
 			
 			var script_tag = document.createElement( 'script' );
 			script_tag.setAttribute( "type", "text/javascript" );
-			script_tag.setAttribute( "src", IriSP.lib.jQuery );
+			script_tag.setAttribute( "src", libs.jQuery );
 			
 			script_tag.onload = scriptLibHandler;
 			script_tag.onreadystatechange = function () { // Same thing but for IE
@@ -91,7 +66,7 @@ IriSP.init = function ( config ) {
 			
 			var script_jqUi_tooltip = document.createElement( 'script' );
 			script_jqUi_tooltip.setAttribute( "type", "text/javascript" );
-			script_jqUi_tooltip.setAttribute( "src", IriSP.lib.jQueryToolTip );
+			script_jqUi_tooltip.setAttribute( "src", libs.jQueryToolTip );
 			script_jqUi_tooltip.onload = scriptLoadHandler;
 			script_jqUi_tooltip.onreadystatechange = function () { // Same thing but for IE
 				if ( this.readyState == 'complete' || this.readyState == 'loaded' ) {
@@ -101,7 +76,7 @@ IriSP.init = function ( config ) {
 			
 			var script_swfObj = document.createElement('script');
 			script_swfObj.setAttribute( "type","text/javascript" );
-			script_swfObj.setAttribute( "src",IriSP.lib.swfObject );
+			script_swfObj.setAttribute( "src",libs.swfObject );
 			script_swfObj.onload = scriptLoadHandler;
 			script_swfObj.onreadystatechange = function () { // Same thing but for IE
 				if ( this.readyState == 'complete' || this.readyState == 'loaded' ) {
@@ -111,7 +86,7 @@ IriSP.init = function ( config ) {
 		
 			var script_jqUi = document.createElement( 'script' );
 			script_jqUi.setAttribute( "type","text/javascript" );
-			script_jqUi.setAttribute( "src",IriSP.lib.jQueryUI );
+			script_jqUi.setAttribute( "src",libs.jQueryUI );
 			script_jqUi.onload = scriptLoadHandler;
 			script_jqUi.onreadystatechange = function () { // Same thing but for IE
 				if ( this.readyState == 'complete' || this.readyState == 'loaded' ) {
@@ -144,20 +119,20 @@ IriSP.init = function ( config ) {
 
 			//  Make our own IriSP.jQuery and restore window.jQuery if there was one. 
 			IriSP.jQuery = window.jQuery.noConflict( true );
-			// Call ours Jquery
+			// Call our Jquery
 			IriSP.jQuery( document ).ready( function($) { 
 				
 				/******* Load CSS *******/
 				var css_link_jquery = IriSP.jQuery( "<link>", { 
 					rel: "stylesheet", 
 					type: "text/css", 
-					href: IriSP.lib.cssjQueryUI,
+					href: libs.cssjQueryUI,
 					'class': "dynamic_css"
 				} );
 				var css_link_custom = IriSP.jQuery( "<link>", { 
 					rel: "stylesheet", 
 					type: "text/css", 
-					href: IriSP.config.gui.css,
+					href: customCssPath,
 					'class': "dynamic_css"
 				} );
 				
@@ -168,16 +143,45 @@ IriSP.init = function ( config ) {
 				if ( $.browser.msie ) {
 					$( '.dynamic_css' ).clone().appendTo( 'head' );
 				}
+        
+        callback();
+      });
+    }
+};
+
+IriSP.init = function ( config ) {		
+		if ( config === null ) {
+			IriSP.config 			 = IriSP.configDefault;
+		} else {
+			
+			IriSP.config 			 = config;
+						
+			if ( IriSP.config.player.params == null ) {
+				IriSP.config.player.params = IriSP.configDefault.player.params;
+			}
+			
+			if ( IriSP.config.player.flashvars == null ) {
+				IriSP.config.player.flashvars = IriSP.configDefault.player.flashvars;
+			}
+			
+			if ( IriSP.config.player.attributes == null ) {
+				IriSP.config.player.attributes = IriSP.configDefault.player.attributes;
+			}
+		}
+		
+		var metadataSrc 		 = IriSP.config.metadata.src;
+		var guiContainer		 = IriSP.config.gui.container;
+		var guiMode				 = IriSP.config.gui.mode;
+		var guiLdtShareTool		 = IriSP.LdtShareTool;
+		
+    IriSP.loadLibs(IriSP.lib, IriSP.config.gui.css, function() {
+    	IriSP.createPlayerChrome();			
+      /******* Load Metadata *******/
+      IriSP.getMetadata();	
+    });
 				
 				//__IriSP.trace("main","ready createMyHtml");
-				IriSP.createPlayerChrome();
-				
-				/******* Load Metadata *******/
-				IriSP.getMetadata();
-			
-			});
-		}
-
+						
 };
 
 
