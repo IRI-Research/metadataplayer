@@ -4,12 +4,24 @@
 
 IriSP.traceNum = 0;
 IriSP.trace = function( msg, value ) {
-
+/*
 	if( IriSP.config.gui.debug === true ) {
 		IriSP.traceNum += 1;
 		IriSP.jQuery( "<div>"+IriSP.traceNum+" - "+msg+" : "+value+"</div>" ).appendTo( "#Ldt-output" );
 	}
+*/
 };
+
+/* used in callbacks - because in callbacks we lose "this",
+   we need to have a special function which wraps "this" in 
+   a closure. This way, the 
+*/   
+IriSP.wrap = function (obj, fn) {
+  return function() {
+    args = [].slice.call(this, arguments);
+    fn.call(obj, args);
+  }
+}
 
 /* for ie compatibility
 if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
