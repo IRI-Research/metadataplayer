@@ -9,12 +9,15 @@ IriSP.DataLoader.prototype.get = function(url, callback) {
     callback(this._cache[url]);
   } else {
     /* we need a closure because this gets lost when it's called back */
+    IriSP.jQuery.get(url, callback);  
+    /*
     IriSP.jQuery.get(url, (function(obj) {      
                                return function(data) {
                                   obj._cache[url] = data;      
                                   callback(obj._cache[url]);
                                 }; 
                               })(this));
+    */
        
   }
 }
@@ -27,6 +30,14 @@ IriSP.Serializer = function(DataLoader, url) {
 
 IriSP.Serializer.prototype.serialize = function(data) { };
 IriSP.Serializer.prototype.deserialize = function(data) {};
+
+IriSP.Serializer.prototype.currentMedia = function() {  
+  return {"meta" : {"dc:duration" : 10000000}}; /* dummy object for unit testing */
+};
+
+IriSP.Serializer.prototype.sync = function(callback) {
+  callback.apply(this, []);  
+};
 
 IriSP.JSONSerializer = function(DataLoader, url) {
   IriSP.Serializer.call(this, DataLoader, url);
@@ -44,14 +55,20 @@ IriSP.JSONSerializer.prototype.deserialize = function(data) {
 
 IriSP.JSONSerializer.prototype.sync = function(callback) {
   /* we don't have to do much because jQuery handles json for us */
+  
+  /* a wrapper to get a closure because we lose this in callbacks */
   var wrapper = function(obj) {
     return function(data) {    
-      obj._data = data;
+      obj._data = data;            
       callback(data);
     }
   };
   
   this._DataLoader.get(this._url, wrapper(this));
+};
+
+IriSP.JSONSerializer.prototype.currentMedia = function() {  
+  return this._data.medias[0]; /* FIXME: don't hardcode it */
 };
 
 IriSP.SerializerFactory = function(DataLoader) {
