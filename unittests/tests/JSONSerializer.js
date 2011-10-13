@@ -13,7 +13,7 @@ function test_JSONSerializer() {
       equal(serializer.serialize(arr), JSON.stringify(arr), "assert that the outputted json is correct");
     });
     
-    test("sync() - callback should get called", function() {
+    test("sync()", function() {
       this.xhr = this.sandbox.useFakeXMLHttpRequest();
       this.requests = [];
       this.xhr.onCreate = function (request) {
@@ -37,4 +37,11 @@ function test_JSONSerializer() {
       deepEqual(ser._data, response_array, "the internal variable is initialized to the correct value");
     });
 
+    test("currentMedia should return the current media", function() {
+      var ser = new IriSP.JSONSerializer(this.dt, "/url");
+      /* FIXME: actually get something instead of monkey-patching the struct */
+      ser._data = {}
+      ser._data.medias = [0];
+      equal(ser.currentMedia(), 0, "currentMedia() returns the correct value");
+    });
 };
