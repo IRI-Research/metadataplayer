@@ -33,9 +33,6 @@ IriSP.createPlayerChrome = function(){
 		IriSP.jQuery(videoPlayer).appendTo("#"+IriSP.config.gui.container);
 	}
 	
-	/* FIXME : move it elsewhere */
-	IriSP.trace("__IriSP.createHtml",IriSP.jQuery.browser.msie+" "+IriSP.jQuery.browser.version);		
-	IriSP.trace("__IriSP.createHtml","end");
 	IriSP.jQuery("#Ldt-Annotations").width(width-(75*2));
 	IriSP.jQuery("#Ldt-Show-Arrow-container").width(width-(75*2));
 	IriSP.jQuery("#Ldt-ShowAnnotation-audio").width(width-10);
