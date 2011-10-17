@@ -24,10 +24,6 @@ Popcorn.player( "jwplayer", {
     media.play = function() {
       media.paused = false;
       media.dispatchEvent( "play" );
-      if ( dataLoaded ) {
-        media.dispatchEvent( "loadeddata" );
-        dataLoaded = false;
-      }
 
       media.dispatchEvent( "playing" );
       jwplayer( container.id ).play();
@@ -106,8 +102,8 @@ Popcorn.player( "jwplayer", {
 
     options.events = {
         onReady: initApi
-    };
-
+      };
+      
     jwplayer( container.id ).setup(options);
 
   }
