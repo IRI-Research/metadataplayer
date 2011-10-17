@@ -18,8 +18,8 @@ IriSP.trace = function( msg, value ) {
 */   
 IriSP.wrap = function (obj, fn) {
   return function() {
-    args = [].slice.call(this, arguments);
-    fn.call(obj, args);
+    var args = [].slice.call(this, arguments);
+    return fn.call(obj, args);
   }
 }
 
