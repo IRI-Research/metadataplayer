@@ -32,7 +32,6 @@ IriSP.Serializer.prototype.serialize = function(data) { };
 IriSP.Serializer.prototype.deserialize = function(data) {};
 
 IriSP.Serializer.prototype.currentMedia = function() {  
-  return {"meta" : {"dc:duration" : 10000000}}; /* dummy object for unit testing */
 };
 
 IriSP.Serializer.prototype.sync = function(callback) {
@@ -41,7 +40,7 @@ IriSP.Serializer.prototype.sync = function(callback) {
 
 IriSP.JSONSerializer = function(DataLoader, url) {
   IriSP.Serializer.call(this, DataLoader, url);
-}
+};
 
 IriSP.JSONSerializer.prototype = IriSP.Serializer;
 
