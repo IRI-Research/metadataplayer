@@ -41,11 +41,13 @@
 					};
 		
 		IriSP.loadLibs(IriSP.lib, config.gui.css, function() {});     
-		var pop = Popcorn.youtube("#LdtPlayer", "http://www.youtube.com/watch?v=QH2-TGUlwu4");    
+		var pop = Popcorn.youtube("#LdtPlayer", "http://www.youtube.com/watch?v=lFtNG1wZ4zU", {controls: 0});    
 		var dt = new IriSP.DataLoader();
 		var ser = new IriSP.JSONSerializer(dt, "../test.json");
 		var player = new IriSP.PlayerWidget(pop, config, ser);
-		ser.sync(IriSP.wrap(player, player.draw));
+		var annotationWidget = new IriSP.AnnotationsWidget(pop, config, ser);		
+		ser.sync(function() { player.draw();  annotationWidget.draw(); });
+		
 	});
 	</script>
 	

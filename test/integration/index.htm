@@ -41,11 +41,12 @@
 					};
 		
 		IriSP.loadLibs(IriSP.lib, config.gui.css, function() {});     
-		Popcorn = Popcorn("#video");    
+		pop = Popcorn("#video");    
 		dt = new IriSP.DataLoader();
 		ser = new IriSP.JSONSerializer(dt, "../test.json");
-		var player = new IriSP.PlayerWidget(Popcorn, config, ser);
-		ser.sync(IriSP.wrap(player, player.draw));
+		var player = new IriSP.PlayerWidget(pop, config, ser);
+		var annotationWidget = new IriSP.AnnotationsWidget(pop, config, ser);
+		ser.sync(function() { player.draw();  annotationWidget.draw(); });
 		});
 	</script>
 	
