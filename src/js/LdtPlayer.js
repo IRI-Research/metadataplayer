@@ -603,7 +603,7 @@ __IriSP.Ligne.prototype.checkTime = function(time){
 					IriSP.jQuery("#Ldt-SaKeywordText").html("Mots clefs : "+annotationTempo.htmlTags);
 					
 					//__IriSP.jQuery('#Ldt-ShowAnnotation').slideDown();
-					var startPourcent 	= annotationTempo.timeToPourcent((annotationTempo.begin*1+(annotationTempo.end*1-annotationTempo.begin*1)/2),annotationTempo.duration*1); 
+					var startPourcent = annotationTempo.timeToPourcent((annotationTempo.begin*1+(annotationTempo.end*1-annotationTempo.begin*1)/2),annotationTempo.duration*1); 
 					IriSP.jQuery("#Ldt-Show-Arrow").animate({left:startPourcent+'%'},1000);
 					IriSP.jQuery("#"+annotationTempo.id).animate({alpha:'100%'},1000);
 					//alert(startPourcent);
