@@ -9,7 +9,7 @@
 
 	<div style="width:650px;font-family: 'Trebuchet MS', 'Helvetica', 'Arial',  'Verdana', 'sans-serif';">
 	<h1>MetaDataPlayer </h1>
-	Test d'intégration du widget du player avec Popcorn.
+	Test d'intégration du widget du player avec Popcorn (jwplayer).
 	</div>
 	
 	
@@ -21,7 +21,8 @@
 	<script src="../../res/js/jquery-ui.min.js"></script>
 	<div id="LdtPlayer"></div>
 	
-	<script  type="text/javascript">	
+	<script  type="text/javascript">
+		$(document).ready(function() {
 		var config = {
 						metadata:{
 							format:'cinelab',
@@ -40,14 +41,33 @@
 					};
 		
 		IriSP.loadLibs(IriSP.lib, config.gui.css, function() {});     
-		Popcorn = Popcorn.youtube("#LdtPlayer", "http://www.youtube.com/watch?v=QH2-TGUlwu4");    
+		Popcorn = Popcorn("#video");    
 		dt = new IriSP.DataLoader();
-		ser = new IriSP.JSONSerializer(this.dt, "../test.json");
-		var player = new IriSP.PlayerWidget(this.Popcorn, this.config, this.ser);
+		ser = new IriSP.JSONSerializer(dt, "../test.json");
+		var player = new IriSP.PlayerWidget(Popcorn, config, ser);
 		ser.sync(IriSP.wrap(player, player.draw));
+		});
 	</script>
 	
+ <video id='video'
+    style="display:;width:300px"
+    controls
+    preload="auto">
 
-<!-- END  ################  ###################################### -->
+    <source id='mp4'
+      src="../trailer.mp4"
+      type='video/mp4; codecs="avc1, mp4a"'>
+
+    <source id='ogv'
+      src="../trailer.ogv"
+      type='video/ogg; codecs="theora, vorbis"'>
+      
+    <source id='webm'
+      src="../trailer.webm"
+      type='video/webm; codecs="vp8, vorbis"'>
+
+    <p>Your user agent does not support the HTML5 Video element.</p>
+
+  </video>
  </body>
  </html>
