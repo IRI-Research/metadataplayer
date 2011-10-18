@@ -1,18 +1,23 @@
 function test_serializer() {
-  module("Serializer basic tests");
+  module("Serializer basic tests", {setup: function() {
+    this.dt = new IriSP.DataLoader();
+    this.ser = new IriSP.Serializer(this.dt, "http://google.com");
+  }});
   
   test("init the serializer with a DataLoader and an url", function() {
-      var dt = new IriSP.DataLoader();
-      var ser = new IriSP.Serializer(dt, "http://google.com");
-      equal( ser._DataLoader, dt, "The dataloader reference is copied to the object." );
-      equal( ser._url, "http://google.com", "The url has been copied as well." );
+      
+      equal( this.ser._DataLoader, this.dt, "The dataloader reference is copied to the object." );
+      equal( this.ser._url, "http://google.com", "The url has been copied as well." );
+      equal( this.ser._data, undefined, "The serializer data is not defined." );
   });
   
   test("check that the serialize and deserialize abstract functions are defined", function() {
-      var dt = new IriSP.DataLoader();
-      var ser = new IriSP.Serializer(dt);
-      equal(ser.serialize(), undefined, ".serialize is defined");
-      equal(ser.deserialize(), undefined, ".deserialize is defined");
+      notEqual(this.ser.serialize, undefined, ".serialize is defined");
+      notEqual(this.ser.deserialize, undefined, ".deserialize is defined");
+  });
+  
+  test("check if currentMedia() is defined", function() {
+  
   });
 
 };
