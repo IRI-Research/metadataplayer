@@ -74,6 +74,9 @@
 	        <filelist dir="../../src/js" files="LdtPlayer.js" />
 	    	<filelist dir="../../build" files="compiled_templates.js" />
 	    	<filelist dir="../../src/js" files="mustache.js utils.js data.js site.js ui.js widgets.js" />
+			<fileset dir="../../src/js/widgets" casesensitive="yes">
+					<include name="**/*.js"/>					
+			</fileset>
 	    	<filterchain>
 	    	    <deletecharacters chars="&#xFEFF;" />
 	    	</filterchain>
