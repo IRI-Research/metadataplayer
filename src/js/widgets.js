@@ -19,9 +19,10 @@ IriSP.PlayerWidget = function(Popcorn, config, Serializer) {
   
 };
 
-IriSP.PlayerWidget.prototype = IriSP.Widget;
+IriSP.PlayerWidget.prototype = new IriSP.Widget;
 
 IriSP.PlayerWidget.prototype.draw = function() {
+  var _this = this;
   var width = this._config.gui.width;
 	var height = this._config.gui.height;
 	var heightS = this._config.gui.height-20;
@@ -58,12 +59,6 @@ IriSP.PlayerWidget.prototype.draw = function() {
 	if(this._config.gui.mode=='radio'){
 		IriSP.jQuery("#Ldt-load-container").attr("width",this._config.gui.width);
 	}
-	// Show or not the output
-	if(this._config.gui.debug===true){
-		IriSP.jQuery("#Ldt-output").show();
-	} else {
-		IriSP.jQuery("#Ldt-output").hide();
-	}
 	  		
   IriSP.jQuery( "#Ldt-controler" ).show();
   //__IriSP.jQuery("#Ldt-Root").css('display','visible');
@@ -79,14 +74,16 @@ IriSP.PlayerWidget.prototype.draw = function() {
     min: 1,
     max: this._serializer.currentMedia().meta["dc:duration"]/1000,//1:54:52.66 = 3600+3240+
     step: 0.1,
-    slide: function(event, ui) {
-      
-      //__IriSP.jQuery("#amount").val(ui.value+" s");
-      //player.sendEvent('SEEK', ui.value)
-      IriSP.MyApiPlayer.seek(ui.value);
-      //changePageUrlOffset(ui.value);
-      //player.sendEvent('PAUSE')
+    slide: function(event, ui) {     
+      _this._Popcorn.currentTime(ui.value);
+    },
+    /* change event is similar to slide, but it happens when the slider position is 
+       modified programatically. We use it for unit tests */
+    /*   
+    change: function(event, ui) {     
+      _this._Popcorn.currentTime(ui.value);
     }
+    */
   } );
   
   IriSP.jQuery("#amount").val(IriSP.jQuery("#slider-range-min").slider("value")+" s");
@@ -95,7 +92,7 @@ IriSP.PlayerWidget.prototype.draw = function() {
       primary: 'ui-icon-play'
     },
     text: false
-  }).click(IriSP.wrap(this, this.playEvent))
+  }).click(function() { _this.playHandler.call(_this); })
     .next().button({
     icons: {
       primary: 'ui-icon-seek-next'
@@ -113,7 +110,7 @@ IriSP.PlayerWidget.prototype.draw = function() {
       primary: 'ui-icon-volume-on'
     },
      text: false
-  });
+  }).click(function() { _this.muteHandler.call(_this); } );
 
   // /!\ PB A MODIFIER 
   //__IriSP.MyTags.draw();
@@ -124,21 +121,86 @@ IriSP.PlayerWidget.prototype.draw = function() {
   if( this._config.gui.mode=="radio" & IriSP.jQuery.browser.msie != true ) {
     IriSP.jQuery( "#Ldtplayer1" ).attr( "height", "0" );
   }
-  IriSP.trace( "__IriSP.createInterface" , "3" );
 
-  IriSP.trace( "__IriSP.createInterface", "END" );
+  this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
+};
+
+IriSP.PlayerWidget.prototype.playHandler = function() {
+  var status = this._Popcorn.media.paused;
   
+  if ( status == true ){        
+    this._Popcorn.play();
+    IriSP.jQuery( ".ui-icon-play" ).css( "background-position", "-16px -160px" );
+    IriSP.jQuery( "#ldt-CtrlPlay" ).attr("title", "Play");
+  } else {
+    this._Popcorn.pause();
+    IriSP.jQuery( ".ui-icon-play" ).css( "background-position","0px -160px" );
+    IriSP.jQuery( "#ldt-CtrlPlay" ).attr("title", "Pause");
+  }  
+};
+
+IriSP.PlayerWidget.prototype.muteHandler = function() {
+  if (!this._Popcorn.muted()) {    
+      this._Popcorn.mute(true);
+      IriSP.jQuery(" .ui-icon-volume-on ").css("background-position", "-130px -160px");    
+    } else {
+      this._Popcorn.mute(false);
+      IriSP.jQuery( ".ui-icon-volume-on" ).css("background-position", "-144px -160px" );
+    }
+};
+
+IriSP.PlayerWidget.prototype.sliderUpdater = function() {  
+  var currentPosition = this._Popcorn.currentTime();   
+	IriSP.jQuery( "#slider-range-min" ).slider( "value", currentPosition);		
+};
+
+
+IriSP.AnnotationsWidget = function(Popcorn, config, Serializer) {
+  IriSP.Widget.call(this, Popcorn, config, Serializer);
   
 };
 
-IriSP.PlayerWidget.prototype.playEvent = function() {
-   var status = this._Popcorn.media.paused;
-      
-  if ( status == true ){        
-    this._Popcorn.play();
-  } else {
-    this._Popcorn.pause();
-  }
+
+IriSP.AnnotationsWidget.prototype = new IriSP.Widget;
+
+IriSP.AnnotationsWidget.prototype.clear = function() {
+    IriSP.jQuery("#Ldt-SaTitle").text("");
+    IriSP.jQuery("#Ldt-SaDescription").text("");
+    IriSP.jQuery("#Ldt-SaKeywordText").text("");
+};
+
+IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
+    var title = annotation.content.title;
+    var description = annotation.content.description;
+    var keywords =  "" // FIXME;
+    var begin = +annotation.begin;
+    var end = +annotation.end;
+    var duration = +this._serializer.currentMedia().meta["dc:duration"];
+
+    IriSP.jQuery("#Ldt-SaTitle").text(title);
+    IriSP.jQuery("#Ldt-SaDescription").text(description);
+    IriSP.jQuery("#Ldt-SaKeywordText").text("Mots clefs : "+ keywords);
+		var startPourcent = parseInt(Math.round((begin*1+(end*1-begin*1)/2) / (duration*1)) / 100); 
+		IriSP.jQuery("#Ldt-Show-Arrow").animate({left:startPourcent+'%'},1000);
+		//IriSP.jQuery("#"+annotationTempo.id).animate({alpha:'100%'},1000);
+
+};
+
+IriSP.AnnotationsWidget.prototype.draw = function() {
+  var _this = this;
+
+  var annotationMarkup = Mustache.to_html(IriSP.annotationWidget_template, {"share_template" : IriSP.share_template});
+	IriSP.jQuery("#Ldt-Ligne").append(annotationMarkup);
+  console.dir(this._serializer);
   
-  this._Popcorn.trigger("mulz");
+  var annotations = this._serializer._data.annotations;
+	for (i in annotations) {    
+    var annotation = annotations[i];
+    var begin = Math.round((+ annotation.begin) / 1000);
+    var end = Math.round((+ annotation.end) / 1000);
+
+    this._Popcorn = this._Popcorn.code({start: begin, end: end, 
+                                        onStart: function() { console.log(begin, end); _this.displayAnnotation(annotation); }, 
+                                        onEnd: function() { console.log("end", end); }});                                             
+  }
 };
