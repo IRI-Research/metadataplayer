@@ -200,7 +200,7 @@ IriSP.AnnotationsWidget.prototype.draw = function() {
     var end = Math.round((+ annotation.end) / 1000);
 
     this._Popcorn = this._Popcorn.code({start: begin, end: end, 
-                                        onStart: function() { console.log(begin, end); _this.displayAnnotation(annotation); }, 
-                                        onEnd: function() { console.log("end", end); }});                                             
+                                        onStart: 
+                                          function(annotation) { return function() { _this.displayAnnotation(annotation); } }(annotation) });                                             
   }
 };
