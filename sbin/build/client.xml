@@ -16,7 +16,7 @@
 	<delete dir="${basedir}/../../build" />
 	<mkdir  dir="${basedir}/../../build" />
 		
-	<target name="makeall" depends="concatenate,compile" />
+	<target name="makeall" depends="concatenate,compile,jslint" />
 	
 	<target name="make_templates" description="Concatenate the html templates together">
 	    <for param="file">
@@ -78,5 +78,21 @@
 	    	    <deletecharacters chars="&#xFEFF;" />
 	    	</filterchain>
 	    </concat>
+	</target>
+	
+	<property name="rhino.jar" value="${basedir}/../res/rhino.jar"/>  
+	<property name="jslint-wrapper.js" value="${basedir}/../res/jslint-wrapper.js"/>
+	<property name="jslint.js" value="${basedir}/../res/jslint.js"/>
+	
+	<target name="jslint" description="Run jslint on the files" depends="concatenate">
+		<apply executable="java" parallel="false">  
+			<filelist dir="../../build">  
+				<file name="LdtPlayer-release.js"/>  
+			</filelist>  
+			<arg line="-jar"/>  
+			<arg path="${rhino.jar}"/>  
+			<arg path="${jslint-wrapper.js}"/>  
+			<arg path="${jslint.js}"/>  
+		</apply>
 	</target>
 </project>
