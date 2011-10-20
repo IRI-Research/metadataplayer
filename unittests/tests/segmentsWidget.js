@@ -34,20 +34,23 @@ function test_segments_widget() {
     var widget = new IriSP.SegmentsWidget(this.Popcorn, this.config, this.ser);    
     widget.draw();
   
-    console.dir(IriSP.jQuery("#Ldt-Annotations").get(0));
     equal(IriSP.jQuery("#Ldt-Annotations").length, 1, "test if the div has been added correctly");
     equal(IriSP.jQuery("#Ldt-Annotations").children().length, this.ser._data.annotations.length, "test if children have been added correctly");     
   });
   
-  test("test annotation display function", function() {
-  /*
-    var widget = new IriSP.AnnotationsWidget(this.Popcorn, this.config, this.ser);    
+  test("test click on a random segment", function() {
+    var widget = new IriSP.SegmentsWidget(this.Popcorn, this.config, this.ser);
     widget.draw();
-    var annotation = {content: {"title": "title", "description": "description", "keywords": "keywords"}};
-    widget.displayAnnotation(annotation);
-    equal(IriSP.jQuery("#Ldt-SaTitle").text(), "title", "title set correctly");
-    equal(IriSP.jQuery("#Ldt-SaDescription").text(), "description", "description set correctly");
-    equal(IriSP.jQuery("#Ldt-SaKeywordText").text(), "Mots clefs : ", "keywords field set correctly");
-  */
+    
+    var spy_callback = this.spy();
+    var spy_handler = sinon.spy(widget, "clickHandler");
+    this.Popcorn.listen("timeupdate", spy_callback);    
+    
+    var selector = IriSP.jQuery("#Ldt-Annotations :not(first-child)");
+    var random = Math.round(Math.random() * selector.length);
+    selector.eq(random).click();
+        
+    ok(spy_callback.called, "the currenttime was changed");         
+    ok(spy_handler.called, "handling function has been called");           
   });
 }; 
