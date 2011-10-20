@@ -55,4 +55,4 @@ IriSP.SegmentsWidget.prototype.draw = function() {
 IriSP.SegmentsWidget.prototype.clickHandler = function(annotation) {
   var begin = Math.round((+ annotation.begin) / 1000);
   this._Popcorn.currentTime(begin)
-}
+};
