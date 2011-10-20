@@ -30,7 +30,7 @@
 							load:'json'},
 						gui:{
 							width:650,
-							height:1,
+							height:64,
 							mode:'radio',
 							container:'LdtPlayer',
 							debug:true,
@@ -40,18 +40,27 @@
 							src:'../res/swf/player.swf'}
 					};
 		
-		IriSP.loadLibs(IriSP.lib, config.gui.css, function() {});     
-		var pop = Popcorn.youtube("#LdtPlayer", "http://www.youtube.com/watch?v=lFtNG1wZ4zU", {controls: 0});    
+		IriSP.loadLibs(IriSP.lib, config.gui.css, function() {});
+		
+		templ = "width: {{width}}px; height: {{height}}px; margin-bottom: 5px;";
+		var str = Mustache.to_html(templ, {width: config.gui.width, height: config.gui.height});    
+		// Popcorn.youtube wants us to specify the size of the player in the style attribute of its container div.
+		IriSP.jQuery("#Ldt-PlaceHolder").attr("style", str);
+		
+		var pop = Popcorn.youtube("#Ldt-PlaceHolder", "http://www.youtube.com/watch?v=lFtNG1wZ4zU", {controls: 0});    
 		var dt = new IriSP.DataLoader();
 		var ser = new IriSP.JSONSerializer(dt, "../test.json");
 		var player = new IriSP.PlayerWidget(pop, config, ser);
-		var annotationWidget = new IriSP.AnnotationsWidget(pop, config, ser);		
-		ser.sync(function() { player.draw();  annotationWidget.draw(); });
+		var annotationWidget = new IriSP.AnnotationsWidget(pop, config, ser);
+		var segmentsWidget = new IriSP.SegmentsWidget(pop, config, ser);
+		ser.sync(function() { player.draw();  annotationWidget.draw(); segmentsWidget.draw();});
 		
 	});
 	</script>
-	
-
+<div id='Ldt-Root'>
+	<div id='Ldt-PlaceHolder'>
+	</div>
+</div>	
 <!-- END  ################  ###################################### -->
  </body>
  </html>
