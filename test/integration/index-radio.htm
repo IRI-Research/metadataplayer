@@ -51,8 +51,8 @@
 		ser2 = new IriSP.JSONSerializer(dt, "../test.json");
 		var player = new IriSP.PlayerWidget(pop, config, ser);
 		var annotationWidget = new IriSP.AnnotationsWidget(pop, config, ser);
-		
-		ser.sync(function() { player.draw();  annotationWidget.draw(); });
+		var segmentsWidget = new IriSP.SegmentsWidget(pop, config, ser);
+		ser.sync(function() { player.draw();  annotationWidget.draw(); segmentsWidget.draw();});
 		});
 	</script>
 	
