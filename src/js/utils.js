@@ -23,6 +23,11 @@ IriSP.wrap = function (obj, fn) {
   }
 }
 
+/* convert a time to a percentage in the media */
+IriSP.timeToPourcent = function(time,timetotal){
+	return (parseInt(Math.round(time/timetotal*100)));
+};
+
 /* for ie compatibility
 if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
    Object.defineProperty=function(obj,prop,desc) {
