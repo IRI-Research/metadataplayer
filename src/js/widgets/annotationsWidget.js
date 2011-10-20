@@ -34,7 +34,6 @@ IriSP.AnnotationsWidget.prototype.draw = function() {
 
   var annotationMarkup = Mustache.to_html(IriSP.annotationWidget_template, {"share_template" : IriSP.share_template});
 	IriSP.jQuery("#Ldt-Ligne").append(annotationMarkup);
-  console.dir(this._serializer);
   
   var annotations = this._serializer._data.annotations;
 	for (i in annotations) {    
