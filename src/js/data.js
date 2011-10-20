@@ -58,7 +58,13 @@ IriSP.JSONSerializer.prototype.sync = function(callback) {
   /* a wrapper to get a closure because we lose this in callbacks */
   var wrapper = function(obj) {
     return function(data) {    
-      obj._data = data;            
+      obj._data = data;
+      // sort the data too
+      obj._data["annotations"].sort(function(a, b) 
+          { var a_begin = +a.begin;
+            var b_begin = +b.begin;
+            return a_begin - b_begin;
+          });
       callback(data);
     }
   };

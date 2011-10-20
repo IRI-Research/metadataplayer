@@ -20,7 +20,17 @@ function test_JSONSerializer() {
         this.requests.push(request);
       };
       
-      var response_array = [{ media: 12, content: "Hey there" }];
+      var response_array = { media: 12, content: "Hey there", 
+                             annotations: [{"begin": "32", "end" : 64}, {"begin": "08", "end" : 27},{"begin": "02", "end" : 61}]  };
+
+      /* sorted array is our comparision array */
+      var sorted_array = IriSP.jQuery.extend({}, response_array);
+      sorted_array.annotations.sort(function(a, b) 
+          { var a_begin = +a.begin;
+            var b_begin = +b.begin;
+            return a_begin - b_begin;
+          });
+          
       var response_string = JSON.stringify(response_array);
   
       var spy_callback = this.spy();
@@ -35,6 +45,18 @@ function test_JSONSerializer() {
       ok(spy_callback.calledOnce, "callback called");
       ok(spy_callback.calledWith(response_array), "callback called with correct value");
       deepEqual(ser._data, response_array, "the internal variable is initialized to the correct value");
+      
+      var order_preserved = true;
+      
+      var i = 0;
+      for(i = 0; i < ser._data.length - 1; i++) {
+        if (ser._data.annotations[i].begin > ser._data.annotations[i+1].begin) {
+            order_preserved = false;
+            break;
+        }
+      }
+      
+      ok(order_preserved, "the annotation sub-array is sorted by begin time");
     });
 
     test("currentMedia should return the current media", function() {
@@ -43,5 +65,5 @@ function test_JSONSerializer() {
       ser._data = {}
       ser._data.medias = [0];
       equal(ser.currentMedia(), 0, "currentMedia() returns the correct value");
-    });
+    });    
 };
