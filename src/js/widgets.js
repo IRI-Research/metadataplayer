@@ -10,8 +10,8 @@ IriSP.Widget = function(Popcorn, config, Serializer) {
   this._config = config;  
   this._serializer = Serializer;
   
-  if (config.hasOwnProperty("divId")) {
-     this._id = config.divId;
+  if (config.hasOwnProperty("gui") && config.gui.hasOwnProperty("container")) {
+     this._id = config.gui.container;
      this.selector = IriSP.jQuery("#" + this._id);
   }  
 };
