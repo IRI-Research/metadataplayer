@@ -32,9 +32,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
           {"title" : divTitle, "begin" : begin, "end" : end,
           "description": annotation.content.description});
     
-        
-    IriSP.jQuery(annotationTemplate).appendTo("#Ldt-Annotations");
-    // TOOLTIP BUG ! 
+    IriSP.jQuery("#Ldt-Annotations").append(annotationTemplate);    
     
     IriSP.jQuery("#" + id).tooltip({ effect: 'slide'});
     
