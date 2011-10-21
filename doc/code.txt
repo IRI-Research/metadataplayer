@@ -1,0 +1,13 @@
+Metadataplayer : Code et structure
+==================================
+
+Ce document présente briévement la conception du metadataplayer.
+
+Annexe: Idiomes
+===============
+
+Le code utilise quelques idiomes. Les voici, sans classement particulier :
+- les membres de données privées d'un objet sont précedés d'un underscore. Ils ne sont pas censés être manipulés par des objets extérieurs, hormis 
+  par les tests unitaires.
+- tous les widgets et certains autres objets possèdent un attribut selector, qui est en fait une instance de jQuery appellée sur le div contenant
+  l'objet en question.
