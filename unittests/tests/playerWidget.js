@@ -7,7 +7,8 @@ function test_player_widget() {
     
     this.dt = new IriSP.DataLoader();
     this.ser = new IriSP.MockSerializer(this.dt, "/url"); /* dummy serializer */
-       
+    this.lay = new IriSP.LayoutManager('widget-div');
+    
     this.config = {
 						metadata:{
 							format:'cinelab',
