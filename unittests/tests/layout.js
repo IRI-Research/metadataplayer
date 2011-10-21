@@ -17,7 +17,7 @@ function test_layout() {
   });
   
   test("test custom init of layout manager", function() {
-    var lay = new IriSP.LayoutManager({divId: "myDiv", width: 327, height: 542});
+    var lay = new IriSP.LayoutManager({container: "myDiv", width: 327, height: 542});
     equal(lay._div, "myDiv", "the default div is set correctly");
     equal(lay._width, 327, "the default width is set correctly");
     equal(lay._height, 542, "the default height is set correctly");
