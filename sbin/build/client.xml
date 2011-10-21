@@ -73,7 +73,7 @@
 	        <filelist dir="../../src/js/libs" files="popcorn.js popcorn.youtube.js popcorn.code.js popcorn.jwplayer.js jwplayer.js mustache.js" />
 	        <filelist dir="../../src/js" files="LdtPlayer.js" />
 	    	<filelist dir="../../build" files="compiled_templates.js" />
-	    	<filelist dir="../../src/js" files="utils.js data.js site.js ui.js widgets.js layout.js" />
+	    	<filelist dir="../../src/js" files="utils.js data.js site.js ui.js widgets.js layout.js init.js" />
 			<fileset dir="../../src/js/widgets" casesensitive="yes">
 					<include name="**/*.js"/>					
 			</fileset>
