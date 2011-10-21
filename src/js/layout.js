@@ -9,7 +9,7 @@ IriSP.LayoutManager = function(options) {
     this._Popcorn = null;
     this._widgets = [];
     
-    this._div = "#LdtPlayer";
+    this._div = "LdtPlayer";
     this._width = 640;
     this._height = 480;
     
@@ -30,8 +30,11 @@ IriSP.LayoutManager = function(options) {
       this._height = options.height;
     } 
     
-    IriSP.jQuery(this._div).css("width", this._width);
-    IriSP.jQuery(this._div).css("height", this._height);
+    /* this is a shortcut */
+    this.selector = IriSP.jQuery("#" + this._div);
+    
+    this.selector.css("width", this._width);
+    this.selector.css("height", this._height);
 };
 
 /* we need this special setter because of a chicken and egg problem :
@@ -44,3 +47,10 @@ IriSP.LayoutManager.prototype.setPopcornInstance = function(popcorn) {
     /* FIXME - don't forget to add the popcorn messages handlers there */
 }
 
+IriSP.LayoutManager.prototype.createDiv = function() {
+    var newDiv = Popcorn.guid(this._div + "_widget_");
+    this._widgets.push(newDiv);    
+    this.selector.append("<div id='" + newDiv + "'></div");
+    
+    return newDiv;
+};

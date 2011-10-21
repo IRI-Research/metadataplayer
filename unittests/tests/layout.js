@@ -8,23 +8,30 @@ function test_layout() {
   
   test("test the default initialization of layout manager", function() {
       var lay = new IriSP.LayoutManager();
-      equal(lay._div, "#LdtPlayer", "the default div is set correctly");
+      equal(lay._div, "LdtPlayer", "the default div is set correctly");
       equal(lay._width, 640, "the default width is set correctly");
       equal(lay._height, 480, "the default height is set correctly");
       
-      console.log(IriSP.jQuery(lay._div).css("width"));
-      equal(IriSP.jQuery(lay._div).css("width"), lay._width + "px", "div width is set correctly");
-      equal(IriSP.jQuery(lay._div).css("height"), lay._height + "px", "div height is set correctly");
+      equal(IriSP.jQuery("#" + lay._div).css("width"), lay._width + "px", "div width is set correctly");
+      equal(IriSP.jQuery("#" + lay._div).css("height"), lay._height + "px", "div height is set correctly");
   });
   
   test("test custom init of layout manager", function() {
-    var lay = new IriSP.LayoutManager({divId: "#myDiv", width: 327, height: 542});
-    equal(lay._div, "#myDiv", "the default div is set correctly");
+    var lay = new IriSP.LayoutManager({divId: "myDiv", width: 327, height: 542});
+    equal(lay._div, "myDiv", "the default div is set correctly");
     equal(lay._width, 327, "the default width is set correctly");
     equal(lay._height, 542, "the default height is set correctly");
     
-    equal(IriSP.jQuery(lay._div).css("width"), lay._width + "px", "div width is set correctly");
-    equal(IriSP.jQuery(lay._div).css("height"), lay._height + "px", "div height is set correctly");
+    equal(IriSP.jQuery("#" + lay._div).css("width"), lay._width + "px", "div width is set correctly");
+    equal(IriSP.jQuery("#" + lay._div).css("height"), lay._height + "px", "div height is set correctly");
+  });
+  
+  test("test widget div creation", function() {
+    var lay = new IriSP.LayoutManager({});
+    var divId = lay.createDiv();
+    
+    equal(lay.selector.children("#" + divId).length, 1, "check that a subdiv is created");
+    
   });
   
 };
