@@ -2,6 +2,9 @@ IriSP.PlayerWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   
 };
+
+IriSP.PlayerWidget.prototype = new IriSP.Widget();
+
 IriSP.PlayerWidget.prototype.draw = function() {
   var _this = this;
   var width = this._config.gui.width;
