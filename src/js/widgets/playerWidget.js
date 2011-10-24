@@ -6,13 +6,13 @@ IriSP.PlayerWidget.prototype = new IriSP.Widget();
 
 IriSP.PlayerWidget.prototype.draw = function() {
   var _this = this;
-  var width = this._config.gui.width;
-	var height = this._config.gui.height;
-	var heightS = this._config.gui.height-20;
+  var width = this.width;
+	var height = this.height;
+	var heightS = this.height-20;
 		
-	if (this._config.gui.mode=="radio") {
+	if (this._config.mode=="radio") {
 
-		//IriSP.jQuery( "#"+this._config.gui.container ).before(IriSP.search_template);
+		//IriSP.jQuery( "#"+this._config.container ).before(IriSP.search_template);
 		var radioPlayer = Mustache.to_html(IriSP.radio_template, {"share_template" : IriSP.share_template});
     this.selector.append(radioPlayer);		
     
@@ -22,7 +22,7 @@ IriSP.PlayerWidget.prototype.draw = function() {
 			//__IriSP.jQuery("#LdtPlayer").attr("margin-top","50px");
 			this.selector.children("#Ldt-Root").css("padding-top","25px");			
 		}
-	} else if (this._config.gui.mode == "video") {
+	} else if (this._config.mode == "video") {
 	
 		var videoPlayer = Mustache.to_html(IriSP.video_template, {"share_template" : IriSP.share_template, "heightS" : heightS});
     this.selector.append(videoPlayer);		
@@ -39,8 +39,8 @@ IriSP.PlayerWidget.prototype.draw = function() {
 	
   this.selector.children("#Ldt-ShowAnnotation-audio").append(IriSP.annotation_loading_template);	
 
-	if(this._config.gui.mode=='radio'){
-		this.selector.children("#Ldt-load-container").attr("width",this._config.gui.width);
+	if(this._config.mode=='radio'){
+		this.selector.children("#Ldt-load-container").attr("width",this.width);
 	}
 	  		
   this.selector.children("#Ldt-controler").show();
@@ -99,7 +99,7 @@ IriSP.PlayerWidget.prototype.draw = function() {
   
   this.selector.children("#Ldt-load-container").hide();
   
-  if( this._config.gui.mode=="radio" & IriSP.jQuery.browser.msie != true ) {
+  if( this._config.mode=="radio" & IriSP.jQuery.browser.msie != true ) {
     IriSP.jQuery( "#Ldtplayer1" ).attr( "height", "0" );
   }
 
