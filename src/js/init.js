@@ -85,10 +85,10 @@ IriSP.configureWidgets = function (popcornInstance, guiOptions) {
     var arr = IriSP.jQuery.extend({}, widget);
     arr.container = container;
     
-    var serializer = serialFactory.getSerializer(widget.metadata);
-
+    var serializer = serialFactory.getSerializer(widget.metadata);    
+    
     // instantiate the object passed as a string
-    var widget = new IriSP[widget.type](popcornInstance, widget, serializer);    
+    var widget = new IriSP[widget.type](popcornInstance, arr, serializer);    
     serializer.sync(function() { widget.draw() });
     ret_widgets.push(widget);
   };
