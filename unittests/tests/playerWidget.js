@@ -10,18 +10,12 @@ function test_player_widget() {
     this.lay = new IriSP.LayoutManager('widget-div');
     
     this.config = {
-						metadata:{
-							format:'cinelab',
-							src:'test.json',
-							load:'json'},
-						gui:{
 							width:650,
 							height:1,
 							mode:'radio',
 							container:'widget-div',
 							debug:true,
-							css:'../src/css/LdtPlayer.css'},
-					};
+							css:'../src/css/LdtPlayer.css'}					
     },
   teardown: function() {
     /* free the popcorn object because it has signal handlers attached to it */
