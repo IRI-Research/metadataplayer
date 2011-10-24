@@ -10,10 +10,22 @@ IriSP.Widget = function(Popcorn, config, Serializer) {
   this._config = config;  
   this._serializer = Serializer;
   
-  if (config.hasOwnProperty("gui") && config.gui.hasOwnProperty("container")) {
-     this._id = config.gui.container;
+  if (config.hasOwnProperty("container")) {
+     this._id = config.container;
      this.selector = IriSP.jQuery("#" + this._id);
-  }  
+  }
+
+  if (config.hasOwnProperty("width")) {
+     // this.width and not this._width because we consider it public.
+     this.width = config.width;     
+  }
+  
+  if (config.hasOwnProperty("height")) {
+     // this.width and not this._width because we consider it public.
+     this.height = config.height;     
+  }
+  
+  
 };
 
 IriSP.Widget.prototype.draw = function() {

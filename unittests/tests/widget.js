@@ -10,7 +10,7 @@ function test_widget() {
   );
   
   test("test initialisation", function() {
-    var config = { gui : { container: "mydiv"} };
+    var config = { container: "mydiv", width: 640, height: 480};
     var wid = new IriSP.Widget(this.Popcorn, config, this.ser);
     deepEqual(wid._config, config, "Check if the parent div is set correctly");
     ok(wid.selector, "Check if the jquery selector is set");
