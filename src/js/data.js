@@ -34,7 +34,7 @@ IriSP.Serializer.prototype.deserialize = function(data) {};
 IriSP.Serializer.prototype.currentMedia = function() {  
 };
 
-IriSP.Serializer.prototype.sync = function(callback) {
+IriSP.Serializer.prototype.sync = function(callback) {  
   callback.apply(this, []);  
 };
 
@@ -42,13 +42,19 @@ IriSP.SerializerFactory = function(DataLoader) {
   this._dataloader = DataLoader;
 };
 
-IriSP.SerializerFactory.prototype.getSerializer = function(config) {
+IriSP.SerializerFactory.prototype.getSerializer = function(metadataOptions) {
   /* This function returns serializer set-up with the correct
-     configuration
+     configuration - takes a metadata struct describing the metadata source
   */
-  switch(config.metadata.load) {
+  switch(metadataOptions.type) {
     case "json":
-      return new IriSP.JSONSerializer(this._dataloader, config.metadata.src);
+      return new IriSP.JSONSerializer(this._dataloader, metadataOptions.src);
+      break;
+    
+    case "dummy": /* only used for unit testing - not defined in production */
+      return new IriSP.MockSerializer(this._dataloader, metadataOptions.src);
+      break;
+      
     default:
       return undefined;
   }

@@ -1,7 +1,7 @@
 /* mock serializer, for unit testing. This file is separated from data.js
    because the stub data is huge an we don't want to ship it with the rest
    of the app */
-   
+
 IriSP.MockSerializer = function(DataLoader, url) {
   IriSP.Serializer.call(this, DataLoader, url);
 
@@ -1461,6 +1461,8 @@ IriSP.MockSerializer = function(DataLoader, url) {
       ]
 };
 };
+
+IriSP.MockSerializer.prototype = new IriSP.Serializer();   
 
 IriSP.MockSerializer.prototype.currentMedia = function() {
   return this._data.medias[0];

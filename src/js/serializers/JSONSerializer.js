@@ -3,7 +3,7 @@ IriSP.JSONSerializer = function(DataLoader, url) {
   IriSP.Serializer.call(this, DataLoader, url);
 };
 
-IriSP.JSONSerializer.prototype = IriSP.Serializer;
+IriSP.JSONSerializer.prototype = new IriSP.Serializer();
 
 IriSP.JSONSerializer.prototype.serialize = function(data) {
   return JSON.stringify(data);
@@ -15,7 +15,7 @@ IriSP.JSONSerializer.prototype.deserialize = function(data) {
 
 IriSP.JSONSerializer.prototype.sync = function(callback) {
   /* we don't have to do much because jQuery handles json for us */
-  
+
   /* a wrapper to get a closure because we lose this in callbacks */
   var wrapper = function(obj) {
     return function(data) {    
