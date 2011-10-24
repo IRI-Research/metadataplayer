@@ -8,19 +8,19 @@ exemple json configuration:
 							container:'LdtPlayer',
 							css:'../../src/css/LdtPlayer.css',
               widgets: [
-                {type: IriSP.PlayerWidget, // please note that type refers directly to the constructor of the widget.
+                {type: "IriSP.PlayerWidget", // please note that type refers directly to the constructor of the widget.
                  metadata:{
                   format:'cinelab',
                   src:'test.json',
                   load:'json'}
                 },
-               {type: IriSP.SegmentsWidget, 
+               {type: "IriSP.SegmentsWidget", 
                  metadata:{
                   format:'cinelab',
                   src:'test.json',
                   load:'json'}
                 },
-               {type: IriSP.AnnotationsWidget, 
+               {type: "IriSP.AnnotationsWidget",                
                  metadata:{
                   format:'cinelab',
                   src:'test.json',
@@ -29,7 +29,7 @@ exemple json configuration:
               ]
 						player:{
 							type:'jwplayer', // player type
-              
+              container: '#PopcornContainer'
               // the rest is player-dependent configuration options.
               file : "video/franceculture/franceculture_retourdudimanche20100620.flv", 
               streamer: "rtmp://media.iri.centrepompidou.fr/ddc_player/", 
@@ -46,59 +46,52 @@ exemple json configuration:
 IriSP.configurePopcorn = function (options) {
     var pop;
     
-    switch(options.player.type) {
+    switch(options.type) {
       /*
         todo : dynamically create the div/video tag which
         will contain the video.
       */
       case "html5":
-           //pop = Popcorn(
+           pop = Popcorn(options.container);
         break;
+        
+      case "jwplayer":
+          var opts = IriSP.jQuery.extend({}, options);
+          delete opts.container;
+          pop = Popcorn.jwplayer(options.container, "", opts);
+        break;
+        
+      default:
+        pop = undefined;
     };
+    
+    return pop;
 };
 
-IriSP.configureWidgets = function (guiOptions) {
+IriSP.configureWidgets = function (popcornInstance, guiOptions) {
 
   var dt = new IriSP.DataLoader();
+  var serialFactory = new IriSP.SerializerFactory(dt);
   
-  var params = {width: guiOptions.width, height: guiOptions.height, 
-  var lay = new LayoutManager(params);
+  var params = {width: guiOptions.width, height: guiOptions.height};
+  var lay = new IriSP.LayoutManager(params);
   
-  for (widget in widgets) {
+  var ret_widgets = [];
+  
+  for (index in guiOptions.widgets) {    
+    var widget = guiOptions.widgets[index];
     var container = lay.createDiv();
+        
+    var arr = IriSP.jQuery.extend({}, widget);
+    arr.container = container;
     
+    var serializer = serialFactory.getSerializer(widget.metadata);
+
+    // instantiate the object passed as a string
+    var widget = new IriSP[widget.type](popcornInstance, widget, serializer);    
+    serializer.sync(function() { widget.draw() });
+    ret_widgets.push(widget);
   };
-};
-
-IriSP.initInstance = function ( config ) {		
-		if ( config === null ) {
-			config = IriSP.configDefault;
-		
-    } else {			
-		
-
-			if (.config.player.params == null ) {
-				config.player.params = IriSP.configDefault.player.params;
-			}
-			
-			if ( config.player.flashvars == null ) {
-				config.player.flashvars = IriSP.configDefault.player.flashvars;
-			}
-			
-			if ( config.player.attributes == null ) {
-				config.player.attributes = IriSP.configDefault.player.attributes;
-			}
-		}
-		
-		var metadataSrc 		 = config.metadata.src;
-		var guiContainer		 = config.gui.container;
-		var guiMode				 = config.gui.mode;
-			
-    IriSP.loadLibs(IriSP.lib, IriSP.config.gui.css, function() {
-    	IriSP.createPlayerChrome();			
-      /******* Load Metadata *******/
-      IriSP.getMetadata();	
-    });
-	
-    
+  
+  return ret_widgets;
 };
