@@ -54,13 +54,13 @@
 		lay.setPopcornInstance(pop);
 		
 		config.gui.container = lay.createDiv();
-		var player = new IriSP.PlayerWidget(pop, config, ser);
+		var player = new IriSP.PlayerWidget(pop, config.gui, ser);
 		
 		config.gui.container = lay.createDiv();
-		var annotationWidget = new IriSP.AnnotationsWidget(pop, config, ser);
+		var annotationWidget = new IriSP.AnnotationsWidget(pop, config.gui, ser);
 		
 		config.gui.container = lay.createDiv();
-		var segmentsWidget = new IriSP.SegmentsWidget(pop, config, ser);
+		var segmentsWidget = new IriSP.SegmentsWidget(pop, config.gui, ser);
 		ser.sync(function() { player.draw();  annotationWidget.draw(); segmentsWidget.draw();});
 		});
 	</script>
