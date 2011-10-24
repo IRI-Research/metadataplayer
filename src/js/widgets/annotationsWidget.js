@@ -35,7 +35,8 @@ IriSP.AnnotationsWidget.prototype.clearWidget = function() {
     IriSP.jQuery("#Ldt-SaDescription").text("");
     IriSP.jQuery("#Ldt-SaKeywordText").html("");
     IriSP.jQuery('#Ldt-ShowAnnotation').slideUp();
-}
+};
+
 IriSP.AnnotationsWidget.prototype.draw = function() {
   var _this = this;
 
