@@ -29,6 +29,13 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
 
 };
 
+IriSP.AnnotationsWidget.prototype.clearWidget = function() {
+    /* retract the pane between two annotations */
+    IriSP.jQuery("#Ldt-SaTitle").text("");
+    IriSP.jQuery("#Ldt-SaDescription").text("");
+    IriSP.jQuery("#Ldt-SaKeywordText").html("");
+    IriSP.jQuery('#Ldt-ShowAnnotation').slideUp();
+}
 IriSP.AnnotationsWidget.prototype.draw = function() {
   var _this = this;
 
@@ -41,8 +48,12 @@ IriSP.AnnotationsWidget.prototype.draw = function() {
     var begin = Math.round((+ annotation.begin) / 1000);
     var end = Math.round((+ annotation.end) / 1000);
 
-    this._Popcorn = this._Popcorn.code({start: begin, end: end, 
-                                        onStart: 
-                                          function(annotation) { return function() { _this.displayAnnotation(annotation); } }(annotation) });                                             
+    var conf = {start: begin, end: end, 
+                onStart: 
+                       function(annotation) { return function() { _this.displayAnnotation(annotation); } }(annotation),
+                onEnd: 
+                       function() { _this.clearWidget(); },
+                };
+    this._Popcorn = this._Popcorn.code(conf);                                             
   }
 };
