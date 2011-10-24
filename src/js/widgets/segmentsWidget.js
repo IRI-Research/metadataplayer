@@ -58,7 +58,6 @@ IriSP.SegmentsWidget.prototype.draw = function() {
                 onStart: 
                        function(middle) {                         
                         return function() { 
-                          console.log(middle, real_middle);
                           IriSP.jQuery("#Ldt-Show-Arrow").animate({left: real_middle + '%'}, 1000); }}(middle)                
                 };
     this._Popcorn = this._Popcorn.code(conf);
