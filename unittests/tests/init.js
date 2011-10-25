@@ -2,9 +2,9 @@ function test_init() {
 	module("test initialization routines", 
   {
     setup: function() {
-      IriSP.jQuery("#widget-div").append("<div id='player_container'></div>");
+      IriSP.jQuery("#widget-div").append("<div id='LdtPlayer'></div>");
       this.popcornOptions = {
-          container: "player_container",
+          container: "widget-div",
           type: "jwplayer", file : "video/franceculture/franceculture_retourdudimanche20100620.flv", 
           streamer: "rtmp://media.iri.centrepompidou.fr/ddc_player/", 
           flashplayer : '../libs/player.swf',
@@ -57,10 +57,10 @@ function test_init() {
   test("test the instantiation of a bunch of widgets", function() {
     var pop = IriSP.configurePopcorn(this.popcornOptions);
     var widgets = IriSP.configureWidgets(pop, this.widgetOptions);
-    
-    ok(widgets[0] instanceof IriSP.PlayerWidget, "first widget is a player widget");
-    equal(widgets[0].selector.length, 1, "the first widget has a created a dom element");    
+
+    ok(widgets[0] instanceof IriSP.PlayerWidget, "first widget is a player widget");       
     ok(widgets[1] instanceof IriSP.SegmentsWidget, "second widget is a segments widget");
     ok(widgets[2] instanceof IriSP.AnnotationsWidget, "third widget is an annotation widget");
+    equal(IriSP.jQuery("#" + this.widgetOptions.container).length, 1, "a new dom element has been created");
   });
 }
