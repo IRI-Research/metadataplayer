@@ -4,7 +4,7 @@ IriSP.AnnotationsWidget = function(Popcorn, config, Serializer) {
 };
 
 
-IriSP.AnnotationsWidget.prototype = new IriSP.Widget;
+IriSP.AnnotationsWidget.prototype = new IriSP.Widget();
 
 IriSP.AnnotationsWidget.prototype.clear = function() {
     IriSP.jQuery("#Ldt-SaTitle").text("");
@@ -42,7 +42,7 @@ IriSP.AnnotationsWidget.prototype.draw = function() {
 
   var annotationMarkup = Mustache.to_html(IriSP.annotationWidget_template, {"share_template" : IriSP.share_template});
 	IriSP.jQuery("#Ldt-Ligne").append(annotationMarkup);
-  
+
   var annotations = this._serializer._data.annotations;
 	for (i in annotations) {    
     var annotation = annotations[i];

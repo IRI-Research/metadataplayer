@@ -2,7 +2,7 @@ IriSP.SegmentsWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);  
 };
 
-IriSP.SegmentsWidget.prototype = new IriSP.Widget;
+IriSP.SegmentsWidget.prototype = new IriSP.Widget();
 
 IriSP.SegmentsWidget.prototype.draw = function() {
 
