@@ -15,7 +15,6 @@ IriSP.LayoutManager = function(options) {
     
     if (options === undefined) {
       options = {};
-      console.error("The options parameter is undefined.");
     };
     
     if (options.hasOwnProperty('container')) {
