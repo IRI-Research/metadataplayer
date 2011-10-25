@@ -15,5 +15,13 @@ function test_mockSerializer() {
       notEqual(ser.serialize, undefined, ".serialize is defined");
       notEqual(ser.deserialize, undefined, ".deserialize is defined");
   });
+  
+  test("check that the callback is called", function() {
+      var dt = new IriSP.DataLoader();
+      var ser = new IriSP.Serializer(dt);
+      var spy = this.spy();
+      ser.sync(spy);
+      ok(spy.called, "the callback has been called");
+  });
 
 };
