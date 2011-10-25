@@ -73,7 +73,7 @@ function test_player_widget() {
     
     IriSP.jQuery("#ldt-CtrlSound").trigger("click");
     ok(!this.Popcorn.muted(), "the player is un muted");         
-    ok(spy_handler.called, "handling function has been called twice");                                                                                                                                        
+    ok(spy_handler.called, "handling function has been called");                                                                                                                                        
   });
 
   test("test slider seeking", function() {    
@@ -90,4 +90,24 @@ function test_player_widget() {
   ok(true, "WARNING : slider is not tested");
   });
   
-  };
+  test("test search button event handler", function() {
+  var player = new IriSP.PlayerWidget(this.Popcorn, this.config, this.ser);
+  
+  var searchTerm = "blah";
+  
+  var spy_callback = this.spy();
+  var spy_handler = sinon.spy(player, "searchButtonHandler");
+  player._Popcorn.listen("IriSP.search", spy_callback);    
+  
+  player.draw();
+     
+  IriSP.jQuery("#ldt-CtrlSearch").trigger("click");
+  IriSP.jQuery("#LdtSearchInput").attr('value', searchTerm); 
+  IriSP.jQuery("#LdtSearchInput").trigger('keypress');
+  
+  ok(spy_handler.called, "search button handling function has been called");  
+  ok(spy_callback.called, "search typeahead function has been called");  
+  ok(spy_callback.calledWith(searchTerm), "popcorn message sent with the right parameters");                                                                                                                                        
+  
+  });
+};

@@ -1,5 +1,8 @@
 IriSP.PlayerWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
+  
+  this._searchBlockOpen = false;
+  this._searchLastValue = "";
 };
 
 IriSP.PlayerWidget.prototype = new IriSP.Widget();
@@ -9,7 +12,10 @@ IriSP.PlayerWidget.prototype.draw = function() {
   var width = this.width;
 	var height = this.height;
 	var heightS = this.height-20;
-		
+	
+  var searchBox = Mustache.to_html(IriSP.search_template);
+  this.selector.append(searchBox);
+  
 	if (this._config.mode=="radio") {
 
 		//IriSP.jQuery( "#"+this._config.container ).before(IriSP.search_template);
@@ -88,7 +94,8 @@ IriSP.PlayerWidget.prototype.draw = function() {
       //secondary: 'ui-icon-volume-off'
     },
     text: false
-  }).next().button({
+  }).click(function() { _this.searchButtonHandler.call(_this); })
+    .next().button({
     icons: {
       primary: 'ui-icon-volume-on'
     },
@@ -130,8 +137,45 @@ IriSP.PlayerWidget.prototype.muteHandler = function() {
     }
 };
 
+/* updates the slider as time passes */
 IriSP.PlayerWidget.prototype.sliderUpdater = function() {  
   var currentPosition = this._Popcorn.currentTime();   
 	this.selector.find( "#slider-range-min" ).slider( "value", currentPosition);		
 };
 
+IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
+    var self = this;
+
+    /* show the search field if it is not shown */
+  	if ( this._searchBlockOpen == false ) {
+      this.selector.find( ".ui-icon-search" ).css( "background-position", "-144px -112px" );
+      //__IriSP.jQuery("#LdtSearch").animate({height:26},250);
+      
+      this.selector.find("#LdtSearch").show(100);
+      
+      this.selector.find("#LdtSearchInput").css('background-color','#fff');
+      this.selector.find("#LdtSearchInput").focus();
+      this.selector.find("#LdtSearchInput").attr('value', this._searchLastValue);
+      this._searchBlockOpen = true;           
+      this.selector.find("#LdtSearchInput").bind('keypress set', null, function() { self.searchHandler.call(self); } );
+      
+	} else {
+      this._searchLastValue = this.selector.find("#LdtSearchInput").attr('value');
+      this.selector.find("#LdtSearchInput").attr('value','');
+      //IriSP.SearchClean();
+      this.selector.find(".ui-icon-search").css("background-position","-160px -112px");
+      //__IriSP.jQuery("#LdtSearch").animate({height:0},250);
+      this.selector.find("#LdtSearch").hide(100);
+      
+      // unbind the watcher event.
+      this.selector.find("#LdtSearchInput").unbind('keypress set');
+      this._searchBlockOpen = false;
+  }
+};
+
+/* this handler is called whenever the content of the search
+   field changes */
+IriSP.PlayerWidget.prototype.searchHandler = function() {
+  this._searchLastValue = this.selector.find("#LdtSearchInput").attr('value');
+  this._Popcorn.trigger("IriSP.search", this._searchLastValue);
+};
