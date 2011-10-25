@@ -2,20 +2,21 @@
 <html dir="ltr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr">
 
 <head>
-
+<title>Test d'intégration de l'initialisation</title>
 </head>
 
 <body>
 
 	<div style="width:650px;font-family: 'Trebuchet MS', 'Helvetica', 'Arial',  'Verdana', 'sans-serif';">
 	<h1>MetaDataPlayer </h1>
-	Test d'intégration de gestionnaire de placement.
+	Test d'intégration de l'initialisation.
 	</div>
 	
 	
  <!-- START Integration  ###################################### -->
  <!-- SIMPLE PLAYER EXPERIMENTATION -->
 	<script type="text/javascript" src="../../build/LdtPlayer-release.js" type="text/javascript"></script> 
+	<script type="text/javascript" src="../../unittests/mockSerializer.js" type="text/javascript"></script> 
 	<script src="../../res/js/jquery.min.js" type="text/javascript"></script>
 	<script src="../../res/js/jquery.tools.min.js" type="text/javascript"></script>
 	<script src="../../res/js/jquery-ui.min.js" type="text/javascript"></script>
@@ -31,29 +32,32 @@
 						height:480,							
 						container:'LdtPlayer',
 						css:'../../src/css/LdtPlayer.css',
-              widgets: [
-                {type: "IriSP.PlayerWidget", // please note that type refers directly to the constructor of the widget.
-                 metadata:{
-                  format:'cinelab',
-                  src:'test.json',
-                  load:'json'}
-                },
-               {type: "IriSP.SegmentsWidget", 
-                 metadata:{
-                  format:'cinelab',
-                  src:'test.json',
-                  load:'json'}
-                },
-               {type: "IriSP.AnnotationsWidget", 
-                 metadata:{
-                  format:'cinelab',
-                  src:'test.json',
-                  load:'json'}
-                },
-              ]
+					  widgets: [
+						{type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
+						 mode: "radio",
+						 metadata:{
+						  format:'cinelab',
+						  src:'../test.json',
+						  type:'json'}
+						},
+						
+					   {type: "SegmentsWidget", 
+						 metadata:{
+						  format:'cinelab',
+						  src:'../test.json',
+						  type:'json'}
+						},
+					   {type: "AnnotationsWidget", 
+						 metadata:{
+						  format:'cinelab',
+						  src:'../test.json',
+						  type:'json'}
+						}		
+					  ]
+			  },
 			player:{
 			type:'jwplayer', // player type
-              container: '#PopcornContainer'
+              container: 'PopcornContainer',
               // the rest is player-dependent configuration options.
               file : "video/franceculture/franceculture_retourdudimanche20100620.flv", 
               streamer: "rtmp://media.iri.centrepompidou.fr/ddc_player/", 
@@ -66,29 +70,14 @@
             }
 		};
 		
-		IriSP.loadLibs(IriSP.lib, config.gui.css, function() {});
-		var pop = Popcorn.jwplayer( '#video', "",{file : "video/franceculture/franceculture_retourdudimanche20100620.flv", streamer: "rtmp://media.iri.centrepompidou.fr/ddc_player/", flashplayer : config.player.src,
-                                     live: true, "controlbar.position" : "none", height: config.gui.height, width: config.gui.width, provider: "rtmp"});
+		IriSP.loadLibs(IriSP.lib, config.gui.css, 
+			function() { 	var pop = IriSP.configurePopcorn(config.player);
+							var widgets = IriSP.configureWidgets(pop, config.gui); });
 		
-		var dt = new IriSP.DataLoader();
-		var ser = new IriSP.JSONSerializer(dt, "../test.json");
-		var ser2 = new IriSP.JSONSerializer(dt, "../test.json");
-		
-		var lay = new IriSP.LayoutManager({divId : "LdtPlayer"});
-		lay.setPopcornInstance(pop);
-		
-		config.gui.container = lay.createDiv();
-		var player = new IriSP.PlayerWidget(pop, config.gui, ser);
-		
-		config.gui.container = lay.createDiv();
-		var annotationWidget = new IriSP.AnnotationsWidget(pop, config.gui, ser);
-		
-		config.gui.container = lay.createDiv();
-		var segmentsWidget = new IriSP.SegmentsWidget(pop, config.gui, ser);
-		ser.sync(function() { player.draw();  annotationWidget.draw(); segmentsWidget.draw();});
 		});
 	</script>
 	
 	
  </body>
+ <div id="PopcornContainer"></div>
  </html>
