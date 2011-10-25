@@ -75,6 +75,7 @@ IriSP.configureWidgets = function (popcornInstance, guiOptions) {
   
   var params = {width: guiOptions.width, height: guiOptions.height};
   var lay = new IriSP.LayoutManager(params);
+  lay.setPopcornInstance(popcornInstance);
   
   var ret_widgets = [];
   
