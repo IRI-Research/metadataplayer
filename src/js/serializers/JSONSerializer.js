@@ -16,21 +16,21 @@ IriSP.JSONSerializer.prototype.deserialize = function(data) {
 IriSP.JSONSerializer.prototype.sync = function(callback) {
   /* we don't have to do much because jQuery handles json for us */
 
-  /* a wrapper to get a closure because we lose this in callbacks */
-  var wrapper = function(obj) {
-    return function(data) {    
-      obj._data = data;
-      // sort the data too
-      obj._data["annotations"].sort(function(a, b) 
+  var self = this;
+
+  var fn = function(data) {      
+      self._data = data;      
+      // sort the data too     
+      self._data["annotations"].sort(function(a, b) 
           { var a_begin = +a.begin;
             var b_begin = +b.begin;
             return a_begin - b_begin;
           });
-      callback(data);
-    }
+     
+      callback(data);      
   };
   
-  this._DataLoader.get(this._url, wrapper(this));
+  this._DataLoader.get(this._url, fn);
 };
 
 IriSP.JSONSerializer.prototype.currentMedia = function() {  
