@@ -4,7 +4,7 @@ function test_init() {
     setup: function() {
       IriSP.jQuery("#widget-div").append("<div id='player_container'></div>");
       this.popcornOptions = {
-          container: "#player_container",
+          container: "player_container",
           type: "jwplayer", file : "video/franceculture/franceculture_retourdudimanche20100620.flv", 
           streamer: "rtmp://media.iri.centrepompidou.fr/ddc_player/", 
           flashplayer : '../libs/player.swf',
@@ -22,6 +22,7 @@ function test_init() {
 						css:'../../src/css/LdtPlayer.css',
             widgets: [
               {type: "PlayerWidget",
+               mode: "radio",
                metadata:{
                 format:'cinelab',
                 src:'test.json',
@@ -58,6 +59,7 @@ function test_init() {
     var widgets = IriSP.configureWidgets(pop, this.widgetOptions);
     
     ok(widgets[0] instanceof IriSP.PlayerWidget, "first widget is a player widget");
+    equal(widgets[0].selector.length, 1, "the first widget has a created a dom element");    
     ok(widgets[1] instanceof IriSP.SegmentsWidget, "second widget is a segments widget");
     ok(widgets[2] instanceof IriSP.AnnotationsWidget, "third widget is an annotation widget");
   });
