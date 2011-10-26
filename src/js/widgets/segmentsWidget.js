@@ -6,6 +6,7 @@ IriSP.SegmentsWidget.prototype = new IriSP.Widget();
 
 IriSP.SegmentsWidget.prototype.draw = function() {
 
+  var self = this;
   var annotations = this._serializer._data.annotations;
   
   var i = 0;
@@ -62,9 +63,15 @@ IriSP.SegmentsWidget.prototype.draw = function() {
                 };
     this._Popcorn = this._Popcorn.code(conf);
   }
+  
+  this._Popcorn.listen("IriSP.search", function(searchWord) { self.searchHandler.call(self, searchWord); });
 };
 
 IriSP.SegmentsWidget.prototype.clickHandler = function(annotation) {
   var begin = Math.round((+ annotation.begin) / 1000);
   this._Popcorn.currentTime(begin)
+};
+
+IriSP.SegmentsWidget.prototype.searchHandler = function(searchWord) {
+  console.log("received" + searchWord);
 };
