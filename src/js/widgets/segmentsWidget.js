@@ -1,5 +1,12 @@
 IriSP.SegmentsWidget = function(Popcorn, config, Serializer) {
-  IriSP.Widget.call(this, Popcorn, config, Serializer);  
+  
+  var self = this;
+  IriSP.Widget.call(this, Popcorn, config, Serializer);
+  this.oldSearchMatches = [];
+  
+  // event handlers
+  this._Popcorn.listen("IriSP.search", function(searchString) { self.searchHandler.call(self, searchString); });
+  this._Popcorn.listen("IriSP.search.closed", function() { self.searchFieldClosedHandler.call(self); });
 };
 
 IriSP.SegmentsWidget.prototype = new IriSP.Widget();
@@ -62,9 +69,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
                           IriSP.jQuery("#Ldt-Show-Arrow").animate({left: real_middle + '%'}, 1000); }}(middle)                
                 };
     this._Popcorn = this._Popcorn.code(conf);
-  }
-  
-  this._Popcorn.listen("IriSP.search", function(searchWord) { self.searchHandler.call(self, searchWord); });
+  } 
 };
 
 IriSP.SegmentsWidget.prototype.clickHandler = function(annotation) {
@@ -72,6 +77,47 @@ IriSP.SegmentsWidget.prototype.clickHandler = function(annotation) {
   this._Popcorn.currentTime(begin)
 };
 
-IriSP.SegmentsWidget.prototype.searchHandler = function(searchWord) {
-  console.log("received" + searchWord);
+IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
+
+  if (searchString == "")
+    return;
+  
+  console.log(searchString);
+  var matches = this._serializer.searchOccurences(searchString);
+  
+  for (var id in matches) {
+    var factor = matches[id] * 8;
+    IriSP.jQuery("#"+id).dequeue();
+    IriSP.jQuery("#"+id).animate({height: factor},200);
+    IriSP.jQuery("#"+id).css('border','2px');
+    IriSP.jQuery("#"+id).css('border-color','red');
+    IriSP.jQuery("#"+id).animate({opacity:0.6},200);
+
+    //IriSP.jQuery("#LdtSearchInput").css('background-color','#e1ffe1');
+  }
+  
+  // clean up the blocks that were in the previous search
+  // but who aren't in the current one.
+  for (var id in this.oldSearchMatches) { 
+    if (!matches.hasOwnProperty(id)) {
+        IriSP.jQuery("#"+id).dequeue();
+				IriSP.jQuery("#"+id).animate({height:0},250);
+				IriSP.jQuery("#"+id).animate({opacity:0.3},200);
+    }
+  }
+  this.oldSearchMatches = matches;
+};
+
+IriSP.SegmentsWidget.prototype.searchFieldClosedHandler = function() {
+  // reinit the fields
+  for (var id in this.oldSearchMatches) {     
+      
+      IriSP.jQuery("#"+id).dequeue();
+			IriSP.jQuery("#"+id).animate({height:0},100);	
+			IriSP.jQuery("#"+id).css('border','0px');
+			IriSP.jQuery("#"+id).css('border-color','red');
+			IriSP.jQuery("#"+id).animate({opacity:0.3},100);
+  }
+  
+  
 };
