@@ -94,11 +94,13 @@ function test_player_widget() {
   var spy_callback = this.spy();
   var spy_open = this.spy();
   var spy_closed = this.spy();
+  var spy_cleared = this.spy();
   var spy_handler = sinon.spy(player, "searchButtonHandler");
   
   player._Popcorn.listen("IriSP.search", spy_callback);    
   player._Popcorn.listen("IriSP.search.open", spy_open);    
   player._Popcorn.listen("IriSP.search.closed", spy_closed);    
+  player._Popcorn.listen("IriSP.search.cleared", spy_cleared);    
   
   player.draw();
      
@@ -111,8 +113,13 @@ function test_player_widget() {
   ok(spy_callback.called, "search typeahead function has been called");
   ok(spy_callback.calledWith(searchTerm), "popcorn message sent with the right parameters");
 
+  player.selector.find("#LdtSearchInput").attr('value', ""); 
+  player.selector.find("#LdtSearchInput").trigger('keyup');
+  ok(spy_cleared.called, "clear message has been sent");
+  
   player.selector.find("#ldt-CtrlSearch").trigger("click");
   ok(spy_closed.called, "closed signal has been sent");  
   
   });
+  
 };
