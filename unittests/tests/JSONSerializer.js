@@ -39,6 +39,8 @@ function test_JSONSerializer() {
       ser.sync(spy_callback);
       
       equals(this.xhr.requests.length, 1, "the mock ajax object should have received the request");
+      equals(this.xhr.requests[0].url, "/url", "the requested url is correct");
+
       this.xhr.requests[0].respond(200, { "Content-Type": "application/json" },
                              response_string);
         
@@ -61,9 +63,39 @@ function test_JSONSerializer() {
 
     test("currentMedia should return the current media", function() {
       var ser = new IriSP.JSONSerializer(this.dt, "/url");
-      /* FIXME: actually get something instead of monkey-patching the struct */
+
       ser._data = {}
       ser._data.medias = [0];
       equal(ser.currentMedia(), 0, "currentMedia() returns the correct value");
-    });    
+    });
+
+    test("test annotation search", function() {
+      var ser = new IriSP.JSONSerializer(this.dt, "../test/test.json");
+            
+      ser._data = { annotations : [
+      {"content": {        
+        "description": "professeur", 
+        "title": "garrigou"
+        }},
+      { "content": {        
+        "description": "interview", 
+        "title": "Revue de presse - Hervé Gardette"
+      }},
+      {"content": {        
+        "description": "concept", 
+        "title": "idée"
+      }},
+      { "content": {        
+        "description": "", 
+        "title": "sans titre"
+      }}
+      ]};
+      
+      equal(ser.searchAnnotations("GarriGOU", "", "").length, 1, "requesting on title works");
+      equal(ser.searchAnnotations("", "IntErView", "").length, 1, "requesting on description works");      
+      equal(ser.searchAnnotations("", "", "").length, 4, "empty request works");
+      equal(ser.searchAnnotations("idée", "concept", "").length, 1, "specific request works");
+      
+      
+    });
 };

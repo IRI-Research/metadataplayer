@@ -36,3 +36,39 @@ IriSP.JSONSerializer.prototype.sync = function(callback) {
 IriSP.JSONSerializer.prototype.currentMedia = function() {  
   return this._data.medias[0]; /* FIXME: don't hardcode it */
 };
+
+/* this function searches for an annotation which matches title, description and keyword 
+   "" matches any field. 
+*/    
+IriSP.JSONSerializer.prototype.searchAnnotations = function(title, description, keyword) {
+    var rTitle;
+    var rDescription;
+    var rKeyword;
+    
+    /* match anything if given the empty string */
+    if (title == "")
+      title = ".*";
+    if (description == "")
+      description = ".*";
+    if (keyword == "")
+      keyword = ".*";
+    
+    rTitle = new RegExp(title, "i");  
+    rDescription = new RegExp(description, "i");  
+    rKeyword = new RegExp(keyword, "i");  
+    
+    var ret_array = [];
+    
+    var i;
+    for (i in this._data.annotations) {
+      var annotation = this._data.annotations[i];
+      
+      if (rTitle.test(annotation.content.title) && 
+          rDescription.test(annotation.content.description)) {
+          /* FIXME : implement keyword support */
+          ret_array.push(annotation);
+      }
+    }
+    
+    return ret_array;
+}
