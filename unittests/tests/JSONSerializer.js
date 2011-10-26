@@ -98,4 +98,34 @@ function test_JSONSerializer() {
       
       
     });
+    
+    test("test occurence count", function() {
+    var ser = new IriSP.JSONSerializer(this.dt, "../test/test.json");
+            
+      ser._data = { annotations : [
+      {"content": {        
+        "description": "professeur", 
+        "title": "garrigou"
+        }, "id" : 1 },
+      { "content": {        
+        "description": "interview", 
+        "title": "Revue de presse - Hervé Gardette"
+      }, "id" : 2},
+      {"content": {        
+        "description": "concept", 
+        "title": "idée"
+      }, "id" : 3},
+      { "content": {        
+        "description": "", 
+        "title": "sans titre"
+      }, "id" : 4}
+      ]};
+            
+      // warning : these tests may not work with ie8, safari 4, etc.      
+      equal(Object.keys(ser.searchOccurences("garrigou")).length, 1, "first request works");
+      deepEqual(ser.searchOccurences("garrigou"), {1 : 1}, "returned object is correctly defined");
+      
+      equal(Object.keys(ser.searchOccurences("garrigou interview")).length, 2, "second request works");
+      equal(Object.keys(ser.searchOccurences("garrigou idée interview")).length, 3, "third request works");
+    });
 };

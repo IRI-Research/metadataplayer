@@ -71,4 +71,36 @@ IriSP.JSONSerializer.prototype.searchAnnotations = function(title, description, 
     }
     
     return ret_array;
-}
+};
+
+/* breaks a string in words and searches each of these words. Returns an array
+   of objects with the id of the annotation and its number of occurences.
+   
+   FIXME: optimize ? seems to be n^2 in the worst case.
+*/
+IriSP.JSONSerializer.prototype.searchOccurences = function(searchString) {
+  var ret = { };
+  var keywords = searchString.split(/\s+/);
+  
+  for (var i in keywords) {
+    var keyword = keywords[i];
+    
+    var found_annotations = []
+    found_annotations = found_annotations.concat(this.searchAnnotations(keyword, "", ""));
+    found_annotations = found_annotations.concat(this.searchAnnotations("", keyword, ""));
+    
+    for (var j in found_annotations) {
+      var current_annotation = found_annotations[j];
+      
+      if (!ret.hasOwnProperty(current_annotation.id)) {
+        ret[current_annotation.id] = 1;
+      } else {
+        ret[current_annotation.id] += 1;
+      }
+      
+    }
+
+  };
+  
+  return ret;
+};
