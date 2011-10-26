@@ -177,9 +177,14 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
 /* this handler is called whenever the content of the search
    field changes */
 IriSP.PlayerWidget.prototype.searchHandler = function() {
-
   this._searchLastValue = this.selector.find("#LdtSearchInput").attr('value');
-  this._Popcorn.trigger("IriSP.search", this._searchLastValue);
+  
+  // do nothing if the search field is empty, instead of highlighting everything.
+  if (this._searchLastValue == "") {
+    this._Popcorn.trigger("IriSP.search.cleared");
+  } else {
+    this._Popcorn.trigger("IriSP.search", this._searchLastValue);
+  }
 };
 
 /*

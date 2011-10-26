@@ -7,6 +7,7 @@ IriSP.SegmentsWidget = function(Popcorn, config, Serializer) {
   // event handlers
   this._Popcorn.listen("IriSP.search", function(searchString) { self.searchHandler.call(self, searchString); });
   this._Popcorn.listen("IriSP.search.closed", function() { self.searchFieldClosedHandler.call(self); });
+  this._Popcorn.listen("IriSP.search.cleared", function() { self.searchFieldClearedHandler.call(self); });
 };
 
 IriSP.SegmentsWidget.prototype = new IriSP.Widget();
@@ -72,6 +73,19 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   } 
 };
 
+/* restores the view after a search */
+IriSP.SegmentsWidget.prototype.clear = function() {
+  // reinit the fields
+  for (var id in this.oldSearchMatches) {     
+      
+      IriSP.jQuery("#"+id).dequeue();
+			IriSP.jQuery("#"+id).animate({height:0},100);	
+			IriSP.jQuery("#"+id).css('border','0px');
+			IriSP.jQuery("#"+id).css('border-color','red');
+			IriSP.jQuery("#"+id).animate({opacity:0.3},100);
+  }   
+};
+
 IriSP.SegmentsWidget.prototype.clickHandler = function(annotation) {
   var begin = Math.round((+ annotation.begin) / 1000);
   this._Popcorn.currentTime(begin)
@@ -108,16 +122,10 @@ IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
   this.oldSearchMatches = matches;
 };
 
+IriSP.SegmentsWidget.prototype.searchFieldClearedHandler = function() {
+  this.clear();
+};
+
 IriSP.SegmentsWidget.prototype.searchFieldClosedHandler = function() {
-  // reinit the fields
-  for (var id in this.oldSearchMatches) {     
-      
-      IriSP.jQuery("#"+id).dequeue();
-			IriSP.jQuery("#"+id).animate({height:0},100);	
-			IriSP.jQuery("#"+id).css('border','0px');
-			IriSP.jQuery("#"+id).css('border-color','red');
-			IriSP.jQuery("#"+id).animate({opacity:0.3},100);
-  }
-  
-  
+  this.clear();
 };
