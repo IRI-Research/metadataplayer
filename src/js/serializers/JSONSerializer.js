@@ -85,6 +85,7 @@ IriSP.JSONSerializer.prototype.searchOccurences = function(searchString) {
   for (var i in keywords) {
     var keyword = keywords[i];
     
+    // search this keyword in descriptions and title
     var found_annotations = []
     found_annotations = found_annotations.concat(this.searchAnnotations(keyword, "", ""));
     found_annotations = found_annotations.concat(this.searchAnnotations("", keyword, ""));
