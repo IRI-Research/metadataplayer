@@ -52,8 +52,8 @@ function test_player_widget() {
     
     */
     
-    IriSP.jQuery("#ldt-CtrlPlay").trigger("click");    
-    IriSP.jQuery("#ldt-CtrlPlay").trigger("click");
+    player.selector.find("#ldt-CtrlPlay").trigger("click");    
+    player.selector.find("#ldt-CtrlPlay").trigger("click");
     ok(player.playHandler.calledTwice, "play handler called");
     ok(spy_callback2.calledOnce, "test if pause callback has been called");                                                                    
   });
@@ -68,26 +68,22 @@ function test_player_widget() {
     player.draw();
        
     // IriSP.jQuery("#ldt-CtrlSound").trigger("click");    
-    IriSP.jQuery(".Ldt-Control2 button:first").next().trigger("click");    
+    player.selector.find(".Ldt-Control2 button:first").next().trigger("click");    
     ok(this.Popcorn.muted(), "the player is muted");
     
-    IriSP.jQuery("#ldt-CtrlSound").trigger("click");
+    player.selector.find("#ldt-CtrlSound").trigger("click");
     ok(!this.Popcorn.muted(), "the player is un muted");         
     ok(spy_handler.called, "handling function has been called");                                                                                                                                        
   });
 
   test("test slider seeking", function() {    
-  /* FIXME: because of a bug in popcorn, this test doesn't pass
     var player = new IriSP.PlayerWidget(this.Popcorn, this.config, this.ser);    
     player.draw();    
     
     var spy_callback = this.spy();
-    this.Popcorn.listen("seeked", spy_callback);       
-    IriSP.jQuery("#slider-range-min").slider("value", 30);
-    
-    ok(spy_callback.called, "handling function has been called twice");
-  */
-  ok(true, "WARNING : slider is not tested");
+    player._Popcorn.listen("test.fixture", spy_callback);       
+    player.selector.find("#slider-range-min").slider("value", 30);
+    ok(spy_callback.called, "handling function has been called");
   });
   
   test("test search button event handler", function() {

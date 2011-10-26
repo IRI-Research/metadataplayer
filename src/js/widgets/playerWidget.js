@@ -8,7 +8,7 @@ IriSP.PlayerWidget = function(Popcorn, config, Serializer) {
 IriSP.PlayerWidget.prototype = new IriSP.Widget();
 
 IriSP.PlayerWidget.prototype.draw = function() {
-  var _this = this;
+  var self = this;
   var width = this.width;
 	var height = this.height;
 	var heightS = this.height-20;
@@ -17,14 +17,11 @@ IriSP.PlayerWidget.prototype.draw = function() {
   this.selector.append(searchBox);
   
 	if (this._config.mode=="radio") {
-
-		//IriSP.jQuery( "#"+this._config.container ).before(IriSP.search_template);
 		var radioPlayer = Mustache.to_html(IriSP.radio_template, {"share_template" : IriSP.share_template});
     this.selector.append(radioPlayer);		
     
 		// special tricks for IE 7
 		if (IriSP.jQuery.browser.msie == true && IriSP.jQuery.browser.version == "7.0"){
-			//LdtSearchContainer
 			//__IriSP.jQuery("#LdtPlayer").attr("margin-top","50px");
 			this.selector.children("#Ldt-Root").css("padding-top","25px");			
 		}
@@ -64,24 +61,24 @@ IriSP.PlayerWidget.prototype.draw = function() {
     max: this._serializer.currentMedia().meta["dc:duration"]/1000,//1:54:52.66 = 3600+3240+
     step: 0.1,
     slide: function(event, ui) {     
-      _this._Popcorn.currentTime(ui.value);
+      self._Popcorn.currentTime(ui.value);
     },
     /* change event is similar to slide, but it happens when the slider position is 
-       modified programatically. We use it for unit tests */
-    /*   
-    change: function(event, ui) {     
-      _this._Popcorn.currentTime(ui.value);
+       modified programatically. We use it for unit tests */       
+    change: function(event, ui) {      
+      self._Popcorn.trigger("test.fixture", ui.value);
     }
-    */
+    
   } );
   
+  this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
   this.selector.children("#amount").val(this.selector.children("#slider-range-min").slider("value")+" s");
   this.selector.children(".Ldt-Control1 button:first").button({
     icons: {
       primary: 'ui-icon-play'
     },
     text: false
-  }).click(function() { _this.playHandler.call(_this); })
+  }).click(function() { self.playHandler.call(self); })
     .next().button({
     icons: {
       primary: 'ui-icon-seek-next'
@@ -94,13 +91,13 @@ IriSP.PlayerWidget.prototype.draw = function() {
       //secondary: 'ui-icon-volume-off'
     },
     text: false
-  }).click(function() { _this.searchButtonHandler.call(_this); })
+  }).click(function() { self.searchButtonHandler.call(self); })
     .next().button({
     icons: {
       primary: 'ui-icon-volume-on'
     },
      text: false
-  }).click(function() { _this.muteHandler.call(_this); } );
+  }).click(function() { self.muteHandler.call(self); } );
 
   this.selector.children("#ldt-CtrlPlay").attr( "style", "background-color:#CD21C24;" );
   
@@ -110,7 +107,7 @@ IriSP.PlayerWidget.prototype.draw = function() {
     IriSP.jQuery( "#Ldtplayer1" ).attr( "height", "0" );
   }
 
-  this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
+
 };
 
 IriSP.PlayerWidget.prototype.playHandler = function() {
@@ -166,9 +163,7 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
 	} else {
       this._searchLastValue = this.selector.find("#LdtSearchInput").attr('value');
       this.selector.find("#LdtSearchInput").attr('value','');
-      //IriSP.SearchClean();
       this.selector.find(".ui-icon-search").css("background-position","-160px -112px");
-      //__IriSP.jQuery("#LdtSearch").animate({height:0},250);
       this.selector.find("#LdtSearch").hide(100);
       
       // unbind the watcher event.
