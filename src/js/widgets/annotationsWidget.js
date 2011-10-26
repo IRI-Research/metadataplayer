@@ -44,6 +44,8 @@ IriSP.AnnotationsWidget.prototype.draw = function() {
 	IriSP.jQuery("#Ldt-Ligne").append(annotationMarkup);
 
   var annotations = this._serializer._data.annotations;
+  var i;
+  
 	for (i in annotations) {    
     var annotation = annotations[i];
     var begin = Math.round((+ annotation.begin) / 1000);
