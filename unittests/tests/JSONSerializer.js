@@ -120,12 +120,21 @@ function test_JSONSerializer() {
         "title": "sans titre"
       }, "id" : 4}
       ]};
-            
-      // warning : these tests may not work with ie8, safari 4, etc.      
-      equal(Object.keys(ser.searchOccurences("garrigou")).length, 1, "first request works");
-      deepEqual(ser.searchOccurences("garrigou"), {1 : 1}, "returned object is correctly defined");
       
-      equal(Object.keys(ser.searchOccurences("garrigou interview")).length, 2, "second request works");
-      equal(Object.keys(ser.searchOccurences("garrigou idée interview")).length, 3, "third request works");
+      // a function to get the number of fields in a dict.
+      function countOccurences(queryString) {
+        var count = 0;
+        for (var i in ser.searchOccurences(queryString)) {
+          count++;
+        };
+        
+        return count;
+      };
+      
+      equal(countOccurences("garrigou"), 1, "first request works");
+      deepEqual(ser.searchOccurences("garrigou"), {1 : 1}, "returned object is correctly defined");
+          
+      equal(countOccurences("garrigou interview"), 2, "second request works");
+      equal(countOccurences("garrigou idée interview"), 3, "third request works");
     });
 };
