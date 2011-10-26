@@ -149,15 +149,19 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
     /* show the search field if it is not shown */
   	if ( this._searchBlockOpen == false ) {
       this.selector.find( ".ui-icon-search" ).css( "background-position", "-144px -112px" );
-      //__IriSP.jQuery("#LdtSearch").animate({height:26},250);
       
       this.selector.find("#LdtSearch").show(100);
       
       this.selector.find("#LdtSearchInput").css('background-color','#fff');
       this.selector.find("#LdtSearchInput").focus();
-      this.selector.find("#LdtSearchInput").attr('value', this._searchLastValue);
+      this.selector.find("#LdtSearchInput").attr('value', this._searchLastValue);      
+      this._Popcorn.trigger("IriSP.search", this._searchLastValue); // trigger the search to make it more natural.
+      
       this._searchBlockOpen = true;           
-      this.selector.find("#LdtSearchInput").bind('keypress set', null, function() { self.searchHandler.call(self); } );
+      this.selector.find("#LdtSearchInput").bind('keyup', null, function() { self.searchHandler.call(self); } );
+      
+      // tell the world the field is open
+      this._Popcorn.trigger("IriSP.search.open");
       
 	} else {
       this._searchLastValue = this.selector.find("#LdtSearchInput").attr('value');
@@ -170,12 +174,29 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
       // unbind the watcher event.
       this.selector.find("#LdtSearchInput").unbind('keypress set');
       this._searchBlockOpen = false;
+      
+      this._Popcorn.trigger("IriSP.search.closed");
   }
 };
 
 /* this handler is called whenever the content of the search
    field changes */
 IriSP.PlayerWidget.prototype.searchHandler = function() {
+
   this._searchLastValue = this.selector.find("#LdtSearchInput").attr('value');
   this._Popcorn.trigger("IriSP.search", this._searchLastValue);
 };
+
+/*
+  handler for the IriSP.search.found message, which is sent by some views when they
+  highlight a match.
+*/
+IriSP.PlayerWidget.prototype.searchMatch = function() {
+  this.selector.find("#LdtSearchInput").css('background-color','#e1ffe1');
+}
+
+/* the same, except that no value could be found */
+IriSP.PlayerWidget.prototype.searchNoMatch = function() {
+  this.selector.find("#LdtSearchInput").css('background-color','#e1ffe1');
+}
+

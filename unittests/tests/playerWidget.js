@@ -96,18 +96,27 @@ function test_player_widget() {
   var searchTerm = "blah";
   
   var spy_callback = this.spy();
+  var spy_open = this.spy();
+  var spy_closed = this.spy();
   var spy_handler = sinon.spy(player, "searchButtonHandler");
+  
   player._Popcorn.listen("IriSP.search", spy_callback);    
+  player._Popcorn.listen("IriSP.search.open", spy_open);    
+  player._Popcorn.listen("IriSP.search.closed", spy_closed);    
   
   player.draw();
      
-  IriSP.jQuery("#ldt-CtrlSearch").trigger("click");
-  IriSP.jQuery("#LdtSearchInput").attr('value', searchTerm); 
-  IriSP.jQuery("#LdtSearchInput").trigger('keypress');
+  player.selector.find("#ldt-CtrlSearch").trigger("click");
+  player.selector.find("#LdtSearchInput").attr('value', searchTerm); 
+  player.selector.find("#LdtSearchInput").trigger('keyup');
   
   ok(spy_handler.called, "search button handling function has been called");  
-  ok(spy_callback.called, "search typeahead function has been called");  
-  ok(spy_callback.calledWith(searchTerm), "popcorn message sent with the right parameters");                                                                                                                                        
+  ok(spy_open.called, "open signal has been sent");  
+  ok(spy_callback.called, "search typeahead function has been called");
+  ok(spy_callback.calledWith(searchTerm), "popcorn message sent with the right parameters");
+
+  player.selector.find("#ldt-CtrlSearch").trigger("click");
+  ok(spy_closed.called, "closed signal has been sent");  
   
   });
 };
