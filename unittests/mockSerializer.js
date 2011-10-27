@@ -4,8 +4,22 @@
 
 IriSP.MockSerializer = function(DataLoader, url) {
   IriSP.Serializer.call(this, DataLoader, url);
+  this._data = _data;
+};
 
-  this._data = { "tags": [
+IriSP.MockSerializer.prototype = new IriSP.Serializer();   
+
+IriSP.MockSerializer.prototype.currentMedia = function() {
+  return this._data.medias[0];
+};
+
+// Copy some methods from JSONSerializer because we need them in
+// some tests.
+
+IriSP.MockSerializer.prototype.searchAnnotations = IriSP.JSONSerializer.prototype.searchAnnotations;
+IriSP.MockSerializer.prototype.searchOccurences = IriSP.JSONSerializer.prototype.searchOccurences;
+
+var _data = { "tags": [
       {
           "meta": {
             "dc:contributor": "IRI ", 
@@ -1458,12 +1472,4 @@ IriSP.MockSerializer = function(DataLoader, url) {
           "dc:description": "", 
           "dc:modified": "2010-09-06T15:53:44.699595"
         }
-      ]
-};
-};
-
-IriSP.MockSerializer.prototype = new IriSP.Serializer();   
-
-IriSP.MockSerializer.prototype.currentMedia = function() {
-  return this._data.medias[0];
-};
+      ]};

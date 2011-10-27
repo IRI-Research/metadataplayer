@@ -47,10 +47,23 @@ function test_segments_widget() {
     this.Popcorn.listen("timeupdate", spy_callback);    
     
     var selector = IriSP.jQuery("#Ldt-Annotations :not(first-child)");
-    var random = Math.round(Math.random() * selector.length);
+    var random = Math.round(Math.random() * selector.length) + 1;
     selector.eq(random).click();
         
     ok(spy_callback.called, "the currenttime was changed");         
     ok(spy_handler.called, "handling function has been called");           
+  });
+  
+  test("test search highlight features", function() {
+  
+    var tag_id = "#s_" + "82613B88-9578-DC2C-D7D0-B2C5BE0B7BDA".toUpperCase();
+    
+    var widget = new IriSP.SegmentsWidget(this.Popcorn, this.config, this.ser);
+    widget.draw();    
+
+    var oldStyle = IriSP.jQuery("#Ldt-Annotations").children(tag_id).attr("style");
+    widget._Popcorn.trigger("IriSP.search", "sociologie");
+    var newStyle = IriSP.jQuery("#Ldt-Annotations").children(tag_id).attr("style");
+    notEqual(oldStyle, newStyle, "the segment style has been modified");
   });
 }; 

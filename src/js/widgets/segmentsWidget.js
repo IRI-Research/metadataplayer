@@ -102,10 +102,10 @@ IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
   for (var id in matches) {
     var factor = matches[id] * 8;
     IriSP.jQuery("#"+id).dequeue();
-    IriSP.jQuery("#"+id).animate({height: factor},200);
+    IriSP.jQuery("#"+id).animate({height: factor}, 200);
     IriSP.jQuery("#"+id).css('border','2px');
     IriSP.jQuery("#"+id).css('border-color','red');
-    IriSP.jQuery("#"+id).animate({opacity:0.6},200);
+    IriSP.jQuery("#"+id).animate({opacity:0.6}, 200);
 
     //IriSP.jQuery("#LdtSearchInput").css('background-color','#e1ffe1');
   }
