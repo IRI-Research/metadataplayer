@@ -4,7 +4,7 @@ function test_init() {
     setup: function() {
       IriSP.jQuery("#widget-div").append("<div id='LdtPlayer'></div>");
       this.popcornOptions = {
-          container: "widget-div",
+          container: "LdtPlayer",
           type: "jwplayer", file : "video/franceculture/franceculture_retourdudimanche20100620.flv", 
           streamer: "rtmp://media.iri.centrepompidou.fr/ddc_player/", 
           flashplayer : '../libs/player.swf',
@@ -46,17 +46,35 @@ function test_init() {
   
   test("test the creation of a correct popcorn object", function() {
 
-            
-    var pop = IriSP.configurePopcorn(this.popcornOptions);
+    var layoutManager = new IriSP.LayoutManager({container: "LdtPlayer", width: 327, height: 542});
+    var pop = IriSP.configurePopcorn(layoutManager, this.popcornOptions);
     notDeepEqual(pop, undefined, "returned object is not undefined");
     
     /* FIXME: add more test options ? */
     equal(pop.options.type, "jwplayer", "the player is of the correct type.");
   });
   
+  test("test the creation of a video tag", function() {
+  
+    var popcornOptions = {
+            type: "html5",
+            file: "demo.mp4"
+          };
+    
+    var layoutManager = new IriSP.LayoutManager({container: "LdtPlayer", width: 327, height: 542});
+    var pop = IriSP.configurePopcorn(layoutManager, popcornOptions);
+    
+    var elem = IriSP.jQuery("#LdtPlayer").find("video");
+    notDeepEqual(elem, [], "the element is not null");
+    equal(elem.attr("src"), popcornOptions.file, "the src attribute is set correctly");    
+  });
+  
   test("test the instantiation of a bunch of widgets", function() {
-    var pop = IriSP.configurePopcorn(this.popcornOptions);
-    var widgets = IriSP.configureWidgets(pop, this.widgetOptions);
+  
+    var layoutManager = new IriSP.LayoutManager({container: "LdtPlayer", width: 327, height: 542});
+    var pop = IriSP.configurePopcorn(layoutManager, this.popcornOptions);
+    
+    var widgets = IriSP.configureWidgets(pop, layoutManager, this.widgetOptions);
 
     ok(widgets[0] instanceof IriSP.PlayerWidget, "first widget is a player widget");       
     ok(widgets[1] instanceof IriSP.SegmentsWidget, "second widget is a segments widget");

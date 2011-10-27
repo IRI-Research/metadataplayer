@@ -3,8 +3,9 @@ exemple json configuration:
  
  */
 
-IriSP.configurePopcorn = function (options) {
+IriSP.configurePopcorn = function (layoutManager, options) {
     var pop;
+    var containerDiv = layoutManager.createDiv();
     
     switch(options.type) {
       /*
@@ -12,13 +13,15 @@ IriSP.configurePopcorn = function (options) {
         will contain the video.
       */
       case "html5":
-           pop = Popcorn("#" + options.container);
+           var tmpId = Popcorn.guid("video"); 
+           IriSP.jQuery("#" + containerDiv).append("<video src='" + options.file + "' id='" + tmpId + "'></video>");
+           pop = Popcorn("#" + tmpId);
         break;
         
       case "jwplayer":
           var opts = IriSP.jQuery.extend({}, options);
           delete opts.container;
-          pop = Popcorn.jwplayer("#" + options.container, "", opts);
+          pop = Popcorn.jwplayer("#" + containerDiv, "", opts);
         break;
         
       default:
@@ -28,21 +31,19 @@ IriSP.configurePopcorn = function (options) {
     return pop;
 };
 
-IriSP.configureWidgets = function (popcornInstance, guiOptions) {
+IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
 
   var dt = new IriSP.DataLoader();
   var serialFactory = new IriSP.SerializerFactory(dt);
   
   var params = {width: guiOptions.width, height: guiOptions.height};
-  var lay = new IriSP.LayoutManager(params);
-  lay.setPopcornInstance(popcornInstance);
-  
+
   var ret_widgets = [];
   var index;
   
   for (index = 0; index < guiOptions.widgets.length; index++) {    
     var widget = guiOptions.widgets[index];
-    var container = lay.createDiv();
+    var container = layoutManager.createDiv();
         
     var arr = IriSP.jQuery.extend({}, widget);
     arr.container = container;
