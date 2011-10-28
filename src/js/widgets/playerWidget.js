@@ -115,22 +115,22 @@ IriSP.PlayerWidget.prototype.playHandler = function() {
   
   if ( status == true ){        
     this._Popcorn.play();
-    this.selector.children(".ui-icon-play").css( "background-position", "-16px -160px" );
-    this.selector.children("#ldt-CtrlPlay").attr("title", "Play");
+    this.selector.find(".ui-icon-play").css( "background-position", "-16px -160px" );
+    this.selector.find("#ldt-CtrlPlay").attr("title", "Play");
   } else {
     this._Popcorn.pause();
-    this.selector.children(".ui-icon-play").css( "background-position","0px -160px" );
-    this.selector.children("#ldt-CtrlPlay").attr("title", "Pause");
+    this.selector.find(".ui-icon-play").css( "background-position","0px -160px" );
+    this.selector.find("#ldt-CtrlPlay").attr("title", "Pause");
   }  
 };
 
 IriSP.PlayerWidget.prototype.muteHandler = function() {
   if (!this._Popcorn.muted()) {    
       this._Popcorn.mute(true);
-      this.selector.children(" .ui-icon-volume-on ").css("background-position", "-130px -160px");    
+      this.selector.find(" .ui-icon-volume-on ").css("background-position", "-130px -160px");    
     } else {
       this._Popcorn.mute(false);
-      this.selector.children( ".ui-icon-volume-on" ).css("background-position", "-144px -160px" );
+      this.selector.find( ".ui-icon-volume-on" ).css("background-position", "-144px -160px" );
     }
 };
 

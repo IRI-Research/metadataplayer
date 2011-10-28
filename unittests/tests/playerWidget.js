@@ -28,7 +28,7 @@ function test_player_widget() {
     var player = new IriSP.PlayerWidget(this.Popcorn, this.config, this.ser);    
     player.draw();
     
-    equal(IriSP.jQuery("#widget-div #Ldt-Root").length, 1, "test if the div has been added correctly");     
+    equal(IriSP.jQuery("#widget-div").length, 1, "test if the div has been added correctly");     
   });
  
   test("test play button event handler", function() {
@@ -42,16 +42,6 @@ function test_player_widget() {
     
     player.draw();        
 
-    /*
-    Code seems to work but test doesn't. It must be a subtle race condition
-    between Popcorn, the youtube plugin and QUnit. Anyway, it works for pause
-    so WONTFIX
-    
-    IriSP.jQuery("#widget-div .Ldt-Control1 button:first").trigger("click");
-    ok(spy_callback.calledOnce, "test if play callback has been called");
-    
-    */
-    
     player.selector.find("#ldt-CtrlPlay").trigger("click");    
     player.selector.find("#ldt-CtrlPlay").trigger("click");
     ok(player.playHandler.calledTwice, "play handler called");
