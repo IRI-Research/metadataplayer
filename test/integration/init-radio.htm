@@ -29,7 +29,7 @@
 		var config = {						
 				gui:{
 						width:650,
-						height:480,							
+						height:2100,							
 						container:'LdtPlayer',
 						css:'../../src/css/LdtPlayer.css',
 					  widgets: [
@@ -40,19 +40,19 @@
 						  src:'../test.json',
 						  type:'json'}
 						},
-						
+						{type: "AnnotationsWidget", 
+						 metadata:{
+						  format:'cinelab',
+						  src:'../test.json',
+						  type:'json'}
+						},
 					   {type: "SegmentsWidget", 
 						 metadata:{
 						  format:'cinelab',
 						  src:'../test.json',
 						  type:'json'}
 						},
-					   {type: "AnnotationsWidget", 
-						 metadata:{
-						  format:'cinelab',
-						  src:'../test.json',
-						  type:'json'}
-						}		
+					  		
 					  ]
 			  },
 			player:{
