@@ -10,10 +10,9 @@ function test_layout() {
       var lay = new IriSP.LayoutManager();
       equal(lay._div, "LdtPlayer", "the default div is set correctly");
       equal(lay._width, 640, "the default width is set correctly");
-      equal(lay._height, 480, "the default height is set correctly");
+      equal(lay._height, undefined, "the default height is set correctly");
       
-      equal(IriSP.jQuery("#" + lay._div).css("width"), lay._width + "px", "div width is set correctly");
-      equal(IriSP.jQuery("#" + lay._div).css("height"), lay._height + "px", "div height is set correctly");
+      equal(IriSP.jQuery("#" + lay._div).css("width"), lay._width + "px", "div width is set correctly");      
   });
   
   test("test custom init of layout manager", function() {
