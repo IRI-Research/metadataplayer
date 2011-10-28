@@ -7,9 +7,9 @@ IriSP.AnnotationsWidget = function(Popcorn, config, Serializer) {
 IriSP.AnnotationsWidget.prototype = new IriSP.Widget();
 
 IriSP.AnnotationsWidget.prototype.clear = function() {
-    IriSP.jQuery("#Ldt-SaTitle").text("");
-    IriSP.jQuery("#Ldt-SaDescription").text("");
-    IriSP.jQuery("#Ldt-SaKeywordText").text("");
+    this.selector.find(".Ldt-SaTitle").text("");
+    this.selector.find(".Ldt-SaDescription").text("");
+    this.selector.find(".Ldt-SaKeywordText").text("");
 };
 
 IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
@@ -20,28 +20,27 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
     var end = +annotation.end;
     var duration = +this._serializer.currentMedia().meta["dc:duration"];
 
-    IriSP.jQuery("#Ldt-SaTitle").text(title);
-    IriSP.jQuery("#Ldt-SaDescription").text(description);
-    IriSP.jQuery("#Ldt-SaKeywordText").text("Mots clefs : "+ keywords);
+    this.selector.find(".Ldt-SaTitle").text(title);
+    this.selector.find(".Ldt-SaDescription").text(description);
 		var startPourcent = parseInt(Math.round((begin*1+(end*1-begin*1)/2) / (duration*1)) / 100); 
-		IriSP.jQuery("#Ldt-Show-Arrow").animate({left:startPourcent+'%'},1000);
+		this.selector.find(".Ldt-Show-Arrow").animate({left:startPourcent+'%'},1000);
 		//IriSP.jQuery("#"+annotationTempo.id).animate({alpha:'100%'},1000);
 
 };
 
 IriSP.AnnotationsWidget.prototype.clearWidget = function() {
     /* retract the pane between two annotations */
-    IriSP.jQuery("#Ldt-SaTitle").text("");
-    IriSP.jQuery("#Ldt-SaDescription").text("");
-    IriSP.jQuery("#Ldt-SaKeywordText").html("");
-    IriSP.jQuery('#Ldt-ShowAnnotation').slideUp();
+    this.selector.find(".Ldt-SaTitle").text("");
+    this.selector.find(".Ldt-SaDescription").text("");
+    this.selector.find(".Ldt-SaKeywordText").html("");
+    this.selector.find(".Ldt-ShowAnnotation").slideUp();
 };
 
 IriSP.AnnotationsWidget.prototype.draw = function() {
   var _this = this;
 
   var annotationMarkup = Mustache.to_html(IriSP.annotationWidget_template, {"share_template" : IriSP.share_template});
-	IriSP.jQuery("#Ldt-Ligne").append(annotationMarkup);
+	this.selector.append(annotationMarkup);
 
   var annotations = this._serializer._data.annotations;
   var i;
