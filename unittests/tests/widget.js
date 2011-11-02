@@ -17,5 +17,13 @@ function test_widget() {
     
   });
   
+  test("test initialisation with more values", function() {
+    var config = { container: "mydiv", widthmax: 640, heightmax: 480};
+    var wid = new IriSP.Widget(this.Popcorn, config, this.ser);
+    deepEqual(wid._config, config, "Check if the parent div is set correctly");
+    ok(wid.selector, "Check if the jquery selector is set");
+    
+  });
+  
   
 };

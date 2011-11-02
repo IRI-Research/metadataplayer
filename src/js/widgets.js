@@ -20,11 +20,17 @@ IriSP.Widget = function(Popcorn, config, Serializer) {
      this.width = config.width;     
   }
   
-  if (config.hasOwnProperty("height")) {
-     // this.width and not this._width because we consider it public.
+  if (config.hasOwnProperty("height")) {    
      this.height = config.height;     
   }
   
+  if (config.hasOwnProperty("heightmax")) {
+     this.heightmax = config.heightmax;     
+  }
+
+  if (config.hasOwnProperty("widthmax")) {
+     this.widthmax = config.widthmax;     
+  }
   
 };
 
