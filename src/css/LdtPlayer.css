@@ -179,3 +179,23 @@
 		.shareJamesPot{
 			background-position:0 -1808px;
 		}
+		
+		.tip{
+			position : absolute;
+			padding : 3px;
+			z-index: 10000000000;
+			max-width: 200px;
+			display: none;
+			background: transparent url("<?php echo($baseurl);?>images/white_arrow_long.png");
+			font-size: 12px;
+			height: 125px;
+			width: 180px;
+			padding: 10px;
+			padding-left: 15px;
+			padding-top: 15px;
+			padding-right: 15px;
+			color: black;
+			z-index: 10000000000;
+			font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
+			overflow:hidden;
+		}
