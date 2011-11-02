@@ -69,6 +69,55 @@ function test_init() {
     equal(elem.attr("src"), popcornOptions.file, "the src attribute is set correctly");    
   });
   
+  test("test the instantiation of a single widget without dependencies", function() {
+    
+    var dt = new IriSP.DataLoader();
+    var serialFactory = new IriSP.SerializerFactory(dt);
+ 
+    var layoutManager = new IriSP.LayoutManager({container: "LdtPlayer", width: 327, height: 542});
+    var pop = IriSP.configurePopcorn(layoutManager, this.popcornOptions);
+    var conf = {type: "PlayerWidget",
+               mode: "radio",
+               metadata:{
+                format:'cinelab',
+                src:'test.json',
+                type:'dummy'}
+              };
+              
+    var res = IriSP.instantiateWidget(pop, serialFactory, layoutManager, conf);    
+    ok(res instanceof IriSP.PlayerWidget, "the returned widget is of the correct instance");
+  });  
+  
+  test("test the instantiation of a single widget with one dependency", function() {
+    var dt = new IriSP.DataLoader();
+    var serialFactory = new IriSP.SerializerFactory(dt);
+ 
+    var layoutManager = new IriSP.LayoutManager({container: "LdtPlayer", width: 327, height: 542});    
+    
+    var pop = IriSP.configurePopcorn(layoutManager, this.popcornOptions);
+    var conf = {type: "PlayerWidget",
+               mode: "radio",
+               metadata:{
+                format:'cinelab',
+                src:'test.json',
+                type:'dummy'},
+                requires: [
+                {type: "PlayerWidget",
+                  mode: "radio",
+                  metadata:{
+                    format:'cinelab',
+                    src:'test.json',
+                    type:'dummy'
+                } }]
+              };
+    
+    
+    var res = IriSP.instantiateWidget(pop, serialFactory, layoutManager, conf);
+    
+    ok(res instanceof IriSP.PlayerWidget, "the returned widget is of the correct instance");
+    ok(res.PlayerWidget instanceof IriSP.PlayerWidget, "the dependency widget is accessible from the parent");
+  });
+  
   test("test the instantiation of a bunch of widgets", function() {
   
     var layoutManager = new IriSP.LayoutManager({container: "LdtPlayer", width: 327, height: 542});
@@ -81,4 +130,6 @@ function test_init() {
     ok(widgets[2] instanceof IriSP.AnnotationsWidget, "third widget is an annotation widget");
     equal(IriSP.jQuery("#" + this.widgetOptions.container).length, 1, "a new dom element has been created");
   });
+  
+
 }
