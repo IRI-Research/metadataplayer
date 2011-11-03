@@ -184,9 +184,8 @@
 			position : absolute;
 			padding : 3px;
 			z-index: 10000000000;
-			max-width: 200px;
-			display: none;
-			background: transparent url("<?php echo($baseurl);?>images/white_arrow_long.png");
+			max-width: 200px;			
+			background: transparent url("http://www.polemictweet.com/images/white_arrow_long.png");
 			font-size: 12px;
 			height: 125px;
 			width: 180px;
