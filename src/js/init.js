@@ -53,11 +53,14 @@ IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
 
 IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager, widgetConfig) {
     var container = layoutManager.createDiv();        
-    var arr = IriSP.jQuery.extend({}, widget);
+    var arr = IriSP.jQuery.extend({}, widgetConfig);
     arr.container = container;
-
+    
     var serializer = serialFactory.getSerializer(widgetConfig.metadata);    
-
+    
+    if (typeof serializer == "undefined")   
+      debugger;
+    
     // instantiate the object passed as a string
     var widget = new IriSP[widgetConfig.type](popcornInstance, arr, serializer);    
     
@@ -66,12 +69,13 @@ IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager
       // the dependency widget is available in the parent widget context as
       // this.WidgetName (for instance, this.TipWidget);
       
-      for(var j in widgetConfig.requires) {
-        var widgetName = widgetConfig.requires[j]["type"];
-        widget[widgetName] = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, widgetConfig.requires[j]);
+      var i = 0;
+      for(i = 0; i < widgetConfig.requires.length; i++) {
+        var widgetName = widgetConfig.requires[i]["type"];
+        widget[widgetName] = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, widgetConfig.requires[i]);
       }
-    }
-    
+    }       
+     
     serializer.sync(IriSP.wrap(widget, function() { this.draw(); }));
     return widget;
 };
