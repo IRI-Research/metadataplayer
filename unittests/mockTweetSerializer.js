@@ -4,6 +4,7 @@
 
 IriSP.MockTweetSerializer = function(DataLoader, url) {
   IriSP.Serializer.call(this, DataLoader, url);
+  this._data = IriSP.MockTweetSerializer.prototype._data;
 };
 
 IriSP.MockTweetSerializer.prototype = new IriSP.Serializer();   
