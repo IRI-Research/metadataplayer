@@ -44,14 +44,16 @@ IriSP.PolemicWidget.prototype.draw = function() {
 	
 		// variable 
 		// yMax
+    
+    var self = this;
 		var yCoef	  		= 2; 						// coef for height of 1 tweet 
 		var frameSize 		= 5; 						// frame size 
 		var margin 	  		= 1;						// marge between frame
 		var lineSize  		= this.width;				// timeline pixel width 
 		var nbrframes 		= lineSize/frameSize; 		// frame numbers
 		var numberOfTweet 	= 0;						// number of tweet overide later 
-		var duration  		= config.duration;			// timescale width 
-		var frameLenght 	= lineSize/frameSize;		// frame timescale	
+		var duration  		= +this._serializer.currentMedia().meta["dc:duration"];			// timescale width 
+		var frameLenght 	= lineSize/frameSize;		// frame timescale	    
 		var timeline;
 		var colors  = new Array("","#1D973D","#C5A62D","#CE0A15","#036AAE","#585858");
 		
@@ -131,13 +133,10 @@ IriSP.PolemicWidget.prototype.draw = function() {
 		}
 		
 
-		// Refactoring (parametere) ************************************************************
-		// load tweets send in parameters 
-		__IriSP.jQuery.ajax({
-		  dataType: "jsonp",
-		  url:config.metadata,
-		  success : function(json){
-			trace("load","");
+      this._serializer.sync(function(data) { loaded_callback.call(self, data) });
+      
+      function loaded_callback (json) {
+
 		    // get current view (the first ???)
 		    view = json.views[0];
 		    
@@ -148,8 +147,8 @@ IriSP.PolemicWidget.prototype.draw = function() {
 		    }
 			RAWTweets = json.annotations;
 			
-			__IriSP.jQuery.each(json.annotations, function(i,item) {
-				
+      for(var i = 0; i < json.annotations.length; i++) {
+        var item = json.annotations[i];							
 				var MyTime  = Math.floor(item.begin/duration*lineSize);
 				var Myframe = Math.floor(MyTime/lineSize*frameLenght);
 
@@ -167,7 +166,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 					
 							for(var j=0; j<item.content['polemics'].length; j++){
 									
-									tweets[numberOfTweet] = {
+									this.tweets[numberOfTweet] = {
 												id:i,
 												qualification:colorTranslation(item.content['polemics'][j]),
 												yIndicator:MyTime,
@@ -184,7 +183,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 					}
 					else {
 						//trace("k = ",i);
-						tweets[numberOfTweet] = {
+						this.tweets[numberOfTweet] = {
 									id:i,
 									qualification:colorTranslation(""),
 									yIndicator:MyTime,
@@ -203,13 +202,12 @@ IriSP.PolemicWidget.prototype.draw = function() {
 				else {
 					//trace("tweet qualification = ","null");
 				}
-			});	
+			};	
 			
-		   DrawTweets ();
+		   DrawTweets.call (this); // FIXME: ugly.
 		   if(numberOfTweet>0){Report();}
 		   
-		  }
-		 });
+		  };		 
 		
 		function pourcent(value,max){
 			var myPourcentage = Math.round(value/max*1000)/10;
@@ -329,9 +327,9 @@ IriSP.PolemicWidget.prototype.draw = function() {
 			console.log("tweets conversationel nsp: "+pourcent(tweetConversationel.length-tweetConversationelSP,tweetConversationel.length));
 		}
 		function tweetsStats(){
-			for(var i=0; i<tweets.length; i++) {
-					conversationalCount(tweets[i])
-					tweetClientCount(tweets[i]);
+			for(var i=0; i<this.tweets.length; i++) {
+					conversationalCount(this.tweets[i])
+					tweetClientCount(this.tweets[i]);
 					//tweetRetweetCount(tweets[i]);
 			}	
 			conversationalReport();
@@ -339,13 +337,13 @@ IriSP.PolemicWidget.prototype.draw = function() {
 		}		
 		function numberUserUsePolemic(){
 			
-			for(var i=0; i<tweets.length; i++) {
-				if (tweets[i].qualification!=5){
-					var searchKeyValueArrayTest = searchKeyValueArray('userId',tweets[i].userId,userPol);
+			for(var i=0; i<this.tweets.length; i++) {
+				if (this.tweets[i].qualification!=5){
+					var searchKeyValueArrayTest = searchKeyValueArray('userId', this.tweets[i].userId,userPol);
 					if(searchKeyValueArrayTest==true){
 						myUser = userPol.push({
-											userId: tweets[i].userId,
-											userScreenName: tweets[i].userScreenName,
+											userId: this.tweets[i].userId,
+											userScreenName: this.tweets[i].userScreenName,
 											tweets:[]
 											});
 					}
@@ -372,16 +370,16 @@ IriSP.PolemicWidget.prototype.draw = function() {
 										ecartNP:null,
 										ecartSP:null
 								 		});
-					if(tweets[i].qualification!=5){
+					if(this.tweets[i].qualification!=5){
 							userst[myUser-1].tweetsNP.push(tweets);
 					}else {
 							userst[myUser-1].tweetsSP.push(tweets);
 					}
 				}else{
-					if(tweets[searchKeyValueArrayTest].qualification!=5){
-						userst[searchKeyValueArrayTest].tweetsNP.push(tweets);
+					if(this.tweets[searchKeyValueArrayTest].qualification!=5){
+						userst[searchKeyValueArrayTest].tweetsNP.push(this.tweets);
 					}else {
-						userst[searchKeyValueArrayTest].tweetsSP.push(tweets);
+						userst[searchKeyValueArrayTest].tweetsSP.push(this.tweets);
 					}	
 				}	
 			}
@@ -431,20 +429,20 @@ IriSP.PolemicWidget.prototype.draw = function() {
 			console.log("question     		: "+qTweet_Q+" 	"+pourcent(qTweet_Q,numberOfTweet)+" %");
 			console.log("reference    		: "+qTweet_REF+" 	"+pourcent(qTweet_REF,numberOfTweet)+" %");
 			console.log("sans polemic 		: "+qTweet_0+" 	"+pourcent(qTweet_0,numberOfTweet)+" %");
-			numberUserUsePolemic();
-			tweetsStats();
+			// numberUserUsePolemic();
+			// tweetsStats.call(this); //fixme: ugly
 		}
 		// tweet Drawing (in raphael) 
 		function DrawTweets (){
 		// GROUPES TWEET ============================================
 		// Count nbr of cluster and tweet in a frame an save int in "frames"
-			numberOfTweet = tweets.length;
+			numberOfTweet = this.tweets.length;
 			for(var i=0; i<nbrframes; i++) {	
 				for(var j=0; j<numberOfTweet; j++) {	
 				
-					if (i==tweets[j].yframe){
+					if (i==this.tweets[j].yframe){
 						
-						var k = tweets[j].qualification;
+						var k = this.tweets[j].qualification;
 						
 						// make array for frame cluster
 						if(frames[i]==undefined){
@@ -454,7 +452,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 										};
 						}
 						// add my tweet to frame
-						frames[i].mytweetsID.push(tweets[j]);
+						frames[i].mytweetsID.push(this.tweets[j]);
 						
 						// count opinion by frame
 						if( frames[i].qualifVol[k] == undefined){
@@ -470,17 +468,19 @@ IriSP.PolemicWidget.prototype.draw = function() {
 		// GROUPES TWEET ============================================		
 		// max of tweet by Frame 
 			var max = 0; 
-			for(var i=0; i<nbrframes; i++) {
+			for(var i = 0; i < nbrframes; i++) {
 				var moy	= 0;
-				for (var j=0; j<6; j++){		
-					if (frames[i]!=undefined){
-						if (frames[i].qualifVol[j]!=undefined){
+				for (var j = 0; j < 6; j++) {		
+					if (frames[i] != undefined) {
+						if (frames[i].qualifVol[j] != undefined) {
 							moy += frames[i].qualifVol[j];
 						}
 					}
 				}
-				//trace("frame "+i,moy);
-				if (moy>max){max=moy;}
+				
+				if (moy > max) {
+          max = moy;
+        }
 			}
 		
 			var tweetDrawed = new Array();
@@ -489,36 +489,39 @@ IriSP.PolemicWidget.prototype.draw = function() {
 			// DRAW  TWEETS ============================================
 			for(var i=0; i<nbrframes;i++) {
 				var addEheight = 5;
-				if (frames[i]!=undefined){
-					trace (i+" k=",frames[i].mytweetsID.length);
+				if (frames[i] != undefined){
+				        
 					// by type 
-					for (var j=6; j>-1; j--){
+					for (var j = 6; j>-1; j--){
 						if (frames[i].qualifVol[j]!=undefined){
 							// show tweet by type 
-							for (var k=0; k<frames[i].mytweetsID.length; k++){
-								if (frames[i].mytweetsID[k].qualification==j){
-									var y=config.heightmax-addEheight;
-									if(yMax>y){yMax=y;}
-									e = paper.rect( i*frameSize, 					// x
-													y,								// y
-													frameSize-margin,				// width
-													TweetHeight						// height
-													).attr({stroke:"#00","stroke-width":0.1,  fill: colors[j]});	
-									addEheight +=TweetHeight;
+							for (var k = 0; k < frames[i].mytweetsID.length; k++) {
+								if (frames[i].mytweetsID[k].qualification == j) {                
+                  var x = i*frameSize;
+									var y = this.heightmax - addEheight;
+									if (this.yMax > y) {
+                    this.yMax = y;
+                  }
+                  
+									var e = this.paper.rect(x, y, frameSize - margin, TweetHeight /* height */).attr({stroke:"#00","stroke-width":0.1,  fill: colors[j]});	
+									addEheight += TweetHeight;
 									e.time= frames[i].mytweetsID[k].timeframe;
 									e.title= frames[i].mytweetsID[k].title;
-									e.mouseover(function () {
-										//this.attr({stroke:"#fff","stroke-width":5});
-										//this.toFront();
-									}).mouseout(function () {
+                  
+									e.mouseover(function(element) { return function (event) {                                             
+                        // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.
+                        self.TooltipWidget.show.call(self.TooltipWidget, element.title, "#fefefe", event.clientX - 106, event.clientY - 160);
+                        element.displayed = true;
+                      }}(e)).mouseout(function(element) { return function () {                          
+                          self.TooltipWidget.hide.call(self);
 										//this.attr({stroke:"#00","stroke-width":0.1});	
-									}).mousedown(function () {
-										__IriSP.MyApiPlayer.seek(this.time/1000);
+									}}(e)).mousedown(function () {
+										self._Popcorn.currentTime(this.time/1000); // FIXME: update ?
 									});
 									__IriSP.jQuery(e.node).attr('id', 't'+k+'');
 									__IriSP.jQuery(e.node).attr('title', frames[i].mytweetsID[k].title);
 									__IriSP.jQuery(e.node).attr('begin',  frames[i].mytweetsID[k].timeframe);
-									var tempPosition = {x:i*frameSize,y:config.heightmax-addEheight};
+									var tempPosition = {x:i*frameSize,y: this.heightmax-addEheight};
 									addTip(e.node, frames[i].mytweetsID[k].title,colors[j],tempPosition);
 									//frames[i].mytweetsID.pop();
 								}
@@ -529,13 +532,13 @@ IriSP.PolemicWidget.prototype.draw = function() {
 
 			}		
 			// DRAW UI :: resize border and bgd
-			heightOfChart 	= (yMax-(config.height-yMax));
-			PaperBackground = paper.rect(0,yMax, this.width,heightOfChart).attr({fill:"#fff","stroke-width":0.1,opacity: 0.1});	
-			PaperBorder 	= paper.rect(0,yMax,this.width,1).attr({fill:"#fff",stroke: "none",opacity: 1});	
-			PaperSlider 	= paper.rect(0,20,1,heightOfChart).attr({fill:"#fc00ff",stroke: "none",opacity: 1});	
+			var heightOfChart 	= (this.yMax-(this.height- this.yMax));
+			var PaperBackground = this.paper.rect(0, this.yMax, this.width,heightOfChart).attr({fill:"#fff","stroke-width":0.1,opacity: 0.1});	
+			var PaperBorder 	= this.paper.rect(0, this.yMax,this.width,1).attr({fill:"#fff",stroke: "none",opacity: 1});	
+			var PaperSlider 	= this.paper.rect(0,20,1,heightOfChart).attr({fill:"#fc00ff",stroke: "none",opacity: 1});	
 			
 			// decalage 
-			tweetSelection = paper.rect(-100,-100,5,5).attr({fill:"#fff",stroke: "none",opacity: 1});	
+			tweetSelection = this.paper.rect(-100,-100,5,5).attr({fill:"#fff",stroke: "none",opacity: 1});	
 				
 			PaperSlider.toFront();
 			PaperBackground.toBack();
@@ -544,7 +547,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 		if(typeof(PaperSlider) !== 'undefined' ) {
 			PaperSlider.toFront();
 		}
-		Report();
+		Report.call(this);
 	}
 
 	
@@ -570,7 +573,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 	
 	// AddTip  ******************************************************************************
 	function addTip(node, txt,color,tempPosition){
-			__IriSP.jQuery(node).mouseover(function(){
+			IriSP.jQuery(node).mouseover(function(){
 			   tipText = txt;
 			   //tip.hide();//fadeIn(0);
 			   tipColor = color;
