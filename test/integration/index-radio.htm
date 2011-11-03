@@ -41,19 +41,61 @@
 							type:'jwplayer',
 							src:'../libs/player.swf'}
 					};
+		var config = {						
+				gui:{
+						width:650,
+						height:2100,							
+						container:'LdtPlayer',
+						css:'../../src/css/LdtPlayer.css',
+					  widgets: [					  	
+						{type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
+						 mode: "radio",
+						 metadata:{
+						  format:'cinelab',
+						  src:'../test.json',
+						  type:'json'}
+						},
+						
+						{type: "SegmentsWidget", // please note that type refers directly to the constructor of the widget.
+						 mode: "radio",
+						 metadata:{
+						  format:'cinelab',
+						  src:'../test.json',
+						  type:'json'}
+						},
+						
+						{type: "AnnotationsWidget", // please note that type refers directly to the constructor of the widget.
+						 mode: "radio",
+						 metadata:{
+						  format:'cinelab',
+						  src:'../test.json',
+						  type:'json'}
+						},
+					  	
+					  ]
+			  },
+			player:{
+				type:'jwplayer', // player type
+				  // the rest is player-dependent configuration options.
+				  file : "video/franceculture/franceculture_retourdudimanche20100620.flv", 
+				  streamer: "rtmp://media.iri.centrepompidou.fr/ddc_player/", 
+				  flashplayer : '../libs/player.swf',
+				  live: true, 
+				  "controlbar.position" : "none", 
+				  height: 300, 
+				  width: 640, 
+				  provider: "rtmp" 
+				}
+		};
 		
-		IriSP.loadLibs(IriSP.lib, config.gui.css, function() {});
-		var pop = Popcorn.jwplayer( '#video', "",{file : "video/franceculture/franceculture_retourdudimanche20100620.flv", streamer: "rtmp://media.iri.centrepompidou.fr/ddc_player/", flashplayer : config.player.src,
-                                     live: true, "controlbar.position" : "none", height: config.gui.height, width: config.gui.width, provider: "rtmp"});
-		//pop.pause();
-		dt = new IriSP.DataLoader();
-		ser = new IriSP.JSONSerializer(dt, "../test.json");
-		ser2 = new IriSP.JSONSerializer(dt, "../test.json");
-		var player = new IriSP.PlayerWidget(pop, config, ser);
-		var annotationWidget = new IriSP.AnnotationsWidget(pop, config, ser);
-		var segmentsWidget = new IriSP.SegmentsWidget(pop, config, ser);
-		ser.sync(function() { player.draw();  annotationWidget.draw(); segmentsWidget.draw();});
-		});
+		IriSP.loadLibs(IriSP.lib, config.gui.css, 
+			function() { 	
+							var layoutManager = new IriSP.LayoutManager(config.gui.container);
+							var pop = IriSP.configurePopcorn(layoutManager, config.player);
+							
+							var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); });
+		
+		});			
 	</script>
 	
 	
