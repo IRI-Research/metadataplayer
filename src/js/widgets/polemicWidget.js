@@ -277,14 +277,11 @@ IriSP.PolemicWidget.prototype.draw = function() {
                           self.TooltipWidget.hide.call(self);
 										//this.attr({stroke:"#00","stroke-width":0.1});	
 									}}(e)).mousedown(function () {
-										self._Popcorn.currentTime(this.time/1000); // FIXME: update ?
+										self._Popcorn.currentTime(this.time/1000);
 									});
 									__IriSP.jQuery(e.node).attr('id', 't'+k+'');
 									__IriSP.jQuery(e.node).attr('title', frames[i].mytweetsID[k].title);
-									__IriSP.jQuery(e.node).attr('begin',  frames[i].mytweetsID[k].timeframe);
-									var tempPosition = {x:i*frameSize,y: this.heightmax-addEheight};
-									addTip(e.node, frames[i].mytweetsID[k].title,colors[j],tempPosition);
-									//frames[i].mytweetsID.pop();
+									__IriSP.jQuery(e.node).attr('begin',  frames[i].mytweetsID[k].timeframe);									
 								}
 							}
 						}
@@ -310,48 +307,5 @@ IriSP.PolemicWidget.prototype.draw = function() {
 		}
 	}
 
-	
-	// jQuery(document).mousemove(function(e){
-		// if (over){
-			// __IriSP.jQuery("#tip").css("left", e.pageX-106).css("top", e.pageY-160);
-			// __IriSP.jQuery("#tipcolor").css("background-color", tipColor);
-			// __IriSP.jQuery("#tiptext").text(tipText);
-			// __IriSP.jQuery("#tip").show();
-		// }else{
-			// if (typeof(__IriSP) !== 'undefined' && typeof(__IriSP.jQuery) === 'function') {
-				// __IriSP.jQuery("#tip").css("left", -10000).css("top", -100000);
-			    // //tweetSelection.attr({x:-100,y:-100});
-			// }
-		// }
-	// });
-	
-	// var over 	 = false;
-	// var tipText  = "";
-	// var tipColor = "#efefef";
-	// var tweetSelection;
-	// var PaperSlider;
-	
-	// AddTip  ******************************************************************************
-	function addTip(node, txt,color,tempPosition){
-			IriSP.jQuery(node).mouseover(function(){
-			   tipText = txt;
-			   //tip.hide();//fadeIn(0);
-			   tipColor = color;
-			   over = true;
-			   //tweetSelection.attr(tempPosition);
-			   //tweetSelection.toFront();
-			}).mouseout(function(){
-			   //tip.show()//tip.fadeOut(0);
-			   over = false;
-			});
-			
-
-	}
-	
-		// jQuery(document).ready(function() {
-			// if (typeof(__IriSP) !== 'undefined' && typeof(__IriSP.jQuery) === 'function') {
-				// __IriSP.jQuery("#tip").hide();
-			// }
-		// });
     
     
