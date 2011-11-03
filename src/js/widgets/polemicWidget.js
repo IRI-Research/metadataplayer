@@ -21,7 +21,6 @@
 IriSP.PolemicWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
  
-  this.RAWTweets;
 	this.userPol    = new Array();
 	this.userNoPol  = new Array();
 	this.userst 	   = new Array();
@@ -138,7 +137,6 @@ IriSP.PolemicWidget.prototype.draw = function() {
 		    if(typeof(view.annotation_types) !== "undefined" && view.annotation_types.length > 1) {
 		    	tweet_annot_type = view.annotation_types[1];
 		    }
-			RAWTweets = json.annotations;
 			
       for(var i = 0; i < json.annotations.length; i++) {
         var item = json.annotations[i];							
