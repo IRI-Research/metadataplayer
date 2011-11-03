@@ -4,7 +4,6 @@
 
 IriSP.MockSerializer = function(DataLoader, url) {
   IriSP.Serializer.call(this, DataLoader, url);
-  this._data = _data;
 };
 
 IriSP.MockSerializer.prototype = new IriSP.Serializer();   
@@ -19,7 +18,7 @@ IriSP.MockSerializer.prototype.currentMedia = function() {
 IriSP.MockSerializer.prototype.searchAnnotations = IriSP.JSONSerializer.prototype.searchAnnotations;
 IriSP.MockSerializer.prototype.searchOccurences = IriSP.JSONSerializer.prototype.searchOccurences;
 
-var _data = { "tags": [
+IriSP.MockSerializer.prototype._data = { "tags": [
       {
           "meta": {
             "dc:contributor": "IRI ", 
