@@ -26,6 +26,7 @@ IriSP.DataLoader.prototype.get = function(url, callback) {
 IriSP.Serializer = function(DataLoader, url) {
   this._DataLoader = DataLoader;
   this._url = url;
+  this._data = [];
 };
 
 IriSP.Serializer.prototype.serialize = function(data) { };
@@ -35,7 +36,7 @@ IriSP.Serializer.prototype.currentMedia = function() {
 };
 
 IriSP.Serializer.prototype.sync = function(callback) {  
-  callback.apply(this, []);  
+  callback.call(this, this._data);  
 };
 
 IriSP.SerializerFactory = function(DataLoader) {
