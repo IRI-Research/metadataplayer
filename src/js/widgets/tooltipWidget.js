@@ -14,11 +14,14 @@ IriSP.TooltipWidget.prototype.draw = function() {
 };
 
 IriSP.TooltipWidget.prototype.show = function(text, color, x, y) {
-  this.selector.children(".tipcolor").css("background-color", color);
-	this.selector.find(".tiptext").text(text);
-  this.selector.children(".tip").css("left", x).css("top", y);
+  if (this.selector.find(".tiptext").text() == text)
+    return;
+    
+  this.selector.find(".tipcolor").css("background-color", color);  
+	this.selector.find(".tiptext").text(text);  
+  this.selector.find(".tip").css("left", x).css("top", y);
 };
 
 IriSP.TooltipWidget.prototype.hide = function() {
-  this.selector.children(".tip").css("left", -10000).css("top", -100000);
+  this.selector.find(".tip").css("left", -10000).css("top", -100000);
 };
