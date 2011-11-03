@@ -7,8 +7,8 @@ function test_serializer() {
   test("init the serializer with a DataLoader and an url", function() {
       
       equal( this.ser._DataLoader, this.dt, "The dataloader reference is copied to the object." );
-      equal( this.ser._url, "http://google.com", "The url has been copied as well." );
-      equal( this.ser._data, undefined, "The serializer data is not defined." );
+      equal( this.ser._url, "http://google.com", "The url has been copied as well." );      
+      deepEqual( this.ser._data, [], "The serializer data is not defined." );
   });
   
   test("check that the serialize and deserialize abstract functions are defined", function() {
