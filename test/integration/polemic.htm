@@ -2,7 +2,7 @@
 <html dir="ltr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr">
 
 <head>
-<title>Test d'intégration de l'initialisation</title>
+<title>Test d'intégration du widget Polemic Tweet</title>
 </head>
 
 <body>
@@ -33,39 +33,47 @@
 						container:'LdtPlayer',
 						css:'../../src/css/LdtPlayer.css',
 					  widgets: [
+					  	{type: "PolemicWidget",
+						 width: 640, /* required for this widget */
+						 height: 50,
+						 heightmax: 50,
+						 metadata:{
+						  format:'cinelab',
+						  src:'polemic_fr.json',
+						  type:'json'},
+						  
+						 requires: [{
+							type: "TooltipWidget",
+							width: 180,
+							heigh: 160,
+							metadata : {
+								format:'cinelab',
+								src:'polemic.json',
+								type:'empty'
+							}
+						 }],
+						},
 						{type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
 						 mode: "radio",
 						 metadata:{
 						  format:'cinelab',
 						  src:'../test.json',
 						  type:'json'}
-						},
-						{type: "PolemicWidget", 
-						 metadata:{
-						  format:'cinelab',
-						  src:'polemic.json',
-						  type:'json'}
-						},
-					   {type: "SegmentsWidget", 
-						 metadata:{
-						  format:'cinelab',
-						  src:'../test.json',
-						  type:'json'}
-						},
-					  		
+						}
+					  	
 					  ]
 			  },
 			player:{
 			type:'jwplayer', // player type
               container: 'PopcornContainer',
               // the rest is player-dependent configuration options.
-              file : "video/franceculture/franceculture_retourdudimanche20100620.flv", 
+              file : "video/ldtplatform/museologie_inaugurale_20111018_flat.f4v", 
               streamer: "rtmp://media.iri.centrepompidou.fr/ddc_player/", 
               flashplayer : '../libs/player.swf',
               live: true, 
               "controlbar.position" : "none", 
               height: 300, 
-              width: 200, 
+              width: 640, 
               provider: "rtmp" 
             }
 		};
