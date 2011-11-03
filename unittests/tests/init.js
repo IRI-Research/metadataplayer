@@ -86,6 +86,7 @@ function test_init() {
               
     var res = IriSP.instantiateWidget(pop, serialFactory, layoutManager, conf);    
     ok(res instanceof IriSP.PlayerWidget, "the returned widget is of the correct instance");
+    equal(res._config.mode, "radio", "the parameters not interpreted by the config are copied into the object");
   });  
   
   test("test the instantiation of a single widget with one dependency", function() {
