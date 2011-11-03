@@ -46,6 +46,11 @@ IriSP.SerializerFactory.prototype.getSerializer = function(metadataOptions) {
   /* This function returns serializer set-up with the correct
      configuration - takes a metadata struct describing the metadata source
   */
+  
+  if (metadataOptions === undefined)
+    /* return an empty serializer */
+    return IriSP.Serializer("", "");
+            
   switch(metadataOptions.type) {
     case "json":
       return new IriSP.JSONSerializer(this._dataloader, metadataOptions.src);
@@ -54,8 +59,12 @@ IriSP.SerializerFactory.prototype.getSerializer = function(metadataOptions) {
     case "dummy": /* only used for unit testing - not defined in production */
       return new IriSP.MockSerializer(this._dataloader, metadataOptions.src);
       break;
+    
+    case "empty":
+      return new IriSP.Serializer("", "empty");
+      break;
       
-    default:
+    default:      
       return undefined;
   }
 };
