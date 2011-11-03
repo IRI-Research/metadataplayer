@@ -98,14 +98,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 		var Tweet = function(){
 		};
 		// Classes =======================================================================
-		
-		// trace function 
-		var traceNum = 0;
-		function trace(msg,value){
-			traceNum += 1;
-			__IriSP.jQuery("<div>"+traceNum+" - "+msg+" : "+value+"</div>").appendTo("#output");
-		}
-		
+
 		// Refactoring (parametere) ************************************************************
 		// color translastion
 		var qTweet_0  =0;
@@ -182,7 +175,6 @@ IriSP.PolemicWidget.prototype.draw = function() {
 							}
 					}
 					else {
-						//trace("k = ",i);
 						this.tweets[numberOfTweet] = {
 									id:i,
 									qualification:colorTranslation(""),
@@ -199,9 +191,6 @@ IriSP.PolemicWidget.prototype.draw = function() {
 					}
 					
 				} 
-				else {
-					//trace("tweet qualification = ","null");
-				}
 			};	
 			
 		   DrawTweets.call (this); // FIXME: ugly.
