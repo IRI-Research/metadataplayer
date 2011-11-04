@@ -52,7 +52,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 		var nbrframes 		= lineSize/frameSize; 		// frame numbers
 		var numberOfTweet 	= 0;						// number of tweet overide later 
 		var duration  		= +this._serializer.currentMedia().meta["dc:duration"];			// timescale width 
-		var frameLenght 	= lineSize/frameSize;		// frame timescale	    
+		var frameLength 	= lineSize/frameSize;		// frame timescale	    
 		var timeline;
 		var colors  = new Array("","#1D973D","#C5A62D","#CE0A15","#036AAE","#585858");
 		
@@ -60,7 +60,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 		//var tweets  = new Array();
 		var element = new Array();
 		var cluster = new Array();
-		var frames  = new Array(frameLenght);
+		var frames  = new Array(frameLength);
 		var slices  = new Array();
 		
 		
@@ -141,7 +141,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
       for(var i = 0; i < json.annotations.length; i++) {
         var item = json.annotations[i];							
 				var MyTime  = Math.floor(item.begin/duration*lineSize);
-				var Myframe = Math.floor(MyTime/lineSize*frameLenght);
+				var Myframe = Math.floor(MyTime/lineSize*frameLength);
 
 				if (typeof(item.meta) !== "undefined" 
 					&& typeof(item.meta["id-ref"]) !== "undefined"
