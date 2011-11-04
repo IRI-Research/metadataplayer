@@ -278,7 +278,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
                         self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.clientX - 106, event.clientY - 160);
                         element.displayed = true;
                   }}(e)).mouseout(function(element) { return function () {                          
-                          self.TooltipWidget.hide.call(self);
+                          self.TooltipWidget.hide.call(self.TooltipWidget);
 									}}(e)).mousedown(function () {
 										self._Popcorn.currentTime(this.time/1000);
 									});
@@ -298,7 +298,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 			var PaperBackground = this.paper.rect(0, this.yMax, this.width,heightOfChart).attr({fill:"#fff","stroke-width":0.1,opacity: 0.1});	
 			var PaperBorder 	= this.paper.rect(0, this.yMax,this.width,1).attr({fill:"#fff",stroke: "none",opacity: 1});	
 	
-      this.paperSlider 	= this.paper.rect(0, this.yMax, 0, this.height).attr({fill:"#D4D5D5", stroke: "none", opacity: 1});				
+      this.paperSlider 	= this.paper.rect(0, this.yMax, 0, this.heightmax).attr({fill:"#D4D5D5", stroke: "none", opacity: 1});				
 			// decalage 
 			tweetSelection = this.paper.rect(-100,-100,5,5).attr({fill:"#fff",stroke: "none",opacity: 1});	
 				
