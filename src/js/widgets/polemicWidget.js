@@ -52,7 +52,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 		var nbrframes 		= lineSize/frameSize; 		// frame numbers
 		var numberOfTweet 	= 0;						// number of tweet overide later 
 		var duration  		= +this._serializer.currentMedia().meta["dc:duration"];			// timescale width 
-		var frameLength 	= lineSize/frameSize;		// frame timescale	    
+		var frameLength 	= lineSize / frameSize;		// frame timescale	
 		var timeline;
 		var colors  = new Array("","#1D973D","#C5A62D","#CE0A15","#036AAE","#585858");
 		
@@ -132,7 +132,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 		    // get current view (the first ???)
 		    view = json.views[0];
 		    
-		    // the tweets are by definition of the second annotation type
+		    // the tweets are by definition of the second annotation type FIXME ?
 		    tweet_annot_type = null;
 		    if(typeof(view.annotation_types) !== "undefined" && view.annotation_types.length > 1) {
 		    	tweet_annot_type = view.annotation_types[1];
@@ -248,39 +248,44 @@ IriSP.PolemicWidget.prototype.draw = function() {
 			var TweetHeight = 5;
 			
 			// DRAW  TWEETS ============================================
-			for(var i=0; i<nbrframes;i++) {
+			for(var i = 0; i < nbrframes; i++) {
 				var addEheight = 5;
-				if (frames[i] != undefined){
-				        
+				if (frames[i] != undefined){				        
 					// by type 
-					for (var j = 6; j>-1; j--){
-						if (frames[i].qualifVol[j]!=undefined){
+					
+          for (var j = 6; j > -1; j--) {
+						if (frames[i].qualifVol[j] != undefined) {
 							// show tweet by type 
 							for (var k = 0; k < frames[i].mytweetsID.length; k++) {
+              
 								if (frames[i].mytweetsID[k].qualification == j) {                
-                  var x = i*frameSize;
+                  var x = i * frameSize;
 									var y = this.heightmax - addEheight;
+                  
 									if (this.yMax > y) {
                     this.yMax = y;
                   }
                   
 									var e = this.paper.rect(x, y, frameSize - margin, TweetHeight /* height */).attr({stroke:"#00","stroke-width":0.1,  fill: colors[j]});	
 									addEheight += TweetHeight;
-									e.time= frames[i].mytweetsID[k].timeframe;
+									
+                  e.time= frames[i].mytweetsID[k].timeframe;
 									e.title= frames[i].mytweetsID[k].title;
                   
 									e.mouseover(function(element) { return function (event) {                                             
+                  
                         // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.
                         self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.clientX - 106, event.clientY - 160);
                         element.displayed = true;
-                      }}(e)).mouseout(function(element) { return function () {                          
+                  }}(e)).mouseout(function(element) { return function () {                          
                           self.TooltipWidget.hide.call(self);
 									}}(e)).mousedown(function () {
 										self._Popcorn.currentTime(this.time/1000);
 									});
-									__IriSP.jQuery(e.node).attr('id', 't'+k+'');
-									__IriSP.jQuery(e.node).attr('title', frames[i].mytweetsID[k].title);
-									__IriSP.jQuery(e.node).attr('begin',  frames[i].mytweetsID[k].timeframe);									
+									
+                  IriSP.jQuery(e.node).attr('id', 't' + k + '');
+									IriSP.jQuery(e.node).attr('title', frames[i].mytweetsID[k].title);
+									IriSP.jQuery(e.node).attr('begin',  frames[i].mytweetsID[k].timeframe);									
 								}
 							}
 						}
@@ -292,19 +297,24 @@ IriSP.PolemicWidget.prototype.draw = function() {
 			var heightOfChart 	= (this.yMax-(this.height- this.yMax));
 			var PaperBackground = this.paper.rect(0, this.yMax, this.width,heightOfChart).attr({fill:"#fff","stroke-width":0.1,opacity: 0.1});	
 			var PaperBorder 	= this.paper.rect(0, this.yMax,this.width,1).attr({fill:"#fff",stroke: "none",opacity: 1});	
-			var PaperSlider 	= this.paper.rect(0,20,1,heightOfChart).attr({fill:"#fc00ff",stroke: "none",opacity: 1});	
-			
+	
+      this.paperSlider 	= this.paper.rect(0, this.yMax, 0, this.height).attr({fill:"#D4D5D5", stroke: "none", opacity: 1});				
 			// decalage 
 			tweetSelection = this.paper.rect(-100,-100,5,5).attr({fill:"#fff",stroke: "none",opacity: 1});	
 				
-			PaperSlider.toFront();
+			this.paperSlider.toBack();
 			PaperBackground.toBack();
 		}
-		
-		if(typeof(PaperSlider) !== 'undefined' ) {
-			PaperSlider.toFront();
-		}
-	}
+    
+    this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
+}
 
+IriSP.PolemicWidget.prototype.sliderUpdater = function() {
+
+    var time = +this._Popcorn.currentTime();
+    var duration = +this._serializer.currentMedia().meta["dc:duration"];
+    
+    this.paperSlider.attr("width", time * (this.width / (duration / 1000)));
+};
     
     
