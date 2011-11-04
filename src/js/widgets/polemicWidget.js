@@ -300,13 +300,18 @@ IriSP.PolemicWidget.prototype.draw = function() {
 			this.paperBackground = this.paper.rect(0, this.yMax, this.width, this.heightmax).attr({fill:"#F8F8F8","stroke-width":0.1,opacity: 1});	
 			// var PaperBorder 	= this.paper.rect(0, this.yMax,this.width,1).attr({fill:"#fff",stroke: "none",opacity: 1});	
 	
-      this.paperSlider 	= this.paper.rect(0, this.yMax, 0, this.heightmax).attr({fill:"#D4D5D5", stroke: "none", opacity: 1});				
+      this.paperSlider 	= this.paper.rect(0, this.yMax, 0, this.heightmax).attr({fill:"#D4D5D5", stroke: "none", opacity: 1});
+      
+      // the small white line displayed over the slider.
+      this.sliderTip = this.paper.rect(0, this.yMax, 5, this.heightmax).attr({fill:"#FFFFFF", stroke: "none", opacity: 1});
+      
 			// decalage 
 			tweetSelection = this.paper.rect(-100,-100,5,5).attr({fill:"#fff",stroke: "none",opacity: 1});	
 			
       
 			this.paperSlider.toBack();
 			this.paperBackground.toBack();
+      this.sliderTip.toFront();
 		}
     
     this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
@@ -318,6 +323,8 @@ IriSP.PolemicWidget.prototype.sliderUpdater = function() {
     var duration = +this._serializer.currentMedia().meta["dc:duration"];
     
     this.paperSlider.attr("width", time * (this.width / (duration / 1000)));
+        
+    this.sliderTip.attr("x", time * (this.width / (duration / 1000)));
 };
     
     
