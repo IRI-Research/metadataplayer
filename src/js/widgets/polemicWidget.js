@@ -31,6 +31,7 @@ IriSP.PolemicWidget = function(Popcorn, config, Serializer) {
 	this.PaperSlider;
 	this.heightOfChart;
 	this.tweets  = new Array();
+  this.svgElements = new Array();
   
 	// Make and define the Raphael area
 	this.paper = Raphael(document.getElementById(this._id), config.width, config.height);
@@ -267,6 +268,8 @@ IriSP.PolemicWidget.prototype.draw = function() {
                   }
                   
 									var e = this.paper.rect(x, y, frameSize - margin, TweetHeight /* height */).attr({stroke:"#00","stroke-width":0.1,  fill: colors[j]});	
+                  this.svgElements.push(e);
+                  
 									addEheight += TweetHeight;
 									
                   e.time= frames[i].mytweetsID[k].timeframe;
@@ -293,17 +296,17 @@ IriSP.PolemicWidget.prototype.draw = function() {
 				}
 
 			}		
-			// DRAW UI :: resize border and bgd
-			var heightOfChart 	= (this.yMax-(this.height- this.yMax));
-			var PaperBackground = this.paper.rect(0, this.yMax, this.width,heightOfChart).attr({fill:"#fff","stroke-width":0.1,opacity: 0.1});	
-			var PaperBorder 	= this.paper.rect(0, this.yMax,this.width,1).attr({fill:"#fff",stroke: "none",opacity: 1});	
+			// DRAW UI :: resize border and bgd			
+			this.paperBackground = this.paper.rect(0, this.yMax, this.width, this.heightmax).attr({fill:"#F8F8F8","stroke-width":0.1,opacity: 1});	
+			// var PaperBorder 	= this.paper.rect(0, this.yMax,this.width,1).attr({fill:"#fff",stroke: "none",opacity: 1});	
 	
       this.paperSlider 	= this.paper.rect(0, this.yMax, 0, this.heightmax).attr({fill:"#D4D5D5", stroke: "none", opacity: 1});				
 			// decalage 
 			tweetSelection = this.paper.rect(-100,-100,5,5).attr({fill:"#fff",stroke: "none",opacity: 1});	
-				
+			
+      
 			this.paperSlider.toBack();
-			PaperBackground.toBack();
+			this.paperBackground.toBack();
 		}
     
     this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
