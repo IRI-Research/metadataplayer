@@ -71,6 +71,10 @@ IriSP.PlayerWidget.prototype.draw = function() {
     
   } );
   
+  // handle clicks by the user on the video.
+  this._Popcorn.listen("play", IriSP.wrap(this, this.playButtonUpdater));
+  this._Popcorn.listen("pause", IriSP.wrap(this, this.playButtonUpdater));
+  
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
   this.selector.children("#amount").val(this.selector.children("#slider-range-min").slider("value")+" s");
   this.selector.children(".Ldt-Control1 button:first").button({
@@ -110,17 +114,32 @@ IriSP.PlayerWidget.prototype.draw = function() {
 
 };
 
-IriSP.PlayerWidget.prototype.playHandler = function() {
+/* update the icon of the button - separate function from playHandler
+   because in some cases (for instance, when the user directly clicks on
+   the jwplayer window) we have to change the icon without playing/pausing
+*/
+IriSP.PlayerWidget.prototype.playButtonUpdater = function() {
   var status = this._Popcorn.media.paused;
   
   if ( status == true ){        
-    this._Popcorn.play();
     this.selector.find(".ui-icon-play").css( "background-position", "-16px -160px" );
     this.selector.find("#ldt-CtrlPlay").attr("title", "Play");
   } else {
-    this._Popcorn.pause();
     this.selector.find(".ui-icon-play").css( "background-position","0px -160px" );
     this.selector.find("#ldt-CtrlPlay").attr("title", "Pause");
+  }  
+};
+
+
+IriSP.PlayerWidget.prototype.playHandler = function() {
+  var status = this._Popcorn.media.paused;
+  
+  this.playButtonUpdater();
+  
+  if ( status == true ){        
+    this._Popcorn.play();   
+  } else {
+    this._Popcorn.pause();
   }  
 };
 
