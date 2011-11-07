@@ -23,6 +23,19 @@ IriSP.configurePopcorn = function (layoutManager, options) {
           delete opts.container;
           pop = Popcorn.jwplayer("#" + containerDiv, "", opts);
         break;
+      
+      case "youtube":
+          var opts = IriSP.jQuery.extend({}, options);
+          delete opts.container;
+          opts.controls = 0;
+          opts.autostart = false;
+          templ = "width: {{width}}px; height: {{height}}px; margin-bottom: 5px;";
+          var str = Mustache.to_html(templ, {width: opts.width, height: opts.height});    
+          // Popcorn.youtube wants us to specify the size of the player in the style attribute of its container div.
+          IriSP.jQuery("#" + containerDiv).attr("style", str);
+          
+          pop = Popcorn.youtube("#" + containerDiv, opts.video, opts);
+        break;
         
       default:
         pop = undefined;
