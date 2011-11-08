@@ -17,7 +17,6 @@
 			font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
 			background-color:#eeeeee;
 			height:35px;
-			padding:5px;
 		}
 
 		.Ldt-AnnotationsWidget {
@@ -31,8 +30,8 @@
 		.Ldt-iri-chapter{
 			padding-top:10px;
 			padding-bottom:5px;
-			border-left:solid 1px #000;
-			border-right:solid 1px #000;
+			border-left:solid 0px #000;
+			border-right:solid 0px #000;
 			float: left;
 		}
 
