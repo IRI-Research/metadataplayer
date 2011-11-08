@@ -26,37 +26,36 @@
 	<script  type="text/javascript">
 		$(document).ready(function() {
 		var config = {
-						metadata:{
-							format:'cinelab',
-							src:'test.json',
-							load:'json'},
 						gui:{
 							width:650,
 							height:1,
 							mode:'video',
 							container:'LdtPlayer',
 							debug:true,
-							css:'../../src/css/LdtPlayer.css'},
+							css:'../../src/css/LdtPlayer.css',
+              widgets : [{ 
+                  type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
+                  mode: "radio",
+                  metadata:{
+                  format:'cinelab',
+                  src:'../test.json',
+                  type:'json'}
+              }]},
 						player:{
 							type:'jwplayer',
-							src:'../res/swf/player.swf'}
+							flashplayer:'../../res/swf/player.swf',
+              file:'http://127.0.0.1/mdp/test/trailer.mp4',
+              provider:'video',
+              duration: 50}
 					};
 		
-		IriSP.loadLibs(IriSP.lib, config.gui.css, function() {});
-		var pop = Popcorn.jwplayer( '#video', "", {"file" : "../trailer.mp4", "duration" : 40, "flashplayer" : "../../res/swf/player.swf"});
-		//pop.pause();
-		dt = new IriSP.DataLoader();
-		ser = new IriSP.JSONSerializer(dt, "../test.json");
-		ser2 = new IriSP.JSONSerializer(dt, "../test.json");
-		var player = new IriSP.PlayerWidget(pop, config, ser);
-		var annotationWidget = new IriSP.AnnotationsWidget(pop, config, ser);
-		
-		ser.sync(function() { player.draw();  annotationWidget.draw(); });
-		/*
-		var annotationBar = new IriSP.AnnotationWidget(pop, config, ser);
-		ser.sync(IriSP.wrap(annotationBar, draw));
-		*/
-		});
+          IriSP.loadLibs(IriSP.lib, config.gui.css, function() { 	
+              var layoutManager = new IriSP.LayoutManager(config.gui.container);
+              var pop = IriSP.configurePopcorn(layoutManager, config.player);
+              
+              var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); });
+    
+    });
 	</script>
 	
 	

@@ -23,52 +23,36 @@
 	
 	<script  type="text/javascript">
 		$(document).ready(function() {
-		var config = {
-						metadata:{
-							format:'cinelab',
-							src:'test.json',
-							load:'json'},
+      var config = {
 						gui:{
 							width:650,
 							height:1,
-							mode:'radio',
+							mode:'video',
 							container:'LdtPlayer',
 							debug:true,
-							css:'../../src/css/LdtPlayer.css'},
+							css:'../../src/css/LdtPlayer.css',
+              widgets : [{ 
+                  type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
+                  mode: "radio",
+                  metadata:{
+                  format:'cinelab',
+                  src:'../test.json',
+                  type:'json'}
+              }]},
 						player:{
-							type:'jwplayer',
-							src:'../res/swf/player.swf'}
+							type:'html5',							
+              file:'../trailer.ogv',
+              duration: 50}
 					};
 		
-		IriSP.loadLibs(IriSP.lib, config.gui.css, function() {});     
-		pop = Popcorn("#video");    
-		dt = new IriSP.DataLoader();
-		ser = new IriSP.JSONSerializer(dt, "../test.json");
-		var player = new IriSP.PlayerWidget(pop, config, ser);
-		var annotationWidget = new IriSP.AnnotationsWidget(pop, config, ser);
-		ser.sync(function() { player.draw();  annotationWidget.draw(); });
-		});
+      IriSP.loadLibs(IriSP.lib, config.gui.css, function() { 	
+          var layoutManager = new IriSP.LayoutManager(config.gui.container);
+          var pop = IriSP.configurePopcorn(layoutManager, config.player);
+          
+          var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); });
+
+    });
 	</script>
-	
- <video id='video'
-    style="display:;width:300px"
-    controls
-    preload="auto">
-
-    <source id='mp4'
-      src="../trailer.mp4"
-      type='video/mp4; codecs="avc1, mp4a"'>
-
-    <source id='ogv'
-      src="../trailer.ogv"
-      type='video/ogg; codecs="theora, vorbis"'>
-      
-    <source id='webm'
-      src="../trailer.webm"
-      type='video/webm; codecs="vp8, vorbis"'>
-
-    <p>Your user agent does not support the HTML5 Video element.</p>
-
-  </video>
+  
  </body>
  </html>
