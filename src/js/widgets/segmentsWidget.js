@@ -16,12 +16,14 @@ IriSP.SegmentsWidget.prototype.draw = function() {
 
   var self = this;
   var annotations = this._serializer._data.annotations;
-  //this.selector.attr("class", "Ldt-Segments");
 
-  //this.selector.append("<div style='position: absolute; z-index: 100; text-color: blue'></div>")
-
+  
+  this.selector.after("<div class='cleaner'></div>"); // we need to do this because the segments are floated                                                      
+  
   var i = 0;
-
+  var totalWidth = this.selector.width();
+  var onePxPercent = 100 / totalWidth; /* the value of a pixel, in percents */
+  
   for (i = 0; i < annotations.length; i++) {
     var annotation = annotations[i];
 
@@ -29,7 +31,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     var end = Math.round((+ annotation.end) / 1000);
     var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
     var id = annotation.id;
-    var startPourcent 	= IriSP.timeToPourcent(begin, duration);
+    var startPourcent 	= IriSP.timeToPourcent(begin, duration) + onePxPercent * annotations.length * 2;
     var endPourcent 	= IriSP.timeToPourcent(end, duration) - startPourcent;
 
     var divTitle		= annotation.content.title.substr(0,55);
@@ -50,7 +52,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
 
     IriSP.jQuery("#" + id).tooltip({ effect: 'slide'});
 
-    IriSP.jQuery("#" + id).fadeTo(0,0.3);
+    IriSP.jQuery("#" + id).fadeTo(0, 0.3);
 
     IriSP.jQuery("#" + id).mouseover(function() {
       IriSP.jQuery("#" + id).animate({opacity: 0.6}, 5);
