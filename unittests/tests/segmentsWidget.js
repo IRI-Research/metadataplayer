@@ -32,6 +32,8 @@ function test_segments_widget() {
     equal(IriSP.jQuery("#widget-div").length, 1, "test if the div has been added correctly");
     // the + 1 is because we have a z-index div to indicate progress in the video.
     equal(IriSP.jQuery("#widget-div").children().length, this.ser._data.annotations.length + 1, "test if children have been added correctly");
+    equal(IriSP.jQuery("#widget-div").children(":first").css("z-index"), 100, "test if slider div is created correctly.");
+    equal(IriSP.jQuery("#widget-div").css("overflow"), "auto", "test if the divs are floated correctly.");
   });
   
   test("test click on a random segment", function() {
