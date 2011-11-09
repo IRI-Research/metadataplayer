@@ -17,6 +17,8 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   var self = this;
   var annotations = this._serializer._data.annotations;
 
+  this.positionMarker = this.selector.append("<div style='position: absolute; z-index: 100; width: 1px; height: 20px; background-color: black;'></div>");
+  this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.positionUpdater));
   
   this.selector.after("<div class='cleaner'></div>"); // we need to do this because the segments are floated                                                      
   
@@ -121,4 +123,12 @@ IriSP.SegmentsWidget.prototype.searchFieldClearedHandler = function() {
 
 IriSP.SegmentsWidget.prototype.searchFieldClosedHandler = function() {
   this.clear();
+};
+
+IriSP.SegmentsWidget.prototype.positionUpdater = function() {  
+  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var time = this._Popcorn.currentTime();
+  var position 	= IriSP.timeToPourcent(begin, duration);
+  
+  this.positionMarker.css("left", position);
 };
