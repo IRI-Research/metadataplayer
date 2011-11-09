@@ -15,13 +15,13 @@ IriSP.configurePopcorn = function (layoutManager, options) {
       case "html5":
            var tmpId = Popcorn.guid("video"); 
            IriSP.jQuery("#" + containerDiv).append("<video src='" + options.file + "' id='" + tmpId + "'></video>");
-           pop = Popcorn("#" + tmpId);
+           pop = Popcorn("#" + tmpId).mediafragment({start : 0});
         break;
         
       case "jwplayer":
           var opts = IriSP.jQuery.extend({}, options);
           delete opts.container;
-          pop = Popcorn.jwplayer("#" + containerDiv, "", opts);
+          pop = Popcorn.jwplayer("#" + containerDiv, "", opts).mediafragment({start : 0});
         break;
       
       case "youtube":
@@ -34,7 +34,7 @@ IriSP.configurePopcorn = function (layoutManager, options) {
           // Popcorn.youtube wants us to specify the size of the player in the style attribute of its container div.
           IriSP.jQuery("#" + containerDiv).attr("style", str);
           
-          pop = Popcorn.youtube("#" + containerDiv, opts.video, opts);
+          pop = Popcorn.youtube("#" + containerDiv, opts.video, opts).mediafragment({start : 0});
         break;
         
       default:
