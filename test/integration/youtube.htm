@@ -9,38 +9,20 @@
 
 	<div style="width:650px;font-family: 'Trebuchet MS', 'Helvetica', 'Arial',  'Verdana', 'sans-serif';">
 	<h1>MetaDataPlayer </h1>
-	Test d'intégration du widget du player avec Popcorn (jwplayer).
+	Test d'intégration du widget du player avec Popcorn (Youtube).
 	</div>
 	
 	
  <!-- START Integration  ###################################### -->
  <!-- SIMPLE PLAYER EXPERIMENTATION -->
-	<script type="text/javascript" src="../../build/LdtPlayer-release.js" type="text/javascript"></script> 
-	<script src="../../res/js/jquery.min.js" type="text/javascript"></script>
-	<script src="../../res/js/jquery.tools.min.js" type="text/javascript"></script>
-	<script src="../../res/js/jquery-ui.min.js" type="text/javascript"></script>
-	
-	<div id="video"></div>
+	<script type="text/javascript" src="../../build/LdtPlayer-release.js"></script> 
+	<script src="../../res/js/jquery.min.js"></script>
+	<script src="../../res/js/jquery.tools.min.js"></script>
+	<script src="../../res/js/jquery-ui.min.js"></script>
 	<div id="LdtPlayer"></div>
 	
 	<script  type="text/javascript">
 		$(document).ready(function() {
-		var config = {
-						metadata:{
-							format:'cinelab',
-							src:'test.json',
-							load:'json'},
-						gui:{
-							width:650,
-							height:1,
-							mode:'video',
-							container:'LdtPlayer',
-							debug:true,
-							css:'../../src/css/LdtPlayer.css'},
-						player:{
-							type:'jwplayer',
-							src:'../libs/player.swf'}
-					};
 		var config = {						
 				gui:{
 						width:650,
@@ -75,14 +57,10 @@
 					  ]
 			  },
 			player:{
-				type:'jwplayer', // player type
+				type:'youtube', // player type
 				  // the rest is player-dependent configuration options.
-				  file : "video/franceculture/franceculture_retourdudimanche20100620.flv", 
-				  streamer: "rtmp://media.iri.centrepompidou.fr/ddc_player/", 
-				  flashplayer : '../libs/player.swf',
-				  live: true, 
-				  "controlbar.position" : "none", 
-				  height: 1, 
+				  video: "http://www.youtube.com/watch?v=rrkrvAUbU9Y",
+				  height: 400, 
 				  width: 640, 
 				  provider: "rtmp" 
 				}
@@ -95,9 +73,12 @@
 							
 							var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); });
 		
-		});			
+		});	
 	</script>
-	
-	
+<div id='Ldt-Root'>
+	<div id='Ldt-PlaceHolder'>
+	</div>
+</div>	
+<!-- END  ################  ###################################### -->
  </body>
  </html>
