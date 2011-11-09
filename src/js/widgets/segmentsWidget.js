@@ -17,7 +17,9 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   var self = this;
   var annotations = this._serializer._data.annotations;
 
-  this.positionMarker = this.selector.append("<div style='position: absolute; z-index: 100; width: 1px; height: 20px; background-color: black;'></div>");
+  this.selector.append("<div style='position: absolute; z-index: 100; width: 1px; height: 20px; background-color: black;'></div>");
+  this.positionMarker = this.selector.children(":first");
+  
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.positionUpdater));
   
   this.selector.after("<div class='cleaner'></div>"); // we need to do this because the segments are floated                                                      
@@ -83,7 +85,7 @@ IriSP.SegmentsWidget.prototype.clear = function() {
 
 IriSP.SegmentsWidget.prototype.clickHandler = function(annotation) {
   var begin = Math.round((+ annotation.begin) / 1000);
-  this._Popcorn.currentTime(begin)
+  this._Popcorn.currentTime(begin);
 };
 
 IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
@@ -128,7 +130,7 @@ IriSP.SegmentsWidget.prototype.searchFieldClosedHandler = function() {
 IriSP.SegmentsWidget.prototype.positionUpdater = function() {  
   var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
   var time = this._Popcorn.currentTime();
-  var position 	= IriSP.timeToPourcent(begin, duration);
-  
-  this.positionMarker.css("left", position);
+  var position 	= ((time / duration) * 100).toFixed(2);
+
+  this.positionMarker.css("left", position + "%");  
 };

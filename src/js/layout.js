@@ -49,8 +49,11 @@ IriSP.LayoutManager.prototype.setPopcornInstance = function(popcorn) {
 
 IriSP.LayoutManager.prototype.createDiv = function() {
     var newDiv = Popcorn.guid(this._div + "_widget_");
-    this._widgets.push(newDiv);    
-    this.selector.append("<div id='" + newDiv + "' style='width: 100%'></div");
+    this._widgets.push(newDiv);
+
+    var templ = "<div id='{{id}}' style='width: 100%; position: relative;'></div";
+    var txt = Mustache.to_html(templ, {id: newDiv});
+    this.selector.append(txt);
     
     return newDiv;
 };

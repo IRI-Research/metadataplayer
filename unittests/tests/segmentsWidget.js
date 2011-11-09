@@ -30,7 +30,8 @@ function test_segments_widget() {
     widget.draw();
   
     equal(IriSP.jQuery("#widget-div").length, 1, "test if the div has been added correctly");
-    equal(IriSP.jQuery("#widget-div").children().length, this.ser._data.annotations.length, "test if children have been added correctly");
+    // the + 1 is because we have a z-index div to indicate progress in the video.
+    equal(IriSP.jQuery("#widget-div").children().length, this.ser._data.annotations.length + 1, "test if children have been added correctly");
   });
   
   test("test click on a random segment", function() {
