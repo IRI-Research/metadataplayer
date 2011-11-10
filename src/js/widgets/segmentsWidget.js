@@ -18,7 +18,8 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   var annotations = this._serializer._data.annotations;
 
   this.selector.css("overflow", "auto"); // clear the floats - FIXME : to refactor ?
-  this.selector.append("<div style='position: absolute; z-index: 100; width: 1px; height: 20px; background-color: white;'></div>");
+  this.selector.append(Mustache.to_html(IriSP.segment_marker_template));
+  
   this.positionMarker = this.selector.children(":first");
   
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.positionUpdater));
