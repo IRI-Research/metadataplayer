@@ -51,7 +51,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
       endPourcent -= onePxPercent;
     }
     
-    var divTitle		= annotation.content.title.substr(0,55);
+    var divTitle = annotation.content.title.substr(0,55);
     var color = annotation.content.color
 
 
@@ -89,10 +89,9 @@ IriSP.SegmentsWidget.prototype.clear = function() {
   for (var id in this.oldSearchMatches) {
 
       IriSP.jQuery("#"+id).dequeue();
-			IriSP.jQuery("#"+id).animate({height:0},100);
-			IriSP.jQuery("#"+id).css('border','0px');
-			IriSP.jQuery("#"+id).css('border-color','red');
-			IriSP.jQuery("#"+id).animate({opacity:0.3},100);
+			IriSP.jQuery("#"+id).animate({height:0}, 100);
+			IriSP.jQuery("#"+id).css('border-color','lightgray');
+			IriSP.jQuery("#"+id).animate({opacity:0.3}, 100);
   }
 };
 
@@ -106,18 +105,16 @@ IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
   if (searchString == "")
     return;
 
-  console.log(searchString);
   var matches = this._serializer.searchOccurences(searchString);
 
   for (var id in matches) {
     var factor = matches[id] * 8;
-    IriSP.jQuery("#"+id).dequeue();
-    IriSP.jQuery("#"+id).animate({height: factor}, 200);
-    IriSP.jQuery("#"+id).css('border','2px');
-    IriSP.jQuery("#"+id).css('border-color','red');
-    IriSP.jQuery("#"+id).animate({opacity:0.6}, 200);
+    this.selector.find("#"+id).dequeue();
+    this.selector.find("#"+id).animate({height: factor}, 200);    
+    this.selector.find("#"+id).css('border-color','red');
+    this.selector.find("#"+id).animate({opacity:0.6}, 200);
 
-    //IriSP.jQuery("#LdtSearchInput").css('background-color','#e1ffe1');
+    IriSP.jQuery("#LdtSearchInput").css('background-color','#e1ffe1');
   }
 
   // clean up the blocks that were in the previous search
@@ -125,10 +122,12 @@ IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
   for (var id in this.oldSearchMatches) {
     if (!matches.hasOwnProperty(id)) {
         IriSP.jQuery("#"+id).dequeue();
-				IriSP.jQuery("#"+id).animate({height:0},250);
-				IriSP.jQuery("#"+id).animate({opacity:0.3},200);
+				IriSP.jQuery("#"+id).animate({height:0}, 250);				
+				IriSP.jQuery("#"+id).animate({opacity:0.3}, 200);
+        this.selector.find("#"+id).css('border','solid 1px #aaaaaa');
     }
   }
+  
   this.oldSearchMatches = matches;
 };
 
