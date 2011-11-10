@@ -37,9 +37,20 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     var end = Math.round((+ annotation.end) / 1000);
     var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
     var id = annotation.id;
-    var startPourcent 	= IriSP.timeToPourcent(begin, duration) + onePxPercent * annotations.length * 2;
-    var endPourcent 	= IriSP.timeToPourcent(end, duration) - startPourcent;
+    var startPourcent 	= IriSP.timeToPourcent(begin, duration);
+    
+    /* some sort of collapsing occurs, so we only have to substract one pixel to each box instead of
+       two
+    */
+    var endPourcent 	= IriSP.timeToPourcent(end, duration) - startPourcent - onePxPercent * 1;
+    
+    /* on the other hand, we have to substract one pixel from the first box because it's the only
+       one to have to effective 1px margins */
+    if (i == 0) {
 
+      endPourcent -= onePxPercent;
+    }
+    
     var divTitle		= annotation.content.title.substr(0,55);
     var color = annotation.content.color
 
