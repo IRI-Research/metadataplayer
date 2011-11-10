@@ -65,16 +65,6 @@ function test_player_widget() {
     ok(!this.Popcorn.muted(), "the player is un muted");         
     ok(spy_handler.called, "handling function has been called");                                                                                                                                        
   });
-
-  test("test slider seeking", function() {    
-    var player = new IriSP.PlayerWidget(this.Popcorn, this.config, this.ser);    
-    player.draw();    
-    
-    var spy_callback = this.spy();
-    player._Popcorn.listen("test.fixture", spy_callback);       
-    player.selector.find("#slider-range-min").slider("value", 30);
-    ok(spy_callback.called, "handling function has been called");
-  });
   
   test("test search button event handler", function() {
   var player = new IriSP.PlayerWidget(this.Popcorn, this.config, this.ser);

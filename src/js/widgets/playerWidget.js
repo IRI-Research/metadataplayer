@@ -54,28 +54,11 @@ IriSP.PlayerWidget.prototype.draw = function() {
 
   var LdtpPlayerY = this.selector.children("#Ldt-PlaceHolder").attr("top");
   var LdtpPlayerX = this.selector.children("#Ldt-PlaceHolder").attr("left");
-  
-  this.selector.find("#slider-range-min").slider( { //range: "min",
-    value: 0,
-    min: 1,
-    max: this._serializer.currentMedia().meta["dc:duration"]/1000,//1:54:52.66 = 3600+3240+
-    step: 0.1,
-    slide: function(event, ui) {     
-      self._Popcorn.currentTime(ui.value);
-    },
-    /* change event is similar to slide, but it happens when the slider position is 
-       modified programatically. We use it for unit tests */       
-    change: function(event, ui) {      
-      self._Popcorn.trigger("test.fixture", ui.value);
-    }
     
-  } );
-  
   // handle clicks by the user on the video.
   this._Popcorn.listen("play", IriSP.wrap(this, this.playButtonUpdater));
   this._Popcorn.listen("pause", IriSP.wrap(this, this.playButtonUpdater));
   
-  this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
   this.selector.children("#amount").val(this.selector.children("#slider-range-min").slider("value")+" s");
   this.selector.children(".Ldt-Control1 button:first").button({
     icons: {
@@ -151,12 +134,6 @@ IriSP.PlayerWidget.prototype.muteHandler = function() {
       this._Popcorn.mute(false);
       this.selector.find( ".ui-icon-volume-on" ).css("background-position", "-144px -160px" );
     }
-};
-
-/* updates the slider as time passes */
-IriSP.PlayerWidget.prototype.sliderUpdater = function() {  
-  var currentPosition = this._Popcorn.currentTime();   
-	this.selector.find( "#slider-range-min" ).slider( "value", currentPosition);		
 };
 
 IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
