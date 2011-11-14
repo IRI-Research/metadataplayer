@@ -27,7 +27,8 @@ function test_slider_widget() {
     var widget = new IriSP.SliderWidget(this.Popcorn, this.config, this.ser);    
     widget.draw();
     
-    ok(IriSP.jQuery("#widget-div").hasClass("ui-slider"), "test if the div has been set-up");
+    ok(IriSP.jQuery("#widget-div").children().hasClass("sliderBackground"), "test if the div has been set-up");
+    ok(IriSP.jQuery("#widget-div").children().hasClass("sliderForeground"), "test if the div has been set-up");
   
   });
   
@@ -36,8 +37,8 @@ function test_slider_widget() {
     widget.draw();
     
     var spy_callback = this.spy();
-    widget._Popcorn.listen("test.fixture", spy_callback);       
-    IriSP.jQuery("#widget-div").slider("value", 30);
+    widget._Popcorn.listen("timeupdate", spy_callback);       
+    IriSP.jQuery("#widget-div").children().click();
     ok(spy_callback.called, "handling function has been called");
   });
 }

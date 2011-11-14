@@ -18,7 +18,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   var annotations = this._serializer._data.annotations;
 
   this.selector.css("overflow", "auto"); // clear the floats - FIXME : to refactor ?
-  this.selector.append(Mustache.to_html(IriSP.segment_marker_template));
+  this.selector.append(Mustache.to_html(IriSP.overlay_marker_template));
   
   this.positionMarker = this.selector.children(":first");
   
