@@ -16,6 +16,8 @@ IriSP.SliderWidget.prototype.draw = function() {
   this.selector.append(Mustache.to_html(IriSP.overlay_marker_template));
   this.positionMarker = this.selector.children(".positionMarker");
   
+  this.sliderBackground.click(function(event) { self.clickHandler.call(self, event); });
+  
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
 };
 
@@ -28,4 +30,23 @@ IriSP.SliderWidget.prototype.sliderUpdater = function() {
 	this.sliderForeground.css("width", percent + "%");
 	this.positionMarker.css("left", percent + "%");
   
+};
+
+IriSP.SliderWidget.prototype.clickHandler = function(event) {
+  /* this piece of code is a little bit convoluted - here's how it works :
+     we want to handle clicks on the progress bar and convert those to seeks in the media.
+     However, jquery only gives us a global position, and we want a number of pixels relative
+     to our container div, so we get the parent position, and compute an offset to this position,
+     and finally compute the progress ratio in the media.
+     Finally we multiply this ratio with the duration to get the correct time
+  */
+  
+  var parentOffset = this.sliderBackground.parent().offset();
+  var width = this.sliderBackground.width();
+  var relX = event.pageX - parentOffset.left;
+      
+  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var newTime = ((relX / width) * duration).toFixed(2);
+	
+  this._Popcorn.currentTime(newTime);
 };
