@@ -183,7 +183,8 @@
 		}
 		
 		.tip{
-			position : absolute;
+			position : fixed; /* why not absolute instead of fixed ? because the div containing the tooltip widget is not a subdiv of its parent
+                           widget */
 			padding : 3px;
 			z-index: 10000000000;
 			max-width: 200px;			
@@ -196,7 +197,6 @@
 			padding-top: 15px;
 			padding-right: 15px;
 			color: black;
-			z-index: 10000000000;
 			font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
 			overflow:hidden;
 		}

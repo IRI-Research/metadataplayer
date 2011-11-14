@@ -26,6 +26,7 @@ function test_tooltip_widget() {
     widget.draw();
 
     equal(widget.selector.children(".tip").length, 1, "test if the div has been added correctly");
+    equal(widget.selector.children(".tip").css("position"), "fixed", "test if the widget has the correct position attr");    
     equal(widget.selector.children(".tip").css("left"), "-10000px", "test if div has been positionned correctly");
     equal(widget.selector.children(".tip").css("top"), "-100000px", "test if div has been positionned correctly");
   });
@@ -38,7 +39,7 @@ function test_tooltip_widget() {
     equal(widget.selector.children(".tip").css("left"), "105px", "test if div has been positionned correctly");
     equal(widget.selector.children(".tip").css("top"), "240px", "test if div has been positionned correctly");    
     equal(widget.selector.find(".tiptext").text(), "ceci est un texte", "test if text has been set correctly");
-  
+    
     widget.hide();
     equal(widget.selector.children(".tip").css("left"), "-10000px", "test if div has been positionned correctly");
     equal(widget.selector.children(".tip").css("top"), "-100000px", "test if div has been positionned correctly");

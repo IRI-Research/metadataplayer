@@ -8,6 +8,7 @@ IriSP.TooltipWidget.prototype = new IriSP.Widget();
 
 IriSP.TooltipWidget.prototype.draw = function() {
   var templ = Mustache.to_html(IriSP.tooltipWidget_template);
+    
   this.selector.append(templ);
   this.hide();
   

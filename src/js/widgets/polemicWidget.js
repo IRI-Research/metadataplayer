@@ -275,11 +275,11 @@ IriSP.PolemicWidget.prototype.draw = function() {
                   e.time= frames[i].mytweetsID[k].timeframe;
                   e.title= frames[i].mytweetsID[k].title;
                   
-                  e.mouseover(function(element) { return function (event) {                                             
-                  
-                        // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.
+                  e.mouseover(function(element) { return function (event) {
+                        // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.                        
                         self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.clientX - 106, event.clientY - 160);
                         element.displayed = true;
+                        debugger;
                   }}(e)).mouseout(function(element) { return function () {                          
                           self.TooltipWidget.hide.call(self.TooltipWidget);
                   }}(e)).mousedown(function () {
