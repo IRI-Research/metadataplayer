@@ -35,7 +35,6 @@ IriSP.PolemicWidget = function(Popcorn, config, Serializer) {
   
   // Make and define the Raphael area
   this.paper = Raphael(document.getElementById(this._id), config.width, config.height);
-  
 };
 
 IriSP.PolemicWidget.prototype = new IriSP.Widget();
@@ -279,7 +278,6 @@ IriSP.PolemicWidget.prototype.draw = function() {
                         // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.                        
                         self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.clientX - 106, event.clientY - 160);
                         element.displayed = true;
-                        debugger;
                   }}(e)).mouseout(function(element) { return function () {                          
                           self.TooltipWidget.hide.call(self.TooltipWidget);
                   }}(e)).mousedown(function () {
