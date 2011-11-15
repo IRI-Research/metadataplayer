@@ -24,7 +24,7 @@ function test_dataloader() {
     var spy_callback = this.spy();
     var dt = new IriSP.DataLoader();
     
-    var resp = dt.get("/url", spy_callback);
+    var resp = dt.get("/url&a=1", spy_callback);
 
     equals(xhr.requests.length, 1, "the mock ajax object should have received the request");
     
@@ -35,8 +35,11 @@ function test_dataloader() {
     ok(spy_callback.calledOnce, "callback called");
     ok(spy_callback.calledWith(response_array), "callback called with correct string");
     
-    // FIXME : remove or activate this test.
-    //deepEqual(dt._cache["/url"], response_array, "the response should be stored in the cache");
+    deepEqual(dt._cache["/url"], response_array, "the response should be stored in the cache");
+    
+    var resp2 = dt.get("/url&a=2", spy_callback);
+    ok(spy_callback.calledOnce, "callback called only once");
+    
   });
     
 }

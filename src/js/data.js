@@ -4,20 +4,23 @@ IriSP.DataLoader = function() {
   this._cache = {};
 };
 
-IriSP.DataLoader.prototype.get = function(url, callback) {  
+IriSP.DataLoader.prototype.get = function(url, callback) {
+
+  var base_url = url.split("&")[0]
   if (this._cache.hasOwnProperty(url)) {
-    callback(this._cache[url]);
+    callback(this._cache[base_url]);
   } else {
     /* we need a closure because this gets lost when it's called back */
-    IriSP.jQuery.get(url, callback);  
-    /*
+    // uncomment you don't want to use caching.
+    // IriSP.jQuery.get(url, callback);
+    
     IriSP.jQuery.get(url, (function(obj) {      
                                return function(data) {
-                                  obj._cache[url] = data;      
-                                  callback(obj._cache[url]);
+                                  obj._cache[base_url] = data;      
+                                  callback(obj._cache[base_url]);
                                 }; 
                               })(this));
-    */
+    
        
   }
 }
