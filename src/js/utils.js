@@ -34,12 +34,12 @@ IriSP.timeToPourcent = function(time, timetotal){
 /* convert a number of seconds to a tuple of the form 
    [hours, minutes, seconds]
 */
-IriSP.secondsToTime = function(secs) {
+IriSP.secondsToTime = function(secs) {  
   var hours = Math.abs(parseInt( secs / 3600 ) % 24);
   var minutes = Math.abs(parseInt( secs / 60 ) % 60);
-  var seconds = Math.abs(secs % 60);
+  var seconds = parseFloat(Math.abs(secs % 60).toFixed(0));
   
-  return [hours, minutes, seconds];
+  return {"hours" : hours, "minutes" : minutes, "seconds" : seconds};
 }
 /* for ie compatibility
 if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
