@@ -27,11 +27,12 @@
 	<script src="tests/serializers/JSONSerializer.js" type="text/javascript"></script>
 	<script src="tests/serializerFactory.js" type="text/javascript"></script>
 	<script src="tests/widget.js" type="text/javascript"></script>
-	<script src="tests/widgets/playerWidget.js" type="text/javascript"></script>
-	<script src="tests/widgets/annotationsWidget.js" type="text/javascript"></script>
-	<script src="tests/widgets/segmentsWidget.js" type="text/javascript"></script>
+	<script src="tests/utils.js" type="text/javascript"></script>	
 	<script src="tests/layout.js" type="text/javascript"></script>
 	<script src="tests/init.js" type="text/javascript"></script>
+  <script src="tests/widgets/playerWidget.js" type="text/javascript"></script>
+	<script src="tests/widgets/annotationsWidget.js" type="text/javascript"></script>
+	<script src="tests/widgets/segmentsWidget.js" type="text/javascript"></script>
 	<script src="tests/widgets/tooltipWidget.js" type="text/javascript"></script>
 	<script src="tests/widgets/polemicWidget.js" type="text/javascript"></script>
 	<script src="tests/widgets/sliderWidget.js" type="text/javascript"></script>
@@ -42,11 +43,12 @@
 		IriSP.jQuery = jQuery;
 		
 		test_dataloader();
-		test_serializer();
+		test_serializer();    
 		test_mockSerializer();
 		test_mockTweetSerializer();
 		test_JSONSerializer();
 		test_serializerFactory();
+    test_utils();
 		test_widget();
 		test_player_widget();
 		test_annotations_widget();
