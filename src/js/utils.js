@@ -31,6 +31,13 @@ IriSP.timeToPourcent = function(time, timetotal){
 	return Math.floor((time/timetotal) * 100);
 };
 
+IriSP.padWithZeros = function(num) {
+  if (Math.abs(num) < 10) {
+    return "0" + num.toString();
+  } else {
+    return num.toString();
+  }
+};
 /* convert a number of seconds to a tuple of the form 
    [hours, minutes, seconds]
 */

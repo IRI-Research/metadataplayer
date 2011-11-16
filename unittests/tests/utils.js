@@ -24,6 +24,10 @@ function test_utils() {
     equal(IriSP.timeToPourcent(2, 3), 66, "the function is immune to negative numbers");            
   });
   
+  test("test padding function", function() {
+    equal(IriSP.padWithZeros(3), "03", "function works correctly");
+  });
+  
   test("test function to convert from seconds to a time", function() {
     var h = 13, m = 7, s = 41;
     var t = 13 * 3600 + 7* 60 + 41;
