@@ -12,7 +12,7 @@
 			float:left;
 		}
 
-		#Ldt-controler {
+		.Ldt-controler {
 			font-size: 62.5%;
 			font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
 			background-color:#eeeeee;
@@ -135,14 +135,16 @@
 			display:none
 		}
 
-		.Ldt-Control1{
-			width:60px;
+		.Ldt-LeftPlayerControls {			
 			float:left;
+      padding: 4px;
 		}
-		.Ldt-Control2{
+    
+		.Ldt-RightPlayerControls {
 			padding-left:10px;
 			width:60px;
-			float:left;
+			float: right;
+      padding: 4px;
 		}
 		.Ldt-cleaner {
 			clear:both;
