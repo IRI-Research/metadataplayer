@@ -41,4 +41,26 @@ function test_slider_widget() {
     IriSP.jQuery("#widget-div").children().click();
     ok(spy_callback.called, "handling function has been called");
   });
+  
+    test("test slider dragging", function() {
+    
+    /* comes from the jquery unit tests */
+    var drag = function(handle, dx, dy) {
+      var element = el.data("draggable").element;
+      $(handle).simulate("drag", {
+        dx: dx || 0,
+        dy: dy || 0
+      });
+      dragged = { dx: dx, dy: dy };
+    }    
+    
+    var widget = new IriSP.SliderWidget(this.Popcorn, this.config, this.ser);    
+    widget.draw();
+    
+    var spy_callback = this.spy();
+    widget._Popcorn.listen("timeupdate", spy_callback);
+    
+    IriSP.jQuery("#widget-div").children(".positionMarker").simulate("drag", 70, 50);
+    ok(spy_callback.called, "handling function has been called");
+  });
 }
