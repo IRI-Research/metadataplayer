@@ -17,15 +17,17 @@ IriSP.trace = function( msg, value ) {
    a closure. This way, the 
 */   
 IriSP.wrap = function (obj, fn) {
-  return function() {
-    var args = [].slice.call(this, arguments);
-    return fn.call(obj, args);
+  return function() {    
+    var args = Array.prototype.slice.call(arguments, 0);
+    return fn.apply(obj, args);
   }
 }
 
 /* convert a time to a percentage in the media */
 IriSP.timeToPourcent = function(time, timetotal){
-	// return (parseInt(Math.round(time/timetotal*100)));
+	var time = Math.abs(time);
+  var timetotal = Math.abs(timetotal);
+  
 	return Math.floor((time/timetotal) * 100);
 };
 
