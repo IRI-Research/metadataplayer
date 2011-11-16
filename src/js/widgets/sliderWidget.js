@@ -85,8 +85,6 @@ IriSP.SliderWidget.prototype.positionMarkerDraggingStartedHandler = function(eve
 };
     
 IriSP.SliderWidget.prototype.positionMarkerDraggedHandler = function(event, ui) {  
-  // debugger;
-  console.log("dragging finished");
   var width = this.sliderBackground.width();
   var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
   var newTime = ((ui.offset.left / width) * duration).toFixed(2);
