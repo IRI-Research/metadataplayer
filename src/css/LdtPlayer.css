@@ -222,4 +222,16 @@
       padding-top: 5px;
       z-index: 2;
       width: 0px;
+      position: absolute; 
+      top: 0%; 
+      width: 0%;
     }
+    
+    .positionMarker {
+      position: absolute; 
+      z-index: 100; 
+      width: 1px; 
+      height: 20px; 
+      background-color: white;
+    }
+
