@@ -12,10 +12,7 @@ IriSP.PlayerWidget.prototype.draw = function() {
   var width = this.width;
 	var height = this.height;
 	var heightS = this.height-20;
-	
-  var searchBox = Mustache.to_html(IriSP.search_template);
-  this.selector.append(searchBox);
-  
+	  
 	var Player_templ = Mustache.to_html(IriSP.player_template, {"share_template" : IriSP.share_template});
   this.selector.append(Player_templ);		
     
@@ -58,6 +55,11 @@ IriSP.PlayerWidget.prototype.draw = function() {
   }).click(function() { self.muteHandler.call(self); } );
 
   this.selector.find(".ldt-CtrlPlay").attr( "style", "background-color:#CD21C24;" );
+  
+  var searchButtonPos = this.selector.find(".ldt-CtrlSearch").position();
+  var searchBox = Mustache.to_html(IriSP.search_template, {margin_left : searchButtonPos.left + "px"});
+  this.selector.append(searchBox);
+  
 };
 
 /* Update the elasped time div */
@@ -128,7 +130,7 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
     var self = this;
 
     /* show the search field if it is not shown */
-  	if ( this._searchBlockOpen == false ) {
+  	if ( this._searchBlockOpen == false ) {      
       this.selector.find( ".ui-icon-search" ).css( "background-position", "-144px -112px" );
       
       this.selector.find(".LdtSearch").show(100);
