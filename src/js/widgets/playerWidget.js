@@ -36,17 +36,18 @@ IriSP.PlayerWidget.prototype.draw = function() {
 	this.selector.children("#Ldt-ShowAnnotation-audio").width(width - 10);
 	this.selector.children("#Ldt-ShowAnnotation-video").width(width - 10);
 	this.selector.children("#Ldt-SaKeyword").width(width - 10);
-	this.selector.children("#Ldt-controler").width(width - 10);
-	this.selector.children("#Ldt-Control").attr("z-index", "100");
+	this.selector.children(".Ldt-controler").width(width - 10);
+	/*
+  this.selector.children("#Ldt-Control").attr("z-index", "100");
 	this.selector.children("#Ldt-controler").hide();
-	
+	*/
   this.selector.children("#Ldt-ShowAnnotation-audio").append(IriSP.annotation_loading_template);	
 
 	if(this._config.mode=='radio'){
 		this.selector.children("#Ldt-load-container").attr("width",this.width);
 	}
 	  		
-  this.selector.children("#Ldt-controler").show();
+  this.selector.children(".Ldt-controler").show();
   //__IriSP.jQuery("#Ldt-Root").css('display','visible');
   this.selector.children("#Ldt-ShowAnnotation").click( function () { 
      //__IriSP.jQuery(this).slideUp(); 
@@ -60,7 +61,8 @@ IriSP.PlayerWidget.prototype.draw = function() {
   this._Popcorn.listen("pause", IriSP.wrap(this, this.playButtonUpdater));
   
   this.selector.children("#amount").val(this.selector.children("#slider-range-min").slider("value")+" s");
-  this.selector.children(".Ldt-Control1 button:first").button({
+  
+  this.selector.find(".ldt-CtrlPlay").button({
     icons: {
       primary: 'ui-icon-play'
     },
@@ -72,23 +74,25 @@ IriSP.PlayerWidget.prototype.draw = function() {
     },
      text: false
   });
-  this.selector.children(".Ldt-Control2 button:first").button({
+  
+  this.selector.find(".ldt-CtrlSearch").button({
     icons: {
       primary: 'ui-icon-search'//,
       //secondary: 'ui-icon-volume-off'
     },
     text: false
-  }).click(function() { self.searchButtonHandler.call(self); })
-    .next().button({
+  }).click(function() { self.searchButtonHandler.call(self); });
+  
+  this.selector.find('.ldt-CtrlSound').button({
     icons: {
       primary: 'ui-icon-volume-on'
     },
      text: false
   }).click(function() { self.muteHandler.call(self); } );
 
-  this.selector.children("#ldt-CtrlPlay").attr( "style", "background-color:#CD21C24;" );
+  this.selector.find(".ldt-CtrlPlay").attr( "style", "background-color:#CD21C24;" );
   
-  this.selector.children("#Ldt-load-container").hide();
+  // this.selector.children("#Ldt-load-container").hide();
   
   if( this._config.mode=="radio" & IriSP.jQuery.browser.msie != true ) {
     IriSP.jQuery( "#Ldtplayer1" ).attr( "height", "0" );
@@ -106,10 +110,10 @@ IriSP.PlayerWidget.prototype.playButtonUpdater = function() {
   
   if ( status == true ){        
     this.selector.find(".ui-icon-play").css( "background-position", "-16px -160px" );
-    this.selector.find("#ldt-CtrlPlay").attr("title", "Play");
+    this.selector.find(".ldt-CtrlPlay").attr("title", "Play");
   } else {
     this.selector.find(".ui-icon-play").css( "background-position","0px -160px" );
-    this.selector.find("#ldt-CtrlPlay").attr("title", "Pause");
+    this.selector.find(".ldt-CtrlPlay").attr("title", "Pause");
   }  
 };
 
@@ -143,27 +147,27 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
   	if ( this._searchBlockOpen == false ) {
       this.selector.find( ".ui-icon-search" ).css( "background-position", "-144px -112px" );
       
-      this.selector.find("#LdtSearch").show(100);
+      this.selector.find(".LdtSearch").show(100);
       
-      this.selector.find("#LdtSearchInput").css('background-color','#fff');
-      this.selector.find("#LdtSearchInput").focus();
-      this.selector.find("#LdtSearchInput").attr('value', this._searchLastValue);      
+      this.selector.find(".LdtSearchInput").css('background-color','#fff');
+      this.selector.find(".LdtSearchInput").focus();
+      this.selector.find(".LdtSearchInput").attr('value', this._searchLastValue);      
       this._Popcorn.trigger("IriSP.search", this._searchLastValue); // trigger the search to make it more natural.
       
       this._searchBlockOpen = true;           
-      this.selector.find("#LdtSearchInput").bind('keyup', null, function() { self.searchHandler.call(self); } );
+      this.selector.find(".LdtSearchInput").bind('keyup', null, function() { self.searchHandler.call(self); } );
       
       // tell the world the field is open
       this._Popcorn.trigger("IriSP.search.open");
       
 	} else {
-      this._searchLastValue = this.selector.find("#LdtSearchInput").attr('value');
-      this.selector.find("#LdtSearchInput").attr('value','');
+      this._searchLastValue = this.selector.find(".LdtSearchInput").attr('value');
+      this.selector.find(".LdtSearchInput").attr('value','');
       this.selector.find(".ui-icon-search").css("background-position","-160px -112px");
-      this.selector.find("#LdtSearch").hide(100);
+      this.selector.find(".LdtSearch").hide(100);
       
       // unbind the watcher event.
-      this.selector.find("#LdtSearchInput").unbind('keypress set');
+      this.selector.find(".LdtSearchInput").unbind('keypress set');
       this._searchBlockOpen = false;
       
       this._Popcorn.trigger("IriSP.search.closed");
@@ -173,7 +177,7 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
 /* this handler is called whenever the content of the search
    field changes */
 IriSP.PlayerWidget.prototype.searchHandler = function() {
-  this._searchLastValue = this.selector.find("#LdtSearchInput").attr('value');
+  this._searchLastValue = this.selector.find(".LdtSearchInput").attr('value');
   
   // do nothing if the search field is empty, instead of highlighting everything.
   if (this._searchLastValue == "") {
@@ -188,11 +192,11 @@ IriSP.PlayerWidget.prototype.searchHandler = function() {
   highlight a match.
 */
 IriSP.PlayerWidget.prototype.searchMatch = function() {
-  this.selector.find("#LdtSearchInput").css('background-color','#e1ffe1');
+  this.selector.find(".LdtSearchInput").css('background-color','#e1ffe1');
 }
 
 /* the same, except that no value could be found */
 IriSP.PlayerWidget.prototype.searchNoMatch = function() {
-  this.selector.find("#LdtSearchInput").css('background-color','#e1ffe1');
+  this.selector.find(".LdtSearchInput").css('background-color','#e1ffe1');
 }
 

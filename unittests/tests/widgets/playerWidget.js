@@ -42,8 +42,8 @@ function test_player_widget() {
     
     player.draw();        
 
-    player.selector.find("#ldt-CtrlPlay").trigger("click");    
-    player.selector.find("#ldt-CtrlPlay").trigger("click");
+    player.selector.find(".ldt-CtrlPlay").trigger("click");    
+    player.selector.find(".ldt-CtrlPlay").trigger("click");
     ok(player.playHandler.calledTwice, "play handler called");
     ok(spy_callback2.calledOnce, "test if pause callback has been called");                                                                    
   });
@@ -56,12 +56,11 @@ function test_player_widget() {
     this.Popcorn.listen("volumechange", spy_callback);    
     
     player.draw();
-       
-    // IriSP.jQuery("#ldt-CtrlSound").trigger("click");    
-    player.selector.find(".Ldt-Control2 button:first").next().trigger("click");    
+         
+    player.selector.find(".ldt-CtrlSound").trigger("click");    
     ok(this.Popcorn.muted(), "the player is muted");
     
-    player.selector.find("#ldt-CtrlSound").trigger("click");
+    player.selector.find(".ldt-CtrlSound").trigger("click");
     ok(!this.Popcorn.muted(), "the player is un muted");         
     ok(spy_handler.called, "handling function has been called");                                                                                                                                        
   });
@@ -84,20 +83,20 @@ function test_player_widget() {
   
   player.draw();
      
-  player.selector.find("#ldt-CtrlSearch").trigger("click");
-  player.selector.find("#LdtSearchInput").attr('value', searchTerm); 
-  player.selector.find("#LdtSearchInput").trigger('keyup');
+  player.selector.find(".ldt-CtrlSearch").trigger("click");
+  player.selector.find(".LdtSearchInput").attr('value', searchTerm); 
+  player.selector.find(".LdtSearchInput").trigger('keyup');
   
   ok(spy_handler.called, "search button handling function has been called");  
   ok(spy_open.called, "open signal has been sent");  
-  ok(spy_callback.called, "search typeahead function has been called");
+  ok(spy_callback.called, "search typeahead function has been called");  
   ok(spy_callback.calledWith(searchTerm), "popcorn message sent with the right parameters");
 
-  player.selector.find("#LdtSearchInput").attr('value', ""); 
-  player.selector.find("#LdtSearchInput").trigger('keyup');
+  player.selector.find(".LdtSearchInput").attr('value', ""); 
+  player.selector.find(".LdtSearchInput").trigger('keyup');
   ok(spy_cleared.called, "clear message has been sent");
   
-  player.selector.find("#ldt-CtrlSearch").trigger("click");
+  player.selector.find(".ldt-CtrlSearch").trigger("click");
   ok(spy_closed.called, "closed signal has been sent");  
   
   });
