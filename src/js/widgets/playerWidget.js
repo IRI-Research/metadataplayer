@@ -16,42 +16,16 @@ IriSP.PlayerWidget.prototype.draw = function() {
   var searchBox = Mustache.to_html(IriSP.search_template);
   this.selector.append(searchBox);
   
-	if (this._config.mode=="radio") {
-		var radioPlayer = Mustache.to_html(IriSP.radio_template, {"share_template" : IriSP.share_template});
-    this.selector.append(radioPlayer);		
+	var Player_templ = Mustache.to_html(IriSP.player_template, {"share_template" : IriSP.share_template});
+  this.selector.append(Player_templ);		
     
-		// special tricks for IE 7
-		if (IriSP.jQuery.browser.msie == true && IriSP.jQuery.browser.version == "7.0"){
-			//__IriSP.jQuery("#LdtPlayer").attr("margin-top","50px");
-			this.selector.children("#Ldt-Root").css("padding-top","25px");			
-		}
-	} else if (this._config.mode == "video") {
-	
-		var videoPlayer = Mustache.to_html(IriSP.video_template, {"share_template" : IriSP.share_template, "heightS" : heightS});
-    this.selector.append(videoPlayer);		
-	}
-	
-	this.selector.children("#Ldt-Annotations").width(width - (75 * 2));
-	this.selector.children("#Ldt-Show-Arrow-container").width(width - (75 * 2));
-	this.selector.children("#Ldt-ShowAnnotation-audio").width(width - 10);
-	this.selector.children("#Ldt-ShowAnnotation-video").width(width - 10);
-	this.selector.children("#Ldt-SaKeyword").width(width - 10);
 	this.selector.children(".Ldt-controler").width(width - 10);
 	/*
   this.selector.children("#Ldt-Control").attr("z-index", "100");
 	this.selector.children("#Ldt-controler").hide();
 	*/
-  this.selector.children("#Ldt-ShowAnnotation-audio").append(IriSP.annotation_loading_template);	
-
-	if(this._config.mode=='radio'){
-		this.selector.children("#Ldt-load-container").attr("width",this.width);
-	}
 	  		
   this.selector.children(".Ldt-controler").show();
-  //__IriSP.jQuery("#Ldt-Root").css('display','visible');
-  this.selector.children("#Ldt-ShowAnnotation").click( function () { 
-     //__IriSP.jQuery(this).slideUp(); 
-  } );
 
   var LdtpPlayerY = this.selector.children("#Ldt-PlaceHolder").attr("top");
   var LdtpPlayerX = this.selector.children("#Ldt-PlaceHolder").attr("left");
