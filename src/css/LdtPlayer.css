@@ -1,207 +1,211 @@
-		#demo-frame > div.demo { padding: 5px !important; };
+    #demo-frame > div.demo { padding: 5px !important; };
 
-		button.ui-button-icon-only  {
-			height:1.5em;
-			width:1.5em;
-		}
+    button.ui-button-icon-only  {
+      height:1.5em;
+      width:1.5em;
+    }
 
-		#Ldt-loader {
-			background:url(imgs/loader.gif) no-repeat;
-			width:20px;
-			height:16px;
-			float:left;
-		}
+    #Ldt-loader {
+      background:url(imgs/loader.gif) no-repeat;
+      width:20px;
+      height:16px;
+      float:left;
+    }
 
-		.Ldt-controler {
-			font-size: 62.5%;
-			font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-			background-color:#eeeeee;
-			height:35px;
-		}
+    .Ldt-controler {
+      font-size: 62.5%;
+      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+      background-color:#eeeeee;
+      height:35px;
+    }
 
-		.Ldt-AnnotationsWidget {
-			font-size: 62.5%;
-			font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-			background-color:#eeeeee;		
-			padding:5px;
-		}
+    .Ldt-AnnotationsWidget {
+      font-size: 62.5%;
+      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+      background-color:#eeeeee;    
+      padding:5px;
+    }
 
-		.Ldt-iri-chapter{
-			padding-top:10px;
-			padding-bottom:5px;
-			border-left:solid 1px #000;
-			border-right:solid 1px #000;
-			float: left;
-		}
+    .Ldt-iri-chapter{
+      padding-top:10px;
+      padding-bottom:5px;
+      border-left:solid 1px #000;
+      border-right:solid 1px #000;
+      float: left;
+    }
 
-		.tooltip {
-			display:none;
-			background:transparent url(imgs/white_arrow_mini.png);
-			font-size:12px;
-			height:55px;
-			width:180px;
-			padding:10px;
-			padding-left:15px;
-			padding-top:15px;
-			padding-right:15px;
-			color:#000;
-			font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-		}
-		#Ldt-Root{
-			font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-		}
-		#Ldt-Hat{
-			height:3px;
-		}
+    .tooltip {
+      display:none;
+      background:transparent url(imgs/white_arrow_mini.png);
+      font-size:12px;
+      height:55px;
+      width:180px;
+      padding:10px;
+      padding-left:15px;
+      padding-top:15px;
+      padding-right:15px;
+      color:#000;
+      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+    }
+    #Ldt-Root{
+      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+    }
+    #Ldt-Hat{
+      height:3px;
+    }
 
-		#Ldt-Annotations{
-			padding-left:5px;
-			width:470px;
-			float:left;
-			font-size: 62.5%;
-		}
+    #Ldt-Annotations{
+      padding-left:5px;
+      width:470px;
+      float:left;
+      font-size: 62.5%;
+    }
 
-		.Ldt-SaTitle{
-			padding-top:2px;
-			padding-bottom:5px;
-			font-size:18px;
-			height:22p;
-		}
-		.Ldt-SaDescription{
-			font-size:12px;
-		}
-		#Ldt-Show-Arrow-container{
-			margin-left:60px;
-		}
-		#Ldt-Show-Arrow{
-			position:relative;
-			background:url(imgs/grey_arrow_Show.png);
-			width:27px;
-			height:13px;
-			margin-top:12px;
-			margin-left:-10px;
-			z-index:999;
-		}
+    .Ldt-SaTitle{
+      padding-top:2px;
+      padding-bottom:5px;
+      font-size:18px;
+      height:22p;
+    }
+    .Ldt-SaDescription{
+      font-size:12px;
+    }
+    #Ldt-Show-Arrow-container{
+      margin-left:60px;
+    }
+    #Ldt-Show-Arrow{
+      position:relative;
+      background:url(imgs/grey_arrow_Show.png);
+      width:27px;
+      height:13px;
+      margin-top:12px;
+      margin-left:-10px;
+      z-index:999;
+    }
 
-		#Ldt-Show-Tags{
-			position:relative;
-			height:13px;
-			margin-top:-10px;
-			border: solid 1px #000;
-		}
-		#Ldt-ShowAnnotation-video{
-			position:absolute;
-			z-index: 999;
-			padding:5px;
-			background:url(imgs/transBlack.png);
-			font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-			color:#FFF;
-		}
-		#Ldt-ShowAnnotation-audio{
-			position:relative;
-			padding:5px;
-			background-color:#cfcfcf;
-			font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-			color:#4D4D4D;
-		}
-		.Ldt-SaKeyword{
-			background-color:#b9b9b9;
-			color:#4D4D4D;
-			padding:5px;
-			font-weight:bold;
-			text-align:left;
-			float:left;
-			font-size:10px;
-		}
-		#Ldt-SaShareTools{
-			text-align:right;
-			float:right;
-		}
+    #Ldt-Show-Tags{
+      position:relative;
+      height:13px;
+      margin-top:-10px;
+      border: solid 1px #000;
+    }
+    #Ldt-ShowAnnotation-video{
+      position:absolute;
+      z-index: 999;
+      padding:5px;
+      background:url(imgs/transBlack.png);
+      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+      color:#FFF;
+    }
+    #Ldt-ShowAnnotation-audio{
+      position:relative;
+      padding:5px;
+      background-color:#cfcfcf;
+      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+      color:#4D4D4D;
+    }
+    .Ldt-SaKeyword{
+      background-color:#b9b9b9;
+      color:#4D4D4D;
+      padding:5px;
+      font-weight:bold;
+      text-align:left;
+      float:left;
+      font-size:10px;
+    }
+    #Ldt-SaShareTools{
+      text-align:right;
+      float:right;
+    }
 
 
-		#Ldt-PlaceHolder{
-			position:absolue;
-			float:none;
-		}
+    #Ldt-PlaceHolder{
+      position:absolue;
+      float:none;
+    }
 
-		.Ldt-Segments{
-			float:left;
-			font-size: 62.5%;
-		}
+    .Ldt-Segments{
+      float:left;
+      font-size: 62.5%;
+    }
 
-		.Ldt-mode-radio{
-			visibility:hidden;
-			height:0px;
-			display:none
-		}
+    .Ldt-mode-radio{
+      visibility:hidden;
+      height:0px;
+      display:none
+    }
 
-		.Ldt-LeftPlayerControls {			
-			float:left;
+    .Ldt-LeftPlayerControls {      
+      float:left;
       padding: 4px;
-		}
+    }
     
-		.Ldt-RightPlayerControls {
-			padding-left:10px;
-			width:60px;
-			float: right;
+    .Ldt-RightPlayerControls {      
+      float: right;
       padding: 4px;
-		}
-		.Ldt-cleaner {
-			clear:both;
-		}
+    }
+    
+    .ldt-ElapsedTime {
+      float: left;
+      padding: 4px;
+    }
+    
+    .Ldt-cleaner {
+      clear:both;
+    }
     
     .cleaner {
-			clear:both;
-		}
+      clear:both;
+    }
 
-		.share {
-			background:url('imgs/widget20.png') no-repeat scroll 0 0 transparent ;
-			display:block;
-			height:16px;
-			line-height:16px !important;
-			overflow:hidden;
-			width:16px;
-			float:left;
-			cursor:pointer;
-			margin:2px;
-		}
-		.shareFacebook{
-			background-position:0 -704px;
-		}
-		.shareMySpace{
-			background-position:0 -736px;
-		}
-		.shareTwitter{
-			background-position:0 -1072px;
-		}
-		.shareGoogle{
-			background-position:0 -752px;
-		}
-		.shareDelicious{
-			background-position:0 -672px;
-		}
-		.shareJamesPot{
-			background-position:0 -1808px;
-		}
-		
-		.tip{
-			position : fixed; /* why not absolute instead of fixed ? because the div containing the tooltip widget is not a subdiv of its parent
+    .share {
+      background:url('imgs/widget20.png') no-repeat scroll 0 0 transparent ;
+      display:block;
+      height:16px;
+      line-height:16px !important;
+      overflow:hidden;
+      width:16px;
+      float:left;
+      cursor:pointer;
+      margin:2px;
+    }
+    .shareFacebook{
+      background-position:0 -704px;
+    }
+    .shareMySpace{
+      background-position:0 -736px;
+    }
+    .shareTwitter{
+      background-position:0 -1072px;
+    }
+    .shareGoogle{
+      background-position:0 -752px;
+    }
+    .shareDelicious{
+      background-position:0 -672px;
+    }
+    .shareJamesPot{
+      background-position:0 -1808px;
+    }
+    
+    .tip{
+      position : fixed; /* why not absolute instead of fixed ? because the div containing the tooltip widget is not a subdiv of its parent
                            widget */
-			padding : 3px;
-			z-index: 10000000000;
-			max-width: 200px;			
-			background: transparent url("http://www.polemictweet.com/images/white_arrow_long.png");
-			font-size: 12px;
-			height: 125px;
-			width: 180px;
-			padding: 10px;
-			padding-left: 15px;
-			padding-top: 15px;
-			padding-right: 15px;
-			color: black;
-			font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
-			overflow:hidden;
-		}
+      padding : 3px;
+      z-index: 10000000000;
+      max-width: 200px;      
+      background: transparent url("http://www.polemictweet.com/images/white_arrow_long.png");
+      font-size: 12px;
+      height: 125px;
+      width: 180px;
+      padding: 10px;
+      padding-left: 15px;
+      padding-top: 15px;
+      padding-right: 15px;
+      color: black;
+      font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
+      overflow:hidden;
+    }
     
     .SliderWidget {
     

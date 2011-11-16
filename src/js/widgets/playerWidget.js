@@ -20,21 +20,14 @@ IriSP.PlayerWidget.prototype.draw = function() {
   this.selector.append(Player_templ);		
     
 	this.selector.children(".Ldt-controler").width(width - 10);
-	/*
-  this.selector.children("#Ldt-Control").attr("z-index", "100");
-	this.selector.children("#Ldt-controler").hide();
-	*/
 	  		
   this.selector.children(".Ldt-controler").show();
-
-  var LdtpPlayerY = this.selector.children("#Ldt-PlaceHolder").attr("top");
-  var LdtpPlayerX = this.selector.children("#Ldt-PlaceHolder").attr("left");
     
   // handle clicks by the user on the video.
   this._Popcorn.listen("play", IriSP.wrap(this, this.playButtonUpdater));
   this._Popcorn.listen("pause", IriSP.wrap(this, this.playButtonUpdater));
+  this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeDisplayUpdater));
   
-  this.selector.children("#amount").val(this.selector.children("#slider-range-min").slider("value")+" s");
   
   this.selector.find(".ldt-CtrlPlay").button({
     icons: {
@@ -65,14 +58,31 @@ IriSP.PlayerWidget.prototype.draw = function() {
   }).click(function() { self.muteHandler.call(self); } );
 
   this.selector.find(".ldt-CtrlPlay").attr( "style", "background-color:#CD21C24;" );
+};
+
+/* Update the elasped time div */
+IriSP.PlayerWidget.prototype.timeDisplayUpdater = function() {
   
-  // this.selector.children("#Ldt-load-container").hide();
+  if (this._previousSecond === undefined)
+    this._previousSecond = this._Popcorn.roundTime();
   
-  if( this._config.mode=="radio" & IriSP.jQuery.browser.msie != true ) {
-    IriSP.jQuery( "#Ldtplayer1" ).attr( "height", "0" );
+  else {
+    /* we're still in the same second, so it's not necessary to update time */
+    if (this._Popcorn.roundTime() == this._previousSecond)
+      return;
+      
   }
-
-
+  
+  // we get it at each call because it may change.
+  var duration = +this._serializer.currentMedia().meta["dc:duration"]; 
+  var totalTime = IriSP.secondsToTime(duration);
+  var elapsedTime = IriSP.secondsToTime(this._Popcorn.currentTime());
+  
+  var timeTemplate = "{{hours}}:{{minutes}}:{{seconds}}";
+  this.selector.find(".ElapsedTime").html(Mustache.to_html(timeTemplate, elapsedTime));
+  this.selector.find(".TotalTime").html(Mustache.to_html(timeTemplate, totalTime));
+  
+  this._previousSecond = this._Popcorn.roundTime();
 };
 
 /* update the icon of the button - separate function from playHandler
