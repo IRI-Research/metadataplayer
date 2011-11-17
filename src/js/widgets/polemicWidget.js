@@ -139,7 +139,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
         }
       
       for(var i = 0; i < json.annotations.length; i++) {
-        var item = json.annotations[i];              
+        var item = json.annotations[i];        
         var MyTime  = Math.floor(item.begin/duration*lineSize);
         var Myframe = Math.floor(MyTime/lineSize*frameLength);
 
@@ -152,7 +152,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
             if (item.content['polemics'] != undefined 
             && item.content['polemics'][0] != null) {
             
-            
+              // a tweet can have many polemics at the same time.
               for(var j=0; j<item.content['polemics'].length; j++){
                   
                   this.tweets[numberOfTweet] = {
@@ -164,7 +164,8 @@ IriSP.PolemicWidget.prototype.draw = function() {
                         timeframe:item.begin,
                         userId: MyTJson.id,
                         userScreenName: MyTJson.screen_name,
-                        tsource:MyTJson
+                        tsource:MyTJson,
+                        cinecast_id: item.id
                         };
                   numberOfTweet+=1;
                   
@@ -180,8 +181,8 @@ IriSP.PolemicWidget.prototype.draw = function() {
                   timeframe:item.begin,
                   userId: MyTJson.id,
                   userScreenName: MyTJson.screen_name,
-                  tsource:MyTJson
-                  
+                  tsource:MyTJson,
+                  cinecast_id: item.id
             };
             numberOfTweet+=1;
           }
@@ -266,14 +267,16 @@ IriSP.PolemicWidget.prototype.draw = function() {
                     this.yMax = y;
                   }
                   
-                  var e = this.paper.rect(x, y, frameSize - margin, TweetHeight /* height */).attr({stroke:"#00","stroke-width":0.1,  fill: colors[j]});  
+                  var e = this.paper.rect(x, y, frameSize - margin, TweetHeight /* height */)
+                                    .attr({stroke:"#00","stroke-width":0.1,  fill: colors[j]});  
                   this.svgElements.push(e);
                   
                   addEheight += TweetHeight;
                   
-                  e.time= frames[i].mytweetsID[k].timeframe;
-                  e.title= frames[i].mytweetsID[k].title;
-                  
+                  e.time = frames[i].mytweetsID[k].timeframe;
+                  e.title = frames[i].mytweetsID[k].title;
+                  e.id = frames[i].mytweetsID[k].cinecast_id;
+
                   e.mouseover(function(element) { return function (event) {
                         // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.                        
                         self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.clientX - 106, event.clientY - 160);
@@ -282,6 +285,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
                           self.TooltipWidget.hide.call(self.TooltipWidget);
                   }}(e)).mousedown(function () {
                     self._Popcorn.currentTime(this.time/1000);
+                    self._Popcorn.trigger("IriSP.PolemicTweet.click", this.id); 
                   });
                   
                   IriSP.jQuery(e.node).attr('id', 't' + k + '');
