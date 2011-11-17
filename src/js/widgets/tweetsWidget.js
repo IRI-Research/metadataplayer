@@ -8,13 +8,14 @@ IriSP.TweetsWidget = function(Popcorn, config, Serializer) {
 
 IriSP.TweetsWidget.prototype = new IriSP.Widget();
 
-IriSP.TweetsWidget.prototype.displayTweet = function(annotation) {
-
+IriSP.TweetsWidget.prototype.displayTweet = function(annotation) {    
     var title = annotation.content.title;
     var imageMarkup = Mustache.to_html("<img src='{{src}}' alt='avatar'></img>", 
                                        {src : annotation.content.img.src});
     this.selector.find(".Ldt-tweetContents").text(title);
     this.selector.find(".Ldt-tweetAvatar").html(imageMarkup);
+    this.selector.show(50);
+    window.setTimeout(IriSP.wrap(this, function() { this.selector.hide(50) }), 10000);
 };
 
 IriSP.TweetsWidget.prototype.draw = function() {
@@ -22,7 +23,8 @@ IriSP.TweetsWidget.prototype.draw = function() {
   
   var tweetMarkup = Mustache.to_html(IriSP.tweetWidget_template, {"share_template" : IriSP.share_template});
 	this.selector.append(tweetMarkup);
-    
+  this.selector.hide();
+  
   this._Popcorn.listen("IriSP.PolemicTweet.click", IriSP.wrap(this, this.PolemicTweetClickHandler));
 };
 
