@@ -11,13 +11,10 @@ IriSP.TweetsWidget.prototype = new IriSP.Widget();
 IriSP.TweetsWidget.prototype.displayTweet = function(annotation) {
 
     var title = annotation.content.title;
-    var description = annotation.content.description;
-    var keywords =  "" // FIXME;
-    var begin = +annotation.begin;
-    var end = +annotation.end;
-    var duration = +this._serializer.currentMedia().meta["dc:duration"];
-
-    this.selector.find(".Ldt-tweetContents").text(title);   
+    var imageMarkup = Mustache.to_html("<img src='{{src}}' alt='avatar'></img>", 
+                                       {src : annotation.content.img.src});
+    this.selector.find(".Ldt-tweetContents").text(title);
+    this.selector.find(".Ldt-tweetAvatar").html(imageMarkup);
 };
 
 IriSP.TweetsWidget.prototype.draw = function() {

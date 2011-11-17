@@ -240,10 +240,11 @@
       font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
       background-color:#eeeeee;    
       padding:5px;
+      overflow: auto;
     }
     
     .Ldt-tweetAvatar {
-    
+      float: left;
     }
     
     .Ldt-tweetContents {
