@@ -13,6 +13,7 @@ IriSP.AnnotationsWidget.prototype.clear = function() {
 };
 
 IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
+
     var title = annotation.content.title;
     var description = annotation.content.description;
     var keywords =  "" // FIXME;
@@ -22,13 +23,13 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
 
     this.selector.find(".Ldt-SaTitle").text(title);
     this.selector.find(".Ldt-SaDescription").text(description);
-		var startPourcent = parseInt(Math.round((begin*1+(end*1-begin*1)/2) / (duration*1)) / 100); 
-		this.selector.find(".Ldt-Show-Arrow").animate({left:startPourcent+'%'},1000);
-		//IriSP.jQuery("#"+annotationTempo.id).animate({alpha:'100%'},1000);
+		var startPourcent = parseInt(Math.round((begin*1+(end*1-begin*1)/2) / (duration*1)) / 100); 		
 
 };
 
 IriSP.AnnotationsWidget.prototype.clearWidget = function() {
+
+    
     /* retract the pane between two annotations */
     this.selector.find(".Ldt-SaTitle").text("");
     this.selector.find(".Ldt-SaDescription").text("");
@@ -52,10 +53,20 @@ IriSP.AnnotationsWidget.prototype.draw = function() {
 
     var conf = {start: begin, end: end, 
                 onStart: 
-                       function(annotation) { return function() { _this.displayAnnotation(annotation); } }(annotation),
+                       function(annotation) { 
+                        return function() { 
+                          /* we need it because we have to restore
+                             the display after displaying the contents
+                             of a tweet.
+                          */
+                          _this._currentAnnotation = annotation;
+                          _this.displayAnnotation(annotation); 
+                          
+                        } }(annotation),
                 onEnd: 
-                       function() { _this.clearWidget(); },
+                       function() { _this.clearWidget.call(_this); },
                 };
     this._Popcorn = this._Popcorn.code(conf);                                             
   }
+
 };
