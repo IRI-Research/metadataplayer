@@ -234,4 +234,19 @@
       height: 20px; 
       background-color: white;
     }
+    
+    .Ldt-tweetWidget {
+      font-size: 62.5%;
+      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+      background-color:#eeeeee;    
+      padding:5px;
+    }
+    
+    .Ldt-tweetAvatar {
+    
+    }
+    
+    .Ldt-tweetContents {
+    
+    }
 
