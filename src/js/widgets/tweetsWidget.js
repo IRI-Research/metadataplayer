@@ -10,8 +10,14 @@ IriSP.TweetsWidget.prototype = new IriSP.Widget();
 
 IriSP.TweetsWidget.prototype.displayTweet = function(annotation) {    
     var title = annotation.content.title;
+    var img = annotation.content.img.src;
+    if (typeof(img) === "undefined" || img === "" || img === "None") {
+      img = IriSP.widgetsDefaults.TweetsWidget.default_profile_picture;
+    }
+    
     var imageMarkup = Mustache.to_html("<img src='{{src}}' alt='avatar'></img>", 
-                                       {src : annotation.content.img.src});
+                                       {src : img});
+
     this.selector.find(".Ldt-tweetContents").text(title);
     this.selector.find(".Ldt-tweetAvatar").html(imageMarkup);
     this.selector.show(50);
