@@ -37,7 +37,7 @@ IriSP.TweetsWidget.prototype.displayTweet = function(annotation) {
   this.drawTweet(annotation);
 
   var time = this._Popcorn.currentTime();  
-  this._timeoutId = window.setTimeout(IriSP.wrap(this, this.clearPanel), 10000);
+  this._timeoutId = window.setTimeout(IriSP.wrap(this, this.clearPanel), IriSP.widgetsDefaults.TweetsWidget.tweet_display_period);
 };
 
 

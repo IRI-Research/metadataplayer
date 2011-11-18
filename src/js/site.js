@@ -22,7 +22,8 @@ IriSP.widgetsDefaults = {
   "PlayerWidget" : {},
   "AnnotationsWidget": {},
   "TweetsWidget" : {
-      default_profile_picture : "https://twimg0-a.akamaihd.net/sticky/default_profile_images/default_profile_3_bigger.png"
+      default_profile_picture : "https://twimg0-a.akamaihd.net/sticky/default_profile_images/default_profile_3_bigger.png",
+      tweet_display_period: 10000 // how long do we show a tweet ?
   }
 };
 
