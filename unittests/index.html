@@ -46,7 +46,8 @@
  $(document).ready(function(){ 
 		/* only for unit-testing ! */
 		IriSP.jQuery = jQuery;
-		
+		jQuery.fx.off = true;
+    
 		test_dataloader();
 		test_serializer();    
 		test_mockSerializer();
