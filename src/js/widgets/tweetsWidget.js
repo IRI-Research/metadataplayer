@@ -2,9 +2,9 @@
 
 IriSP.TweetsWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
- 
-  this._isDisplayingTweet = false;
-  this._ignoreClear = false;
+
+  this._displayingTweet = false;
+  this._timeoutId = undefined;
 };
 
 
@@ -28,31 +28,22 @@ IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
 };
 
 IriSP.TweetsWidget.prototype.displayTweet = function(annotation) {
-  if (this._isDisplayingTweet === false) {
-    this._isDisplayingTweet = true;
-  } else { /* we're already displaying a tweet */
-    this._ignoreClear = true;
+  if (this._displayingTweet === false) {
+    this._displayingTweet = true;
+  } else {
+    window.clearTimeout(this._timeoutId);
   }
-  
+
   this.drawTweet(annotation);
 
   var time = this._Popcorn.currentTime();  
-  // this._Popcorn.exec(time + 10, IriSP.wrap(this, this.clearPanel)); 
-  window.setTimeout(IriSP.wrap(this, this.clearPanel), 10000);
+  this._timeoutId = window.setTimeout(IriSP.wrap(this, this.clearPanel), 10000);
 };
 
 
-IriSP.TweetsWidget.prototype.clearPanel = function() {
-  debugger;
-  if (this._ignoreClear === true) {
-    this._ignoreClear = false;
-    return;
-  } else {
-    /* clear the display */
+IriSP.TweetsWidget.prototype.clearPanel = function() {  
+    this._displayingTweet = false;
     this.closePanel();
-    this._isDisplayingTweet = false;    
-    this._ignoreClear = false;    
-  }
 };
 
 IriSP.TweetsWidget.prototype.closePanel = function() {
@@ -67,7 +58,7 @@ IriSP.TweetsWidget.prototype.draw = function() {
   var _this = this;
   
   var tweetMarkup = Mustache.to_html(IriSP.tweetWidget_template, {"share_template" : IriSP.share_template});
-	this.selector.append(tweetMarkup);
+  this.selector.append(tweetMarkup);
   this.selector.hide();
   
   this._Popcorn.listen("IriSP.PolemicTweet.click", IriSP.wrap(this, this.PolemicTweetClickHandler));
