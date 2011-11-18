@@ -4,7 +4,7 @@ IriSP.TweetsWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
 
   this._displayingTweet = false;
-  this._timeoutId = undefined;
+  this._timeoutId = undefined;  
 };
 
 
@@ -24,7 +24,7 @@ IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
 
     this.selector.find(".Ldt-tweetContents").text(title);
     this.selector.find(".Ldt-tweetAvatar").html(imageMarkup);
-    this.selector.show(50);
+    this.selector.show("blind", 250); 
 };
 
 IriSP.TweetsWidget.prototype.displayTweet = function(annotation) {
@@ -43,15 +43,20 @@ IriSP.TweetsWidget.prototype.displayTweet = function(annotation) {
 
 IriSP.TweetsWidget.prototype.clearPanel = function() {  
     this._displayingTweet = false;
+    this._timeoutId = undefined;
     this.closePanel();
+    
 };
 
 IriSP.TweetsWidget.prototype.closePanel = function() {
-  if (this._displayingTweet)
-    return;
-  else {
-    this.selector.hide(50);
-  }
+    if (this._timeoutId != undefined) {
+      /* we're called from the "close window" link */
+      /* cancel the timeout */
+      window.clearTimeout(this._timeoutId);
+    }
+    
+    this.selector.hide("blind", 400);
+    
 };
 
 IriSP.TweetsWidget.prototype.draw = function() {
@@ -60,6 +65,7 @@ IriSP.TweetsWidget.prototype.draw = function() {
   var tweetMarkup = Mustache.to_html(IriSP.tweetWidget_template, {"share_template" : IriSP.share_template});
   this.selector.append(tweetMarkup);
   this.selector.hide();
+  this.selector.find(".Ldt-tweetWidgetMinimize").click(IriSP.wrap(this, this.closePanel));
   
   this._Popcorn.listen("IriSP.PolemicTweet.click", IriSP.wrap(this, this.PolemicTweetClickHandler));
 };
