@@ -22,7 +22,7 @@
     .Ldt-AnnotationsWidget {
       font-size: 62.5%;
       font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-      background-color:#eeeeee;    
+      background-color:#eeeeee;
       padding:5px;
     }
 
@@ -135,25 +135,25 @@
       display:none
     }
 
-    .Ldt-LeftPlayerControls {      
+    .Ldt-LeftPlayerControls {
       float:left;
       padding: 4px;
     }
-    
-    .Ldt-RightPlayerControls {      
+
+    .Ldt-RightPlayerControls {
       float: right;
       padding: 4px;
     }
-    
+
     .ldt-ElapsedTime {
       float: left;
       padding: 4px;
     }
-    
+
     .Ldt-cleaner {
       clear:both;
     }
-    
+
     .cleaner {
       clear:both;
     }
@@ -187,13 +187,13 @@
     .shareJamesPot{
       background-position:0 -1808px;
     }
-    
+
     .tip{
       position : fixed; /* why not absolute instead of fixed ? because the div containing the tooltip widget is not a subdiv of its parent
                            widget */
       padding : 3px;
       z-index: 10000000000;
-      max-width: 200px;      
+      max-width: 200px;
       background: transparent url("http://www.polemictweet.com/images/white_arrow_long.png");
       font-size: 12px;
       height: 125px;
@@ -206,9 +206,9 @@
       font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
       overflow:hidden;
     }
-    
+
     .SliderWidget {
-    
+
     }
     /* slider */
     .sliderBackground  {
@@ -216,41 +216,46 @@
       width: 100%;
       padding-top: 5px;
     }
-    
+
     .sliderForeground  {
       background-color: #747474;
       padding-top: 5px;
       z-index: 2;
       width: 0px;
-      position: absolute; 
-      top: 0%; 
+      position: absolute;
+      top: 0%;
       width: 0%;
     }
-    
+
     .positionMarker {
-      position: absolute; 
-      z-index: 100; 
-      width: 1px; 
-      height: 20px; 
+      position: absolute;
+      z-index: 100;
+      width: 1px;
+      height: 20px;
       background-color: white;
     }
-    
+
     .Ldt-tweetWidget {
       font-size: 62.5%;
       font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-      background-color:#eeeeee;    
+      background-color:#eeeeee;
       padding:5px;
       overflow: auto;
     }
-    
+
     .Ldt-tweetAvatar {
       float: left;
     }
-    
+
     .Ldt-tweetContents {
-    
+
     }
 
     .Ldt-tweetWidgetMinimize {
       float: right;
+    }
+
+    /* the styling of a spacer div */
+    .Ldt-spacer {
+      background-color:#eeeeee;
     }
