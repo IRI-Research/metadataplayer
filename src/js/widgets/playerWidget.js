@@ -76,14 +76,13 @@ IriSP.PlayerWidget.prototype.timeDisplayUpdater = function() {
   }
   
   // we get it at each call because it may change.
-  var duration = +this._serializer.currentMedia().meta["dc:duration"]; 
+  var duration = +this._serializer.currentMedia().meta["dc:duration"] / 1000; 
   var totalTime = IriSP.secondsToTime(duration);
   var elapsedTime = IriSP.secondsToTime(this._Popcorn.currentTime());
   
   var timeTemplate = "{{hours}}:{{minutes}}:{{seconds}}";
   this.selector.find(".Ldt-ElapsedTime").html(Mustache.to_html(timeTemplate, elapsedTime));
   this.selector.find(".Ldt-TotalTime").html(Mustache.to_html(timeTemplate, totalTime));
-  
   this._previousSecond = this._Popcorn.roundTime();
 };
 
