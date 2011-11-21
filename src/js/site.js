@@ -19,6 +19,7 @@ IriSP.lib = {
 IriSP.config = undefined;
 
 IriSP.widgetsDefaults = {
+  "LayoutManager" : {spacer_div_height : "0px" },
   "PlayerWidget" : {},
   "AnnotationsWidget": {},
   "TweetsWidget" : {

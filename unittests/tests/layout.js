@@ -33,6 +33,7 @@ function test_layout() {
     
     equal(lay.selector.children("#" + divId).length, 1, "check that a subdiv container is created");
     equal(lay.selector.children("#" + spacerId).length, 1, "check that a spacer subdiv is created");
+    equal(lay.selector.children("#" + spacerId).height() + "px", IriSP.widgetsDefaults.LayoutManager.spacer_div_height, "check that spacer height is set");
     
   });
   
