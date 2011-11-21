@@ -13,7 +13,7 @@ IriSP.TweetsWidget.prototype = new IriSP.Widget();
 
 IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
     
-    var title = annotation.content.title;
+    var title = IriSP.formatTweet(annotation.content.title);
     var img = annotation.content.img.src;
     if (typeof(img) === "undefined" || img === "" || img === "None") {
       img = IriSP.widgetsDefaults.TweetsWidget.default_profile_picture;
@@ -22,7 +22,7 @@ IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
     var imageMarkup = Mustache.to_html("<img src='{{src}}' alt='avatar'></img>", 
                                        {src : img});
 
-    this.selector.find(".Ldt-tweetContents").text(title);
+    this.selector.find(".Ldt-tweetContents").html(title);
     this.selector.find(".Ldt-tweetAvatar").html(imageMarkup);
     this.selector.show("blind", 250); 
 };
