@@ -2,26 +2,48 @@
 
 IriSP.DataLoader = function() {
   this._cache = {};
+  
+  /*
+    A structure to hold callbacks for specific urls. We need it because
+    ajax calls are asynchronous, so it means that sometimes we ask
+    multiple times for a ressource because the first call hasn't been
+    received yet.
+  */
+  this._callbacks = {};
 };
 
 IriSP.DataLoader.prototype.get = function(url, callback) {
 
   var base_url = url.split("&")[0]
-  if (this._cache.hasOwnProperty(url)) {
+  if (this._cache.hasOwnProperty(base_url)) {
     callback(this._cache[base_url]);
-  } else {
-    /* we need a closure because this gets lost when it's called back */
-    // uncomment you don't want to use caching.
-    // IriSP.jQuery.get(url, callback);
+  } else {  
+    if (!this._callbacks.hasOwnProperty(base_url)) {
+      this._callbacks[base_url] = [];
+      this._callbacks[base_url].push(callback);   
+      /* we need a closure because this gets lost when it's called back */
+  
+      // uncomment you don't want to use caching.
+      // IriSP.jQuery.get(url, callback);
+      
+      var func = function(data) {
+                  this._cache[base_url] = data;                                
+                  var i = 0;
+                  
+                  for (i = 0; i < this._callbacks[base_url].length; i++) {
+                    this._callbacks[base_url][i](this._cache[base_url]);                                  
+                  }
+      };
+      
+      IriSP.jQuery.get(url, IriSP.wrap(this, func));                                
     
-    IriSP.jQuery.get(url, (function(obj) {      
-                               return function(data) {
-                                  obj._cache[base_url] = data;      
-                                  callback(obj._cache[base_url]);
-                                }; 
-                              })(this));
-    
-       
+    } else {
+      /* simply push the callback - it'll get called when the ressource
+         has been received */
+      
+      this._callbacks[base_url].push(callback);   
+   
+    }
   }
 }
 

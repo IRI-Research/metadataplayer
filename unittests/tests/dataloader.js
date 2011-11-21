@@ -38,7 +38,7 @@ function test_dataloader() {
     deepEqual(dt._cache["/url"], response_array, "the response should be stored in the cache");
     
     var resp2 = dt.get("/url&a=2", spy_callback);
-    ok(spy_callback.calledOnce, "callback called only once");
+    ok(spy_callback.calledTwice && xhr.requests.length === 1, "callback called twice but request made only once.");
     
   });
     
