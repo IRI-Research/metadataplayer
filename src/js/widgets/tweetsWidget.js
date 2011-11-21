@@ -30,7 +30,6 @@ IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
                                        {src : img, creator: creator});
             
       title = Mustache.to_html(IriSP.rich_tweet_template, {contents : title, date : tweetContents.created_at});
-      console.log(title);
     }
 
     this.selector.find(".Ldt-tweetContents").html(title);

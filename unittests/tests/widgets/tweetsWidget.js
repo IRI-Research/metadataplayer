@@ -36,13 +36,16 @@ function test_tweets_widget() {
     
     var widget = new IriSP.TweetsWidget(this.Popcorn, this.config, this.ser);    
     widget.draw();
-    var annotation = {content: {"title": "title", "description": "description", "keywords": "keywords", "img": {"src" : "http://yop.com"}}};
+    var annotation = {content: 
+                        {"title": "title", "description": "description", "keywords": "keywords", "img": {"src" : "http://yop.com"}},
+                      meta: {"dc:source" : {}}
+                     };
     widget.displayTweet(annotation);
     
     equal(widget.selector.find(".Ldt-tweetContents").text(), "title", "title set correctly");    
     equal(widget.selector.find(".Ldt-tweetAvatar").children().attr("src"), "http://yop.com", "user avatar set correctly");
     
-    var annotation2 = {content: {"title": "title", "description": "description", "keywords": "keywords", "img" : {}}};
+    var annotation2 = {content: {"title": "title", "description": "description", "keywords": "keywords", "img" : {}}, meta: {"dc:source" : {}}};
     widget.displayTweet(annotation2);
     equal(widget.selector.find(".Ldt-tweetAvatar").children().attr("src"), 
                                IriSP.widgetsDefaults.TweetsWidget.default_profile_picture, "default avatar set correctly");
