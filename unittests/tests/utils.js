@@ -39,8 +39,8 @@ function test_utils() {
   });
   
   test("test function to format a tweet", function() {
-    var input = "@handle #hashtag ";
-    var output = "<a href='http://twitter.com/handle'>@handle</a> <a href='http://twitter.com/search?q=%23hashtag'>#hashtag</a> ";
+    var input = "@handle @bundle #hashtag http://t.co/11111";
+    var output = "<a href='http://twitter.com/handle'>@handle</a> <a href='http://twitter.com/bundle'>@bundle</a> <a href='http://twitter.com/search?q=%23hashtag'>#hashtag</a> <a href='http://t.co/11111'>http://t.co/11111</a>";
     equal(IriSP.formatTweet(input), output, "the correct output is given");
   });
 }

@@ -51,12 +51,15 @@ IriSP.secondsToTime = function(secs) {
 
 /* format a tweet - replaces @name by a link to the profile, #hashtag, etc. */
 IriSP.formatTweet = function(tweet) {
-  var rNickname = /@(\w+)/; // matches a @handle
-  var rHashtag = /#(\w+)/;  // matches a hashtag
-  var i1 = tweet.replace(rNickname, "<a href='http://twitter.com/$1'>@$1</a>");
-  var i2 = i1.replace(rHashtag, "<a href='http://twitter.com/search?q=%23$1'>#$1</a>");
+  var rNickname = /@(\w+)/gi; // matches a @handle
+  var rHashtag = /#(\w+)/gi;  // matches a hashtag
+  var rUrl = /((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi; // copied from http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript/480#480
   
-  return i2;
+  var i1 = tweet.replace(rUrl, "<a href='$1'>$1</a>");
+  var i2 = i1.replace(rNickname, "<a href='http://twitter.com/$1'>@$1</a>");
+  var i3 = i2.replace(rHashtag, "<a href='http://twitter.com/search?q=%23$1'>#$1</a>");
+
+  return i3;
 };
 
 /* for ie compatibility
