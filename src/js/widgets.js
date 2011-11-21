@@ -15,6 +15,12 @@ IriSP.Widget = function(Popcorn, config, Serializer) {
      this.selector = IriSP.jQuery("#" + this._id);
   }
 
+  if (config.hasOwnProperty("spacer")) {
+     this._spacerId = config.spacer;
+     this.spacer = IriSP.jQuery("#" + this._spacerId);
+  }
+
+
   if (config.hasOwnProperty("width")) {
      // this.width and not this._width because we consider it public.
      this.width = config.width;     

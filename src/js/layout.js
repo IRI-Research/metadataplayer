@@ -44,16 +44,21 @@ IriSP.LayoutManager = function(options) {
    
 IriSP.LayoutManager.prototype.setPopcornInstance = function(popcorn) {
     this._Popcorn = popcorn;
-    /* FIXME - don't forget to add the popcorn messages handlers there */
 }
 
 IriSP.LayoutManager.prototype.createDiv = function() {
     var newDiv = Popcorn.guid(this._div + "_widget_");
+    var spacerDiv = Popcorn.guid("_spacer_");
     this._widgets.push(newDiv);
 
-    var templ = "<div id='{{id}}' style='width: 100%; position: relative;'></div";
-    var txt = Mustache.to_html(templ, {id: newDiv});
-    this.selector.append(txt);
+    var divTempl = "<div id='{{id}}' style='width: 100%; position: relative;'></div";
+    var spacerTempl = "<div id='{{spacer_id}}' style='width: 100%; position: relative; height: 5px;'></div";
     
-    return newDiv;
+    var divCode = Mustache.to_html(divTempl, {id: newDiv});
+    var spacerCode = Mustache.to_html(spacerTempl, {spacer_id: spacerDiv});
+
+    this.selector.append(spacerCode);
+    this.selector.append(divCode);
+    
+    return [newDiv, spacerDiv];
 };

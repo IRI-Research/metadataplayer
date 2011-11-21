@@ -5,7 +5,8 @@ exemple json configuration:
 
 IriSP.configurePopcorn = function (layoutManager, options) {
     var pop;
-    var containerDiv = layoutManager.createDiv();
+    var ret = layoutManager.createDiv(); 
+    var containerDiv = ret[0];
     
     switch(options.type) {
       /*
@@ -65,9 +66,14 @@ IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
 };
 
 IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager, widgetConfig) {
-    var container = layoutManager.createDiv();        
+    /* create div returns us a container for the widget and a spacer */
+    var ret = layoutManager.createDiv();        
+    var container = ret[0];
+    var spacer = ret[1];
+
     var arr = IriSP.jQuery.extend({}, widgetConfig);
     arr.container = container;
+    arr.spacer = spacer;
     
     var serializer = serialFactory.getSerializer(widgetConfig.metadata);    
     

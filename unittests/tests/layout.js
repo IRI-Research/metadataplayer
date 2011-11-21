@@ -27,9 +27,12 @@ function test_layout() {
   
   test("test widget div creation", function() {
     var lay = new IriSP.LayoutManager({});
-    var divId = lay.createDiv();
+    var ret = lay.createDiv(); 
+    var divId = ret[0];
+    var spacerId = ret[1];
     
-    equal(lay.selector.children("#" + divId).length, 1, "check that a subdiv is created");
+    equal(lay.selector.children("#" + divId).length, 1, "check that a subdiv container is created");
+    equal(lay.selector.children("#" + spacerId).length, 1, "check that a spacer subdiv is created");
     
   });
   
