@@ -145,9 +145,17 @@
       padding: 4px;
     }
 
-    .ldt-ElapsedTime {
+    .Ldt-Time {
       float: left;
       padding: 4px;
+    }
+    
+    .Ldt-ElapsedTime {
+      color: #4a4a4a;
+    }
+    
+    .Ldt-TotalTime {
+      color: #b2b2b2; 
     }
 
     .Ldt-cleaner {
