@@ -29,7 +29,6 @@ function test_annotations_widget() {
     widget.draw();
 
     equal(widget.selector.children(".Ldt-AnnotationsWidget").length, 1, "test if the div has been added correctly");
-    equal(widget.selector.children(".Ldt-AnnotationsWidget").find(".Ldt-SaKeyword").length, 1, "test if sub-div has been added correctly");
   });
   
   test("test annotation display function", function() {
