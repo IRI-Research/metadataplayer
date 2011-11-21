@@ -18,9 +18,20 @@ IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
     if (typeof(img) === "undefined" || img === "" || img === "None") {
       img = IriSP.widgetsDefaults.TweetsWidget.default_profile_picture;
     }
-    
-    var imageMarkup = Mustache.to_html("<img src='{{src}}' alt='avatar'></img>", 
+
+    var imageMarkup = Mustache.to_html("<img src='{{src}}' alt='user image'></img>", 
                                        {src : img});
+    
+    if (typeof(annotation.meta["dc:source"].content) !== "undefined") {
+      var tweetContents = JSON.parse(annotation.meta["dc:source"].content);
+      var creator = tweetContents.user.screen_name;
+      
+      imageMarkup = Mustache.to_html("<a href='http://twitter.com/{{creator}}'><img src='{{src}}' alt='user image'></img></a>", 
+                                       {src : img, creator: creator});
+            
+      title = Mustache.to_html(IriSP.rich_tweet_template, {contents : title, date : tweetContents.created_at});
+      console.log(title);
+    }
 
     this.selector.find(".Ldt-tweetContents").html(title);
     this.selector.find(".Ldt-tweetAvatar").html(imageMarkup);
