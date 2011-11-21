@@ -40,12 +40,14 @@
 	<script src="tests/widgets/tooltipWidget.js" type="text/javascript"></script>
 	<script src="tests/widgets/polemicWidget.js" type="text/javascript"></script>
 	<script src="tests/widgets/sliderWidget.js" type="text/javascript"></script>
+	<script src="tests/widgets/tweetsWidget.js" type="text/javascript"></script>
 </head>
 <script>
  $(document).ready(function(){ 
 		/* only for unit-testing ! */
 		IriSP.jQuery = jQuery;
-		
+		jQuery.fx.off = true;
+    
 		test_dataloader();
 		test_serializer();    
 		test_mockSerializer();
@@ -62,6 +64,7 @@
 		test_tooltip_widget();
 		test_polemic_widget();
     test_slider_widget();
+    test_tweets_widget();
 });
 </script>	
 <body>

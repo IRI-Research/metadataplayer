@@ -37,4 +37,10 @@ function test_utils() {
     t = -t;
     deepEqual(IriSP.secondsToTime(t),  {"hours" : h, "minutes" : m, "seconds" : s}, "the function is immune to negative numbers.");
   });
+  
+  test("test function to format a tweet", function() {
+    var input = "@handle #hashtag ";
+    var output = "<a href='http://twitter.com/handle'>@handle</a> <a href='http://twitter.com/search?q=%23hashtag'>#hashtag</a> ";
+    equal(IriSP.formatTweet(input), output, "the correct output is given");
+  });
 }

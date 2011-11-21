@@ -47,7 +47,18 @@ IriSP.secondsToTime = function(secs) {
   var seconds = parseFloat(Math.abs(secs % 60).toFixed(0));
   
   return {"hours" : hours, "minutes" : minutes, "seconds" : seconds};
-}
+};
+
+/* format a tweet - replaces @name by a link to the profile, #hashtag, etc. */
+IriSP.formatTweet = function(tweet) {
+  var rNickname = /@(\w+)/; // matches a @handle
+  var rHashtag = /#(\w+)/;  // matches a hashtag
+  var i1 = tweet.replace(rNickname, "<a href='http://twitter.com/$1'>@$1</a>");
+  var i2 = i1.replace(rHashtag, "<a href='http://twitter.com/search?q=%23$1'>#$1</a>");
+  
+  return i2;
+};
+
 /* for ie compatibility
 if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
    Object.defineProperty=function(obj,prop,desc) {
