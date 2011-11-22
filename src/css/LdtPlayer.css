@@ -162,6 +162,15 @@
       clear:both;
     }
 
+    /* Arrow Widget */
+    .Ldt-arrowWidget {
+      background:url('imgs/arrow.png') no-repeat scroll 0 0 transparent ;
+      height:16px;
+      width:27px;
+      margin-bottom: -1px;
+      left: 0%;
+    }
+ 
     .cleaner {
       clear:both;
     }
