@@ -16,7 +16,15 @@ IriSP.SegmentsWidget.prototype.draw = function() {
 
   var self = this;
   var annotations = this._serializer._data.annotations;
+  var view = this._serializer._data.views[0];
 
+  /* in case we have different types of annotations, we want to display only the first type */
+  var view_type = "";
+
+  if(typeof(view.annotation_types) !== "undefined" && view.annotation_types.length > 1) {
+          view_type = view.annotation_types[0];
+  }
+ 
   this.selector.css("overflow", "auto"); // clear the floats - FIXME : to refactor ?
   this.selector.append(Mustache.to_html(IriSP.overlay_marker_template));
   
@@ -29,9 +37,15 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   var i = 0;
   var totalWidth = this.selector.width();
   var onePxPercent = 100 / totalWidth; /* the value of a pixel, in percents */
-  
+ 
   for (i = 0; i < annotations.length; i++) {
     var annotation = annotations[i];
+
+    /* filter the annotations whose type is not the one we want */
+    if (view_type != "" && typeof(annotation.meta) !== "undefined" && typeof(annotation.meta["id-ref"]) !== "undefined"
+          && annotation.meta["id-ref"] != view_type) {
+        continue;
+    }
 
     var begin = Math.round((+ annotation.begin) / 1000);
     var end = Math.round((+ annotation.end) / 1000);
