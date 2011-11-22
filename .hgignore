@@ -4,3 +4,4 @@ syntax: regexp
 syntax: glob
 build/LdtPlayer-release.js
 build/LdtPlayer.min.js
+*.swp
