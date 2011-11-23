@@ -17,13 +17,16 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
     var title = annotation.content.title;
     var description = annotation.content.description;
     var keywords =  "" // FIXME;
-    var begin = +annotation.begin;
-    var end = +annotation.end;
+    var begin = +annotation.begin / 1000;
+    var end = +annotation.end / 1000;
     var duration = +this._serializer.currentMedia().meta["dc:duration"];
 
-    this.selector.find(".Ldt-SaTitle").text(title);
+    var title_templ = "{{title}} - ( {{begin}} - {{end}} )";
+    var endstr = Mustache.to_html(title_templ, {title: title, begin: IriSP.secondsToTime(begin), end: IriSP.secondsToTime(end)});
+
+    this.selector.find(".Ldt-SaTitle").text(endstr);
     this.selector.find(".Ldt-SaDescription").text(description);
-		var startPourcent = parseInt(Math.round((begin*1+(end*1-begin*1)/2) / (duration*1)) / 100); 		
+		//var startPourcent = parseInt(Math.round((begin*1+(end*1-begin*1)/2) / (duration*1)) / 100); 		
 
 };
 

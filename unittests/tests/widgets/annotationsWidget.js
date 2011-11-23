@@ -36,7 +36,7 @@ function test_annotations_widget() {
     widget.draw();
     var annotation = {content: {"title": "title", "description": "description", "keywords": "keywords"}};
     widget.displayAnnotation(annotation);
-    equal(widget.selector.find(".Ldt-SaTitle").text(), "title", "title set correctly");
+    equal(widget.selector.find(".Ldt-SaTitle").text(), "title - ( NaN:NaN - NaN:NaN )", "title set correctly");
     equal(widget.selector.find(".Ldt-SaDescription").text(), "description", "description set correctly");
     equal(widget.selector.find(".Ldt-SaKeywordText").text(), "", "keywords field set correctly");
   });
