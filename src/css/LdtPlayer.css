@@ -12,14 +12,7 @@
       float:left;
     }
 
-    .Ldt-controler {
-      font-size: 62.5%;
-      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-      background-color:#eeeeee;
-      height:35px;
-    }
-
-    .Ldt-AnnotationsWidget {
+   .Ldt-AnnotationsWidget {
       font-size: 62.5%;
       font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
       background-color:#eeeeee;
@@ -138,14 +131,52 @@
       display:none
     }
 
+    /* player */
+    .Ldt-controler {
+      font-size: 62.5%;
+      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+      background:url('imgs/player_gradient.png') repeat-x transparent ;
+      height: 27px;
+      border-top: 1px solid #b6b8b8;
+      border-bottom: 1px solid #b6b8b8;
+    }
+
+ 
     .Ldt-LeftPlayerControls {
       float:left;
-      padding: 4px;
     }
 
     .Ldt-RightPlayerControls {
       float: right;
       padding: 4px;
+    }
+
+    .Ldt-CtrlPlay {
+      background:url('imgs/play_button.png') no-repeat scroll 0 0 transparent ;
+      background-position: center;
+      width: 50px;
+      height: 23px;
+      border: 1px solid #b6b8b8;
+      float: left;
+    }
+
+    .Ldt-CtrlNext {
+      background:url('imgs/play_button.png') no-repeat scroll 0 0 transparent ;
+      background-position: center;
+      width: 50px;
+      height: 23px;
+      border: 1px solid #b6b8b8;
+      float: left;
+    }
+
+
+    .Ldt-CtrlSearch {
+      background:url('imgs/play_button.png') no-repeat scroll 0 0 transparent ;
+      background-position: center;
+      width: 50px;
+      height: 23px;
+      border: 1px solid #b6b8b8;
+      float: left;
     }
 
     .Ldt-Time {

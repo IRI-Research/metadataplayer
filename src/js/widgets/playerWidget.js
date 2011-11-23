@@ -26,37 +26,15 @@ IriSP.PlayerWidget.prototype.draw = function() {
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeDisplayUpdater));
   
   
-  this.selector.find(".ldt-CtrlPlay").button({
-    icons: {
-      primary: 'ui-icon-play'
-    },
-    text: false
-  }).click(function() { self.playHandler.call(self); })
-    .next().button({
-    icons: {
-      primary: 'ui-icon-seek-next'
-    },
-     text: false
-  });
+  this.selector.find(".Ldt-CtrlPlay").click(function() { self.playHandler.call(self); });
+  this.selector.find(".Ldt-CtrlNext").click(function() { });
+  this.selector.find(".Ldt-CtrlSearch").click(function() { self.searchButtonHandler.call(self); });
   
-  this.selector.find(".ldt-CtrlSearch").button({
-    icons: {
-      primary: 'ui-icon-search'//,
-      //secondary: 'ui-icon-volume-off'
-    },
-    text: false
-  }).click(function() { self.searchButtonHandler.call(self); });
-  
-  this.selector.find('.ldt-CtrlSound').button({
-    icons: {
-      primary: 'ui-icon-volume-on'
-    },
-     text: false
-  }).click(function() { self.muteHandler.call(self); } );
+  this.selector.find('.Ldt-CtrlSound').click(function() { self.muteHandler.call(self); } );
 
-  this.selector.find(".ldt-CtrlPlay").attr( "style", "background-color:#CD21C24;" );
+  this.selector.find(".Ldt-CtrlPlay").attr( "style", "background-color:#CD21C24;" );
   
-  var searchButtonPos = this.selector.find(".ldt-CtrlSearch").position();
+  var searchButtonPos = this.selector.find(".Ldt-CtrlSearch").position();
   var searchBox = Mustache.to_html(IriSP.search_template, {margin_left : searchButtonPos.left + "px"});
   this.selector.append(searchBox);
   
@@ -95,10 +73,10 @@ IriSP.PlayerWidget.prototype.playButtonUpdater = function() {
   
   if ( status == true ){        
     this.selector.find(".ui-icon-play").css( "background-position", "-16px -160px" );
-    this.selector.find(".ldt-CtrlPlay").attr("title", "Play");
+    this.selector.find(".Ldt-CtrlPlay").attr("title", "Play");
   } else {
     this.selector.find(".ui-icon-play").css( "background-position","0px -160px" );
-    this.selector.find(".ldt-CtrlPlay").attr("title", "Pause");
+    this.selector.find(".Ldt-CtrlPlay").attr("title", "Pause");
   }  
 };
 
