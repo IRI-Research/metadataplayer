@@ -16,12 +16,19 @@ IriSP.SegmentsWidget.prototype.draw = function() {
 
   var self = this;
   var annotations = this._serializer._data.annotations;
-  var view = this._serializer._data.views[0];
 
   /* in case we have different types of annotations, we want to display only the first type */
+  /* the next two lines are a bit verbose because for some test data, _serializer.data.view is either
+     null or undefined.
+  */
+  var view;
+
+  if (typeof(this._serializer._data.views) !== "undefined" && this._serializer._data.views !== null)
+     view = this._serializer._data.views[0];
+
   var view_type = "";
 
-  if(typeof(view.annotation_types) !== "undefined" && view.annotation_types.length > 1) {
+  if(typeof(view) !== "undefined" && typeof(view.annotation_types) !== "undefined" && view.annotation_types.length > 1) {
           view_type = view.annotation_types[0];
   }
  
