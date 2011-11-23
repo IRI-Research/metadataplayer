@@ -263,13 +263,15 @@
 
     }
     /* slider */
-    .sliderBackground  {
+    .Ldt-sliderBackground  {
       background-color: #B6B8B8;
       width: 100%;
-      padding-top: 5px;
+      height: 5px;
+      position: absolute;
+      z-index: 2;
     }
 
-    .sliderForeground  {
+    .Ldt-sliderForeground  {
       background-color: #747474;
       padding-top: 5px;
       z-index: 2;
@@ -277,6 +279,15 @@
       position: absolute;
       top: 0%;
       width: 0%;
+    }
+
+    .Ldt-sliderPositionMarker {
+      position: absolute;
+      z-index: 100;
+      background-color: blue;
+      height: 5px;
+      width: 5px;
+      top: 0%;
     }
 
     .positionMarker {

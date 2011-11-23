@@ -7,18 +7,11 @@ IriSP.SliderWidget.prototype = new IriSP.Widget();
 IriSP.SliderWidget.prototype.draw = function() {
   var self = this;
 
+  this.selector.append(Mustache.to_html(IriSP.sliderWidget_template, {}));
 
-  this.selector.append("<div class='sliderBackground'></div>");
-  this.sliderBackground = this.selector.find(".sliderBackground");
-
-  this.selector.append("<div class='sliderForeground'></div>");
-  this.sliderForeground = this.selector.find(".sliderForeground");
-
-  this.selector.append(Mustache.to_html(IriSP.overlay_marker_template));
-  this.positionMarker = this.selector.find(".positionMarker");
-  this.positionMarker.css("height", "10px");
-  this.positionMarker.css("width", "10px");
-  this.positionMarker.css("top", "0%");
+  this.sliderBackground = this.selector.find(".Ldt-sliderBackground");
+  this.sliderForeground = this.selector.find(".Ldt-sliderForeground");
+  this.positionMarker = this.selector.find(".Ldt-sliderPositionMarker");
 
   // a special variable to stop methods from tinkering
   // with the positionMarker when the user is dragging it
@@ -69,14 +62,14 @@ IriSP.SliderWidget.prototype.clickHandler = function(event) {
 
 /* handles mouse over the slider */
 IriSP.SliderWidget.prototype.mouseOverHandler = function(event) {
-  this.sliderBackground.animate({"padding-top": "10px"}, 100);
-  this.sliderForeground.animate({"padding-top": "10px"}, 100);
+/*  this.sliderBackground.animate({"padding-top": "10px", "margin-top": "-10px"}, 100);
+  this.sliderForeground.animate({"margin-top": "-10px"}, 100); */
 };
 
 /* handles when the mouse leaves the slider */
 IriSP.SliderWidget.prototype.mouseOutHandler = function(event) {
-  this.sliderBackground.animate({"padding-top": "5px"}, 50);
-  this.sliderForeground.animate({"padding-top": "5px"}, 50);
+/*  this.sliderBackground.animate({"padding-top": "5", "margin-top": "0px"}, 100);
+  this.sliderForeground.animate({"padding-top": "5px"}, 50); */
 };
 
 // called when the user starts dragging the position indicator
