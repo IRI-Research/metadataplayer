@@ -26,8 +26,6 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
 
     this.selector.find(".Ldt-SaTitle").text(endstr);
     this.selector.find(".Ldt-SaDescription").text(description);
-		//var startPourcent = parseInt(Math.round((begin*1+(end*1-begin*1)/2) / (duration*1)) / 100); 		
-
 };
 
 IriSP.AnnotationsWidget.prototype.clearWidget = function() {
