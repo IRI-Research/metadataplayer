@@ -25,6 +25,9 @@
       background-color:#eeeeee;
       padding:5px;
       background:url('imgs/wire_pattern.png') repeat scroll transparent ;
+      border-color: #b6b8b8;
+      border-width: 1px;
+      border-style: solid;
     }
 
     .Ldt-iri-chapter{
@@ -168,7 +171,7 @@
       background:url('imgs/arrow.png') no-repeat scroll 0 0 transparent ;
       height:16px;
       width:27px;
-      margin-bottom: -1px;
+      margin-bottom: -2px;
     }
  
     .cleaner {
