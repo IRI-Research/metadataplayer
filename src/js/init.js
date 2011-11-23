@@ -67,7 +67,7 @@ IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
 
 IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager, widgetConfig) {
     /* create div returns us a container for the widget and a spacer */
-    var ret = layoutManager.createDiv();        
+    var ret = layoutManager.createDiv(widgetConfig.type);        
     var container = ret[0];
     var spacer = ret[1];
 

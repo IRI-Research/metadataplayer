@@ -46,9 +46,13 @@ IriSP.LayoutManager.prototype.setPopcornInstance = function(popcorn) {
     this._Popcorn = popcorn;
 }
 
-IriSP.LayoutManager.prototype.createDiv = function() {
-    var newDiv = Popcorn.guid(this._div + "_widget_");
-    var spacerDiv = Popcorn.guid("_spacer_");
+/* stem is a string to append to the id of the widget */
+IriSP.LayoutManager.prototype.createDiv = function(stem) {
+    if (typeof(stem) === "undefined")
+       stem = "";
+
+    var newDiv = Popcorn.guid(this._div + "_widget_" + stem + "_");
+    var spacerDiv = Popcorn.guid("LdtPlayer_spacer_");
     this._widgets.push(newDiv);
 
     var divTempl = "<div id='{{id}}' style='width: 100%; position: relative;'></div";
