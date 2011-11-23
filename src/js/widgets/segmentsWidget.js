@@ -118,7 +118,14 @@ IriSP.SegmentsWidget.prototype.clear = function() {
 
 IriSP.SegmentsWidget.prototype.clickHandler = function(annotation) {
   var begin = Math.round((+ annotation.begin) / 1000);
+  var end = Math.round((+ annotation.end) / 1000);
   this._Popcorn.currentTime(begin);
+
+  var duration = +this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var middle_time = (begin + end) / 2;
+  var percents = Math.round((middle_time / duration) * 100);
+
+  this._Popcorn.trigger("IriSP.SegmentsWidget.segmentClick", percents);
 };
 
 IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
