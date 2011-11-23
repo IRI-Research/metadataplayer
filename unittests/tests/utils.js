@@ -31,11 +31,14 @@ function test_utils() {
   test("test function to convert from seconds to a time", function() {
     var h = 13, m = 7, s = 41;
     var t = 13 * 3600 + 7* 60 + 41;
-    deepEqual(IriSP.secondsToTime(t), {"hours" : h, "minutes" : m, "seconds" : s}, 
-              "the converted time is correct");
+    
+    var r = IriSP.secondsToTime(t);
+    ok(r.hours === h && r.minutes === m && r.seconds === s, "the converted time is correct");
     
     t = -t;
-    deepEqual(IriSP.secondsToTime(t),  {"hours" : h, "minutes" : m, "seconds" : s}, "the function is immune to negative numbers.");
+    var r = IriSP.secondsToTime(t);
+    ok(r.hours === h && r.minutes === m && r.seconds === s, "the function is immune to negative numbers.");
+    equal(IriSP.secondsToTime(t), "13:07:41");
   });
   
   test("test function to format a tweet", function() {

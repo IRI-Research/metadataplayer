@@ -46,8 +46,18 @@ IriSP.secondsToTime = function(secs) {
   var minutes = Math.abs(parseInt( secs / 60 ) % 60);
   var seconds = parseFloat(Math.abs(secs % 60).toFixed(0));
   
-  return {"hours" : hours, "minutes" : minutes, "seconds" : seconds};
+  var toString_fn = function() {
+    var ret = "";
+    if (hours > 0)
+       ret = IriSP.padWithZeros(this.hours) + ":";
+    ret += IriSP.padWithZeros(this.minutes) + ":" + IriSP.padWithZeros(this.seconds);
+
+    return ret;
+  }
+  return {"hours" : hours, "minutes" : minutes, "seconds" : seconds, toString: toString_fn};
 };
+
+IriSP.secondsToString
 
 /* format a tweet - replaces @name by a link to the profile, #hashtag, etc. */
 IriSP.formatTweet = function(tweet) {
