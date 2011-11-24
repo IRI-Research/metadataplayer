@@ -24,11 +24,10 @@
     }
 
     .Ldt-iri-chapter{
-      padding-top:10px;
-      padding-bottom:5px;
       border-left:solid 1px #000;
       border-right:solid 1px #000;
       float: left;
+      height: 3px;
     }
 
     .tooltip {
