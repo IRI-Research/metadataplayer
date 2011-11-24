@@ -137,4 +137,59 @@ function test_JSONSerializer() {
       equal(countOccurences("garrigou interview"), 2, "second request works");
       equal(countOccurences("garrigou idée interview"), 3, "third request works");
     });
+    
+    test("test current annotation search", function() {
+      var ser = new IriSP.JSONSerializer(this.dt, "../test/test.json");      
+
+      ser._data = { 
+      "views": [
+          {
+            "id": "0", 
+            "contents": [
+              "franceculture_retourdudimanche20100620"
+            ], 
+            "annotation_types": [
+              "c_1F07824B-F512-78A9-49DB-6FB51DAB9560"
+            ]
+          }
+        ], 
+          annotations : [
+      {"begin": 1234, "end" : 578900,
+       "content": {        
+        "description": "professeur", 
+        "title": "garrigou"
+        }, 
+      "id" : 1,
+      "meta": {
+        "dc:contributor": "perso", 
+        "id-ref": "c_1F07824B-F512-78A9-49DB-6FB51DAB9560", 
+        "dc:created": "2011-10-20T13:36:18.286693", 
+        "dc:modified": "2011-10-20T13:36:18.286693", 
+        "dc:creator": "perso"
+        } 
+      }, 
+      {"begin": 1234, "end" : 578900,
+       "content": {        
+        "description": "interview", 
+        "title": "Revue de presse - Hervé Gardette"
+        }, 
+       "id" : 2, 
+       "meta": {
+        "dc:contributor": "perso", 
+        "id-ref": "c_1F07824B-F512-78A9-49DB-6FB51DAB9560", 
+        "dc:created": "2011-10-20T13:36:18.286693", 
+        "dc:modified": "2011-10-20T13:36:18.286693", 
+        "dc:creator": "perso"
+        } 
+      }
+      ]};
+
+      var ret = ser.currentAnnotations(234);  
+      equal(ret.length, 2, "the correct number of elements is returned");
+      ok(ret[0].begin < 234 * 1000 && ret[0].end > 234 * 1000 && 
+         ret[0].meta["id-ref"] == "c_1F07824B-F512-78A9-49DB-6FB51DAB9560",
+         "the first element is correctly configured");
+
+    });
+ 
 };

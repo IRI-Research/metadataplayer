@@ -105,3 +105,34 @@ IriSP.JSONSerializer.prototype.searchOccurences = function(searchString) {
   
   return ret;
 };
+
+/* takes the currentTime and returns all the annotations that are displayable at the moment 
+   NB: only takes account the first type of annotations - ignores tweets 
+   currentTime is in seconds.
+ */
+
+IriSP.JSONSerializer.prototype.currentAnnotations = function(currentTime) {
+  var view;
+  var currentTimeMs = 1000 * currentTime;
+
+  if (typeof(this._data.views) !== "undefined" && this._data.views !== null)
+     view = this._data.views[0];
+
+  var view_type = "";
+
+  if(typeof(view) !== "undefined" && typeof(view.annotation_types) !== "undefined" && view.annotation_types.length >= 1) {
+          view_type = view.annotation_types[0];
+  }
+
+  var ret_array = [];
+  
+  var i;
+ 
+  for (i in this._data.annotations) {
+    var annotation = this._data.annotations[i];
+    if (annotation.meta["id-ref"] == view_type && annotation.begin < currentTimeMs && annotation.end > currentTimeMs)
+      ret_array.push(annotation);
+  }
+  
+  return ret_array;
+};
