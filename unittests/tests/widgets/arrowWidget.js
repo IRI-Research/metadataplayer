@@ -30,6 +30,6 @@ function test_arrow_widget() {
     equal(widget.selector.children(".Ldt-arrowWidget").length, 1, "test if the div has been added correctly");
 
     widget._Popcorn.trigger("IriSP.SegmentsWidget.segmentClick", 40);
-    equal(widget.selector.children(".Ldt-arrowWidget").css("left"), "40%", "test if the widget responds correctly to messages.");
+    equal(widget.selector.children(".Ldt-arrowWidget").css("left"), "22%", "test if the widget responds correctly to messages.");
   });
  }; 
