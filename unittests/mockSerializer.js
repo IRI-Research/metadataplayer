@@ -7,17 +7,13 @@ IriSP.MockSerializer = function(DataLoader, url) {
   this._data = IriSP.MockSerializer.prototype._data;
 };
 
-IriSP.MockSerializer.prototype = new IriSP.Serializer();   
+IriSP.MockSerializer.prototype = new IriSP.JSONSerializer();   
 
 IriSP.MockSerializer.prototype.currentMedia = function() {
   return this._data.medias[0];
 };
 
-// Copy some methods from JSONSerializer because we need them in
-// some tests.
-
-IriSP.MockSerializer.prototype.searchAnnotations = IriSP.JSONSerializer.prototype.searchAnnotations;
-IriSP.MockSerializer.prototype.searchOccurences = IriSP.JSONSerializer.prototype.searchOccurences;
+IriSP.MockSerializer.prototype.sync = IriSP.Serializer.prototype.sync;
 
 IriSP.MockSerializer.prototype._data = { "tags": [
       {
