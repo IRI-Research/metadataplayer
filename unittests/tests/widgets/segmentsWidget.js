@@ -44,14 +44,12 @@ function test_segments_widget() {
     var spy_segmentClick = this.spy();
     var spy_handler = sinon.spy(widget, "clickHandler");
     this.Popcorn.listen("timeupdate", spy_timeupdate);    
-    this.Popcorn.listen("IriSP.SegmentsWidget.segmentClick", spy_segmentClick);    
     
     var selector = IriSP.jQuery("#widget-div :not(first-child)");
     var random = Math.round(Math.random() * selector.length) + 1;
     selector.eq(random).click();
         
     ok(spy_timeupdate.called, "the timeupdate signal has been sent");         
-    ok(spy_segmentClick.called, "the IriSP.segmentClick signal has been sent");         
     ok(spy_handler.called, "handling function has been called");           
   });
   
