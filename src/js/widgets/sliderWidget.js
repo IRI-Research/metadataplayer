@@ -19,7 +19,9 @@ IriSP.SliderWidget.prototype.draw = function() {
 
   this.positionMarker.draggable({axis: "x",
   start: IriSP.wrap(this, this.positionMarkerDraggingStartedHandler),
-  stop: IriSP.wrap(this, this.positionMarkerDraggedHandler)});
+  stop: IriSP.wrap(this, this.positionMarkerDraggedHandler),
+  containment: "parent"
+  });
 
   this.sliderBackground.click(function(event) { self.clickHandler.call(self, event); });
 
@@ -27,7 +29,7 @@ IriSP.SliderWidget.prototype.draw = function() {
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
 };
 
-/* updates the slider as time passes */
+/* update the slider and the position marker as time passes */
 IriSP.SliderWidget.prototype.sliderUpdater = function() {
   if(this.draggingOngoing)
     return;
