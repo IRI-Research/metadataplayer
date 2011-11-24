@@ -130,9 +130,10 @@ IriSP.JSONSerializer.prototype.currentAnnotations = function(currentTime) {
  
   for (i in this._data.annotations) {
     var annotation = this._data.annotations[i];
-    if (annotation.meta["id-ref"] == view_type && annotation.begin < currentTimeMs && annotation.end > currentTimeMs)
+    
+    if (annotation.meta["id-ref"] === view_type && annotation.begin <= currentTimeMs && annotation.end >= currentTimeMs)
       ret_array.push(annotation);
   }
-  
+
   return ret_array;
 };

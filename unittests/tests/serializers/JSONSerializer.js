@@ -181,7 +181,22 @@ function test_JSONSerializer() {
         "dc:modified": "2011-10-20T13:36:18.286693", 
         "dc:creator": "perso"
         } 
+      },
+      {"begin": 1234, "end" : 578900,
+       "content": {        
+        "description": "interview", 
+        "title": "lolol"
+        }, 
+       "id" : 2, 
+       "meta": {
+        "dc:contributor": "perso", 
+        "id-ref": "c_dfdfdfdf", 
+        "dc:created": "2011-10-20T13:36:18.286693", 
+        "dc:modified": "2011-10-20T13:36:18.286693", 
+        "dc:creator": "perso"
+        } 
       }
+ 
       ]};
 
       var ret = ser.currentAnnotations(234);  
