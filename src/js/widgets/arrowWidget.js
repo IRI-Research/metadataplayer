@@ -40,6 +40,11 @@ IriSP.ArrowWidget.prototype.timeUpdateHandler = function(percents) {
     var totalWidth = this.selector.width();
     var correction = ((27 / 2) / totalWidth) * 100;
     var corrected_percents = percents - correction;
+
+    /* don't move out of the screen */
+    if (corrected_percents <= 0)
+      corrected_percents = 0;
+
     this.selector.children(".Ldt-arrowWidget").animate({"left" : corrected_percents + "%"});
 
     this._oldAnnotation = currentAnnotation;
