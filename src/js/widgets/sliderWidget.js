@@ -25,7 +25,8 @@ IriSP.SliderWidget.prototype.draw = function() {
   containment: "parent"
   });
 
-  this.sliderBackground.click(function(event) { self.clickHandler.call(self, event); });
+  this.sliderBackground.click(function(event) { self.backgroundClickHandler.call(self, event); });
+  this.sliderForeground.click(function(event) { self.foregroundClickHandler.call(self, event); });
 
   this.selector.hover(IriSP.wrap(this, this.mouseOverHandler), IriSP.wrap(this, this.mouseOutHandler));
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
@@ -45,7 +46,7 @@ IriSP.SliderWidget.prototype.sliderUpdater = function() {
 
 };
 
-IriSP.SliderWidget.prototype.clickHandler = function(event) {
+IriSP.SliderWidget.prototype.backgroundClickHandler = function(event) {
   /* this piece of code is a little bit convoluted - here's how it works :
      we want to handle clicks on the progress bar and convert those to seeks in the media.
      However, jquery only gives us a global position, and we want a number of pixels relative
@@ -55,6 +56,19 @@ IriSP.SliderWidget.prototype.clickHandler = function(event) {
   */
 
   var parentOffset = this.sliderBackground.parent().offset();
+  var width = this.sliderBackground.width();
+  var relX = event.pageX - parentOffset.left;
+
+  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var newTime = ((relX / width) * duration).toFixed(2);
+
+  this._Popcorn.currentTime(newTime);
+};
+
+/* same function as the previous one, except that it handles clicks
+   on the foreground element */
+IriSP.SliderWidget.prototype.foregroundClickHandler = function(event) {
+  var parentOffset = this.sliderForeground.parent().offset();
   var width = this.sliderBackground.width();
   var relX = event.pageX - parentOffset.left;
 
