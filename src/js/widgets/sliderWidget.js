@@ -66,8 +66,8 @@ IriSP.SliderWidget.prototype.clickHandler = function(event) {
 
 /* handles mouse over the slider */
 IriSP.SliderWidget.prototype.mouseOverHandler = function(event) {
-  this.sliderBackground.animate({"height": "10px"}, 100);
-  this.sliderForeground.animate({"height": "10px"}, 100);
+  this.sliderBackground.animate({"height": "9px"}, 100);
+  this.sliderForeground.animate({"height": "9px"}, 100);
   
 //  this.selector.removeClass("Ldt-SliderMinimized");
 //  this.selector.addClass("Ldt-SliderMaximized");
