@@ -61,9 +61,8 @@ IriSP.PlayerWidget.prototype.timeDisplayUpdater = function() {
   var totalTime = IriSP.secondsToTime(duration);
   var elapsedTime = IriSP.secondsToTime(this._Popcorn.currentTime());
   
-  var timeTemplate = "{{hours}}:{{minutes}}:{{seconds}}";
-  this.selector.find(".Ldt-ElapsedTime").html(Mustache.to_html(timeTemplate, elapsedTime));
-  this.selector.find(".Ldt-TotalTime").html(Mustache.to_html(timeTemplate, totalTime));
+  this.selector.find(".Ldt-ElapsedTime").html(elapsedTime.toString());
+  this.selector.find(".Ldt-TotalTime").html(totalTime.toString());
   this._previousSecond = this._Popcorn.roundTime();
 };
 

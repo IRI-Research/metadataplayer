@@ -149,7 +149,6 @@
 
     .Ldt-RightPlayerControls {
       float: right;
-      padding: 4px;
     }
 
     .Ldt-CtrlPlay {
@@ -183,23 +182,23 @@
 
     .Ldt-Time {
       float: left;
-      padding: 4px;
       border-right: 1px solid #b6b8b8;
-      height: 25px;
-      overflow: auto;
+      top: 15px;
+      left: 2px;
     }
     
     .Ldt-ElapsedTime {
+      float: left;
       color: #4a4a4a;
     }
     
     .Ldt-TotalTime {
+      float: right;
       color: #b2b2b2; 
     }
 
     .Ldt-CtrlSound {
       float: right;
-      padding: 4px;
     }
     .Ldt-cleaner {
       clear:both;
