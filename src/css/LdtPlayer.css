@@ -27,7 +27,7 @@
       border-left:solid 1px #000;
       border-right:solid 1px #000;
       float: left;
-      height: 3px;
+      height: 10px;
     }
 
     .tooltip {
@@ -74,7 +74,6 @@
     }
 
 
-    }
     .Ldt-SaDescription{
       font-size:12px;
     }
