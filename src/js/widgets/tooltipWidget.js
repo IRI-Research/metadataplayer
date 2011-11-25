@@ -14,6 +14,10 @@ IriSP.TooltipWidget.prototype.draw = function() {
 
 };
 
+IriSP.TooltipWidget.prototype.clear = function() {
+	this.selector.find(".tiptext").text("");
+};
+
 IriSP.TooltipWidget.prototype.show = function(text, color, x, y) {
   if (this.selector.find(".tiptext").text() == text)
     return;
@@ -24,5 +28,6 @@ IriSP.TooltipWidget.prototype.show = function(text, color, x, y) {
 };
 
 IriSP.TooltipWidget.prototype.hide = function() {
+  this.clear();
   this.selector.find(".tip").css("left", -10000).css("top", -100000);
 };

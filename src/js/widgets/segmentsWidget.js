@@ -82,20 +82,32 @@ IriSP.SegmentsWidget.prototype.draw = function() {
         "seekPlace" : Math.round(begin/1000)});
 
 
-    var toolTipTemplate = Mustache.to_html(IriSP.tooltip_template,
-          {"title" : divTitle, "begin" : begin, "end" : end,
-          "description": annotation.content.description});
-
     this.selector.append(annotationTemplate);
 
-    IriSP.jQuery("#" + id).tooltip({ effect: 'slide'});
+//    IriSP.jQuery("#" + id).tooltip({ effect: 'slide'});
 
     IriSP.jQuery("#" + id).fadeTo(0, 0.3);
 
-    IriSP.jQuery("#" + id).mouseover(function() {
-      IriSP.jQuery(this).animate({opacity: 0.6}, 5);
-    }).mouseout(function(){
+    IriSP.jQuery("#" + id).mouseover(
+    /* we wrap the handler in another function because js's scoping
+       rules are function-based - otherwise, the internal vars like
+       divTitle are preserved but they are looked-up from the draw
+       method scope, so after that the loop is run, so they're not
+       preserved */
+    (function(divTitle) { 
+     return function(event) {
+          IriSP.jQuery(this).animate({opacity: 0.6}, 5);
+          var offset = IriSP.jQuery(this).offset();
+          var correction = IriSP.jQuery(this).outerWidth() / 2;
+
+          var offset_x = offset.left + correction - 106;
+          if (offset_x < 0)
+            offset_x = 0;
+
+          self.TooltipWidget.show(divTitle, color, offset_x, event.pageY - 160);
+    } })(divTitle)).mouseout(function(){
       IriSP.jQuery(this).animate({opacity: 0.3}, 5);
+      self.TooltipWidget.hide();
     });
 
     IriSP.jQuery("#" + id).click(function(_this, annotation) {
