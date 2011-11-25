@@ -38,6 +38,9 @@ IriSP.PlayerWidget.prototype.draw = function() {
   var searchBox = Mustache.to_html(IriSP.search_template, {margin_left : searchButtonPos.left + "px"});
   this.selector.append(searchBox);
   
+  // trigger an IriSP.PlayerWidget.MouseOver to the widgets that are interested (i.e : sliderWidget)
+  this.selector.hover(function() { self._Popcorn.trigger("IriSP.PlayerWidget.MouseOver"); }, 
+                      function() { self._Popcorn.trigger("IriSP.PlayerWidget.MouseOut"); });
 };
 
 /* Update the elasped time div */

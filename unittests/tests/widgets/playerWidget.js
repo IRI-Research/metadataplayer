@@ -100,5 +100,36 @@ function test_player_widget() {
   ok(spy_closed.called, "closed signal has been sent");  
   
   });
-  
+ 
+  test("test mouseover handler", function() {
+    var player = new IriSP.PlayerWidget(this.Popcorn, this.config, this.ser);
+
+    var spy_callback = this.spy();
+    this.Popcorn.listen("IriSP.PlayerWidget.MouseOver", spy_callback);    
+    this.Popcorn.listen("IriSP.PlayerWidget.MouseOut", spy_callback);    
+    
+    player.draw();
+    var elem = player.selector.get(0);
+
+    if( document.createEvent ) {
+      var evObj = document.createEvent('MouseEvents');
+        evObj.initEvent( 'mouseover', true, false );
+        elem.dispatchEvent(evObj);
+    } else if( document.createEventObject ) {
+        elem.fireEvent('onmouseover');
+    }
+
+     ok(spy_callback.called, "the MouseOver event has been fired");
+
+     if( document.createEvent ) {
+      var evObj = document.createEvent('MouseEvents');
+        evObj.initEvent( 'mouseout', true, false );
+        elem.dispatchEvent(evObj);
+     } else if( document.createEventObject ) {
+        elem.fireEvent('onmouseout');
+     }
+
+     ok(spy_callback.calledTwice, "the MouseOver event has been fired");
+  });
+
 };
