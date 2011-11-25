@@ -29,7 +29,13 @@ IriSP.SliderWidget.prototype.draw = function() {
   this.sliderForeground.click(function(event) { self.foregroundClickHandler.call(self, event); });
 
   this.selector.hover(IriSP.wrap(this, this.mouseOverHandler), IriSP.wrap(this, this.mouseOutHandler));
+
+  // update the positions
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
+
+  // special messages :
+  this._Popcorn.listen("IriSP.PlayerWidget.MouseOver", IriSP.wrap(this, this.mouseOverHandler));
+  this._Popcorn.listen("IriSP.PlayerWidget.MouseOut", IriSP.wrap(this, this.mouseOutHandler));
 };
 
 /* update the slider and the position marker as time passes */
