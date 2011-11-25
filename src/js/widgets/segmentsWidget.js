@@ -17,6 +17,8 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   var self = this;
   var annotations = this._serializer._data.annotations;
 
+  this.selector.addClass("Ldt-SegmentsWidget");
+
   /* in case we have different types of annotations, we want to display only the first type */
   /* the next two lines are a bit verbose because for some test data, _serializer.data.view is either
      null or undefined.
@@ -32,14 +34,12 @@ IriSP.SegmentsWidget.prototype.draw = function() {
           view_type = view.annotation_types[0];
   }
  
-  this.selector.css("overflow", "auto"); // clear the floats - FIXME : to refactor ?
   this.selector.append(Mustache.to_html(IriSP.overlay_marker_template));
   
   this.positionMarker = this.selector.children(":first");
   
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.positionUpdater));
   
-  this.selector.after("<div class='cleaner'></div>"); // we need to do this because the segments are floated                                                      
   
   var i = 0;
   var totalWidth = this.selector.width();
@@ -93,9 +93,9 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     IriSP.jQuery("#" + id).fadeTo(0, 0.3);
 
     IriSP.jQuery("#" + id).mouseover(function() {
-      IriSP.jQuery("#" + id).animate({opacity: 0.6}, 5);
+      IriSP.jQuery(this).animate({opacity: 0.6}, 5);
     }).mouseout(function(){
-      IriSP.jQuery("#" + id).animate({opacity: 0.3}, 5);
+      IriSP.jQuery(this).animate({opacity: 0.3}, 5);
     });
 
     IriSP.jQuery("#" + id).click(function(_this, annotation) {
