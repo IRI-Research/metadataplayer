@@ -24,12 +24,16 @@ function test_arrow_widget() {
   });
   
   test("test widget initialization", function() {  
+  
     var widget = new IriSP.ArrowWidget(this.Popcorn, this.config, this.ser);    
     widget.draw();
 
     equal(widget.selector.children(".Ldt-arrowWidget").length, 1, "test if the div has been added correctly");
 
-    widget._Popcorn.trigger("IriSP.SegmentsWidget.segmentClick", 40);
+    /*
+    widget._Popcorn.media.currentTime = 400;
+    widget._Popcorn.trigger("timeupdate");
     equal(widget.selector.children(".Ldt-arrowWidget").css("left"), "22%", "test if the widget responds correctly to messages.");
+  */
   });
  }; 
