@@ -181,24 +181,36 @@
     }
 
     .Ldt-Time {
+      position: inherit;
       float: left;
       border-right: 1px solid #b6b8b8;
-      top: 15px;
-      left: 2px;
+      height: 25px;
+      padding-right: 2px;
     }
     
     .Ldt-ElapsedTime {
+      margin-top: 5px;
       float: left;
       color: #4a4a4a;
     }
     
+    .Ldt-TimeSeparator {
+      margin-top: 5px;
+      float: left;
+    }
+
     .Ldt-TotalTime {
-      float: right;
+      margin-top: 5px;
+      float: left;
       color: #b2b2b2; 
     }
 
     .Ldt-CtrlSound {
+      margin-top: 5px;
       float: right;
+      height: 25px;
+      top: 7px;
+      position: inherit;
     }
     .Ldt-cleaner {
       clear:both;
