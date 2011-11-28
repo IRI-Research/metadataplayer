@@ -12,6 +12,11 @@
       float:left;
     }
 
+   /* general class for all buttons */
+   .Ldt-button {
+
+   }
+
    .Ldt-AnnotationsWidget {
       font-size: 62.5%;
       font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
@@ -151,9 +156,11 @@
       float: right;
     }
 
-    .Ldt-CtrlPlay {
-      background:url('imgs/play.png') no-repeat scroll 0 0 transparent ;
-      background-position: center;
+    /* we need a container to contain our buttons because we want
+       them centered and there's no way to position them this way
+       while at the same time using sprites 
+    */
+    .Ldt-ButtonContainer {
       width: 50px;
       height: 25px;
       border-left: 1px solid #b6b8b8;
@@ -161,8 +168,24 @@
       float: left;
     }
 
+    .Ldt-CtrlPlay {
+      background:url('imgs/play_sprite.png') no-repeat transparent ;
+      background-position: 0 0;
+      width: 16px;
+      height: 25px;
+      margin: 0 auto;
+    }
+
+    .Ldt-CtrlPlay:hover {
+      background:url('imgs/play_sprite.png') no-repeat transparent ;
+      background-position: 0 -25px;
+      width: 16px;
+      height: 25px;
+      margin: 0 auto;
+    }
+
     .Ldt-CtrlNext {
-      background:url('imgs/play_button.png') no-repeat scroll 0 0 transparent ;
+      background:url('imgs/play_sprite.png') no-repeat scroll 0 0 transparent ;
       background-position: center;
       width: 50px;
       height: 25px;
