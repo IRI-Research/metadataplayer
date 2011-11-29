@@ -19,6 +19,11 @@ IriSP.SliderWidget.prototype.draw = function() {
   // with the positionMarker when the user is dragging it
   this.draggingOngoing = false;
 
+  // another special variable used by the timeout handler to
+  // open or close the slider.
+  this.sliderMaximized = false;
+  this.timeOutId = null;
+
   this.positionMarker.draggable({axis: "x",
   start: IriSP.wrap(this, this.positionMarkerDraggingStartedHandler),
   stop: IriSP.wrap(this, this.positionMarkerDraggedHandler),
@@ -86,6 +91,13 @@ IriSP.SliderWidget.prototype.foregroundClickHandler = function(event) {
 
 /* handles mouse over the slider */
 IriSP.SliderWidget.prototype.mouseOverHandler = function(event) {
+  
+  if (this.timeOutId !== null) {
+    window.clearTimeout(this.timeOutId);
+  }
+ 
+  this.sliderMaximized = true;
+
   this.sliderBackground.animate({"height": "9px"}, 100);
   this.sliderForeground.animate({"height": "9px"}, 100);
   
@@ -95,8 +107,14 @@ IriSP.SliderWidget.prototype.mouseOverHandler = function(event) {
 
 /* handles when the mouse leaves the slider */
 IriSP.SliderWidget.prototype.mouseOutHandler = function(event) {
+ 
+  this.timeOutId = window.setTimeout(IriSP.wrap(this, this.minimizeOnTimeout), 3000);
+};
+
+IriSP.SliderWidget.prototype.minimizeOnTimeout = function(event) {
   this.sliderBackground.animate({"height": "5px"}, 100);
   this.sliderForeground.animate({"height": "5px"}, 100);
+  this.sliderMinimized = true;
   
 //  this.selector.removeClass("Ldt-SliderMaximized");
 //  this.selector.addClass("Ldt-SliderMinimized");
