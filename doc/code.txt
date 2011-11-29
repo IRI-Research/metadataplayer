@@ -3,6 +3,43 @@ Metadataplayer : Code et structure
 
 Ce document présente briévement la conception du metadataplayer.
 
+Compilation
+===========
+
+Pour le moment, il est nécessaire d'executer un script pour génerer le fichier final. Ce script est un script ant, accessible dans
+sbin/build/client.xml. Des raccourcis existent comme compil.bat (win) et compil.sh (unix).
+
+L'étape de compilation est nécessaire pour l'instant car on a des templates qui sont integrées au fichier final à ce moment là.
+
+Objets
+======
+
+En gros, nous avons quatre objets:
+- le DataLoader, qui est l'objet chargé de récupérer les données extérieures et de les cacher
+- le sérializeur. C'est une classe derivée de IriSP.Serializer et qui implémente des méthodes pour sérializer/déserializer des données.
+  Ils sont définis dans le répertoire serializers/
+- le layout manager, un objet qui gère un div et qui permet de créer/supprimer des sous-div.  
+- les widgets. Un widget est associé à un div. Il possède également une réference sur l'objet popcorn pour pouvoir envoyer et recevoir des
+  messages. Il doit possèder impérativement deux méthodes : un constructeur, qui appelle le constructeur de l'object Widget, et une méthode
+  draw(), qui initialise l'objet. Il peut aussi optionnellement définir une méthod redraw(), au cas où le widget aurait besoin d'être redessiné.
+
+Templates
+=========
+
+Le player utilise des templates qui sont transformées en chaînes javascript puis inserées dans le fichier final.
+Un template nommé truc.html est accessible dans le code sous le nom : IriSP.truc_template.
+
+ATTENTION: Une template ne doit en aucun cas contenir de guillements ("), sous peine de faire planter la compilation et le fichier géneré.
+
+Initialisation
+==============
+
+Le code d'initialisation est défini dans init.js. En gros, il se contente de parser la structure IriSP.config qui définit les options génerales
+du player et les widgets à afficher. Chaque widget peut avoir des widgets de dépendances, qui seront instanciés avant lui et dont il aura accès
+(voir l'annexe idiomes)
+Pour plus d'informations, voir le code source des tests d'integration, notamment le fichier integration/polemic.htm.
+
+
 Annexe: Idiomes
 ===============
 
@@ -10,4 +47,6 @@ Le code utilise quelques idiomes. Les voici, sans classement particulier :
 - les membres de données privées d'un objet sont précedés d'un underscore. Ils ne sont pas censés être manipulés par des objets extérieurs, hormis 
   par les tests unitaires.
 - tous les widgets et certains autres objets possèdent un attribut selector, qui est en fait une instance de jQuery appellée sur le div contenant
-  l'objet en question.
+  l'objet en question. 
+- certains widgets qui possèdent des dépendances ont accès à l'objet dépendant en tant qu'attribut portant le nom du widget en 
+  question. Ainsi, comme le PolemicWidget possède comme dépendance un TooltipWidget, il peut accèder à sa dépendance sous "this.TooltipWidget".
