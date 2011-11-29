@@ -29,7 +29,8 @@ IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
       imageMarkup = Mustache.to_html("<a href='http://twitter.com/{{creator}}'><img src='{{src}}' alt='user image'></img></a>", 
                                        {src : img, creator: creator});
             
-      title = Mustache.to_html(IriSP.rich_tweet_template, {contents : title, date : tweetContents.created_at});
+      var formatted_date = new Date(tweetContents.created_at).toLocaleDateString();
+      title = Mustache.to_html(IriSP.rich_tweet_template, {contents : title, date : formatted_date});
     }
 
     this.selector.find(".Ldt-tweetContents").html(title);
