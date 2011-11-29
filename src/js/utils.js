@@ -72,6 +72,17 @@ IriSP.formatTweet = function(tweet) {
   return i3;
 };
 
+IriSP.countProperties = function(obj) {
+    var count = 0;
+
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+                ++count;
+    }
+
+    return count;
+};
+
 /* for ie compatibility
 if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
    Object.defineProperty=function(obj,prop,desc) {
