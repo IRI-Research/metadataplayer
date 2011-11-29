@@ -159,6 +159,7 @@
     .Ldt-button {
       border-left: 1px solid #b6b8b8;
       float: left;
+      cursor: pointer;
      
     }
 
