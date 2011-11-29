@@ -66,12 +66,20 @@
 						  src:'polemic_fr.json',
 						  type:'json'}
 						},
-            {type: "SegmentsWidget",
+           {type: "SegmentsWidget",
              metadata:{
               format:'cinelab',
               src:'polemic_fr.json',
-              type:'json'}
-            },
+              type:'json'},
+             requires: [{
+              type: "TooltipWidget",
+              width: 180,
+              heigh: 160,
+              metadata : {
+                type:'empty'
+              }
+             }]},
+
             {type: "ArrowWidget",
              metadata:{
               format:'cinelab',
