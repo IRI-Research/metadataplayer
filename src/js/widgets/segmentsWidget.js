@@ -122,8 +122,7 @@ IriSP.SegmentsWidget.prototype.clear = function() {
   for (var id in this.oldSearchMatches) {
 
       IriSP.jQuery("#"+id).dequeue();
-			IriSP.jQuery("#"+id).animate({height:0}, 100);
-			IriSP.jQuery("#"+id).css('border-color','lightgray');
+			IriSP.jQuery("#"+id).css('border','none');
 			IriSP.jQuery("#"+id).animate({opacity:0.3}, 100);
   }
 };
@@ -141,11 +140,10 @@ IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
   var matches = this._serializer.searchOccurences(searchString);
 
   for (var id in matches) {
-    var factor = matches[id] * 8;
+    var factor = (0.3 + matches[id] * 0.2) % 1;
     this.selector.find("#"+id).dequeue();
-    this.selector.find("#"+id).animate({height: factor}, 200);    
-    this.selector.find("#"+id).css('border-color','red');
-    this.selector.find("#"+id).animate({opacity:0.6}, 200);
+    this.selector.find("#"+id).css('border','1px red');
+    this.selector.find("#"+id).animate({opacity:factor}, 200);
 
     IriSP.jQuery("#LdtSearchInput").css('background-color','#e1ffe1');
   }
@@ -155,9 +153,7 @@ IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
   for (var id in this.oldSearchMatches) {
     if (!matches.hasOwnProperty(id)) {
         IriSP.jQuery("#"+id).dequeue();
-				IriSP.jQuery("#"+id).animate({height:0}, 250);				
 				IriSP.jQuery("#"+id).animate({opacity:0.3}, 200);
-        this.selector.find("#"+id).css('border','solid 1px #aaaaaa');
     }
   }
   
