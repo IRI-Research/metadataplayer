@@ -156,52 +156,59 @@
       float: right;
     }
 
-    /* we need a container to contain our buttons because we want
-       them centered and there's no way to position them this way
-       while at the same time using sprites 
-    */
-    .Ldt-ButtonContainer {
-      width: 50px;
-      height: 25px;
+    .Ldt-button {
       border-left: 1px solid #b6b8b8;
-      border-right: 1px solid #b6b8b8;
       float: left;
+     
     }
 
     .Ldt-CtrlPlay {
       background:url('imgs/play_sprite.png') no-repeat transparent ;
       background-position: 0 0;
-      width: 16px;
+      width: 59px;
       height: 25px;
-      margin: 0 auto;
     }
 
     .Ldt-CtrlPlay:hover {
-      background:url('imgs/play_sprite.png') no-repeat transparent ;
       background-position: 0 -25px;
-      width: 16px;
-      height: 25px;
-      margin: 0 auto;
     }
 
-    .Ldt-CtrlNext {
-      background:url('imgs/play_sprite.png') no-repeat scroll 0 0 transparent ;
-      background-position: center;
-      width: 50px;
+    .Ldt-CtrlPlay:active {
+      background-position: 0 -50px;
+    }
+
+    .Ldt-CtrlAnnotate {
+      background:url('imgs/annotate_sprite.png') no-repeat scroll 0 0 transparent ;
+      width: 33px;
       height: 25px;
       border-right: 1px solid #b6b8b8;
       float: left;
     }
 
+    .Ldt-CtrlAnnotate:hover {
+      background-position: 0 -25px;
+    }
+
+    .Ldt-CtrlAnnotate:active {
+      background-position: 0 -50px;
+    }
 
     .Ldt-CtrlSearch {
-      background:url('imgs/search.png') no-repeat scroll 0 0 transparent ;
-      background-position: center;
-      width: 50px;
+      background:url('imgs/search_sprite.png') no-repeat scroll 0 0 transparent ;
+      width: 33px;
       height: 25px;
       border-right: 1px solid #b6b8b8;
       float: left;
     }
+
+    .Ldt-CtrlSearch:hover {
+      background-position: 0 -25px;
+    }
+
+    .Ldt-CtrlSearch:active {
+      background-position: 0 -50px;
+    }
+
 
     .Ldt-Time {
       position: inherit;
