@@ -24,6 +24,8 @@ IriSP.PlayerWidget.prototype.draw = function() {
   this._Popcorn.listen("play", IriSP.wrap(this, this.playButtonUpdater));
   this._Popcorn.listen("pause", IriSP.wrap(this, this.playButtonUpdater));
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeDisplayUpdater));
+  this._Popcorn.listen("IriSP.SegmentsWidget.matchFound", IriSP.wrap(this, this.searchMatch));
+  this._Popcorn.listen("IriSP.SegmentsWidget.noMatchFound", IriSP.wrap(this, this.searchNoMatch));
   
   
   this.selector.find(".Ldt-CtrlPlay").click(function() { self.playHandler.call(self); });
@@ -147,6 +149,7 @@ IriSP.PlayerWidget.prototype.searchHandler = function() {
   // do nothing if the search field is empty, instead of highlighting everything.
   if (this._searchLastValue == "") {
     this._Popcorn.trigger("IriSP.search.cleared");
+    this.selector.find(".LdtSearchInput").css('background-color','');
   } else {
     this._Popcorn.trigger("IriSP.search", this._searchLastValue);
   }
@@ -162,6 +165,6 @@ IriSP.PlayerWidget.prototype.searchMatch = function() {
 
 /* the same, except that no value could be found */
 IriSP.PlayerWidget.prototype.searchNoMatch = function() {
-  this.selector.find(".LdtSearchInput").css('background-color','#e1ffe1');
+  this.selector.find(".LdtSearchInput").css('background-color', "#d62e3a");
 }
 
