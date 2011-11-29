@@ -41,6 +41,22 @@ IriSP.JSONSerializer.prototype.currentMedia = function() {
    "" matches any field. 
 */    
 IriSP.JSONSerializer.prototype.searchAnnotations = function(title, description, keyword) {
+ 
+    /* we can have many types of annotations. We want search to only look for regular segments */
+    /* the next two lines are a bit verbose because for some test data, _serializer.data.view is either
+       null or undefined.
+    */
+    var view;
+
+    if (typeof(this._data.views) !== "undefined" && this._data.views !== null)
+       view = this._data.views[0];
+
+    var searchViewType = "";
+
+    if(typeof(view) !== "undefined" && typeof(view.annotation_types) !== "undefined" && view.annotation_types.length > 1) {
+            searchViewType = view.annotation_types[0];
+    }
+
     var rTitle;
     var rDescription;
     var rKeyword;
@@ -63,6 +79,12 @@ IriSP.JSONSerializer.prototype.searchAnnotations = function(title, description, 
     for (i in this._data.annotations) {
       var annotation = this._data.annotations[i];
       
+      /* filter the annotations whose type is not the one we want */
+      if (searchViewType  != "" && typeof(annotation.meta) !== "undefined" && typeof(annotation.meta["id-ref"]) !== "undefined"
+            && annotation.meta["id-ref"] !== searchViewType) {
+          continue;
+      }
+    
       if (rTitle.test(annotation.content.title) && 
           rDescription.test(annotation.content.description)) {
           /* FIXME : implement keyword support */
