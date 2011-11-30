@@ -378,8 +378,19 @@
       float: left;
     }
 
-    .Ldt-tweetContents {
+    .Ldt-tweetAvatar-profileArrow {
+      float: left;
+      height: 48px;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
 
+
+    .Ldt-tweetContents {
+    }
+
+    .Ldt-tweet_date {
+      float: left;
     }
 
     .Ldt-tweetWidgetMinimize {
@@ -387,13 +398,54 @@
       float: right;
       height: 17px;
       width: 17px;
-      background:url('imgs/minimize.png') repeat scroll transparent ;
       right: 9px;
     }
 
     .Ldt-tweetWidget * a:link {
       color: #729efa;
 
+    }
+
+    .Ldt-TweetReply {
+      float: left;
+      margin-left: 16px;
+    }
+
+    .Ldt-TweetReplyIcon {
+      background:url('imgs/reply_sprite.png') no-repeat scroll 0 0 transparent ;
+      width: 14px;
+      height: 11px;
+      float: left;
+      margin-top: 2px;
+    }
+
+    .Ldt-TweetReplyIcon:hover {
+      background-position: 0 -11px;
+    }
+
+    .Ldt-TweetReplyIcon:active {
+      background-position: 0 -22px;
+    }
+
+    .Ldt-Retweet {
+      float: left;
+      margin-left: 16px;
+    }
+
+    .Ldt-RetweetIcon {
+      background:url('imgs/retweet_sprite.png') no-repeat scroll 0 0 transparent ;
+      width: 14px;
+      height: 8px;
+      float: left;
+      margin-top: 3px;
+    }
+
+    .Ldt-RetweetIcon:hover {
+      background-position: 0 -8px;
+    }
+
+    .Ldt-RetweetIcon:active {
+      background-position: 0 -16px;
     }
 
     /* the styling of a spacer div */
