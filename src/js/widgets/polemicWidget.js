@@ -35,6 +35,7 @@ IriSP.PolemicWidget = function(Popcorn, config, Serializer) {
   
   // Make and define the Raphael area
   this.paper = Raphael(document.getElementById(this._id), config.width, config.height);
+  console.log(config.height);
 };
 
 IriSP.PolemicWidget.prototype = new IriSP.Widget();
@@ -300,13 +301,25 @@ IriSP.PolemicWidget.prototype.draw = function() {
       }    
       // DRAW UI :: resize border and bgd      
       this.paperBackground = this.paper.rect(0, 0, this.width, this.heightmax).attr({fill:"#F8F8F8","stroke-width":0.1,opacity: 1});  
-      // var PaperBorder   = this.paper.rect(0, this.yMax,this.width,1).attr({fill:"#fff",stroke: "none",opacity: 1});  
-      
+
+      // outer borders
+      this.outerBorders   = [];
+      this.outerBorders.push(this.paper.rect(0, this.height - 1, this.width, 1).attr({fill:"#ababab",stroke: "none",opacity: 1}));  
+      this.outerBorders.push(this.paper.rect(0, 0, this.width, 1).attr({fill:"#ababab",stroke: "none",opacity: 1}));  
+
+      // inner borders
+      this.innerBorders   = [];
+      this.innerBorders.push(this.paper.rect(1, this.height - 2, this.width, 1).attr({fill:"#efefef",stroke: "none",opacity: 1}));  
+      this.innerBorders.push(this.paper.rect(1, 1, this.width, 1).attr({fill:"#efefef",stroke: "none",opacity: 1}));  
+      this.innerBorders.push(this.paper.rect(1, 1, 1, this.height - 2).attr({fill:"#d0d1d1",stroke: "none",opacity: 0.8}));  
+      this.innerBorders.push(this.paper.rect(this.width - 2, 1, 1, this.height - 2).attr({fill:"#efefef",stroke: "none",opacity: 1}));  
+
+
+
       this.paperSlider   = this.paper.rect(0, 0, 0, this.heightmax).attr({fill:"#D4D5D5", stroke: "none", opacity: 1});
       
       // the small white line displayed over the slider.
       this.sliderTip = this.paper.rect(0, 0, 1, this.heightmax).attr({fill:"#fc00ff", stroke: "none", opacity: 1});
-      
       // decalage 
       // tweetSelection = this.paper.rect(-100,-100,5,5).attr({fill:"#fff",stroke: "none",opacity: 1});  
       
