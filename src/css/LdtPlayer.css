@@ -383,7 +383,17 @@
     }
 
     .Ldt-tweetWidgetMinimize {
+      position: relative;
       float: right;
+      height: 17px;
+      width: 17px;
+      background:url('imgs/minimize.png') repeat scroll transparent ;
+      right: 9px;
+    }
+
+    .Ldt-tweetWidget * a:link {
+      color: #729efa;
+
     }
 
     /* the styling of a spacer div */
