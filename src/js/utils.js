@@ -83,6 +83,20 @@ IriSP.countProperties = function(obj) {
     return count;
 };
 
+// conversion de couleur Decimal vers HexaDecimal || 000 si fff
+IriSP.DEC_HEXA_COLOR = function (dec) {
+	 var hexa='0123456789ABCDEF',hex='';
+	 var tmp;
+	 while (dec>15){
+		  tmp = dec-(Math.floor(dec/16))*16;
+		  hex = hexa.charAt(tmp)+hex;
+		  dec = Math.floor(dec/16);
+	 }
+	 hex = hexa.charAt(dec)+hex;
+	 if (hex == "FFCC00"){ hex="";/* by default color of Ldt annotation */ }
+	 return(hex);
+};
+
 /* for ie compatibility
 if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
    Object.defineProperty=function(obj,prop,desc) {
