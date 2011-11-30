@@ -61,8 +61,8 @@ IriSP.LayoutManager.prototype.createDiv = function(stem) {
     var divCode = Mustache.to_html(divTempl, {id: newDiv});
     var spacerCode = Mustache.to_html(spacerTempl, {spacer_id: spacerDiv, spacer_div_height: IriSP.widgetsDefaults.LayoutManager.spacer_div_height });
 
-    this.selector.append(spacerCode);
     this.selector.append(divCode);
-    
+    this.selector.append(spacerCode);
+
     return [newDiv, spacerDiv];
 };
