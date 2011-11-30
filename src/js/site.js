@@ -28,3 +28,7 @@ IriSP.widgetsDefaults = {
   }
 };
 
+IriSP.default_templates_vars = {
+  "img_dir" : "./../../src/css/imgs"
+};
+
