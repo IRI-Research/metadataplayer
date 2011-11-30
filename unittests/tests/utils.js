@@ -52,4 +52,9 @@ function test_utils() {
     equal(IriSP.DEC_HEXA_COLOR(24345), "5F19", "second test passes");
 
   });
+
+  test("test template function", function() {
+    IriSP.default_templates_vars["test_fixture"] = "FIXTURE";
+    equal(IriSP.templToHTML("{{test_fixture}} {{foo}}", {foo: 2}), "FIXTURE 2", "correct template returned"); 
+  });
 }

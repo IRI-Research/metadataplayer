@@ -97,6 +97,12 @@ IriSP.DEC_HEXA_COLOR = function (dec) {
 	 return(hex);
 };
 
+/* shortcut to have global variables in templates */
+IriSP.templToHTML = function(template, values) {
+  var params = IriSP.jQuery.extend(IriSP.default_templates_vars, values);
+  return Mustache.to_html(template, params);
+};
+
 /* for ie compatibility
 if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
    Object.defineProperty=function(obj,prop,desc) {
