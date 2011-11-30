@@ -46,4 +46,10 @@ function test_utils() {
     var output = "<a href='http://twitter.com/handle'>@handle</a> <a href='http://twitter.com/bundle'>@bundle</a> <a href='http://twitter.com/search?q=%23hashtag'>#hashtag</a> <a href='http://t.co/11111'>http://t.co/11111</a>";
     equal(IriSP.formatTweet(input), output, "the correct output is given");
   });
+
+  test("test function to convert decimal color to hexadecimal", function() {
+    equal(IriSP.DEC_HEXA_COLOR(125), "7D", "first test passes");
+    equal(IriSP.DEC_HEXA_COLOR(24345), "5F19", "second test passes");
+
+  });
 }
