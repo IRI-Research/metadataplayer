@@ -19,18 +19,19 @@ IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
       img = IriSP.widgetsDefaults.TweetsWidget.default_profile_picture;
     }
 
-    var imageMarkup = Mustache.to_html("<img src='{{src}}' alt='user image'></img>", 
+    var imageMarkup = IriSP.templToHTML("<img src='{{src}}' alt='user image'></img>", 
                                        {src : img});
     
     if (typeof(annotation.meta["dc:source"].content) !== "undefined") {
       var tweetContents = JSON.parse(annotation.meta["dc:source"].content);
       var creator = tweetContents.user.screen_name;
       
-      imageMarkup = Mustache.to_html("<a href='http://twitter.com/{{creator}}'><img src='{{src}}' alt='user image'></img></a>", 
+      imageMarkup = IriSP.templToHTML("<a href='http://twitter.com/{{creator}}'><img src='{{src}}' alt='user image'></img></a>", 
                                        {src : img, creator: creator});
             
       var formatted_date = new Date(tweetContents.created_at).toLocaleDateString();
-      title = Mustache.to_html(IriSP.rich_tweet_template, {contents : title, date : formatted_date});
+      title = IriSP.templToHTML("<div class='Ldt-tweet_tweetContents'>{{{ contents }}}</div><div class='Ldt-tweet_date'>{{ date }}</div>", 
+                                {contents : title, date : formatted_date});
     }
 
     this.selector.find(".Ldt-tweetContents").html(title);
@@ -73,7 +74,7 @@ IriSP.TweetsWidget.prototype.closePanel = function() {
 IriSP.TweetsWidget.prototype.draw = function() {
   var _this = this;
   
-  var tweetMarkup = Mustache.to_html(IriSP.tweetWidget_template, {"share_template" : IriSP.share_template});
+  var tweetMarkup = IriSP.templToHTML(IriSP.tweetWidget_template, {"share_template" : IriSP.share_template});
   this.selector.append(tweetMarkup);
   this.selector.hide();
   this.selector.find(".Ldt-tweetWidgetMinimize").click(IriSP.wrap(this, this.closePanel));
