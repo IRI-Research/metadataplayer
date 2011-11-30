@@ -25,13 +25,17 @@ IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
     if (typeof(annotation.meta["dc:source"].content) !== "undefined") {
       var tweetContents = JSON.parse(annotation.meta["dc:source"].content);
       var creator = tweetContents.user.screen_name;
-      
+      var real_name = tweetContents.user.name;
+
       imageMarkup = IriSP.templToHTML("<a href='http://twitter.com/{{creator}}'><img src='{{src}}' alt='user image'></img></a>", 
                                        {src : img, creator: creator});
             
       var formatted_date = new Date(tweetContents.created_at).toLocaleDateString();
-      title = IriSP.templToHTML("<div class='Ldt-tweet_tweetContents'>{{{ contents }}}</div><div class='Ldt-tweet_date'>{{ date }}</div>", 
-                                {contents : title, date : formatted_date});
+      title = IriSP.templToHTML("<a class='Ldt-tweet_userHandle' href='http://twitter.com/{{creator}}'>@{{creator}}</a> - " + 
+                                "<div class='Ldt-tweet_realName'>{{real_name}}</div>" +
+                                "<div class='Ldt-tweet_tweetContents'>{{{ contents }}}</div>" +
+                                "<div class='Ldt-tweet_date'>{{ date }}</div>", 
+                                {creator: creator, real_name: real_name, contents : title, date : formatted_date});
     }
 
     this.selector.find(".Ldt-tweetContents").html(title);

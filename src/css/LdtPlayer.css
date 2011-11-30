@@ -385,6 +385,14 @@
       margin-right: 5px;
     }
 
+    .Ldt-tweet_userHandle {
+       float: left;
+    }
+
+    .Ldt-tweet_realName {
+      float: left;
+      margin-left: 3px;
+    }
 
     .Ldt-tweetContents {
     }
