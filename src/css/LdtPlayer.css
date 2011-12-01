@@ -430,6 +430,26 @@
       background-position: 0 -16px;
     }
 
+    /* styling of a "++" in a tweet */
+    .Ldt-PolemicPlusPlus {
+      background-color: #1d973d;
+    }
+
+    /* styling of a "==" in a tweet */
+    .Ldt-PolemicEqualEqual {
+      background-color: #5c8df1
+    }
+
+    /* styling of a "--" in a tweet */
+    .Ldt-PolemicMinusMinus {
+      background-color: #ce0a15;
+    }
+
+    /* styling of a "??" in a tweet */
+    .Ldt-PolemicQuestion {
+      background-color: #c5a62d;
+    }
+
     /* the styling of a spacer div */
     .Ldt-spacer {
       background-color:#eeeeee;
