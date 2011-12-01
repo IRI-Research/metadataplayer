@@ -1,11 +1,10 @@
 {{! template for the annotation widget }}
 <div class='Ldt-AnnotationsWidget'>
-	<div class='ldt-Show'></div>
-	<div class='demo Ldt-ShowAnnotation-audio'>
-		<div class='Ldt-SaTitle'></div>
-		<div class='Ldt-SaDescription'></div>
-		<div class='cleaner'>
-			<!--&nbsp\;-->
-		</div>
-	</div>
+  <!-- ugly div because we want to have a double border -->
+  <div class='Ldt-Annotation-DoubleBorder'>
+    <div class='Ldt-AnnotationContent'>  
+		  <div class='Ldt-SaTitle'></div>
+	  	<div class='Ldt-SaDescription'></div>
+    </div>
+  </div>
 </div>

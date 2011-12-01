@@ -17,17 +17,6 @@
 
    }
 
-   .Ldt-AnnotationsWidget {
-      font-size: 62.5%;
-      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-      background-color:#eeeeee;
-      padding:5px;
-      background:url('imgs/wire_pattern.png') repeat scroll transparent ;
-      border-color: #b6b8b8;
-      border-width: 1px;
-      border-style: solid;
-    }
-
     .Ldt-SegmentsWidget {
       background-color: #b6b8b7;
       overflow: auto; /* clear the floats */
@@ -59,54 +48,37 @@
       height:3px;
     }
 
-    #Ldt-Annotations{
-      padding-left:5px;
-      width:470px;
-      float:left;
-      font-size: 62.5%;
+    .Ldt-AnnotationsWidget {
+      font-size: 12px;
+      font-family: "Arial",  "Verdana", "sans-serif";
+      background-color:#eeeeee;
+      background:url('imgs/wire_pattern.png') repeat scroll transparent ;
+      border-color: #b6b8b8;
+      border-width: 1px;
+      border-style: solid;
+    }
+
+    .Ldt-Annotation-DoubleBorder {
+      border: 1px solid white;
+    }
+
+    .Ldt-AnnotationContent {
+      padding:5px;
+      padding-left: 12px;
+
     }
 
     .Ldt-SaTitle{
       padding-top:2px;
-      padding-bottom:5px;
-      font-size:18px;
+      padding-bottom:3px;
+      font-size: 12pt;
       color : #0068c4;
     }
-    #Ldt-Show-Arrow{
-      position:relative;
-      background:url(imgs/grey_arrow_Show.png);
-      width:27px;
-      height:13px;
-      margin-top:12px;
-      margin-left:-10px;
-      z-index:999;
-    }
-
 
     .Ldt-SaDescription{
       font-size:12px;
     }
-    #Ldt-Show-Tags{
-      position:relative;
-      height:13px;
-      margin-top:-10px;
-      border: solid 1px #000;
-    }
-    #Ldt-ShowAnnotation-video{
-      position:absolute;
-      z-index: 999;
-      padding:5px;
-      background:url(imgs/transBlack.png);
-      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-      color:#FFF;
-    }
-    #Ldt-ShowAnnotation-audio{
-      position:relative;
-      padding:5px;
-      background-color:#cfcfcf;
-      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-      color:#4D4D4D;
-    }
+
     .Ldt-SaKeyword{
       background-color:#b9b9b9;
       color:#4D4D4D;
