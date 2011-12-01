@@ -36,6 +36,13 @@ IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
                                 "<div class='Ldt-tweet_tweetContents'>{{{ contents }}}</div>" +
                                 "<div class='Ldt-tweet_date'>{{ date }}</div>", 
                                 {creator: creator, real_name: real_name, contents : title, date : formatted_date});
+
+      this.selector.find(".Ldt-TweetReply").attr("href", "http://twitter.com/home?status=@" + creator + ":%20");
+
+
+      var rtText = Mustache.to_html("http://twitter.com/home?status=RT @{{creator}}: {{text}}",
+                                    {creator: creator, text: IriSP.encodeURI(annotation.content.title)});
+      this.selector.find(".Ldt-Retweet").attr("href", rtText);
     }
 
     this.selector.find(".Ldt-tweetContents").html(title);
