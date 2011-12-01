@@ -107,8 +107,9 @@ IriSP.SliderWidget.prototype.mouseOverHandler = function(event) {
 
 /* handles when the mouse leaves the slider */
 IriSP.SliderWidget.prototype.mouseOutHandler = function(event) {
- 
-  this.timeOutId = window.setTimeout(IriSP.wrap(this, this.minimizeOnTimeout), 3000);
+
+  this.timeOutId = window.setTimeout(IriSP.wrap(this, this.minimizeOnTimeout),
+                                     IriSP.widgetsDefaults.SliderWidget.minimize_period);
 };
 
 IriSP.SliderWidget.prototype.minimizeOnTimeout = function(event) {

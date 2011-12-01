@@ -25,6 +25,9 @@ IriSP.widgetsDefaults = {
   "TweetsWidget" : {
       default_profile_picture : "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
       tweet_display_period: 10000 // how long do we show a tweet ?
+  },
+  "SliderWidget" : {
+      minimize_period: 850 // how long does the slider stays maximized after the user leaves the zone ?
   }
 };
 
