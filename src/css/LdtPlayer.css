@@ -31,6 +31,7 @@
     .Ldt-SegmentsWidget {
       background-color: #b6b8b7;
       overflow: auto; /* clear the floats */
+      margin-top: 1px;
     }
 
     .Ldt-iri-chapter{
@@ -387,6 +388,7 @@
 
     .Ldt-tweet_userHandle {
        float: left;
+       color: #5c8df1;
     }
 
     .Ldt-tweet_realName {
