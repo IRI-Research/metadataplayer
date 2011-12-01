@@ -145,10 +145,8 @@ IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
     this._Popcorn.trigger("IriSP.SegmentsWidget.noMatchFound");
   }
 
-  console.log(matches.length, matches);
-
   for (var id in matches) {
-    var factor = (0.3 + matches[id] * 0.2) % 1;
+    var factor = 0.5 + matches[id] * 0.2;
     this.selector.find("#"+id).dequeue();
     this.selector.find("#"+id).css('border','1px red');
     this.selector.find("#"+id).animate({opacity:factor}, 200);
