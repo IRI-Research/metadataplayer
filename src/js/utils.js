@@ -61,15 +61,26 @@ IriSP.secondsToString
 
 /* format a tweet - replaces @name by a link to the profile, #hashtag, etc. */
 IriSP.formatTweet = function(tweet) {
-  var rNickname = /@(\w+)/gi; // matches a @handle
-  var rHashtag = /#(\w+)/gi;  // matches a hashtag
-  var rUrl = /((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi; // copied from http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript/480#480
-  
-  var i1 = tweet.replace(rUrl, "<a href='$1'>$1</a>");
-  var i2 = i1.replace(rNickname, "<a href='http://twitter.com/$1'>@$1</a>");
-  var i3 = i2.replace(rHashtag, "<a href='http://twitter.com/search?q=%23$1'>#$1</a>");
+  /*
+    an array of arrays which hold a regexp and its replacement.
+  */
+  var regExps = [
+    /* copied from http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript/480#480 */
+    [/((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi, "<a href='$1'>$1</a>"],
+    [/@(\w+)/gi, "<a href='http://twitter.com/$1'>@$1</a>"], // matches a @handle
+    [/#(\w+)/gi, "<a href='http://twitter.com/search?q=%23$1'>#$1</a>"],// matches a hashtag
+    [/(\+\+)/gi, "<span class='Ldt-PolemicPlusPlus'>$1</span>"],
+    [/(--)/gi, "<span class='Ldt-PolemicMinusMinus'>$1</span>"],
+    [/(==)/gi, "<span class='Ldt-PolemicEqualEqual'>$1</span>"],
+    [/(\?\?)/gi, "<span class='Ldt-PolemicQuestion'>$1</span>"]
+  ]; 
 
-  return i3;
+  var i = 0;
+  for(i = 0; i < regExps.length; i++) {
+     tweet = tweet.replace(regExps[i][0], regExps[i][1]);
+  }
+  
+  return tweet;
 };
 
 IriSP.countProperties = function(obj) {

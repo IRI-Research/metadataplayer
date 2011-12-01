@@ -42,9 +42,18 @@ function test_utils() {
   });
   
   test("test function to format a tweet", function() {
-    var input = "@handle @bundle #hashtag http://t.co/11111";
-    var output = "<a href='http://twitter.com/handle'>@handle</a> <a href='http://twitter.com/bundle'>@bundle</a> <a href='http://twitter.com/search?q=%23hashtag'>#hashtag</a> <a href='http://t.co/11111'>http://t.co/11111</a>";
-    equal(IriSP.formatTweet(input), output, "the correct output is given");
+    var inputs = ["@handle", "@bundle", "#hashtag", "http://t.co/11111", "++", "--"];
+    var outputs = ["<a href='http://twitter.com/handle'>@handle</a>", 
+                   "<a href='http://twitter.com/bundle'>@bundle</a>",
+                   "<a href='http://twitter.com/search?q=%23hashtag'>#hashtag</a>",
+                   "<a href='http://t.co/11111'>http://t.co/11111</a>",
+                   "<span class='Ldt-PolemicPlusPlus'>++</span>",
+                   "<span class='Ldt-PolemicMinusMinus'>--</span>"];
+
+    var i = 0;
+    for(i = 0; i < inputs.length; i++) {
+      equal(IriSP.formatTweet(inputs[i]), outputs[i], "the correct output is given");
+    }
   });
 
   test("test function to convert decimal color to hexadecimal", function() {
