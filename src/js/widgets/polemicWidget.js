@@ -35,7 +35,6 @@ IriSP.PolemicWidget = function(Popcorn, config, Serializer) {
   
   // Make and define the Raphael area
   this.paper = Raphael(document.getElementById(this._id), config.width, config.height);
-  console.log(config.height);
 };
 
 IriSP.PolemicWidget.prototype = new IriSP.Widget();
