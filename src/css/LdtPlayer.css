@@ -376,6 +376,14 @@
       float: left;
     }
 
+    .Ldt-tweetWidgetKeepOpen {
+      position: relative;
+      float: right;
+      height: 17px;
+      width: 17px;
+      margin-right: 1px;
+    }
+
     .Ldt-tweetWidgetMinimize {
       position: relative;
       float: right;

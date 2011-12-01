@@ -76,10 +76,21 @@ IriSP.TweetsWidget.prototype.closePanel = function() {
       /* we're called from the "close window" link */
       /* cancel the timeout */
       window.clearTimeout(this._timeoutId);
+      this._timeoutId = null;
     }
     
     this.selector.hide("blind", 400);
     
+};
+
+/* cancel the timeout if the user clicks on the keep panel open button */
+IriSP.TweetsWidget.prototype.keepPanel = function() {
+    if (this._timeoutId != undefined) {
+      /* we're called from the "close window" link */
+      /* cancel the timeout */
+      window.clearTimeout(this._timeoutId);
+      this._timeoutId = null;
+    }
 };
 
 IriSP.TweetsWidget.prototype.draw = function() {
@@ -89,6 +100,7 @@ IriSP.TweetsWidget.prototype.draw = function() {
   this.selector.append(tweetMarkup);
   this.selector.hide();
   this.selector.find(".Ldt-tweetWidgetMinimize").click(IriSP.wrap(this, this.closePanel));
+  this.selector.find(".Ldt-tweetWidgetKeepOpen").click(IriSP.wrap(this, this.keepPanel));
   
   this._Popcorn.listen("IriSP.PolemicTweet.click", IriSP.wrap(this, this.PolemicTweetClickHandler));
 };

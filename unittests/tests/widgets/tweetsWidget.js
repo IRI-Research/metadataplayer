@@ -50,7 +50,11 @@ function test_tweets_widget() {
     equal(widget.selector.find(".Ldt-tweetAvatar").children().attr("src"), 
                                IriSP.widgetsDefaults.TweetsWidget.default_profile_picture, "default avatar set correctly");
     
+    widget.selector.find(".Ldt-tweetWidgetKeepOpen").click();
+    ok(widget._timeoutId === null, "the timeout is cancelled");
     widget.selector.find(".Ldt-tweetWidgetMinimize").click();
+    
+    widget.displayTweet(annotation2);
     
     ok(!widget.selector.is(":visible"), "the widget is hidden after a click");    
   });
