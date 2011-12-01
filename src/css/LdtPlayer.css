@@ -225,7 +225,8 @@
       background:url('imgs/arrow.png') no-repeat scroll 0 0 transparent ;
       height:16px;
       width:27px;
-      margin-bottom: -2px;
+      margin-bottom: -3px;
+      z-index: 4;
       left: 0%;
     }
  
