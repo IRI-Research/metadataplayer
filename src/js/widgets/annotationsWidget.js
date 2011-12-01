@@ -41,7 +41,7 @@ IriSP.AnnotationsWidget.prototype.clearWidget = function() {
 IriSP.AnnotationsWidget.prototype.draw = function() {
   var _this = this;
 
-  var annotationMarkup = Mustache.to_html(IriSP.annotationWidget_template, {"share_template" : IriSP.share_template});
+  var annotationMarkup = IriSP.templToHTML(IriSP.annotationWidget_template);
 	this.selector.append(annotationMarkup);
 
   var annotations = this._serializer._data.annotations;
