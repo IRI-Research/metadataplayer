@@ -57,4 +57,8 @@ function test_utils() {
     IriSP.default_templates_vars["test_fixture"] = "FIXTURE";
     equal(IriSP.templToHTML("{{test_fixture}} {{foo}}", {foo: 2}), "FIXTURE 2", "correct template returned"); 
   });
+
+  test("test url encoding function", function() {
+    equal(IriSP.encodeURI("!'()*"), "%21%27%28%29%2A", "the returned string is correct");
+  });
 }
