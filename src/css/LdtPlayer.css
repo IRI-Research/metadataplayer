@@ -88,9 +88,10 @@
       float:left;
       font-size:10px;
     }
-    #Ldt-SaShareTools{
-      text-align:right;
+
+    .Ldt-AnnotationShareIcons {
       float:right;
+      position: relative;
     }
 
 
