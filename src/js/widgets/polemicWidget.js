@@ -31,10 +31,18 @@ IriSP.PolemicWidget = function(Popcorn, config, Serializer) {
   this.PaperSlider;
   this.heightOfChart;
   this.tweets  = new Array();
-  this.svgElements = new Array();
+  this.svgElements = {};
   
   // Make and define the Raphael area
   this.paper = Raphael(document.getElementById(this._id), config.width, config.height);
+  
+  this.oldSearchMatches = [];
+
+  // event handlers
+  this._Popcorn.listen("IriSP.search", IriSP.wrap(this, function(searchString) { this.searchHandler(searchString); }));
+  this._Popcorn.listen("IriSP.search.closed", IriSP.wrap(this, this.searchFieldClosedHandler));
+  this._Popcorn.listen("IriSP.search.cleared", IriSP.wrap(this, this.searchFieldClearedHandler));
+
 };
 
 IriSP.PolemicWidget.prototype = new IriSP.Widget();
@@ -269,13 +277,15 @@ IriSP.PolemicWidget.prototype.draw = function() {
                   
                   var e = this.paper.rect(x, y, frameSize - margin, TweetHeight /* height */)
                                     .attr({stroke:"#00","stroke-width":0.1,  fill: colors[j]});  
-                  this.svgElements.push(e);
                   
                   addEheight += TweetHeight;
                   
+                  e.color = colors[j];
                   e.time = frames[i].mytweetsID[k].timeframe;
                   e.title = frames[i].mytweetsID[k].title;
                   e.id = frames[i].mytweetsID[k].cinecast_id;
+
+                  this.svgElements[e.id] = e;
 
                   e.mouseover(function(element) { return function (event) {
                         // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.                        
@@ -341,4 +351,55 @@ IriSP.PolemicWidget.prototype.sliderUpdater = function() {
     this.sliderTip.attr("x", time * (this.width / (duration / 1000)));
 };
     
-    
+IriSP.PolemicWidget.prototype.searchHandler = function(searchString) {
+
+  if (searchString == "")
+    return;
+
+  var matches = this._serializer.searchTweetsOccurences(searchString);
+
+  if (IriSP.countProperties(matches) > 0) {
+    this._Popcorn.trigger("IriSP.PolemicWidget.matchFound");
+  } else {
+    this._Popcorn.trigger("IriSP.PolemicWidget.noMatchFound");
+  }
+
+  for (var id in matches) {
+    var factor = 0.5 + matches[id] * 0.2;
+    if (this.svgElements.hasOwnProperty(id)) {
+      this.svgElements[id].attr({fill: "#fc00ff"});
+    }
+  }
+
+  // clean up the blocks that were in the previous search
+  // but who aren't in the current one.
+  for (var id in this.oldSearchMatches) {
+    if (!matches.hasOwnProperty(id)) {
+      var e = this.svgElements[id];
+      e.attr({fill: e.color});
+    }
+  }
+  
+  this.oldSearchMatches = matches;
+};
+
+IriSP.PolemicWidget.prototype.searchFieldClearedHandler = function() {
+  // clean up the blocks that were in the previous search
+  // but who aren't in the current one.
+  for (var id in this.oldSearchMatches) {
+      var e = this.svgElements[id];
+      e.attr({fill: e.color});
+  }
+ 
+};
+
+IriSP.PolemicWidget.prototype.searchFieldClosedHandler = function() {
+  // clean up the blocks that were in the previous search
+  // but who aren't in the current one.
+  for (var id in this.oldSearchMatches) {
+      var e = this.svgElements[id];
+      e.attr({fill: e.color});
+  }
+ 
+};
+   
