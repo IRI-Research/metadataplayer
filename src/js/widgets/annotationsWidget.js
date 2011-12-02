@@ -43,7 +43,17 @@ IriSP.AnnotationsWidget.prototype.draw = function() {
 
   var annotationMarkup = IriSP.templToHTML(IriSP.annotationWidget_template);
 	this.selector.append(annotationMarkup);
+  var view;
 
+  if (typeof(this._serializer._data.views) !== "undefined" && this._serializer._data.views !== null)
+     view = this._serializer._data.views[0];
+
+  var view_type = "";
+
+  if(typeof(view) !== "undefined" && typeof(view.annotation_types) !== "undefined" && view.annotation_types.length > 1) {
+          view_type = view.annotation_types[0];
+  }
+ 
   var annotations = this._serializer._data.annotations;
   var i;
   
@@ -52,16 +62,17 @@ IriSP.AnnotationsWidget.prototype.draw = function() {
     var begin = Math.round((+ annotation.begin) / 1000);
     var end = Math.round((+ annotation.end) / 1000);
 
+    if (view_type != "" && typeof(annotation.meta) !== "undefined" && typeof(annotation.meta["id-ref"]) !== "undefined"
+          && annotation.meta["id-ref"] != view_type) {
+        continue;
+    }
+
+
     var conf = {start: begin, end: end, 
                 onStart: 
                        function(annotation) { 
                         return function() { 
-                          /* we need it because we have to restore
-                             the display after displaying the contents
-                             of a tweet.
-                          */
-                          _this._currentAnnotation = annotation;
-                          _this.displayAnnotation(annotation); 
+                            _this.displayAnnotation(annotation); 
                           
                         } }(annotation),
                 onEnd: 
