@@ -29,10 +29,11 @@ Popcorn.jwplayer = function(container, options) {
   Popcorn._container = container.slice(1); //eschew the '#'
   options.events = {
       onReady: Popcorn.__initApi,
-      onTime: Popcorn.__timehandler 
+      onTime: Popcorn.__timeHandler 
     };
     
   jwplayer(Popcorn._container).setup(options);
+  Popcorn.media.duration = options.duration;
   return Popcorn;
 };
 
@@ -92,18 +93,20 @@ Popcorn.code = function(options) {
    (onTime event)
  */
 
-Popcorn.__timehandler = function() {
+Popcorn.__timeHandler = function() {
   var currentTime = jwplayer(Popcorn._container).getPosition();
   var i = 0;
   for(i = 0; i < Popcorn.__codes.length; i++) {
     var c = Popcorn.__codes[i];
-    if (currentTime <= c.start && currentTime + 0.1 >= c.start) {
+    if (currentTime == c.start) {
       c.onStart();
     }
     
-    if (currentTime <= c.end && currentTime + 0.1 >= c.end) {
+    if (currentTime == c.end) {
       c.onEnd();
     }
 
   }
+
+  Popcorn.trigger("timeupdate");
 };
