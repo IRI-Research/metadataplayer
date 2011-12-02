@@ -191,21 +191,25 @@
       border-right: 1px solid #b6b8b8;
       height: 25px;
       padding-right: 2px;
+      font-size: 12px;
+      font-family: Arial, Verdana, sans-serif;
     }
     
     .Ldt-ElapsedTime {
-      margin-top: 5px;
+      margin-top: 4px;
       float: left;
       color: #4a4a4a;
     }
     
     .Ldt-TimeSeparator {
-      margin-top: 5px;
+      margin-top: 4px;
       float: left;
+      padding-left: 1px;
+      padding-right: 1px;
     }
 
     .Ldt-TotalTime {
-      margin-top: 5px;
+      margin-top: 4px;
       float: left;
       color: #b2b2b2; 
     }
