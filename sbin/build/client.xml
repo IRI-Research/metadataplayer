@@ -70,10 +70,10 @@
 	<target name="concatenate" description="Build the developer release file" depends="make_templates">
 	    <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-release.js">
 			<filelist dir="../../src/js/" files="header.js" />
-	        <filelist dir="../../src/js/libs" files="popcorn.js popcorn.youtube.js popcorn.code.js popcorn.jwplayer.js popcorn.mediafragment.js jwplayer.js mustache.js raphael.js" />
+	        <filelist dir="../../src/js/libs" files="jwplayer.js mustache.js raphael.js" />
 	        <filelist dir="../../src/js" files="main.js" />
 	    	<filelist dir="../../build" files="compiled_templates.js" />
-	    	<filelist dir="../../src/js" files="utils.js data.js site.js ui.js widgets.js layout.js init.js" />
+	    	<filelist dir="../../src/js" files="pop.js utils.js data.js site.js ui.js widgets.js layout.js init.js" />
 			<fileset dir="../../src/js/widgets" casesensitive="yes">
 					<include name="**/*.js"/>					
 			</fileset>

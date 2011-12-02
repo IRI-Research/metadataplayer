@@ -22,7 +22,7 @@ IriSP.configurePopcorn = function (layoutManager, options) {
       case "jwplayer":
           var opts = IriSP.jQuery.extend({}, options);
           delete opts.container;
-          pop = Popcorn.jwplayer("#" + containerDiv, "", opts).mediafragment({start : 0});
+          pop = Popcorn.jwplayer("#" + containerDiv, opts);
         break;
       
       case "youtube":
