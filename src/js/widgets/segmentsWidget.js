@@ -118,13 +118,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
 
 /* restores the view after a search */
 IriSP.SegmentsWidget.prototype.clear = function() {
-  // reinit the fields
-  for (var id in this.oldSearchMatches) {
-
-      IriSP.jQuery("#"+id).dequeue();
-			IriSP.jQuery("#"+id).css('border','none');
-			IriSP.jQuery("#"+id).animate({opacity:0.3}, 100);
-  }
+  this.selector.children(".Ldt-iri-chapter").css('border','none').animate({opacity:0.3}, 100);
 };
 
 IriSP.SegmentsWidget.prototype.clickHandler = function(annotation) {
@@ -145,6 +139,10 @@ IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
     this._Popcorn.trigger("IriSP.SegmentsWidget.noMatchFound");
   }
 
+  // un-highlight all the blocks
+  this.selector.children(".Ldt-iri-chapter").css("opacity", 0.1);
+ 
+  // then highlight the ones with matches.
   for (var id in matches) {
     var factor = 0.5 + matches[id] * 0.2;
     this.selector.find("#"+id).dequeue();
@@ -152,15 +150,7 @@ IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
     this.selector.find("#"+id).animate({opacity:factor}, 200);
   }
 
-  // clean up the blocks that were in the previous search
-  // but who aren't in the current one.
-  for (var id in this.oldSearchMatches) {
-    if (!matches.hasOwnProperty(id)) {
-        IriSP.jQuery("#"+id).dequeue();
-				IriSP.jQuery("#"+id).animate({opacity:0.3}, 200);
-    }
-  }
-  
+ 
   this.oldSearchMatches = matches;
 };
 
