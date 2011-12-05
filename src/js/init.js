@@ -16,6 +16,13 @@ IriSP.configurePopcorn = function (layoutManager, options) {
       case "html5":
            var tmpId = Popcorn.guid("video"); 
            IriSP.jQuery("#" + containerDiv).append("<video src='" + options.file + "' id='" + tmpId + "'></video>");
+
+           if (options.hasOwnProperty("width"))
+             IriSP.jQuery("#" + containerDiv).css("width", options.width);
+           
+           if (options.hasOwnProperty("height"))
+             IriSP.jQuery("#" + containerDiv).css("height", options.height);
+
            pop = Popcorn("#" + tmpId).mediafragment({start : 0});
         break;
         
