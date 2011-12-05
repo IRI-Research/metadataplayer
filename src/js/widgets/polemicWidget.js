@@ -359,9 +359,9 @@ IriSP.PolemicWidget.prototype.searchHandler = function(searchString) {
   var matches = this._serializer.searchTweetsOccurences(searchString);
 
   if (IriSP.countProperties(matches) > 0) {
-    this._Popcorn.trigger("IriSP.PolemicWidget.matchFound");
+    this._Popcorn.trigger("IriSP.search.matchFound");
   } else {
-    this._Popcorn.trigger("IriSP.PolemicWidget.noMatchFound");
+    this._Popcorn.trigger("IriSP.search.noMatchFound");
   }
 
   for (var id in matches) {

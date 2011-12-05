@@ -24,8 +24,8 @@ IriSP.PlayerWidget.prototype.draw = function() {
   this._Popcorn.listen("play", IriSP.wrap(this, this.playButtonUpdater));
   this._Popcorn.listen("pause", IriSP.wrap(this, this.playButtonUpdater));
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeDisplayUpdater));
-  this._Popcorn.listen("IriSP.SegmentsWidget.matchFound", IriSP.wrap(this, this.searchMatch));
-  this._Popcorn.listen("IriSP.SegmentsWidget.noMatchFound", IriSP.wrap(this, this.searchNoMatch));
+  this._Popcorn.listen("IriSP.search.matchFound", IriSP.wrap(this, this.searchMatch));
+  this._Popcorn.listen("IriSP.search.noMatchFound", IriSP.wrap(this, this.searchNoMatch));
   
   
   this.selector.find(".Ldt-CtrlPlay").click(function() { self.playHandler.call(self); });
@@ -124,6 +124,12 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
       this._searchBlockOpen = true;           
       this.selector.find(".LdtSearchInput").bind('keyup', null, function() { self.searchHandler.call(self); } );
       
+      // we need this variable because some widget can find a match in
+      // their data while at the same time other's don't. As we want the
+      // search field to become green when there's a match, we need a 
+      // variable to remember that we had one.
+      this._positiveMatch = false;
+
       // tell the world the field is open
       this._Popcorn.trigger("IriSP.search.open");
       
@@ -136,6 +142,8 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
       // unbind the watcher event.
       this.selector.find(".LdtSearchInput").unbind('keypress set');
       this._searchBlockOpen = false;
+
+      this._positiveMatch = false;
       
       this._Popcorn.trigger("IriSP.search.closed");
   }
@@ -145,6 +153,7 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
    field changes */
 IriSP.PlayerWidget.prototype.searchHandler = function() {
   this._searchLastValue = this.selector.find(".LdtSearchInput").attr('value');
+  this._positiveMatch = false;
   
   // do nothing if the search field is empty, instead of highlighting everything.
   if (this._searchLastValue == "") {
@@ -160,11 +169,13 @@ IriSP.PlayerWidget.prototype.searchHandler = function() {
   highlight a match.
 */
 IriSP.PlayerWidget.prototype.searchMatch = function() {
+  this._positiveMatch = true;
   this.selector.find(".LdtSearchInput").css('background-color','#e1ffe1');
 }
 
 /* the same, except that no value could be found */
 IriSP.PlayerWidget.prototype.searchNoMatch = function() {
-  this.selector.find(".LdtSearchInput").css('background-color', "#d62e3a");
+  if (this._positiveMatch !== true)
+    this.selector.find(".LdtSearchInput").css('background-color', "#d62e3a");
 }
 

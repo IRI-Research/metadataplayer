@@ -134,9 +134,9 @@ IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
   var matches = this._serializer.searchOccurences(searchString);
 
   if (IriSP.countProperties(matches) > 0) {
-    this._Popcorn.trigger("IriSP.SegmentsWidget.matchFound");
+    this._Popcorn.trigger("IriSP.search.matchFound");
   } else {
-    this._Popcorn.trigger("IriSP.SegmentsWidget.noMatchFound");
+    this._Popcorn.trigger("IriSP.search.noMatchFound");
   }
 
   // un-highlight all the blocks
