@@ -123,7 +123,7 @@ IriSP.SegmentsWidget.prototype.clear = function() {
 
 IriSP.SegmentsWidget.prototype.clickHandler = function(annotation) {
   var begin = (+ annotation.begin) / 1000;
-  this._Popcorn.currentTime(Math.floor(begin));
+  this._Popcorn.currentTime(Math.round(begin));
 };
 
 IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
