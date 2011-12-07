@@ -76,11 +76,20 @@ IriSP.PlayerWidget.prototype.playButtonUpdater = function() {
   var status = this._Popcorn.media.paused;
   
   if ( status == true ){        
-    this.selector.find(".ui-icon-play").css( "background-position", "-16px -160px" );
     this.selector.find(".Ldt-CtrlPlay").attr("title", "Play");
+   
+    // we use templToHTML because it has some predefined
+    // vars like where to get the images
+    var templ = IriSP.templToHTML("url({{img_dir}}/pause_sprite.png)");
+    this.selector.find(".Ldt-CtrlPlay").css("background-image", templ);
+
   } else {
-    this.selector.find(".ui-icon-play").css( "background-position","0px -160px" );
     this.selector.find(".Ldt-CtrlPlay").attr("title", "Pause");
+
+    // we use templToHTML because it has some predefined
+    // vars like where to get the images
+    var templ = IriSP.templToHTML("url({{img_dir}}/play_sprite.png)");
+    this.selector.find(".Ldt-CtrlPlay").css("background-image", templ);
   }  
 };
 
@@ -136,7 +145,6 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
 	} else {
       this._searchLastValue = this.selector.find(".LdtSearchInput").attr('value');
       this.selector.find(".LdtSearchInput").attr('value','');
-      this.selector.find(".ui-icon-search").css("background-position","-160px -112px");
       this.selector.find(".LdtSearch").hide(100);
       
       // unbind the watcher event.
