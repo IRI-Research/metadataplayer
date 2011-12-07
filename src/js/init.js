@@ -27,6 +27,8 @@ IriSP.configurePopcorn = function (layoutManager, options) {
         break;
         
       case "jwplayer":
+          Popcorn.noConflict(); /* remove current popcorn instance */
+          Popcorn = PopcornReplacement;
           var opts = IriSP.jQuery.extend({}, options);
           delete opts.container;
           pop = Popcorn.jwplayer("#" + containerDiv, opts);
