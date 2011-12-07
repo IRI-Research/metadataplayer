@@ -3,7 +3,7 @@
 function test_segments_widget() {
   module("segments widget testing", 
   {setup : function() {    
-    this.Popcorn = Popcorn.youtube("#popcorn-div", "http://www.youtube.com/watch?v=QH2-TGUlwu4");
+    this.Popcorn = Popcorn("#popcorn-div");
     
     this.dt = new IriSP.DataLoader();
     this.ser = new IriSP.MockSerializer(this.dt, "/url"); /* dummy serializer */
@@ -22,7 +22,7 @@ function test_segments_widget() {
     },  
   teardown: function() {
     /* free the popcorn object because it has signal handlers attached to it */
-    this.Popcorn = Popcorn.youtube("#popcorn-div", "http://www.youtube.com/watch?v=QH2-TGUlwu4");
+    this.Popcorn = Popcorn("#popcorn-div");
   }});
   
   test("test widget initialization", function() {  
@@ -39,7 +39,7 @@ function test_segments_widget() {
   test("test click on a random segment", function() {
     var widget = new IriSP.SegmentsWidget(this.Popcorn, this.config, this.ser);
     widget.draw();
-    
+
     var spy_timeupdate = this.spy();
     var spy_segmentClick = this.spy();
     var spy_handler = sinon.spy(widget, "clickHandler");
@@ -52,7 +52,7 @@ function test_segments_widget() {
     ok(spy_timeupdate.called, "the timeupdate signal has been sent");         
     ok(spy_handler.called, "handling function has been called");           
   });
-  
+
   test("test search highlight features", function() {
   
     var tag_id = "#s_" + "82613B88-9578-DC2C-D7D0-B2C5BE0B7BDA".toUpperCase();

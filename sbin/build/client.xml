@@ -72,7 +72,7 @@
 			<filelist dir="../../src/js/" files="header.js" />
 			
       <filelist dir="../../src/js/libs" 
-                files="popcorn.js popcorn.code.js popcorn.jwplayer.js popcorn.mediafragment.js popcorn.youtube.js jwplayer.js mustache.js raphael.js" /> 
+                files="popcorn.js popcorn.youtube.js popcorn.code.js popcorn.jwplayer.js popcorn.mediafragment.js jwplayer.js mustache.js raphael.js"/> 
      
       <!-- required file before everything else -->
 	    <filelist dir="../../src/js" files="main.js" />
