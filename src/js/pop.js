@@ -30,27 +30,7 @@ Popcorn.jwplayer = function(container, options) {
   options.events = {
       onReady: Popcorn.__initApi,
       onTime: Popcorn.__timeHandler,
-      onSeek: function(event) { 
-                              var i = 0;
-                              console.log("old: %d, new: %d", event.position, event.offset);
-                              for(i = 0; i < Popcorn.__codes.length; i++) {
-                                 var c = Popcorn.__codes[i];
-                                
-                                 if (event.position >= c.start && event.position < c.end) {
-                                    c.onEnd();
-                                 }
-                                
-                                 if (typeof(event.offset) === "undefined")
-                                   event.offset = 0;
-                                 if (event.offset >= c.start && event.offset < c.end) {
-                                   c.onStart();
-                                 }
-                                 
-                               }
-                         
-                           Popcorn.trigger("timeupdate");
-              }
-  }
+      onSeek: Popcorn.__seekHandler }
     
   jwplayer(Popcorn._container).setup(options);
   Popcorn.media.duration = options.duration;
@@ -129,9 +109,48 @@ Popcorn.__runCode = function() {
    (onTime event)
  */
 
-Popcorn.__timeHandler = function() {
+Popcorn.__timeHandler = function(event) {
+  var pos = event.position;
+
+  var i = 0;
+  for(i = 0; i < Popcorn.__codes.length; i++) {
+     var c = Popcorn.__codes[i];
+     
+     if (pos >= c.start && pos < c.end && 
+         pos - 0.1 <= c.start) {
+        c.onStart();
+     }
+ 
+     if (pos >= c.start && pos >= c.end && 
+         pos - 0.1 <= c.end) {
+        c.onEnd();
+     }
+   
+  }
+ 
   Popcorn.trigger("timeupdate");
 };
+
+Popcorn.__seekHandler = function(event) { 
+  var i = 0;
+  for(i = 0; i < Popcorn.__codes.length; i++) {
+     var c = Popcorn.__codes[i];
+    
+     if (event.position >= c.start && event.position < c.end) {
+        c.onEnd();
+     }
+    
+     if (typeof(event.offset) === "undefined")
+       event.offset = 0;
+     if (event.offset >= c.start && event.offset < c.end) {
+       c.onStart();
+     }
+     
+   }
+
+  Popcorn.trigger("timeupdate");
+}
+
 
 Popcorn.roundTime = function() {
   var currentTime = Popcorn.currentTime();
