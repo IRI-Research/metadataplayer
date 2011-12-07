@@ -49,9 +49,6 @@ function test_init() {
     var layoutManager = new IriSP.LayoutManager({container: "LdtPlayer", width: 327, height: 542});
     var pop = IriSP.configurePopcorn(layoutManager, this.popcornOptions);
     notDeepEqual(pop, undefined, "returned object is not undefined");
-
-    /* FIXME: add more test options ? */
-    equal(pop.options.type, "jwplayer", "the player is of the correct type.");
   });
 
   test("test the creation of a video tag", function() {
