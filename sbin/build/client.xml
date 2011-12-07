@@ -45,7 +45,7 @@
 		</for>
 	</target>
 	
-	<target name="compile" depends="make_templates">
+	<target name="compile" depends="concatenate">
 		<jscomp compilationLevel="simple" warning="quiet" debug="false"
 			output="../../build/LdtPlayer.min.raw.js">
 			<externs dir="${basedir}/../../res/">
@@ -71,12 +71,9 @@
 	    <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-release.js">
 			<filelist dir="../../src/js/" files="header.js" />
 			
-      <filelist dir="../../src/js/libs" files="jwplayer.js popcorn.js popcorn.code.js popcorn.jwplayer.js popcorn.mediafragment.js popcorn.youtube.js raphael.js" />
-      
-      <fileset dir="../../src/js/libs" casesensitive="yes">
-					<include name="**/*.js"/>					
-			</fileset>
-      
+      <filelist dir="../../src/js/libs" 
+                files="popcorn.js popcorn.code.js popcorn.jwplayer.js popcorn.mediafragment.js popcorn.youtube.js jwplayer.js mustache.js raphael.js" /> 
+     
       <!-- required file before everything else -->
 	    <filelist dir="../../src/js" files="main.js" />
 
