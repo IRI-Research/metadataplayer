@@ -1,18 +1,18 @@
 /* wrapper that simulates popcorn.js because
    popcorn is a bit unstable at the time */
 
-Popcorn = {};
-Popcorn.media = { "paused": true};
+PopcornReplacement = {};
+PopcornReplacement.media = { "paused": true};
 
-Popcorn.listen = function(msg, callback) {
-  IriSP.jQuery(Popcorn).bind(msg, function(event, rest) { callback(rest); });
+PopcornReplacement.listen = function(msg, callback) {
+  IriSP.jQuery(PopcornReplacement).bind(msg, function(event, rest) { callback(rest); });
 };
 
-Popcorn.trigger = function(msg, params) {
-  IriSP.jQuery(Popcorn).trigger(msg, params);
+PopcornReplacement.trigger = function(msg, params) {
+  IriSP.jQuery(PopcornReplacement).trigger(msg, params);
 };
 
-Popcorn.guid = function(prefix) {
+PopcornReplacement.guid = function(prefix) {
   var str = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
       return v.toString(16);
@@ -21,79 +21,79 @@ Popcorn.guid = function(prefix) {
   return prefix + str;
 };
 
-Popcorn.__initApi = function() {
-  Popcorn.trigger("timeupdate");
+PopcornReplacement.__initApi = function() {
+  PopcornReplacement.trigger("timeupdate");
 };
 
-Popcorn.jwplayer = function(container, options) {
-  Popcorn._container = container.slice(1); //eschew the '#'
+PopcornReplacement.jwplayer = function(container, options) {
+  PopcornReplacement._container = container.slice(1); //eschew the '#'
   options.events = {
-      onReady: Popcorn.__initApi,
-      onTime: Popcorn.__timeHandler,
-      onSeek: Popcorn.__seekHandler }
+      onReady: PopcornReplacement.__initApi,
+      onTime: PopcornReplacement.__timeHandler,
+      onSeek: PopcornReplacement.__seekHandler }
     
-  jwplayer(Popcorn._container).setup(options);
-  Popcorn.media.duration = options.duration;
-  return Popcorn;
+  jwplayer(PopcornReplacement._container).setup(options);
+  PopcornReplacement.media.duration = options.duration;
+  return PopcornReplacement;
 };
 
-Popcorn.currentTime = function(time) {
+PopcornReplacement.currentTime = function(time) {
   if (typeof(time) === "undefined") {
-      return jwplayer(Popcorn._container).getPosition();            
+      return jwplayer(PopcornReplacement._container).getPosition();            
   } else {
      var currentTime = +time;
-     jwplayer( Popcorn._container ).seek( currentTime );
-     return jwplayer(Popcorn._container).getPosition();            
+     jwplayer( PopcornReplacement._container ).seek( currentTime );
+     return jwplayer(PopcornReplacement._container).getPosition();            
   }
 };
 
-Popcorn.play = function() {
-      Popcorn.media.paused = false;
-//      Popcorn.trigger("play");
-//      Popcorn.trigger("playing");
-      jwplayer( Popcorn._container ).play();
+PopcornReplacement.play = function() {
+      PopcornReplacement.media.paused = false;
+//      PopcornReplacement.trigger("play");
+//      PopcornReplacement.trigger("playing");
+      jwplayer( PopcornReplacement._container ).play();
 };
     
-Popcorn.pause = function() {
-      if ( !Popcorn.media.paused ) {
-        Popcorn.media.paused = true;
-        Popcorn.trigger( "pause" );
-        jwplayer( Popcorn._container ).pause();
+PopcornReplacement.pause = function() {
+      if ( !PopcornReplacement.media.paused ) {
+        PopcornReplacement.media.paused = true;
+        PopcornReplacement.trigger( "pause" );
+        jwplayer( PopcornReplacement._container ).pause();
       }
 };
 
-Popcorn.muted = function(val) {
+PopcornReplacement.muted = function(val) {
   if (typeof(val) !== "undefined") {
 
-    if (jwplayer(Popcorn._container).getMute() !== val) {
+    if (jwplayer(PopcornReplacement._container).getMute() !== val) {
       if (val) {
-        jwplayer(Popcorn._container).setMute(true);
+        jwplayer(PopcornReplacement._container).setMute(true);
       } else {
-        jwplayer( Popcorn._container ).setMute(false);
+        jwplayer( PopcornReplacement._container ).setMute(false);
       }
 
-      Popcorn.trigger( "volumechange" );
+      PopcornReplacement.trigger( "volumechange" );
     }
     
-    return jwplayer( Popcorn._container ).getMute();
+    return jwplayer( PopcornReplacement._container ).getMute();
   } else {
-    return jwplayer( Popcorn._container ).getMute();
+    return jwplayer( PopcornReplacement._container ).getMute();
   }
 };
 
-Popcorn.mute = Popcorn.muted;
+PopcornReplacement.mute = PopcornReplacement.muted;
 
-Popcorn.__codes = [];
-Popcorn.code = function(options) {
-  Popcorn.__codes.push(options);
-  return Popcorn;
+PopcornReplacement.__codes = [];
+PopcornReplacement.code = function(options) {
+  PopcornReplacement.__codes.push(options);
+  return PopcornReplacement;
 };
 
-Popcorn.__runCode = function() {
-  var currentTime = jwplayer(Popcorn._container).getPosition();
+PopcornReplacement.__runCode = function() {
+  var currentTime = jwplayer(PopcornReplacement._container).getPosition();
   var i = 0;
-  for(i = 0; i < Popcorn.__codes.length; i++) {
-    var c = Popcorn.__codes[i];
+  for(i = 0; i < PopcornReplacement.__codes.length; i++) {
+    var c = PopcornReplacement.__codes[i];
     if (currentTime == c.start) {
       c.onStart();
     }
@@ -109,12 +109,12 @@ Popcorn.__runCode = function() {
    (onTime event)
  */
 
-Popcorn.__timeHandler = function(event) {
+PopcornReplacement.__timeHandler = function(event) {
   var pos = event.position;
 
   var i = 0;
-  for(i = 0; i < Popcorn.__codes.length; i++) {
-     var c = Popcorn.__codes[i];
+  for(i = 0; i < PopcornReplacement.__codes.length; i++) {
+     var c = PopcornReplacement.__codes[i];
      
      if (pos >= c.start && pos < c.end && 
          pos - 0.1 <= c.start) {
@@ -128,13 +128,13 @@ Popcorn.__timeHandler = function(event) {
    
   }
  
-  Popcorn.trigger("timeupdate");
+  PopcornReplacement.trigger("timeupdate");
 };
 
-Popcorn.__seekHandler = function(event) { 
+PopcornReplacement.__seekHandler = function(event) { 
   var i = 0;
-  for(i = 0; i < Popcorn.__codes.length; i++) {
-     var c = Popcorn.__codes[i];
+  for(i = 0; i < PopcornReplacement.__codes.length; i++) {
+     var c = PopcornReplacement.__codes[i];
     
      if (event.position >= c.start && event.position < c.end) {
         c.onEnd();
@@ -148,11 +148,11 @@ Popcorn.__seekHandler = function(event) {
      
    }
 
-  Popcorn.trigger("timeupdate");
+  PopcornReplacement.trigger("timeupdate");
 }
 
 
-Popcorn.roundTime = function() {
-  var currentTime = Popcorn.currentTime();
+PopcornReplacement.roundTime = function() {
+  var currentTime = PopcornReplacement.currentTime();
   return Math.round(currentTime);
 };
