@@ -31,7 +31,10 @@ IriSP.widgetsDefaults = {
   }
 };
 
+IriSP.paths = {
+  "imgs": "./../../src/css/imgs"
+};
 IriSP.default_templates_vars = {
-  "img_dir" : "./../../src/css/imgs"
+  "img_dir" : IriSP.paths.imgs 
 };
 
