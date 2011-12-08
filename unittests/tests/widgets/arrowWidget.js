@@ -3,7 +3,7 @@
 function test_arrow_widget() {
   module("arrow widget testing", 
   {setup : function() {    
-    this.Popcorn = Popcorn.youtube("#popcorn-div", "http://www.youtube.com/watch?v=QH2-TGUlwu4");
+    this.Popcorn = Popcorn("#popcorn-div");
     
     this.dt = new IriSP.DataLoader();
     this.ser = new IriSP.MockSerializer(this.dt, "/url"); /* dummy serializer */
@@ -19,7 +19,7 @@ function test_arrow_widget() {
     },
   teardown: function() {
     /* free the popcorn object because it has signal handlers attached to it */
-    this.Popcorn = Popcorn.youtube("#popcorn-div", "http://www.youtube.com/watch?v=QH2-TGUlwu4");
+    this.Popcorn = Popcorn("#popcorn-div");
   }
   });
   

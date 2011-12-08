@@ -3,7 +3,7 @@
 function test_polemic_widget() {
   module("polemic widget testing", 
   {setup : function() {    
-    this.Popcorn = Popcorn.youtube("#popcorn-div", "http://www.youtube.com/watch?v=QH2-TGUlwu4");
+    this.Popcorn = Popcorn("#popcorn-div");
     
     this.dt = new IriSP.DataLoader();
     this.ser = new IriSP.MockTweetSerializer(this.dt, "/url"); /* dummy serializer */
@@ -16,7 +16,7 @@ function test_polemic_widget() {
 							src:'test.json',
 							load:'json'},
 							width:650,
-							height:1,
+							height:120,
 							mode:'radio',
 							container:'PolemicDiv',
 							debug:true,
@@ -35,7 +35,7 @@ function test_polemic_widget() {
     },  
   teardown: function() {
     /* free the popcorn object because it has signal handlers attached to it */
-    this.Popcorn = Popcorn.youtube("#popcorn-div", "http://www.youtube.com/watch?v=QH2-TGUlwu4");
+    this.Popcorn = Popcorn("#popcorn-div");
   }});
   
   test("test widget initialization", function() {
