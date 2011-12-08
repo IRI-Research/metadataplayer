@@ -2,7 +2,9 @@
    popcorn is a bit unstable at the time */
 
 IriSP.PopcornReplacement = {};
-IriSP.PopcornReplacement.media = { "paused": true};
+IriSP.PopcornReplacement.media = { 
+  "paused": true
+};
 
 IriSP.PopcornReplacement.listen = function(msg, callback) {
   IriSP.jQuery(IriSP.PopcornReplacement).bind(msg, function(event, rest) { callback(rest); });
@@ -30,8 +32,8 @@ IriSP.PopcornReplacement.jwplayer = function(container, options) {
   options.events = {
       onReady: IriSP.PopcornReplacement.__initApi,
       onTime: IriSP.PopcornReplacement.__timeHandler,
-  //    onPlay: IriSP.PopcornReplacement.__playHandler,
-  //    onPause: IriSP.PopcornReplacement.__pauseHandler,
+      onPlay: IriSP.PopcornReplacement.__playHandler,
+      onPause: IriSP.PopcornReplacement.__pauseHandler,
       onSeek: IriSP.PopcornReplacement.__seekHandler 
       }
     
@@ -157,10 +159,12 @@ IriSP.PopcornReplacement.__seekHandler = function(event) {
 
 IriSP.PopcornReplacement.__playHandler = function(event) {
   IriSP.PopcornReplacement.media.paused = false;
+  IriSP.PopcornReplacement.trigger("play");
 };
 
 IriSP.PopcornReplacement.__pauseHandler = function(event) {
   IriSP.PopcornReplacement.media.paused = true;
+  IriSP.PopcornReplacement.trigger("pause");
 };
 
 IriSP.PopcornReplacement.roundTime = function() {
