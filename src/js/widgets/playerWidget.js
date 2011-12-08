@@ -23,6 +23,7 @@ IriSP.PlayerWidget.prototype.draw = function() {
   // handle clicks by the user on the video.
   this._Popcorn.listen("play", IriSP.wrap(this, this.playButtonUpdater));
   this._Popcorn.listen("pause", IriSP.wrap(this, this.playButtonUpdater));
+
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeDisplayUpdater));
   this._Popcorn.listen("IriSP.search.matchFound", IriSP.wrap(this, this.searchMatch));
   this._Popcorn.listen("IriSP.search.noMatchFound", IriSP.wrap(this, this.searchNoMatch));
@@ -74,13 +75,14 @@ IriSP.PlayerWidget.prototype.timeDisplayUpdater = function() {
 */
 IriSP.PlayerWidget.prototype.playButtonUpdater = function() {
   var status = this._Popcorn.media.paused;
+  console.log("called!");
   
   if ( status == true ){        
     this.selector.find(".Ldt-CtrlPlay").attr("title", "Play");
    
     // we use templToHTML because it has some predefined
     // vars like where to get the images
-    var templ = IriSP.templToHTML("url({{img_dir}}/pause_sprite.png)");
+    var templ = IriSP.templToHTML("url({{img_dir}}/play_sprite.png)");
     this.selector.find(".Ldt-CtrlPlay").css("background-image", templ);
 
   } else {
@@ -88,16 +90,16 @@ IriSP.PlayerWidget.prototype.playButtonUpdater = function() {
 
     // we use templToHTML because it has some predefined
     // vars like where to get the images
-    var templ = IriSP.templToHTML("url({{img_dir}}/play_sprite.png)");
+    var templ = IriSP.templToHTML("url({{img_dir}}/pause_sprite.png)");
     this.selector.find(".Ldt-CtrlPlay").css("background-image", templ);
   }  
+
+  return;
 };
 
 
 IriSP.PlayerWidget.prototype.playHandler = function() {
   var status = this._Popcorn.media.paused;
-  
-  this.playButtonUpdater();
   
   if ( status == true ){        
     this._Popcorn.play();   
