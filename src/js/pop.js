@@ -9,7 +9,7 @@ IriSP.PopcornReplacement.listen = function(msg, callback) {
 };
 
 IriSP.PopcornReplacement.trigger = function(msg, params) {
-  IriSP.jQuery(IriSP.PopcornReplacement).trigger(msg, params);
+  IriSP.jQuery(IriSP.PopcornReplacement).triggerHandler(msg, params);
 };
 
 IriSP.PopcornReplacement.guid = function(prefix) {
@@ -30,7 +30,10 @@ IriSP.PopcornReplacement.jwplayer = function(container, options) {
   options.events = {
       onReady: IriSP.PopcornReplacement.__initApi,
       onTime: IriSP.PopcornReplacement.__timeHandler,
-      onSeek: IriSP.PopcornReplacement.__seekHandler }
+  //    onPlay: IriSP.PopcornReplacement.__playHandler,
+  //    onPause: IriSP.PopcornReplacement.__pauseHandler,
+      onSeek: IriSP.PopcornReplacement.__seekHandler 
+      }
     
   jwplayer(IriSP.PopcornReplacement._container).setup(options);
   IriSP.PopcornReplacement.media.duration = options.duration;
@@ -49,7 +52,7 @@ IriSP.PopcornReplacement.currentTime = function(time) {
 
 IriSP.PopcornReplacement.play = function() {
       IriSP.PopcornReplacement.media.paused = false;
-//      IriSP.PopcornReplacement.trigger("play");
+      IriSP.PopcornReplacement.trigger("play");
 //      IriSP.PopcornReplacement.trigger("playing");
       jwplayer( IriSP.PopcornReplacement._container ).play();
 };
@@ -149,8 +152,16 @@ IriSP.PopcornReplacement.__seekHandler = function(event) {
    }
 
   IriSP.PopcornReplacement.trigger("timeupdate");
-}
+};
 
+
+IriSP.PopcornReplacement.__playHandler = function(event) {
+  IriSP.PopcornReplacement.media.paused = false;
+};
+
+IriSP.PopcornReplacement.__pauseHandler = function(event) {
+  IriSP.PopcornReplacement.media.paused = true;
+};
 
 IriSP.PopcornReplacement.roundTime = function() {
   var currentTime = IriSP.PopcornReplacement.currentTime();
