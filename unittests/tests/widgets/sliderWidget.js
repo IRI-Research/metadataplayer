@@ -16,7 +16,8 @@ function test_slider_widget() {
 							mode:'radio',
 							container:'widget-div',
 							debug:true,
-							css:'../src/css/LdtPlayer.css'}
+							css:'../src/css/LdtPlayer.css'};
+    IriSP.jQuery("#widget-div").html("");
     },
   teardown: function() {
     /* free the popcorn object because it has signal handlers attached to it */

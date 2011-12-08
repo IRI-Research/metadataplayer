@@ -47,7 +47,7 @@ function test_segments_widget() {
     
     var selector = IriSP.jQuery("#widget-div :not(first-child)");
     var random = Math.round(Math.random() * selector.length) + 1;
-    selector.eq(random).click();
+    selector.eq(12).click();
         
     ok(spy_timeupdate.called, "the timeupdate signal has been sent");         
     ok(spy_handler.called, "handling function has been called");           
