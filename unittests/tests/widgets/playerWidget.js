@@ -45,6 +45,7 @@ function test_player_widget() {
     player.selector.find(".ldt-CtrlPlay").trigger("click");    
     player.selector.find(".ldt-CtrlPlay").trigger("click");
     ok(player.playHandler.calledTwice, "play handler called");
+
     ok(spy_callback2.calledOnce, "test if pause callback has been called");                                                                    
   });
   

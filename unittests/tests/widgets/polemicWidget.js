@@ -16,7 +16,7 @@ function test_polemic_widget() {
 							src:'test.json',
 							load:'json'},
 							width:650,
-							height:1,
+							height:120,
 							mode:'radio',
 							container:'PolemicDiv',
 							debug:true,
