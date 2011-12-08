@@ -53,13 +53,12 @@
       font-family: "Arial",  "Verdana", "sans-serif";
       background-color:#eeeeee;
       background:url('imgs/wire_pattern.png') repeat scroll transparent ;
-      border-color: #b6b8b8;
-      border-width: 1px;
-      border-style: solid;
+      border: 1px solid #b6b8b8;
     }
 
     .Ldt-Annotation-DoubleBorder {
       border: 1px solid white;
+      overflow: auto;
     }
 
     .Ldt-AnnotationContent {
@@ -351,7 +350,15 @@
       font-size: 62.5%;
       font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
       background:url('imgs/wire_pattern.png') repeat scroll transparent ;
-      padding:5px;
+      border: 1px solid #b6b8b8;
+      border-top: none;
+      overflow: auto;
+    }
+
+    .Ldt-tweet-DoubleBorder {
+      border: 1px solid white;
+      padding: 5px;
+      overflow: auto;
     }
 
     .Ldt-tweetAvatar {

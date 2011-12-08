@@ -1,11 +1,14 @@
 {{! template for the tweet widget }}
 <div class='Ldt-tweetWidget'>
-  <img src='{{img_dir}}/minimize.png' class='Ldt-tweetWidgetKeepOpen' alt='dont minimize automatically'></img>
-  <img src='{{img_dir}}/minimize.png' class='Ldt-tweetWidgetMinimize' alt='minimize window'></img>
-  <div class='Ldt-tweetAvatar'></div>
-  <img src='{{img_dir}}/profile_arrow.png' class='Ldt-tweetAvatar-profileArrow'></img>
-  <div class='Ldt-tweetContents'>
+  <div class='Ldt-tweet-DoubleBorder'>
+
+      <img src='{{img_dir}}/minimize.png' class='Ldt-tweetWidgetKeepOpen' alt='dont minimize automatically'></img>
+      <img src='{{img_dir}}/minimize.png' class='Ldt-tweetWidgetMinimize' alt='minimize window'></img>
+      <div class='Ldt-tweetAvatar'></div>
+      <img src='{{img_dir}}/profile_arrow.png' class='Ldt-tweetAvatar-profileArrow'></img>
+      <div class='Ldt-tweetContents'></div>
+      <a href='' target='_blank' class='Ldt-Retweet'><div class='Ldt-RetweetIcon'></div> - Retweet </a>
+      <a href='' target='_blank' class='Ldt-TweetReply'><div class='Ldt-TweetReplyIcon'></div> - Reply</a>
+
   </div>
-  <a href='' target='_blank' class='Ldt-Retweet'><div class='Ldt-RetweetIcon'></div> - Retweet </a>
-  <a href='' target='_blank' class='Ldt-TweetReply'><div class='Ldt-TweetReplyIcon'></div> - Reply</a>
 </div>
