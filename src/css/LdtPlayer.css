@@ -352,7 +352,6 @@
       font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
       background:url('imgs/wire_pattern.png') repeat scroll transparent ;
       padding:5px;
-      overflow: auto;
     }
 
     .Ldt-tweetAvatar {
