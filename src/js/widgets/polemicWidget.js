@@ -352,7 +352,6 @@ IriSP.PolemicWidget.prototype.sliderUpdater = function() {
 };
     
 IriSP.PolemicWidget.prototype.searchHandler = function(searchString) {
-
   if (searchString == "")
     return;
 
@@ -365,8 +364,8 @@ IriSP.PolemicWidget.prototype.searchHandler = function(searchString) {
   }
 
   for (var id in matches) {
-    var factor = 0.5 + matches[id] * 0.2;
     if (this.svgElements.hasOwnProperty(id)) {
+      var e = this.svgElements[id];
       this.svgElements[id].attr({fill: "#fc00ff"});
     }
   }
