@@ -75,7 +75,6 @@ IriSP.PlayerWidget.prototype.timeDisplayUpdater = function() {
 */
 IriSP.PlayerWidget.prototype.playButtonUpdater = function() {
   var status = this._Popcorn.media.paused;
-  console.log("called!");
   
   if ( status == true ){        
     this.selector.find(".Ldt-CtrlPlay").attr("title", "Play");
