@@ -215,12 +215,30 @@
     }
 
     .Ldt-CtrlSound {
+      background:url('imgs/sound_sprite.png') no-repeat scroll 0 0 transparent ;
+      width: 33px;
+      height: 25px;
+      border-right: 1px solid #b6b8b8;
+      float: right;
+      border-left: none;
+    }
+
+    .Ldt-CtrlSound:hover {
+      background-position: 0 -25px;
+    }
+
+    .Ldt-CtrlSound:active {
+      background-position: 0 -50px;
+    }
+/*
+    .Ldt-CtrlSound {
       float: right;
       border-left: none;
       height: 25px;
       top: 7px;
       position: inherit;
     }
+*/    
     .Ldt-cleaner {
       clear:both;
     }
