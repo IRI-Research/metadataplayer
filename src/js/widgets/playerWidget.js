@@ -122,8 +122,6 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
 
     /* show the search field if it is not shown */
   	if ( this._searchBlockOpen == false ) {      
-      this.selector.find( ".ui-icon-search" ).css( "background-position", "-144px -112px" );
-      
       this.selector.find(".LdtSearch").show(100);
       
       this.selector.find(".LdtSearchInput").css('background-color','#fff');
