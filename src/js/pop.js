@@ -6,7 +6,8 @@ IriSP.PopcornReplacement = {
 };
 
 IriSP.PopcornReplacement.media = { 
-  "paused": true
+  "paused": true,
+  "muted": false
 };
 
 IriSP.PopcornReplacement.listen = function(msg, callback) {
@@ -89,8 +90,10 @@ IriSP.PopcornReplacement.muted = function(val) {
     if (jwplayer(IriSP.PopcornReplacement._container).getMute() !== val) {
       if (val) {
         jwplayer(IriSP.PopcornReplacement._container).setMute(true);
+        IriSP.PopcornReplacement.media.muted = true;
       } else {
         jwplayer( IriSP.PopcornReplacement._container ).setMute(false);
+        IriSP.PopcornReplacement.media.muted = false;
       }
 
       IriSP.PopcornReplacement.trigger( "volumechange" );
