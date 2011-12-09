@@ -23,6 +23,8 @@ IriSP.PlayerWidget.prototype.draw = function() {
   // handle clicks by the user on the video.
   this._Popcorn.listen("play", IriSP.wrap(this, this.playButtonUpdater));
   this._Popcorn.listen("pause", IriSP.wrap(this, this.playButtonUpdater));
+  
+  this._Popcorn.listen("volumechange", IriSP.wrap(this, this.muteButtonUpdater));
 
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeDisplayUpdater));
   this._Popcorn.listen("IriSP.search.matchFound", IriSP.wrap(this, this.searchMatch));
@@ -110,12 +112,34 @@ IriSP.PlayerWidget.prototype.playHandler = function() {
 IriSP.PlayerWidget.prototype.muteHandler = function() {
   if (!this._Popcorn.muted()) {    
       this._Popcorn.mute(true);
-      this.selector.find(" .ui-icon-volume-on ").css("background-position", "-130px -160px");    
     } else {
       this._Popcorn.mute(false);
-      this.selector.find( ".ui-icon-volume-on" ).css("background-position", "-144px -160px" );
     }
 };
+
+IriSP.PlayerWidget.prototype.muteButtonUpdater = function() {
+  var status = this._Popcorn.media.muted;
+  
+  if ( status == true ){        
+    this.selector.find(".Ldt-CtrlSound").attr("title", "Unmute");
+   
+    // we use templToHTML because it has some predefined
+    // vars like where to get the images
+    var templ = IriSP.templToHTML("url({{img_dir}}/sound_sprite.png)");
+    this.selector.find(".Ldt-CtrlSound").css("background-image", templ);
+
+  } else {
+    this.selector.find(".Ldt-CtrlSound").attr("title", "Mute");
+
+    // we use templToHTML because it has some predefined
+    // vars like where to get the images
+    var templ = IriSP.templToHTML("url({{img_dir}}/mute_sprite.png)");
+    this.selector.find(".Ldt-CtrlSound").css("background-image", templ);
+  }  
+
+  return;
+};
+
 
 IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
     var self = this;
