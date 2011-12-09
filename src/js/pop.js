@@ -1,17 +1,33 @@
 /* wrapper that simulates popcorn.js because
    popcorn is a bit unstable at the time */
 
-IriSP.PopcornReplacement = {};
+IriSP.PopcornReplacement = {
+  msgPump : {} /* used by jquery to receive and send messages */
+};
+
 IriSP.PopcornReplacement.media = { 
   "paused": true
 };
 
 IriSP.PopcornReplacement.listen = function(msg, callback) {
-  IriSP.jQuery(IriSP.PopcornReplacement).bind(msg, function(event, rest) { callback(rest); });
+//  IriSP.jQuery(IriSP.PopcornReplacement.msgPump).bind(msg, function(event, rest) { callback(rest); });
+  if (!IriSP.PopcornReplacement.msgPump.hasOwnProperty(msg))
+    IriSP.PopcornReplacement.msgPump[msg] = [];
+
+  IriSP.PopcornReplacement.msgPump[msg].push(callback);
 };
 
 IriSP.PopcornReplacement.trigger = function(msg, params) {
-  IriSP.jQuery(IriSP.PopcornReplacement).triggerHandler(msg, params);
+//  IriSP.jQuery(IriSP.PopcornReplacement.msgPump).trigger(msg, params);
+  
+  if (!IriSP.PopcornReplacement.msgPump.hasOwnProperty(msg))
+    return;
+
+  var d = IriSP.PopcornReplacement.msgPump[msg];
+  for(var entry in d) {
+    d[entry].call(window, params);
+  }
+
 };
 
 IriSP.PopcornReplacement.guid = function(prefix) {
