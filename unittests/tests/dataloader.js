@@ -41,5 +41,15 @@ function test_dataloader() {
     ok(spy_callback.calledTwice && xhr.requests.length === 1, "callback called twice but request made only once.");
     
   });
+ 
+  test("should default to JSONP for foreign domains", function() {
+    /* we can't simulate jsonp so we just verify that the function is called */
+    var stub = this.stub(IriSP.jQuery, "ajax");
+    var dt = new IriSP.DataLoader();
     
+    var resp = dt.get("http://example.com/url&a=1", stub);
+
+    ok(stub.calledOnce, "ajax request actually made");
+  });
+   
 }

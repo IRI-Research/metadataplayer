@@ -35,7 +35,17 @@ IriSP.DataLoader.prototype.get = function(url, callback) {
                   }
       };
       
-      IriSP.jQuery.get(url, IriSP.wrap(this, func));                                
+      /* automagically choose between json and jsonp */
+      if (url.indexOf(document.location.hostname) === -1 &&
+          url[0] !== '/' /* not a relative url */ ) {
+        // we contacting a foreign domain, use JSONP
+
+        IriSP.jQuery.get(url, {}, IriSP.wrap(this, func), "jsonp");
+      } else {
+
+        // otherwise, hey, whatever rows your boat
+        IriSP.jQuery.get(url, IriSP.wrap(this, func));
+      }
     
     } else {
       /* simply push the callback - it'll get called when the ressource
