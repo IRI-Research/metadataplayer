@@ -3,6 +3,13 @@ exemple json configuration:
  
  */
 
+IriSP.setupDataLoader = function() {
+  /* we set it up separately because we need to
+     get data at the very beginning, for instance when
+     setting up the video */
+  IriSP.__dataloader = new IriSP.DataLoader();
+};
+
 IriSP.configurePopcorn = function (layoutManager, options) {
     var pop;
     var ret = layoutManager.createDiv(); 
@@ -29,6 +36,20 @@ IriSP.configurePopcorn = function (layoutManager, options) {
       case "jwplayer":
           var opts = IriSP.jQuery.extend({}, options);
           delete opts.container;
+
+          /* exit if we can't access the metadata */
+          if (typeof(IriSP.__jsonMetadata) === "undefined") {
+              break;
+          };
+
+
+          // the json format is totally illogical
+          opts.streamer = IriSP.__jsonMetadata["medias"][0]["meta"]["item"]["value"];
+          var source = IriSP.__jsonMetadata["medias"][0]["href"];
+
+          // the source if a full url but jwplayer wants an url relative to the
+          // streamer url, so we've got to remove the common part.
+          opts.file = source.slice(opts.streamer.length);
           pop = IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
         break;
       
@@ -53,10 +74,8 @@ IriSP.configurePopcorn = function (layoutManager, options) {
 };
 
 IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
-
-  var dt = new IriSP.DataLoader();
-  var serialFactory = new IriSP.SerializerFactory(dt);
-  
+ 
+  var serialFactory = new IriSP.SerializerFactory(IriSP.__dataloader);
   var params = {width: guiOptions.width, height: guiOptions.height};
 
   var ret_widgets = [];

@@ -103,10 +103,6 @@
         },
       player:{
       type:'jwplayer', // player type
-              container: 'PopcornContainer',
-              // the rest is player-dependent configuration options.
-              file : "video/ldtplatform/museologie_inaugurale_20111018_flat.f4v", 
-              streamer: "rtmp://media.iri.centrepompidou.fr/ddc_player/", 
               flashplayer : '../libs/player.swf',
               live: true, 
               "controlbar.position" : "none", 
@@ -116,7 +112,7 @@
             }
     };
     
-    IriSP.loadLibs(IriSP.lib, config.gui.css, 
+    IriSP.loadLibs(IriSP.lib, config.gui.css, "polemic_fr.json",
       function() {   
               var layoutManager = new IriSP.LayoutManager(config.gui.container);
               var pop = IriSP.configurePopcorn(layoutManager, config.player);

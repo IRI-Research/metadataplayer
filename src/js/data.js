@@ -37,7 +37,7 @@ IriSP.DataLoader.prototype.get = function(url, callback) {
       
       /* automagically choose between json and jsonp */
       if (url.indexOf(document.location.hostname) === -1 &&
-          url[0] !== '/' /* not a relative url */ ) {
+          url.indexOf("http://") !== -1 /* not a relative url */ ) {
         // we contacting a foreign domain, use JSONP
 
         IriSP.jQuery.get(url, {}, IriSP.wrap(this, func), "jsonp");

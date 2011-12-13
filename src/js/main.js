@@ -7,7 +7,7 @@ if ( window.IriSP === undefined && window.__IriSP === undefined ) {
 
 /* crap code will be the first against the wall when the
    revolution comes */
-IriSP.loadLibs = function( libs, customCssPath, callback ) {
+IriSP.loadLibs = function( libs, customCssPath, metadata_url, callback ) {
 		// Localize jQuery variable
 		IriSP.jQuery = null;
 
@@ -117,7 +117,14 @@ IriSP.loadLibs = function( libs, customCssPath, callback ) {
 					$( '.dynamic_css' ).clone().appendTo( 'head' );
 				}
         
-        callback();
+        IriSP.setupDataLoader();
+        IriSP.__dataloader.get(metadata_url, 
+            function(data) {
+              /* save the data so that we could re-use it to
+                 configure the video
+              */
+              IriSP.__jsonMetadata = data;
+              callback.call(window) });
       });
     }
 };
