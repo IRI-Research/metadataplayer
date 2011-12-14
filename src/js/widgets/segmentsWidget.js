@@ -122,6 +122,7 @@ IriSP.SegmentsWidget.prototype.clear = function() {
 };
 
 IriSP.SegmentsWidget.prototype.clickHandler = function(annotation) {
+  this._Popcorn.trigger("IriSP.SegmentsWidget.click", annotation.id);
   var begin = (+ annotation.begin) / 1000;
   this._Popcorn.currentTime(Math.round(begin));
 };
