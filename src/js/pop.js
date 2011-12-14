@@ -42,6 +42,7 @@ IriSP.PopcornReplacement.guid = function(prefix) {
 
 IriSP.PopcornReplacement.__initApi = function() {
   IriSP.PopcornReplacement.trigger("timeupdate");
+  IriSP.PopcornReplacement.media.muted = jwplayer(IriSP.PopcornReplacement._container).getMute();
 };
 
 IriSP.PopcornReplacement.jwplayer = function(container, options) {

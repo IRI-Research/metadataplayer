@@ -46,6 +46,8 @@ IriSP.PlayerWidget.prototype.draw = function() {
   // trigger an IriSP.PlayerWidget.MouseOver to the widgets that are interested (i.e : sliderWidget)
   this.selector.hover(function() { self._Popcorn.trigger("IriSP.PlayerWidget.MouseOver"); }, 
                       function() { self._Popcorn.trigger("IriSP.PlayerWidget.MouseOut"); });
+ 
+  this.muteButtonUpdater(); /* some player - jwplayer notable - save the state of the mute button between sessions */
 };
 
 /* Update the elasped time div */
