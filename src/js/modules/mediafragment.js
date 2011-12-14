@@ -3,9 +3,11 @@
 IriSP.MediaFragment = function(Popcorn, config, Serializer) {
   IriSP.Module.call(this, Popcorn, config, Serializer);
 
+  this.mutex = false; /* a mutex because we access the url from two different functions */
+
   this._Popcorn.listen( "loadedmetadata", IriSP.wrap(this, IriSP.MediaFragment.advanceTime));
-//  this._Popcorn.listen( "pause", IriSP.wrap(this, IriSP.MediaFragment.updateTime));
-//  this._Popcorn.listen( "seeked", IriSP.wrap(this, IriSP.MediaFragment.updateTime));
+  this._Popcorn.listen( "pause", IriSP.wrap(this, IriSP.MediaFragment.updateTime));
+  this._Popcorn.listen( "seeked", IriSP.wrap(this, IriSP.MediaFragment.updateTime));
   this._Popcorn.listen( "IriSP.PolemicTweet.click", IriSP.wrap(this, IriSP.MediaFragment.updateAnnotation));
   this._Popcorn.listen( "IriSP.SegmentsWidget.click", IriSP.wrap(this, IriSP.MediaFragment.updateAnnotation));
 };
@@ -36,6 +38,10 @@ IriSP.MediaFragment.advanceTime = function() {
 };
 
 IriSP.MediaFragment.updateTime = function() {
+  if (this.mutex === true) {
+    return;
+  }
+
   var history = window.history;
   if ( !history.pushState ) {
     return false;
@@ -47,6 +53,9 @@ IriSP.MediaFragment.updateTime = function() {
 
 
 IriSP.MediaFragment.updateAnnotation = function(annotationId) {
+  var _this = this;
+  this.mutex = true;
+
   var history = window.history;
   if ( !history.pushState ) {
     return false;
@@ -55,6 +64,7 @@ IriSP.MediaFragment.updateAnnotation = function(annotationId) {
   splitArr = window.location.href.split( "#" )
   history.replaceState( {}, "", splitArr[0] + "#a=" + annotationId);
  
+  window.setTimeout(function() { _this.mutex = false }, 50);
 };
 
 // lookup and seek to the beginning of an annotation
