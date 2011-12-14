@@ -37,19 +37,25 @@ IriSP.configurePopcorn = function (layoutManager, options) {
           var opts = IriSP.jQuery.extend({}, options);
           delete opts.container;
 
-          /* exit if we can't access the metadata */
-          if (typeof(IriSP.__jsonMetadata) === "undefined") {
-              break;
-          };
+          if (options.provider === "rtmp") {
+            /* exit if we can't access the metadata */
+            if (typeof(IriSP.__jsonMetadata) === "undefined") {
+                break;
+            };
 
 
-          // the json format is totally illogical
-          opts.streamer = IriSP.__jsonMetadata["medias"][0]["meta"]["item"]["value"];
-          var source = IriSP.__jsonMetadata["medias"][0]["href"];
+            // the json format is totally illogical
+            opts.streamer = IriSP.__jsonMetadata["medias"][0]["meta"]["item"]["value"];
+            var source = IriSP.__jsonMetadata["medias"][0]["href"];
 
-          // the source if a full url but jwplayer wants an url relative to the
-          // streamer url, so we've got to remove the common part.
-          opts.file = source.slice(opts.streamer.length);
+            // the source if a full url but jwplayer wants an url relative to the
+            // streamer url, so we've got to remove the common part.
+            opts.file = source.slice(opts.streamer.length);
+          } else {
+            /* other providers type, video for instance -
+               pass everything as is */
+          }
+
           pop = IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
         break;
       
