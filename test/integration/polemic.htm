@@ -109,7 +109,15 @@
               height: 300, 
               width: 640, 
               provider: "rtmp" 
-            }
+      },
+      modules: [
+               { type: "MediaFragment",
+  			     		 metadata:{
+	  	  			   format:'cinelab',
+		  				   src:'polemic_fr.json',
+						     type:'json'}
+						}]
+
     };
     
     IriSP.loadLibs(IriSP.lib, config.gui.css, "polemic_fr.json",
@@ -117,7 +125,9 @@
               var layoutManager = new IriSP.LayoutManager(config.gui.container);
               var pop = IriSP.configurePopcorn(layoutManager, config.player);
               
-              var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); });
+              var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); 
+              var modules = IriSP.configureModules(pop, config.modules); 
+      });
     
     });
   </script>
