@@ -63,20 +63,16 @@
 			  },
 			player:{
 			type:'jwplayer', // player type
-              container: 'PopcornContainer',
-              // the rest is player-dependent configuration options.
-              file : "video/franceculture/franceculture_retourdudimanche20100620.flv", 
-              streamer: "rtmp://media.iri.centrepompidou.fr/ddc_player/", 
               flashplayer : '../libs/player.swf',
               live: true, 
               "controlbar.position" : "none", 
-              height: 300, 
+              height: 1, /* jwplayer doesn't want it to be 0 */
               width: 200, 
               provider: "rtmp" 
             }
 		};
 		
-		IriSP.loadLibs(IriSP.lib, config.gui.css, 
+		IriSP.loadLibs(IriSP.lib, config.gui.css, "../test.json",
 			function() { 	
 							var layoutManager = new IriSP.LayoutManager(config.gui.container);
 							var pop = IriSP.configurePopcorn(layoutManager, config.player);
@@ -88,5 +84,4 @@
 	
 	
  </body>
- <div id="PopcornContainer"></div>
  </html>

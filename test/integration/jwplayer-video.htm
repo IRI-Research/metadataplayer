@@ -47,16 +47,16 @@
                 src:'../test.json',
                 type:'json'}
               }
-              ],
+              ]},
 						player:{
 							type:'jwplayer',
 							flashplayer:'../../res/swf/player.swf',
-              file:'http://127.0.0.1/mdp/test/trailer.mp4',
+              file:'../trailer.mp4',
               provider:'video',
               duration: 50}
 					};
 		
-          IriSP.loadLibs(IriSP.lib, config.gui.css, function() { 	
+          IriSP.loadLibs(IriSP.lib, config.gui.css, "../test.json", function() { 	
               var layoutManager = new IriSP.LayoutManager(config.gui.container);
               var pop = IriSP.configurePopcorn(layoutManager, config.player);
               
