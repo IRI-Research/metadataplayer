@@ -41,7 +41,8 @@ IriSP.PopcornReplacement.guid = function(prefix) {
 };
 
 IriSP.PopcornReplacement.__initApi = function() {
-  IriSP.PopcornReplacement.trigger("timeupdate");
+  IriSP.PopcornReplacement.trigger("loadedmetadata"); // we've done more than loading metadata of course,
+                                                      // but popcorn doesn't need to know more.
   IriSP.PopcornReplacement.media.muted = jwplayer(IriSP.PopcornReplacement._container).getMute();
 };
 
@@ -66,6 +67,7 @@ IriSP.PopcornReplacement.currentTime = function(time) {
   } else {
      var currentTime = +time;
      jwplayer( IriSP.PopcornReplacement._container ).seek( currentTime );
+     IriSP.PopcornReplacement.trigger("seeked");
      return jwplayer(IriSP.PopcornReplacement._container).getPosition();            
   }
 };
