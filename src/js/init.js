@@ -97,6 +97,23 @@ IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
   return ret_widgets;
 };
 
+IriSP.configureModules = function (popcornInstance, modulesList) {
+ 
+  var serialFactory = new IriSP.SerializerFactory(IriSP.__dataloader);
+  var ret_modules = [];
+  var index;
+  
+  for (index = 0; index < modulesList.length; index++) {    
+    var moduleConfig = modulesList[index];
+    
+    var serializer = serialFactory.getSerializer(moduleConfig.metadata);
+    var module = new IriSP[moduleConfig.type](popcornInstance, moduleConfig, serializer);    
+    ret_modules.push(module);
+  };
+
+  return ret_modules;
+};
+
 IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager, widgetConfig) {
     /* create div returns us a container for the widget and a spacer */
     var ret = layoutManager.createDiv(widgetConfig.type);        

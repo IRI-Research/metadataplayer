@@ -5,14 +5,8 @@ function test_init() {
       IriSP.jQuery("#widget-div").append("<div id='LdtPlayer'></div>");
       this.popcornOptions = {
           container: "LdtPlayer",
-          type: "jwplayer", file : "video/franceculture/franceculture_retourdudimanche20100620.flv",
-          streamer: "rtmp://media.iri.centrepompidou.fr/ddc_player/",
-          flashplayer : '../libs/player.swf',
-          live: true,
-          "controlbar.position" : "none",
-          height: 300,
-          width: 200,
-          provider: "rtmp"
+          type: "html5", 
+          file : "trailer.mp4",
         };
 
         this.widgetOptions = {
@@ -41,6 +35,11 @@ function test_init() {
                 type:'dummy'}
               },
             ]};
+
+        this.modulesOptions = [ 
+            {type: "Module", a : 36},
+            {type: "Module", b : 54}
+        ];
     }
   });
 
@@ -127,6 +126,17 @@ function test_init() {
     ok(widgets[1] instanceof IriSP.SegmentsWidget, "second widget is a segments widget");
     ok(widgets[2] instanceof IriSP.AnnotationsWidget, "third widget is an annotation widget");
     equal(IriSP.jQuery("#" + this.widgetOptions.container).length, 1, "a new dom element has been created");
+  });
+
+  test("test the instantiation of a couple modules", function() {
+      
+    var layoutManager = new IriSP.LayoutManager({container: "LdtPlayer", width: 327, height: 542});
+    var pop = IriSP.configurePopcorn(layoutManager, this.popcornOptions);
+
+    var modules = IriSP.configureModules(pop, this.modulesOptions);
+
+    ok(modules[0] instanceof IriSP.Module && modules[0]._config.a === 36);
+    ok(modules[1] instanceof IriSP.Module && modules[1]._config.b === 54);
   });
 
 
