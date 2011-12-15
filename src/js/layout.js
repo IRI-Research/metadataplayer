@@ -55,11 +55,12 @@ IriSP.LayoutManager.prototype.createDiv = function(stem) {
     var spacerDiv = Popcorn.guid("LdtPlayer_spacer_");
     this._widgets.push(newDiv);
 
-    var divTempl = "<div id='{{id}}' style='width: 100%; position: relative;'></div";
-    var spacerTempl = "<div id='{{spacer_id}}' style='width: 100%; position: relative; height: {{spacer_div_height}};'></div";
+    var divTempl = "<div id='{{id}}' style='width: {{width}}px; position: relative;'></div";
+    var spacerTempl = "<div id='{{spacer_id}}' style='width: {{width}}px; position: relative; height: {{spacer_div_height}};'></div";
     
-    var divCode = Mustache.to_html(divTempl, {id: newDiv});
-    var spacerCode = Mustache.to_html(spacerTempl, {spacer_id: spacerDiv, spacer_div_height: IriSP.widgetsDefaults.LayoutManager.spacer_div_height });
+    var divCode = Mustache.to_html(divTempl, {id: newDiv, width: this._width});
+    var spacerCode = Mustache.to_html(spacerTempl, {spacer_id: spacerDiv, width: this._width,
+                                                    spacer_div_height: IriSP.widgetsDefaults.LayoutManager.spacer_div_height });
 
     this.selector.append(divCode);
     this.selector.append(spacerCode);

@@ -15,9 +15,7 @@ IriSP.PlayerWidget.prototype.draw = function() {
 	  
 	var Player_templ = Mustache.to_html(IriSP.player_template, {"share_template" : IriSP.share_template});
   this.selector.append(Player_templ);		
-    
-	this.selector.children(".Ldt-controler").width(width - 10);
-	  		
+	
   this.selector.children(".Ldt-controler").show();
     
   // handle clicks by the user on the video.
