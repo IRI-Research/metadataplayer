@@ -63,7 +63,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     /* some sort of collapsing occurs, so we only have to substract one pixel to each box instead of
        two
     */
-    var endPourcent 	= IriSP.timeToPourcent(end, duration) - startPourcent - onePxPercent * 1;
+    var endPourcent 	= IriSP.timeToPourcent(end, duration) - startPourcent - onePxPercent * 1.5;
     
     /* on the other hand, we have to substract one pixel from the first box because it's the only
        one to have to effective 1px margins */
@@ -72,7 +72,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
       endPourcent -= onePxPercent;
     }
     
-    var divTitle = annotation.content.title.substr(0,55);
+    var divTitle = (annotation.content.title + " - " + annotation.content.description).substr(0,55);
 
     if (typeof(annotation.content.color) !== "undefined")
       var color = annotation.content.color;
@@ -80,7 +80,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
       var color = annotation.color;
     
     var hexa_color = IriSP.DEC_HEXA_COLOR(color);
-    console.log(hexa_color);
+    
     if (hexa_color === "FFCC00")
       hexa_color = "333";
     
@@ -111,7 +111,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
           var offset_x = offset.left + correction - 106;
           if (offset_x < 0)
             offset_x = 0;
-
+                    
           self.TooltipWidget.show(divTitle, color, offset_x, event.pageY - 160);
     } })(divTitle)).mouseout(function(){
       IriSP.jQuery(this).animate({opacity: 0.3}, 5);
