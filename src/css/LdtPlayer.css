@@ -18,7 +18,6 @@
    }
 
     .Ldt-SegmentsWidget {
-      background-color: #b6b8b7;
       overflow: auto; /* clear the floats */
       margin-top: 1px;
     }
@@ -26,6 +25,7 @@
     .Ldt-iri-chapter{
       float: left;
       height: 10px;
+      border-right: 1px solid white;
     }
 
     .tooltip {

@@ -103,8 +103,7 @@ IriSP.DEC_HEXA_COLOR = function (dec) {
 		  hex = hexa.charAt(tmp)+hex;
 		  dec = Math.floor(dec/16);
 	 }
-	 hex = hexa.charAt(dec)+hex;
-	 if (hex == "FFCC00"){ hex="";/* by default color of Ldt annotation */ }
+	 hex = hexa.charAt(dec)+hex;	 
 	 return(hex);
 };
 

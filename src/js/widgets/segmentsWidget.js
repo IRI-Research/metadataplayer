@@ -73,12 +73,20 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     }
     
     var divTitle = annotation.content.title.substr(0,55);
-    var color = annotation.content.color
 
-
+    if (typeof(annotation.content.color) !== "undefined")
+      var color = annotation.content.color;
+    else
+      var color = annotation.color;
+    
+    var hexa_color = IriSP.DEC_HEXA_COLOR(color);
+    console.log(hexa_color);
+    if (hexa_color === "FFCC00")
+      hexa_color = "333";
+    
     var annotationTemplate = Mustache.to_html(IriSP.annotation_template,
         {"divTitle" : divTitle, "id" : id, "startPourcent" : startPourcent,
-        "endPourcent" : endPourcent, "hexa_color" : IriSP.DEC_HEXA_COLOR(color),
+        "endPourcent" : endPourcent, "hexa_color" : hexa_color,
         "seekPlace" : Math.round(begin/1000)});
 
 
