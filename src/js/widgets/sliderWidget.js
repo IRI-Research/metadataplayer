@@ -52,8 +52,19 @@ IriSP.SliderWidget.prototype.sliderUpdater = function() {
 
   var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
   var percent = ((time / duration) * 100).toFixed(2);
+  
+  /* we do these complicated calculations to center exactly
+     the position Marker */
+  var pixels_to_percents = 100 / this.selector.width(); /* how much is a pixel in percents */
+  var positionMarker_width = this.positionMarker.width();
+  var correction = (pixels_to_percents * positionMarker_width) / 2;
+
+  var newPos = percent - correction;
+  if (newPos <= 0)
+    newPos = 0;
+  
 	this.sliderForeground.css("width", percent + "%");
-	this.positionMarker.css("left", percent + "%");
+	this.positionMarker.css("left", newPos + "%");
 
 };
 
