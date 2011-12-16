@@ -45,9 +45,9 @@ IriSP.SliderWidget.prototype.draw = function() {
 
 /* update the slider and the position marker as time passes */
 IriSP.SliderWidget.prototype.sliderUpdater = function() {
-  if(this.draggingOngoing)
+  if(this.draggingOngoing || this._disableUpdates)
     return;
-
+  
   var time = this._Popcorn.currentTime();
 
   var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
@@ -137,11 +137,15 @@ IriSP.SliderWidget.prototype.minimizeOnTimeout = function(event) {
 };
 
 // called when the user starts dragging the position indicator
-IriSP.SliderWidget.prototype.positionMarkerDraggingStartedHandler = function(event, ui) {
+IriSP.SliderWidget.prototype.positionMarkerDraggingStartedHandler = function(event, ui) {  
   this.draggingOngoing = true;
 };
 
 IriSP.SliderWidget.prototype.positionMarkerDraggedHandler = function(event, ui) {
+  console.log(ui.offset.left);
+  this._disableUpdate = true; // disable slider position updates while dragging is ongoing.
+  window.setTimeout(IriSP.wrap(this, function() { this._disableUpdate = false; }), 500);
+  
   var width = this.sliderBackground.width();
   var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
   var newTime = ((ui.offset.left / width) * duration).toFixed(2);
