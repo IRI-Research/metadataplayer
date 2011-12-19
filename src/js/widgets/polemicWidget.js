@@ -302,7 +302,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
                   
                   IriSP.jQuery(e.node).mouseenter(function(element) { return function (event) {                        
                         // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.                        
-                        self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.clientX - 106, event.clientY - 160);
+                        self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.pageX - 106, event.pageY - 160);
                         element.displayed = true;
                   }}(e)).mousedown(function () {
                     self._Popcorn.currentTime(this.time/1000);
