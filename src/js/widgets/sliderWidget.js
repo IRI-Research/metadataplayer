@@ -24,12 +24,14 @@ IriSP.SliderWidget.prototype.draw = function() {
   this.sliderMaximized = false;
   this.timeOutId = null;
 
+  
   this.positionMarker.draggable({axis: "x",
   start: IriSP.wrap(this, this.positionMarkerDraggingStartedHandler),
   stop: IriSP.wrap(this, this.positionMarkerDraggedHandler),
   containment: "parent"
   });
-
+  this.positionMarker.css("position", "absolute");
+  
   this.sliderBackground.click(function(event) { self.backgroundClickHandler.call(self, event); });
   this.sliderForeground.click(function(event) { self.foregroundClickHandler.call(self, event); });
 
@@ -112,7 +114,7 @@ IriSP.SliderWidget.prototype.mouseOverHandler = function(event) {
   this.sliderBackground.animate({"height": "9px"}, 100);
   this.sliderForeground.animate({"height": "9px"}, 100);
   this.positionMarker.animate({"height": "9px", "width": "9px"}, 100);
-  this.positionMarker.css("margin-top", "-4px");
+  //this.positionMarker.css("margin-top", "-4px");
   
 //  this.selector.removeClass("Ldt-SliderMinimized");
 //  this.selector.addClass("Ldt-SliderMaximized");
