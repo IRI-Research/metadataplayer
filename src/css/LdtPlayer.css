@@ -20,6 +20,7 @@
     .Ldt-SegmentsWidget {
      /* overflow: auto; /* clear the floats */
       margin-top: 1px;
+      padding-bottom: 8px; /* FIXME: only a temporary fix. This should be put into the layout manager. */
     }
 
     .Ldt-iri-chapter{
