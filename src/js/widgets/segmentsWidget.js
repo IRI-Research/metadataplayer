@@ -58,15 +58,14 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     var end = Math.round((+ annotation.end) / 1000);
     var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
     var id = annotation.id;
-    var startPourcent 	= IriSP.timeToPourcent(begin, duration) + onePxPercent;
+    var startPourcent 	= IriSP.timeToPourcent(begin, duration);
     
-    /* some sort of collapsing occurs, so we only have to substract one pixel to each box instead of
-       two
+    /* surprisingly, the following code doesn't work on webkit - for some reason, most of the 
+       boxes are 3 pixels smaller.
     */
-    var endPourcent 	= IriSP.timeToPourcent(end, duration) - startPourcent - onePxPercent * 1.5;
-    
-    /* on the other hand, we have to substract one pixel from the first box because it's the only
-       one to have to effective 1px margins */
+    var endPourcent 	= Math.floor(IriSP.timeToPourcent(end, duration) - startPourcent);
+    var endPixel = Math.floor(this.selector.parent().width() * (endPourcent / 100)) - 2;
+        
     if (i == 0) {
 
       endPourcent -= onePxPercent;
@@ -88,9 +87,8 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     
     var annotationTemplate = Mustache.to_html(IriSP.annotation_template,
         {"divTitle" : divTitle, "id" : id, "startPourcent" : startPourcent,
-        "endPourcent" : endPourcent, "hexa_color" : hexa_color,
+        "endPixel" : endPixel, "hexa_color" : hexa_color,
         "seekPlace" : Math.round(begin/1000)});
-
 
     this.selector.append(annotationTemplate);
 
@@ -176,6 +174,7 @@ IriSP.SegmentsWidget.prototype.searchFieldClosedHandler = function() {
 IriSP.SegmentsWidget.prototype.positionUpdater = function() {  
   var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
   var time = this._Popcorn.currentTime();
+  //var position 	= ((time / duration) * 100).toFixed(2);
   var position 	= ((time / duration) * 100).toFixed(2);
 
   this.positionMarker.css("left", position + "%");  

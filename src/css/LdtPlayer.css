@@ -18,7 +18,7 @@
    }
 
     .Ldt-SegmentsWidget {
-      overflow: auto; /* clear the floats */
+     /* overflow: auto; /* clear the floats */
       margin-top: 1px;
     }
 
@@ -28,6 +28,13 @@
       border-right: 1px solid white;
     }
 
+    .Ldt-SegmentPositionMarker {
+      position: absolute;
+      z-index: 100;
+      width: 1px;
+      height: 10px;
+      background-color: white;
+    }
     .tooltip {
       display:none;
       background:transparent url(imgs/white_arrow_mini.png);
@@ -356,14 +363,6 @@
       bottom: 1px;
       border-left: 1px solid white;
       border-right: 1px solid white;
-    }
-
-    .positionMarker {
-      position: absolute;
-      z-index: 100;
-      width: 1px;
-      height: 20px;
-      background-color: white;
     }
 
     /* tweet Widget */
