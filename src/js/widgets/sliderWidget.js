@@ -111,7 +111,8 @@ IriSP.SliderWidget.prototype.mouseOverHandler = function(event) {
 
   this.sliderBackground.animate({"height": "9px"}, 100);
   this.sliderForeground.animate({"height": "9px"}, 100);
-  this.positionMarker.animate({"height": "9px", "width": "9px", "margin-top": "-4px"}, 100);
+  this.positionMarker.animate({"height": "9px", "width": "9px"}, 100);
+  this.positionMarker.css("margin-top", "-4px");
   
 //  this.selector.removeClass("Ldt-SliderMinimized");
 //  this.selector.addClass("Ldt-SliderMaximized");
@@ -127,8 +128,8 @@ IriSP.SliderWidget.prototype.mouseOutHandler = function(event) {
 IriSP.SliderWidget.prototype.minimizeOnTimeout = function(event) {
   this.sliderBackground.animate({"height": "5px"}, 100);
   this.sliderForeground.animate({"height": "5px"}, 100);
-  this.positionMarker.animate({"height": "5px", "width": "5px", "margin-top": "0px"}, 100);
-  
+  this.positionMarker.animate({"height": "5px", "width": "5px"}, 100);
+  this.positionMarker.css("margin-top", "0px");
   this.sliderMinimized = true;
   
 //  this.selector.removeClass("Ldt-SliderMaximized");
