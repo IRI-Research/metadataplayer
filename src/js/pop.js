@@ -144,12 +144,13 @@ IriSP.PopcornReplacement.__timeHandler = function(event) {
      var c = IriSP.PopcornReplacement.__codes[i];
      
      if (pos >= c.start && pos < c.end && 
-         pos - 0.1 <= c.start) {
+         pos - 0.1 <= c.start) {       
         c.onStart();
      }
  
-     if (pos >= c.start && pos >= c.end && 
+     if (pos > c.start && pos > c.end && 
          pos - 0.1 <= c.end) {
+         console.log("eonedn");
         c.onEnd();
      }
    
@@ -158,18 +159,26 @@ IriSP.PopcornReplacement.__timeHandler = function(event) {
   IriSP.PopcornReplacement.trigger("timeupdate");
 };
 
-IriSP.PopcornReplacement.__seekHandler = function(event) { 
+IriSP.PopcornReplacement.__seekHandler = function(event) {
+  console.log(IriSP.PopcornReplacement.__codes.length);
+  
   var i = 0;
+  
   for(i = 0; i < IriSP.PopcornReplacement.__codes.length; i++) {
      var c = IriSP.PopcornReplacement.__codes[i];
     
-     if (event.position >= c.start && event.position < c.end) {
+     if (event.position >= c.start && event.position < c.end) {        
         c.onEnd();
-     }
-    
+     }         
+   }
+
+   for(i = 0; i < IriSP.PopcornReplacement.__codes.length; i++) {
+     var c = IriSP.PopcornReplacement.__codes[i];
+
      if (typeof(event.offset) === "undefined")
        event.offset = 0;
-     if (event.offset >= c.start && event.offset < c.end) {
+           
+     if (event.offset >= c.start && event.offset < c.end) { 
        c.onStart();
      }
      
