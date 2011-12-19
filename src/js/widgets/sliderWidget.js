@@ -47,7 +47,7 @@ IriSP.SliderWidget.prototype.draw = function() {
 
 /* update the slider and the position marker as time passes */
 IriSP.SliderWidget.prototype.sliderUpdater = function() {
-  if(this.draggingOngoing || this._disableUpdates)
+  if(this.draggingOngoing || this._disableUpdate)
     return;
   
   var time = this._Popcorn.currentTime();
@@ -144,17 +144,19 @@ IriSP.SliderWidget.prototype.positionMarkerDraggingStartedHandler = function(eve
   this.draggingOngoing = true;
 };
 
-IriSP.SliderWidget.prototype.positionMarkerDraggedHandler = function(event, ui) {
-  console.log(ui.offset.left);
+IriSP.SliderWidget.prototype.positionMarkerDraggedHandler = function(event, ui) {   
   this._disableUpdate = true; // disable slider position updates while dragging is ongoing.
   window.setTimeout(IriSP.wrap(this, function() { this._disableUpdate = false; }), 500);
-  
+
+  var parentOffset = this.sliderForeground.parent().offset();
   var width = this.sliderBackground.width();
+  var relX = event.pageX - parentOffset.left;
+
   var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
-  var newTime = ((ui.offset.left / width) * duration).toFixed(2);
+  var newTime = ((relX / width) * duration).toFixed(2);
 
   this._Popcorn.currentTime(newTime);
-
+  
   this.draggingOngoing = false;
 };
 
