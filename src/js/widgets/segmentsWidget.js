@@ -80,9 +80,11 @@ IriSP.SegmentsWidget.prototype.draw = function() {
       var color = annotation.color;
     
     var hexa_color = IriSP.DEC_HEXA_COLOR(color);
-    
+
     if (hexa_color === "FFCC00")
       hexa_color = "333";
+    if (hexa_color.length == 4)
+      hexa_color = hexa_color + '00';
     
     var annotationTemplate = Mustache.to_html(IriSP.annotation_template,
         {"divTitle" : divTitle, "id" : id, "startPourcent" : startPourcent,

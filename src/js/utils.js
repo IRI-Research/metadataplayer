@@ -96,7 +96,8 @@ IriSP.countProperties = function(obj) {
 
 // conversion de couleur Decimal vers HexaDecimal || 000 si fff
 IriSP.DEC_HEXA_COLOR = function (dec) {
-	 var hexa='0123456789ABCDEF',hex='';
+	 var hexa='0123456789ABCDEF';
+   var hex='';
 	 var tmp;
 	 while (dec>15){
 		  tmp = dec-(Math.floor(dec/16))*16;
