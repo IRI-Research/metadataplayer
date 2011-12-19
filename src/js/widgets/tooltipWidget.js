@@ -2,6 +2,8 @@
 IriSP.TooltipWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this._shown = false;
+  this._displayedText = "";
+  this._hideTimeout = -1;
 };
 
 
@@ -20,19 +22,29 @@ IriSP.TooltipWidget.prototype.clear = function() {
 };
 
 IriSP.TooltipWidget.prototype.show = function(text, color, x, y) {
-  if (this._shown === true || this.selector.find(".tiptext").text() == text)
+  if (this._shown === true || this._displayedText == text)
     return;
-
-  this.selector.find(".tipcolor").css("background-color", color);
-	this.selector.find(".tiptext").text(text);
-  this.selector.find(".tip").css("left", x).css("top", y);
+    
+  // cancel the timeout for the previously displayed element.
+  if (this._hideTimeout != -1) {
+    window.clearTimeout(this._hideTimeout);
+    this._hideTimeout = -1;
+    console.log(text === this._displayedText);
+  }
+  debugger;
   
+  this.selector.find(".tipcolor").css("background-color", color);
+  this._displayedText = text;
+	this.selector.find(".tiptext").text(text);
+  //this.selector.find(".tip").css("left", x).css("top", y);  
+  this.selector.find(".tip").css("left", x).css("top", "-160px");
+  this.selector.find(".tip").show();
   this._shown = true;
 };
 
-IriSP.TooltipWidget.prototype.hide = function() {
-  this.clear();
-  this.selector.find(".tip").css("left", -10000).css("top", -100000);
+IriSP.TooltipWidget.prototype.hide = function() {  
+  this._hideTimeout = window.setTimeout(IriSP.wrap(this, function() {                                                  
+                                                  this.selector.find(".tip").hide();
+                                                  this._shown = false; }), 1000);
   
-  this._shown = false;
 };

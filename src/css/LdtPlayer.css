@@ -289,8 +289,10 @@
     }
 
     .tip{
-      position : fixed; /* why not absolute instead of fixed ? because the div containing the tooltip widget is not a subdiv of its parent
+    /* why not absolute instead of fixed ? because the div containing the tooltip widget is not a subdiv of its parent
                            widget */
+      /*position : fixed;  */
+      position: absolute;
       padding : 3px;
       z-index: 10000000000;
       max-width: 200px;

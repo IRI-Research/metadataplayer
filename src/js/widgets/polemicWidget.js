@@ -287,6 +287,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 
                   this.svgElements[e.id] = e;
 
+                  /*
                   e.mouseover(function(element) { return function (event) {
                         // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.                        
                         self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.clientX - 106, event.clientY - 160);
@@ -297,6 +298,18 @@ IriSP.PolemicWidget.prototype.draw = function() {
                     self._Popcorn.currentTime(this.time/1000);
                     self._Popcorn.trigger("IriSP.PolemicTweet.click", this.id); 
                   });
+                  */
+                  
+                  IriSP.jQuery(e.node).mouseenter(function(element) { return function (event) {
+                        // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.                        
+                        self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.clientX - 106, event.clientY - 160);
+                        element.displayed = true;
+                  }}(e)).mouseleave(function(element) { return function () {                          
+                          self.TooltipWidget.hide.call(self.TooltipWidget);
+                  }}(e)).mousedown(function () {
+                    self._Popcorn.currentTime(this.time/1000);
+                    self._Popcorn.trigger("IriSP.PolemicTweet.click", this.id); 
+                  });                  
                   
                   IriSP.jQuery(e.node).attr('id', 't' + k + '');
                   IriSP.jQuery(e.node).attr('title', frames[i].mytweetsID[k].title);

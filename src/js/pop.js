@@ -160,8 +160,6 @@ IriSP.PopcornReplacement.__timeHandler = function(event) {
 };
 
 IriSP.PopcornReplacement.__seekHandler = function(event) {
-  console.log(IriSP.PopcornReplacement.__codes.length);
-  
   var i = 0;
   
   for(i = 0; i < IriSP.PopcornReplacement.__codes.length; i++) {

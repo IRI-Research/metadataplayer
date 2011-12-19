@@ -58,7 +58,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     var end = Math.round((+ annotation.end) / 1000);
     var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
     var id = annotation.id;
-    var startPourcent 	= IriSP.timeToPourcent(begin, duration);
+    var startPourcent 	= IriSP.timeToPourcent(begin, duration) + onePxPercent;
     
     /* some sort of collapsing occurs, so we only have to substract one pixel to each box instead of
        two
