@@ -22,29 +22,21 @@ IriSP.TooltipWidget.prototype.clear = function() {
 };
 
 IriSP.TooltipWidget.prototype.show = function(text, color, x, y) {
-  if (this._shown === true || this._displayedText == text)
+
+  if (this._displayedText == text)
     return;
-    
-  // cancel the timeout for the previously displayed element.
-  if (this._hideTimeout != -1) {
-    window.clearTimeout(this._hideTimeout);
-    this._hideTimeout = -1;
-    console.log(text === this._displayedText);
-  }
-  debugger;
   
   this.selector.find(".tipcolor").css("background-color", color);
   this._displayedText = text;
 	this.selector.find(".tiptext").text(text);
   //this.selector.find(".tip").css("left", x).css("top", y);  
-  this.selector.find(".tip").css("left", x).css("top", "-160px");
+  this.selector.find(".tip").css("left", x).css("top", "-180px");
   this.selector.find(".tip").show();
   this._shown = true;
 };
 
-IriSP.TooltipWidget.prototype.hide = function() {  
-  this._hideTimeout = window.setTimeout(IriSP.wrap(this, function() {                                                  
-                                                  this.selector.find(".tip").hide();
-                                                  this._shown = false; }), 1000);
-  
+IriSP.TooltipWidget.prototype.hide = function() {                                                   
+  console.log("hide");  
+  this.selector.find(".tip").hide();
+  this._shown = false;  
 };

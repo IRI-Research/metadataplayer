@@ -300,12 +300,10 @@ IriSP.PolemicWidget.prototype.draw = function() {
                   });
                   */
                   
-                  IriSP.jQuery(e.node).mouseenter(function(element) { return function (event) {
+                  IriSP.jQuery(e.node).mouseenter(function(element) { return function (event) {                        
                         // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.                        
                         self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.clientX - 106, event.clientY - 160);
                         element.displayed = true;
-                  }}(e)).mouseleave(function(element) { return function () {                          
-                          self.TooltipWidget.hide.call(self.TooltipWidget);
                   }}(e)).mousedown(function () {
                     self._Popcorn.currentTime(this.time/1000);
                     self._Popcorn.trigger("IriSP.PolemicTweet.click", this.id); 
@@ -351,6 +349,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
       this.sliderTip.toFront();
     }
     
+    this.selector.mouseleave(IriSP.wrap(this, function() { self.TooltipWidget.hide.call(self.TooltipWidget); }));
     this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
 }
 
