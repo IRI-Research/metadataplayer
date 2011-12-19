@@ -304,10 +304,11 @@ IriSP.PolemicWidget.prototype.draw = function() {
                         // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.                        
                         self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.pageX - 106, event.pageY - 160);
                         element.displayed = true;
-                  }}(e)).mousedown(function () {
-                    self._Popcorn.currentTime(this.time/1000);
-                    self._Popcorn.trigger("IriSP.PolemicTweet.click", this.id); 
-                  });                  
+                  }}(e)).mousedown(function(element) { return function () {                    
+                    self._Popcorn.currentTime(element.time/1000);
+                    self._Popcorn.trigger("IriSP.PolemicTweet.click", element.id); 
+                    }
+                  }(e));                  
                   
                   IriSP.jQuery(e.node).attr('id', 't' + k + '');
                   IriSP.jQuery(e.node).attr('title', frames[i].mytweetsID[k].title);
