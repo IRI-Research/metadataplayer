@@ -36,7 +36,6 @@ IriSP.TooltipWidget.prototype.show = function(text, color, x, y) {
 };
 
 IriSP.TooltipWidget.prototype.hide = function() {                                                   
-  console.log("hide");  
   this.selector.find(".tip").hide();
   this._shown = false;  
 };
