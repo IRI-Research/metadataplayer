@@ -17,9 +17,10 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
     } else {
       // load the real popcorn
       $L = $L.script(libs.popcorn).script(libs["popcorn.code"]);
-      if (config.player === "youtube")
+      if (config.player.type === "youtube") {
         $L = $L.script(libs["popcorn.youtube"]);
-      if (config.player === "vimeo")
+      } 
+      if (config.player.type === "vimeo")
         $L = $L.script(libs["popcorn.vimeo"]);
       
       /* do nothing for html5 */
