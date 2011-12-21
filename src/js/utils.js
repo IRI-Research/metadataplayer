@@ -122,13 +122,10 @@ IriSP.encodeURI = function(str) {
                                  replace(/\)/g, '%29').replace(/\*/g, '%2A');  
 }  
 
+IriSP.__guidCounter = 0;
 IriSP.guid = function(prefix) {
-  var str = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-      return v.toString(16);
-  });
-
-  return prefix + str;
+  IriSP.__guidCounter += 1;
+  return prefix + IriSP.__guidCounter;
 };
 /* for ie compatibility
 if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
