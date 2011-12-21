@@ -122,7 +122,11 @@ IriSP.encodeURI = function(str) {
                                  replace(/\)/g, '%29').replace(/\*/g, '%2A');  
 }  
 
-
+IriSP.__guidCounter = 0;
+IriSP.guid = function(prefix) {
+  IriSP.__guidCounter += 1;
+  return prefix + IriSP.__guidCounter;
+};
 /* for ie compatibility
 if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
    Object.defineProperty=function(obj,prop,desc) {

@@ -16,15 +16,11 @@
  <!-- START Integration  ###################################### -->
  <!-- SIMPLE PLAYER EXPERIMENTATION -->
 	<script type="text/javascript" src="../../build/LdtPlayer-release.js" type="text/javascript"></script> 
-	<script src="../../res/js/jquery.min.js" type="text/javascript"></script>
-	<script src="../../res/js/jquery.tools.min.js" type="text/javascript"></script>
-	<script src="../../res/js/jquery-ui.min.js" type="text/javascript"></script>
 	
 	<div id="video"></div>
 	<div id="LdtPlayer"></div>
 	
 	<script  type="text/javascript">
-		$(document).ready(function() {
 		var config = {
 						gui:{
 							width:650,
@@ -56,13 +52,11 @@
               duration: 50}
 					};
 		
-          IriSP.loadLibs(IriSP.lib, config.gui.css, "../test.json", function() { 	
+          IriSP.loadLibs(IriSP.lib, config, "../test.json", function() { 	
               var layoutManager = new IriSP.LayoutManager(config.gui.container);
               var pop = IriSP.configurePopcorn(layoutManager, config.player);
               
               var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); });
-    
-    });
 	</script>
 	
 	
