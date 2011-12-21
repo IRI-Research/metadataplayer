@@ -16,7 +16,7 @@
 	<delete dir="${basedir}/../../build" />
 	<mkdir  dir="${basedir}/../../build" />
 		
-	<target name="makeall" depends="concatenate,compile" />
+	<target name="makeall" depends="concatenate" />
 	
 	<target name="make_templates" description="Concatenate the html templates together">
 	    <for param="file">
@@ -44,29 +44,7 @@
 	    	</sequential>
 		</for>
 	</target>
-	
-	<target name="compile" depends="concatenate">
-		<jscomp compilationLevel="simple" warning="quiet" debug="false"
-			output="../../build/LdtPlayer.min.raw.js">
-			<externs dir="${basedir}/../../res/">
-				<file name="js/jquery.min.js" />
-				<file name="js/jquery.tools.min.js" />
-				<file name="js/jquery-ui.min.js" />
-				<file name="js/swfobject.js" />
-			</externs>
-			<sources dir="${basedir}/../../src/js">
-				<file name="LdtPlayer.js" />
-			</sources>
-		</jscomp>
-		<concat destfile="../../build/LdtPlayer.min.js"
-			append="false">
-			<filelist dir="../../src/js/" files="header.js" />
-	        <filelist dir="../../build/" files="LdtPlayer.min.raw.js" />
-		</concat>
-		<delete file="../../build/LdtPlayer.min.raw.js" />
-		<delete file="../../build/compiled_templates.js" />
-	</target>
-	    	
+		    	
 	<target name="concatenate" description="Build the developer release file" depends="make_templates">
 	    <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-release.js">
 			<filelist dir="../../src/js/" files="header.js" />
@@ -102,8 +80,30 @@
 	    	    <deletecharacters chars="&#xFEFF;" />
 	    	</filterchain>
 	    </concat>
+      <delete file="../../build/compiled_templates.js" />
 	</target>
 	
+  <target name="minify" depends="concatenate">
+		<jscomp compilationLevel="simple" warning="quiet" debug="false"
+			output="../../build/LdtPlayer.min.raw.js">
+			<externs dir="${basedir}/../../res/">
+				<file name="js/jquery.min.js" />
+				<file name="js/jquery.tools.min.js" />
+				<file name="js/jquery-ui.min.js" />
+				<file name="js/swfobject.js" />
+			</externs>
+			<sources dir="${basedir}/../../build">
+				<file name="LdtPlayer-release.js" />
+			</sources>
+		</jscomp>
+		<concat destfile="../../build/LdtPlayer.min.js"
+			append="false">
+			<filelist dir="../../src/js/" files="header.js" />
+	        <filelist dir="../../build/" files="LdtPlayer.min.raw.js" />
+		</concat>
+		<delete file="../../build/LdtPlayer.min.raw.js" />
+	</target>
+  
 	<property name="rhino.jar" value="${basedir}/../res/rhino.jar"/>  
 	<property name="jslint-wrapper.js" value="${basedir}/../res/jslint-wrapper.js"/>
 	<property name="jslint.js" value="${basedir}/../res/jslint.js"/>
