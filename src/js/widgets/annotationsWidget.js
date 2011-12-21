@@ -87,7 +87,7 @@ IriSP.AnnotationsWidget.prototype.draw = function() {
                           
                         } }(annotation),
                 onEnd: 
-                       function() { _this.clearWidget.call(_this); },
+                       function() { _this.clearWidget.call(_this); }
                 };
     this._Popcorn = this._Popcorn.code(conf);                                             
   }
