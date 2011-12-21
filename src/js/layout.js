@@ -51,8 +51,8 @@ IriSP.LayoutManager.prototype.createDiv = function(stem) {
     if (typeof(stem) === "undefined")
        stem = "";
 
-    var newDiv = Popcorn.guid(this._div + "_widget_" + stem + "_");
-    var spacerDiv = Popcorn.guid("LdtPlayer_spacer_");
+    var newDiv = IriSP.guid(this._div + "_widget_" + stem + "_");
+    var spacerDiv = IriSP.guid("LdtPlayer_spacer_");
     this._widgets.push(newDiv);
 
     var divTempl = "<div id='{{id}}' style='width: {{width}}px; position: relative;'></div";
