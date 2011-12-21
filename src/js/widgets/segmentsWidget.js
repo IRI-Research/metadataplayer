@@ -12,6 +12,20 @@ IriSP.SegmentsWidget = function(Popcorn, config, Serializer) {
 
 IriSP.SegmentsWidget.prototype = new IriSP.Widget();
 
+/* Get the width of a segment, in pixels. */
+IriSP.SegmentsWidget.prototype.segmentToPixel(annotation) {
+  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var id = annotation.id;
+  var startPourcent 	= IriSP.timeToPourcent(begin, duration);
+  var startPixel = Math.floor(this.selector.parent().width() * (endPourcent / 100));
+  
+  /* surprisingly, the following code doesn't work on webkit - for some reason, most of the 
+     boxes are 3 pixels smaller.
+  */
+  var endPourcent 	= Math.floor(IriSP.timeToPourcent(end, duration) - startPourcent);
+  var endPixel = Math.floor(this.selector.parent().width() * (endPourcent / 100));
+};
+
 IriSP.SegmentsWidget.prototype.draw = function() {
 
   var self = this;
@@ -56,6 +70,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
         continue;
     }
 
+    segments_annotations.push(annotation);
     var begin = Math.round((+ annotation.begin) / 1000);
     var end = Math.round((+ annotation.end) / 1000);
     var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
