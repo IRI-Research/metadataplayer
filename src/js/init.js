@@ -30,7 +30,7 @@ IriSP.configurePopcorn = function (layoutManager, options) {
            if (options.hasOwnProperty("height"))
              IriSP.jQuery("#" + containerDiv).css("height", options.height);
 
-           pop = Popcorn("#" + tmpId).mediafragment({start : 0});
+           pop = Popcorn("#" + tmpId);
         break;
         
       case "jwplayer":
@@ -69,7 +69,7 @@ IriSP.configurePopcorn = function (layoutManager, options) {
           // Popcorn.youtube wants us to specify the size of the player in the style attribute of its container div.
           IriSP.jQuery("#" + containerDiv).attr("style", str);
           
-          pop = Popcorn.youtube("#" + containerDiv, opts.video, opts).mediafragment({start : 0});
+          pop = Popcorn.youtube("#" + containerDiv, opts.video, opts);
         break;
         
       default:
