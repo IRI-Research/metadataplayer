@@ -45,6 +45,8 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   var totalWidth = this.selector.width();
   var onePxPercent = 100 / totalWidth; /* the value of a pixel, in percents */
  
+  var segments_annotations = [];
+  
   for (i = 0; i < annotations.length; i++) {
     var annotation = annotations[i];
 
