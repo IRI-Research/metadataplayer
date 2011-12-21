@@ -16,13 +16,10 @@
  <!-- START Integration  ###################################### -->
  <!-- SIMPLE PLAYER EXPERIMENTATION -->
 	<script type="text/javascript" src="../../build/LdtPlayer-release.js"></script> 
-	<script src="../../res/js/jquery.min.js"></script>
-	<script src="../../res/js/jquery.tools.min.js"></script>
-	<script src="../../res/js/jquery-ui.min.js"></script>
+
 	<div id="LdtPlayer"></div>
 	
 	<script  type="text/javascript">
-		$(document).ready(function() {
 		var config = {						
 				gui:{
 						width:650,
@@ -43,15 +40,31 @@
 						  src:'../test.json',
 						  type:'json'}
 						},
-						
+
 						{type: "SegmentsWidget", // please note that type refers directly to the constructor of the widget.
+						 mode: "radio",
+						 metadata:{
+						  format:'cinelab',
+						  src:'../test.json',
+						  type:'json'},
+              requires: [{
+              type: "TooltipWidget",
+              width: 180,
+              heigh: 160,
+              metadata : {
+                type:'empty'
+              }
+             }]
+						},
+												
+						{type: "ArrowWidget", // please note that type refers directly to the constructor of the widget.
 						 mode: "radio",
 						 metadata:{
 						  format:'cinelab',
 						  src:'../test.json',
 						  type:'json'}
 						},
-						
+            
 						{type: "AnnotationsWidget", // please note that type refers directly to the constructor of the widget.
 						 mode: "radio",
 						 metadata:{
@@ -72,14 +85,12 @@
 				}
 		};
 		
-		IriSP.loadLibs(IriSP.lib, config.gui.css, '../test.json',
+		IriSP.loadLibs(IriSP.lib, config, '../test.json',
 			function() { 	
 							var layoutManager = new IriSP.LayoutManager(config.gui.container);
 							var pop = IriSP.configurePopcorn(layoutManager, config.player);
 							
 							var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); });
-		
-		});	
 	</script>
 <div id='Ldt-Root'>
 	<div id='Ldt-PlaceHolder'>

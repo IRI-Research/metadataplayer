@@ -16,16 +16,11 @@
  <!-- START Integration  ###################################### -->
  <!-- SIMPLE PLAYER EXPERIMENTATION -->
 	<script type="text/javascript" src="../../build/LdtPlayer-release.js" type="text/javascript"></script> 
-	<script type="text/javascript" src="../../unittests/mockSerializer.js" type="text/javascript"></script> 
-	<script src="../../res/js/jquery.min.js" type="text/javascript"></script>
-	<script src="../../res/js/jquery.tools.min.js" type="text/javascript"></script>
-	<script src="../../res/js/jquery-ui.min.js" type="text/javascript"></script>
 	
 	<div id="video"></div>
 	<div id="LdtPlayer"></div>
 	
 	<script  type="text/javascript">
-		$(document).ready(function() {
 		var config = {						
 				gui:{
 						width:650,
@@ -109,14 +104,12 @@
             }
 		};
 		
-		IriSP.loadLibs(IriSP.lib, config.gui.css, "polemic_fr.json",
+		IriSP.loadLibs(IriSP.lib, config, "polemic_fr.json",
 			function() { 	
 							var layoutManager = new IriSP.LayoutManager(config.gui.container);
 							var pop = IriSP.configurePopcorn(layoutManager, config.player);
 							
 							var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); });
-		
-		});
 	</script>
 	
 	
