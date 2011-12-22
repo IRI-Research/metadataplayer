@@ -66,37 +66,25 @@ IriSP.SegmentsWidget.prototype.draw = function() {
         continue;
     }
 
-    segments_annotations.push({annotation: annotation, pixelValue: this.segmentToPixel(annotation)});
+    segments_annotations.push(annotation);
   }
     
   var totalWidth = this.selector.width() - segments_annotations.length;
+  var lastSegment = IriSP.underscore.max(segments_annotations, function(annotation) { return annotation.end; });
   
-  var currentWidth = IriSP.underscore.reduce(segments_annotations, function(memo, segment) { return memo + segment.pixelValue; }, 0);
-  while(currentWidth > totalWidth) {
-    var max = IriSP.underscore.max(segments_annotations, function(segment) { return segment.pixelValue; });
-    max.pixelValue -= 1;
-    currentWidth = IriSP.underscore.reduce(segments_annotations, function(memo, segment) { return memo + segment.pixelValue; }, 0);
-  }
-  
-  console.log(currentWidth);
   for (i = 0; i < segments_annotations.length; i++) {
   
-    var annotation = segments_annotations[i].annotation;
-    var begin = Math.round((+ annotation.begin) / 1000);
-    var end = Math.round((+ annotation.end) / 1000);
-    var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+    var annotation = segments_annotations[i];
+    var begin = (+ annotation.begin);
+    var end = (+ annotation.end);
+    var duration = this._serializer.currentMedia().meta["dc:duration"];
     var id = annotation.id;
-    var startPourcent 	= IriSP.timeToPourcent(begin, duration);
-    var startPixel = Math.floor(this.selector.parent().width() * (startPourcent / 100));
+        
+    var startPixel = Math.floor(this.selector.parent().width() * (begin / duration));
 
-    var pourcentWidth	= Math.floor(IriSP.timeToPourcent(end, duration) - startPourcent);
-    //var pxWidth = Math.floor(this.selector.parent().width() * (pourcentWidth / 100));
-    var pxWidth = segments_annotations[i].pixelValue;
-
-    /* don't show annotation with an empty length */
-    if (pxWidth === 0)
-      continue;
-      
+    var endPixel = Math.floor(this.selector.parent().width() * (end / duration));
+    var pxWidth = endPixel - startPixel -1;
+ 
     var divTitle = (annotation.content.title + " - " + annotation.content.description).substr(0,55);
 
     if (typeof(annotation.content.color) !== "undefined")
@@ -116,9 +104,14 @@ IriSP.SegmentsWidget.prototype.draw = function() {
         "pxWidth" : pxWidth, "hexa_color" : hexa_color,
         "seekPlace" : Math.round(begin/1000)});
 
+        
     this.selector.append(annotationTemplate);
-
-//    IriSP.jQuery("#" + id).tooltip({ effect: 'slide'});
+    
+    /* add a special class to the last segment */
+    if (annotation.id === lastSegment.id) {
+        this.selector.find("#" + id).addClass("Ldt-lastSegment");        
+        this.selector.find(".Ldt-lastSegment").css("border-color", hexa_color);
+    }
 
     IriSP.jQuery("#" + id).fadeTo(0, 0.3);
 

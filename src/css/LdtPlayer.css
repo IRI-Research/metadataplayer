@@ -23,8 +23,8 @@
       padding-bottom: 8px; /* FIXME: only a temporary fix. This should be put into the layout manager. */
     }
 
-    .Ldt-iri-chapter{
-      float: left;
+    .Ldt-iri-chapter {
+      position: absolute;
       height: 10px;
       border-right: 1px solid white;
     }
