@@ -205,12 +205,13 @@
     
     .Ldt-ElapsedTime {
       margin-top: 4px;
+      margin-right: 2px;
       float: left;
       color: #4a4a4a;
     }
     
     .Ldt-TimeSeparator {
-      margin-top: 4px;
+      margin-top: 4px;      
       float: left;
       padding-left: 1px;
       padding-right: 1px;
@@ -218,6 +219,7 @@
 
     .Ldt-TotalTime {
       margin-top: 4px;
+      margin-left: 2px;
       float: left;
       color: #b2b2b2; 
     }
