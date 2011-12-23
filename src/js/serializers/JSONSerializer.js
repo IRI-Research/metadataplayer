@@ -1,18 +1,26 @@
-
+/** @class This class implement a serializer for the JSON-Cinelab format
+    @params DataLoader a dataloader reference
+    @url the url from which to get our cinelab
+ */
 IriSP.JSONSerializer = function(DataLoader, url) {
   IriSP.Serializer.call(this, DataLoader, url);
 };
 
 IriSP.JSONSerializer.prototype = new IriSP.Serializer();
 
+/** serialize data */
 IriSP.JSONSerializer.prototype.serialize = function(data) {
   return JSON.stringify(data);
 };
 
+/** deserialize data */
 IriSP.JSONSerializer.prototype.deserialize = function(data) {
   return JSON.parse(data);
 };
 
+/** load JSON-cinelab data and also sort the annotations by start time
+    @param callback function to call when the data is ready.
+ */
 IriSP.JSONSerializer.prototype.sync = function(callback) {
   /* we don't have to do much because jQuery handles json for us */
 
@@ -33,13 +41,15 @@ IriSP.JSONSerializer.prototype.sync = function(callback) {
   this._DataLoader.get(this._url, fn);
 };
 
+/** @return the metadata about the media being read FIXME: always return the first media. */
 IriSP.JSONSerializer.prototype.currentMedia = function() {  
   return this._data.medias[0]; /* FIXME: don't hardcode it */
 };
 
-/* this function searches for an annotation which matches title, description and keyword 
+/** searches for an annotation which matches title, description and keyword 
    "" matches any field. 
    Note: it ignores tweets.
+   @return a list of matching ids.
 */    
 IriSP.JSONSerializer.prototype.searchAnnotations = function(title, description, keyword) {
     /* we can have many types of annotations. We want search to only look for regular segments */
@@ -104,8 +114,9 @@ IriSP.JSONSerializer.prototype.searchTweets = function(title, description, keywo
 
 };
 
-/*
-  the previous function call this one, which is more general:
+/**
+  search an annotation according to its title, description and keyword
+  @param filter a function to filter the results with. Used to select between annotation types.
  */    
 IriSP.JSONSerializer.prototype.searchAnnotationsFilter = function(title, description, keyword, filter) {
 
@@ -145,9 +156,10 @@ IriSP.JSONSerializer.prototype.searchAnnotationsFilter = function(title, descrip
     return ret_array;
 };
 
-/* breaks a string in words and searches each of these words. Returns an array
+/** breaks a string in words and searches each of these words. Returns an array
    of objects with the id of the annotation and its number of occurences.
    
+   @param searchString a string of words.
    FIXME: optimize ? seems to be n^2 in the worst case.
 */
 IriSP.JSONSerializer.prototype.searchOccurences = function(searchString) {
@@ -178,7 +190,7 @@ IriSP.JSONSerializer.prototype.searchOccurences = function(searchString) {
   return ret;
 };
 
-/* breaks a string in words and searches each of these words. Returns an array
+/** breaks a string in words and searches each of these words. Returns an array
    of objects with the id of the annotation and its number of occurences.
    
    FIXME: optimize ? seems to be n^2 in the worst case.
@@ -211,9 +223,11 @@ IriSP.JSONSerializer.prototype.searchTweetsOccurences = function(searchString) {
   return ret;
 };
 
-/* takes the currentTime and returns all the annotations that are displayable at the moment 
+/** returns all the annotations that are displayable at the moment 
    NB: only takes account the first type of annotations - ignores tweets 
    currentTime is in seconds.
+   
+   @param currentTime the time at which we search.
  */
 
 IriSP.JSONSerializer.prototype.currentAnnotations = function(currentTime) {
@@ -244,7 +258,7 @@ IriSP.JSONSerializer.prototype.currentAnnotations = function(currentTime) {
 };
 
 
-/* this function returns a list of ids of tweet lines */
+/** returns a list of ids of tweet lines (aka: groups in cinelab) */
 IriSP.JSONSerializer.prototype.getTweetIds = function() {
   if (typeof(this._data.lists) === "undefined" || this._data.lists === null)
     return [];
@@ -260,7 +274,7 @@ IriSP.JSONSerializer.prototype.getTweetIds = function() {
   return tweetsId;
 };
 
-/* this function returns a list of lines which are not tweet lines */
+/** this function returns a list of lines which are not tweet lines */
 IriSP.JSONSerializer.prototype.getNonTweetIds = function() {
   if (typeof(this._data.lists) === "undefined" || this._data.lists === null)
     return [];

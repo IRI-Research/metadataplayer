@@ -18,6 +18,7 @@
 */
 // CHART TIMELINE / VERSION PROTOTYPE  ::
 
+/** the polemic widget */
 IriSP.PolemicWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
  
@@ -354,6 +355,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
     this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
 }
 
+/** update the positionMarker as time passes */
 IriSP.PolemicWidget.prototype.sliderUpdater = function() {
 
     var time = +this._Popcorn.currentTime();
@@ -363,7 +365,8 @@ IriSP.PolemicWidget.prototype.sliderUpdater = function() {
         
     this.sliderTip.attr("x", time * (this.width / (duration / 1000)));
 };
-    
+
+/** reacts to IriSP.search events */    
 IriSP.PolemicWidget.prototype.searchHandler = function(searchString) {
   if (searchString == "")
     return;
@@ -395,6 +398,7 @@ IriSP.PolemicWidget.prototype.searchHandler = function(searchString) {
   this.oldSearchMatches = matches;
 };
 
+/** reacts to IriSP.search.cleared messages */
 IriSP.PolemicWidget.prototype.searchFieldClearedHandler = function() {
   // clean up the blocks that were in the previous search
   // but who aren't in the current one.
@@ -405,6 +409,7 @@ IriSP.PolemicWidget.prototype.searchFieldClearedHandler = function() {
  
 };
 
+/** reacts to IriSP.search.closed messages by clearing the highlighted elements */
 IriSP.PolemicWidget.prototype.searchFieldClosedHandler = function() {
   // clean up the blocks that were in the previous search
   // but who aren't in the current one.
