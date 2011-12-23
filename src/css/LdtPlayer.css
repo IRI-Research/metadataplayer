@@ -497,3 +497,36 @@
     .Ldt-spacer {
       background-color:#eeeeee;
     }
+    
+    /* sparkline widget */
+    .Ldt-sparklineWidget {
+      position: relative;
+      width: 640px;
+      height: 60px;
+      border: 1px solid pink;
+    }
+    
+    .Ldt-sparkLinePositionMarker {
+      position: absolute;
+      top: 0px;
+      width: 0px;
+      height: 60px;
+      background-color: #333333;
+      border-right: solid 1px pink;
+      z-index: 3;
+      opacity: 0.2;
+    }
+    
+    .Ldt-sparkLine {
+      position: absolute;
+      top: 0px;
+    }
+    
+    .Ldt-sparkLineClickOverlay {
+      position: absolute;
+      width: 640px;
+      height: 60px;
+      z-index: 4;
+      top: 0px;
+      opacity: 0.3;
+    }

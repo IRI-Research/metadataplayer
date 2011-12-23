@@ -36,6 +36,10 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
       if (config.gui.widgets[idx].type === "PolemicWidget") {        
         $L.script(libs.raphael);
       }
+
+      if (config.gui.widgets[idx].type === "SparklineWidget") {
+        $L.script(libs.jquery_sparkline);
+      }
     }
     
     // same for modules
