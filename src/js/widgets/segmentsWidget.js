@@ -83,7 +83,12 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     var startPixel = Math.floor(this.selector.parent().width() * (begin / duration));
 
     var endPixel = Math.floor(this.selector.parent().width() * (end / duration));
-    var pxWidth = endPixel - startPixel -1;
+    
+    if (annotation.id !== lastSegment.id) 
+      var pxWidth = endPixel - startPixel -1;
+    else
+      /* the last segment has no segment following it */
+      var pxWidth = endPixel - startPixel;
  
     var divTitle = (annotation.content.title + " - " + annotation.content.description).substr(0,55);
 
@@ -107,10 +112,10 @@ IriSP.SegmentsWidget.prototype.draw = function() {
         
     this.selector.append(annotationTemplate);
     
-    /* add a special class to the last segment */
+    /* add a special class to the last segment and change its border */
     if (annotation.id === lastSegment.id) {
         this.selector.find("#" + id).addClass("Ldt-lastSegment");        
-        this.selector.find(".Ldt-lastSegment").css("border-color", hexa_color);
+        this.selector.find(".Ldt-lastSegment").css("border-color", "#" + hexa_color);        
     }
 
     IriSP.jQuery("#" + id).fadeTo(0, 0.3);
@@ -145,7 +150,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
 
 /* restores the view after a search */
 IriSP.SegmentsWidget.prototype.clear = function() {
-  this.selector.children(".Ldt-iri-chapter").css('border','none').animate({opacity:0.3}, 100);
+  this.selector.children(".Ldt-iri-chapter").animate({opacity:0.3}, 100);
 };
 
 IriSP.SegmentsWidget.prototype.clickHandler = function(annotation) {
@@ -174,7 +179,6 @@ IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
   for (var id in matches) {
     var factor = 0.5 + matches[id] * 0.2;
     this.selector.find("#"+id).dequeue();
-    this.selector.find("#"+id).css('border','1px red');
     this.selector.find("#"+id).animate({opacity:factor}, 200);
   }
 
