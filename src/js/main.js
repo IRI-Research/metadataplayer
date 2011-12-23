@@ -43,6 +43,8 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
 
     $L.wait(function() {
       IriSP.jQuery = window.jQuery.noConflict( true );
+      IriSP._ = window._.noConflict();
+      IriSP.underscore = IriSP._;
       
       var css_link_jquery = IriSP.jQuery( "<link>", { 
         rel: "stylesheet", 

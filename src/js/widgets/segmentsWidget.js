@@ -12,29 +12,41 @@ IriSP.SegmentsWidget = function(Popcorn, config, Serializer) {
 
 IriSP.SegmentsWidget.prototype = new IriSP.Widget();
 
+/* Get the width of a segment, in pixels. */
+IriSP.SegmentsWidget.prototype.segmentToPixel = function(annotation) {  
+  var begin = Math.round((+ annotation.begin) / 1000);
+  var end = Math.round((+ annotation.end) / 1000);    
+  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  
+  var startPourcent 	= IriSP.timeToPourcent(begin, duration);
+  var startPixel = Math.floor(this.selector.parent().width() * (startPourcent / 100));
+  
+  var endPourcent 	= Math.floor(IriSP.timeToPourcent(end, duration) - startPourcent);
+  var endPixel = Math.floor(this.selector.parent().width() * (endPourcent / 100));
+  
+  return endPixel;
+};
+
+/* compute the total length of a group of segments */
+IriSP.SegmentsWidget.prototype.segmentsLength = function(segmentsList) {
+  var self = this;
+  var total = 0;
+  
+  for (var i = 0; i < segmentsList.length; i++)
+    total += self.segmentToPixel(segmentsList[i].annotation);
+  
+  return total;  
+};
+
 IriSP.SegmentsWidget.prototype.draw = function() {
 
   var self = this;
   var annotations = this._serializer._data.annotations;
 
   this.selector.addClass("Ldt-SegmentsWidget");
-
-  /* in case we have different types of annotations, we want to display only the first type */
-  /* the next two lines are a bit verbose because for some test data, _serializer.data.view is either
-     null or undefined.
-  */
-  var view;
-
-  if (typeof(this._serializer._data.views) !== "undefined" && this._serializer._data.views !== null)
-     view = this._serializer._data.views[0];
-
-  var view_type = "";
-
-  if(typeof(view) !== "undefined" && typeof(view.annotation_types) !== "undefined" && view.annotation_types.length > 1) {
-          view_type = view.annotation_types[0];
-  }
- 
   this.selector.append(Mustache.to_html(IriSP.overlay_marker_template));
+          
+  var view_type = this._serializer.getNonTweetIds()[0];    
   
   this.positionMarker = this.selector.children(":first");
   
@@ -42,9 +54,9 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   
   
   var i = 0;
-  var totalWidth = this.selector.width();
-  var onePxPercent = 100 / totalWidth; /* the value of a pixel, in percents */
- 
+  
+  var segments_annotations = [];
+  
   for (i = 0; i < annotations.length; i++) {
     var annotation = annotations[i];
 
@@ -54,23 +66,30 @@ IriSP.SegmentsWidget.prototype.draw = function() {
         continue;
     }
 
-    var begin = Math.round((+ annotation.begin) / 1000);
-    var end = Math.round((+ annotation.end) / 1000);
-    var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+    segments_annotations.push(annotation);
+  }
+    
+  var totalWidth = this.selector.width() - segments_annotations.length;
+  var lastSegment = IriSP.underscore.max(segments_annotations, function(annotation) { return annotation.end; });
+  
+  for (i = 0; i < segments_annotations.length; i++) {
+  
+    var annotation = segments_annotations[i];
+    var begin = (+ annotation.begin);
+    var end = (+ annotation.end);
+    var duration = this._serializer.currentMedia().meta["dc:duration"];
     var id = annotation.id;
-    var startPourcent 	= IriSP.timeToPourcent(begin, duration);
-    
-    /* surprisingly, the following code doesn't work on webkit - for some reason, most of the 
-       boxes are 3 pixels smaller.
-    */
-    var endPourcent 	= Math.floor(IriSP.timeToPourcent(end, duration) - startPourcent);
-    var endPixel = Math.floor(this.selector.parent().width() * (endPourcent / 100)) - 2;
         
-    if (i == 0) {
+    var startPixel = Math.floor(this.selector.parent().width() * (begin / duration));
 
-      endPourcent -= onePxPercent;
-    }
+    var endPixel = Math.floor(this.selector.parent().width() * (end / duration));
     
+    if (annotation.id !== lastSegment.id) 
+      var pxWidth = endPixel - startPixel -1;
+    else
+      /* the last segment has no segment following it */
+      var pxWidth = endPixel - startPixel;
+ 
     var divTitle = (annotation.content.title + " - " + annotation.content.description).substr(0,55);
 
     if (typeof(annotation.content.color) !== "undefined")
@@ -86,13 +105,18 @@ IriSP.SegmentsWidget.prototype.draw = function() {
       hexa_color = hexa_color + '00';
     
     var annotationTemplate = Mustache.to_html(IriSP.annotation_template,
-        {"divTitle" : divTitle, "id" : id, "startPourcent" : startPourcent,
-        "endPixel" : endPixel, "hexa_color" : hexa_color,
+        {"divTitle" : divTitle, "id" : id, "startPixel" : startPixel,
+        "pxWidth" : pxWidth, "hexa_color" : hexa_color,
         "seekPlace" : Math.round(begin/1000)});
 
+        
     this.selector.append(annotationTemplate);
-
-//    IriSP.jQuery("#" + id).tooltip({ effect: 'slide'});
+    
+    /* add a special class to the last segment and change its border */
+    if (annotation.id === lastSegment.id) {
+        this.selector.find("#" + id).addClass("Ldt-lastSegment");        
+        this.selector.find(".Ldt-lastSegment").css("border-color", "#" + hexa_color);        
+    }
 
     IriSP.jQuery("#" + id).fadeTo(0, 0.3);
 
@@ -126,7 +150,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
 
 /* restores the view after a search */
 IriSP.SegmentsWidget.prototype.clear = function() {
-  this.selector.children(".Ldt-iri-chapter").css('border','none').animate({opacity:0.3}, 100);
+  this.selector.children(".Ldt-iri-chapter").animate({opacity:0.3}, 100);
 };
 
 IriSP.SegmentsWidget.prototype.clickHandler = function(annotation) {
@@ -155,7 +179,6 @@ IriSP.SegmentsWidget.prototype.searchHandler = function(searchString) {
   for (var id in matches) {
     var factor = 0.5 + matches[id] * 0.2;
     this.selector.find("#"+id).dequeue();
-    this.selector.find("#"+id).css('border','1px red');
     this.selector.find("#"+id).animate({opacity:factor}, 200);
   }
 

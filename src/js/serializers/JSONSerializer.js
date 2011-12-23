@@ -242,3 +242,34 @@ IriSP.JSONSerializer.prototype.currentAnnotations = function(currentTime) {
 
   return ret_array;
 };
+
+
+/* this function returns a list of ids of tweet lines */
+IriSP.JSONSerializer.prototype.getTweetIds = function() {
+  if (typeof(this._data.lists) === "undefined" || this._data.lists === null)
+    return [];
+
+  var tweetsId = [];
+  
+  /* first get the list containing the tweets */
+  var tweets = IriSP.underscore.filter(this._data.lists, function(entry) { return entry.id.indexOf("tweet") !== -1 });
+  
+  // FIXME: collect tweets from multiple sources ?
+  tweetsId = IriSP.underscore.pluck(tweets[0].items, "id-ref");
+
+  return tweetsId;
+};
+
+/* this function returns a list of lines which are not tweet lines */
+IriSP.JSONSerializer.prototype.getNonTweetIds = function() {
+  if (typeof(this._data.lists) === "undefined" || this._data.lists === null)
+    return [];
+  
+  /* get all the ids */
+  var ids = IriSP.underscore.map(this._data.lists, function(entry) {                                                         
+                                                         return IriSP.underscore.pluck(entry.items, "id-ref"); });
+                                                         
+  var illegal_values = this.getTweetIds();
+  return IriSP.underscore.difference(ids, illegal_values);
+  
+};
