@@ -1,6 +1,11 @@
 /* main file */
 
+
 if ( window.IriSP === undefined && window.__IriSP === undefined ) { 
+  /**
+    We define here IriSP, the object under which everything goes.
+    We also alias it to __IriSP for backward compatibility
+  */
 	var IriSP = {}; 
 	var __IriSP = IriSP; /* for backward compatibility */
 }
