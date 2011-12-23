@@ -1,10 +1,9 @@
 /* layout.js - very basic layout management */
 
-/*
-  a layout manager manages a div and the layout of objects
+/**
+  @class a layout manager manages a div and the layout of objects
   inside it.
 */
-
 IriSP.LayoutManager = function(options) {
     this._Popcorn = null;
     this._widgets = [];
@@ -37,7 +36,10 @@ IriSP.LayoutManager = function(options) {
       this.selector.css("height", this._height);
 };
 
-/* we need this special setter because of a chicken and egg problem :
+/** 
+   Set the popcorn instance used by the manager.
+   
+   we need this special setter because of a chicken and egg problem :
    we want the manager to use popcorn but the popcorn div will be managed
    by the manager. So we need a way to set the instance the manager uses
 */
@@ -46,7 +48,10 @@ IriSP.LayoutManager.prototype.setPopcornInstance = function(popcorn) {
     this._Popcorn = popcorn;
 }
 
-/* stem is a string to append to the id of the widget */
+/** create a subdiv with an unique id, and a spacer div as well.
+    @param stem stem is a string to append to the id of the widget
+    @return an array of the form [createdivId, spacerdivId].
+*/
 IriSP.LayoutManager.prototype.createDiv = function(stem) {
     if (typeof(stem) === "undefined")
        stem = "";
