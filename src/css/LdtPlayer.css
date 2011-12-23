@@ -501,16 +501,12 @@
     /* sparkline widget */
     .Ldt-sparklineWidget {
       position: relative;
-      width: 640px;
-      height: 60px;
-      border: 1px solid pink;
     }
     
     .Ldt-sparkLinePositionMarker {
       position: absolute;
       top: 0px;
       width: 0px;
-      height: 60px;
       background-color: #333333;
       border-right: solid 1px pink;
       z-index: 3;
