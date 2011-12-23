@@ -7,3 +7,4 @@ build/LdtPlayer.min.js
 *.swp
 *.orig
 src/js/site.js
+doc/jsdoc/*
