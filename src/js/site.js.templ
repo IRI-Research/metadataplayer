@@ -1,5 +1,5 @@
-/* EDIT THIS FILE AND RENAME IT TO site.js to build the player */
-/* site.js - all our site-dependent config : player chrome, cdn locations, etc...*/
+/* EDIT THIS FILE AND RENAME IT TO site.js TO BUILD THE METADATAPLAYER
+   site.js - all our site-dependent config : player chrome, cdn locations, etc...*/
 
 IriSP.lib = { 
 		jQuery : "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js",
@@ -7,13 +7,15 @@ IriSP.lib = {
 		jQueryToolTip : "http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
 		swfObject : "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
 		cssjQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css",
-    popcorn : "src/js/libs/popcorn.js",
-    jwplayer : "src/js/libs/jwplayer.js",
-    "popcorn.mediafragment" : "src/js/libs/popcorn.mediafragment.js",
-    "popcorn.code" : "src/js/libs/popcorn.code.js",
-    "popcorn.jwplayer": "src/js/libs/popcorn.jwplayer.js",
-    "popcorn.youtube": "src/js/libs/popcorn.youtube.js",
-     raphael: "src/js/libs/raphael.js"
+    popcorn : "/mdp/src/js/libs/popcorn.js",
+    jwplayer : "/mdp/src/js/libs/jwplayer.js",
+    popcornReplacement: "/mdp/src/js/libs/pop.js",
+    raphael: "/mdp/src/js/libs/raphael.js",
+    jquery_sparkline: "/mdp/src/js/libs/jquery.sparkline.js",
+    "popcorn.mediafragment" : "/mdp/src/js/libs/popcorn.mediafragment.js",
+    "popcorn.code" : "/mdp/src/js/libs/popcorn.code.js",
+    "popcorn.jwplayer": "/mdp/src/js/libs/popcorn.jwplayer.js",
+    "popcorn.youtube": "/mdp/src/js/libs/popcorn.youtube.js"
 };
 
 //Player Configuration 
@@ -23,7 +25,7 @@ IriSP.widgetsDefaults = {
   "LayoutManager" : {spacer_div_height : "0px" },
   "PlayerWidget" : {},
   "AnnotationsWidget": {
-    "share_text" : "I'm watching ",
+    "share_text" : "I'm watching ",     
     "fb_link" : "http://www.facebook.com/share.php?u=",
     "tw_link" : "http://twitter.com/home?status=",
     "gplus_link" : ""
@@ -38,10 +40,11 @@ IriSP.widgetsDefaults = {
   "Main" : {
       autoplay: true
   }
+  
 };
 
 IriSP.paths = {
-  "imgs": "/tweetlive/res/metadataplayer/src/css/imgs"
+  "imgs": "/mdp/src/css/imgs"
 };
 IriSP.default_templates_vars = {
   "img_dir" : IriSP.paths.imgs 
