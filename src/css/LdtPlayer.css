@@ -1,531 +1,531 @@
-    #demo-frame > div.demo { padding: 5px !important; };
+#demo-frame > div.demo { padding: 5px !important; };
 
-    button.ui-button-icon-only  {
-      height:1.5em;
-      width:1.5em;
-    }
+button.ui-button-icon-only  {
+  height:1.5em;
+  width:1.5em;
+}
 
-    #Ldt-loader {
-      background:url(imgs/loader.gif) no-repeat;
-      width:20px;
-      height:16px;
-      float:left;
-    }
+#Ldt-loader {
+  background:url(imgs/loader.gif) no-repeat;
+  width:20px;
+  height:16px;
+  float:left;
+}
 
-   /* general class for all buttons */
-   .Ldt-button {
+/* general class for all buttons */
+.Ldt-button {
 
-   }
+}
 
-    .Ldt-SegmentsWidget {
-     /* overflow: auto; /* clear the floats */
-      margin-top: 1px;
-      padding-bottom: 8px; /* FIXME: only a temporary fix. This should be put into the layout manager. */
-    }
+.Ldt-SegmentsWidget {
+ /* overflow: auto; /* clear the floats */
+  margin-top: 1px;
+  padding-bottom: 8px; /* FIXME: only a temporary fix. This should be put into the layout manager. */
+}
 
-    .Ldt-iri-chapter {
-      position: absolute;
-      height: 10px;
-      border-right: 1px solid white;
-    }
+.Ldt-iri-chapter {
+  position: absolute;
+  height: 10px;
+  border-right: 1px solid white;
+}
 
-    .Ldt-SegmentPositionMarker {
-      position: absolute;
-      z-index: 100;
-      width: 1px;
-      height: 10px;
-      background-color: white;
-    }
-    .tooltip {
-      display:none;
-      background:transparent url(imgs/white_arrow_mini.png);
-      font-size:12px;
-      height:55px;
-      width:180px;
-      padding:10px;
-      padding-left:15px;
-      padding-top:15px;
-      padding-right:15px;
-      color:#000;
-      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-    }
-    #Ldt-Root{
-      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-    }
-    #Ldt-Hat{
-      height:3px;
-    }
+.Ldt-SegmentPositionMarker {
+  position: absolute;
+  z-index: 100;
+  width: 1px;
+  height: 10px;
+  background-color: white;
+}
+.tooltip {
+  display:none;
+  background:transparent url(imgs/white_arrow_mini.png);
+  font-size:12px;
+  height:55px;
+  width:180px;
+  padding:10px;
+  padding-left:15px;
+  padding-top:15px;
+  padding-right:15px;
+  color:#000;
+  font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+}
+#Ldt-Root{
+  font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+}
+#Ldt-Hat{
+  height:3px;
+}
 
-    .Ldt-AnnotationsWidget {
-      font-size: 12px;
-      font-family: "Arial",  "Verdana", "sans-serif";
-      background-color:#eeeeee;
-      background:url('imgs/wire_pattern.png') repeat scroll transparent ;
-      border: 1px solid #b6b8b8;
-    }
+.Ldt-AnnotationsWidget {
+  font-size: 12px;
+  font-family: "Arial",  "Verdana", "sans-serif";
+  background-color:#eeeeee;
+  background:url('imgs/wire_pattern.png') repeat scroll transparent ;
+  border: 1px solid #b6b8b8;
+}
 
-    .Ldt-Annotation-DoubleBorder {
-      border: 1px solid white;
-      overflow: auto;
-    }
+.Ldt-Annotation-DoubleBorder {
+  border: 1px solid white;
+  overflow: auto;
+}
 
-    .Ldt-AnnotationContent {
-      padding:5px;
-      padding-left: 12px;
+.Ldt-AnnotationContent {
+  padding:5px;
+  padding-left: 12px;
 
-    }
+}
 
-    .Ldt-SaTitle{
-      padding-top:2px;
-      padding-bottom:3px;
-      font-size: 12pt;
-      color : #0068c4;
-    }
+.Ldt-SaTitle{
+  padding-top:2px;
+  padding-bottom:3px;
+  font-size: 12pt;
+  color : #0068c4;
+}
 
-    .Ldt-SaDescription{
-      font-size:12px;
-    }
+.Ldt-SaDescription{
+  font-size:12px;
+}
 
-    .Ldt-SaKeyword{
-      background-color:#b9b9b9;
-      color:#4D4D4D;
-      padding:5px;
-      font-weight:bold;
-      text-align:left;
-      float:left;
-      font-size:10px;
-    }
+.Ldt-SaKeyword{
+  background-color:#b9b9b9;
+  color:#4D4D4D;
+  padding:5px;
+  font-weight:bold;
+  text-align:left;
+  float:left;
+  font-size:10px;
+}
 
-    .Ldt-AnnotationShareIcons {
-      float:right;
-      position: relative;
-    }
+.Ldt-AnnotationShareIcons {
+  float:right;
+  position: relative;
+}
 
 
-    #Ldt-PlaceHolder{
-      position:absolue;
-      float:none;
-    }
+#Ldt-PlaceHolder{
+  position:absolue;
+  float:none;
+}
 
-    .Ldt-Segments{
-      float:left;
-      font-size: 62.5%;
-    }
+.Ldt-Segments{
+  float:left;
+  font-size: 62.5%;
+}
 
-    .Ldt-mode-radio{
-      visibility:hidden;
-      height:0px;
-      display:none
-    }
+.Ldt-mode-radio{
+  visibility:hidden;
+  height:0px;
+  display:none
+}
 
-    /* player */
-    .Ldt-controler {
-      font-size: 62.5%;
-      font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-      background:url('imgs/player_gradient.png') repeat-x transparent ;
-      height: 25px;
-      border-top: 1px solid #b6b8b8;
-      border-bottom: 1px solid #b6b8b8;
-    }
+/* player */
+.Ldt-controler {
+  font-size: 62.5%;
+  font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+  background:url('imgs/player_gradient.png') repeat-x transparent ;
+  height: 25px;
+  border-top: 1px solid #b6b8b8;
+  border-bottom: 1px solid #b6b8b8;
+}
 
+
+.Ldt-LeftPlayerControls {
+  float:left;
+}
+
+.Ldt-RightPlayerControls {
+  float: right;
+}
+
+.Ldt-button {
+  border-left: 1px solid #b6b8b8;
+  float: left;
+  cursor: pointer;
  
-    .Ldt-LeftPlayerControls {
-      float:left;
-    }
+}
 
-    .Ldt-RightPlayerControls {
-      float: right;
-    }
+.Ldt-CtrlPlay {
+  background:url('imgs/play_sprite.png') no-repeat transparent ;
+  background-position: 0 0;
+  width: 59px;
+  height: 25px;
+}
 
-    .Ldt-button {
-      border-left: 1px solid #b6b8b8;
-      float: left;
-      cursor: pointer;
-     
-    }
+.Ldt-CtrlPlay:hover {
+  background-position: 0 -25px;
+}
 
-    .Ldt-CtrlPlay {
-      background:url('imgs/play_sprite.png') no-repeat transparent ;
-      background-position: 0 0;
-      width: 59px;
-      height: 25px;
-    }
+.Ldt-CtrlPlay:active {
+  background-position: 0 -50px;
+}
 
-    .Ldt-CtrlPlay:hover {
-      background-position: 0 -25px;
-    }
+.Ldt-CtrlAnnotate {
+  background:url('imgs/annotate_sprite.png') no-repeat scroll 0 0 transparent ;
+  width: 33px;
+  height: 25px;
+  border-right: 1px solid #b6b8b8;
+  float: left;
+}
 
-    .Ldt-CtrlPlay:active {
-      background-position: 0 -50px;
-    }
+.Ldt-CtrlAnnotate:hover {
+  background-position: 0 -25px;
+}
 
-    .Ldt-CtrlAnnotate {
-      background:url('imgs/annotate_sprite.png') no-repeat scroll 0 0 transparent ;
-      width: 33px;
-      height: 25px;
-      border-right: 1px solid #b6b8b8;
-      float: left;
-    }
+.Ldt-CtrlAnnotate:active {
+  background-position: 0 -50px;
+}
 
-    .Ldt-CtrlAnnotate:hover {
-      background-position: 0 -25px;
-    }
+.Ldt-CtrlSearch {
+  background:url('imgs/search_sprite.png') no-repeat scroll 0 0 transparent ;
+  width: 33px;
+  height: 25px;
+  border-right: 1px solid #b6b8b8;
+  float: left;
+  border-left: none;
+}
 
-    .Ldt-CtrlAnnotate:active {
-      background-position: 0 -50px;
-    }
+.Ldt-CtrlSearch:hover {
+  background-position: 0 -25px;
+}
 
-    .Ldt-CtrlSearch {
-      background:url('imgs/search_sprite.png') no-repeat scroll 0 0 transparent ;
-      width: 33px;
-      height: 25px;
-      border-right: 1px solid #b6b8b8;
-      float: left;
-      border-left: none;
-    }
-
-    .Ldt-CtrlSearch:hover {
-      background-position: 0 -25px;
-    }
-
-    .Ldt-CtrlSearch:active {
-      background-position: 0 -50px;
-    }
+.Ldt-CtrlSearch:active {
+  background-position: 0 -50px;
+}
 
 
-    .Ldt-Time {
-      position: inherit;
-      float: left;
-      border-right: 1px solid #b6b8b8;
-      height: 25px;
-      padding-right: 2px;
-      font-size: 12px;
-      font-family: Arial, Verdana, sans-serif;
-    }
-    
-    .Ldt-ElapsedTime {
-      margin-top: 4px;
-      margin-right: 2px;
-      float: left;
-      color: #4a4a4a;
-    }
-    
-    .Ldt-TimeSeparator {
-      margin-top: 4px;      
-      float: left;
-      padding-left: 1px;
-      padding-right: 1px;
-    }
+.Ldt-Time {
+  position: inherit;
+  float: left;
+  border-right: 1px solid #b6b8b8;
+  height: 25px;
+  padding-right: 2px;
+  font-size: 12px;
+  font-family: Arial, Verdana, sans-serif;
+}
 
-    .Ldt-TotalTime {
-      margin-top: 4px;
-      margin-left: 2px;
-      float: left;
-      color: #b2b2b2; 
-    }
+.Ldt-ElapsedTime {
+  margin-top: 4px;
+  margin-right: 2px;
+  float: left;
+  color: #4a4a4a;
+}
 
-    .Ldt-CtrlSound {
-      background:url('imgs/sound_sprite.png') no-repeat scroll 0 0 transparent ;
-      width: 33px;
-      height: 25px;
-      border-right: 1px solid #b6b8b8;
-      float: right;
-      border-left: none;
-    }
+.Ldt-TimeSeparator {
+  margin-top: 4px;      
+  float: left;
+  padding-left: 1px;
+  padding-right: 1px;
+}
 
-    .Ldt-CtrlSound:hover {
-      background-position: 0 -25px;
-    }
+.Ldt-TotalTime {
+  margin-top: 4px;
+  margin-left: 2px;
+  float: left;
+  color: #b2b2b2; 
+}
 
-    .Ldt-CtrlSound:active {
-      background-position: 0 -50px;
-    }
+.Ldt-CtrlSound {
+  background:url('imgs/sound_sprite.png') no-repeat scroll 0 0 transparent ;
+  width: 33px;
+  height: 25px;
+  border-right: 1px solid #b6b8b8;
+  float: right;
+  border-left: none;
+}
+
+.Ldt-CtrlSound:hover {
+  background-position: 0 -25px;
+}
+
+.Ldt-CtrlSound:active {
+  background-position: 0 -50px;
+}
 /*
-    .Ldt-CtrlSound {
-      float: right;
-      border-left: none;
-      height: 25px;
-      top: 7px;
-      position: inherit;
-    }
+.Ldt-CtrlSound {
+  float: right;
+  border-left: none;
+  height: 25px;
+  top: 7px;
+  position: inherit;
+}
 */    
-    .Ldt-cleaner {
-      clear:both;
-    }
+.Ldt-cleaner {
+  clear:both;
+}
 
-    /* Arrow Widget */
-    .Ldt-arrowWidget {
-      position: relative;
-      background:url('imgs/arrow.png') no-repeat scroll 0 0 transparent ;
-      height:16px;
-      width:27px;
-      margin-bottom: -3px;
-      z-index: 4;
-      left: 0%;
-    }
- 
-    .cleaner {
-      clear:both;
-    }
+/* Arrow Widget */
+.Ldt-arrowWidget {
+  position: relative;
+  background:url('imgs/arrow.png') no-repeat scroll 0 0 transparent ;
+  height:16px;
+  width:27px;
+  margin-bottom: -3px;
+  z-index: 4;
+  left: 0%;
+}
 
-    .share {
-      background:url('imgs/widget20.png') no-repeat scroll 0 0 transparent ;
-      display:block;
-      height:16px;
-      line-height:16px !important;
-      overflow:hidden;
-      width:16px;
-      float:left;
-      cursor:pointer;
-      margin:2px;
-    }
-    .shareFacebook{
-      background-position:0 -704px;
-    }
-    .shareMySpace{
-      background-position:0 -736px;
-    }
-    .shareTwitter{
-      background-position:0 -1072px;
-    }
-    .shareGoogle{
-      background-position:0 -752px;
-    }
-    .shareDelicious{
-      background-position:0 -672px;
-    }
-    .shareJamesPot{
-      background-position:0 -1808px;
-    }
+.cleaner {
+  clear:both;
+}
 
-    .tip{
-    /* why not absolute instead of fixed ? because the div containing the tooltip widget is not a subdiv of its parent
-                           widget */
-      /*position : fixed;  */
-      position:fixed;
-      padding : 3px;
-      z-index: 10000000000;
-      max-width: 200px;
-      background: transparent url("imgs/white_arrow_long.png");
-      font-size: 12px;
-      height: 125px;
-      width: 180px;
-      padding: 10px;
-      padding-left: 15px;
-      padding-top: 15px;
-      padding-right: 15px;
-      color: black;
-      font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
-      overflow:hidden;
-    }
+.share {
+  background:url('imgs/widget20.png') no-repeat scroll 0 0 transparent ;
+  display:block;
+  height:16px;
+  line-height:16px !important;
+  overflow:hidden;
+  width:16px;
+  float:left;
+  cursor:pointer;
+  margin:2px;
+}
+.shareFacebook{
+  background-position:0 -704px;
+}
+.shareMySpace{
+  background-position:0 -736px;
+}
+.shareTwitter{
+  background-position:0 -1072px;
+}
+.shareGoogle{
+  background-position:0 -752px;
+}
+.shareDelicious{
+  background-position:0 -672px;
+}
+.shareJamesPot{
+  background-position:0 -1808px;
+}
 
-    /* slider */
-    .Ldt-SliderMinimized {
-      height: 6px;
-    }
+.tip{
+/* why not absolute instead of fixed ? because the div containing the tooltip widget is not a subdiv of its parent
+                       widget */
+  /*position : fixed;  */
+  position:fixed;
+  padding : 3px;
+  z-index: 10000000000;
+  max-width: 200px;
+  background: transparent url("imgs/white_arrow_long.png");
+  font-size: 12px;
+  height: 125px;
+  width: 180px;
+  padding: 10px;
+  padding-left: 15px;
+  padding-top: 15px;
+  padding-right: 15px;
+  color: black;
+  font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
+  overflow:hidden;
+}
 
-    .Ldt-SliderMaximized {
-      height: 11px;
-    }
+/* slider */
+.Ldt-SliderMinimized {
+  height: 6px;
+}
 
-    .Ldt-sliderElementMinimized {
-      width: 100%;
-      height: 5px;
-    }
+.Ldt-SliderMaximized {
+  height: 11px;
+}
 
-    .Ldt-sliderElementMaximized {
-      width: 100%;
-      height: 10px;
-    }
+.Ldt-sliderElementMinimized {
+  width: 100%;
+  height: 5px;
+}
 
-    .Ldt-sliderBackground  {
-      background-color: #B6B8B8;
-      position: absolute;
-      z-index: 2;
-      bottom: 1px;
-      width: 100%;
-      height: 5px;
- 
-    }
+.Ldt-sliderElementMaximized {
+  width: 100%;
+  height: 10px;
+}
 
-    .Ldt-sliderForeground  {
-      background-color: #747474;
-      z-index: 2;
-      width: 0px;
-      position: absolute;
-      bottom: 1px;
-      height: 5px;
-    }
+.Ldt-sliderBackground  {
+  background-color: #B6B8B8;
+  position: absolute;
+  z-index: 2;
+  bottom: 1px;
+  width: 100%;
+  height: 5px;
 
-    .Ldt-sliderPositionMarker {
-      position: absolute;
-      z-index: 100;
-      background-color: #f7268e;
-      height: 5px;
-      width: 5px;
-      bottom: 1px;
-      border-left: 1px solid white;
-      border-right: 1px solid white;
-    }
+}
 
-    /* tweet Widget */
-    .Ldt-tweetWidget {
-      font-size: 12px;
-      font-family: "Arial",  "Verdana", "sans-serif";
-      background:url('imgs/wire_pattern.png') repeat scroll transparent ;
-      border: 1px solid #b6b8b8;
-      border-top: none;
-      overflow: auto;
-    }
+.Ldt-sliderForeground  {
+  background-color: #747474;
+  z-index: 2;
+  width: 0px;
+  position: absolute;
+  bottom: 1px;
+  height: 5px;
+}
 
-    .Ldt-tweet-DoubleBorder {
-      border: 1px solid white;
-      padding: 5px;
-      overflow: auto;
-    }
+.Ldt-sliderPositionMarker {
+  position: absolute;
+  z-index: 100;
+  background-color: #f7268e;
+  height: 5px;
+  width: 5px;
+  bottom: 1px;
+  border-left: 1px solid white;
+  border-right: 1px solid white;
+}
 
-    .Ldt-tweetAvatar {
-      float: left;
-    }
+/* tweet Widget */
+.Ldt-tweetWidget {
+  font-size: 12px;
+  font-family: "Arial",  "Verdana", "sans-serif";
+  background:url('imgs/wire_pattern.png') repeat scroll transparent ;
+  border: 1px solid #b6b8b8;
+  border-top: none;
+  overflow: auto;
+}
 
-    .Ldt-tweetAvatar-profileArrow {
-      float: left;
-      height: 48px;
-      margin-left: 5px;
-      margin-right: 5px;
-    }
+.Ldt-tweet-DoubleBorder {
+  border: 1px solid white;
+  padding: 5px;
+  overflow: auto;
+}
 
-    .Ldt-tweet_userHandle {
-       float: left;
-       color: #5c8df1;
-    }
+.Ldt-tweetAvatar {
+  float: left;
+}
 
-    .Ldt-tweet_realName {
-      float: left;
-      margin-left: 3px;
-    }
+.Ldt-tweetAvatar-profileArrow {
+  float: left;
+  height: 48px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
 
-    .Ldt-tweetContents {
-    }
+.Ldt-tweet_userHandle {
+   float: left;
+   color: #5c8df1;
+}
 
-    .Ldt-tweet_date {
-      float: left;
-    }
+.Ldt-tweet_realName {
+  float: left;
+  margin-left: 3px;
+}
 
-    .Ldt-tweetWidgetKeepOpen {
-      position: relative;
-      float: right;
-      height: 17px;
-      width: 17px;
-      margin-right: 1px;
-    }
+.Ldt-tweetContents {
+}
 
-    .Ldt-tweetWidgetMinimize {
-      position: relative;
-      float: right;
-      height: 17px;
-      width: 17px;
-      right: 9px;
-    }
+.Ldt-tweet_date {
+  float: left;
+}
 
-    .Ldt-tweetWidget * a:link {
-      color: #729efa;
+.Ldt-tweetWidgetKeepOpen {
+  position: relative;
+  float: right;
+  height: 17px;
+  width: 17px;
+  margin-right: 1px;
+}
 
-    }
+.Ldt-tweetWidgetMinimize {
+  position: relative;
+  float: right;
+  height: 17px;
+  width: 17px;
+  right: 9px;
+}
 
-    .Ldt-TweetReply {
-      float: left;
-      margin-left: 16px;
-    }
+.Ldt-tweetWidget * a:link {
+  color: #729efa;
 
-    .Ldt-TweetReplyIcon {
-      background:url('imgs/reply_sprite.png') no-repeat scroll 0 0 transparent ;
-      width: 14px;
-      height: 11px;
-      float: left;
-      margin-top: 2px;
-    }
+}
 
-    .Ldt-TweetReplyIcon:hover {
-      background-position: 0 -11px;
-    }
+.Ldt-TweetReply {
+  float: left;
+  margin-left: 16px;
+}
 
-    .Ldt-TweetReplyIcon:active {
-      background-position: 0 -22px;
-    }
+.Ldt-TweetReplyIcon {
+  background:url('imgs/reply_sprite.png') no-repeat scroll 0 0 transparent ;
+  width: 14px;
+  height: 11px;
+  float: left;
+  margin-top: 2px;
+}
 
-    .Ldt-Retweet {
-      float: left;
-      margin-left: 16px;
-    }
+.Ldt-TweetReplyIcon:hover {
+  background-position: 0 -11px;
+}
 
-    .Ldt-RetweetIcon {
-      background:url('imgs/retweet_sprite.png') no-repeat scroll 0 0 transparent ;
-      width: 14px;
-      height: 8px;
-      float: left;
-      margin-top: 3px;
-    }
+.Ldt-TweetReplyIcon:active {
+  background-position: 0 -22px;
+}
 
-    .Ldt-RetweetIcon:hover {
-      background-position: 0 -8px;
-    }
+.Ldt-Retweet {
+  float: left;
+  margin-left: 16px;
+}
 
-    .Ldt-RetweetIcon:active {
-      background-position: 0 -16px;
-    }
+.Ldt-RetweetIcon {
+  background:url('imgs/retweet_sprite.png') no-repeat scroll 0 0 transparent ;
+  width: 14px;
+  height: 8px;
+  float: left;
+  margin-top: 3px;
+}
 
-    /* styling of a "++" in a tweet */
-    .Ldt-PolemicPlusPlus {
-      background-color: #1d973d;
-    }
+.Ldt-RetweetIcon:hover {
+  background-position: 0 -8px;
+}
 
-    /* styling of a "==" in a tweet */
-    .Ldt-PolemicEqualEqual {
-      background-color: #5c8df1
-    }
+.Ldt-RetweetIcon:active {
+  background-position: 0 -16px;
+}
 
-    /* styling of a "--" in a tweet */
-    .Ldt-PolemicMinusMinus {
-      background-color: #ce0a15;
-    }
+/* styling of a "++" in a tweet */
+.Ldt-PolemicPlusPlus {
+  background-color: #1d973d;
+}
 
-    /* styling of a "??" in a tweet */
-    .Ldt-PolemicQuestion {
-      background-color: #c5a62d;
-    }
+/* styling of a "==" in a tweet */
+.Ldt-PolemicEqualEqual {
+  background-color: #5c8df1
+}
 
-    /* the styling of a spacer div */
-    .Ldt-spacer {
-      background-color:#eeeeee;
-    }
-    
-    /* sparkline widget */
-    .Ldt-sparklineWidget {
-      position: relative;
-      margin-bottom: 5px;
-    }
-    
-    .Ldt-sparkLinePositionMarker {
-      position: absolute;
-      top: 0px;
-      width: 0px;
-      background-color: #333333;
-      border-right: solid 1px pink;
-      z-index: 3;
-      opacity: 0.2;
-    }
-    
-    .Ldt-sparkLine {
-      position: absolute;
-      top: 0px;
-    }
-    
-    .Ldt-sparkLineClickOverlay {
-      position: absolute;
-      width: 640px;
-      height: 60px;
-      z-index: 4;
-      top: 0px;
-      opacity: 0.3;
-    }
+/* styling of a "--" in a tweet */
+.Ldt-PolemicMinusMinus {
+  background-color: #ce0a15;
+}
+
+/* styling of a "??" in a tweet */
+.Ldt-PolemicQuestion {
+  background-color: #c5a62d;
+}
+
+/* the styling of a spacer div */
+.Ldt-spacer {
+  background-color:#eeeeee;
+}
+
+/* sparkline widget */
+.Ldt-sparklineWidget {
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.Ldt-sparkLinePositionMarker {
+  position: absolute;
+  top: 0px;
+  width: 0px;
+  background-color: #333333;
+  border-right: solid 1px pink;
+  z-index: 3;
+  opacity: 0.2;
+}
+
+.Ldt-sparkLine {
+  position: absolute;
+  top: 0px;
+}
+
+.Ldt-sparkLineClickOverlay {
+  position: absolute;
+  width: 640px;
+  height: 60px;
+  z-index: 4;
+  top: 0px;
+  opacity: 0.3;
+}
