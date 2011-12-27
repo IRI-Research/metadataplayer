@@ -3,11 +3,13 @@
 
 if ( window.IriSP === undefined && window.__IriSP === undefined ) { 
   /**
-    We define here IriSP, the object under which everything goes.
-    We also alias it to __IriSP for backward compatibility
+    @class
+    the object under which everything goes.        
   */
-	var IriSP = {}; 
-	var __IriSP = IriSP; /* for backward compatibility */
+	IriSP = {}; 
+  
+  /** Alias to IriSP for backward compatibility */
+	__IriSP = IriSP;
 }
 
 IriSP.loadLibs = function( libs, config, metadata_url, callback ) {

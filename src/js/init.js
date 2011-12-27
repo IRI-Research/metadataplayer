@@ -3,6 +3,12 @@ exemple json configuration:
  
  */
 
+/**
+    set up the IriSP.__dataloader instance - 
+    we need it because we have to get the metadata
+    about the video before that the widget have even
+    loaded.
+*/
 IriSP.setupDataLoader = function() {
   /* we set it up separately because we need to
      get data at the very beginning, for instance when
@@ -10,6 +16,9 @@ IriSP.setupDataLoader = function() {
   IriSP.__dataloader = new IriSP.DataLoader();
 };
 
+/** do some magic to configure popcorn according to the options object passed.
+    Works for html5, jwplayer and youtube videos 
+*/
 IriSP.configurePopcorn = function (layoutManager, options) {
     var pop;
     var ret = layoutManager.createDiv(); 
@@ -79,6 +88,9 @@ IriSP.configurePopcorn = function (layoutManager, options) {
     return pop;
 };
 
+/** Configure the gui and instantiate the widgets passed as parameters
+    @param guiOptions the gui object as seen in the examples.
+ */
 IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
  
   var serialFactory = new IriSP.SerializerFactory(IriSP.__dataloader);
@@ -97,6 +109,7 @@ IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
   return ret_widgets;
 };
 
+/** configure modules. @see configureWidgets */
 IriSP.configureModules = function (popcornInstance, modulesList) {
  
   var serialFactory = new IriSP.SerializerFactory(IriSP.__dataloader);
@@ -114,6 +127,13 @@ IriSP.configureModules = function (popcornInstance, modulesList) {
   return ret_modules;
 };
 
+/** instantiate a widget - only called by configureWidgets, never by the user. Handles widget 
+    dependencies.
+    @param popcornInstance popcorn instance the widget will user
+    @param serialFactory serializer factory to instantiate the widget with
+    @param layoutManager layout manager
+    @param widgetConfig configuration options for the widget
+ */
 IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager, widgetConfig) {
     /* create div returns us a container for the widget and a spacer */
     var ret = layoutManager.createDiv(widgetConfig.type);        
