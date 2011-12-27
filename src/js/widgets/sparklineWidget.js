@@ -58,8 +58,7 @@ IriSP.SparklineWidget.prototype.draw = function() {
                                                            spotColor: "#b70056",
                                                            width: this.width, height: this.height});
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeUpdateHandler));
-  IriSP.jQuery(".Ldt-sparkLineClickOverlay").click(IriSP.wrap(this, this.clickHandler));
-  this.spacer.css("height", "2px");
+  IriSP.jQuery(".Ldt-sparkLineClickOverlay").click(IriSP.wrap(this, this.clickHandler));  
 };
 
 /** react to a timeupdate event */
@@ -88,5 +87,7 @@ IriSP.SparklineWidget.prototype.clickHandler = function(event) {
   var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
   
+  
+  this._Popcorn.trigger("IriSP.SparklineWidget.clicked", newTime);
   this._Popcorn.currentTime(newTime);                                 
 };

@@ -503,6 +503,7 @@
     /* sparkline widget */
     .Ldt-sparklineWidget {
       position: relative;
+      margin-bottom: 5px;
     }
     
     .Ldt-sparkLinePositionMarker {
