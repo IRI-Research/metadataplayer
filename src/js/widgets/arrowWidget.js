@@ -45,6 +45,17 @@ IriSP.ArrowWidget.prototype.timeUpdateHandler = function(percents) {
     if (corrected_percents <= 0)
       corrected_percents = 0;
 
+    if (corrected_percents <= 5) {
+      var left_edge_img_templ = IriSP.templToHTML("url('{{img_dir}}/left_edge_arrow.png')"); 
+      this.selector.children(".Ldt-arrowWidget").css("background-image", left_edge_img_templ); 
+    } else if (corrected_percents >= 95) {
+      var right_edge_img_templ = IriSP.templToHTML("url('{{img_dir}}/right_edge_arrow.png')"); 
+      this.selector.children(".Ldt-arrowWidget").css("background-image", right_edge_img_templ);
+    } else {
+      var img_templ = IriSP.templToHTML("url('{{img_dir}}/arrow.png')"); 
+      this.selector.children(".Ldt-arrowWidget").css("background-image", img_templ);
+    }
+    
     this.selector.children(".Ldt-arrowWidget").animate({"left" : corrected_percents + "%"});
 
     this._oldAnnotation = currentAnnotation;
