@@ -96,14 +96,14 @@ function test_init() {
                mode: "radio",
                metadata:{
                 format:'cinelab',
-                src:'test.json',
+                src:'../test/test.json',
                 type:'dummy'},
                 requires: [
                 {type: "PlayerWidget",
                   mode: "radio",
                   metadata:{
                     format:'cinelab',
-                    src:'test.json',
+                    src:'../test/test.json',
                     type:'dummy'
                 } }]
               };
@@ -119,7 +119,6 @@ function test_init() {
 
     var layoutManager = new IriSP.LayoutManager({container: "LdtPlayer", width: 327, height: 542});
     var pop = IriSP.configurePopcorn(layoutManager, this.popcornOptions);
-
     var widgets = IriSP.configureWidgets(pop, layoutManager, this.widgetOptions);
 
     ok(widgets[0] instanceof IriSP.PlayerWidget, "first widget is a player widget");
