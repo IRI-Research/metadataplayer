@@ -568,3 +568,40 @@ button.ui-button-icon-only  {
   background:url('imgs/right_handle.gif') no-repeat scroll transparent;
   z-index: 2;
 }
+
+.Ldt-createAnnotationWidget {
+  font-size: 12px;
+  font-family: "Arial",  "Verdana", "sans-serif";
+  background-color:#eeeeee;
+  background:url('imgs/wire_pattern.png') repeat scroll transparent ;
+  border: 1px solid #b6b8b8;
+}
+
+.Ldt-createAnnotation-DoubleBorder {
+  border: 1px solid white;
+  overflow: auto;
+  padding: 7px;
+}
+
+.Ldt-createAnnotation-Title {
+  font-size: 12pt;
+  color : #0068c4;  
+  float: left;
+  margin-right: 5px;
+}
+
+.Ldt-createAnnotation-TimeFrame {
+  font-size: 12pt;
+  color : #ff5589;  
+  float: left;
+}
+
+.Ldt-createAnnotation-userAvatar {
+  float: right;
+}
+
+.Ldt-createAnnotation-Description {
+  width: 470px;
+  height: 56px;
+  float: left;
+}
