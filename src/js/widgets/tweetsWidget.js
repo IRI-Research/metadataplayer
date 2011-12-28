@@ -4,7 +4,8 @@ IriSP.TweetsWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
 
   this._displayingTweet = false;
-  this._timeoutId = undefined;  
+  this._timeoutId = undefined; 
+  this._hidden = false;
 };
 
 
@@ -12,6 +13,8 @@ IriSP.TweetsWidget.prototype = new IriSP.Widget();
 
 
 IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
+    if (this._hidden)
+      return;
     
     var title = IriSP.formatTweet(annotation.content.title);
     var img = annotation.content.img.src;
@@ -103,6 +106,8 @@ IriSP.TweetsWidget.prototype.draw = function() {
   this.selector.find(".Ldt-tweetWidgetKeepOpen").click(IriSP.wrap(this, this.keepPanel));
   
   this._Popcorn.listen("IriSP.PolemicTweet.click", IriSP.wrap(this, this.PolemicTweetClickHandler));
+  this._Popcorn.listen("IriSP.PlayerWidget.AnnotateButton.clicked", 
+                        IriSP.wrap(this, this.handleAnnotateSignal));  
 };
 
 IriSP.TweetsWidget.prototype.PolemicTweetClickHandler = function(tweet_id) {  
@@ -120,4 +125,15 @@ IriSP.TweetsWidget.prototype.PolemicTweetClickHandler = function(tweet_id) {
   
   this.displayTweet(annotation);
   return;
+};
+
+/** handle clicks on the annotate button by hiding/showing itself */
+IriSP.TweetsWidget.prototype.handleAnnotateSignal = function() {
+  if (this._hidden == false) {
+    this.selector.hide();
+    this._hidden = true;
+  } else {
+    this.selector.show();
+    this._hidden = false;
+  }
 };
