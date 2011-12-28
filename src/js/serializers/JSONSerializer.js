@@ -234,23 +234,16 @@ IriSP.JSONSerializer.prototype.currentAnnotations = function(currentTime) {
   var view;
   var currentTimeMs = 1000 * currentTime;
 
-  if (typeof(this._data.views) !== "undefined" && this._data.views !== null)
-     view = this._data.views[0];
-
-  var view_type = "";
-
-  if(typeof(view) !== "undefined" && typeof(view.annotation_types) !== "undefined" && view.annotation_types.length >= 1) {
-          view_type = view.annotation_types[0];
-  }
-
+  var legal_ids = this.getNonTweetIds();
+  
   var ret_array = [];
   
   var i;
- 
+  
   for (i in this._data.annotations) {
     var annotation = this._data.annotations[i];
     
-    if (annotation.meta["id-ref"] === view_type && annotation.begin <= currentTimeMs && annotation.end >= currentTimeMs)
+    if (IriSP.underscore.include(legal_ids, annotation.meta["id-ref"]) && annotation.begin <= currentTimeMs && annotation.end >= currentTimeMs)
       ret_array.push(annotation);
   }
 
@@ -279,9 +272,11 @@ IriSP.JSONSerializer.prototype.getNonTweetIds = function() {
   if (typeof(this._data.lists) === "undefined" || this._data.lists === null)
     return [];
   
-  /* get all the ids */
-  var ids = IriSP.underscore.map(this._data.lists, function(entry) {                                                         
-                                                         return IriSP.underscore.pluck(entry.items, "id-ref"); });
+  /* complicated : for each list in this._data.lists, get the id-ref.
+     flatten the returned array because pluck returns a string afterwards.
+  */
+  var ids = IriSP.underscore.flatten(IriSP.underscore.map(this._data.lists, function(entry) {                                                         
+                                                         return IriSP.underscore.pluck(entry.items, "id-ref"); }));
                                                          
   var illegal_values = this.getTweetIds();
   return IriSP.underscore.difference(ids, illegal_values);
