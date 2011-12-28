@@ -30,7 +30,8 @@ IriSP.PlayerWidget.prototype.draw = function() {
   
   
   this.selector.find(".Ldt-CtrlPlay").click(function() { self.playHandler.call(self); });
-  this.selector.find(".Ldt-CtrlNext").click(function() { });
+  this.selector.find(".Ldt-CtrlAnnotate").click(function() 
+                                            { self._Popcorn.trigger("IriSP.PlayerWidget.AnnotateButton.clicked"); });
   this.selector.find(".Ldt-CtrlSearch").click(function() { self.searchButtonHandler.call(self); });
   
   this.selector.find('.Ldt-CtrlSound').click(function() { self.muteHandler.call(self); } );
