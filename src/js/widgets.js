@@ -47,6 +47,10 @@ IriSP.Widget = function(Popcorn, config, Serializer) {
 
   if (config.hasOwnProperty("widthmax")) {
      this.widthmax = config.widthmax;     
+  } 
+
+  if (config.hasOwnProperty("layoutManager")) {
+     this.layoutManager = config.layoutManager;     
   }
   
 };

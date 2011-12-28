@@ -143,6 +143,7 @@ IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager
     var arr = IriSP.jQuery.extend({}, widgetConfig);
     arr.container = container;
     arr.spacer = spacer;
+    arr.layoutManager = layoutManager;
     
     var serializer = serialFactory.getSerializer(widgetConfig.metadata);    
     
