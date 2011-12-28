@@ -529,3 +529,42 @@ button.ui-button-icon-only  {
   top: 0px;
   opacity: 0.3;
 }
+
+.Ldt-sliceWidget {
+  position: relative;
+  width: 100%;
+  height: 25px;
+  margin-top: 3px;
+}
+
+.Ldt-sliceBackground {
+  width: 100%;
+  background-color: #b6b8b8;
+  height: 12px;
+}
+
+.Ldt-sliceZone {
+  position: absolute;
+  top: 0px;
+  background:url('imgs/wire_pattern.png') repeat scroll transparent;
+  height: 12px;
+  z-index: 2;
+}
+
+.Ldt-sliceLeftHandle {
+  position: absolute;
+  top: 0px;
+  height: 25px;
+  width: 7px;
+  background:url('imgs/left_handle.gif') no-repeat scroll transparent;
+  z-index: 2;
+}
+
+.Ldt-sliceRightHandle {
+  position: absolute;
+  top: 0px;
+  height: 25px;
+  width: 7px;
+  background:url('imgs/right_handle.gif') no-repeat scroll transparent;
+  z-index: 2;
+}
