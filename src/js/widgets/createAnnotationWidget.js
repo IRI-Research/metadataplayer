@@ -1,6 +1,7 @@
 IriSP.createAnnotationWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this._hidden = true;
+  this.keywords = IriSP.widgetsDefaults["createAnnotationWidget"].keywords;
 };
 
 
@@ -29,12 +30,13 @@ IriSP.createAnnotationWidget.prototype.hideWidget = function() {
 IriSP.createAnnotationWidget.prototype.draw = function() {
   var _this = this;
 
-  var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template);
+  var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template,
+                                           {keywords: this.keywords});
 	this.selector.append(annotationMarkup);
   this.selector.hide();
   
   this._Popcorn.listen("IriSP.PlayerWidget.AnnotateButton.clicked", 
-                        IriSP.wrap(this, this.handleAnnotateSignal));
+                        IriSP.wrap(this, this.handleAnnotateSignal));  
 };
 
 IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
