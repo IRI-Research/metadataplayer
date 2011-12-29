@@ -574,7 +574,7 @@ button.ui-button-icon-only  {
   font-family: "Arial",  "Verdana", "sans-serif";
   background-color:#eeeeee;
   background:url('imgs/wire_pattern.png') repeat scroll transparent ;
-  border: 1px solid #b6b8b8;
+  border: 1px solid #b6b8b8;  
 }
 
 .Ldt-createAnnotation-DoubleBorder {
@@ -596,12 +596,42 @@ button.ui-button-icon-only  {
   float: left;
 }
 
-.Ldt-createAnnotation-userAvatar {
-  float: right;
+.Ldt-createAnnotation-Container {  
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.Ldt-createAnnotation-userAvatar {  
+  width: 48px;
+  display: table-cell;
+  vertical-align: top;
+}
+
+.Ldt-createAnnotation-userAvatar img {  
+  display: block;
+  border: 1px solid #babcbc;
+}
+.Ldt-createAnnotation-profileArrow {
+  display: table-cell;
+  vertical-align: top;
+  height: 48px;
+  width: 15px;
+  padding-right: 5px;
+  padding-left: 3px;
+}
+
+.Ldt-createAnnotation-profileArrow img {
+  display: block;
+  margin-left: 4px;
 }
 
 .Ldt-createAnnotation-Description {
-  width: 470px;
-  height: 56px;
-  float: left;
+  display: table-cell;   
+  width: 100%;
+  height: 48px;  
+  vertical-align: top;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
 }
