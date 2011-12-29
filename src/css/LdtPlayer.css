@@ -643,6 +643,7 @@ button.ui-button-icon-only  {
   padding: 3px;
   padding-left: 4px;
   padding-right: 4px;
+  cursor: pointer;
 }
 
 .Ldt-createAnnotation-absent-keyword {
@@ -652,4 +653,16 @@ button.ui-button-icon-only  {
   padding: 3px;
   padding-left: 4px;
   padding-right: 4px;
+  cursor: pointer;
+}
+
+.Ldt-createAnnotation-submitButton {
+  float: right;
+  background-color: #d93c71;
+  color: #ffffff;
+  cursor: pointer;
+  background-image: url('imgs/submit_annotation.png');
+  background-repeat: no-repeat;
+  height: 48px;
+  width: 48px;
 }
