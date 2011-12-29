@@ -30,10 +30,17 @@ IriSP.createAnnotationWidget.prototype.hideWidget = function() {
 IriSP.createAnnotationWidget.prototype.draw = function() {
   var _this = this;
 
-  var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template,
-                                           {keywords: this.keywords});
+  var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template);
 	this.selector.append(annotationMarkup);
+  
   this.selector.hide();
+  for (var i = 0; i < this.keywords.length; i++) {
+    var templ = IriSP.templToHTML("<span class='Ldt-createAnnotation-absent-keyword'>{{keyword}}</span>", 
+                                  {keyword: this.keywords[i]});
+                                  
+    this.selector.find(".Ldt-createAnnotation-keywords").append(templ);
+  }
+  
   
   this._Popcorn.listen("IriSP.PlayerWidget.AnnotateButton.clicked", 
                         IriSP.wrap(this, this.handleAnnotateSignal));  
