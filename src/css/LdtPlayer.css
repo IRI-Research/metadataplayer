@@ -635,3 +635,21 @@ button.ui-button-icon-only  {
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
 }
+
+.Ldt-createAnnotation-present-keyword {
+  border: 1px solid #ffffff;
+  background-color: #217bcb;
+  color: #ffffff;
+  padding: 3px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.Ldt-createAnnotation-absent-keyword {
+  border: 1px solid #ffffff;
+  background-color: #d93c71;
+  color: #ffffff;
+  padding: 3px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
