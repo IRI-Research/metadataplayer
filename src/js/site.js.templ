@@ -1,21 +1,23 @@
 /* EDIT THIS FILE AND RENAME IT TO site.js TO BUILD THE METADATAPLAYER
    site.js - all our site-dependent config : player chrome, cdn locations, etc...*/
 
+IriSP.libdir = "/mdp/src/js/libs/";
+
 IriSP.lib = { 
 		jQuery : "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js",
 		jQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.js",
 		jQueryToolTip : "http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
 		swfObject : "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
 		cssjQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css",
-    popcorn : "/mdp/src/js/libs/popcorn.js",
-    jwplayer : "/mdp/src/js/libs/jwplayer.js",
-    popcornReplacement: "/mdp/src/js/libs/pop.js",
-    raphael: "/mdp/src/js/libs/raphael.js",
-    jquery_sparkline: "/mdp/src/js/libs/jquery.sparkline.js",
-    "popcorn.mediafragment" : "/mdp/src/js/libs/popcorn.mediafragment.js",
-    "popcorn.code" : "/mdp/src/js/libs/popcorn.code.js",
-    "popcorn.jwplayer": "/mdp/src/js/libs/popcorn.jwplayer.js",
-    "popcorn.youtube": "/mdp/src/js/libs/popcorn.youtube.js"
+    popcorn : IriSP.libdir + "popcorn.js",
+    jwplayer : IriSP.libdir + "jwplayer.js",
+    popcornReplacement: IriSP.libdir + "pop.js",
+    raphael: IriSP.libdir + "raphael.js",
+    jquery_sparkline: IriSP.libdir + "jquery.sparkline.js",
+    "popcorn.mediafragment" : IriSP.libdir + "popcorn.mediafragment.js",
+    "popcorn.code" : IriSP.libdir + "popcorn.code.js",
+    "popcorn.jwplayer": IriSP.libdir + "popcorn.jwplayer.js",
+    "popcorn.youtube": IriSP.libdir + "popcorn.youtube.js"
 };
 
 //Player Configuration 
