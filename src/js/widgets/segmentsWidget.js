@@ -137,7 +137,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
             offset_x = 0;
           
           var offset_y = offset.top;          
-          console.log(offset_y);
+
           self.TooltipWidget.show(divTitle, color, offset_x, offset_y - 160);
     } })(divTitle)).mouseout(function(){
       IriSP.jQuery(this).animate({opacity: 0.3}, 5);
