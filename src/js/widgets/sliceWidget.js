@@ -31,6 +31,8 @@ IriSP.SliceWidget.prototype.draw = function() {
   containment: "parent"
   });
 
+  this.leftHandle.css("position", "absolute");
+  this.rightHandle.css("position", "absolute");
   
   this._Popcorn.listen("IriSP.SliceWidget.position", 
                         IriSP.wrap(this, this.positionSliceHandler));
@@ -48,24 +50,6 @@ IriSP.SliceWidget.prototype.positionSliceHandler = function(params) {
   this.leftHandle.css("left", (left - 7) + "px");
   this.rightHandle.css("left", left + width + "px");
 };
-
-/*
-IriSP.SliceWidget.prototype.leftHandleDragged = function(event, ui) {
-  var currentX = this.leftHandle.position()["left"];
-  
-  var parentOffset = this.selector.offset();  
-  var relX = event.pageX - parentOffset.left;
-  
-  
-  var increment = this.zoneLeft - relX;
-  console.log(increment);
-
-  this.sliceZone.css("width", this.zoneWidth + increment);
-  this.sliceZone.css("left", relX + "px");
-  this.zoneLeft = relX;
-  this.zoneWidth += increment;
-};
-*/
 
 /** handle a dragging of the left handle */
 IriSP.SliceWidget.prototype.leftHandleDragged = function(event, ui) {
