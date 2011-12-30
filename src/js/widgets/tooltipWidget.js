@@ -11,7 +11,8 @@ IriSP.TooltipWidget.prototype = new IriSP.Widget();
 
 IriSP.TooltipWidget.prototype.draw = function() {
   var templ = Mustache.to_html(IriSP.tooltipWidget_template);
-
+  // position the widget absolutely relative to document.
+  this.selector.css("position", "static");
   this.selector.append(templ);
   this.hide();
 

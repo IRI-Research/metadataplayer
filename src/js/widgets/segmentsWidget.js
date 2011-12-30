@@ -135,8 +135,10 @@ IriSP.SegmentsWidget.prototype.draw = function() {
           var offset_x = offset.left + correction - 106;
           if (offset_x < 0)
             offset_x = 0;
-                    
-          self.TooltipWidget.show(divTitle, color, offset_x, event.pageY - 160);
+          
+          var offset_y = offset.top;          
+          console.log(offset_y);
+          self.TooltipWidget.show(divTitle, color, offset_x, offset_y - 160);
     } })(divTitle)).mouseout(function(){
       IriSP.jQuery(this).animate({opacity: 0.3}, 5);
       self.TooltipWidget.hide();
