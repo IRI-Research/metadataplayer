@@ -38,6 +38,13 @@ IriSP.padWithZeros = function(num) {
     return num.toString();
   }
 };
+
+/* convert a number of milliseconds to a tuple of the form 
+   [hours, minutes, seconds]
+*/
+IriSP.msToTime = function(ms) {
+  return IriSP.secondsToTime(ms / 1000);
+}
 /* convert a number of seconds to a tuple of the form 
    [hours, minutes, seconds]
 */

@@ -2,6 +2,7 @@ IriSP.createAnnotationWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this._hidden = true;
   this.keywords = IriSP.widgetsDefaults["createAnnotationWidget"].keywords;
+  this.cinecast_version = IriSP.widgetsDefaults["createAnnotationWidget"].cinecast_version;
   this.ids = {}; /* a dictionnary linking buttons ids to keywords */
 };
 
@@ -14,24 +15,15 @@ IriSP.createAnnotationWidget.prototype.clear = function() {
     this.selector.find(".Ldt-SaKeywordText").text("");
 };
 
-IriSP.createAnnotationWidget.prototype.showWidget = function() {
-  this.layoutManager.slice.after("ArrowWidget")
-                          .before("createAnnotationWidget")
-                          .jQuerySelector().hide();
-  this.selector.show();
-};
-
-IriSP.createAnnotationWidget.prototype.hideWidget = function() {
-  this.selector.hide();
-  this.layoutManager.slice.after("ArrowWidget")
-                          .before("createAnnotationWidget")
-                          .jQuerySelector().show();
-};
-
 IriSP.createAnnotationWidget.prototype.draw = function() {
   var _this = this;
 
-  var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template);
+  if (this.cinecast_version) {    
+    var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_festivalCinecast_template);
+  } else {
+    var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template);
+  }
+  
 	this.selector.append(annotationMarkup);
   
   this.selector.hide();
@@ -62,6 +54,7 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   this.selector.find(".Ldt-createAnnotation-Description")
                .bind("propertychange keyup input paste", IriSP.wrap(this, this.handleTextChanges));
   
+  this.selector.find(".Ldt-createAnnotation-submitButton").click(IriSP.wrap(this, this.handleButtonClick));
   this._Popcorn.listen("IriSP.PlayerWidget.AnnotateButton.clicked", 
                         IriSP.wrap(this, this.handleAnnotateSignal));  
 };
@@ -70,7 +63,25 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
   if (this._hidden == false) {
     this.selector.hide();
     this._hidden = true;
+    /* reinit the fields */
+    
+    this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().show();
+    this.selector.find("Ldt-createAnnotation-Description").val("");
+    this.selector.find(".Ldt-createAnnotation-endScreen").hide();
   } else {
+    if (this.cinecast_version) {
+      var currentTime = this._Popcorn.currentTime();
+      var currentAnnotation = this._serializer.currentAnnotations(currentTime)[0];
+      var beginTime = IriSP.msToTime(currentAnnotation.begin);
+      var endTime = IriSP.msToTime(currentAnnotation.end);
+      
+      if (typeof(currentAnnotation.content) !== "undefined")
+        this.selector.find(".Ldt-createAnnotation-Title").html(currentAnnotation.content.title);
+
+      var timeTemplate = IriSP.templToHTML("- ({{begin}} - {{ end }})", {begin: beginTime, end: endTime });
+      this.selector.find(".Ldt-createAnnotation-TimeFrame").html(timeTemplate);
+    }
+    
     this.selector.show();
     this._hidden = false;
   }
@@ -97,4 +108,10 @@ IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
       }
     }
   }
+};
+
+/** handle clicks on "send annotation" button */
+IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
+  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+  this.selector.find(".Ldt-createAnnotation-endScreen").show();
 };
