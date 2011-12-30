@@ -5,7 +5,7 @@ IriSP.TweetsWidget = function(Popcorn, config, Serializer) {
 
   this._displayingTweet = false;
   this._timeoutId = undefined; 
-  this._hidden = false;
+  this._hidden = false; /* hidden means that the createAnnotationWidget is shown */
 };
 
 
@@ -133,7 +133,10 @@ IriSP.TweetsWidget.prototype.handleAnnotateSignal = function() {
     this.selector.hide();
     this._hidden = true;
   } else {
-    this.selector.show();
+    if (this._displayingTweet !== false)
+      this.selector.show();
+      
+    
     this._hidden = false;
   }
 };
