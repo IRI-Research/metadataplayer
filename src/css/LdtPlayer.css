@@ -676,3 +676,7 @@ button.ui-button-icon-only  {
   color : #f7268e;
   text-align: center;
 }
+
+.Ldt-createAnnotation-errorMessage {
+  color: #D93C71;
+}

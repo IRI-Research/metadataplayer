@@ -112,6 +112,23 @@ IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
 
 /** handle clicks on "send annotation" button */
 IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
-  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
-  this.selector.find(".Ldt-createAnnotation-endScreen").show();
+  var textfield = this.selector.find(".Ldt-createAnnotation-Description");
+  var contents = textfield.val();
+
+  if (contents === "") {
+    textfield.after(IriSP.templToHTML(IriSP.createAnnotation_errorMessage_template));
+    textfield.css("background-color", "#d93c71");
+    textfield.bind("propertychange.tmp keyup.tmp input.tmp paste.tmp", IriSP.wrap(this, function() {
+                    var contents = textfield.val();
+                    console.log(contents);
+                    if (contents !== "") {
+                      this.selector.find(".Ldt-createAnnotation-errorMessage").hide();
+                      textfield.css("background-color", "");
+                      textfield.unbind(".tmp");
+                    }
+                 }));
+  } else {
+    this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+    this.selector.find(".Ldt-createAnnotation-endScreen").show();
+  }
 };
