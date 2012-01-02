@@ -2,7 +2,7 @@ IriSP.ArrowWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
 
   this._oldAnnotation = null;
-  
+  this._blockArrow = false;
 };
 
 
@@ -19,9 +19,15 @@ IriSP.ArrowWidget.prototype.draw = function() {
   var templ = Mustache.to_html(IriSP.arrowWidget_template, {});
   this.selector.append(templ);
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeUpdateHandler));
+  this._Popcorn.listen("IriSP.ArrowWidget.blockArrow", IriSP.wrap(this, this.blockArrow));
+  this._Popcorn.listen("IriSP.ArrowWidget.releaseArrow", IriSP.wrap(this, this.releaseArrow));
+  
 };
 
 IriSP.ArrowWidget.prototype.timeUpdateHandler = function(percents) {
+  if (this._blockArrow)
+    return;
+  
   var currentTime = this._Popcorn.currentTime();
   var currentAnnotation = this._serializer.currentAnnotations(currentTime)[0]; // FIXME : use the others ?
 
@@ -66,4 +72,13 @@ IriSP.ArrowWidget.prototype.timeUpdateHandler = function(percents) {
 
     this._oldAnnotation = currentAnnotation;
   }
-}
+};
+
+/** Block the arrow for instance when the user is annotating */
+IriSP.ArrowWidget.prototype.blockArrow = function() {
+  this._blockArrow = true;
+};
+
+IriSP.ArrowWidget.prototype.releaseArrow = function() {
+  this._blockArrow = false;   
+};

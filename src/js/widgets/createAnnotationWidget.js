@@ -84,6 +84,9 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     
     this.selector.show();
     this._hidden = false;
+    
+    // block the arrow.
+    this._Popcorn.trigger("IriSP.ArrowWidget.blockArrow");
   }
 };
 
@@ -133,5 +136,6 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
   } else {
     this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
     this.selector.find(".Ldt-createAnnotation-endScreen").show();
+    this._Popcorn.trigger("IriSP.ArrowWidget.releaseArrow");
   }
 };
