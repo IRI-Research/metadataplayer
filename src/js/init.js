@@ -45,6 +45,7 @@ IriSP.configurePopcorn = function (layoutManager, options) {
       case "jwplayer":
           var opts = IriSP.jQuery.extend({}, options);
           delete opts.container;
+          delete opts.type;
 
           if (options.provider === "rtmp") {
             /* exit if we can't access the metadata */
@@ -66,12 +67,14 @@ IriSP.configurePopcorn = function (layoutManager, options) {
           }
 
           if (!options.hasOwnProperty("flashplayer")) {
-            options.flashplayer = IriSP.jwplayer_swf_path;
+            opts.flashplayer = IriSP.jwplayer_swf_path;
           }
 
           if (!options.hasOwnProperty("controlbar.position")) {
-            options["controlbar.position"] = "none";
+            opts["controlbar.position"] = "none";
           }
+
+          console.log(opts);
           pop = IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
         break;
       
