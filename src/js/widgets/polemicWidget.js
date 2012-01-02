@@ -287,19 +287,6 @@ IriSP.PolemicWidget.prototype.draw = function() {
                   e.id = frames[i].mytweetsID[k].cinecast_id;
 
                   this.svgElements[e.id] = e;
-
-                  /*
-                  e.mouseover(function(element) { return function (event) {
-                        // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.                        
-                        self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.clientX - 106, event.clientY - 160);
-                        element.displayed = true;
-                  }}(e)).mouseout(function(element) { return function () {                          
-                          self.TooltipWidget.hide.call(self.TooltipWidget);
-                  }}(e)).mousedown(function () {
-                    self._Popcorn.currentTime(this.time/1000);
-                    self._Popcorn.trigger("IriSP.PolemicTweet.click", this.id); 
-                  });
-                  */
                   
                   IriSP.jQuery(e.node).mouseenter(function(element) { return function (event) {                        
                         // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.                        
@@ -379,43 +366,36 @@ IriSP.PolemicWidget.prototype.searchHandler = function(searchString) {
     this._Popcorn.trigger("IriSP.search.noMatchFound");
   }
 
+  
+  // decrease the opacity of the other elements.
+  for (var id in this.svgElements) {
+    var e = this.svgElements[id];
+    e.attr({fill: e.color, opacity: 0.4});
+  }
+  
   for (var id in matches) {
     if (this.svgElements.hasOwnProperty(id)) {
       var e = this.svgElements[id];
-      this.svgElements[id].attr({fill: "#fc00ff"});
+      this.svgElements[id].attr({fill: "#fc00ff", opacity: 1});
     }
   }
 
-  // clean up the blocks that were in the previous search
-  // but who aren't in the current one.
-  for (var id in this.oldSearchMatches) {
-    if (!matches.hasOwnProperty(id)) {
-      var e = this.svgElements[id];
-      e.attr({fill: e.color});
-    }
-  }
-  
   this.oldSearchMatches = matches;
 };
 
 /** reacts to IriSP.search.cleared messages */
 IriSP.PolemicWidget.prototype.searchFieldClearedHandler = function() {
-  // clean up the blocks that were in the previous search
-  // but who aren't in the current one.
-  for (var id in this.oldSearchMatches) {
-      var e = this.svgElements[id];
-      e.attr({fill: e.color});
+  for (var id in this.svgElements) {
+    var e = this.svgElements[id];
+    e.attr({fill: e.color, opacity: 1});
   }
- 
 };
 
 /** reacts to IriSP.search.closed messages by clearing the highlighted elements */
 IriSP.PolemicWidget.prototype.searchFieldClosedHandler = function() {
-  // clean up the blocks that were in the previous search
-  // but who aren't in the current one.
-  for (var id in this.oldSearchMatches) {
-      var e = this.svgElements[id];
-      e.attr({fill: e.color});
+  for (var id in this.svgElements) {
+    var e = this.svgElements[id];
+    e.attr({fill: e.color, opacity: 1});
   }
  
 };
