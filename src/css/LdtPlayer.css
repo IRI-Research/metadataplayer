@@ -192,6 +192,15 @@ button.ui-button-icon-only  {
   background-position: 0 -50px;
 }
 
+.LdtSearch {
+  display: none;
+  width: 165px;
+  height: 25px;
+  border: 1px;
+  border-color: #CFCFCF;
+  float: left;
+  text-align: center;
+}
 
 .Ldt-Time {
   position: inherit;

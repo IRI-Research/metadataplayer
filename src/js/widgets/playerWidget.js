@@ -13,8 +13,8 @@ IriSP.PlayerWidget.prototype.draw = function() {
 	var height = this.height;
 	var heightS = this.height-20;
 	  
-	var Player_templ = Mustache.to_html(IriSP.player_template, {"share_template" : IriSP.share_template});
-  this.selector.append(Player_templ);		
+	var playerTempl = IriSP.templToHTML(IriSP.player_template, {"share_template" : IriSP.share_template});
+  this.selector.append(playerTempl);		
 	
   this.selector.children(".Ldt-controler").show();
     
@@ -41,9 +41,11 @@ IriSP.PlayerWidget.prototype.draw = function() {
 
   this.selector.find(".Ldt-CtrlPlay").attr( "style", "background-color:#CD21C24;" );
   
+  /*
   var searchButtonPos = this.selector.find(".Ldt-CtrlSearch").position();
   var searchBox = Mustache.to_html(IriSP.search_template, {margin_left : searchButtonPos.left + "px"});
-  this.selector.append(searchBox);
+  this.selector.find(".Ldt-CtrlSearch").after(searchBox);
+  */
   
   // trigger an IriSP.PlayerWidget.MouseOver to the widgets that are interested (i.e : sliderWidget)
   this.selector.hover(function() { self._Popcorn.trigger("IriSP.PlayerWidget.MouseOver"); }, 
@@ -150,7 +152,7 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
 
     /* show the search field if it is not shown */
   	if ( this._searchBlockOpen == false ) {      
-      this.selector.find(".LdtSearch").show(100);
+      this.selector.find(".LdtSearch").show("blind", { direction: "horizontal"}, 100);
       
       this.selector.find(".LdtSearchInput").css('background-color','#fff');
       this.selector.find(".LdtSearchInput").focus();
@@ -172,7 +174,7 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
 	} else {
       this._searchLastValue = this.selector.find(".LdtSearchInput").attr('value');
       this.selector.find(".LdtSearchInput").attr('value','');
-      this.selector.find(".LdtSearch").hide(100);
+      this.selector.find(".LdtSearch").hide("blind", { direction: "horizontal"}, 75);
       
       // unbind the watcher event.
       this.selector.find(".LdtSearchInput").unbind('keypress set');
