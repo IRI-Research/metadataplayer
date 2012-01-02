@@ -24,7 +24,10 @@ IriSP.PlayerWidget.prototype.draw = function() {
   
   this._Popcorn.listen("volumechange", IriSP.wrap(this, this.muteButtonUpdater));
 
-  this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeDisplayUpdater));
+  this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeDisplayUpdater));  
+  // update the time display for the first time.
+  this._Popcorn.listen("loadedmetadata", IriSP.wrap(this, this.timeDisplayUpdater));
+  
   this._Popcorn.listen("IriSP.search.matchFound", IriSP.wrap(this, this.searchMatch));
   this._Popcorn.listen("IriSP.search.noMatchFound", IriSP.wrap(this, this.searchNoMatch));
   
