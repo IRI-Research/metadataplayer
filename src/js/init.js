@@ -65,6 +65,13 @@ IriSP.configurePopcorn = function (layoutManager, options) {
                pass everything as is */
           }
 
+          if (!options.hasOwnProperty("flashplayer")) {
+            options.flashplayer = IriSP.jwplayer_swf_path;
+          }
+
+          if (!options.hasOwnProperty("controlbar.position")) {
+            options["controlbar.position"] = "none";
+          }
           pop = IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
         break;
       
