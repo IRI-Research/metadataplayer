@@ -118,6 +118,9 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
   if (contents === "") {
     textfield.after(IriSP.templToHTML(IriSP.createAnnotation_errorMessage_template));
     textfield.css("background-color", "#d93c71");
+    
+    // use namespaced events to be able to unbind them quickly and without unbinding
+    // the other event handlers.
     textfield.bind("propertychange.tmp keyup.tmp input.tmp paste.tmp", IriSP.wrap(this, function() {
                     var contents = textfield.val();
                     console.log(contents);
