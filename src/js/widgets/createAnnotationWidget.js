@@ -150,7 +150,15 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
     if (this.cinecast_version) {
       this.selector.find(".Ldt-createAnnotation-Title").parent().show();      
     }
+
+    var twStatus = IriSP.mkTweetUrl(document.location.href);
+    var gpStatus = IriSP.mkGplusUrl(document.location.href);
+    var fbStatus = IriSP.mkFbUrl(document.location.href);
     
+    this.selector.find(".Ldt-createAnnotation-endScreen-TweetLink").attr("href", twStatus);
+    this.selector.find(".Ldt-createAnnotation-endScreen-FbLink").attr("href", fbStatus);
+    this.selector.find(".Ldt-createAnnotation-endScreen-GplusLink").attr("href", gpStatus);
+            
     this.selector.find(".Ldt-createAnnotation-endScreen").show();    
   }
 };

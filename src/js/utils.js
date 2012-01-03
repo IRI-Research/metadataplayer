@@ -134,6 +134,22 @@ IriSP.guid = function(prefix) {
   IriSP.__guidCounter += 1;
   return prefix + IriSP.__guidCounter;
 };
+
+/** returns an url to share on facebook */
+IriSP.mkFbUrl = function(url) {
+  return "http://www.facebook.com/share.php?u=" + "I'm watching " + url;
+};
+
+/** returns an url to share on twitter */
+IriSP.mkTweetUrl = function(url) {
+  return "http://twitter.com/home?status=" + "I'm sharing " + url;
+};
+
+/** returns an url to share on google + */
+IriSP.mkGplusUrl = function(url) {
+  return "";
+};
+
 /* for ie compatibility
 if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
    Object.defineProperty=function(obj,prop,desc) {
