@@ -16,7 +16,7 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
     // Localize jQuery variable
 		IriSP.jQuery = null;
     var $L = $LAB.script(libs.jQuery).script(libs.swfObject)
-                .script(libs.jQueryUI)
+                .script(libs.jQueryUI).wait();
                                    
     if (config.player.type === "jwplayer") {
       // load our popcorn.js lookalike
