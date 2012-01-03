@@ -45,6 +45,9 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
       }
       
       _this.selector.find(".Ldt-createAnnotation-Description").val(newVal);
+      // we use a custom event because there's no simple way to test for a js
+      // change in a textfield.
+      _this.selector.find(".Ldt-createAnnotation-Description").trigger("js_mod");
       // also call our update function.
       _this.handleTextChanges();
     }
@@ -68,6 +71,9 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().show();
     this.selector.find("Ldt-createAnnotation-Description").val("");
     this.selector.find(".Ldt-createAnnotation-endScreen").hide();
+    
+    // free the arrow.
+    this._Popcorn.trigger("IriSP.ArrowWidget.releaseArrow");
   } else {
     if (this.cinecast_version) {
       var currentTime = this._Popcorn.currentTime();
@@ -119,23 +125,31 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
   var contents = textfield.val();
 
   if (contents === "") {
-    textfield.after(IriSP.templToHTML(IriSP.createAnnotation_errorMessage_template));
-    textfield.css("background-color", "#d93c71");
-    
-    // use namespaced events to be able to unbind them quickly and without unbinding
-    // the other event handlers.
-    textfield.bind("propertychange.tmp keyup.tmp input.tmp paste.tmp", IriSP.wrap(this, function() {
-                    var contents = textfield.val();
-                    console.log(contents);
-                    if (contents !== "") {
-                      this.selector.find(".Ldt-createAnnotation-errorMessage").hide();
-                      textfield.css("background-color", "");
-                      textfield.unbind(".tmp");
-                    }
-                 }));
+  
+    if (this.selector.find(".Ldt-createAnnotation-errorMessage").length === 0) {
+      this.selector.find(".Ldt-createAnnotation-Container")
+                   .after(IriSP.templToHTML(IriSP.createAnnotation_errorMessage_template));
+      textfield.css("background-color", "#d93c71");
+        
+      // use namespaced events to be able to unbind them quickly and without unbinding
+      // the other event handlers.
+      textfield.bind("js_mod.tmp propertychange.tmp keyup.tmp input.tmp paste.tmp", IriSP.wrap(this, function() {
+                      var contents = textfield.val();
+                      console.log(contents);
+                      if (contents !== "") {
+                        this.selector.find(".Ldt-createAnnotation-errorMessage").hide();
+                        textfield.css("background-color", "");
+                        textfield.unbind(".tmp");
+                      }
+                   }));
+    }
   } else {
     this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
-    this.selector.find(".Ldt-createAnnotation-endScreen").show();
-    this._Popcorn.trigger("IriSP.ArrowWidget.releaseArrow");
+    
+    if (this.cinecast_version) {
+      this.selector.find(".Ldt-createAnnotation-Title").parent().show();      
+    }
+    
+    this.selector.find(".Ldt-createAnnotation-endScreen").show();    
   }
 };
