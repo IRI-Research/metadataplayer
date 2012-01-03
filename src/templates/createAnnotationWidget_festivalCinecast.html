@@ -1,4 +1,4 @@
-{{! template for the annotation creation widget }}
+{{! template for the annotation creation widget specific for the cinecast festival}}
 <div class='Ldt-createAnnotationWidget'>
   <!-- ugly div because we want to have a double border -->
   <div class='Ldt-createAnnotation-DoubleBorder'>
@@ -26,10 +26,11 @@
     
     <div class='Ldt-createAnnotation-endScreen' style='display: none'>
       Thank you, your annotation has been saved.
-      <div style='margin-top: 12px;'>
-        <img src='{{img_dir}}/tweet_button.png' style='margin-right: 20px; display: table-cell'></img>
-        <img src='{{img_dir}}/facebook_button.png' style='margin-right: 20px; display: table-cell'></img>
-        <img src='{{img_dir}}/gplus_button.png' style='margin-right: 20px; display: table-cell'></img>                
+      Would you like to share it on social networks ?
+      <div style='margin-top: 12px; text-align: center;'>
+          <img src='{{img_dir}}/tweet_button.png' style='margin-right: 20px;'></img>
+          <img src='{{img_dir}}/facebook_button.png' style='margin-right: 20px;'></img>
+          <img src='{{img_dir}}/gplus_button.png' style='margin-right: 20px;'></img>                
       </div>
     </div>
   </div>
