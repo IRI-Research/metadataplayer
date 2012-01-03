@@ -129,8 +129,10 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
     if (this.selector.find(".Ldt-createAnnotation-errorMessage").length === 0) {
       this.selector.find(".Ldt-createAnnotation-Container")
                    .after(IriSP.templToHTML(IriSP.createAnnotation_errorMessage_template));
-      textfield.css("background-color", "#d93c71");
-        
+      textfield.css("background-color", "#d93c71");      
+    } else {
+      this.selector.find(".Ldt-createAnnotation-errorMessage").show();
+    }
       // use namespaced events to be able to unbind them quickly and without unbinding
       // the other event handlers.
       textfield.bind("js_mod.tmp propertychange.tmp keyup.tmp input.tmp paste.tmp", IriSP.wrap(this, function() {
@@ -142,7 +144,6 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
                         textfield.unbind(".tmp");
                       }
                    }));
-    }
   } else {
     this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
     
