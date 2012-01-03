@@ -261,6 +261,9 @@ IriSP.JSONSerializer.prototype.getTweetIds = function() {
   /* first get the list containing the tweets */
   var tweets = IriSP.underscore.filter(this._data.lists, function(entry) { return entry.id.indexOf("tweet") !== -1 });
   
+  if (tweets.length === 0)
+    return [];
+  
   // FIXME: collect tweets from multiple sources ?
   tweetsId = IriSP.underscore.pluck(tweets[0].items, "id-ref");
 

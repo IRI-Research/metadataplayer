@@ -34,11 +34,10 @@ IriSP.PolemicWidget = function(Popcorn, config, Serializer) {
   this.tweets  = new Array();
   this.svgElements = {};
   
+  this.oldSearchMatches = [];
   // Make and define the Raphael area
   this.paper = Raphael(document.getElementById(this._id), config.width, config.height);
   
-  this.oldSearchMatches = [];
-
   // event handlers
   this._Popcorn.listen("IriSP.search", IriSP.wrap(this, function(searchString) { this.searchHandler(searchString); }));
   this._Popcorn.listen("IriSP.search.closed", IriSP.wrap(this, this.searchFieldClosedHandler));
@@ -137,16 +136,23 @@ IriSP.PolemicWidget.prototype.draw = function() {
       this._serializer.sync(function(data) { loaded_callback.call(self, data) });
       
       function loaded_callback (json) {
-
-        // get current view (the first ???)
+        
+      var view_type = this._serializer.getTweetIds()[0];        
+      if (typeof(view_type) === "undefined") {
+        // default to guessing if nothing else works.
         view = json.views[0];
         
-        // the tweets are by definition of the second annotation type FIXME ?
+        // 
         tweet_annot_type = null;
-        if(typeof(view.annotation_types) !== "undefined" && view.annotation_types.length > 1) {
-          tweet_annot_type = view.annotation_types[1];
-        }
-      
+        if(typeof(view.annotation_types) !== "undefined") {
+          if (view.annotation_types.length >= 1) {
+            view_type = view.annotation_types[0];
+          } else {
+            console.log("PolemicWidget: invalid file");
+          }
+        }      
+      }
+        
       for(var i = 0; i < json.annotations.length; i++) {
         var item = json.annotations[i];        
         var MyTime  = Math.floor(item.begin/duration*lineSize);
@@ -154,10 +160,13 @@ IriSP.PolemicWidget.prototype.draw = function() {
 
         if (typeof(item.meta) !== "undefined" 
           && typeof(item.meta["id-ref"]) !== "undefined"
-          && item.meta["id-ref"] === tweet_annot_type) {
+          && item.meta["id-ref"] === view_type) {
             
-          var MyTJson = JSON.parse(item.meta['dc:source']['content']);
-          
+            var MyTJson = {};
+            if (typeof(item.meta['dc:source']) !== "undefined") {
+              var MyTJson = JSON.parse(item.meta['dc:source']['content']);
+            }
+            
             if (item.content['polemics'] != undefined 
             && item.content['polemics'][0] != null) {
             
@@ -256,7 +265,16 @@ IriSP.PolemicWidget.prototype.draw = function() {
     
       var tweetDrawed = new Array();
       var TweetHeight = 5;
+      var newHeight = TweetHeight * max + 10;
+
       
+      if (newHeight > this.height) {
+        this.paper.setSize(this.width, newHeight);
+        this.height = newHeight;
+        console.log("resizeing");
+      }
+      
+  
       // DRAW  TWEETS ============================================
       for(var i = 0; i < nbrframes; i++) {
         var addEheight = 5;
@@ -270,7 +288,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
               
                 if (frames[i].mytweetsID[k].qualification == j) {                
                   var x = i * frameSize;
-                  var y = this.heightmax - addEheight;
+                  var y = this.height - addEheight;
                   
                   if (this.yMax > y) {
                     this.yMax = y;
@@ -309,7 +327,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 
       }    
       // DRAW UI :: resize border and bgd      
-      this.paperBackground = this.paper.rect(0, 0, this.width, this.heightmax).attr({fill:"#F8F8F8","stroke-width":0.1,opacity: 1});  
+      this.paperBackground = this.paper.rect(0, 0, this.width, this.height).attr({fill:"#F8F8F8","stroke-width":0.1,opacity: 1});  
 
       // outer borders
       this.outerBorders   = [];
@@ -325,10 +343,10 @@ IriSP.PolemicWidget.prototype.draw = function() {
 
 
 
-      this.paperSlider   = this.paper.rect(0, 0, 0, this.heightmax).attr({fill:"#D4D5D5", stroke: "none", opacity: 1});
+      this.paperSlider   = this.paper.rect(0, 0, 0, this.height).attr({fill:"#D4D5D5", stroke: "none", opacity: 1});
       
       // the small white line displayed over the slider.
-      this.sliderTip = this.paper.rect(0, 0, 1, this.heightmax).attr({fill:"#fc00ff", stroke: "none", opacity: 1});
+      this.sliderTip = this.paper.rect(0, 0, 1, this.height).attr({fill:"#fc00ff", stroke: "none", opacity: 1});
       // decalage 
       // tweetSelection = this.paper.rect(-100,-100,5,5).attr({fill:"#fff",stroke: "none",opacity: 1});  
       
@@ -373,7 +391,8 @@ IriSP.PolemicWidget.prototype.searchHandler = function(searchString) {
     e.attr({fill: e.color, opacity: 0.4});
   }
   
-  for (var id in matches) {
+
+  for (var id in matches) {    
     if (this.svgElements.hasOwnProperty(id)) {
       var e = this.svgElements[id];
       this.svgElements[id].attr({fill: "#fc00ff", opacity: 1});

@@ -28,23 +28,42 @@
             container:'LdtPlayer',
             css:'../../src/css/LdtPlayer.css',
             widgets: [
+            {type: "PolemicWidget",
+             width: 640, /* required for this widget */
+             height: 50,
+             metadata:{
+              format:'cinelab',
+              src:'http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/ae6827dc-1f29-11e1-a049-00145ea49a02',
+              type:'json'},
+              
+             requires: [{
+              type: "TooltipWidget",
+              width: 180,
+              heigh: 160,
+              metadata : {
+                format:'cinelab',
+                src:'http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/ae6827dc-1f29-11e1-a049-00145ea49a02',
+                type:'empty'
+              }
+             }],
+            },
             {type: "SliderWidget",
 						 metadata:{
 						  format:'cinelab',
-						  src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/f20906c6-2c82-11e1-872c-00145ea49a02",
+						  src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/ae6827dc-1f29-11e1-a049-00145ea49a02",
 						  type:'json'}
 						},
             {type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
              mode: "radio",
              metadata:{
               format:'cinelab',
-              src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/f20906c6-2c82-11e1-872c-00145ea49a02",
+              src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/ae6827dc-1f29-11e1-a049-00145ea49a02",
               type:'json'}
             },
             {type: "SegmentsWidget",
              metadata:{
               format:'cinelab',
-              src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/f20906c6-2c82-11e1-872c-00145ea49a02",
+              src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/ae6827dc-1f29-11e1-a049-00145ea49a02",
               type:'json'},
              requires: [{
               type: "TooltipWidget",
@@ -58,20 +77,20 @@
             {type: "ArrowWidget",
              metadata:{
               format:'cinelab',
-              src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/f20906c6-2c82-11e1-872c-00145ea49a02",
+              src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/ae6827dc-1f29-11e1-a049-00145ea49a02",
               type:'json'}
             },
 
             {type: "AnnotationsWidget",
 						 metadata:{
 						  format:'cinelab',
-						  src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/f20906c6-2c82-11e1-872c-00145ea49a02",
+						  src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/ae6827dc-1f29-11e1-a049-00145ea49a02",
 						  type:'json'}
 						},
             {type: "TweetsWidget",
 						 metadata:{
 						  format:'cinelab',
-						  src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/f20906c6-2c82-11e1-872c-00145ea49a02",
+						  src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/ae6827dc-1f29-11e1-a049-00145ea49a02",
 						  type:'json'}
 						}      
             ]
@@ -89,13 +108,13 @@
                { type: "MediaFragment",
   			     		 metadata:{
 	  	  			   format:'cinelab',
-		  				   src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/f20906c6-2c82-11e1-872c-00145ea49a02",
+		  				   src:"http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/ae6827dc-1f29-11e1-a049-00145ea49a02",
 						     type:'json'}
 						}]
 
     };
     
-    IriSP.loadLibs(IriSP.lib, config, "http://www.iri.centrepompidou.fr/dev/ldt/ldtplatform/ldt/cljson/id/f20906c6-2c82-11e1-872c-00145ea49a02",
+    IriSP.loadLibs(IriSP.lib, config, "polemic_fr.json",
       function() {   
               var layoutManager = new IriSP.LayoutManager(config.gui.container);
               var pop = IriSP.configurePopcorn(layoutManager, config.player);
