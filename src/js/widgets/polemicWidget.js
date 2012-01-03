@@ -294,6 +294,11 @@ IriSP.PolemicWidget.prototype.draw = function() {
                     this.yMax = y;
                   }
                   
+                  /* some tweets seem to be duplicated - so we make a check before
+                     creating a new rect */
+                  if (this.svgElements.hasOwnProperty(frames[i].mytweetsID[k].cinecast_id))
+                    continue;
+                  
                   var e = this.paper.rect(x, y, frameSize - margin, TweetHeight /* height */)
                                     .attr({stroke:"#00","stroke-width":0.1,  fill: colors[j]});  
                   
@@ -303,7 +308,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
                   e.time = frames[i].mytweetsID[k].timeframe;
                   e.title = frames[i].mytweetsID[k].title;
                   e.id = frames[i].mytweetsID[k].cinecast_id;
-
+                  
                   this.svgElements[e.id] = e;
                   
                   IriSP.jQuery(e.node).mouseenter(function(element) { return function (event) {                        
@@ -388,7 +393,7 @@ IriSP.PolemicWidget.prototype.searchHandler = function(searchString) {
   // decrease the opacity of the other elements.
   for (var id in this.svgElements) {
     var e = this.svgElements[id];
-    e.attr({fill: e.color, opacity: 0.4});
+    e.attr({fill: e.color, opacity: 0.4});   
   }
   
 
