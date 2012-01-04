@@ -24,9 +24,9 @@ IriSP.TooltipWidget.prototype.clear = function() {
 
 IriSP.TooltipWidget.prototype.show = function(text, color, x, y) {
 
-  if (this._displayedText == text)
+  if (this._displayedText == text && this._shown)
     return;
-  
+
   this.selector.find(".tipcolor").css("background-color", color);
   this._displayedText = text;
 	this.selector.find(".tiptext").text(text);
