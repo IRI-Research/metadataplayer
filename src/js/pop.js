@@ -139,14 +139,14 @@ IriSP.PopcornReplacement.__timeHandler = function(event) {
   var i = 0;
   for(i = 0; i < IriSP.PopcornReplacement.__codes.length; i++) {
      var c = IriSP.PopcornReplacement.__codes[i];
-      
+
      if (pos >= c.start && pos < c.end && 
-         pos - 0.1 <= c.start) {       
+         pos - 1 <= c.start) {       
         c.onStart();
      }
  
      if (pos > c.start && pos > c.end && 
-         pos - 0.1 <= c.end) {
+         pos - 1 <= c.end) {
          c.onEnd();
      }
    
@@ -165,7 +165,7 @@ IriSP.PopcornReplacement.__seekHandler = function(event) {
         c.onEnd();
      }         
    }
-
+  
    for(i = 0; i < IriSP.PopcornReplacement.__codes.length; i++) {
      var c = IriSP.PopcornReplacement.__codes[i];
 
