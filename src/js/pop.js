@@ -44,6 +44,19 @@ IriSP.PopcornReplacement.__initApi = function() {
   IriSP.PopcornReplacement.trigger("loadedmetadata"); // we've done more than loading metadata of course,
                                                       // but popcorn doesn't need to know more.
   IriSP.PopcornReplacement.media.muted = jwplayer(IriSP.PopcornReplacement._container).getMute();
+  
+  /* some programmed segments are supposed to be run at the beginning */
+  var i = 0;
+  for(i = 0; i < IriSP.PopcornReplacement.__codes.length; i++) {
+    var c = IriSP.PopcornReplacement.__codes[i];
+    if (0 == c.start) {
+      c.onStart();
+    }
+    
+    if (0 == c.end) {
+      c.onEnd();
+    }
+  }
 };
 
 IriSP.PopcornReplacement.jwplayer = function(container, options) {
@@ -116,33 +129,17 @@ IriSP.PopcornReplacement.code = function(options) {
   return IriSP.PopcornReplacement;
 };
 
-IriSP.PopcornReplacement.__runCode = function() {
-  var currentTime = jwplayer(IriSP.PopcornReplacement._container).getPosition();
-  var i = 0;
-  for(i = 0; i < IriSP.PopcornReplacement.__codes.length; i++) {
-    var c = IriSP.PopcornReplacement.__codes[i];
-    if (currentTime == c.start) {
-      c.onStart();
-    }
-    
-    if (currentTime == c.end) {
-      c.onEnd();
-    }
-
-  }
-};
-
 /* called everytime the player updates itself 
    (onTime event)
  */
 
 IriSP.PopcornReplacement.__timeHandler = function(event) {
   var pos = event.position;
-
+  
   var i = 0;
   for(i = 0; i < IriSP.PopcornReplacement.__codes.length; i++) {
      var c = IriSP.PopcornReplacement.__codes[i];
-     
+      
      if (pos >= c.start && pos < c.end && 
          pos - 0.1 <= c.start) {       
         c.onStart();
@@ -150,8 +147,7 @@ IriSP.PopcornReplacement.__timeHandler = function(event) {
  
      if (pos > c.start && pos > c.end && 
          pos - 0.1 <= c.end) {
-         console.log("eonedn");
-        c.onEnd();
+         c.onEnd();
      }
    
   }
