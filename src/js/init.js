@@ -74,7 +74,6 @@ IriSP.configurePopcorn = function (layoutManager, options) {
             opts["controlbar.position"] = "none";
           }
 
-          console.log(opts);
           pop = IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
         break;
       
