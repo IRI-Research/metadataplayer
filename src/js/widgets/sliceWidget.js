@@ -49,12 +49,26 @@ IriSP.SliceWidget.prototype.positionSliceHandler = function(params) {
   this.sliceZone.css("width", width + "px");
   this.leftHandle.css("left", (left - 7) + "px");
   this.rightHandle.css("left", left + width + "px");
+  
+  this._leftHandleOldLeft = left - 7;
+  this._rightHandleOldLeft = left + width;
 };
 
 /** handle a dragging of the left handle */
 IriSP.SliceWidget.prototype.leftHandleDragged = function(event, ui) {
+  /* we have a special variable, this._leftHandleOldLeft, to keep the
+     previous position of the handle. We do that to know in what direction
+     is the handle being dragged
+  */
+  
   var currentX = this.leftHandle.position()["left"];
-    
+  var rightHandleX = this.rightHandle.position()["left"];
+  
+  if (currentX >= rightHandleX - 7 && ui.position.left >= this._leftHandleOldLeft) {
+    /* prevent the handle from moving past the right handle */
+    ui.position.left = this._leftHandleOldLeft;
+  }
+  
   var increment = this.zoneLeft - (currentX + 7);
   
   this.zoneWidth += increment;
@@ -62,17 +76,27 @@ IriSP.SliceWidget.prototype.leftHandleDragged = function(event, ui) {
   this.sliceZone.css("width", this.zoneWidth);
   this.sliceZone.css("left", this.zoneLeft + "px");
   this.broadcastChanges();
+  
+  this._leftHandleOldLeft = ui.position.left;  
 };
 
 /** handle a dragging of the right handle */
 IriSP.SliceWidget.prototype.rightHandleDragged = function(event, ui) { 
   var currentX = this.rightHandle.position()["left"];
-    
+  var leftHandleX = this.leftHandle.position()["left"];
+  
+  if (currentX <= leftHandleX + 7 && ui.position.left <= this._rightHandleOldLeft) {
+    /* prevent the handle from moving past the right handle */
+    ui.position.left = this._rightHandleOldLeft;
+  }
+  
   var increment = currentX - (this.zoneLeft + this.zoneWidth);  
 
   this.zoneWidth += increment;  
   this.sliceZone.css("width", this.zoneWidth);
   this.broadcastChanges();
+  
+  this._rightHandleOldLeft = ui.position.left; 
 };
 
 /** tell to the world that the coordinates of the slice have
@@ -81,8 +105,6 @@ IriSP.SliceWidget.prototype.rightHandleDragged = function(event, ui) {
 IriSP.SliceWidget.prototype.broadcastChanges = function() {
   var leftPercent = (this.zoneLeft / this.selector.width()) * 100;
   var zonePercent = (this.zoneWidth / this.selector.width()) * 100;
-  console.log(leftPercent, zonePercent);
   
-  this._Popcorn.trigger("IriSP.SliceWidget.zoneChange", [leftPercent, zonePercent]);
-  
+  this._Popcorn.trigger("IriSP.SliceWidget.zoneChange", [leftPercent, zonePercent]);  
 };
