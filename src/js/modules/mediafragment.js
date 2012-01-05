@@ -5,14 +5,18 @@ IriSP.MediaFragment = function(Popcorn, config, Serializer) {
 
   this.mutex = false; /* a mutex because we access the url from two different functions */
 
-  this._Popcorn.listen( "loadedmetadata", IriSP.wrap(this, IriSP.MediaFragment.advanceTime));
-  this._Popcorn.listen( "pause", IriSP.wrap(this, IriSP.MediaFragment.updateTime));
-  this._Popcorn.listen( "seeked", IriSP.wrap(this, IriSP.MediaFragment.updateTime));
-  this._Popcorn.listen( "IriSP.PolemicTweet.click", IriSP.wrap(this, IriSP.MediaFragment.updateAnnotation));
-  this._Popcorn.listen( "IriSP.SegmentsWidget.click", IriSP.wrap(this, IriSP.MediaFragment.updateAnnotation));
+  this._Popcorn.listen( "loadedmetadata", IriSP.wrap(this,this.advanceTime));
+  this._Popcorn.listen( "pause", IriSP.wrap(this,this.updateTime));
+  this._Popcorn.listen( "seeked", IriSP.wrap(this,this.updateTime));
+  this._Popcorn.listen( "IriSP.PolemicTweet.click", IriSP.wrap(this,this.updateAnnotation));
+  this._Popcorn.listen( "IriSP.SegmentsWidget.click", IriSP.wrap(this,this.updateAnnotation));
+  
+  window.onhashchange = IriSP.wrap(this, this.advanceTime);
 };
 
-IriSP.MediaFragment.advanceTime = function() {
+IriSP.MediaFragment.prototype = new IriSP.Module();
+
+IriSP.MediaFragment.prototype.advanceTime = function() {
              var url = window.location.href;
 
               if ( url.split( "#" )[ 1 ] != null ) {
@@ -31,13 +35,13 @@ IriSP.MediaFragment.advanceTime = function() {
                     // there's no better way than that because
                     // of possible race conditions
                     this._serializer.sync(IriSP.wrap(this, function() {
-                          IriSP.MediaFragment.lookupAnnotation.call(this, annotationId); 
+                          this.lookupAnnotation.call(this, annotationId); 
                           }));
                   }
               }
 };
 
-IriSP.MediaFragment.updateTime = function() {
+IriSP.MediaFragment.prototype.updateTime = function() {
   if (this.mutex === true) {
     return;
   }
@@ -52,7 +56,7 @@ IriSP.MediaFragment.updateTime = function() {
 };
 
 
-IriSP.MediaFragment.updateAnnotation = function(annotationId) {
+IriSP.MediaFragment.prototype.updateAnnotation = function(annotationId) {
   var _this = this;
   this.mutex = true;
 
@@ -68,7 +72,10 @@ IriSP.MediaFragment.updateAnnotation = function(annotationId) {
 };
 
 // lookup and seek to the beginning of an annotation
-IriSP.MediaFragment.lookupAnnotation = function(annotationId) {
+IriSP.MediaFragment.prototype.lookupAnnotation = function(annotationId) {
+  var _this = this;
+  this.mutex = true;
+
   var annotation = undefined;
   var annotations = this._serializer._data.annotations;
 
@@ -83,4 +90,6 @@ IriSP.MediaFragment.lookupAnnotation = function(annotationId) {
   if (typeof(annotation) !== "undefined") {
     this._Popcorn.currentTime(annotation.begin / 1000);
   }
+  
+  window.setTimeout(function() { _this.mutex = false }, 50);
 };
