@@ -64,8 +64,6 @@ IriSP.secondsToTime = function(secs) {
   return {"hours" : hours, "minutes" : minutes, "seconds" : seconds, toString: toString_fn};
 };
 
-IriSP.secondsToString
-
 /* format a tweet - replaces @name by a link to the profile, #hashtag, etc. */
 IriSP.formatTweet = function(tweet) {
   /*
