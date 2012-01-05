@@ -689,3 +689,28 @@ button.ui-button-icon-only  {
 .Ldt-createAnnotation-errorMessage {
   color: #D93C71;
 }
+
+/* AnnotationsListWidget */
+
+.Ldt-AnnotationsListWidget {
+  font-size: 12px;
+  font-family: "Arial",  "Verdana", "sans-serif";
+  background-color:#eeeeee;
+  border: 1px solid #b6b8b8;
+  overflow: auto;
+  max-height: 480px;
+}
+
+.Ldt-AnnotationsListWidget li {
+  list-style-type: none;
+  cursor: pointer;
+}
+.Ldt-AnnotationsList-Duration {
+  float: right;
+  color : #f7268e;
+}
+
+.Ldt-AnnotationsList-Title {
+  color: #0068c4;
+  font-size: 14px;
+}

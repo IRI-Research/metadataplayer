@@ -1,0 +1,20 @@
+{{! template for the annotation list widget }}
+<div class='Ldt-AnnotationsListWidget'>
+  <!-- ugly div because we want to have a double border -->
+  <div class='Ldt-Annotation-DoubleBorder'>
+    <ul>
+    {{#annotations}}
+      <li>
+        <a href='#a={{id}}'>
+          <div style='overflow: auto; margin-bottom: 10px;'>
+            <img src='http://i.imgur.com/aoUlC.jpg' style='display: block; float: left;'></img>
+            <div class='Ldt-AnnotationsList-Duration'>{{begin}} - {{end}}</div>
+            <div class='Ldt-AnnotationsList-Title'>{{title}}</div>
+            <div class='Ldt-AnnotationsList-Description'>{{desc}}</div>
+          </div>
+        </a>
+      </li>
+    {{/annotations}}
+    </ul>
+  </div>
+</div>
