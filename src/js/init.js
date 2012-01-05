@@ -144,16 +144,19 @@ IriSP.configureModules = function (popcornInstance, modulesList) {
     @param widgetConfig configuration options for the widget
  */
 IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager, widgetConfig) {
-    /* create div returns us a container for the widget and a spacer */
-    var ret = layoutManager.createDiv(widgetConfig.type);        
-    var container = ret[0];
-    var spacer = ret[1];
 
     var arr = IriSP.jQuery.extend({}, widgetConfig);
-    arr.container = container;
-    arr.spacer = spacer;
-    arr.layoutManager = layoutManager;
     
+    /* create a div for those widgets who didn't already specify a container; */
+    if (!arr.hasOwnProperty("container")) {
+      /* create div returns us a container for the widget and a spacer */    
+      var ret = layoutManager.createDiv(widgetConfig.type);        
+      var container = ret[0];
+      var spacer = ret[1];           
+      arr.container = container;
+      arr.spacer = spacer;
+      arr.layoutManager = layoutManager;
+    }
     var serializer = serialFactory.getSerializer(widgetConfig.metadata);    
     
     if (typeof serializer == "undefined")   
