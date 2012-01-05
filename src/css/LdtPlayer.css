@@ -695,22 +695,43 @@ button.ui-button-icon-only  {
 .Ldt-AnnotationsListWidget {
   font-size: 12px;
   font-family: "Arial",  "Verdana", "sans-serif";
-  background-color:#eeeeee;
   border: 1px solid #b6b8b8;
   overflow: auto;
   max-height: 480px;
 }
 
+.Ldt-AnnotationsListWidget ul {
+  padding: 5px;
+}
+
 .Ldt-AnnotationsListWidget li {
   list-style-type: none;
   cursor: pointer;
+  display: table-row;
+  padding-top: 2px;
+  height: 64px;
 }
-.Ldt-AnnotationsList-Duration {
+
+.Ldt-AnnotationsListWidget li:hover {
+  background-color: #e9e9e9;
+}
+
+.Ldt-AnnotationsList-Caption {
+  float: left;
+  display: table-cell;
+  vertical-align: middle;  
+}
+
+.Ldt-AnnotationsList-Duration {  
+  color : #f7268e;  
   float: right;
-  color : #f7268e;
+  text-align: left;
+  width: 120px;
 }
 
 .Ldt-AnnotationsList-Title {
   color: #0068c4;
-  font-size: 14px;
+  font-size: 13px;
+  display: table-cell;
+  width: 80%;
 }

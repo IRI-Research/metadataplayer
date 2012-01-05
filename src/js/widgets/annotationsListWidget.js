@@ -8,7 +8,7 @@ IriSP.AnnotationsListWidget.prototype = new IriSP.Widget();
 IriSP.AnnotationsListWidget.prototype.clear = function() {
 };
 
-IriSP.AnnotationsListWidget.prototype.clearWidget = function() {   
+IriSP.AnnotationsListWidget.prototype.clearWidget = function() {
 };
 
 IriSP.AnnotationsListWidget.prototype.draw = function() {
@@ -17,12 +17,12 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
   var view_type = this._serializer.getNonTweetIds()[0];
   var annotations = this._serializer._data.annotations;
   var list = [];
-  
+
   if (typeof(view_type) === "undefined") {
     console.log("not type suitable for display");
     return;
   }
-  
+
   for (i = 0; i < annotations.length; i++) {
     var annotation = annotations[i];
 
@@ -34,13 +34,13 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
 
     var a = annotation;
     var obj = {};
-    console.log(a);
+
     obj["id"] = a.id;
     obj["title"] = a.content.title;
     obj["desc"] = a.content.description;
     obj["begin"] = IriSP.msToTime(a.begin);
     obj["end"] = IriSP.msToTime(a.end);
-    
+
     list.push(obj);
   }
 
