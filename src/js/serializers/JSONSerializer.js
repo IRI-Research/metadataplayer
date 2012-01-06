@@ -234,7 +234,12 @@ IriSP.JSONSerializer.prototype.currentAnnotations = function(currentTime) {
   var view;
   var currentTimeMs = 1000 * currentTime;
 
-  var legal_ids = this.getNonTweetIds();
+  var id = this.getChapitrage();
+  /* FIXME: ugly */
+  if (typeof(id) === "undefined")    
+    var legal_ids = this.getNonTweetIds();
+  else 
+    legal_ids = [id];
   
   var ret_array = [];
   
@@ -300,7 +305,6 @@ IriSP.JSONSerializer.prototype.getId = function(name) {
     return;
 
   var e;
-  debugger;
   /* first get the list containing the tweets */
   e = IriSP.underscore.find(this._data["annotation-types"], 
                                   function(entry) { return (entry["dc:title"].indexOf(name) !== -1) });
