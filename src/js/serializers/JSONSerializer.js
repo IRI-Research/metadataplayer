@@ -243,10 +243,16 @@ IriSP.JSONSerializer.prototype.currentAnnotations = function(currentTime) {
   for (i in this._data.annotations) {
     var annotation = this._data.annotations[i];
     
-    if (IriSP.underscore.include(legal_ids, annotation.meta["id-ref"]) && annotation.begin <= currentTimeMs && annotation.end >= currentTimeMs)
-      ret_array.push(annotation);
+    if (IriSP.underscore.include(legal_ids, annotation.meta["id-ref"]) && 
+        annotation.begin <= currentTimeMs &&
+        annotation.end >= currentTimeMs)
+          ret_array.push(annotation);
   }
-
+ 
+  if (ret_array == []) {
+    console.log("ret_array empty, ", legal_ids);
+  }
+  
   return ret_array;
 };
 
@@ -284,4 +290,40 @@ IriSP.JSONSerializer.prototype.getNonTweetIds = function() {
   var illegal_values = this.getTweetIds();
   return IriSP.underscore.difference(ids, illegal_values);
   
+};
+
+/** return the id of the ligne de temps which contains name
+    @param name of the ligne de temps
+*/
+IriSP.JSONSerializer.prototype.getId = function(name) {
+  if (typeof(this._data.lists) === "undefined" || this._data.lists === null)
+    return;
+
+  var e;
+  debugger;
+  /* first get the list containing the tweets */
+  e = IriSP.underscore.find(this._data["annotation-types"], 
+                                  function(entry) { return (entry["dc:title"].indexOf(name) !== -1) });
+  
+  if (typeof(e) === "undefined")
+    return;
+    
+  var id = e.id;
+
+  return id;
+};
+
+/** return the id of the ligne de temps named "Chapitrage" */
+IriSP.JSONSerializer.prototype.getChapitrage = function() {
+  return this.getId("Chapitrage");
+};
+
+/** return the id of the ligne de temps named "Tweets" */
+IriSP.JSONSerializer.prototype.getTweets = function() {
+  return this.getId("Tweets");
+};
+
+/** return the id of the ligne de temps named "Contributions" */
+IriSP.JSONSerializer.prototype.getContributions = function() {
+  return this.getId("Contributions");
 };
