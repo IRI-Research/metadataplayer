@@ -78,8 +78,13 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     if (this.cinecast_version) {
       var currentTime = this._Popcorn.currentTime();
       var currentAnnotation = this._serializer.currentAnnotations(currentTime)[0];
+
       var beginTime = IriSP.msToTime(currentAnnotation.begin);
       var endTime = IriSP.msToTime(currentAnnotation.end);
+      
+      /* save the variable because the user may take some time writing his 
+         comment so the currentAnnottion may change when it's time to post it */
+      this._currentAnnotation = currentAnnotation;
       
       if (typeof(currentAnnotation.content) !== "undefined")
         this.selector.find(".Ldt-createAnnotation-Title").html(currentAnnotation.content.title);
@@ -159,6 +164,56 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
     this.selector.find(".Ldt-createAnnotation-endScreen-FbLink").attr("href", fbStatus);
     this.selector.find(".Ldt-createAnnotation-endScreen-GplusLink").attr("href", gpStatus);
             
-    this.selector.find(".Ldt-createAnnotation-endScreen").show();    
+    this.selector.find(".Ldt-createAnnotation-endScreen").show();
+
+        
+    if (typeof(this._currentAnnotation) === "undefined") {      
+      console.log("this._currentAnnotation undefined");
+      return;
+    }
+    
+    var apiJson = {annotations : [{}], meta: {}};
+    var annotation = apiJson["annotations"][0];
+    //annotation["type_title"] = "Contributions";
+    annotation["type_title"] = "";
+    //annotation["media"] = this._serializer.currentMedia()["id"];
+    annotation["media"] = "jeanpierremelville_lecerclerouge";
+    annotation["begin"] = this._currentAnnotation.begin;
+    annotation["end"] = this._currentAnnotation.end;
+    annotation["type"] = "c_23934F53-A24A-0106-3407-AA3BEF56DE19";
+    annotation.content = {};
+    annotation.content["data"] = contents;
+    
+    var meta = apiJson["meta"];
+    meta.creator = "An User";    
+    meta.created = Date().toString();
+    
+    annotation["tags"] = [];
+    
+    for (var i = 0; i < this.keywords.length; i++) {
+      var keyword = this.keywords[i];
+      if (contents.indexOf(keyword) != -1)
+        annotation["tags"].push(keyword);
+    }
+    
+    var jsonString = JSON.stringify(apiJson);
+    var project_id = this._serializer._data.meta.id;
+    
+    var url = Mustache.to_html("{{platf_url}}/ldtplatform/api/ldt/projects/f005b2ec-e27e-11df-8f82-00145ea4a2be.json",
+                                {platf_url: IriSP.platform_url, id: project_id}); 
+    IriSP.jQuery.ajax({
+                url: url,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: jsonString,
+                // bug with jquery >= 1.5, "json" adds a callback so we don't specify dataType
+                //dataType: 'json',
+                success: function(json, textStatus, XMLHttpRequest) {
+                    alert("success = " + json);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("ERROR = " + jqXHR.responseText + ", " + errorThrown);
+                }
+            });
   }
 };
