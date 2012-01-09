@@ -17,13 +17,22 @@ IriSP.AnnotationsListWidget.prototype.drawList = function() {
 
   var view_type = this._serializer.getContributions();
   var annotations = this._serializer._data.annotations;
+  var currentTime = this._Popcorn.currentTime();
+  
+  /* happens when the player hasn't yet loaded */
+  if (typeof(currentTime) === "undefined") {
+    window.setTimeout(IriSP.wrap(this, this.drawList), 4000);
+    return;
+  }
+  
   var list = [];
 
   if (typeof(view_type) === "undefined") {
-    console.log("not type suitable for display");
+    console.log("no type suitable for display");
     return;
   }
 
+  console.log(currentTime);
   for (i = 0; i < annotations.length; i++) {
     var annotation = annotations[i];
 
@@ -33,6 +42,11 @@ IriSP.AnnotationsListWidget.prototype.drawList = function() {
         continue;
     }
 
+    /* only get the annotations happening in the current chapter */
+    if (annotation.begin > currentTime || annotation.end <= currentTime) {
+        continue;
+    }
+    
     var a = annotation;
     var obj = {};
 
@@ -53,6 +67,7 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
 
   this.drawList();
   this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, this.redraw));
+  this._Popcorn.listen("seeked", IriSP.wrap(this, this.redraw));
 };
 
 IriSP.AnnotationsListWidget.prototype.redraw = function() {
