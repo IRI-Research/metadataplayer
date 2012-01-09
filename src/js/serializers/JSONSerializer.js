@@ -236,11 +236,8 @@ IriSP.JSONSerializer.prototype.currentAnnotations = function(currentTime, id) {
   var currentTimeMs = 1000 * currentTime;
 
   if (typeof(id) === "undefined") {
-    id = this.getChapitrage();
-  
-    if (typeof(id) === "undefined")    
       var legal_ids = this.getNonTweetIds();
-    else 
+  } else {
       legal_ids = [id];
   }
   
