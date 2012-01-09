@@ -21,7 +21,8 @@
   <div id="LdtPlayer"></div>
   
   <script  type="text/javascript">
-    var project_id = "af3b99e4-b695-11df-bfde-00145ea4a2be";
+    var platf_url = "http://localhost/pf/ldtplatform/ldt/";
+    var project_id = "47e3eef0-3ab4-11e1-9423-001d7d7c6d1d";
     var config = {            
         gui:{
             width:650,
@@ -32,7 +33,7 @@
             {type: "SliderWidget",
 						 metadata:{
 						  format:'cinelab',
-						  src:'http://localhost//pf/ldtplatform/ldt/cljson/id/' + project_id,
+						  src:platf_url + 'cljson/id/' + project_id,
 						  type:'json'}
 						},            
             
@@ -40,20 +41,20 @@
              container: "AnnotationsListContainer",             
 						 metadata:{
 						  format:'cinelab',
-						  src:'http://localhost//pf/ldtplatform/ldt/cljson/id/' + project_id,
+						  src:platf_url + 'cljson/id/' + project_id,
 						  type:'json'}
 						},
             {type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
              mode: "radio",
              metadata:{
               format:'cinelab',
-              src:'http://localhost//pf/ldtplatform/ldt/cljson/id/' + project_id,
+              src:platf_url + 'cljson/id/' + project_id,
               type:'json'}
             },
             {type: "SegmentsWidget",
              metadata:{
               format:'cinelab',
-              src:'http://localhost//pf/ldtplatform/ldt/cljson/id/' + project_id,
+              src:platf_url + 'cljson/id/' + project_id,
               type:'json'},
              requires: [{
               type: "TooltipWidget",
@@ -67,13 +68,13 @@
             {type: "SliceWidget",
              metadata:{
               format:'cinelab',
-              src:'http://localhost//pf/ldtplatform/ldt/cljson/id/' + project_id,
+              src:platf_url + 'cljson/id/' + project_id,
               type:'json'}
             },            
             {type: "ArrowWidget",
              metadata:{
               format:'cinelab',
-              src:'http://localhost//pf/ldtplatform/ldt/cljson/id/' + project_id,
+              src:platf_url + 'cljson/id/' + project_id,
               type:'json'}
             },
 
@@ -81,19 +82,19 @@
             {type: "AnnotationsWidget",
 						 metadata:{
 						  format:'cinelab',
-						  src:'http://localhost//pf/ldtplatform/ldt/cljson/id/' + project_id,
+						  src:platf_url + 'cljson/id/' + project_id,
 						  type:'json'}
 						},
             {type: "TweetsWidget",
 						 metadata:{
 						  format:'cinelab',
-						  src:'http://localhost//pf/ldtplatform/ldt/cljson/id/' + project_id,
+						  src:platf_url + 'cljson/id/' + project_id,
 						  type:'json'}
 						},
             {type: "createAnnotationWidget",
 						 metadata:{
 						  format:'cinelab',
-						  src:'http://localhost//pf/ldtplatform/ldt/cljson/id/' + project_id,
+						  src:platf_url + 'cljson/id/' + project_id,
 						  type:'json'}
 						}      
             ]
@@ -109,13 +110,13 @@
                { type: "MediaFragment",
   			     		 metadata:{
 	  	  			   format:'cinelab',
-		  				   src:'http://localhost//pf/ldtplatform/ldt/cljson/id/' + project_id,
+		  				   src:platf_url + 'cljson/id/' + project_id,
 						     type:'json'}
 						}]
 
     };
     
-    IriSP.loadLibs(IriSP.lib, config, "http://localhost//pf/ldtplatform/ldt/cljson/id/af3b99e4-b695-11df-bfde-00145ea4a2be",
+    IriSP.loadLibs(IriSP.lib, config, platf_url + 'cljson/id/' + project_id,
       function() {   
               var layoutManager = new IriSP.LayoutManager(config.gui.container);
               var pop = IriSP.configurePopcorn(layoutManager, config.player);
