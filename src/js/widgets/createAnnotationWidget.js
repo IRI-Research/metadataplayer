@@ -126,6 +126,7 @@ IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
 
 /** handle clicks on "send annotation" button */
 IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
+  var _this = this;
   var textfield = this.selector.find(".Ldt-createAnnotation-Description");
   var contents = textfield.val();
 
@@ -176,11 +177,10 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
     var annotation = apiJson["annotations"][0];
     //annotation["type_title"] = "Contributions";
     annotation["type_title"] = "";
-    //annotation["media"] = this._serializer.currentMedia()["id"];
-    annotation["media"] = "jeanpierremelville_lecerclerouge";
+    annotation["media"] = this._serializer.currentMedia()["id"];
     annotation["begin"] = this._currentAnnotation.begin;
     annotation["end"] = this._currentAnnotation.end;
-    annotation["type"] = "c_23934F53-A24A-0106-3407-AA3BEF56DE19";
+    annotation["type"] = this._serializer.getContributions();
     annotation.content = {};
     annotation.content["data"] = contents;
     
@@ -199,17 +199,27 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
     var jsonString = JSON.stringify(apiJson);
     var project_id = this._serializer._data.meta.id;
     
-    var url = Mustache.to_html("{{platf_url}}/ldtplatform/api/ldt/projects/f005b2ec-e27e-11df-8f82-00145ea4a2be.json",
-                                {platf_url: IriSP.platform_url, id: project_id}); 
+    var url = Mustache.to_html("{{platf_url}}/ldtplatform/api/ldt/projects/{{id}}.json",
+                                {platf_url: IriSP.platform_url, id: project_id});
+    console.log(url);
     IriSP.jQuery.ajax({
                 url: url,
                 type: 'PUT',
                 contentType: 'application/json',
                 data: jsonString,
                 // bug with jquery >= 1.5, "json" adds a callback so we don't specify dataType
-                //dataType: 'json',
+                dataType: 'json',
                 success: function(json, textStatus, XMLHttpRequest) {
-                    alert("success = " + json);
+                    /* add the annotation to the annotations and tell the world */
+
+                    delete annotation.tags;
+                    annotation.content.description = annotation.content.data;
+                    delete annotation.content.data;
+                    annotation.id = json.annotations[0].id;
+                    annotation.title = _this._currentAnnotation.content.title;
+                    // everything is shared so there's no need to propagate the change
+                    _this._serializer._data.annotations.push(annotation);
+                    _this._Popcorn.trigger("IriSP.createAnnotationWidget.addedAnnotation");
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert("ERROR = " + jqXHR.responseText + ", " + errorThrown);
