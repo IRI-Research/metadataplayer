@@ -27,16 +27,16 @@ IriSP.SparklineWidget.prototype.draw = function() {
   var duration = +this._serializer.currentMedia().meta["dc:duration"];
   var time_step = duration / num_columns; /* the time interval between two columns */
   var results = [];
-  var i = 0; /* the index in the loop */
+  var i = 0; /* the index in the loop */  
 
   /* this algorithm makes one assumption : that the array is sorted 
      (it's done for us by the JSONSerializer). We go through the array 
      and count how many comments fall within a peculiar time piece.
      As i is preserved between each iteration, it's O(n).
   */
-  for(var j = 0; j < num_columns; j++) {
+  
+  for(var j = 0; j < num_columns && i < this._serializer._data.annotations.length; j++) {    
     var count = 0;
-    
     var annotation_begin = +(this._serializer._data.annotations[i].begin);
     
     while(annotation_begin >= j * time_step && annotation_begin <= (j + 1) * time_step ) {
@@ -51,6 +51,7 @@ IriSP.SparklineWidget.prototype.draw = function() {
     
     results.push(count);
   }
+
   
   this.selector.append(templ);
   this.selector.find(".Ldt-sparkLine").css("background", "#c7c8cc");
