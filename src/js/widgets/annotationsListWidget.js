@@ -11,7 +11,8 @@ IriSP.AnnotationsListWidget.prototype.clear = function() {
 IriSP.AnnotationsListWidget.prototype.clearWidget = function() {
 };
 
-IriSP.AnnotationsListWidget.prototype.draw = function() {
+/** draw the annotation list */
+IriSP.AnnotationsListWidget.prototype.drawList = function() {
   var _this = this;
 
   var view_type = this._serializer.getContributions();
@@ -45,5 +46,15 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
   }
 
   var widgetMarkup = IriSP.templToHTML(IriSP.annotationsListWidget_template, {annotations: list});
-  this.selector.append(widgetMarkup);
+  this.selector.html(widgetMarkup);
+};
+
+IriSP.AnnotationsListWidget.prototype.draw = function() {
+
+  this.drawList();
+  this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, this.redraw));
+};
+
+IriSP.AnnotationsListWidget.prototype.redraw = function() {
+  this.drawList();
 };
