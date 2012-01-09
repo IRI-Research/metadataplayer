@@ -25,7 +25,7 @@ IriSP.PopcornReplacement.trigger = function(msg, params) {
     return;
 
   var d = IriSP.PopcornReplacement.msgPump[msg];
-  var i = 0;
+
   for(var i = 0; i < d.length; i++) {
     d[i].call(window, params);
   }
