@@ -136,23 +136,24 @@ IriSP.PolemicWidget.prototype.draw = function() {
       this._serializer.sync(function(data) { loaded_callback.call(self, data) });
       
       function loaded_callback (json) {
-        
-      var view_type = this._serializer.getTweetIds()[0];        
+      var view_type = this._serializer.getTweets();
+
       if (typeof(view_type) === "undefined") {
-        // default to guessing if nothing else works.
-        view = json.views[0];
-        
-        // 
-        tweet_annot_type = null;
-        if(typeof(view.annotation_types) !== "undefined") {
-          if (view.annotation_types.length >= 1) {
-            view_type = view.annotation_types[0];
-          } else {
-            console.log("PolemicWidget: invalid file");
-          }
-        }      
+        var view_type = this._serializer.getTweetIds()[0];      
+        if (typeof(view_type) === "undefined") {
+          // default to guessing if nothing else works.
+          view = json.views[0];
+          
+          if(typeof(view.annotation_types) !== "undefined") {
+            if (view.annotation_types.length >= 1) {
+              view_type = view.annotation_types[0];
+            } else {
+              console.log("PolemicWidget: invalid file");
+            }
+          }      
+        }
       }
-        
+      
       for(var i = 0; i < json.annotations.length; i++) {
         var item = json.annotations[i];        
         var MyTime  = Math.floor(item.begin/duration*lineSize);

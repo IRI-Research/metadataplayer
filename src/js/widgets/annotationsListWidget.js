@@ -14,7 +14,7 @@ IriSP.AnnotationsListWidget.prototype.clearWidget = function() {
 IriSP.AnnotationsListWidget.prototype.draw = function() {
   var _this = this;
 
-  var view_type = this._serializer.getNonTweetIds()[0];
+  var view_type = this._serializer.getContributions();
   var annotations = this._serializer._data.annotations;
   var list = [];
 

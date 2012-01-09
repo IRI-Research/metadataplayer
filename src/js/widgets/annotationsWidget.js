@@ -55,7 +55,11 @@ IriSP.AnnotationsWidget.prototype.draw = function() {
 
   this._Popcorn.listen("IriSP.PlayerWidget.AnnotateButton.clicked", 
                         IriSP.wrap(this, this.handleAnnotateSignal));  
-  var legal_ids = this._serializer.getNonTweetIds();
+  var legal_ids = [];
+  if (typeof(this._serializer.getChapitrage()) !== "undefined")
+    legal_ids.push(this._serializer.getChapitrage());
+  else 
+    legal_ids = this._serializer.getNonTweetIds();
   
   var annotations = this._serializer._data.annotations;
   var i;

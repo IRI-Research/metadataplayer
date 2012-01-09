@@ -228,18 +228,21 @@ IriSP.JSONSerializer.prototype.searchTweetsOccurences = function(searchString) {
    currentTime is in seconds.
    
    @param currentTime the time at which we search.
+   @param (optional) the if of the type of the annotations we want to get.
  */
 
-IriSP.JSONSerializer.prototype.currentAnnotations = function(currentTime) {
+IriSP.JSONSerializer.prototype.currentAnnotations = function(currentTime, id) {
   var view;
   var currentTimeMs = 1000 * currentTime;
 
-  var id = this.getChapitrage();
-  /* FIXME: ugly */
-  if (typeof(id) === "undefined")    
-    var legal_ids = this.getNonTweetIds();
-  else 
-    legal_ids = [id];
+  if (typeof(id) === "undefined") {
+    id = this.getChapitrage();
+  
+    if (typeof(id) === "undefined")    
+      var legal_ids = this.getNonTweetIds();
+    else 
+      legal_ids = [id];
+  }
   
   var ret_array = [];
   
