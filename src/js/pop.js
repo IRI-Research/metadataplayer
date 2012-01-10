@@ -3,11 +3,7 @@
 
 IriSP.PopcornReplacement = {
   msgPump : {} /* used by jquery to receive and send messages */,
-  __fake_currentTime : 0, /* when the stream is too slow, some events which depend
-                     on event "seeked" react to quickly and pickup the wrong currentTime.
-                     That's why we store the future currentTime in a var until the player
-                     has finished seeking */
-  __faking : false
+  __delay_seek_signal : false
 };
 
 IriSP.PopcornReplacement.media = { 
@@ -81,17 +77,12 @@ IriSP.PopcornReplacement.jwplayer = function(container, options) {
 };
 
 IriSP.PopcornReplacement.currentTime = function(time) {
-  if (typeof(time) === "undefined") {
-      if (IriSP.PopcornReplacement.__faking === true) {
-        return IriSP.PopcornReplacement.__fake_currentTime;
-      }
-        
+  if (typeof(time) === "undefined") {        
       return jwplayer(IriSP.PopcornReplacement._container).getPosition();            
   } else {
      var currentTime = +time;
      jwplayer( IriSP.PopcornReplacement._container ).seek( currentTime );
-     IriSP.PopcornReplacement.__fake_currentTime = currentTime;
-     IriSP.PopcornReplacement.trigger("seeked");
+     IriSP.PopcornReplacement.__delay_seek_signal = true;     
      //return jwplayer(IriSP.PopcornReplacement._container).getPosition();            
      return currentTime;
   }
@@ -190,14 +181,15 @@ IriSP.PopcornReplacement.__seekHandler = function(event) {
      
    }
 
+  if (IriSP.PopcornReplacement.__delay_seek_signal === true) {
+    console.log(IriSP.PopcornReplacement.currentTime());
+    IriSP.PopcornReplacement.trigger("seeked");
+  }
   IriSP.PopcornReplacement.trigger("timeupdate");
 };
 
 
 IriSP.PopcornReplacement.__playHandler = function(event) {
-  if (IriSP.PopcornReplacement.__faking === true)
-    IriSP.PopcornReplacement.__faking = false;
-  
   IriSP.PopcornReplacement.media.paused = false;
   IriSP.PopcornReplacement.trigger("play");
 };

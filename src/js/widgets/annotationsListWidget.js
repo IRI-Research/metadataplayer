@@ -1,5 +1,7 @@
 IriSP.AnnotationsListWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
+  this.__counter = 0;
+  this.__oldList = [];
 };
 
 
@@ -18,13 +20,7 @@ IriSP.AnnotationsListWidget.prototype.drawList = function() {
   var view_type = this._serializer.getContributions();
   var annotations = this._serializer._data.annotations;
   var currentTime = this._Popcorn.currentTime();
-  
-  /* happens when the player hasn't yet loaded */
-  if (typeof(currentTime) === "undefined") {
-    window.setTimeout(IriSP.wrap(this, this.drawList), 4000);
-    return;
-  }
-  
+    
   var list = [];
 
   if (typeof(view_type) === "undefined") {
@@ -58,17 +54,48 @@ IriSP.AnnotationsListWidget.prototype.drawList = function() {
     list.push(obj);
   }
 
-  var widgetMarkup = IriSP.templToHTML(IriSP.annotationsListWidget_template, {annotations: list});
-  this.selector.html(widgetMarkup);
+  var idList = IriSP.underscore.pluck(list, "id").sort();
+  
+  if (idList.length !== this.__oldList.length) {
+    var widgetMarkup = IriSP.templToHTML(IriSP.annotationsListWidget_template, {annotations: list});
+    this.selector.html(widgetMarkup);
+  }
+    
+  var res = 1;
+  for (var i = 0; i < idList.length; i++) {
+    if (idList[i] !== this.__oldList[i])
+      res = 0;
+      break;
+  }
+  
+  this.__oldList = idList; /* save for next call */
+  
+  /* the two lists are equal, no need to redraw */
+  if (res === 1) {
+    return;
+  } else {
+    var widgetMarkup = IriSP.templToHTML(IriSP.annotationsListWidget_template, {annotations: list});
+    this.selector.html(widgetMarkup);
+  }
+  
 };
 
 IriSP.AnnotationsListWidget.prototype.draw = function() {
 
   this.drawList();
-  this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, this.redraw));
-  this._Popcorn.listen("seeked", IriSP.wrap(this, this.redraw));
+  this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, this.drawList));
+  this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.redraw));
 };
 
 IriSP.AnnotationsListWidget.prototype.redraw = function() {
+  /* we use some kind of counter to mitigate the fact that the function
+     is supposed to be called at every timeupdate */
+/*  if (this.__counter < 4) {
+    this.__counter++;
+  } else {
+    this.drawList();
+    this.__counter = 0;
+  }*/
+  
   this.drawList();
 };
