@@ -32,7 +32,6 @@ IriSP.AnnotationsListWidget.prototype.drawList = function() {
     return;
   }
 
-  console.log(currentTime);
   for (i = 0; i < annotations.length; i++) {
     var annotation = annotations[i];
 
@@ -43,18 +42,18 @@ IriSP.AnnotationsListWidget.prototype.drawList = function() {
     }
 
     /* only get the annotations happening in the current chapter */
-    if (annotation.begin > currentTime || annotation.end <= currentTime) {
+    if (!(annotation.begin <= currentTime * 1000 && annotation.end > currentTime * 1000)) {        
         continue;
     }
-    
+
     var a = annotation;
     var obj = {};
 
     obj["id"] = a.id;
     obj["title"] = a.content.title;
     obj["desc"] = a.content.description;
-    obj["begin"] = IriSP.msToTime(a.begin);
-    obj["end"] = IriSP.msToTime(a.end);
+    obj["begin"] = IriSP.msToTime(annotation.begin);
+    obj["end"] = IriSP.msToTime(annotation.end);
 
     list.push(obj);
   }
