@@ -211,12 +211,13 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
                 dataType: 'json',
                 success: function(json, textStatus, XMLHttpRequest) {
                     /* add the annotation to the annotations and tell the world */
-
                     delete annotation.tags;
                     annotation.content.description = annotation.content.data;
                     delete annotation.content.data;
                     annotation.id = json.annotations[0].id;
                     annotation.title = _this._currentAnnotation.content.title;
+                    annotation.meta = meta;
+                    annotation.meta["id-ref"] = annotation["type"];
                     // everything is shared so there's no need to propagate the change
                     _this._serializer._data.annotations.push(annotation);
                     _this._Popcorn.trigger("IriSP.createAnnotationWidget.addedAnnotation");
