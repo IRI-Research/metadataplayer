@@ -39,9 +39,12 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
     this.selector.find("#" + id).click(function(keyword) { return function() {
       var contents = _this.selector.find(".Ldt-createAnnotation-Description").val();
       if (contents.indexOf(keyword) != -1) {
-        var newVal = contents.replace(keyword, "");        
+        var newVal = contents.replace(" " + keyword, "");        
       } else {
-        var newVal = contents + keyword;      
+        if (contents === "")
+          var newVal = keyword;
+        else
+          var newVal = contents + " " + keyword;      
       }
       
       _this.selector.find(".Ldt-createAnnotation-Description").val(newVal);
@@ -143,7 +146,7 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
       // the other event handlers.
       textfield.bind("js_mod.tmp propertychange.tmp keyup.tmp input.tmp paste.tmp", IriSP.wrap(this, function() {
                       var contents = textfield.val();
-                      console.log(contents);
+                      
                       if (contents !== "") {
                         this.selector.find(".Ldt-createAnnotation-errorMessage").hide();
                         textfield.css("background-color", "");
