@@ -27,8 +27,12 @@ IriSP.JSONSerializer.prototype.sync = function(callback) {
   var self = this;
 
   var fn = function(data) {      
-      self._data = data;      
-      // sort the data too     
+      self._data = data;  
+      if (typeof(self._data["annotations"]) === "undefined" ||
+          self._data["annotations"] === null)
+          self._data["annotations"] = [];
+      
+      // sort the data too       
       self._data["annotations"].sort(function(a, b) 
           { var a_begin = +a.begin;
             var b_begin = +b.begin;
