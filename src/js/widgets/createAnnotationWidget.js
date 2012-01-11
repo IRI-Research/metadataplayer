@@ -175,12 +175,15 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
     
     var apiJson = {annotations : [{}], meta: {}};
     var annotation = apiJson["annotations"][0];
-    //annotation["type_title"] = "Contributions";
-    annotation["type_title"] = "";
+    
     annotation["media"] = this._serializer.currentMedia()["id"];
     annotation["begin"] = this._currentAnnotation.begin;
     annotation["end"] = this._currentAnnotation.end;
     annotation["type"] = this._serializer.getContributions();
+    if (typeof(annotation["type"]) === "undefined")
+      annotation["type"] = "";
+    
+    annotation["type_title"] = "Contributions";
     annotation.content = {};
     annotation.content["data"] = contents;
     
@@ -201,7 +204,7 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
     
     var url = Mustache.to_html("{{platf_url}}/ldtplatform/api/ldt/projects/{{id}}.json",
                                 {platf_url: IriSP.platform_url, id: project_id});
-    console.log(url);
+    console.log(url, jsonString);
     IriSP.jQuery.ajax({
                 url: url,
                 type: 'PUT',
