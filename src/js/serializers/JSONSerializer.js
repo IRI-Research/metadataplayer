@@ -265,6 +265,12 @@ IriSP.JSONSerializer.prototype.currentAnnotations = function(currentTime, id) {
   return ret_array;
 };
 
+/** return the current chapitre
+    @param currentTime the current time, in seconds.
+*/
+IriSP.JSONSerializer.prototype.currentChapitre = function(currentTime) {
+  return this.currentAnnotations(currentTime, this.getChapitrage())[0];
+};
 
 /** returns a list of ids of tweet lines (aka: groups in cinelab) */
 IriSP.JSONSerializer.prototype.getTweetIds = function() {
