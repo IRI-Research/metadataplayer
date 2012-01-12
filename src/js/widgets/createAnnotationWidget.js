@@ -94,7 +94,6 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
       
       code = {start: annotation.begin / 1000, end: annotation.end / 1000,
               onStart: function(annotation) { return function() {
-                      console.log(annotation);
                       if (typeof(annotation.content) !== "undefined")
                         _this.selector.find(".Ldt-createAnnotation-Title").html(annotation.content.title);
 
