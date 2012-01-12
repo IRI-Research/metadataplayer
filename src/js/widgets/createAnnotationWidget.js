@@ -4,6 +4,12 @@ IriSP.createAnnotationWidget = function(Popcorn, config, Serializer) {
   this.keywords = IriSP.widgetsDefaults["createAnnotationWidget"].keywords;
   this.cinecast_version = IriSP.widgetsDefaults["createAnnotationWidget"].cinecast_version;
   this.ids = {}; /* a dictionnary linking buttons ids to keywords */
+  
+  /* variables to save the current position of the slicer */
+  if (this.cinecast_version) {
+    this.sliceLeft = 0;
+    this.sliceWidth = 0;
+  }
 };
 
 
@@ -135,13 +141,22 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     
     // block the arrow.
     this._Popcorn.trigger("IriSP.ArrowWidget.blockArrow");
+    
     var duration = +this._serializer.currentMedia().meta["dc:duration"];
+        
     var currentChapter = this._serializer.currentChapitre(currentTime);
-    console.log(currentTime);
-    var left = (currentChapter.begin / duration) * this.selector.width();
-    var width = (currentChapter.end / duration) * this.selector.width() - left;
-    console.log([left, width]);
+    if (typeof(currentChapter) === "undefined") {
+      var left = this.selector.width() / 2;
+      var width = this.selector.width() / 10;
+    } else {
+      var left = (currentChapter.begin / duration) * this.selector.width();
+      var width = (currentChapter.end / duration) * this.selector.width() - left;
+    }
+    
+    this.sliceLeft = left;
+    this.sliceWidth = width;
     this._Popcorn.trigger("IriSP.SliceWidget.position", [left, width]);
+    this._Popcorn.listen("IriSP.SliceWidget.zoneChange", IriSP.wrap(this, this.handleSliderChanges));
     this._Popcorn.trigger("IriSP.SliceWidget.show");
   }
 };
@@ -172,7 +187,7 @@ IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
 
 IriSP.createAnnotationWidget.prototype.showStartScreen = function() {
   this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().show();
-  this.selector.find("Ldt-createAnnotation-Description").val("");
+  this.selector.find("Ldt-createAnnotation-Description").val("Type your annotation here.");
   this.selector.find(".Ldt-createAnnotation-endScreen").hide();    
 };
 
@@ -219,11 +234,6 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
                    }));
   } else {
     this.showEndScreen();
-        
-    if (typeof(this._currentAnnotation) === "undefined") {      
-      console.log("this._currentAnnotation undefined");
-      return;
-    }
     
     this.sendLdtData(contents, function() {
                     if (_this.cinecast_version) {
@@ -236,14 +246,30 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
   }
 };
 
+IriSP.createAnnotationWidget.prototype.handleSliderChanges = function(params) {
+  this.sliceLeft = params[0];
+  this.sliceWidth = params[1];
+};
+
 IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback) {
   var _this = this;
   var apiJson = {annotations : [{}], meta: {}};
   var annotation = apiJson["annotations"][0];
   
   annotation["media"] = this._serializer.currentMedia()["id"];
-  annotation["begin"] = this._currentAnnotation.begin;
-  annotation["end"] = this._currentAnnotation.end;
+  
+  if (this.cinecast_version) {
+    if (typeof(this._currentAnnotation) !== "undefined") {
+      annotation["begin"] = this._currentAnnotation.begin;
+      annotation["end"] = this._currentAnnotation.end;
+    }
+  } else {
+    var duration = +this._serializer.currentMedia().meta["dc:duration"];
+    annotation["begin"] = duration * (this.sliceLeft / 100);
+    annotation["end"] = duration * ((this.sliceWidth + this.sliceLeft) / 100);
+    console.log(annotation["begin"], annotation["end"]);
+  }
+  
   annotation["type"] = this._serializer.getContributions();
   if (typeof(annotation["type"]) === "undefined")
     annotation["type"] = "";
@@ -277,6 +303,7 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
       data: jsonString,               
       dataType: 'json',
       success: function(json, textStatus, XMLHttpRequest) {
+                    debugger;
                     /* add the annotation to the annotations and tell the world */
                     delete annotation.tags;
                     annotation.content.description = annotation.content.data;
