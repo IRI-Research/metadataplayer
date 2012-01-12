@@ -33,7 +33,7 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
 
     /* filter the annotations whose type is not the one we want */
     if (typeof(annotation.meta) !== "undefined" && typeof(annotation.meta["id-ref"]) !== "undefined"
-          && annotation.meta["id-ref"] != view_type) {
+          && annotation.meta["id-ref"] !== view_type) {
         continue;
     }
 
