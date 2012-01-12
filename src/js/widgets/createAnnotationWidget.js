@@ -26,7 +26,9 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   
 	this.selector.append(annotationMarkup);
   
-  this.selector.hide();
+  if (!this.cinecast_version)
+    this.selector.hide();
+  
   for (var i = 0; i < this.keywords.length; i++) {
     var keyword = this.keywords[i];
     var id = IriSP.guid("button_");
@@ -39,7 +41,9 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
     this.selector.find("#" + id).click(function(keyword) { return function() {
       var contents = _this.selector.find(".Ldt-createAnnotation-Description").val();
       if (contents.indexOf(keyword) != -1) {
-        var newVal = contents.replace(" " + keyword, "");        
+        var newVal = contents.replace(" " + keyword, "");
+        if (newVal == contents)
+          newVal = contents.replace(keyword, "");
       } else {
         if (contents === "")
           var newVal = keyword;
@@ -59,43 +63,70 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   
   this.selector.find(".Ldt-createAnnotation-Description")
                .bind("propertychange keyup input paste", IriSP.wrap(this, this.handleTextChanges));
+               
+  /* the cinecast version of the player is supposed to pause when the user clicks on the button */
+  if (this.cinecast_version)
+    this.selector.find(".Ldt-createAnnotation-Description")
+                 .one("propertychange keyup input paste js_mod", 
+                 function() { if (!_this._Popcorn.media.paused) _this._Popcorn.pause() });
+  
+  /* the cinecast version expects the user to comment on a defined segment.
+     As the widget is always shown, we need a way to update it's content as
+     time passes. We do this like we did with the annotationsWidget : we schedule
+     a .code start function which will be called at the right time.
+  */
+  if (this.cinecast_version) {
+    var legal_ids;
+    if (typeof(this._serializer.getChapitrage()) !== "undefined")
+      legal_id = this._serializer.getChapitrage();
+    else 
+      legal_id = this._serializer.getNonTweetIds()[0];
+    
+    var annotations = this._serializer._data.annotations;
+    var i;
+  
+    for (i in annotations) {     
+      var annotation = annotations[i];
+      if (typeof(annotation.meta) !== "undefined" && typeof(annotation.meta["id-ref"]) !== "undefined"
+            && legal_id !== annotation.meta["id-ref"]) {
+          continue;
+      }
+      
+      code = {start: annotation.begin / 1000, end: annotation.end / 1000,
+              onStart: function(annotation) { return function() {
+                      console.log(annotation);
+                      if (typeof(annotation.content) !== "undefined")
+                        _this.selector.find(".Ldt-createAnnotation-Title").html(annotation.content.title);
+
+                      _this._currentAnnotation = annotation;
+                      var beginTime = IriSP.msToTime(annotation.begin);
+                      var endTime = IriSP.msToTime(annotation.end);
+                      var timeTemplate = IriSP.templToHTML("- ({{begin}} - {{ end }})", {begin: beginTime, end: endTime });
+                      _this.selector.find(".Ldt-createAnnotation-TimeFrame").html(timeTemplate);
+              } }(annotation)
+            };
+      
+      this._Popcorn.code(code);
+    }
+  }
   
   this.selector.find(".Ldt-createAnnotation-submitButton").click(IriSP.wrap(this, this.handleButtonClick));
-  this._Popcorn.listen("IriSP.PlayerWidget.AnnotateButton.clicked", 
-                        IriSP.wrap(this, this.handleAnnotateSignal));  
+  
+  if (!this.cinecast_version)
+    this._Popcorn.listen("IriSP.PlayerWidget.AnnotateButton.clicked", 
+                          IriSP.wrap(this, this.handleAnnotateSignal));  
 };
 
 IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
+  // note : this signal is only handled by the non-cinecast version.
   if (this._hidden == false) {
     this.selector.hide();
     this._hidden = true;
-    /* reinit the fields */
-    
-    this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().show();
-    this.selector.find("Ldt-createAnnotation-Description").val("");
-    this.selector.find(".Ldt-createAnnotation-endScreen").hide();
     
     // free the arrow.
     this._Popcorn.trigger("IriSP.ArrowWidget.releaseArrow");
   } else {
-    if (this.cinecast_version) {
-      var currentTime = this._Popcorn.currentTime();
-      var currentAnnotation = this._serializer.currentAnnotations(currentTime)[0];
-
-      var beginTime = IriSP.msToTime(currentAnnotation.begin);
-      var endTime = IriSP.msToTime(currentAnnotation.end);
-      
-      /* save the variable because the user may take some time writing his 
-         comment so the currentAnnottion may change when it's time to post it */
-      this._currentAnnotation = currentAnnotation;
-      
-      if (typeof(currentAnnotation.content) !== "undefined")
-        this.selector.find(".Ldt-createAnnotation-Title").html(currentAnnotation.content.title);
-
-      var timeTemplate = IriSP.templToHTML("- ({{begin}} - {{ end }})", {begin: beginTime, end: endTime });
-      this.selector.find(".Ldt-createAnnotation-TimeFrame").html(timeTemplate);
-    }
-    
+    this.showStartScreen();
     this.selector.show();
     this._hidden = false;
     
@@ -103,6 +134,7 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     this._Popcorn.trigger("IriSP.ArrowWidget.blockArrow");
   }
 };
+
 
 /** watch for changes in the textfield and change the buttons accordingly */
 IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
@@ -127,14 +159,37 @@ IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
   }
 };
 
+IriSP.createAnnotationWidget.prototype.showStartScreen = function() {
+  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().show();
+  this.selector.find("Ldt-createAnnotation-Description").val("");
+  this.selector.find(".Ldt-createAnnotation-endScreen").hide();    
+};
+
+IriSP.createAnnotationWidget.prototype.showEndScreen = function() {
+  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+  
+  if (this.cinecast_version) {
+    this.selector.find(".Ldt-createAnnotation-Title").parent().show();      
+  }
+
+  var twStatus = IriSP.mkTweetUrl(document.location.href);
+  var gpStatus = IriSP.mkGplusUrl(document.location.href);
+  var fbStatus = IriSP.mkFbUrl(document.location.href);
+  
+  this.selector.find(".Ldt-createAnnotation-endScreen-TweetLink").attr("href", twStatus);
+  this.selector.find(".Ldt-createAnnotation-endScreen-FbLink").attr("href", fbStatus);
+  this.selector.find(".Ldt-createAnnotation-endScreen-GplusLink").attr("href", gpStatus);
+          
+  this.selector.find(".Ldt-createAnnotation-endScreen").show();
+};
+
 /** handle clicks on "send annotation" button */
 IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
   var _this = this;
   var textfield = this.selector.find(".Ldt-createAnnotation-Description");
   var contents = textfield.val();
 
-  if (contents === "") {
-  
+  if (contents === "") {  
     if (this.selector.find(".Ldt-createAnnotation-errorMessage").length === 0) {
       this.selector.find(".Ldt-createAnnotation-Container")
                    .after(IriSP.templToHTML(IriSP.createAnnotation_errorMessage_template));
@@ -142,80 +197,75 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
     } else {
       this.selector.find(".Ldt-createAnnotation-errorMessage").show();
     }
-      // use namespaced events to be able to unbind them quickly and without unbinding
-      // the other event handlers.
-      textfield.bind("js_mod.tmp propertychange.tmp keyup.tmp input.tmp paste.tmp", IriSP.wrap(this, function() {
+
+      textfield.one("js_mod propertychange keyup input paste", IriSP.wrap(this, function() {
                       var contents = textfield.val();
                       
                       if (contents !== "") {
                         this.selector.find(".Ldt-createAnnotation-errorMessage").hide();
                         textfield.css("background-color", "");
-                        textfield.unbind(".tmp");
                       }
                    }));
   } else {
-    this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
-    
-    if (this.cinecast_version) {
-      this.selector.find(".Ldt-createAnnotation-Title").parent().show();      
-    }
-
-    var twStatus = IriSP.mkTweetUrl(document.location.href);
-    var gpStatus = IriSP.mkGplusUrl(document.location.href);
-    var fbStatus = IriSP.mkFbUrl(document.location.href);
-    
-    this.selector.find(".Ldt-createAnnotation-endScreen-TweetLink").attr("href", twStatus);
-    this.selector.find(".Ldt-createAnnotation-endScreen-FbLink").attr("href", fbStatus);
-    this.selector.find(".Ldt-createAnnotation-endScreen-GplusLink").attr("href", gpStatus);
-            
-    this.selector.find(".Ldt-createAnnotation-endScreen").show();
-
+    this.showEndScreen();
         
     if (typeof(this._currentAnnotation) === "undefined") {      
       console.log("this._currentAnnotation undefined");
       return;
     }
     
-    var apiJson = {annotations : [{}], meta: {}};
-    var annotation = apiJson["annotations"][0];
-    
-    annotation["media"] = this._serializer.currentMedia()["id"];
-    annotation["begin"] = this._currentAnnotation.begin;
-    annotation["end"] = this._currentAnnotation.end;
-    annotation["type"] = this._serializer.getContributions();
-    if (typeof(annotation["type"]) === "undefined")
-      annotation["type"] = "";
-    
-    annotation["type_title"] = "Contributions";
-    annotation.content = {};
-    annotation.content["data"] = contents;
-    
-    var meta = apiJson["meta"];
-    meta.creator = "An User";    
-    meta.created = Date().toString();
-    
-    annotation["tags"] = [];
-    
-    for (var i = 0; i < this.keywords.length; i++) {
-      var keyword = this.keywords[i];
-      if (contents.indexOf(keyword) != -1)
-        annotation["tags"].push(keyword);
-    }
-    
-    var jsonString = JSON.stringify(apiJson);
-    var project_id = this._serializer._data.meta.id;
-    
-    var url = Mustache.to_html("{{platf_url}}/ldtplatform/api/ldt/projects/{{id}}.json",
-                                {platf_url: IriSP.platform_url, id: project_id});
-    console.log(url, jsonString);
-    IriSP.jQuery.ajax({
-                url: url,
-                type: 'PUT',
-                contentType: 'application/json',
-                data: jsonString,
-                // bug with jquery >= 1.5, "json" adds a callback so we don't specify dataType
-                dataType: 'json',
-                success: function(json, textStatus, XMLHttpRequest) {
+    this.sendLdtData(contents, function() {
+                    if (_this.cinecast_version) {
+                        if (_this._Popcorn.media.paused)
+                          _this._Popcorn.play();
+                        
+                        window.setTimeout(IriSP.wrap(_this, function() { this.showStartScreen(); }), 5000);
+                    }
+                    });
+  }
+};
+
+IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback) {
+  var _this = this;
+  var apiJson = {annotations : [{}], meta: {}};
+  var annotation = apiJson["annotations"][0];
+  
+  annotation["media"] = this._serializer.currentMedia()["id"];
+  annotation["begin"] = this._currentAnnotation.begin;
+  annotation["end"] = this._currentAnnotation.end;
+  annotation["type"] = this._serializer.getContributions();
+  if (typeof(annotation["type"]) === "undefined")
+    annotation["type"] = "";
+  
+  annotation["type_title"] = "Contributions";
+  annotation.content = {};
+  annotation.content["data"] = contents;
+  
+  var meta = apiJson["meta"];
+  meta.creator = "An User";    
+  meta.created = Date().toString();
+  
+  annotation["tags"] = [];
+  
+  for (var i = 0; i < this.keywords.length; i++) {
+    var keyword = this.keywords[i];
+    if (contents.indexOf(keyword) != -1)
+      annotation["tags"].push(keyword);
+  }
+  
+  var jsonString = JSON.stringify(apiJson);
+  var project_id = this._serializer._data.meta.id;
+  
+  var url = Mustache.to_html("{{platf_url}}/ldtplatform/api/ldt/projects/{{id}}.json",
+                              {platf_url: IriSP.platform_url, id: project_id});
+                              
+  IriSP.jQuery.ajax({
+      url: url,
+      type: 'PUT',
+      contentType: 'application/json',
+      data: jsonString,               
+      dataType: 'json',
+      success: function(json, textStatus, XMLHttpRequest) {
                     /* add the annotation to the annotations and tell the world */
                     delete annotation.tags;
                     annotation.content.description = annotation.content.data;
@@ -227,10 +277,10 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
                     // everything is shared so there's no need to propagate the change
                     _this._serializer._data.annotations.push(annotation);
                     _this._Popcorn.trigger("IriSP.createAnnotationWidget.addedAnnotation");
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert("ERROR = " + jqXHR.responseText + ", " + errorThrown);
-                }
-            });
-  }
+                    callback();
+      }, 
+      error: 
+              function() { 
+                            console.log("an error occured while contacting " 
+                            + url + " and sending " + jsonString); } });
 };
