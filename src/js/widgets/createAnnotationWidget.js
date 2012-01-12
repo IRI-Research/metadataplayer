@@ -65,11 +65,11 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
                .bind("propertychange keyup input paste", IriSP.wrap(this, this.handleTextChanges));
                
   /* the cinecast version of the player is supposed to pause when the user clicks on the button */
-  if (this.cinecast_version)
+  if (this.cinecast_version) {
     this.selector.find(".Ldt-createAnnotation-Description")
                  .one("propertychange keyup input paste js_mod", 
                  function() { if (!_this._Popcorn.media.paused) _this._Popcorn.pause() });
-  
+  }
   /* the cinecast version expects the user to comment on a defined segment.
      As the widget is always shown, we need a way to update it's content as
      time passes. We do this like we did with the annotationsWidget : we schedule
@@ -116,21 +116,33 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
                           IriSP.wrap(this, this.handleAnnotateSignal));  
 };
 
+/** handles clicks on the annotate button. Works only for the non-cinecast version */
 IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
-  // note : this signal is only handled by the non-cinecast version.
+  
   if (this._hidden == false) {
     this.selector.hide();
     this._hidden = true;
     
     // free the arrow.
     this._Popcorn.trigger("IriSP.ArrowWidget.releaseArrow");
+    this._Popcorn.trigger("IriSP.SliceWidget.hide");
+    
   } else {
     this.showStartScreen();
     this.selector.show();
     this._hidden = false;
+    var currentTime = this._Popcorn.currentTime();
     
     // block the arrow.
     this._Popcorn.trigger("IriSP.ArrowWidget.blockArrow");
+    var duration = +this._serializer.currentMedia().meta["dc:duration"];
+    var currentChapter = this._serializer.currentChapitre(currentTime);
+    console.log(currentTime);
+    var left = (currentChapter.begin / duration) * this.selector.width();
+    var width = (currentChapter.end / duration) * this.selector.width() - left;
+    console.log([left, width]);
+    this._Popcorn.trigger("IriSP.SliceWidget.position", [left, width]);
+    this._Popcorn.trigger("IriSP.SliceWidget.show");
   }
 };
 
