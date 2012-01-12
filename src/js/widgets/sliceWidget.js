@@ -36,9 +36,16 @@ IriSP.SliceWidget.prototype.draw = function() {
   
   this._Popcorn.listen("IriSP.SliceWidget.position", 
                         IriSP.wrap(this, this.positionSliceHandler));
-  this._Popcorn.trigger("IriSP.SliceWidget.position", [57, 24]);
+  
+  this._Popcorn.listen("IriSP.SliceWidget.show", IriSP.wrap(this, this.show));
+  this._Popcorn.listen("IriSP.SliceWidget.hide", IriSP.wrap(this, this.hide));
+  this.selector.hide();
 };
 
+/** responds to an "IriSP.SliceWidget.position" message
+    @param params an array with the first element being the left distance in
+           percents and the second element the width of the slice in pixels
+*/        
 IriSP.SliceWidget.prototype.positionSliceHandler = function(params) {
   left = params[0];
   width = params[1];
@@ -107,4 +114,12 @@ IriSP.SliceWidget.prototype.broadcastChanges = function() {
   var zonePercent = (this.zoneWidth / this.selector.width()) * 100;
   
   this._Popcorn.trigger("IriSP.SliceWidget.zoneChange", [leftPercent, zonePercent]);  
+};
+
+IriSP.SliceWidget.prototype.show = function() {
+  this.selector.show();
+};
+
+IriSP.SliceWidget.prototype.hide = function() {
+  this.selector.hide();
 };
