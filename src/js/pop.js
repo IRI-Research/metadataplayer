@@ -182,7 +182,6 @@ IriSP.PopcornReplacement.__seekHandler = function(event) {
    }
 
   if (IriSP.PopcornReplacement.__delay_seek_signal === true) {
-    console.log(IriSP.PopcornReplacement.currentTime());
     IriSP.PopcornReplacement.trigger("seeked");
   }
   IriSP.PopcornReplacement.trigger("timeupdate");
