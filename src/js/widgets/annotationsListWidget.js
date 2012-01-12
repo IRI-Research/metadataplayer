@@ -23,8 +23,7 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
     
   var list = [];
 
-  if (typeof(view_type) === "undefined") {
-    console.log("no type suitable for display");
+  if (typeof(view_type) === "undefined") {    
     return;
   }
 
