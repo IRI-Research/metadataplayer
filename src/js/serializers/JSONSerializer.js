@@ -314,10 +314,10 @@ IriSP.JSONSerializer.prototype.getId = function(name) {
   if (typeof(this._data.lists) === "undefined" || this._data.lists === null)
     return;
 
-  var e;
-  /* first get the list containing the tweets */
+  name = name.toUpperCase();
+  var e;  
   e = IriSP.underscore.find(this._data["annotation-types"], 
-                                  function(entry) { return (entry["dc:title"].indexOf(name) !== -1) });
+                                  function(entry) { return (entry["dc:title"].toUpperCase().indexOf(name) !== -1) });
   
   if (typeof(e) === "undefined")
     return;
@@ -334,7 +334,17 @@ IriSP.JSONSerializer.prototype.getChapitrage = function() {
 
 /** return the id of the ligne de temps named "Tweets" */
 IriSP.JSONSerializer.prototype.getTweets = function() {
-  return this.getId("Tweets");
+  var val = this.getId("Tweets");
+  if (typeof(val) === "undefined")
+    val = this.getId("Tweet");
+  if (typeof(val) === "undefined")
+    val = this.getId("Twitter");
+  if (typeof(val) === "undefined")
+    val = this.getId("twit");
+  if (typeof(val) === "undefined")
+    val = this.getId("Polemic");
+  
+  return val;
 };
 
 /** return the id of the ligne de temps named "Contributions" */
