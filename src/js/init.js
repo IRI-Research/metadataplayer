@@ -54,13 +54,35 @@ IriSP.configurePopcorn = function (layoutManager, options) {
             };
 
 
+             
             // the json format is totally illogical
-            opts.streamer = IriSP.__jsonMetadata["medias"][0]["meta"]["item"]["value"];
-            var source = IriSP.__jsonMetadata["medias"][0]["href"];
+            //opts.streamer = IriSP.__jsonMetadata["medias"][0]["meta"]["item"]["value"];
+            //var source = IriSP.__jsonMetadata["medias"][0]["href"];
 
             // the source if a full url but jwplayer wants an url relative to the
             // streamer url, so we've got to remove the common part.
-            opts.file = source.slice(opts.streamer.length);
+            //opts.file = source.slice(opts.streamer.length);
+            
+            /* sometimes we get served a file with a wrong path and streamer.
+               as a streamer is of the form rtmp://domain/path/ and the media is
+               the rest, we uglily do this :
+            */
+            opts.file = "";
+            opts.streamer = "";
+            var fullPath = IriSP.__jsonMetadata["medias"][0]["href"];
+            var pathSplit = fullPath.split('/');
+            
+            for (var i = 0; i < pathSplit.length; i++) {
+              if (i < 4) {
+                 opts.streamer += pathSplit[i] + "/";
+              } else {
+                 opts.file += pathSplit[i];
+                 /* omit the last slash if we're on the last element */
+                 if (i < pathSplit.length - 1)
+                  opts.file += "/";
+              }
+            }
+
           } else {
             /* other providers type, video for instance -
                pass everything as is */
