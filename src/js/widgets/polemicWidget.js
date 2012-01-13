@@ -138,7 +138,10 @@ IriSP.PolemicWidget.prototype.draw = function() {
           var view = json.views[0];
           
           if(typeof(view.annotation_types) !== "undefined") {
-            if (view.annotation_types.length > 1) {
+            /* we need to be backward compatible with the old files which used to
+               feature only two lines : Chapitrage and Tweets. We've added a
+               "Contributions" line so we need to discriminate against that */
+            if (view.annotation_types.length === 2 && typeof(this._serializer.getContributions()) === "undefined") {
               var view_type = view.annotation_types[1];
             } else {
               console.log("PolemicWidget: invalid file - minimizing");
