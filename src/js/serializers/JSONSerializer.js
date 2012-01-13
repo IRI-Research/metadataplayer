@@ -329,7 +329,15 @@ IriSP.JSONSerializer.prototype.getId = function(name) {
 
 /** return the id of the ligne de temps named "Chapitrage" */
 IriSP.JSONSerializer.prototype.getChapitrage = function() {
-  return this.getId("Chapitrage");
+  var val = this.getId("Chapitrage");
+  if (typeof(val) === "undefined")
+    val = this.getId("Chapter");   
+  if (typeof(val) === "undefined")
+    val = this.getId("Chapit");
+  if (typeof(val) === "undefined")
+    val = this.getId("Chap");
+    
+  return val;
 };
 
 /** return the id of the ligne de temps named "Tweets" */
@@ -349,5 +357,13 @@ IriSP.JSONSerializer.prototype.getTweets = function() {
 
 /** return the id of the ligne de temps named "Contributions" */
 IriSP.JSONSerializer.prototype.getContributions = function() {
-  return this.getId("Contributions");
+  var val = this.getId("Contribution");
+  if (typeof(val) === "undefined")
+    val = this.getId("Particip");   
+  if (typeof(val) === "undefined")
+    val = this.getId("Contr");
+  if (typeof(val) === "undefined")
+    val = this.getId("Publ");
+    
+  return val;
 };
