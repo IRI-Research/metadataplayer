@@ -245,7 +245,7 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
                         if (_this._Popcorn.media.paused)
                           _this._Popcorn.play();
                     }
-                    debugger;
+
                     _this.showEndScreen();
                     window.setTimeout(IriSP.wrap(_this, function() { this.showStartScreen(); }), 5000);
                     });
@@ -307,21 +307,33 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
       contentType: 'application/json',
       data: jsonString,               
       //dataType: 'json',
-      success: function(json, textStatus, XMLHttpRequest) {
-
-                    /* add the annotation to the annotations and tell the world */
+      success: IriSP.wrap(this, function(json, textStatus, XMLHttpRequest) {                   
+                    /* add the annotation to the annotation and tell the world */
+                    
+                    /* if the media doesn't have a contributions line, we need to add one */
+                    if (typeof(this._serializer.getContributions()) === "undefined") {
+                      /* set up a basic view */
+                      var tmp_view = {"dc:contributor": "perso", "dc:creator": "perso", "dc:title": "Contributions",
+                                      "id": json.annotations[0].type}
+                      console.log(tmp_view);
+                      this._serializer._data["annotation-types"].push(tmp_view);
+                    }
+                    annotation["type"] = "";
+                    
                     delete annotation.tags;
                     annotation.content.description = annotation.content.data;
+                    annotation.content.title = "";
                     delete annotation.content.data;
                     annotation.id = json.annotations[0].id;
-                    annotation.title = "";
+
                     annotation.meta = meta;
                     annotation.meta["id-ref"] = annotation["type"];
                     // everything is shared so there's no need to propagate the change
                     _this._serializer._data.annotations.push(annotation);
+                    console.log(_this._serializer._data);
                     _this._Popcorn.trigger("IriSP.createAnnotationWidget.addedAnnotation");
                     callback();
-      }, 
+      }), 
       error: 
               function(jqXHR, textStatus, errorThrown) { 
                             console.log("an error occured while contacting " 
