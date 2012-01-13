@@ -2,26 +2,32 @@
 <div class='Ldt-createAnnotationWidget'>
   <!-- ugly div because we want to have a double border -->
   <div class='Ldt-createAnnotation-DoubleBorder'>
-    <div style='margin-bottom: 7px; overflow: auto;'>
-      <div class='Ldt-createAnnotation-Title'></div>
-      <div class='Ldt-createAnnotation-TimeFrame'></div>
-    </div>
-    
-    <div class='Ldt-createAnnotation-Container'>
-      <textarea class='Ldt-createAnnotation-Description'></textarea>
-      <div class='Ldt-createAnnotation-profileArrow'>
-        <img src='{{img_dir}}/annotate_arrow.png'></img>
+    <div class='Ldt-createAnnotation-startScreen'>
+      <div style='margin-bottom: 7px; overflow: auto;'>
+        <div class='Ldt-createAnnotation-Title'></div>
+        <div class='Ldt-createAnnotation-TimeFrame'></div>
       </div>
-      <div class='Ldt-createAnnotation-userAvatar'>        
-        <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>
+      
+      <div class='Ldt-createAnnotation-Container'>
+        <textarea class='Ldt-createAnnotation-Description'></textarea>
+        <div class='Ldt-createAnnotation-profileArrow'>
+          <img src='{{img_dir}}/annotate_arrow.png'></img>
+        </div>
+        <div class='Ldt-createAnnotation-userAvatar'>        
+          <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>
+        </div>
+      </div>
+      
+      <div class='Ldt-createAnnotation-keywords'>
+        Add keywords :       
+      </div>          
+      <div class='Ldt-createAnnotation-submitButton'>
+        <div style='position: absolute; bottom: 10pt; right: 11pt;'>Submit</div>
       </div>
     </div>
-    
-    <div class='Ldt-createAnnotation-keywords'>
-      Add keywords :       
-    </div>          
-    <div class='Ldt-createAnnotation-submitButton'>
-      <div style='position: absolute; bottom: 10pt; right: 11pt;'>Submit</div>
+    <div class='Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>
+      <img src='{{img_dir}}/spinner.gif'></img>
+      Please wait while your request is being processed...
     </div>
     
     <div class='Ldt-createAnnotation-endScreen' style='display: none'>

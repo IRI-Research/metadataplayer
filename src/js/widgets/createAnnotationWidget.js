@@ -186,9 +186,14 @@ IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
 };
 
 IriSP.createAnnotationWidget.prototype.showStartScreen = function() {
-  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().show();
-  this.selector.find("Ldt-createAnnotation-Description").val("Type your annotation here.");
-  this.selector.find(".Ldt-createAnnotation-endScreen").hide();    
+  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+  this.selector.find(".Ldt-createAnnotation-startScreen").show();
+  this.selector.find("Ldt-createAnnotation-Description").val("Type your annotation here.");  
+};
+
+IriSP.createAnnotationWidget.prototype.showWaitScreen = function() {
+  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+  this.selector.find(".Ldt-createAnnotation-waitScreen").show();  
 };
 
 IriSP.createAnnotationWidget.prototype.showEndScreen = function() {
@@ -233,15 +238,16 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
                       }
                    }));
   } else {
-    this.showEndScreen();
+    this.showWaitScreen();
     
     this.sendLdtData(contents, function() {
                     if (_this.cinecast_version) {
                         if (_this._Popcorn.media.paused)
                           _this._Popcorn.play();
-                        
-                        window.setTimeout(IriSP.wrap(_this, function() { this.showStartScreen(); }), 5000);
                     }
+                    debugger;
+                    _this.showEndScreen();
+                    window.setTimeout(IriSP.wrap(_this, function() { this.showStartScreen(); }), 5000);
                     });
   }
 };
@@ -267,7 +273,6 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
     var duration = +this._serializer.currentMedia().meta["dc:duration"];
     annotation["begin"] = +((duration * (this.sliceLeft / 100)).toFixed(0));
     annotation["end"] = +((duration * ((this.sliceWidth + this.sliceLeft) / 100)).toFixed(0));
-    console.log(annotation["begin"], annotation["end"]);
   }
   
   annotation["type"] = this._serializer.getContributions();
@@ -295,7 +300,7 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   
   var url = Mustache.to_html("{{platf_url}}/ldtplatform/api/ldt/projects/{{id}}.json",
                               {platf_url: IriSP.platform_url, id: project_id});
-  console.log(url, jsonString);                            
+                          
   IriSP.jQuery.ajax({
       url: url,
       type: 'PUT',
@@ -303,13 +308,13 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
       data: jsonString,               
       //dataType: 'json',
       success: function(json, textStatus, XMLHttpRequest) {
-                    debugger;
+
                     /* add the annotation to the annotations and tell the world */
                     delete annotation.tags;
                     annotation.content.description = annotation.content.data;
                     delete annotation.content.data;
                     annotation.id = json.annotations[0].id;
-                    annotation.title = _this._currentAnnotation.content.title;
+                    annotation.title = "";
                     annotation.meta = meta;
                     annotation.meta["id-ref"] = annotation["type"];
                     // everything is shared so there's no need to propagate the change
