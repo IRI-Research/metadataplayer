@@ -13,6 +13,12 @@ IriSP.AnnotationsListWidget.prototype.clear = function() {
 IriSP.AnnotationsListWidget.prototype.clearWidget = function() {
 };
 
+/** effectively redraw the widget - called by drawList */
+IriSP.AnnotationsListWidget.prototype.do_redraw = function(list) {
+    var widgetMarkup = IriSP.templToHTML(IriSP.annotationsListWidget_template, {annotations: list});
+    this.selector.html(widgetMarkup);
+};
+
 /** draw the annotation list */
 IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
   var _this = this;
@@ -56,8 +62,7 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
   var idList = IriSP.underscore.pluck(list, "id").sort();
   
   if (idList.length !== this.__oldList.length) {
-    var widgetMarkup = IriSP.templToHTML(IriSP.annotationsListWidget_template, {annotations: list});
-    this.selector.html(widgetMarkup);
+    this.do_redraw(list);
   }
     
   var res = 1;
@@ -71,16 +76,14 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
 
   if (typeof(force_redraw) !== "undefined") {
     console.log("forced redraw");
-    var widgetMarkup = IriSP.templToHTML(IriSP.annotationsListWidget_template, {annotations: list});
-    this.selector.html(widgetMarkup);
+    this.do_redraw(list);
   }
   
   /* the two lists are equal, no need to redraw */
   if (res === 1) {
     return;
   } else {
-    var widgetMarkup = IriSP.templToHTML(IriSP.annotationsListWidget_template, {annotations: list});
-    this.selector.html(widgetMarkup);
+    this.do_redraw(list);
   }
   
 };
