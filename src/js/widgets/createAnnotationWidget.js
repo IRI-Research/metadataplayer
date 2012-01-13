@@ -265,8 +265,8 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
     }
   } else {
     var duration = +this._serializer.currentMedia().meta["dc:duration"];
-    annotation["begin"] = duration * (this.sliceLeft / 100);
-    annotation["end"] = duration * ((this.sliceWidth + this.sliceLeft) / 100);
+    annotation["begin"] = +((duration * (this.sliceLeft / 100)).toFixed(0));
+    annotation["end"] = +((duration * ((this.sliceWidth + this.sliceLeft) / 100)).toFixed(0));
     console.log(annotation["begin"], annotation["end"]);
   }
   
@@ -295,13 +295,13 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   
   var url = Mustache.to_html("{{platf_url}}/ldtplatform/api/ldt/projects/{{id}}.json",
                               {platf_url: IriSP.platform_url, id: project_id});
-                              
+  console.log(url, jsonString);                            
   IriSP.jQuery.ajax({
       url: url,
       type: 'PUT',
       contentType: 'application/json',
       data: jsonString,               
-      dataType: 'json',
+      //dataType: 'json',
       success: function(json, textStatus, XMLHttpRequest) {
                     debugger;
                     /* add the annotation to the annotations and tell the world */
@@ -318,7 +318,7 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                     callback();
       }, 
       error: 
-              function() { 
+              function(jqXHR, textStatus, errorThrown) { 
                             console.log("an error occured while contacting " 
-                            + url + " and sending " + jsonString); } });
+                            + url + " and sending " + jsonString + textStatus ); } });
 };
