@@ -30,8 +30,25 @@
             container:'LdtPlayer',
             css:'../../src/css/LdtPlayer.css',
             widgets: [
-    
-            
+            {type: "PolemicWidget",
+               width: 640, /* required for this widget */
+               height: 50,
+               metadata:{
+                format:'cinelab',
+                src:'polemic_fr.json',
+                type:'json'},
+                
+               requires: [{
+                type: "TooltipWidget",
+                width: 180,
+                heigh: 160,
+                metadata : {
+                  format:'cinelab',
+                  src:'polemic.json',
+                  type:'empty'
+                }
+               }],
+            },            
             {type: "AnnotationsListWidget",
              container: "AnnotationsListContainer",             
 						 metadata:{

@@ -32,13 +32,25 @@
             container:'LdtPlayer',
             css:'../../src/css/LdtPlayer.css',
             widgets: [
-            {type: "SliderWidget",
-						 metadata:{
-						  format:'cinelab',
-						  src:platf_url + 'cljson/id/' + project_id,
-						  type:'json'}
-						},            
-            
+             {type: "PolemicWidget",
+               width: 640, /* required for this widget */
+               height: 50,
+               metadata:{
+                format:'cinelab',
+                src:platf_url + 'cljson/id/' + project_id,
+                type:'json'},
+                
+               requires: [{
+                type: "TooltipWidget",
+                width: 180,
+                heigh: 160,
+                metadata : {
+                  format:'cinelab',
+                  src:platf_url + 'cljson/id/' + project_id,
+                  type:'empty'
+                }
+               }],
+            },                      
             {type: "AnnotationsListWidget",
              container: "AnnotationsListContainer",             
 						 metadata:{
@@ -54,6 +66,12 @@
 						  src:platf_url + 'cljson/id/' + project_id,
 						  type:'json'}
 						},
+            {type: "SliderWidget",
+						 metadata:{
+						  format:'cinelab',
+						  src:platf_url + 'cljson/id/' + project_id,
+						  type:'json'}
+						},  
             {type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
              mode: "radio",
              metadata:{

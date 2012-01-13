@@ -35,14 +35,6 @@ IriSP.PolemicWidget = function(Popcorn, config, Serializer) {
   this.svgElements = {};
   
   this.oldSearchMatches = [];
-  // Make and define the Raphael area
-  this.paper = Raphael(document.getElementById(this._id), config.width, config.height);
-  
-  // event handlers
-  this._Popcorn.listen("IriSP.search", IriSP.wrap(this, function(searchString) { this.searchHandler(searchString); }));
-  this._Popcorn.listen("IriSP.search.closed", IriSP.wrap(this, this.searchFieldClosedHandler));
-  this._Popcorn.listen("IriSP.search.cleared", IriSP.wrap(this, this.searchFieldClearedHandler));
-
 };
 
 IriSP.PolemicWidget.prototype = new IriSP.Widget();
@@ -133,26 +125,38 @@ IriSP.PolemicWidget.prototype.draw = function() {
     }
     
 
-      this._serializer.sync(function(data) { loaded_callback.call(self, data) });
+      this._serializer.sync(function(data) { loaded_callback.call(self, data); return; });
       
       function loaded_callback (json) {
       var view_type = this._serializer.getTweets();
 
+      
       if (typeof(view_type) === "undefined") {
-        var view_type = this._serializer.getTweetIds()[0];      
+        var view_type = this._serializer.getTweetIds()[0];
         if (typeof(view_type) === "undefined") {
           // default to guessing if nothing else works.
-          view = json.views[0];
+          var view = json.views[0];
           
           if(typeof(view.annotation_types) !== "undefined") {
-            if (view.annotation_types.length >= 1) {
-              view_type = view.annotation_types[0];
+            if (view.annotation_types.length > 1) {
+              var view_type = view.annotation_types[1];
             } else {
-              console.log("PolemicWidget: invalid file");
+              console.log("PolemicWidget: invalid file - minimizing");
+              return;
             }
           }      
         }
       }
+      
+      // Make and define the Raphael area
+      this.paper = Raphael(document.getElementById(this._id), this._config.width, this._config.height);
+      
+      // event handlers
+      this._Popcorn.listen("IriSP.search", IriSP.wrap(this, function(searchString) { this.searchHandler(searchString); }));
+      this._Popcorn.listen("IriSP.search.closed", IriSP.wrap(this, this.searchFieldClosedHandler));
+      this._Popcorn.listen("IriSP.search.cleared", IriSP.wrap(this, this.searchFieldClearedHandler));
+      this.selector.mouseleave(IriSP.wrap(this, function() { self.TooltipWidget.hide.call(self.TooltipWidget); }));
+      this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
       
       for(var i = 0; i < json.annotations.length; i++) {
         var item = json.annotations[i];        
@@ -362,8 +366,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
       this.sliderTip.toFront();
     }
     
-    this.selector.mouseleave(IriSP.wrap(this, function() { self.TooltipWidget.hide.call(self.TooltipWidget); }));
-    this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
+
 }
 
 /** update the positionMarker as time passes */
