@@ -48,7 +48,6 @@ IriSP.SegmentsWidget.prototype.draw = function() {
           
   var view_type = this._serializer.getChapitrage();
   if (typeof(view_type) === "undefined") {
-    console.log(this._serializer.getNonTweetIds());
     view_type = this._serializer.getNonTweetIds()[0];  
   }
   this.positionMarker = this.selector.children(":first");
