@@ -292,11 +292,11 @@ IriSP.JSONSerializer.prototype.getTweetIds = function() {
     }
   }
 
-  var available_types = this._data["available_types"];    
+  var available_types = this._data["annotation_types"];    
   if (IriSP.null_or_undefined(available_types)) {
-    available_types = this._data["available-types"];
+    available_types = this._data["annotation-types"];
     if (IriSP.null_or_undefined(available_types)) {
-      console.log("neither available_types nor available-types are defined");      
+      console.log("neither annotation_types nor annotation-types are defined");      
       return;
     }
   }
@@ -339,7 +339,7 @@ IriSP.JSONSerializer.prototype.getNonTweetIds = function() {
   if (IriSP.null_or_undefined(available_types)) {
     available_types = this._data["annotation-types"];
     if (IriSP.null_or_undefined(available_types)) {
-      console.log("neither available_types nor available-types are defined");      
+      console.log("neither annotation_types nor annotation-types are defined");      
       return;
     }
   }
@@ -352,7 +352,7 @@ IriSP.JSONSerializer.prototype.getNonTweetIds = function() {
       potential_types.push(available_types[i].id);
     }
   }
-  console.log("pot", potential_types, "avail", annotation_types);
+
   // Get the intersection of both.
   var nonTweetsId = IriSP.underscore.intersection(annotation_types, potential_types);
   
