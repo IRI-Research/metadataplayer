@@ -274,36 +274,89 @@ IriSP.JSONSerializer.prototype.currentChapitre = function(currentTime) {
 
 /** returns a list of ids of tweet lines (aka: groups in cinelab) */
 IriSP.JSONSerializer.prototype.getTweetIds = function() {
-  if (typeof(this._data.lists) === "undefined" || this._data.lists === null)
+  if (IriSP.null_or_undefined(this._data.lists) || IriSP.null_or_undefined(this._data.lists) ||
+      IriSP.null_or_undefined(this._data.views) || IriSP.null_or_undefined(this._data.views[0]))
     return [];
 
-  var tweetsId = [];
   
-  /* first get the list containing the tweets */
-  var tweets = IriSP.underscore.filter(this._data.lists, function(entry) { return entry.id.indexOf("tweet") !== -1 });
-  
-  if (tweets.length === 0)
-    return [];
-  
-  // FIXME: collect tweets from multiple sources ?
-  tweetsId = IriSP.underscore.pluck(tweets[0].items, "id-ref");
+  /* Get the displayable types
+     We've got to jump through a few hoops because the json sometimes defines
+     fields with underscores and sometimes with dashes
+  */
+  var annotation_types = this._data.views[0]["annotation_types"];
+  if (IriSP.null_or_undefined(annotation_types)) {
+    annotation_types = this._data.views[0]["annotation-types"];
+    if (IriSP.null_or_undefined(annotation_types)) {
+      console.log("neither view.annotation_types nor view.annotation-types are defined");      
+      return;
+    }
+  }
 
+  var available_types = this._data["available_types"];    
+  if (IriSP.null_or_undefined(available_types)) {
+    available_types = this._data["available-types"];
+    if (IriSP.null_or_undefined(available_types)) {
+      console.log("neither available_types nor available-types are defined");      
+      return;
+    }
+  }
+  
+  var potential_types = [];
+  
+  // Get the list of types which contain "Tw" in their content
+  for (var i = 0; i < available_types.length; i++) {
+    if (/Tw/i.test(available_types[i]["dc:title"])) {
+      potential_types.push(available_types[i].id);
+    }
+  }
+  
+  // Get the intersection of both.
+  var tweetsId = IriSP.underscore.intersection(annotation_types, potential_types);
+  
   return tweetsId;
 };
 
 /** this function returns a list of lines which are not tweet lines */
 IriSP.JSONSerializer.prototype.getNonTweetIds = function() {
-  if (typeof(this._data.lists) === "undefined" || this._data.lists === null)
+  if (IriSP.null_or_undefined(this._data.lists) || IriSP.null_or_undefined(this._data.lists) ||
+      IriSP.null_or_undefined(this._data.views) || IriSP.null_or_undefined(this._data.views[0]))
     return [];
-  
-  /* complicated : for each list in this._data.lists, get the id-ref.
-     flatten the returned array because pluck returns a string afterwards.
+
+  /* Get the displayable types
+     We've got to jump through a few hoops because the json sometimes defines
+     fields with underscores and sometimes with dashes
   */
-  var ids = IriSP.underscore.flatten(IriSP.underscore.map(this._data.lists, function(entry) {                                                         
-                                                         return IriSP.underscore.pluck(entry.items, "id-ref"); }));
-                                                         
-  var illegal_values = this.getTweetIds();
-  return IriSP.underscore.difference(ids, illegal_values);
+  var annotation_types = this._data.views[0]["annotation_types"];
+  if (IriSP.null_or_undefined(annotation_types)) {
+    annotation_types = this._data.views[0]["annotation-types"];
+    if (IriSP.null_or_undefined(annotation_types)) {
+      console.log("neither view.annotation_types nor view.annotation-types are defined");      
+      return;
+    }
+  }
+
+  var available_types = this._data["annotation_types"];    
+  if (IriSP.null_or_undefined(available_types)) {
+    available_types = this._data["annotation-types"];
+    if (IriSP.null_or_undefined(available_types)) {
+      console.log("neither available_types nor available-types are defined");      
+      return;
+    }
+  }
+
+  var potential_types = [];
+  
+  // Get the list of types which do not contain "Tw" in their content
+  for (var i = 0; i < available_types.length; i++) {
+    if (!(/Tw/i.test(available_types[i]["dc:title"]))) {
+      potential_types.push(available_types[i].id);
+    }
+  }
+  console.log("pot", potential_types, "avail", annotation_types);
+  // Get the intersection of both.
+  var nonTweetsId = IriSP.underscore.intersection(annotation_types, potential_types);
+  
+  return nonTweetsId;
   
 };
 
