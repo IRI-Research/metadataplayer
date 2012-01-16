@@ -148,6 +148,10 @@ IriSP.mkGplusUrl = function(url) {
   return "";
 };
 
+/** test if a value is null or undefined */
+IriSP.null_or_undefined = function(val) {
+  return (typeof(val) === "undefined" || val === null);
+}
 /* for ie compatibility
 if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
    Object.defineProperty=function(obj,prop,desc) {
