@@ -270,11 +270,11 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
       annotation["end"] = this._currentAnnotation.end;
     }
   } else {
-    var duration = +this._serializer.currentMedia().meta["dc:duration"];
-    annotation["begin"] = +((duration * (this.sliceLeft / 100)).toFixed(0));
-    annotation["end"] = +((duration * ((this.sliceWidth + this.sliceLeft) / 100)).toFixed(0));
+    var duration = +this._serializer.currentMedia().meta["dc:duration"];    
+    annotation["begin"] = +((duration * (this.sliceLeft / this.selector.width())).toFixed(0));
+    annotation["end"] = +((duration * ((this.sliceWidth + this.sliceLeft) / this.selector.width())).toFixed(0));
   }
-  
+
   annotation["type"] = this._serializer.getContributions();
   if (typeof(annotation["type"]) === "undefined")
     annotation["type"] = "";
@@ -318,7 +318,6 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                       console.log(tmp_view);
                       this._serializer._data["annotation-types"].push(tmp_view);
                     }
-                    annotation["type"] = "";
                     
                     delete annotation.tags;
                     annotation.content.description = annotation.content.data;
@@ -327,11 +326,12 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                     annotation.id = json.annotations[0].id;
 
                     annotation.meta = meta;
-                    annotation.meta["id-ref"] = annotation["type"];
+                    annotation.meta["id-ref"] = json.annotations[0]["type"];
+                    
                     // everything is shared so there's no need to propagate the change
                     _this._serializer._data.annotations.push(annotation);
                     console.log(_this._serializer._data);
-                    _this._Popcorn.trigger("IriSP.createAnnotationWidget.addedAnnotation");
+                    _this._Popcorn.trigger("IriSP.createAnnotationWidget.addedAnnotation", annotation);
                     callback();
       }), 
       error: 

@@ -3,7 +3,7 @@ IriSP.SparklineWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
 
   this._oldAnnotation = null;
-  
+  this._results = [];
 };
 
 
@@ -21,9 +21,8 @@ IriSP.SparklineWidget.prototype.draw = function() {
     the second is an overlay div to display the progression in the video,
     and the third is a div to react to clicks
   */
-    
-  /* we suppose that a column is 5 pixels wide */
-  var num_columns = (this.selector.width()) / 10;
+  
+  var num_columns = (this.selector.width()) / IriSP.widgetsDefaults["SparklineWidget"].column_width;
   var duration = +this._serializer.currentMedia().meta["dc:duration"];
   var time_step = duration / num_columns; /* the time interval between two columns */
   var results = [];
@@ -52,6 +51,9 @@ IriSP.SparklineWidget.prototype.draw = function() {
     results.push(count);
   }
 
+  // save the results in an array so that we can re-use them when a new annotation
+  // is added.
+  this._results = results;
   
   this.selector.append(templ);
   this.selector.find(".Ldt-sparkLine").css("background", "#c7c8cc");
@@ -59,6 +61,8 @@ IriSP.SparklineWidget.prototype.draw = function() {
                                                            spotColor: "#b70056",
                                                            width: this.width, height: this.height});
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeUpdateHandler));
+  this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, this.handleNewAnnotation));
+  
   IriSP.jQuery(".Ldt-sparkLineClickOverlay").click(IriSP.wrap(this, this.clickHandler));  
 };
 
@@ -91,4 +95,18 @@ IriSP.SparklineWidget.prototype.clickHandler = function(event) {
   
   this._Popcorn.trigger("IriSP.SparklineWidget.clicked", newTime);
   this._Popcorn.currentTime(newTime);                                 
+};
+
+/** react when a new annotation is added */
+IriSP.SparklineWidget.prototype.handleNewAnnotation = function(annotation) {
+  var num_columns = (this.selector.width()) / IriSP.widgetsDefaults["SparklineWidget"].column_width;
+  var duration = +this._serializer.currentMedia().meta["dc:duration"];
+  var time_step = duration / num_columns; /* the time interval between two columns */
+  var begin = +annotation.begin;
+  
+  var index = Math.floor(begin / time_step);
+  this._results[index]++;
+  this.selector.find(".Ldt-sparkLine").sparkline(this._results, {lineColor: "#7492b4", fillColor: "#aeaeb8",
+                                                           spotColor: "#b70056",
+                                                           width: this.width, height: this.height});
 };
