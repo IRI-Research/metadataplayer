@@ -47,9 +47,10 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   this.selector.append(Mustache.to_html(IriSP.overlay_marker_template));
           
   var view_type = this._serializer.getChapitrage();
-  if (typeof(view_type) === "undefined")
-    view_type = this._serializer.getNonTweetIds()[0];    
-  
+  if (typeof(view_type) === "undefined") {
+    console.log(this._serializer.getNonTweetIds());
+    view_type = this._serializer.getNonTweetIds()[0];  
+  }
   this.positionMarker = this.selector.children(":first");
   
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.positionUpdater));
@@ -101,8 +102,10 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     
     var hexa_color = IriSP.DEC_HEXA_COLOR(color);
 
+    /*
     if (hexa_color === "FFCC00")
       hexa_color = "333";
+    */
     if (hexa_color.length == 4)
       hexa_color = hexa_color + '00';
     
