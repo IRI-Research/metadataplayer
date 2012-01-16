@@ -60,7 +60,7 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
   }
   
   var idList = IriSP.underscore.pluck(list, "id").sort();
-  
+
   if (idList.length !== this.__oldList.length) {
     this.do_redraw(list);
   }
@@ -91,7 +91,7 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
 IriSP.AnnotationsListWidget.prototype.draw = function() {
 
   this.drawList();
-  this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, function() { this.redraw(true); }));
+  this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, function() { this.drawList(true); }));
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.redraw));
 };
 
