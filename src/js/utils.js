@@ -101,16 +101,14 @@ IriSP.countProperties = function(obj) {
 
 // conversion de couleur Decimal vers HexaDecimal || 000 si fff
 IriSP.DEC_HEXA_COLOR = function (dec) {
-	 var hexa='0123456789ABCDEF';
-   var hex='';
-	 var tmp;
-	 while (dec>15){
-		  tmp = dec-(Math.floor(dec/16))*16;
-		  hex = hexa.charAt(tmp)+hex;
-		  dec = Math.floor(dec/16);
-	 }
-	 hex = hexa.charAt(dec)+hex;	 
-	 return(hex);
+  var val = +dec;
+  var str = val.toString(16);
+  var zeroes = "";
+  if (str.length < 6) {
+    for (var i = 0; i < 6 - str.length; i++)
+      zeroes += "0";
+  }
+  return zeroes + str;
 };
 
 /* shortcut to have global variables in templates */
