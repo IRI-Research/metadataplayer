@@ -30,7 +30,12 @@ IriSP.TooltipWidget.prototype.show = function(text, color, x, y) {
   this.selector.find(".tipcolor").css("background-color", color);
   this._displayedText = text;
 	this.selector.find(".tiptext").text(text);
-  //this.selector.find(".tip").css("left", x).css("top", y);  
+  
+  if (x < 0)
+    x = 0;
+  if (y < 0)
+    y = 0;
+  
   this.selector.find(".tip").css("left", x).css("top", y);
   this.selector.find(".tip").show();
   this._shown = true;
