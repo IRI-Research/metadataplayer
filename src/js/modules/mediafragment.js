@@ -89,6 +89,7 @@ IriSP.MediaFragment.prototype.lookupAnnotation = function(annotationId) {
 
   if (typeof(annotation) !== "undefined") {
     this._Popcorn.currentTime(annotation.begin / 1000);
+    this._Popcorn.trigger("IriSP.Mediafragment.showAnnotation", annotationId);
   }
   
   window.setTimeout(function() { _this.mutex = false }, 50);
