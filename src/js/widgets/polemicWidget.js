@@ -160,6 +160,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
       this._Popcorn.listen("IriSP.search.cleared", IriSP.wrap(this, this.searchFieldClearedHandler));
       this.selector.mouseleave(IriSP.wrap(this, function() { self.TooltipWidget.hide.call(self.TooltipWidget); }));
       this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
+      this._Popcorn.listen("IriSP.Mediafragment.showAnnotation", IriSP.wrap(this, this.showAnnotation));
       
       for(var i = 0; i < json.annotations.length; i++) {
         var item = json.annotations[i];        
@@ -312,11 +313,15 @@ IriSP.PolemicWidget.prototype.draw = function() {
                   
                   addEheight += TweetHeight;
                   
+                  /* stick a lot of things into e because that's the easiest way
+                     to do it */
                   e.color = colors[j];
                   e.time = frames[i].mytweetsID[k].timeframe;
                   e.title = frames[i].mytweetsID[k].title;
                   e.id = frames[i].mytweetsID[k].cinecast_id;
-                  
+                  var pos = IriSP.jQuery(e.node).offset();                  
+                  e.x = pos.left;
+                  e.y = pos.top;
                   this.svgElements[e.id] = e;
                   
                   IriSP.jQuery(e.node).mouseenter(function(element) { return function (event) {                        
@@ -431,3 +436,9 @@ IriSP.PolemicWidget.prototype.searchFieldClosedHandler = function() {
  
 };
    
+IriSP.PolemicWidget.prototype.showAnnotation = function(id) {
+  if (this.svgElements.hasOwnProperty(id)) {
+    var e = this.svgElements[id];
+    this.TooltipWidget.show(e.title, e.attr("fill"), e.x - 103, e.y - 160);
+  }
+};   
