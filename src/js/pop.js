@@ -83,7 +83,7 @@ IriSP.PopcornReplacement.currentTime = function(time) {
      var currentTime = +time;
      jwplayer( IriSP.PopcornReplacement._container ).seek( currentTime );
      IriSP.PopcornReplacement.__delay_seek_signal = true;     
-     //return jwplayer(IriSP.PopcornReplacement._container).getPosition();            
+     IriSP.PopcornReplacement.trigger("seeked");           
      return currentTime;
   }
 };
@@ -181,9 +181,6 @@ IriSP.PopcornReplacement.__seekHandler = function(event) {
      
    }
 
-  if (IriSP.PopcornReplacement.__delay_seek_signal === true) {
-    IriSP.PopcornReplacement.trigger("seeked");
-  }
   IriSP.PopcornReplacement.trigger("timeupdate");
 };
 
