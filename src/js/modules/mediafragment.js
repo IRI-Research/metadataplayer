@@ -30,8 +30,7 @@ IriSP.MediaFragment.prototype.advanceTime = function() {
                     }
                   } else if ( pageoffset.substring(0, 3) === "id=") {
                     // annotation
-                    var annotationId = pageoffset.substring( 2 );
-
+                    var annotationId = pageoffset.substring( 3 );
                     // there's no better way than that because
                     // of possible race conditions
                     this._serializer.sync(IriSP.wrap(this, function() {
