@@ -28,7 +28,7 @@ IriSP.MediaFragment.prototype.advanceTime = function() {
                     var offsettime = pageoffset.substring( 2 );
                     this._Popcorn.currentTime( parseFloat( offsettime ) );
                     }
-                  } else if ( pageoffset.substring(0, 2) === "a=") {
+                  } else if ( pageoffset.substring(0, 3) === "id=") {
                     // annotation
                     var annotationId = pageoffset.substring( 2 );
 
@@ -66,7 +66,7 @@ IriSP.MediaFragment.prototype.updateAnnotation = function(annotationId) {
   }
   
   splitArr = window.location.href.split( "#" )
-  history.replaceState( {}, "", splitArr[0] + "#a=" + annotationId);
+  history.replaceState( {}, "", splitArr[0] + "#id=" + annotationId);
  
   window.setTimeout(function() { _this.mutex = false }, 50);
 };
