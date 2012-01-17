@@ -33,10 +33,10 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
     var fb_link = defaults.fb_link;
     var tw_link = defaults.tw_link;
     var gplus_link = defaults.gplus_link;
-    var url = document.location.href + "#a=" + annotation.id;
-    this.selector.find(".Ldt-fbShare").attr("href", fb_link + IriSP.encodeURI(text) + IriSP.encodeURI(url));
-    this.selector.find(".Ldt-TwShare").attr("href", tw_link + IriSP.encodeURI(text) + IriSP.encodeURI(url));
-    this.selector.find(".Ldt-GplusShare").attr("href", fb_link + IriSP.encodeURI(text) + IriSP.encodeURI(url));
+    var url = document.location.href + "#id=" + annotation.id;
+    this.selector.find(".Ldt-fbShare").attr("href", IriSP.mkFbUrl(url, text));
+    this.selector.find(".Ldt-TwShare").attr("href", IriSP.mkTweetUrl(url, text));
+    this.selector.find(".Ldt-GplusShare").attr("href", IriSP.mkGplusUrl(url, text));
 };
 
 IriSP.AnnotationsWidget.prototype.clearWidget = function() {   

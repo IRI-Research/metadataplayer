@@ -196,16 +196,17 @@ IriSP.createAnnotationWidget.prototype.showWaitScreen = function() {
   this.selector.find(".Ldt-createAnnotation-waitScreen").show();  
 };
 
-IriSP.createAnnotationWidget.prototype.showEndScreen = function() {
+IriSP.createAnnotationWidget.prototype.showEndScreen = function(annotation) {
   this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
   
   if (this.cinecast_version) {
     this.selector.find(".Ldt-createAnnotation-Title").parent().show();      
   }
 
-  var twStatus = IriSP.mkTweetUrl(document.location.href);
-  var gpStatus = IriSP.mkGplusUrl(document.location.href);
-  var fbStatus = IriSP.mkFbUrl(document.location.href);
+  var url = document.location.href + "id=" + annotation.id;
+  var twStatus = IriSP.mkTweetUrl(url);
+  var gpStatus = IriSP.mkGplusUrl(url);
+  var fbStatus = IriSP.mkFbUrl(url);
   
   this.selector.find(".Ldt-createAnnotation-endScreen-TweetLink").attr("href", twStatus);
   this.selector.find(".Ldt-createAnnotation-endScreen-FbLink").attr("href", fbStatus);
@@ -315,7 +316,7 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                       /* set up a basic view */
                       var tmp_view = {"dc:contributor": "perso", "dc:creator": "perso", "dc:title": "Contributions",
                                       "id": json.annotations[0].type}
-                      console.log(tmp_view);
+
                       this._serializer._data["annotation-types"].push(tmp_view);
                     }
                     
@@ -330,9 +331,9 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                     
                     // everything is shared so there's no need to propagate the change
                     _this._serializer._data.annotations.push(annotation);
-                    console.log(_this._serializer._data);
+ 
                     _this._Popcorn.trigger("IriSP.createAnnotationWidget.addedAnnotation", annotation);
-                    callback();
+                    callback(annotation);
       }), 
       error: 
               function(jqXHR, textStatus, errorThrown) { 
