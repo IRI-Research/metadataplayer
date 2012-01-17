@@ -271,10 +271,10 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
     }
   } else {
     var duration = +this._serializer.currentMedia().meta["dc:duration"];    
-    annotation["begin"] = +((duration * (this.sliceLeft / this.selector.width())).toFixed(0));
-    annotation["end"] = +((duration * ((this.sliceWidth + this.sliceLeft) / this.selector.width())).toFixed(0));
+    annotation["begin"] = +((duration * (this.sliceLeft / 100)).toFixed(0));
+    annotation["end"] = +((duration * ((this.sliceWidth + this.sliceLeft) / 100)).toFixed(0));
   }
-
+  
   annotation["type"] = this._serializer.getContributions();
   if (typeof(annotation["type"]) === "undefined")
     annotation["type"] = "";
