@@ -21,6 +21,7 @@
   <div id="LdtPlayer"></div>
   
   <script  type="text/javascript">
+    var file = "twitterized.json";
     var config = {            
         gui:{
             width:650,
@@ -33,7 +34,7 @@
              height: 50,
              metadata:{
               format:'cinelab',
-              src:'polemic_fr.json',
+              src:file,
               type:'json'},
               
              requires: [{
@@ -51,7 +52,7 @@
                 type: "StackGraphWidget",
                 metadata: {
                     format:'cinelab',
-                    src:'polemic_fr.json',
+                    src:file,
                     type:'json'
                 },requires: [{
                   type: "TooltipWidget",
@@ -68,33 +69,33 @@
              height: 50,
 						 metadata:{
 						  format:'cinelab',
-						  src:'polemic_fr.json',
+						  src:file,
 						  type:'json'}
 						},
             {type: "SliderWidget",
 						 metadata:{
 						  format:'cinelab',
-						  src:'polemic_fr.json',
+						  src:file,
 						  type:'json'}
 						},
             {type: "AnnotationsListWidget",
              container: "AnnotationsListContainer",             
 						 metadata:{
 						  format:'cinelab',
-						  src:'polemic_fr.json',
+						  src:file,
 						  type:'json'}
 						},
             {type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
              mode: "radio",
              metadata:{
               format:'cinelab',
-              src:'polemic_fr.json',
+              src:file,
               type:'json'}
             },
             {type: "SegmentsWidget",
              metadata:{
               format:'cinelab',
-              src:'polemic_fr.json',
+              src:file,
               type:'json'},
              requires: [{
               type: "TooltipWidget",
@@ -108,13 +109,13 @@
             {type: "SliceWidget",
              metadata:{
               format:'cinelab',
-              src:'polemic_fr.json',
+              src:file,
               type:'json'}
             },            
             {type: "ArrowWidget",
              metadata:{
               format:'cinelab',
-              src:'polemic_fr.json',
+              src:file,
               type:'json'}
             },
 
@@ -122,19 +123,19 @@
             {type: "AnnotationsWidget",
 						 metadata:{
 						  format:'cinelab',
-						  src:'polemic_fr.json',
+						  src:file,
 						  type:'json'}
 						},
             {type: "TweetsWidget",
 						 metadata:{
 						  format:'cinelab',
-						  src:'polemic_fr.json',
+						  src:file,
 						  type:'json'}
 						},
             {type: "createAnnotationWidget",
 						 metadata:{
 						  format:'cinelab',
-						  src:'polemic_fr.json',
+						  src:file,
 						  type:'json'}
 						}      
             ]
@@ -150,7 +151,7 @@
                { type: "MediaFragment",
   			     		 metadata:{
 	  	  			   format:'cinelab',
-		  				   src:'polemic_fr.json',
+		  				   src:file,
 						     type:'json'}
 						}]
 

@@ -1,11 +1,11 @@
-/* EDIT THIS FILE AND RENAME IT TO site.js TO BUILD THE METADATAPLAYER
-   site.js - all our site-dependent config : player chrome, cdn locations, etc...*/
+/* site.js - all our site-dependent config : player chrome, cdn locations, etc...*/
 
 IriSP.libdir = "/mdp/src/js/libs/";
-IriSP.jwplayer_swf_path = "http://localhost/mdp/test/libs/player.swf";
+IriSP.jwplayer_swf_path = "/mdp/test/libs/player.swf";
+IriSP.platform_url = "http://localhost/pf";
 
 IriSP.lib = { 
-    jQuery : "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js",
+		jQuery : "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js",
 		jQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.js",
 		jQueryToolTip : "http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
 		swfObject : "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
@@ -18,11 +18,16 @@ IriSP.lib = {
     "popcorn.mediafragment" : IriSP.libdir + "popcorn.mediafragment.js",
     "popcorn.code" : IriSP.libdir + "popcorn.code.js",
     "popcorn.jwplayer": IriSP.libdir + "popcorn.jwplayer.js",
-    "popcorn.youtube": IriSP.libdir + "popcorn.youtube.js"
+    "popcorn.youtube": IriSP.libdir + "popcorn.youtube.js"    
 };
 
-//Player Configuration 
-IriSP.config = undefined;
+//Configuration for the player and utility functions.
+IriSP.config = {};
+
+IriSP.config.shortener = {
+  // function to call to shorten an url.
+  //shortening_function : IriSP.platform_shorten_url
+};
 
 IriSP.widgetsDefaults = {
   "LayoutManager" : {spacer_div_height : "0px" },
@@ -35,7 +40,8 @@ IriSP.widgetsDefaults = {
     },
   "TweetsWidget" : {
       default_profile_picture : "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
-      tweet_display_period: 10000 // how long do we show a tweet ?
+      tweet_display_period: 10000, // how long do we show a tweet ?
+      
   },
   "SliderWidget" : {
       minimize_period: 850 // how long does the slider stays maximized after the user leaves the zone ?
@@ -44,19 +50,26 @@ IriSP.widgetsDefaults = {
       keywords: ["#faux-raccord", "#mot-clef"],
       cinecast_version: true /* put to false to enable the platform version, true for the festival cinecast one. */
   },
-  "SparkLineWidget" : {
+  "SparklineWidget" : {
       column_width: 10 // the width of a column in pixels.
   },
   "Main" : {
       autoplay: true
   }
-  
+  "AnnotationsListWidget" : {
+      ajax_mode: true, /* use ajax to get information about the annotations.
+                         if set to false, only search in the annotations for the
+                         current project. */
+      ajax_url: IriSP.platform_url + "ldtplatform/api/ldt/segments/" /* partial
+                                                                        url of 
+                                                                        where to
+                                                                        get the 
+                                                                        ajax */
+  },  
 };
 
-/* ! Must not end with a trailing slash */
-IriSP.platform_url = "http://localhost/pf/";
-
 IriSP.paths = {
+//  "imgs": "/tweetlive/res/metadataplayer/src/css/imgs"
   "imgs": "/mdp/src/css/imgs"
 };
 IriSP.default_templates_vars = {

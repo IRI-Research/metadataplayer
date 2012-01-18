@@ -29,7 +29,9 @@ IriSP.ArrowWidget.prototype.timeUpdateHandler = function(percents) {
     return;
   
   var currentTime = this._Popcorn.currentTime();
-  var currentAnnotation = this._serializer.currentAnnotations(currentTime)[0]; // FIXME : use the others ?
+  var currentAnnotation = this._serializer.currentChapitre(currentTime);
+  if (IriSP.null_or_undefined(currentAnnotation))
+    var currentAnnotation = this._serializer.currentAnnotation(currentTime)[0]; // FIXME : use the others ?
 
   /* move the arrow only if the current annotation changes */
   if (currentAnnotation != this._oldAnnotation) {
@@ -43,7 +45,7 @@ IriSP.ArrowWidget.prototype.timeUpdateHandler = function(percents) {
     // we need to apply a fix because the arrow has a certain length
     // it's half the length of the arrow (27 / 2). We need to convert
     // it in percents though.
-    var totalWidth = this.selector.width();
+    var totalWidth = this.selector.width();    
     var pixels = percents * totalWidth;
     var correction = (27 / 2);
     var corrected_pixels = pixels - correction;
