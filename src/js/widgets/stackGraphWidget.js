@@ -30,7 +30,8 @@ IriSP.StackGraphWidget.prototype.draw = function() {
         _defaultDefColor = "#585858";
     this.height = (this._config.height ? this._config.height : 50);
     this.width = this.selector.width();
-    this.sliceCount = (this._config.slices ? this._config.slices : ~~(this.width/15));
+    this.isStreamGraph = (this._config.streamgraph ? this._config.streamgraph : false);
+    this.sliceCount = (this._config.slices ? this._config.slices : ~~(this.width/(this.isStreamGraph ? 20 : 5)));
     this.tagconf = (this._config.tags
         ? this._config.tags
         : _defaultTags);
@@ -92,19 +93,22 @@ IriSP.StackGraphWidget.prototype.draw = function() {
                 _nbneutre = _group.length - _nbtags,
                 _h = _nbneutre * _scale,
                 _base = this.height - _h;
-            /*this.paper.rect(i * _width, _base, _width, _h ).attr({
-                "stroke" : "none",
-                "fill" : this.defaultcolorconf,
-            });*/
+            if (!this.isStreamGraph) {
+                this.paper.rect(i * _width, _base, _width - 1, _h ).attr({
+                    "stroke" : "none",
+                    "fill" : this.defaultcolorconf,
+                });
+            }
            _paths[0].push(_base);
             for (var j = 0; j < this.tagconf.length; j++) {
                 _h = _vol[j] * _scale;
                 _base = _base - _h;
-            /*    this.paper.rect(i * _width, _base, _width, _h ).attr({
-                    "stroke" : "none",
-                    "fill" : this.tagconf[j].color,
-                });
-            */
+                if (!this.isStreamGraph) {
+                    this.paper.rect(i * _width, _base, _width - 1, _h ).attr({
+                        "stroke" : "none",
+                        "fill" : this.tagconf[j].color,
+                    });
+                }
                 _paths[j+1].push(_base);
             }
             this.groups.push(_vol.map(function(_v) {
@@ -112,7 +116,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
             }))
         } else {
             for (var j = 0; j < _paths.length; j++) {
-                _paths[j].push(0);
+                _paths[j].push(this.height);
             }
             this.groups.push(this.tagconf.map(function() {
                 return 0;
@@ -120,19 +124,31 @@ IriSP.StackGraphWidget.prototype.draw = function() {
         }
     }
     
-    for (var j = _paths.length - 1; j >= 0; j--) {
-        var _d = _paths[j].reduce(function(_memo, _v, _k) {
-           return _memo + ( _k
-               ? 'C' + (_k * _width) + ' ' + _paths[j][_k - 1] + ' ' + (_k * _width) + ' ' + _v + ' ' + ((_k + .5) * _width) + ' ' + _v
-               : 'M0 ' + _v + 'L' + (.5*_width) + ' ' + _v )
-        },'') + 'L' + this.width + ' ' + _paths[j][_paths[j].length - 1] + 'L' + this.width + ' ' + this.height + 'L0 ' + this.height;
-        this.paper.path(_d).attr({
-            "stroke" : "none",
-            "fill" : (j ? this.tagconf[j-1].color : this.defaultcolorconf),
-        });
+    if (this.isStreamGraph) {
+        for (var j = _paths.length - 1; j >= 0; j--) {
+            var _d = _paths[j].reduce(function(_memo, _v, _k) {
+               return _memo + ( _k
+                   ? 'C' + (_k * _width) + ' ' + _paths[j][_k - 1] + ' ' + (_k * _width) + ' ' + _v + ' ' + ((_k + .5) * _width) + ' ' + _v
+                   : 'M0 ' + _v + 'L' + (.5*_width) + ' ' + _v )
+            },'') + 'L' + this.width + ' ' + _paths[j][_paths[j].length - 1] + 'L' + this.width + ' ' + this.height + 'L0 ' + this.height;
+            this.paper.path(_d).attr({
+                "stroke" : "none",
+                "fill" : (j ? this.tagconf[j-1].color : this.defaultcolorconf),
+            });
+        }
     }
-    
-    this.rectangleProgress = this.paper.rect(0,0,0,this.height).attr({ "stroke" : "none", "fill" : "#808080", "opacity" : .3});
+    this.rectangleFocus = this.paper.rect(0,0,_width,this.height)
+        .attr({
+            "stroke" : "none",
+            "fill" : "#ff00ff",
+            "opacity" : 0,
+        })
+    this.rectangleProgress = this.paper.rect(0,0,0,this.height)
+        .attr({
+            "stroke" : "none",
+            "fill" : "#808080",
+            "opacity" : .3,
+        });
     this.ligneProgress = this.paper.path("M0 0L0 "+this.height).attr({"stroke":"#ff00ff", "line-width" : 2})
     
     this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeUpdateHandler));
@@ -146,6 +162,9 @@ IriSP.StackGraphWidget.prototype.draw = function() {
         })
         .mouseout(function() {
             _this.TooltipWidget.hide();
+            _this.rectangleFocus.attr({
+                "opacity" : 0,
+            })
         })
 }
 
@@ -173,6 +192,7 @@ IriSP.StackGraphWidget.prototype.clickHandler = function(event) {
 IriSP.StackGraphWidget.prototype.updateTooltip = function(event) {
     var _segment = ~~(this.sliceCount * (event.pageX - this.selector.offset().left)/this.width),
         _valeurs = this.groups[_segment],
+        _width = this.width / this.sliceCount,
         _html = '<ul style="list-style: none; margin: 0; padding: 0;">' + this.tagconf.map(function(_tag, _i) {
             return '<li style="clear: both;"><span style="float: left; width: 10px; height: 10px; margin: 2px; background: '
                 + _tag.color
@@ -183,7 +203,11 @@ IriSP.StackGraphWidget.prototype.updateTooltip = function(event) {
                 + '</li>';
         }).join('') + '</ul>';
     this.TooltipWidget._shown = false; // Vraiment, on ne peut pas ouvrir le widget s'il n'est pas encore ouvert ?
-    this.TooltipWidget.show('','',event.pageX - 100, event.pageY - 150);
+    this.TooltipWidget.show('','',event.pageX - 105, event.pageY - 160);
     this.TooltipWidget.selector.find(".tip").html(_html);
+    this.rectangleFocus.attr({
+        "x" : _segment * _width,
+        "opacity" : .4,
+    })
 }
 
