@@ -35,7 +35,8 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
     
     /* widget specific requirements */
     for (var idx in config.gui.widgets) {
-      if (config.gui.widgets[idx].type === "PolemicWidget") {        
+      if (config.gui.widgets[idx].type === "PolemicWidget" ||
+          config.gui.widgets[idx].type === "StackGraphWidget") {        
         $L.script(libs.raphael);
       }
 
