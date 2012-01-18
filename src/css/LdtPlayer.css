@@ -734,3 +734,13 @@ button.ui-button-icon-only  {
   display: table-cell;
   width: 80%;
 }
+
+/* Tagcloud */
+
+.Ldt-TagCloud ul {
+    list-style: none; padding: 0; margin: 5px; text-align: center;
+}
+
+.Ldt-TagCloud li {
+    display: inline-block; margin: 2px;
+}

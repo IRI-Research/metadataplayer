@@ -28,10 +28,10 @@ IriSP.StackGraphWidget.prototype.draw = function() {
             },
         ],
         _defaultDefColor = "#585858";
-    this.height = (this._config.height ? this._config.height : 50);
+    this.height =  this._config.height || 50;
     this.width = this.selector.width();
-    this.isStreamGraph = (this._config.streamgraph ? this._config.streamgraph : false);
-    this.sliceCount = (this._config.slices ? this._config.slices : ~~(this.width/(this.isStreamGraph ? 20 : 5)));
+    this.isStreamGraph = this._config.streamgraph || false;
+    this.sliceCount = this._config.slices || ~~(this.width/(this.isStreamGraph ? 20 : 5));
     this.tagconf = (this._config.tags
         ? this._config.tags
         : _defaultTags);
@@ -49,17 +49,19 @@ IriSP.StackGraphWidget.prototype.draw = function() {
     
     var _annotationType = this._serializer.getTweets(),
         _sliceDuration = ~~ ( this.duration / this.sliceCount),
-        _annotations = IriSP._(this._serializer._data.annotations).filter(function(_a) {
-            return ( _a.meta && _a.meta["id-ref"] && ( _a.meta["id-ref"] == _annotationType ) );
-        }),
-        _groupedAnnotations = IriSP._(_annotations).groupBy(function(_a) {
-            return ~~ (_a.begin / _sliceDuration);
+        _annotations = this._serializer._data.annotations,
+        _groupedAnnotations = IriSP._.range(this.sliceCount).map(function(_i) {
+            return _annotations.filter(function(_a){
+                return (_a.begin <= (1 + _i) * _sliceDuration) && (_a.end >= _i * _sliceDuration)
+            });
         }),
         _max = IriSP._(_groupedAnnotations).max(function(_g) {
             return _g.length
         }).length,
         _scale = this.height / _max,
-        _width = this.width / this.sliceCount;
+        _width = this.width / this.sliceCount
+        _showTitle = !this._config.excludeTitle,
+        _showDescription = !this._config.excludeDescription;
     
     
     var _paths = this.tagconf.map(function() {
@@ -74,7 +76,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
                 return 0;
             });
             for (var j = 0; j < _group.length; j++){
-                var _txt = _group[j].content.description;
+           var _txt = (_showTitle ? _group[j].content.title : '') + ' ' + (_showDescription ? _group[j].content.description : '')
                 var _tags = this.tagconf.map(function(_tag) {
                         return (_txt.search(_tag.regexp) == -1 ? 0 : 1)
                     }),
