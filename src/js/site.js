@@ -2,6 +2,7 @@
 
 IriSP.libdir = "/mdp/src/js/libs/";
 IriSP.jwplayer_swf_path = "/mdp/test/libs/player.swf";
+IriSP.platform_url = "http://localhost/pf";
 
 IriSP.lib = { 
 		jQuery : "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js",
@@ -55,10 +56,17 @@ IriSP.widgetsDefaults = {
   "Main" : {
       autoplay: true
   }
-  
+  "AnnotationsListWidget" : {
+      ajax_mode: true, /* use ajax to get information about the annotations.
+                         if set to false, only search in the annotations for the
+                         current project. */
+      ajax_url: IriSP.platform_url + "ldtplatform/api/ldt/segments/" /* partial
+                                                                        url of 
+                                                                        where to
+                                                                        get the 
+                                                                        ajax */
+  },  
 };
-
-IriSP.platform_url = "http://localhost/pf";
 
 IriSP.paths = {
 //  "imgs": "/tweetlive/res/metadataplayer/src/css/imgs"
