@@ -161,6 +161,7 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
       
       this._searchBlockOpen = true;           
       this.selector.find(".LdtSearchInput").bind('keyup', null, function() { self.searchHandler.call(self); } );
+      this.selector.find(".LdtSearchInput").focus();
       
       // we need this variable because some widget can find a match in
       // their data while at the same time other's don't. As we want the

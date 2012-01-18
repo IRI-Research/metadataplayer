@@ -132,24 +132,39 @@ IriSP.guid = function(prefix) {
 };
 
 /** returns an url to share on facebook */
-IriSP.mkFbUrl = function(url) {
-  return "http://www.facebook.com/share.php?u=" + "I'm watching " + url;
+IriSP.mkFbUrl = function(url, text) {
+  if (typeof(text) === "undefined")
+    text = "I'm watching ";
+  
+  return "http://www.facebook.com/share.php?u=" + IriSP.encodeURI(text) + IriSP.shorten_url(url);
 };
 
 /** returns an url to share on twitter */
-IriSP.mkTweetUrl = function(url) {
-  return "http://twitter.com/home?status=" + "I'm sharing " + url;
+IriSP.mkTweetUrl = function(url, text) {
+  if (typeof(text) === "undefined")
+    text = "I'm watching ";
+  
+  return "http://twitter.com/home?status=" + IriSP.encodeURI(text) + IriSP.shorten_url(url);
 };
 
 /** returns an url to share on google + */
-IriSP.mkGplusUrl = function(url) {
+IriSP.mkGplusUrl = function(url, text) {
   return "";
 };
 
 /** test if a value is null or undefined */
 IriSP.null_or_undefined = function(val) {
   return (typeof(val) === "undefined" || val === null);
-}
+};
+
+/** issue a call to an url shortener and return the shortened url */
+IriSP.shorten_url = function(url) {
+  if (IriSP.config.shortener.hasOwnProperty("shortening_function"))
+    return IriSP.config.shortener.shortening_function(url);
+    
+  return url;
+};
+
 /* for ie compatibility
 if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
    Object.defineProperty=function(obj,prop,desc) {

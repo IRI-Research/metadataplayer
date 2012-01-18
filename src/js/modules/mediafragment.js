@@ -28,10 +28,9 @@ IriSP.MediaFragment.prototype.advanceTime = function() {
                     var offsettime = pageoffset.substring( 2 );
                     this._Popcorn.currentTime( parseFloat( offsettime ) );
                     }
-                  } else if ( pageoffset.substring(0, 2) === "a=") {
+                  } else if ( pageoffset.substring(0, 3) === "id=") {
                     // annotation
-                    var annotationId = pageoffset.substring( 2 );
-
+                    var annotationId = pageoffset.substring( 3 );
                     // there's no better way than that because
                     // of possible race conditions
                     this._serializer.sync(IriSP.wrap(this, function() {
@@ -66,7 +65,7 @@ IriSP.MediaFragment.prototype.updateAnnotation = function(annotationId) {
   }
   
   splitArr = window.location.href.split( "#" )
-  history.replaceState( {}, "", splitArr[0] + "#a=" + annotationId);
+  history.replaceState( {}, "", splitArr[0] + "#id=" + annotationId);
  
   window.setTimeout(function() { _this.mutex = false }, 50);
 };
@@ -89,6 +88,7 @@ IriSP.MediaFragment.prototype.lookupAnnotation = function(annotationId) {
 
   if (typeof(annotation) !== "undefined") {
     this._Popcorn.currentTime(annotation.begin / 1000);
+    this._Popcorn.trigger("IriSP.Mediafragment.showAnnotation", annotationId);
   }
   
   window.setTimeout(function() { _this.mutex = false }, 50);

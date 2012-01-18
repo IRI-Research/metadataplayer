@@ -101,7 +101,7 @@ IriSP.SparklineWidget.prototype.clickHandler = function(event) {
 IriSP.SparklineWidget.prototype.handleNewAnnotation = function(annotation) {
   var num_columns = (this.selector.width()) / IriSP.widgetsDefaults["SparklineWidget"].column_width;
   var duration = +this._serializer.currentMedia().meta["dc:duration"];
-  var time_step = duration / num_columns; /* the time interval between two columns */
+  var time_step = Math.round(duration / num_columns); /* the time interval between two columns */
   var begin = +annotation.begin;
   
   var index = Math.floor(begin / time_step);
