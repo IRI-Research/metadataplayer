@@ -155,7 +155,6 @@ IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
       this.selector.find(".LdtSearch").show("blind", { direction: "horizontal"}, 100);
       
       this.selector.find(".LdtSearchInput").css('background-color','#fff');
-      this.selector.find(".LdtSearchInput").focus();
       this.selector.find(".LdtSearchInput").attr('value', this._searchLastValue);      
       this._Popcorn.trigger("IriSP.search", this._searchLastValue); // trigger the search to make it more natural.
       
