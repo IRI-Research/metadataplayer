@@ -1,6 +1,6 @@
 IriSP.StackGraphWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
-}
+};
 
 IriSP.StackGraphWidget.prototype = new IriSP.Widget();
 
@@ -166,7 +166,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
                 "opacity" : 0,
             })
         })
-}
+};
 
 IriSP.StackGraphWidget.prototype.timeUpdateHandler = function() {
     var _currentTime = this._Popcorn.currentTime(),
@@ -177,7 +177,7 @@ IriSP.StackGraphWidget.prototype.timeUpdateHandler = function() {
     this.ligneProgress.attr({
         "path" : "M" + _x + " 0L" + _x + " " + this.height,
     })
-}
+};
 
 IriSP.StackGraphWidget.prototype.clickHandler = function(event) {
   /* Ctrl-C Ctrl-V'ed from another widget
@@ -209,5 +209,5 @@ IriSP.StackGraphWidget.prototype.updateTooltip = function(event) {
         "x" : _segment * _width,
         "opacity" : .4,
     })
-}
+};
 
