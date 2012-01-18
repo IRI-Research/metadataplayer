@@ -2,6 +2,8 @@ IriSP.AnnotationsListWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this.__counter = 0;
   this.__oldList = [];
+  
+  this.ajax_mode = IriSP.widgetsDefaults["AnnotationsListWidget"].ajax_mode;
 };
 
 
@@ -22,7 +24,7 @@ IriSP.AnnotationsListWidget.prototype.do_redraw = function(list) {
 /** draw the annotation list */
 IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
   var _this = this;
-
+  
   var view_type = this._serializer.getContributions();
   var annotations = this._serializer._data.annotations;
   var currentTime = this._Popcorn.currentTime();
@@ -88,10 +90,20 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
   
 };
 
+IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
+  var pre_url = IriSP.widgetsDefaults["AnnotationsListWidget"].ajax_url;
+  var templ = "{{pre_url}}/{{content_id}}/{{begin_timecode}}/{{end_timecode}}/";
+};
+
 IriSP.AnnotationsListWidget.prototype.draw = function() {
 
   this.drawList();
-  this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, function() { this.drawList(true); }));
+    
+  if (!this._ajax_mode) {    
+    this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, function() { this.drawList(true); }));
+  } else {
+    this._Popcorn.listen("IriSP.StackGraphWidget.mouseOver", IriSP.wrap(this, this.ajaxRedraw));
+  }
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.redraw));
 };
 
