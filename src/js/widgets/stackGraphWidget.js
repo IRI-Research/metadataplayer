@@ -159,6 +159,12 @@ IriSP.StackGraphWidget.prototype.draw = function() {
         })
         .mousemove(function(_e) {
             _this.updateTooltip(_e);
+            
+            // Also tell the world where the mouse is hovering.
+            var relX = event.pageX - this.selector.offset().left;
+            var duration = this._serializer.currentMedia().meta["dc:duration"];
+            var Time = ((relX / _this.width) * duration).toFixed(2);
+            _this._Popcorn.trigger("IriSP.StackGraphWidget.mouseOver", Time);
         })
         .mouseout(function() {
             _this.TooltipWidget.hide();
