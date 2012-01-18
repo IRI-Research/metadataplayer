@@ -92,22 +92,23 @@ IriSP.JSONSerializer.prototype.searchTweets = function(title, description, keywo
     /* the next two lines are a bit verbose because for some test data, _serializer.data.view is either
        null or undefined.
     */
-    var view;
+    
+    var searchViewType = this.getTweets();
+    if (typeof(searchViewType) === "undefined") {
+      var view;
+      
+      if (typeof(this._data.views) !== "undefined" && this._data.views !== null)
+         view = this._data.views[0];    
 
-    if (typeof(this._data.views) !== "undefined" && this._data.views !== null)
-       view = this._data.views[0];
-
-    var searchViewType = "";
-
-    if(typeof(view) !== "undefined" && typeof(view.annotation_types) !== "undefined" && view.annotation_types.length > 1) {
-            searchViewType = view.annotation_types[0];
+      if(typeof(view) !== "undefined" && typeof(view.annotation_types) !== "undefined" && view.annotation_types.length > 1) {
+              searchViewType = view.annotation_types[0];
+      }
     }
-
     var filterfn = function(annotation) {
       if( searchViewType  != "" && 
           typeof(annotation.meta) !== "undefined" && 
           typeof(annotation.meta["id-ref"]) !== "undefined" &&
-          annotation.meta["id-ref"] !== searchViewType) {
+          annotation.meta["id-ref"] === searchViewType) {
         return false; // pass
       } else {
           return true;
