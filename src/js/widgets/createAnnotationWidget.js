@@ -248,6 +248,11 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
                       window.setTimeout(IriSP.wrap(_this, function() { this.showStartScreen(); }), 5000);
                     }
                     
+                    // hide the slicer widget
+                    if (!_this.cinecast_version) {
+                      console.log("hie");
+                      this._Popcorn.trigger("IriSP.SliceWidget.hide");
+                    }                                        
                     });
   }
 };
@@ -263,10 +268,11 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   var annotation = apiJson["annotations"][0];
   
   annotation["media"] = this._serializer.currentMedia()["id"];
+  var duration_part = Math.round(this._serializer.currentMedia().meta["dc:duration"] / 20);
   
   if (this.cinecast_version) {   
-      annotation["begin"] = Math.round(this._Popcorn.currentTime() * 1000 - 10000);
-      annotation["end"] = Math.round(this._Popcorn.currentTime() * 1000 + 10000);
+      annotation["begin"] = Math.round(this._Popcorn.currentTime() * 1000 - duration_part);
+      annotation["end"] = Math.round(this._Popcorn.currentTime() * 1000 + duration_part);
       if (annotation["begin"] < 0)
         annotation["begin"] = 0;
       
