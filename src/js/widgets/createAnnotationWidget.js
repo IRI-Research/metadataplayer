@@ -24,11 +24,7 @@ IriSP.createAnnotationWidget.prototype.clear = function() {
 IriSP.createAnnotationWidget.prototype.draw = function() {
   var _this = this;
 
-  if (this.cinecast_version) {    
-    var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_festivalCinecast_template);
-  } else {
-    var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template);
-  }
+  var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template);
   
 	this.selector.append(annotationMarkup);
   
@@ -241,14 +237,17 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
   } else {
     this.showWaitScreen();
     
-    this.sendLdtData(contents, function() {
+    this.sendLdtData(contents, function(annotation) {
                     if (_this.cinecast_version) {
                         if (_this._Popcorn.media.paused)
                           _this._Popcorn.play();
                     }
 
-                    _this.showEndScreen();
-                    window.setTimeout(IriSP.wrap(_this, function() { this.showStartScreen(); }), 5000);
+                    _this.showEndScreen(annotation);
+                    if (_this.cinecast_version) {
+                      window.setTimeout(IriSP.wrap(_this, function() { this.showStartScreen(); }), 5000);
+                    }
+                    
                     });
   }
 };
@@ -265,11 +264,15 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   
   annotation["media"] = this._serializer.currentMedia()["id"];
   
-  if (this.cinecast_version) {
-    if (typeof(this._currentAnnotation) !== "undefined") {
-      annotation["begin"] = this._currentAnnotation.begin;
-      annotation["end"] = this._currentAnnotation.end;
-    }
+  if (this.cinecast_version) {   
+      annotation["begin"] = Math.round(this._Popcorn.currentTime() * 1000 - 10000);
+      annotation["end"] = Math.round(this._Popcorn.currentTime() * 1000 + 10000);
+      if (annotation["begin"] < 0)
+        annotation["begin"] = 0;
+      
+      if (annotation["end"] > this._serializer.currentMedia().meta["dc:duration"])
+        annotation["end"] = this._serializer.currentMedia().meta["dc:duration"];
+      
   } else {
     var duration = +this._serializer.currentMedia().meta["dc:duration"];    
     annotation["begin"] = +((duration * (this.sliceLeft / 100)).toFixed(0));
