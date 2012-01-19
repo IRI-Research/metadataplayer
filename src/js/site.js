@@ -55,17 +55,19 @@ IriSP.widgetsDefaults = {
   },
   "Main" : {
       autoplay: true
-  }
+  },
   "AnnotationsListWidget" : {
       ajax_mode: true, /* use ajax to get information about the annotations.
                          if set to false, only search in the annotations for the
                          current project. */
-      ajax_url: IriSP.platform_url + "ldtplatform/api/ldt/segments/" /* partial
-                                                                        url of 
-                                                                        where to
-                                                                        get the 
-                                                                        ajax */
-  },  
+      ajax_url: IriSP.platform_url + "ldtplatform/api/ldt/segments/", /* partial
+                                                                         url of 
+                                                                         where to
+                                                                         get the 
+                                                                         ajax */
+      ajax_granularity: 10000 /* how much ms should we look before and after the
+                                 current timecode */
+  }, 
 };
 
 IriSP.paths = {
