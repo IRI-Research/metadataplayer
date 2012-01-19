@@ -9,7 +9,7 @@ IriSP.TagCloudWidget.prototype.draw = function() {
     var _stopwords = [
             'aussi', 'and', 'avec', 'aux', 'car', 'cette', 'comme', 'dans', 'donc', 'des', 'elle', 'est',
             'être', 'eux', 'fait', 'ici', 'ils', 'les', 'leur', 'leurs', 'mais', 'mes', 'même', 'mon', 'notre',
-            'nos', 'nous', 'ont', 'par', 'pas', 'peu', 'pour', 'que', 'qui', 'ses' ,'son', 'sont', 'sur',
+            'non', 'nos', 'nous', 'ont', 'par', 'pas', 'peu', 'pour', 'que', 'qui', 'ses' ,'son', 'sont', 'sur',
             'tes', 'très', 'the', 'ton', 'tous', 'tout', 'une', 'votre', 'vos', 'vous'
         ],
         _regexpword = /[^\s\.&;,'"!\?\d\(\)\+\[\]\\\…\-«»:\/]{3,}/g,

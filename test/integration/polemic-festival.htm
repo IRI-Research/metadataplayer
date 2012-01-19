@@ -21,50 +21,79 @@
   <div id="LdtPlayer"></div>
   <div id="Sparkline"></div>
   <script  type="text/javascript">
-    var platf_url = "http://localhost/pf/ldtplatform/ldt/";
-    var project_id = "47e3eef0-3ab4-11e1-9423-001d7d7c6d1d";
-    IriSP.widgetsDefaults.AnnotationsListWidget.ajax_mode = false;
-    IriSP.widgetsDefaults.createAnnotationWidget.cinecast_version = true;
-    
+    var platf_url = "http://192.168.56.101/pf/ldtplatform/ldt/",
+        project_id = "bb18dcdc-41bc-11e1-91b2-08002791f1b7",
+        json_url = platf_url + 'cljson/id/' + project_id;
     var config = {            
         gui:{
             width:650,
             height:2100,              
             container:'LdtPlayer',
             css:'../../src/css/LdtPlayer.css',
-            widgets: [            
+            widgets: [
+            {type: "StackGraphWidget",
+                tags : [
+                    {
+                        "keywords" : [ "élève", "souleyman", "souleiman", "koumba", "kumba", "karl", "esmeralda" ],
+                        "description" : "Mentions des élèves",
+                        "color" : "#CE0A15",
+                    },
+                    {
+                        "keywords" : [ "F.M", "françois" ],
+                        "description" : "Mentions de François",
+                        "color" : "#036AAE",
+                    },
+                    {
+                        "keywords" : [ "plan", "pano", "caméra", "plongée" ],
+                        "description" : "Descriptions de plans",
+                        "color" : "#C5A62D",   
+                    },
+                ],
+               metadata:{
+                format:'cinelab',
+                src: json_url,
+                type:'json'},
+                
+               requires: [{
+                type: "TooltipWidget",
+                width: 180,
+                heigh: 160,
+                metadata : {type:'empty'
+                }
+               }],
+            },            
             {type: "AnnotationsListWidget",
              container: "AnnotationsListContainer",             
-						 metadata:{
-						  format:'cinelab',
-						  src:platf_url + 'cljson/id/' + project_id,
-						  type:'json'}
-						},
+                         metadata:{
+                          format:'cinelab',
+                          src:json_url,
+                          type:'json'}
+                        },
             {type: "SparklineWidget",
              width: 640, /* required for this widget */
              height: 50,            
-						 metadata:{
-						  format:'cinelab',
-						  src:platf_url + 'cljson/id/' + project_id,
-						  type:'json'}
-						},
+                         metadata:{
+                          format:'cinelab',
+                          src:json_url,
+                          type:'json'}
+                        },
             {type: "SliderWidget",
-						 metadata:{
-						  format:'cinelab',
-						  src:platf_url + 'cljson/id/' + project_id,
-						  type:'json'}
-						},        
+                         metadata:{
+                          format:'cinelab',
+                          src:json_url,
+                          type:'json'}
+                        },        
             {type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
              mode: "radio",
              metadata:{
               format:'cinelab',
-              src:platf_url + 'cljson/id/' + project_id,
+              src:json_url,
               type:'json'}
             },
             {type: "SegmentsWidget",
              metadata:{
               format:'cinelab',
-              src:platf_url + 'cljson/id/' + project_id,
+              src:json_url,
               type:'json'},
              requires: [{
               type: "TooltipWidget",
@@ -78,21 +107,21 @@
             {type: "ArrowWidget",
              metadata:{
               format:'cinelab',
-              src:platf_url + 'cljson/id/' + project_id,
+              src:json_url,
               type:'json'}
             },
             {type: "TweetsWidget",
-						 metadata:{
-						  format:'cinelab',
-						  src:platf_url + 'cljson/id/' + project_id,
-						  type:'json'}
-						},
+                         metadata:{
+                          format:'cinelab',
+                          src:json_url,
+                          type:'json'}
+                        },
             {type: "createAnnotationWidget",
-						 metadata:{
-						  format:'cinelab',
-						  src:platf_url + 'cljson/id/' + project_id,
-						  type:'json'}
-						}      
+                         metadata:{
+                          format:'cinelab',
+                          src:json_url,
+                          type:'json'}
+                        }      
             ]
         },
       player:{
@@ -104,15 +133,15 @@
       },
       modules: [
                { type: "MediaFragment",
-  			     		 metadata:{
-	  	  			   format:'cinelab',
-		  				   src:platf_url + 'cljson/id/' + project_id,
-						     type:'json'}
-						}]
+                         metadata:{
+                       format:'cinelab',
+                           src:json_url,
+                             type:'json'}
+                        }]
 
     };
     
-    IriSP.loadLibs(IriSP.lib, config, platf_url + 'cljson/id/' + project_id,
+    IriSP.loadLibs(IriSP.lib, config, json_url,
       function() {   
               var layoutManager = new IriSP.LayoutManager(config.gui.container);
               var pop = IriSP.configurePopcorn(layoutManager, config.player);
