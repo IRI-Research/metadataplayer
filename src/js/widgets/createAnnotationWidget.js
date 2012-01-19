@@ -238,21 +238,20 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
     this.showWaitScreen();
     
     this.sendLdtData(contents, function(annotation) {
-                    if (_this.cinecast_version) {
-                        if (_this._Popcorn.media.paused)
-                          _this._Popcorn.play();
-                    }
+                      if (_this.cinecast_version) {
+                          if (_this._Popcorn.media.paused)
+                            _this._Popcorn.play();
+                      }
 
-                    _this.showEndScreen(annotation);
-                    if (_this.cinecast_version) {
-                      window.setTimeout(IriSP.wrap(_this, function() { this.showStartScreen(); }), 5000);
-                    }
-                    
-                    // hide the slicer widget
-                    if (!_this.cinecast_version) {
-                      console.log("hie");
-                      this._Popcorn.trigger("IriSP.SliceWidget.hide");
-                    }                                        
+                      _this.showEndScreen(annotation);
+                      if (_this.cinecast_version) {
+                        window.setTimeout(IriSP.wrap(_this, function() { this.showStartScreen(); }), 5000);
+                      }
+                      
+                      // hide the slicer widget
+                      if (!_this.cinecast_version) {                      
+                        _this._Popcorn.trigger("IriSP.SliceWidget.hide");
+                      }           
                     });
   }
 };
