@@ -165,6 +165,14 @@ IriSP.shorten_url = function(url) {
   return url;
 };
 
+/** Similar to substr but remove the last word if
+    we're breaking a word in two.
+ */ 
+IriSP.clean_substr = function(str, start, end) {
+  var s = str.substr(start, end).substr(start, end).split(" ");
+  s.pop();
+  return s.join(" ");
+};
 /* for ie compatibility
 if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
    Object.defineProperty=function(obj,prop,desc) {
