@@ -19,7 +19,7 @@ IriSP.TooltipWidget.prototype.draw = function() {
 };
 
 IriSP.TooltipWidget.prototype.clear = function() {
-	this.selector.find(".tiptext").text("");
+	this.selector.find(".tiptext").html("");
 };
 
 IriSP.TooltipWidget.prototype.show = function(text, color, x, y) {
@@ -29,7 +29,7 @@ IriSP.TooltipWidget.prototype.show = function(text, color, x, y) {
 
   this.selector.find(".tipcolor").css("background-color", color);
   this._displayedText = text;
-	this.selector.find(".tiptext").text(text);
+	this.selector.find(".tiptext").html(text);
   
   if (x < 0)
     x = 0;
