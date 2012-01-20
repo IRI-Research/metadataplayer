@@ -22,35 +22,57 @@ IriSP.SparklineWidget.prototype.draw = function() {
     and the third is a div to react to clicks
   */
   
-  var num_columns = (this.selector.width()) / IriSP.widgetsDefaults["SparklineWidget"].column_width;
-  var duration = +this._serializer.currentMedia().meta["dc:duration"];
-  var time_step = duration / num_columns; /* the time interval between two columns */
-  var results = [];
-  var i = 0; /* the index in the loop */  
-
-  /* this algorithm makes one assumption : that the array is sorted 
-     (it's done for us by the JSONSerializer). We go through the array 
-     and count how many comments fall within a peculiar time piece.
-     As i is preserved between each iteration, it's O(n).
-  */
-  
-  for(var j = 0; j < num_columns && i < this._serializer._data.annotations.length; j++) {    
-    var count = 0;
-    var annotation_begin = +(this._serializer._data.annotations[i].begin);
+  var views = this._serializer._data.views;
+  var stat_view;
+  if (!IriSP.null_or_undefined(views)) {
     
-    while(annotation_begin >= j * time_step && annotation_begin <= (j + 1) * time_step ) {
-      count++;
-      i++;
-      if (i >= this._serializer._data.annotations.length)
-        break;
-        
-      annotation_begin = +(this._serializer._data.annotations[i].begin);
-      
+    var i;
+    for (i = 0; i < views.length; i++) {
+      var view = views[i];
+      if (view.id === "stat") {
+          stat_view = view;
+          break;
+      }
     }
-    
-    results.push(count);
   }
+  
+  // If we've found the correct view, feed the directly the data from the view
+  // to jquery sparkline. Otherwise, compute it ourselves.
+  if (!IriSP.null_or_undefined(stat_view)) {
+    console.log("sparklinewidget : using stats embedded in the json");
+    var results = stat_view.meta.stat.split(",");      
+  } else {
+    console.log("sparklinewidget : computing stats ourselves");
+    var num_columns = (this.selector.width()) / IriSP.widgetsDefaults["SparklineWidget"].column_width;
+    var duration = +this._serializer.currentMedia().meta["dc:duration"];
+    var time_step = duration / num_columns; /* the time interval between two columns */
+    var results = [];
+    var i = 0; /* the index in the loop */  
 
+    /* this algorithm makes one assumption : that the array is sorted 
+       (it's done for us by the JSONSerializer). We go through the array 
+       and count how many comments fall within a peculiar time piece.
+       As i is preserved between each iteration, it's O(n).
+    */
+    
+    for(var j = 0; j < num_columns && i < this._serializer._data.annotations.length; j++) {    
+      var count = 0;
+      var annotation_begin = +(this._serializer._data.annotations[i].begin);
+      
+      while(annotation_begin >= j * time_step && annotation_begin <= (j + 1) * time_step ) {
+        count++;
+        i++;
+        if (i >= this._serializer._data.annotations.length)
+          break;
+          
+        annotation_begin = +(this._serializer._data.annotations[i].begin);
+        
+      }
+      
+      results.push(count);
+    }
+  }
+  
   // save the results in an array so that we can re-use them when a new annotation
   // is added.
   this._results = results;
@@ -91,15 +113,14 @@ IriSP.SparklineWidget.prototype.clickHandler = function(event) {
 
   var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
-  
-  
+    
   this._Popcorn.trigger("IriSP.SparklineWidget.clicked", newTime);
   this._Popcorn.currentTime(newTime);                                 
 };
 
 /** react when a new annotation is added */
 IriSP.SparklineWidget.prototype.handleNewAnnotation = function(annotation) {
-  var num_columns = (this.selector.width()) / IriSP.widgetsDefaults["SparklineWidget"].column_width;
+  var num_columns = this._results.length;
   var duration = +this._serializer.currentMedia().meta["dc:duration"];
   var time_step = Math.round(duration / num_columns); /* the time interval between two columns */
   var begin = +annotation.begin;
