@@ -70,31 +70,18 @@ IriSP.SliceWidget.prototype.leftHandleDragged = function(event, ui) {
   
   var currentX = this.leftHandle.position()["left"];
   var rightHandleX = Math.floor(this.rightHandle.position()["left"]);
-  //ui.position.left = Math.floor(ui.position.left);
   
-  if (currentX >= rightHandleX - 7 && ui.position.left >= this._leftHandleOldLeft) {
+  if (Math.floor(ui.position.left) >= rightHandleX - 7) {
     /* prevent the handle from moving past the right handle */
-    ui.position.left = this._leftHandleOldLeft;
+    ui.position.left = rightHandleX - 7;
   }
-  
-  if (ui.position.left > this._leftHandleOldLeft) {
-    console.log(ui.position.left, this._leftHandleOldLeft);
-    var increment = 1;
-  } else if (ui.position.left < this._leftHandleOldLeft)
-    var increment = -1;
-  else
-    var increment = 0;
-  
-  // the width of the zone is supposed to diminish by increment
-  // while at the same time the position of the zone should
-  // change by the opposite increment.
-  this.zoneWidth = this.zoneWidth - increment;
-  this.zoneLeft = Math.floor(this._leftHandleOldLeft + increment + 7);
+
+  this.zoneWidth = rightHandleX - Math.floor(ui.position.left) - 7;  
+  this.zoneLeft = Math.floor(ui.position.left) + 8;
   
   this.sliceZone.css("width", this.zoneWidth);
   this.sliceZone.css("left", this.zoneLeft + "px");
-  this._leftHandleOldLeft = Math.floor(this._leftHandleOldLeft + increment);
-  ui.position.left = this._leftHandleOldLeft;
+  this._leftHandleOldLeft = Math.floor(this._leftHandleOldLeft);  
   this.broadcastChanges();
     
 };
