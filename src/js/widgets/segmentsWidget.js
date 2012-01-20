@@ -92,7 +92,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
       /* the last segment has no segment following it */
       var pxWidth = endPixel - startPixel;
  
-    var divTitle = (annotation.content.title + " - " + annotation.content.description).substr(0,55);
+    var divTitle = IriSP.clean_substr(annotation.content.title + " -<br>" + annotation.content.description, 0, 132) + "...";
 
     if (typeof(annotation.content.color) !== "undefined")
       var color = annotation.content.color;
