@@ -71,9 +71,9 @@ IriSP.SliceWidget.prototype.leftHandleDragged = function(event, ui) {
   var currentX = this.leftHandle.position()["left"];
   var rightHandleX = Math.floor(this.rightHandle.position()["left"]);
   
-  if (Math.floor(ui.position.left) >= rightHandleX - 6) {
+  if (Math.floor(ui.position.left) >= rightHandleX - 7) {
     /* prevent the handle from moving past the right handle */
-    ui.position.left = rightHandleX - 6;
+    ui.position.left = rightHandleX - 7;
   }
 
   this.zoneWidth = rightHandleX - Math.floor(ui.position.left) - 7;  
