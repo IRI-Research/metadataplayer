@@ -365,7 +365,7 @@ IriSP.JSONSerializer.prototype.getNonTweetIds = function() {
     @param name of the ligne de temps
 */
 IriSP.JSONSerializer.prototype.getId = function(name) {
-  if (typeof(this._data.lists) === "undefined" || this._data.lists === null)
+  if (IriSP.null_or_undefined(this._data["annotation-types"]))
     return;
 
   name = name.toUpperCase();
@@ -379,6 +379,20 @@ IriSP.JSONSerializer.prototype.getId = function(name) {
   var id = e.id;
 
   return id;
+};
+
+/** return the list of id's of the ligne de temps which contains name
+    @param name of the ligne de temps
+*/
+IriSP.JSONSerializer.prototype.getIds = function(name) {
+  if (IriSP.null_or_undefined(this._data["annotation-types"]))
+    return;
+
+  name = name.toUpperCase();
+  var e = [];  
+  e = IriSP.underscore.filter(this._data["annotation-types"], 
+                                  function(entry) { return (entry["dc:title"].toUpperCase().indexOf(name) !== -1) });
+  return IriSP.underscore.pluck(e, "id");  
 };
 
 /** return the id of the ligne de temps named "Chapitrage" */
