@@ -71,9 +71,9 @@ IriSP.SliceWidget.prototype.leftHandleDragged = function(event, ui) {
   var currentX = this.leftHandle.position()["left"];
   var rightHandleX = Math.floor(this.rightHandle.position()["left"]);
   
-  if (Math.floor(ui.position.left) >= rightHandleX - 7) {
+  if (Math.floor(ui.position.left) >= rightHandleX - 6) {
     /* prevent the handle from moving past the right handle */
-    ui.position.left = rightHandleX - 7;
+    ui.position.left = rightHandleX - 6;
   }
 
   this.zoneWidth = rightHandleX - Math.floor(ui.position.left) - 7;  
@@ -88,21 +88,25 @@ IriSP.SliceWidget.prototype.leftHandleDragged = function(event, ui) {
 
 /** handle a dragging of the right handle */
 IriSP.SliceWidget.prototype.rightHandleDragged = function(event, ui) { 
-  var currentX = this.rightHandle.position()["left"];
-  var leftHandleX = this.leftHandle.position()["left"];
+  /* we have a special variable, this._leftHandleOldLeft, to keep the
+     previous position of the handle. We do that to know in what direction
+     is the handle being dragged
+  */
   
-  if (currentX <= leftHandleX + 7 && ui.position.left <= this._rightHandleOldLeft) {
+  var currentX = this.leftHandle.position()["left"];
+  var leftHandleX = Math.floor(this.leftHandle.position()["left"]);
+  
+  if (Math.floor(ui.position.left) < leftHandleX + 7) {
     /* prevent the handle from moving past the right handle */
-    ui.position.left = this._rightHandleOldLeft;
+    ui.position.left = leftHandleX + 7;
   }
-  
-  var increment = currentX - (this.zoneLeft + this.zoneWidth);  
 
-  this.zoneWidth += increment;  
-  this.sliceZone.css("width", this.zoneWidth);
-  this.broadcastChanges();
+  this.zoneWidth = Math.floor(ui.position.left) - (leftHandleX + 7);    
   
-  this._rightHandleOldLeft = ui.position.left; 
+  this.sliceZone.css("width", this.zoneWidth);
+  //this.sliceZone.css("left", this.zoneLeft + "px");
+  this._rightHandleOldLeft = Math.floor(this._rightHandleOldLeft);  
+  this.broadcastChanges();
 };
 
 /** tell to the world that the coordinates of the slice have
