@@ -156,15 +156,13 @@ IriSP.StackGraphWidget.prototype.draw = function() {
     this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeUpdateHandler));
     var _this = this;
     this.selector
-        .click(function(_e) {
-            _this.clickHandler(_e);
-        })
-        .mousemove(function(_e) {
-            _this.updateTooltip(_e);
+        .click(IriSP.wrap(this, this.clickHandler))
+        .mousemove(function(event) {
+            _this.updateTooltip(event);
             
             // Also tell the world where the mouse is hovering.
-            var relX = event.pageX - this.selector.offset().left;
-            var duration = this._serializer.currentMedia().meta["dc:duration"];
+            var relX = event.pageX - _this.selector.offset().left;
+            var duration = _this._serializer.currentMedia().meta["dc:duration"];
             var Time = ((relX / _this.width) * duration).toFixed(2);
             _this._Popcorn.trigger("IriSP.StackGraphWidget.mouseOver", Time);
 
