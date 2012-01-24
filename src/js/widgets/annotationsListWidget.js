@@ -123,8 +123,7 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
   
   for (i = 0; i < annotations.length; i++) {
       var annotation = annotations[i];
-      console.log(annotation);
-      console.log(view_types, annotation.meta["id-ref"]);
+
       /* filter the annotations whose type is not the one we want */
       /* We want _all_ the annotations.
       if (typeof(annotation.meta) !== "undefined" && typeof(annotation.meta["id-ref"]) !== "undefined"
@@ -143,7 +142,7 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
       obj["url"] = document.location.href.split("#")[0] + "/" + annotation.meta["project"];
       l.push(obj);
   }
-  console.log(l);
+
   this.do_redraw(l);
 };
 IriSP.AnnotationsListWidget.prototype.draw = function() {
