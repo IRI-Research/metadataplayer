@@ -96,7 +96,7 @@ IriSP.configurePopcorn = function (layoutManager, options) {
             opts["controlbar.position"] = "none";
           }
 
-          pop = IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
+          pop = new IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
         break;
       
       case "youtube":
