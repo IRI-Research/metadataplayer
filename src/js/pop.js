@@ -2,30 +2,39 @@
    popcorn is a bit unstable at the time */
 
 IriSP.PopcornReplacement = {
-  msgPump : {} /* used by jquery to receive and send messages */,
-  __delay_seek_signal : false
 };
 
-IriSP.PopcornReplacement.media = { 
-  "paused": true,
-  "muted": false
+
+/** instantiate a new popcorn-compatible player
+    @param playerFns an object which contains a number of
+    methods: init, play, pause, getMute, setMute used by
+    our wrapper.
+ */
+IriSP.PopcornReplacement.player = function(playerFns) {
+  this.playerFns = playerFns;
+  this.media = { 
+    "paused": true,
+    "muted": false
+  };
+  
+  this.msgPump = {}; /* dictionnary used to receive and send messages */
 };
 
-IriSP.PopcornReplacement.listen = function(msg, callback) {
+IriSP.PopcornReplacement.player.prototype.listen = function(msg, callback) {
 //  IriSP.jQuery(IriSP.PopcornReplacement.msgPump).bind(msg, function(event, rest) { callback(rest); });
-  if (!IriSP.PopcornReplacement.msgPump.hasOwnProperty(msg))
-    IriSP.PopcornReplacement.msgPump[msg] = [];
+  if (!this.msgPump.hasOwnProperty(msg))
+    this.msgPump[msg] = [];
 
-  IriSP.PopcornReplacement.msgPump[msg].push(callback);
+  this.msgPump[msg].push(callback);
 };
 
-IriSP.PopcornReplacement.trigger = function(msg, params) {
+IriSP.PopcornReplacement.player.prototype.trigger = function(msg, params) {
 //  IriSP.jQuery(IriSP.PopcornReplacement.msgPump).trigger(msg, params);
   
-  if (!IriSP.PopcornReplacement.msgPump.hasOwnProperty(msg))
+  if (!this.msgPump.hasOwnProperty(msg))
     return;
 
-  var d = IriSP.PopcornReplacement.msgPump[msg];
+  var d = this.msgPump[msg];
 
   for(var i = 0; i < d.length; i++) {
     d[i].call(window, params);
@@ -199,3 +208,4 @@ IriSP.PopcornReplacement.roundTime = function() {
   var currentTime = IriSP.PopcornReplacement.currentTime();
   return Math.round(currentTime);
 };
+
