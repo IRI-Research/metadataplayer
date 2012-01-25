@@ -1,7 +1,7 @@
 /* 
  * 	
- *	Copyright 2010 Institut de recherche et d'innovation 
- *	contributor(s) : Samuel Huron 
+ *	Copyright 2010-2012 Institut de recherche et d'innovation 
+ *	contributor(s) : Karim Hamidou, Samuel Huron 
  *	 
  *	contact@iri.centrepompidou.fr
  *	http://www.iri.centrepompidou.fr 
