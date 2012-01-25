@@ -47,14 +47,15 @@ IriSP.configurePopcorn = function (layoutManager, options) {
           delete opts.container;
           delete opts.type;
 
-          if (options.provider === "rtmp") {
+          
+          /* Try to guess options.file and options.streamer only if file and streamer
+             are not already defined in the configuration */
+          if (options.provider === "rtmp" && !opts.hasOwnProperty("file") && !opts.hasOwnProperty("streamer")) {
             /* exit if we can't access the metadata */
             if (typeof(IriSP.__jsonMetadata) === "undefined") {
                 break;
             };
 
-
-             
             // the json format is totally illogical
             //opts.streamer = IriSP.__jsonMetadata["medias"][0]["meta"]["item"]["value"];
             //var source = IriSP.__jsonMetadata["medias"][0]["href"];
@@ -81,8 +82,7 @@ IriSP.configurePopcorn = function (layoutManager, options) {
                  if (i < pathSplit.length - 1)
                   opts.file += "/";
               }
-            }
-
+            }            
           } else {
             /* other providers type, video for instance -
                pass everything as is */
@@ -96,7 +96,7 @@ IriSP.configurePopcorn = function (layoutManager, options) {
             opts["controlbar.position"] = "none";
           }
 
-          pop = IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
+          pop = new IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
         break;
       
       case "youtube":
@@ -112,6 +112,11 @@ IriSP.configurePopcorn = function (layoutManager, options) {
           pop = Popcorn.youtube("#" + containerDiv, opts.video, opts);
         break;
         
+      case "allocine":
+          /* pass the options as-is to the allocine player and let it handle everything */
+          pop = new IriSP.PopcornReplacement.allocine("#" + containerDiv, options);
+          break;
+          
       default:
         pop = undefined;
     };
