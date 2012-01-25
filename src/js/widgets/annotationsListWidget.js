@@ -4,6 +4,7 @@ IriSP.AnnotationsListWidget = function(Popcorn, config, Serializer) {
   this.__oldList = [];
   
   this.ajax_mode = IriSP.widgetsDefaults["AnnotationsListWidget"].ajax_mode;
+  this.project_url = IriSP.widgetsDefaults["AnnotationsListWidget"].project_url;  
 };
 
 
@@ -121,6 +122,8 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
   var view_types = serializer.getIds("Contributions");
   var l = [];
   
+  var media = this._serializer.currentMedia()["id"];
+  
   for (i = 0; i < annotations.length; i++) {
       var annotation = annotations[i];
 
@@ -139,14 +142,36 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
       obj["desc"] = a.content.description;
       obj["begin"] = IriSP.msToTime(annotation.begin);
       obj["end"] = IriSP.msToTime(annotation.end);
-      obj["url"] = document.location.href.split("#")[0] + "/" + annotation.meta["project"];
-      l.push(obj);
+
+      /* only if the annotation isn't present in the document create an
+         external link */
+      if (!this.annotations_ids.hasOwnProperty(obj["id"])) {
+        // braindead url; jacques didn't want to create a new one in the platform,
+        // so we append the cutting id to the url.
+        obj["url"] = this.project_url + "/" + media + "/" + 
+                     annotation.meta["project"] + "/" +
+                     annotation.meta["id-ref"] + "/";
+        
+        // obj["url"] = document.location.href.split("#")[0] + "/" + annotation.meta["project"];
+        l.push(obj);
+      }
   }
 
   this.do_redraw(l);
 };
 IriSP.AnnotationsListWidget.prototype.draw = function() {
-
+  
+  /* build a table of the annotations present in the document for faster 
+     lookup
+  */
+  this.annotations_ids = {};
+  
+  var annotations = this._serializer._data.annotations;
+  var i = 0;
+  for(i = 0; i < annotations.length; i++) {
+    this.annotations_ids[annotations[i]["id"]] = 1;
+  }
+  
   this.drawList();
     
   if (!this.ajax_mode) {    
