@@ -61,6 +61,11 @@
       <!-- core files -->
     	<filelist dir="../../src/js" files="utils.js pop.js data.js site.js ui.js widgets.js modules.js layout.js init.js" />
 
+      <!-- players -->
+			<fileset dir="../../src/js/players" casesensitive="yes">
+					<include name="**/*.js"/>					
+			</fileset>
+
       <!-- modules -->
 			<fileset dir="../../src/js/modules" casesensitive="yes">
 					<include name="**/*.js"/>					
