@@ -155,7 +155,7 @@ IriSP.PopcornReplacement.player.prototype.code = function(options) {
    (onTime event)
  */
 
-IriSP.PopcornReplacement.timeHandler = function(event) {
+IriSP.PopcornReplacement.player.prototype.__timeHandler = function(event) {
   var pos = event.position;
 
   var i = 0;
@@ -177,10 +177,9 @@ IriSP.PopcornReplacement.timeHandler = function(event) {
   this.trigger("timeupdate");
 };
 
-IriSP.PopcornReplacement.player.prototype.__timeHandler = IriSP.PopcornReplacement.timeHandler;
 IriSP.PopcornReplacement.player.prototype.__seekHandler = function(event) {
   var i = 0;
-  console.log(event);
+
   for(i = 0; i < this.__codes.length; i++) {
      var c = this.__codes[i];
     
