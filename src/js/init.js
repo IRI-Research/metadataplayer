@@ -112,6 +112,11 @@ IriSP.configurePopcorn = function (layoutManager, options) {
           pop = Popcorn.youtube("#" + containerDiv, opts.video, opts);
         break;
         
+      case "allocine":
+          /* pass the options as-is to the allocine player and let it handle everything */
+          pop = new PopcornReplacement.allocine("#" + containerDiv, options);
+          break;
+          
       default:
         pop = undefined;
     };
