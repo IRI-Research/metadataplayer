@@ -149,7 +149,7 @@ IriSP.mkTweetUrl = function(url, text) {
 
 /** returns an url to share on google + */
 IriSP.mkGplusUrl = function(url, text) {
-  return "";
+  return "https://plusone.google.com/_/+1/confirm?hl=en&url=" + IriSP.shorten_url(url);
 };
 
 /** test if a value is null or undefined */
