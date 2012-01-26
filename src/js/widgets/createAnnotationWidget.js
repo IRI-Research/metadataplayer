@@ -75,7 +75,7 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
 
       var classname = IriSP.templToHTML("Ldt-createAnnotation-polemic-{{classname}}", {classname : this.polemics[polemic]});
 
-      var templ = IriSP.templToHTML("<button class='{{classname}}'>{{polemic}}</button>",
+      var templ = IriSP.templToHTML("<button class='{{classname}} Ldt-createAnnotation-polemic-button'>{{polemic}}</button>",
                   {classname: classname, polemic: polemic});
                   
       this.selector.find(".Ldt-createAnnotation-polemics").append(templ);
@@ -135,6 +135,7 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
       
       code = {start: annotation.begin / 1000, end: annotation.end / 1000,
               onStart: function(annotation) { return function() {
+                      console.log("runned ?", annotation);
                       if (typeof(annotation.content) !== "undefined")
                         _this.selector.find(".Ldt-createAnnotation-Title").html(annotation.content.title);
 
@@ -204,6 +205,14 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     this._Popcorn.trigger("IriSP.SliceWidget.position", [left, width]);
     this._Popcorn.listen("IriSP.SliceWidget.zoneChange", IriSP.wrap(this, this.handleSliderChanges));
     this._Popcorn.trigger("IriSP.SliceWidget.show");
+    
+    this.selector.find(".Ldt-createAnnotation-Title").html(currentChapter.content.title);
+
+    this._currentcurrentChapter = currentChapter;
+    var beginTime = IriSP.msToTime(currentChapter.begin);
+    var endTime = IriSP.msToTime(currentChapter.end);
+    var timeTemplate = IriSP.templToHTML("- ({{begin}} - {{ end }})", {begin: beginTime, end: endTime });
+    this.selector.find(".Ldt-createAnnotation-TimeFrame").html(timeTemplate);
   }
 };
 
@@ -226,6 +235,20 @@ IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
       if (this.selector.find("#" + id).hasClass("Ldt-createAnnotation-present-keyword")) {
           this.selector.find("#" + id).removeClass("Ldt-createAnnotation-present-keyword")
                                       .addClass("Ldt-createAnnotation-absent-keyword");
+      }
+    }
+  }
+  
+  if (this.polemic_mode) {
+    /* Also go through the polemics to highlight the buttons */
+    for (var polemic in this.polemics) {
+      /* Add the active class to the button */
+      var classname = "Ldt-createAnnotation-polemic-" + this.polemics[polemic];
+      if (contents.indexOf(polemic) != -1) {        
+        this.selector.find("." + classname).addClass("Ldt-createAnnotation-polemic-active");
+      } else {
+        if (this.selector.find("." + classname).addClass("Ldt-createAnnotation-polemic-active"))
+          this.selector.find("." + classname).removeClass("Ldt-createAnnotation-polemic-active")
       }
     }
   }
