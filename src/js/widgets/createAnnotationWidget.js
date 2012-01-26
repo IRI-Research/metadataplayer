@@ -238,7 +238,7 @@ IriSP.createAnnotationWidget.prototype.showEndScreen = function(annotation) {
     this.selector.find(".Ldt-createAnnotation-Title").parent().show();      
   }
 
-  var url = document.location.href + "id=" + annotation.id;
+  var url = document.location.href + "#id=" + annotation.id;
   var twStatus = IriSP.mkTweetUrl(url);
   var gpStatus = IriSP.mkGplusUrl(url);
   var fbStatus = IriSP.mkFbUrl(url);
