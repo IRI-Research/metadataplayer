@@ -153,8 +153,9 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
                      annotation.meta["id-ref"] + "/";
         
         // obj["url"] = document.location.href.split("#")[0] + "/" + annotation.meta["project"];
-        l.push(obj);
       }
+      
+      l.push(obj);
   }
 
   this.do_redraw(l);
