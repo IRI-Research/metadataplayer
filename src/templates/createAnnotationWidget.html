@@ -7,7 +7,9 @@
         <div class='Ldt-createAnnotation-Title'></div>
         <div class='Ldt-createAnnotation-TimeFrame'></div>
       </div>
-      
+      {{^cinecast_version}}
+      <img src='{{img_dir}}/minimize.png' class='Ldt-createAnnotation-Minimize' alt='Cancel'></img>
+      {{/cinecast_version}}
       <div class='Ldt-createAnnotation-Container'>
         <textarea class='Ldt-createAnnotation-Description'></textarea>
         <div class='Ldt-createAnnotation-profileArrow'>

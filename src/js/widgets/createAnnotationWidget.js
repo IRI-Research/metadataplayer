@@ -152,9 +152,20 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   
   this.selector.find(".Ldt-createAnnotation-submitButton").click(IriSP.wrap(this, this.handleButtonClick));
   
-  if (!this.cinecast_version)
+  if (!this.cinecast_version) {
     this._Popcorn.listen("IriSP.PlayerWidget.AnnotateButton.clicked", 
-                          IriSP.wrap(this, this.handleAnnotateSignal));  
+                          IriSP.wrap(this, this.handleAnnotateSignal));
+    
+    // handle clicks on the cancel button too.
+    this.selector.find(".Ldt-createAnnotation-Minimize").click(IriSP.wrap(this, 
+      function() {
+        // we've got to simulate the pressing of the button because there's no
+        // other way to minimize the widget and show the widgets that were hidden
+        // same time
+        this._Popcorn.trigger("IriSP.PlayerWidget.AnnotateButton.clicked");
+      }
+    ));
+  }
 };
 
 /** handles clicks on the annotate button. Works only for the non-cinecast version */

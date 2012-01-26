@@ -689,6 +689,15 @@ button.ui-button-icon-only  {
   color: #D93C71;
 }
 
+.Ldt-createAnnotation-Minimize {
+  position: relative;
+  float: right;
+  height: 17px;
+  width: 17px;
+  right: 0px;
+  top: -5px;
+}
+
 /* AnnotationsListWidget */
 
 .Ldt-AnnotationsListWidget {
