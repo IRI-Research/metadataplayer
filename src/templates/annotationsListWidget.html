@@ -5,9 +5,12 @@
     <ul>
     {{#annotations}}
       <li>
+        {{! if the url is not present, it means that the annotation exists 
+            in the current project }}
         {{^url}}
         <a href='#id={{id}}'>
         {{/url}}
+        {{! otherwise link to url }}
         {{#url}}
         <a href='{{url}}#id={{id}}'>
         {{/url}}
