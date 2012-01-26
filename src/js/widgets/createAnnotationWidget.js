@@ -2,6 +2,10 @@ IriSP.createAnnotationWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this._hidden = true;
   this.keywords = IriSP.widgetsDefaults["createAnnotationWidget"].keywords;
+  
+  this.polemic_mode = IriSP.widgetsDefaults["createAnnotationWidget"].polemic_mode;
+  this.polemics = IriSP.widgetsDefaults["createAnnotationWidget"].polemics;
+  
   this.cinecast_version = IriSP.widgetsDefaults["createAnnotationWidget"].cinecast_version;
   this.ids = {}; /* a dictionnary linking buttons ids to keywords */
   
@@ -24,7 +28,9 @@ IriSP.createAnnotationWidget.prototype.clear = function() {
 IriSP.createAnnotationWidget.prototype.draw = function() {
   var _this = this;
 
-  var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template);
+  var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template, 
+                                           {cinecast_version: this.cinecast_version, 
+                                            polemic_mode: this.polemic_mode});
   
 	this.selector.append(annotationMarkup);
   
@@ -58,10 +64,43 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
       // change in a textfield.
       _this.selector.find(".Ldt-createAnnotation-Description").trigger("js_mod");
       // also call our update function.
-      _this.handleTextChanges();
+      //_this.handleTextChanges();
     }
    }(keyword));
   }
+
+  // add the polemic buttons.
+  if(this.polemic_mode)
+    for (var polemic in this.polemics) {
+
+      var classname = IriSP.templToHTML("Ldt-createAnnotation-polemic-{{classname}}", {classname : this.polemics[polemic]});
+
+      var templ = IriSP.templToHTML("<button class='{{classname}}'>{{polemic}}</button>",
+                  {classname: classname, polemic: polemic});
+                  
+      this.selector.find(".Ldt-createAnnotation-polemics").append(templ);
+      this.selector.find("." + classname).click(function(polemic) { return function() {
+          var contents = _this.selector.find(".Ldt-createAnnotation-Description").val();
+          if (contents.indexOf(polemic) != -1) {
+            var newVal = contents.replace(" " + polemic, "");
+            if (newVal == contents)
+              newVal = contents.replace(polemic, "");
+          } else {
+            if (contents === "")
+              var newVal = polemic;
+            else
+              var newVal = contents + " " + polemic;      
+          }
+          
+          _this.selector.find(".Ldt-createAnnotation-Description").val(newVal);
+          // we use a custom event because there's no simple way to test for a js
+          // change in a textfield.
+          _this.selector.find(".Ldt-createAnnotation-Description").trigger("js_mod");
+          // also call our update function.
+          _this.handleTextChanges();
+        }
+       }(polemic));
+      }    
   
   this.selector.find(".Ldt-createAnnotation-Description")
                .bind("propertychange keyup input paste", IriSP.wrap(this, this.handleTextChanges));
