@@ -101,9 +101,7 @@ IriSP.PopcornReplacement.player.prototype.currentTime = function(time) {
       return this.playerFns.getPosition();            
   } else {
      var currentTime = +time;
-     this.playerFns.seek( currentTime );
-     this.__delay_seek_signal = true;    /* FIXME : useless ? */
-     this.trigger("seeked");           
+     this.playerFns.seek(currentTime);              
      return currentTime;
   }
 };
@@ -179,7 +177,7 @@ IriSP.PopcornReplacement.player.prototype.__timeHandler = function(event) {
 
 IriSP.PopcornReplacement.player.prototype.__seekHandler = function(event) {
   var i = 0;
-
+  
   for(i = 0; i < this.__codes.length; i++) {
      var c = this.__codes[i];
     
@@ -199,8 +197,8 @@ IriSP.PopcornReplacement.player.prototype.__seekHandler = function(event) {
      }
      
    }
-
-  this.trigger("timeupdate");
+  
+  this.trigger("seeked");  
 };
 
 IriSP.PopcornReplacement.player.prototype.__playHandler = function(event) {
