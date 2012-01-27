@@ -183,6 +183,8 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
     this._Popcorn.listen("seeked", IriSP.wrap(this, this.ajaxRedraw));
     this._Popcorn.listen("loadedmetadata", IriSP.wrap(this, this.ajaxRedraw));
     this._Popcorn.listen("paused", IriSP.wrap(this, this.ajaxRedraw));
+    
+    this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, this.ajaxRedraw));
   }
 
 };
