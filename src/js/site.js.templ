@@ -48,12 +48,12 @@ IriSP.widgetsDefaults = {
   },
   "createAnnotationWidget" : {
       keywords: ["#faux-raccord", "#mot-clef"],
-       polemic_mode: true, /* enable polemics ? */
+      polemic_mode: true, /* enable polemics ? */
       /* polemics - the corresponding class names defined in the css should be for instance :
          Ldt-createAnnotation-polemic-plusplus for plusplus
          Ldt-createAnnotation-polemic-equalequal for equalequal, etc.
       */
-      polemics: {"++" : "plusplus", "--" : "minusminus", "==" : "equalequal", "??" : "questionquestion"}, 
+      polemics: {"++" : "positive", "--" : "negative", "==" : "reference", "??" : "question"}, 
       cinecast_version: true /* put to false to enable the platform version, true for the festival cinecast one. */
   },
   "SparklineWidget" : {
@@ -71,7 +71,7 @@ IriSP.widgetsDefaults = {
                                                                          where to
                                                                          get the 
                                                                          ajax */
-      ajax_granularity: 10000 /* how much ms should we look before and after the
+      ajax_granularity: 10000, /* how much ms should we look before and after the
                                  current timecode */
       
       project_url: IriSP.platform_url + "/ldtplatform/ldt/front/player/" /* the beginning 
