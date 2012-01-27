@@ -61,9 +61,15 @@ IriSP.SliderWidget.prototype.sliderUpdater = function() {
   var positionMarker_width = this.positionMarker.width();
   var correction = (pixels_to_percents * positionMarker_width) / 2;
 
+  /* check that we don't leave the left side */
   var newPos = percent - correction;
   if (newPos <= 0)
     newPos = 0;
+  
+  /* check that we don't leave the right side */
+  var outPos = percent + correction;
+  if (outPos > 100)
+    newPos = 100;
   
 	this.sliderForeground.css("width", percent + "%");
 	this.positionMarker.css("left", newPos + "%");
