@@ -79,8 +79,8 @@ IriSP.TagCloudWidget.prototype.draw = function() {
                 : _e.textContent;
         });
     }));
-    this._Popcorn.listen("IriSP.search.closed", IriSP.wrap(this, this.searchFieldClosedHandler));
-    this._Popcorn.listen("IriSP.search.cleared", IriSP.wrap(this, this.searchFieldClearedHandler));
+    this._Popcorn.listen("IriSP.search.closed", IriSP.wrap(this, this.endsearch));
+    this._Popcorn.listen("IriSP.search.cleared", IriSP.wrap(this, this.endsearch));
 }
 
 IriSP.TagCloudWidget.prototype.endsearch = function() {
