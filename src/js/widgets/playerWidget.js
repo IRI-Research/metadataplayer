@@ -30,6 +30,7 @@ IriSP.PlayerWidget.prototype.draw = function() {
   
   this._Popcorn.listen("IriSP.search.matchFound", IriSP.wrap(this, this.searchMatch));
   this._Popcorn.listen("IriSP.search.noMatchFound", IriSP.wrap(this, this.searchNoMatch));
+  this._Popcorn.listen("IriSP.search.triggeredSearch", IriSP.wrap(this, this.triggeredSearch));
   
   
   this.selector.find(".Ldt-CtrlPlay").click(function() { self.playHandler.call(self); });
@@ -146,47 +147,59 @@ IriSP.PlayerWidget.prototype.muteButtonUpdater = function() {
   return;
 };
 
+IriSP.PlayerWidget.prototype.showSearchBlock = function() {
+  var self = this;
+  
+  if (this._searchBlockOpen == false) {
+    this.selector.find(".LdtSearch").show("blind", { direction: "horizontal"}, 100);
+    this.selector.find(".LdtSearchInput").css('background-color','#fff');
+   
+    this._searchBlockOpen = true;           
+    this.selector.find(".LdtSearchInput").bind('keyup', null, function() { self.searchHandler.call(self); } );
+    this.selector.find(".LdtSearchInput").focus();
+    
+    // we need this variable because some widget can find a match in
+    // their data while at the same time other's don't. As we want the
+    // search field to become green when there's a match, we need a 
+    // variable to remember that we had one.
+    this._positiveMatch = false;
 
+    // tell the world the field is open
+    this._Popcorn.trigger("IriSP.search.open");     
+	}
+};
+
+IriSP.PlayerWidget.prototype.hideSearchBlock = function() {
+ if (this._searchBlockOpen == true) {
+    this._searchLastValue = this.selector.find(".LdtSearchInput").attr('value');
+    this.selector.find(".LdtSearchInput").attr('value','');
+    this.selector.find(".LdtSearch").hide("blind", { direction: "horizontal"}, 75);
+    
+    // unbind the watcher event.
+    this.selector.find(".LdtSearchInput").unbind('keypress set');
+    this._searchBlockOpen = false;
+
+    this._positiveMatch = false;
+    
+    this._Popcorn.trigger("IriSP.search.closed");
+	}
+};
+
+/** react to clicks on the search button */
 IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
-    var self = this;
+  var self = this;
 
-    /* show the search field if it is not shown */
-  	if ( this._searchBlockOpen == false ) {      
-      this.selector.find(".LdtSearch").show("blind", { direction: "horizontal"}, 100);
-      
-      this.selector.find(".LdtSearchInput").css('background-color','#fff');
-      this.selector.find(".LdtSearchInput").attr('value', this._searchLastValue);      
-      this._Popcorn.trigger("IriSP.search", this._searchLastValue); // trigger the search to make it more natural.
-      
-      this._searchBlockOpen = true;           
-      this.selector.find(".LdtSearchInput").bind('keyup', null, function() { self.searchHandler.call(self); } );
-      this.selector.find(".LdtSearchInput").focus();
-      
-      // we need this variable because some widget can find a match in
-      // their data while at the same time other's don't. As we want the
-      // search field to become green when there's a match, we need a 
-      // variable to remember that we had one.
-      this._positiveMatch = false;
-
-      // tell the world the field is open
-      this._Popcorn.trigger("IriSP.search.open");
-      
+  /* show the search field if it is not shown */
+  if ( this._searchBlockOpen == false ) {
+    this.showSearchBlock();
+    this.selector.find(".LdtSearchInput").attr('value', this._searchLastValue);      
+    this._Popcorn.trigger("IriSP.search", this._searchLastValue); // trigger the search to make it more natural.
 	} else {
-      this._searchLastValue = this.selector.find(".LdtSearchInput").attr('value');
-      this.selector.find(".LdtSearchInput").attr('value','');
-      this.selector.find(".LdtSearch").hide("blind", { direction: "horizontal"}, 75);
-      
-      // unbind the watcher event.
-      this.selector.find(".LdtSearchInput").unbind('keypress set');
-      this._searchBlockOpen = false;
-
-      this._positiveMatch = false;
-      
-      this._Popcorn.trigger("IriSP.search.closed");
+    this.hideSearchBlock();
   }
 };
 
-/* this handler is called whenever the content of the search
+/** this handler is called whenever the content of the search
    field changes */
 IriSP.PlayerWidget.prototype.searchHandler = function() {
   this._searchLastValue = this.selector.find(".LdtSearchInput").attr('value');
@@ -201,18 +214,27 @@ IriSP.PlayerWidget.prototype.searchHandler = function() {
   }
 };
 
-/*
+/**
   handler for the IriSP.search.found message, which is sent by some views when they
   highlight a match.
 */
 IriSP.PlayerWidget.prototype.searchMatch = function() {
   this._positiveMatch = true;
   this.selector.find(".LdtSearchInput").css('background-color','#e1ffe1');
-}
+};
 
-/* the same, except that no value could be found */
+/** the same, except that no value could be found */
 IriSP.PlayerWidget.prototype.searchNoMatch = function() {
   if (this._positiveMatch !== true)
     this.selector.find(".LdtSearchInput").css('background-color', "#d62e3a");
-}
+};
+
+/** react to an IriSP.Player.triggeredSearch - that is, when
+    a widget ask the PlayerWidget to do a search on his behalf */
+IriSP.PlayerWidget.prototype.triggeredSearch = function(searchString) {
+  this.showSearchBlock();
+  this.selector.find(".LdtSearchInput").attr('value', searchString);      
+  this._Popcorn.trigger("IriSP.search", searchString); // trigger the search to make it more natural.
+};
+
 
