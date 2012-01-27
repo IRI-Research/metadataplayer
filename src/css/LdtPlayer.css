@@ -801,10 +801,22 @@ button.ui-button-icon-only  {
 
 /* Tagcloud */
 
+.Ldt-TagCloud {
+    font-family: "PT Sans", Arial, Helvetica, sans-serif;
+}
+
 .Ldt-TagCloud ul {
     list-style: none; padding: 0; margin: 5px; text-align: center;
 }
 
 .Ldt-TagCloud li {
-    display: inline-block; margin: 2px;
+    display: inline-block; margin: 2px; cursor:pointer; cursor:hand;
+}
+
+.Ldt-TagCloud li:hover {
+    color: #0099ff;
+}
+
+.Ldt-TagCloud-actif {
+    color: #c000c0;
 }
