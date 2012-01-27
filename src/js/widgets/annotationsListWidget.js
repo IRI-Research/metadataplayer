@@ -179,7 +179,9 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
     this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, function() { this.drawList(true); }));
     this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.redraw));
   } else {
+    /* update the widget when the video has finished loading and when it's seeked and paused */
     this._Popcorn.listen("seeked", IriSP.wrap(this, this.ajaxRedraw));
+    this._Popcorn.listen("loadedmetadata", IriSP.wrap(this, this.ajaxRedraw));
     this._Popcorn.listen("paused", IriSP.wrap(this, this.ajaxRedraw));
   }
 
