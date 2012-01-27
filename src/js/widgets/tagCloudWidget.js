@@ -69,7 +69,7 @@ IriSP.TagCloudWidget.prototype.draw = function() {
         .html(_html);
     this.selector.find("li").click(function() {
         var _txt = this.textContent.replace(/(^[\s]+|[\s]+$)/g,'');
-        _this._Popcorn.trigger("IriSP.search", _txt);
+        _this._Popcorn.trigger("IriSP.search.triggeredSearch", _txt);
     });
     this._Popcorn.listen("IriSP.search", IriSP.wrap(this, function(searchString) {
         var _rgxp = new RegExp("(" + searchString.replace(/(\W)/g,'\\$1') + ")","gi");
