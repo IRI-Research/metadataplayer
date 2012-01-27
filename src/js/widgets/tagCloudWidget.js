@@ -48,6 +48,7 @@ IriSP.TagCloudWidget.prototype.draw = function() {
     var _max = _words[0].count,
         _min = Math.min(_words[_words.length - 1].count, _max - 1),
         _scale = 16 / Math.sqrt(_max - _min),
+        _this = this,
         _html = '<ul>'
             + IriSP._(_words)
                 .chain()
@@ -66,5 +67,24 @@ IriSP.TagCloudWidget.prototype.draw = function() {
     this.selector
         .addClass("Ldt-TagCloud")
         .html(_html);
-    
+    this.selector.find("li").click(function() {
+        var _txt = this.textContent.replace(/(^[\s]+|[\s]+$)/g,'');
+        _this._Popcorn.trigger("IriSP.search", _txt);
+    });
+    this._Popcorn.listen("IriSP.search", IriSP.wrap(this, function(searchString) {
+        var _rgxp = new RegExp("(" + searchString.replace(/(\W)/g,'\\$1') + ")","gi");
+        this.selector.find("li").each(function(_i, _e) {
+            _e.innerHTML = searchString.length ?
+                _e.textContent.replace(_rgxp,'<span class="Ldt-TagCloud-actif">$1</span>')
+                : _e.textContent;
+        });
+    }));
+    this._Popcorn.listen("IriSP.search.closed", IriSP.wrap(this, this.searchFieldClosedHandler));
+    this._Popcorn.listen("IriSP.search.cleared", IriSP.wrap(this, this.searchFieldClearedHandler));
+}
+
+IriSP.TagCloudWidget.prototype.endsearch = function() {
+    this.selector.find("li").each(function(_i, _e) {
+        _e.innerHTML = _e.textContent;
+    });
 }
