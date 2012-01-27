@@ -74,9 +74,8 @@ IriSP.SliderWidget.prototype.sliderUpdater = function() {
   if (rightEdgePos >= divWidth)
     newPos = divWidth - 1 * correction - 1;
   
-  console.log(newPos);
-	this.sliderForeground.css("width", pixels + "px");
-	this.positionMarker.css("left", newPos + "px");
+  this.sliderForeground.css("width", pixels + "px");
+  this.positionMarker.css("left", newPos + "px");
 
 };
 
