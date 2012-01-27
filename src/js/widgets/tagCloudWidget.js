@@ -69,7 +69,7 @@ IriSP.TagCloudWidget.prototype.draw = function() {
         .html(_html);
     this.selector.find("li").click(function() {
         var _txt = this.textContent.replace(/(^[\s]+|[\s]+$)/g,'');
-        _this._Popcorn.trigger("IriSP.search", _txt);
+        _this._Popcorn.trigger("IriSP.search.triggeredSearch", _txt);
     });
     this._Popcorn.listen("IriSP.search", IriSP.wrap(this, function(searchString) {
         var _rgxp = new RegExp("(" + searchString.replace(/(\W)/g,'\\$1') + ")","gi");
@@ -79,8 +79,8 @@ IriSP.TagCloudWidget.prototype.draw = function() {
                 : _e.textContent;
         });
     }));
-    this._Popcorn.listen("IriSP.search.closed", IriSP.wrap(this, this.searchFieldClosedHandler));
-    this._Popcorn.listen("IriSP.search.cleared", IriSP.wrap(this, this.searchFieldClearedHandler));
+    this._Popcorn.listen("IriSP.search.closed", IriSP.wrap(this, this.endsearch));
+    this._Popcorn.listen("IriSP.search.cleared", IriSP.wrap(this, this.endsearch));
 }
 
 IriSP.TagCloudWidget.prototype.endsearch = function() {
