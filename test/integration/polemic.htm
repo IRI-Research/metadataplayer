@@ -48,21 +48,6 @@
               }
              }],
             },
-            {
-                type: "StackGraphWidget",
-                metadata: {
-                    format:'cinelab',
-                    src:file,
-                    type:'json'
-                },requires: [{
-                  type: "TooltipWidget",
-                  width: 180,
-                  heigh: 160,
-                  metadata : {
-                    type:'empty'
-                  }
-                  }]
-            },
             {type: "SparklineWidget",
              width: 640, /* required for this widget */
              height: 50,
@@ -71,6 +56,12 @@
 						  src:file,
 						  type:'json'}
 						},
+            {type: "TagCloudWidget",             
+                         metadata:{
+                          format:'cinelab',
+                          src:file,
+                          type:'json'}
+                        },
             {type: "SliderWidget",
 						 metadata:{
 						  format:'cinelab',
