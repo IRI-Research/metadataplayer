@@ -95,11 +95,13 @@ IriSP.defaults.widgetsDefaults = function(platform_url) {
         ajax_mode: true, /* use ajax to get information about the annotations.
                            if set to false, only search in the annotations for the
                            current project. */
-        ajax_url: platform_url + "/ldtplatform/api/ldt/segments/", /* partial
-                                                                           url of 
-                                                                           where to
-                                                                           get the 
-                                                                           ajax */
+        /* the platform generates some funky urls. We replace them afterwards to point to the
+           correct place - this setting will probably be overwritten by the platform 
+           implementers.
+           Note that the player has to replace the variables between {{ and }} by its own values.
+        */
+        ajax_url: platform_url + "/ldtplatform/api/ldt/segments/{media}/{begin}/{end}", 
+        
         ajax_granularity: 10000, /* how much ms should we look before and after the
                                    current timecode */
         
