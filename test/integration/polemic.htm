@@ -147,14 +147,7 @@
 
     };
     
-    IriSP.loadLibs(IriSP.lib, config, "polemic_fr.json",
-      function() {   
-              var layoutManager = new IriSP.LayoutManager(config.gui.container);
-              var pop = IriSP.configurePopcorn(layoutManager, config.player);
-              
-              var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); 
-              var modules = IriSP.configureModules(pop, config.modules); 
-      });
+    IriSP.initPlayer(config, "polemic_fr.json");
   </script>
   
   

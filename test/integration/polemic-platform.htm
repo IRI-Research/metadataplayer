@@ -28,7 +28,9 @@
     var project_id = "1771a6cf-3dfd-11e1-a3d8-001d7d7c6d1d";
     var json_src = platf_url + "cljson/id/" + project_id;
     
+    IriSP.widgetsDefaults["createAnnotationWidget"] = {};
     IriSP.widgetsDefaults["createAnnotationWidget"].cinecast_version = false;
+    
     var config = {            
         gui:{
             width:650,        
@@ -161,14 +163,7 @@
 
     };
     
-    IriSP.loadLibs(IriSP.lib, config, json_src,
-      function() {   
-              var layoutManager = new IriSP.LayoutManager(config.gui.container);
-              var pop = IriSP.configurePopcorn(layoutManager, config.player);
-              
-              var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); 
-              var modules = IriSP.configureModules(pop, config.modules); 
-      });
+    IriSP.initPlayer(config, json_src);
   </script>
   
   

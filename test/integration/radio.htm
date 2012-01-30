@@ -67,12 +67,7 @@
             }
 		};
 		
-		IriSP.loadLibs(IriSP.lib, config, "../test.json",
-			function() { 	
-							var layoutManager = new IriSP.LayoutManager(config.gui.container);
-							var pop = IriSP.configurePopcorn(layoutManager, config.player);
-							
-							var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); });
+    IriSP.initPlayer(config, "../test.json");
 	</script>
 	
 	
