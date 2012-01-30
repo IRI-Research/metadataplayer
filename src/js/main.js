@@ -12,6 +12,13 @@ if ( window.IriSP === undefined && window.__IriSP === undefined ) {
 	__IriSP = IriSP;
 }
 
+/* underscore comes bundled with the player and we need 
+   it ASAP, so load it that way
+*/
+
+IriSP._ = window._.noConflict();
+IriSP.underscore = IriSP._;
+
 IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
     // Localize jQuery variable
 		IriSP.jQuery = null;
@@ -55,8 +62,6 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
 
     $L.wait(function() {
       IriSP.jQuery = window.jQuery.noConflict( true );
-      IriSP._ = window._.noConflict();
-      IriSP.underscore = IriSP._;
       
       var css_link_jquery = IriSP.jQuery( "<link>", { 
         rel: "stylesheet", 
