@@ -150,7 +150,7 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
         // so we append the cutting id to the url.
         obj["url"] = this.project_url + "/" + media + "/" + 
                      annotation.meta["project"] + "/" +
-                     annotation.meta["id-ref"] + "/";
+                     annotation.meta["id-ref"];
         
         // obj["url"] = document.location.href.split("#")[0] + "/" + annotation.meta["project"];
       }
