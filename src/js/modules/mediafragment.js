@@ -40,7 +40,10 @@ IriSP.MediaFragment.prototype.advanceTime = function() {
               }
 };
 
-IriSP.MediaFragment.prototype.updateTime = function() {
+/** handler for the seeked signal. It may have or may have not an argument.
+    @param time if not undefined, the time we're seeking to 
+*/
+IriSP.MediaFragment.prototype.updateTime = function(time) {
   if (this.mutex === true) {
     return;
   }
@@ -50,8 +53,15 @@ IriSP.MediaFragment.prototype.updateTime = function() {
     return false;
   }
   
+  
+  if (IriSP.null_or_undefined(time)) {
+    var ntime = this._Popcorn.currentTime().toFixed(2)
+  } else {
+    var ntime = time.toFixed(2);
+  }
+  
   splitArr = window.location.href.split( "#" )
-  history.replaceState( {}, "", splitArr[0] + "#t=" + this._Popcorn.currentTime().toFixed( 2 ) );
+  history.replaceState( {}, "", splitArr[0] + "#t=" + ntime );
 };
 
 
@@ -67,6 +77,7 @@ IriSP.MediaFragment.prototype.updateAnnotation = function(annotationId) {
   splitArr = window.location.href.split( "#" )
   history.replaceState( {}, "", splitArr[0] + "#id=" + annotationId);
  
+  // reset the mutex afterwards to prevent the module from reacting to his own changes.
   window.setTimeout(function() { _this.mutex = false }, 50);
 };
 

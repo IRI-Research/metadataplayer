@@ -198,7 +198,7 @@ IriSP.PopcornReplacement.player.prototype.__seekHandler = function(event) {
      
    }
   
-  this.trigger("seeked");  
+  this.trigger("seeked", event.offset);  
 };
 
 IriSP.PopcornReplacement.player.prototype.__playHandler = function(event) {
