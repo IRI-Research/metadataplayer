@@ -198,6 +198,8 @@ IriSP.PopcornReplacement.player.prototype.__seekHandler = function(event) {
      
    }
   
+  /* this signal sends as an extra argument the position in the video.
+     As far as I know, this argument is not provided by popcorn */
   this.trigger("seeked", event.offset);  
 };
 
