@@ -52,9 +52,8 @@ IriSP.MediaFragment.prototype.updateTime = function(time) {
   if ( !history.pushState ) {
     return false;
   }
-  
-  
-  if (IriSP.null_or_undefined(time)) {
+    
+  if (IriSP.null_or_undefined(time) || typeof(time) != "number") {
     var ntime = this._Popcorn.currentTime().toFixed(2)
   } else {
     var ntime = time.toFixed(2);
