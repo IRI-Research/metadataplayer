@@ -120,7 +120,6 @@ IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
   if (end_timecode > duration)
     end_timecode = duration;
   
-  console.log("b, e:", begin_timecode, end_timecode);
   var templ = Mustache.to_html(platf_url, {media: media_id, begin: begin_timecode,
                                  end: end_timecode});
 
