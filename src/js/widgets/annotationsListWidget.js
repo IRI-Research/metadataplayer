@@ -92,6 +92,16 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
 
 IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
 
+  /* the seeked signal sometimes passes an argument - depending on if we're using
+     our popcorn lookalike or the real thing - if it's the case, use it as it's
+     more precise than currentTime which sometimes contains the place we where at */
+  if (IriSP.null_or_undefined(timecode) || typeof(timecode) != "number") {
+     var tcode = this._Popcorn.currentTime();     
+   } else {
+     var tcode = timecode;     
+  }
+   
+  
   /* the platform gives us a special url - of the type : http://path/{media}/{begin}/{end}
      we double the braces using regexps and we feed it to mustache to build the correct url
      we have to do that because the platform only knows at run time what view it's displaying.
@@ -102,14 +112,15 @@ IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
   var media_id = this._serializer.currentMedia()["id"];
   var duration = +this._serializer.currentMedia().meta["dc:duration"];
   
-  var begin_timecode = (Math.floor(this._Popcorn.currentTime()) - 300) * 1000;
+  var begin_timecode = (Math.floor(tcode) - 300) * 1000;
   if (begin_timecode < 0)
     begin_timecode = 0;
     
-  var end_timecode = (Math.floor(this._Popcorn.currentTime()) + 300) * 1000;
+  var end_timecode = (Math.floor(tcode) + 300) * 1000;
   if (end_timecode > duration)
     end_timecode = duration;
   
+  console.log("b, e:", begin_timecode, end_timecode);
   var templ = Mustache.to_html(platf_url, {media: media_id, begin: begin_timecode,
                                  end: end_timecode});
 
