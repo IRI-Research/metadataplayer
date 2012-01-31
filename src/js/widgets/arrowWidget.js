@@ -30,9 +30,14 @@ IriSP.ArrowWidget.prototype.timeUpdateHandler = function(percents) {
   
   var currentTime = this._Popcorn.currentTime();
   var currentAnnotation = this._serializer.currentChapitre(currentTime);
-  if (IriSP.null_or_undefined(currentAnnotation))
-    var currentAnnotation = this._serializer.currentAnnotation(currentTime)[0]; // FIXME : use the others ?
-
+  if (IriSP.null_or_undefined(currentAnnotation)) {
+    var c_annots = this._serializer.currentAnnotation(currentTime)
+    if (c_annots.length != 0)
+      var currentAnnotation = c_annots[0]; // FIXME : use the others ?
+    else
+      return;
+  }
+  
   /* move the arrow only if the current annotation changes */
   if (currentAnnotation != this._oldAnnotation) {
     var begin = (+ currentAnnotation.begin) / 1000;
