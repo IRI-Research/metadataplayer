@@ -91,7 +91,14 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
 };
 
 IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
-  var pre_url = IriSP.widgetsDefaults["AnnotationsListWidget"].ajax_url;
+
+  /* the platform gives us a special url - of the type : http://path/{media}/{begin}/{end}
+     we double the braces using regexps and we feed it to mustache to build the correct url
+     we have to do that because the platform only knows at run time what view it's displaying.
+  */
+     
+  var platf_url = IriSP.widgetsDefaults["AnnotationsListWidget"].ajax_url
+                                      .replace(/\{/g, '{{').replace(/\}/g, '}}');
   var media_id = this._serializer.currentMedia()["id"];
   var duration = +this._serializer.currentMedia().meta["dc:duration"];
   
@@ -103,10 +110,9 @@ IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
   if (end_timecode > duration)
     end_timecode = duration;
   
-  var templ = Mustache.to_html("{{pre_url}}/{{media_id}}/{{begin_timecode}}/{{end_timecode}}",
-                                {pre_url: pre_url, media_id: media_id, begin_timecode: begin_timecode,
-                                 end_timecode: end_timecode});
-  
+  var templ = Mustache.to_html(platf_url, {media: media_id, begin: begin_timecode,
+                                 end: end_timecode});
+
   /* we create on the fly a serializer to get the ajax */
   var serializer = new IriSP.JSONSerializer(IriSP.__dataloader, templ);
   serializer.sync(IriSP.wrap(this, function(json) { this.processJson(json, serializer) }));                  
