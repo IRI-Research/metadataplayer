@@ -26,7 +26,11 @@ IriSP.MediaFragment.prototype.advanceTime = function() {
                     // timecode 
                     if ( pageoffset.substring( 2 ) != null ) {
                     var offsettime = pageoffset.substring( 2 );
-                    this._Popcorn.currentTime( parseFloat( offsettime ) );
+                    this._Popcorn.currentTime( parseFloat(offsettime) );
+                    
+                    /* we have to trigger this signal manually because of a
+                     bug in the jwplayer */
+                    this._Popcorn.trigger("seeked", parseFloat(offsettime));
                     }
                   } else if ( pageoffset.substring(0, 3) === "id=") {
                     // annotation
@@ -36,7 +40,7 @@ IriSP.MediaFragment.prototype.advanceTime = function() {
                     this._serializer.sync(IriSP.wrap(this, function() {
                           this.lookupAnnotation.call(this, annotationId); 
                           }));
-                  }
+                  }                                    
               }
 };
 
@@ -98,6 +102,10 @@ IriSP.MediaFragment.prototype.lookupAnnotation = function(annotationId) {
 
   if (typeof(annotation) !== "undefined") {
     this._Popcorn.currentTime(annotation.begin / 1000);
+
+    /* we have to trigger this signal manually because of a
+     bug in the jwplayer */
+    this._Popcorn.trigger("seeked", annotation.begin / 1000);
     this._Popcorn.trigger("IriSP.Mediafragment.showAnnotation", annotationId);
   }
   
