@@ -31,7 +31,7 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
                          polemic_mode: this.polemic_mode};
                          
   if (!IriSP.null_or_undefined(IriSP.user) && !IriSP.null_or_undefined(IriSP.user.avatar))
-    template_params["avatar"] = IriSP.user.avatar;
+    template_params["user_avatar"] = IriSP.user.avatar;
   
   var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template, 
                                            template_params);
