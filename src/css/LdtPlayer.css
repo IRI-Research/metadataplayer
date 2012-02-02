@@ -75,6 +75,30 @@ button.ui-button-icon-only  {
 
 }
 
+.Ldt-fbShare {
+  display: block;
+  float: left;
+  width: 24px;
+  height: 24px;
+  background:url('imgs/facebook.png');
+}
+
+.Ldt-TwShare {
+  display: block;
+  float: left;
+  width: 24px;
+  height: 24px;
+  background:url('imgs/twitter.png');
+}
+
+.Ldt-GplusShare {
+  display: block;
+  float: left;
+  width: 24px;
+  height: 24px;
+  background:url('imgs/google.png');
+}
+
 .Ldt-SaTitle{
   padding-top:2px;
   padding-bottom:3px;
@@ -399,6 +423,8 @@ button.ui-button-icon-only  {
   height: 48px;
   margin-left: 5px;
   margin-right: 5px;
+  background:url('imgs/profile_arrow.png');
+  background-position: 7 10px;
 }
 
 .Ldt-tweet_userHandle {
@@ -424,6 +450,7 @@ button.ui-button-icon-only  {
   height: 17px;
   width: 17px;
   margin-right: 1px;
+  background:url('imgs/minimize.png');
 }
 
 .Ldt-tweetWidgetMinimize {
@@ -432,6 +459,7 @@ button.ui-button-icon-only  {
   height: 17px;
   width: 17px;
   right: 9px;
+  background:url('imgs/minimize.png');
 }
 
 .Ldt-tweetWidget * a:link {
@@ -618,6 +646,7 @@ button.ui-button-icon-only  {
   display: block;
   border: 1px solid #babcbc;
 }
+
 .Ldt-createAnnotation-profileArrow {
   display: table-cell;
   vertical-align: top;
@@ -625,11 +654,9 @@ button.ui-button-icon-only  {
   width: 15px;
   padding-right: 5px;
   padding-left: 3px;
-}
-
-.Ldt-createAnnotation-profileArrow img {
-  display: block;
-  margin-left: 4px;
+  background:url('imgs/profile_arrow.png');
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .Ldt-createAnnotation-Description {
@@ -695,6 +722,7 @@ button.ui-button-icon-only  {
   height: 17px;
   width: 17px;
   right: 0px;
+  background:url('imgs/minimize.png');
 }
 
 /* polemic tweet annotation buttons */
