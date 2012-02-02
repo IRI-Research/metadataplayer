@@ -698,6 +698,8 @@ button.ui-button-icon-only  {
   background-repeat: no-repeat;
   height: 48px;
   width: 48px;
+  position: relative;
+  margin-top: 3px;
 }
 
 .Ldt-createAnnotation-endScreen {
