@@ -27,10 +27,14 @@ IriSP.createAnnotationWidget.prototype.clear = function() {
 
 IriSP.createAnnotationWidget.prototype.draw = function() {
   var _this = this;
-
+  var template_params = {cinecast_version: this.cinecast_version, 
+                         polemic_mode: this.polemic_mode};
+                         
+  if (!IriSP.null_or_undefined(IriSP.user) && !IriSP.null_or_undefined(IriSP.user.avatar))
+    template_params["avatar"] = IriSP.user.avatar;
+  
   var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template, 
-                                           {cinecast_version: this.cinecast_version, 
-                                            polemic_mode: this.polemic_mode});
+                                           template_params);
   
 	this.selector.append(annotationMarkup);
   
