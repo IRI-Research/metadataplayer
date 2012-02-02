@@ -135,7 +135,6 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
       
       code = {start: annotation.begin / 1000, end: annotation.end / 1000,
               onStart: function(annotation) { return function() {
-                      console.log("runned ?", annotation);
                       if (typeof(annotation.content) !== "undefined")
                         _this.selector.find(".Ldt-createAnnotation-Title").html(annotation.content.title);
 
@@ -366,7 +365,11 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   annotation.content["data"] = contents;
   
   var meta = apiJson["meta"];
-  meta.creator = "An User";    
+  if (!IriSP.null_or_undefined(IriSP.user) && !IriSP.null_or_undefined(IriSP.user.name))
+    meta.creator = IriSP.user.name;    
+  else 
+    meta.creator = "An User";
+  
   meta.created = Date().toString();
   
   annotation["tags"] = [];
