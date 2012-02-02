@@ -9,23 +9,23 @@ IriSP.StackGraphWidget.prototype.draw = function() {
             {
                 "keywords" : [ "++" ],
                 "description" : "positif",
-                "color" : "#1D973D",
+                "color" : "#1D973D"
             },
             {
                 "keywords" : [ "--" ],
                 "description" : "negatif",
-                "color" : "#CE0A15",
+                "color" : "#CE0A15"
             },
             {
                 "keywords" : [ "==" ],
                 "description" : "reference",
-                "color" : "#C5A62D",   
+                "color" : "#C5A62D"  
             },
             {
                 "keywords" : [ "??" ],
                 "description" : "question",
-                "color" : "#036AAE",
-            },
+                "color" : "#036AAE"
+            }
         ],
         _defaultDefColor = "#585858";
     this.height =  this._config.height || 50;
@@ -98,7 +98,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
             if (!this.isStreamGraph) {
                 this.paper.rect(i * _width, _base, _width - 1, _h ).attr({
                     "stroke" : "none",
-                    "fill" : this.defaultcolorconf,
+                    "fill" : this.defaultcolorconf
                 });
             }
            _paths[0].push(_base);
@@ -108,7 +108,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
                 if (!this.isStreamGraph) {
                     this.paper.rect(i * _width, _base, _width - 1, _h ).attr({
                         "stroke" : "none",
-                        "fill" : this.tagconf[j].color,
+                        "fill" : this.tagconf[j].color
                     });
                 }
                 _paths[j+1].push(_base);
@@ -135,7 +135,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
             },'') + 'L' + this.width + ' ' + _paths[j][_paths[j].length - 1] + 'L' + this.width + ' ' + this.height + 'L0 ' + this.height;
             this.paper.path(_d).attr({
                 "stroke" : "none",
-                "fill" : (j ? this.tagconf[j-1].color : this.defaultcolorconf),
+                "fill" : (j ? this.tagconf[j-1].color : this.defaultcolorconf)
             });
         }
     }
@@ -143,13 +143,13 @@ IriSP.StackGraphWidget.prototype.draw = function() {
         .attr({
             "stroke" : "none",
             "fill" : "#ff00ff",
-            "opacity" : 0,
+            "opacity" : 0
         })
     this.rectangleProgress = this.paper.rect(0,0,0,this.height)
         .attr({
             "stroke" : "none",
             "fill" : "#808080",
-            "opacity" : .3,
+            "opacity" : .3
         });
     this.ligneProgress = this.paper.path("M0 0L0 "+this.height).attr({"stroke":"#ff00ff", "line-width" : 2})
     
@@ -170,7 +170,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
         .mouseout(function() {
             _this.TooltipWidget.hide();
             _this.rectangleFocus.attr({
-                "opacity" : 0,
+                "opacity" : 0
             })
         })
 }
@@ -179,10 +179,10 @@ IriSP.StackGraphWidget.prototype.timeUpdateHandler = function() {
     var _currentTime = this._Popcorn.currentTime(),
         _x = (1000 * _currentTime / this.duration) * this.width;
     this.rectangleProgress.attr({
-        "width" : _x,
+        "width" : _x
     });
     this.ligneProgress.attr({
-        "path" : "M" + _x + " 0L" + _x + " " + this.height,
+        "path" : "M" + _x + " 0L" + _x + " " + this.height
     })
 }
 
@@ -214,7 +214,7 @@ IriSP.StackGraphWidget.prototype.updateTooltip = function(event) {
     this.TooltipWidget.selector.find(".tip").html(_html);
     this.rectangleFocus.attr({
         "x" : _segment * _width,
-        "opacity" : .4,
+        "opacity" : .4
     })
 }
 

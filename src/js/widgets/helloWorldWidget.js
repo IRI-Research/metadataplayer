@@ -10,7 +10,7 @@ IriSP.HelloWorldWidget.prototype.draw = function() {
         .css({
             "text-align" : "center",
             "padding": "10px 0",
-            "font-size" : "14px",
+            "font-size" : "14px"
         });
         
     console.log(this);

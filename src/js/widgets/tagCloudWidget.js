@@ -34,7 +34,7 @@ IriSP.TagCloudWidget.prototype.draw = function() {
         .map(function(_v, _k) {
             return {
                 "word" : _k,
-                "count" : _v,
+                "count" : _v
             }
         })
         .filter(function(_v) {
