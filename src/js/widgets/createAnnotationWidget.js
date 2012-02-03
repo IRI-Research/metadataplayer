@@ -176,15 +176,17 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
 /** handles clicks on the annotate button. Works only for the non-cinecast version */
 IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
   
-  if (this._hidden == false) {
+  if (this._hidden == false && this._state == 'startScreen') {
     this.selector.hide();
     this._hidden = true;
     
     // free the arrow.
     this._Popcorn.trigger("IriSP.ArrowWidget.releaseArrow");
     this._Popcorn.trigger("IriSP.SliceWidget.hide");
+    this._Popcorn.trigger("IriSP.AnnotationsWidget.show");
     
   } else {
+    this._Popcorn.trigger("IriSP.AnnotationsWidget.hide");
     this.showStartScreen();
     this.selector.show();
     this._hidden = false;
@@ -263,17 +265,21 @@ IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
 IriSP.createAnnotationWidget.prototype.showStartScreen = function() {
   this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
   this.selector.find(".Ldt-createAnnotation-startScreen").show();
-  this.selector.find(".Ldt-createAnnotation-Description").val("Type your annotation here.");  
+  this.selector.find(".Ldt-createAnnotation-Description").val("Type your annotation here.");
+
+  this._state = "startScreen";
 };
 
 IriSP.createAnnotationWidget.prototype.showWaitScreen = function() {
   this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
-  this.selector.find(".Ldt-createAnnotation-waitScreen").show();  
+  this.selector.find(".Ldt-createAnnotation-waitScreen").show();
+  this._state = "waitScreen";
 };
 
 IriSP.createAnnotationWidget.prototype.showErrorScreen = function() {
   this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
-  this.selector.find(".Ldt-createAnnotation-errorScreen").show();  
+  this.selector.find(".Ldt-createAnnotation-errorScreen").show();
+  this._state = "errorScreen";
 };
 
 /** update show the final screen with links to share the created annotation */
@@ -294,6 +300,7 @@ IriSP.createAnnotationWidget.prototype.showEndScreen = function(annotation) {
   this.selector.find(".Ldt-createAnnotation-endScreen-GplusLink").attr("href", gpStatus);
           
   this.selector.find(".Ldt-createAnnotation-endScreen").show();
+  this._state = "endScreen";
 };
 
 /** handle clicks on "send annotation" button */
@@ -328,11 +335,12 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
                             _this._Popcorn.play();
                       }
 
-                      _this.showEndScreen(annotation);
-                      if (_this.cinecast_version) {
-                        window.setTimeout(IriSP.wrap(_this, function() { this.showStartScreen(); }), 5000);
+                      if (_this._state == "waitScreen") {
+                        _this.showEndScreen(annotation);
+                        if (_this.cinecast_version) {
+                          window.setTimeout(IriSP.wrap(_this, function() { this.showStartScreen(); }), 5000);
+                        }
                       }
-                      
                       // hide the slicer widget
                       if (!_this.cinecast_version) {                      
                         _this._Popcorn.trigger("IriSP.SliceWidget.hide");
