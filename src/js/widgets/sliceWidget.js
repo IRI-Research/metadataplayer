@@ -24,24 +24,40 @@ IriSP.SliceWidget.prototype.draw = function() {
   var left = this.selector.offset().left;
   var top = this.selector.offset().top;
 
-  // contain the handles correctly - we cannot set
-  // containment: parent because it wouldn't allow to select the 
-  // whole slice, so we have to compute a box in which the slice is
-  // allowed to move.
-  var containment = [left - 8, top, this.selector.width() + left, top];
-  // var containment = [left - 16, top, this.selector.width() + left - 8, top];
-  this.leftHandle.draggable({axis: "x",
-  drag: IriSP.wrap(this, this.leftHandleDragged),  
-  containment: containment
-  });
+  // a bug in firefox makes it use the wrong format
+  if (!IriSP.jQuery.browser.mozilla) {
+    // contain the handles correctly - we cannot set
+    // containment: parent because it wouldn't allow to select the 
+    // whole slice, so we have to compute a box in which the slice is
+    // allowed to move.
+    var containment = [left - 8, top, this.selector.width() + left, top];
+    console.log(containment);
+    //if (browser.
+    // var containment = [left - 16, top, this.selector.width() + left - 8, top];
+    this.leftHandle.draggable({axis: "x",
+    drag: IriSP.wrap(this, this.leftHandleDragged),  
+    containment: containment
+    });
 
-  containment = [left, top, this.selector.width() + left, top];
-  // containment = [left, top, this.selector.width() + left - 8, top];
-  this.rightHandle.draggable({axis: "x",
-  drag: IriSP.wrap(this, this.rightHandleDragged),    
-  containment: containment
-  });
+    containment = [left, top, this.selector.width() + left, top];
+    // containment = [left, top, this.selector.width() + left - 8, top];
+    this.rightHandle.draggable({axis: "x",
+    drag: IriSP.wrap(this, this.rightHandleDragged),    
+    containment: containment
+    });
+  } else { /* firefox */
 
+    this.leftHandle.draggable({axis: "x",
+    drag: IriSP.wrap(this, this.leftHandleDragged),  
+    containment: parent
+    });
+
+    this.rightHandle.draggable({axis: "x",
+    drag: IriSP.wrap(this, this.rightHandleDragged),    
+    containment: parent
+    });
+  }
+  
   this.leftHandle.css("position", "absolute");
   this.rightHandle.css("position", "absolute");
   
