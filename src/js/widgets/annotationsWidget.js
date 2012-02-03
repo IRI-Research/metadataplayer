@@ -53,8 +53,11 @@ IriSP.AnnotationsWidget.prototype.draw = function() {
   var annotationMarkup = IriSP.templToHTML(IriSP.annotationWidget_template);
 	this.selector.append(annotationMarkup);
 
-  this._Popcorn.listen("IriSP.PlayerWidget.AnnotateButton.clicked", 
-                        IriSP.wrap(this, this.handleAnnotateSignal));  
+  this._Popcorn.listen("IriSP.AnnotationsWidget.show", 
+                        IriSP.wrap(this, this.show));
+  this._Popcorn.listen("IriSP.AnnotationsWidget.hide", 
+                        IriSP.wrap(this, this.hide));
+ 
   var legal_ids = [];
   if (typeof(this._serializer.getChapitrage()) !== "undefined")
     legal_ids.push(this._serializer.getChapitrage());
@@ -90,11 +93,15 @@ IriSP.AnnotationsWidget.prototype.draw = function() {
 
 };
 
-IriSP.AnnotationsWidget.prototype.handleAnnotateSignal = function() {
+IriSP.AnnotationsWidget.prototype.hide = function() {
   if (this._hidden == false) {
     this.selector.hide();
     this._hidden = true;
-  } else {
+  }
+};
+
+IriSP.AnnotationsWidget.prototype.show = function() {
+  if (this._hidden == true) {
     this.selector.show();
     this._hidden = false;
   }
