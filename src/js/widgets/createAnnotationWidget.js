@@ -41,6 +41,7 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   if (!this.cinecast_version)
     this.selector.hide();
   
+  // add the keywords.
   for (var i = 0; i < this.keywords.length; i++) {
     var keyword = this.keywords[i];
     var id = IriSP.guid("button_");
@@ -260,7 +261,7 @@ IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
 IriSP.createAnnotationWidget.prototype.showStartScreen = function() {
   this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
   this.selector.find(".Ldt-createAnnotation-startScreen").show();
-  this.selector.find("Ldt-createAnnotation-Description").val("Type your annotation here.");  
+  this.selector.find(".Ldt-createAnnotation-Description").val("Type your annotation here.");  
 };
 
 IriSP.createAnnotationWidget.prototype.showWaitScreen = function() {
@@ -433,6 +434,5 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
               function(jqXHR, textStatus, errorThrown) { 
                             console.log("an error occured while contacting " 
                             + url + " and sending " + jsonString + textStatus ); 
-                            debugger;
                             _this.showErrorScreen(); } });
 };
