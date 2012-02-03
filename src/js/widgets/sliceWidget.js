@@ -31,8 +31,7 @@ IriSP.SliceWidget.prototype.draw = function() {
     // whole slice, so we have to compute a box in which the slice is
     // allowed to move.
     var containment = [left - 8, top, this.selector.width() + left, top];
-    console.log(containment);
-    //if (browser.
+
     // var containment = [left - 16, top, this.selector.width() + left - 8, top];
     this.leftHandle.draggable({axis: "x",
     drag: IriSP.wrap(this, this.leftHandleDragged),  
@@ -45,16 +44,20 @@ IriSP.SliceWidget.prototype.draw = function() {
     drag: IriSP.wrap(this, this.rightHandleDragged),    
     containment: containment
     });
-  } else { /* firefox */
-
+  
+  } else { // firefox
+    // we need to define a containment specific to firefox.
+    
+    var containment = [left - 16, top, this.selector.width() + left - 8, top];
     this.leftHandle.draggable({axis: "x",
     drag: IriSP.wrap(this, this.leftHandleDragged),  
-    containment: parent
+    containment: containment
     });
 
+    containment = [left, top, this.selector.width() + left - 8, top];
     this.rightHandle.draggable({axis: "x",
     drag: IriSP.wrap(this, this.rightHandleDragged),    
-    containment: parent
+    containment: containment
     });
   }
   
