@@ -53,7 +53,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   this.positionMarker = this.selector.children(":first");
   
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.positionUpdater));
-  
+
   
   var i = 0;
   
@@ -148,10 +148,33 @@ IriSP.SegmentsWidget.prototype.draw = function() {
       self.TooltipWidget.hide();
     });
 
+    // react to mediafragment messages.
+    this._Popcorn.listen("IriSP.Mediafragment.showAnnotation", 
+      function(id, divTitle) { 
+      return function(annotation_id) { 
+        if (annotation_id !== id)
+          return;
+        
+          var divObject = IriSP.jQuery("#" + id);
+          divObject.animate({opacity: 0.6}, 5);
+          var offset = divObject.offset();
+          var correction = divObject.outerWidth() / 2;
+
+          var offset_x = offset.left + correction - 106;
+          if (offset_x < 0)
+            offset_x = 0;
+          
+          var offset_y = offset.top;          
+
+          self.TooltipWidget.show(divTitle, color, offset_x, offset_y - 160);
+          IriSP.jQuery(document).one("mousemove", function() { divObject.animate({opacity: 0.3}, 5);
+                                                                self.TooltipWidget.hide(); });
+      }; }(id, divTitle));
+    
     IriSP.jQuery("#" + id).click(function(_this, annotation) {
                                     return function() { _this.clickHandler(annotation)};
                                  }(this, annotation));
-  }
+    }
 };
 
 /* restores the view after a search */
@@ -207,4 +230,8 @@ IriSP.SegmentsWidget.prototype.positionUpdater = function() {
   var position 	= ((time / duration) * 100).toFixed(2);
 
   this.positionMarker.css("left", position + "%");  
+};
+
+IriSP.SegmentsWidget.prototype.showAnnotation = function() {
+
 };
