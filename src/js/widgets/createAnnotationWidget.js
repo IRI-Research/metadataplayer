@@ -268,6 +268,12 @@ IriSP.createAnnotationWidget.prototype.showWaitScreen = function() {
   this.selector.find(".Ldt-createAnnotation-waitScreen").show();  
 };
 
+IriSP.createAnnotationWidget.prototype.showErrorScreen = function() {
+  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+  this.selector.find(".Ldt-createAnnotation-errorScreen").show();  
+};
+
+/** update show the final screen with links to share the created annotation */
 IriSP.createAnnotationWidget.prototype.showEndScreen = function(annotation) {
   this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
   
@@ -298,7 +304,7 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
       this.selector.find(".Ldt-createAnnotation-Container")
                    .after(IriSP.templToHTML(IriSP.createAnnotation_errorMessage_template));
       textfield.css("background-color", "#d93c71");      
-    } else {
+    } else {      
       this.selector.find(".Ldt-createAnnotation-errorMessage").show();
     }
 
@@ -426,5 +432,7 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
       error: 
               function(jqXHR, textStatus, errorThrown) { 
                             console.log("an error occured while contacting " 
-                            + url + " and sending " + jsonString + textStatus ); } });
+                            + url + " and sending " + jsonString + textStatus ); 
+                            debugger;
+                            _this.showErrorScreen(); } });
 };

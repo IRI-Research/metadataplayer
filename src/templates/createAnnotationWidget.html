@@ -7,7 +7,7 @@
         <div class='Ldt-createAnnotation-Title'></div>
         <div class='Ldt-createAnnotation-TimeFrame'></div>
         {{^cinecast_version}}
-          <div class='Ldt-createAnnotation-Minimize' title='Cancel'></img>
+          <div class='Ldt-createAnnotation-Minimize' title='Cancel'></div>
         {{/cinecast_version}}
       </div>
       
@@ -41,8 +41,14 @@
       <img src='{{img_dir}}/spinner.gif'></img>
       Please wait while your request is being processed...
     </div>
+
+    <div class='Ldt-createAnnotation-errorScreen' style='display: none; text-align: center'>
+      <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>
+      An error happened while contacting the server. Your annotation has not been saved.
+    </div>
     
     <div class='Ldt-createAnnotation-endScreen' style='display: none'>
+      <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>
       Thank you, your annotation has been saved.<br>
       Would you like to share it on social networks ?
       <div style='margin-top: 12px; text-align: center;'>
