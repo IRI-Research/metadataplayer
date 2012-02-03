@@ -23,6 +23,12 @@ IriSP.configurePopcorn = function (layoutManager, options) {
     var pop;
     var ret = layoutManager.createDiv(); 
     var containerDiv = ret[0];
+    var spacerDiv = ret[1];
+    
+    /* insert one pixel of margin between the video and the first widget, using the 
+       spacer.
+    */
+    IriSP.jQuery("#" + spacerDiv).css("height", "1px");
     
     switch(options.type) {
       /*
@@ -138,8 +144,8 @@ IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
   for (index = 0; index < guiOptions.widgets.length; index++) {    
     var widgetConfig = guiOptions.widgets[index];
     var widget = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, widgetConfig);
-    ret_widgets.push(widget);
-   
+        
+    ret_widgets.push(widget);   
   };
 
   return ret_widgets;
