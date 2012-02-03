@@ -21,14 +21,23 @@ IriSP.SliceWidget.prototype.draw = function() {
   this.leftHandle = this.selector.find(".Ldt-sliceLeftHandle");
   this.rightHandle = this.selector.find(".Ldt-sliceRightHandle");
 
+  var left = this.selector.offset().left;
+  var top = this.selector.offset().top;
+  
+  // contain the handles correctly - we cannot set
+  // containment: parent because it wouldn't allow to select the 
+  // whole slice, so we have to compute a box in which the slice is
+  // allowed to move.
+  var containment = [left - 8, top, this.selector.width() + left, top];
   this.leftHandle.draggable({axis: "x",
   drag: IriSP.wrap(this, this.leftHandleDragged),  
-  containment: "parent"
+  containment: containment
   });
 
+  containment = [left, top, this.selector.width() + left, top];
   this.rightHandle.draggable({axis: "x",
   drag: IriSP.wrap(this, this.rightHandleDragged),    
-  containment: "parent"
+  containment: containment
   });
 
   this.leftHandle.css("position", "absolute");
@@ -68,9 +77,11 @@ IriSP.SliceWidget.prototype.leftHandleDragged = function(event, ui) {
      is the handle being dragged
   */
   
-  var currentX = this.leftHandle.position()["left"];
+  var currentX = this.leftHandle.offset().left;
   var rightHandleX = Math.floor(this.rightHandle.position()["left"]);
   
+  var container_offset = this.selector.offset().left;
+
   if (Math.floor(ui.position.left) >= rightHandleX - 7) {
     /* prevent the handle from moving past the right handle */
     ui.position.left = rightHandleX - 7;
@@ -81,7 +92,8 @@ IriSP.SliceWidget.prototype.leftHandleDragged = function(event, ui) {
   
   this.sliceZone.css("width", this.zoneWidth);
   this.sliceZone.css("left", this.zoneLeft + "px");
-  this._leftHandleOldLeft = Math.floor(this._leftHandleOldLeft);  
+  
+  this._leftHandleOldLeft = ui.position.left;  
   this.broadcastChanges();
     
 };
@@ -95,9 +107,11 @@ IriSP.SliceWidget.prototype.rightHandleDragged = function(event, ui) {
   
   var currentX = this.leftHandle.position()["left"];
   var leftHandleX = Math.floor(this.leftHandle.position()["left"]);
+
+  var container_offset = this.selector.offset().left + this.selector.width();
   
   if (Math.floor(ui.position.left) < leftHandleX + 7) {
-    /* prevent the handle from moving past the right handle */
+    /* prevent the handle from moving past the left handle */
     ui.position.left = leftHandleX + 7;
   }
 
@@ -115,7 +129,7 @@ IriSP.SliceWidget.prototype.rightHandleDragged = function(event, ui) {
 IriSP.SliceWidget.prototype.broadcastChanges = function() {
   var leftPercent = (this.zoneLeft / this.selector.width()) * 100;
   var zonePercent = (this.zoneWidth / this.selector.width()) * 100;
-  
+
   this._Popcorn.trigger("IriSP.SliceWidget.zoneChange", [leftPercent, zonePercent]);  
 };
 
