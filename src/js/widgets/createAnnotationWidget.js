@@ -196,7 +196,7 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     var duration = +this._serializer.currentMedia().meta["dc:duration"];
         
     var currentChapter = this._serializer.currentChapitre(currentTime);
-    if (typeof(currentChapter) === "undefined") {
+    if (IriSP.null_or_undefined(currentChapter)) {
       var left = this.selector.width() / 2;
       var width = this.selector.width() / 10;
     } else {
@@ -210,13 +210,15 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     this._Popcorn.listen("IriSP.SliceWidget.zoneChange", IriSP.wrap(this, this.handleSliderChanges));
     this._Popcorn.trigger("IriSP.SliceWidget.show");
     
-    this.selector.find(".Ldt-createAnnotation-Title").html(currentChapter.content.title);
+    if (!IriSP.null_or_undefined(currentChapter)) {
+      this.selector.find(".Ldt-createAnnotation-Title").html(currentChapter.content.title);
 
-    this._currentcurrentChapter = currentChapter;
-    var beginTime = IriSP.msToTime(currentChapter.begin);
-    var endTime = IriSP.msToTime(currentChapter.end);
-    var timeTemplate = IriSP.templToHTML("- ({{begin}} - {{ end }})", {begin: beginTime, end: endTime });
-    this.selector.find(".Ldt-createAnnotation-TimeFrame").html(timeTemplate);
+      this._currentcurrentChapter = currentChapter;
+      var beginTime = IriSP.msToTime(currentChapter.begin);
+      var endTime = IriSP.msToTime(currentChapter.end);
+      var timeTemplate = IriSP.templToHTML("- ({{begin}} - {{ end }})", {begin: beginTime, end: endTime });
+      this.selector.find(".Ldt-createAnnotation-TimeFrame").html(timeTemplate);
+    }
   }
 };
 
