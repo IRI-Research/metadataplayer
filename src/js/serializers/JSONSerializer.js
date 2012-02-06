@@ -371,7 +371,11 @@ IriSP.JSONSerializer.prototype.getId = function(name) {
   name = name.toUpperCase();
   var e;  
   e = IriSP.underscore.find(this._data["annotation-types"], 
-                                  function(entry) { return (entry["dc:title"].toUpperCase().indexOf(name) !== -1) });
+                                  function(entry) { 
+                                    if (IriSP.null_or_undefined(entry["dc:title"]))
+                                      return false;
+                                    
+                                    return (entry["dc:title"].toUpperCase().indexOf(name) !== -1) });
   
   if (typeof(e) === "undefined")
     return;
