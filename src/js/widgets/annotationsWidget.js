@@ -20,12 +20,35 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
     var begin = +annotation.begin / 1000;
     var end = +annotation.end / 1000;
     var duration = +this._serializer.currentMedia().meta["dc:duration"];
+    var tags = "";
     
     var title_templ = "{{title}} - ( {{begin}} - {{end}} )";
     var endstr = Mustache.to_html(title_templ, {title: title, begin: IriSP.secondsToTime(begin), end: IriSP.secondsToTime(end)});
 
     this.selector.find(".Ldt-SaTitle").text(endstr);
     this.selector.find(".Ldt-SaDescription").text(description);
+    
+    
+    if (!IriSP.null_or_undefined(annotation.tags) && !IriSP.null_or_undefined(this._serializer._data.tags)) {
+      /* save the tag id and keywords in a unique structure */
+      var tag_list = {};
+      for (var i = 0; i < this._serializer._data.tags.length; i++) {
+        var id = this._serializer._data.tags[i]["id"];
+        var keyword = this._serializer._data.tags[i]["meta"]["dc:title"];
+
+        tag_list[id] = keyword;
+      }
+
+      /* then browse the list of defined tags for the current annotation */
+      for (var i = 0; i < annotation.tags.length; i++) {
+        if (tag_list.hasOwnProperty(annotation.tags[i]["id-ref"]))
+          tags += tag_list[annotation.tags[i]["id-ref"]] + ", ";
+      }
+    }
+    
+    tags = "Keywords: " + tags.slice(0, tags.length - 2);
+    
+    this.selector.find(".Ldt-SaKeywords").text(tags);
     
     // update sharing buttons
     var defaults = IriSP.widgetsDefaults.AnnotationsWidget;
