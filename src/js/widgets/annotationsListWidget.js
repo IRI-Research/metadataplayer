@@ -135,7 +135,10 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
   if (IriSP.null_or_undefined(annotations))
     return;
   
+  /*
+  commented in case we wanted to discriminate against some annotation types.
   var view_types = serializer.getIds("Contributions");
+  */
   var l = [];
   
   var media = this._serializer.currentMedia()["id"];
