@@ -198,7 +198,8 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     var duration = +this._serializer.currentMedia().meta["dc:duration"];
         
     var currentChapter = this._serializer.currentChapitre(currentTime);
-    if (IriSP.null_or_undefined(currentChapter)) {
+
+    if (IriSP.null_or_undefined(currentChapter)) {      
       var left = this.selector.width() / 2;
       var width = this.selector.width() / 10;
     } else {
@@ -206,8 +207,10 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
       var width = (currentChapter.end / duration) * this.selector.width() - left;
     }
     
-    this.sliceLeft = left;
-    this.sliceWidth = width;
+    // slider position and length is kept in percents.
+    this.sliceLeft = (left / this.selector.width()) * 100;
+    this.sliceWidth = (width / this.selector.width()) * 100;
+    
     this._Popcorn.trigger("IriSP.SliceWidget.position", [left, width]);
     this._Popcorn.listen("IriSP.SliceWidget.zoneChange", IriSP.wrap(this, this.handleSliderChanges));
     this._Popcorn.trigger("IriSP.SliceWidget.show");
@@ -364,18 +367,20 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   
   if (this.cinecast_version) {   
       annotation["begin"] = Math.round(this._Popcorn.currentTime() * 1000 - duration_part);
-      annotation["end"] = Math.round(this._Popcorn.currentTime() * 1000 + duration_part);
-      if (annotation["begin"] < 0)
-        annotation["begin"] = 0;
-      
-      if (annotation["end"] > this._serializer.currentMedia().meta["dc:duration"])
-        annotation["end"] = this._serializer.currentMedia().meta["dc:duration"];
-      
+      annotation["end"] = Math.round(this._Popcorn.currentTime() * 1000 + duration_part);      
   } else {
     var duration = +this._serializer.currentMedia().meta["dc:duration"];    
     annotation["begin"] = +((duration * (this.sliceLeft / 100)).toFixed(0));
     annotation["end"] = +((duration * ((this.sliceWidth + this.sliceLeft) / 100)).toFixed(0));
   }
+
+  // boundary checks
+  if (annotation["begin"] < 0)
+        annotation["begin"] = 0;
+  
+  if (annotation["end"] > this._serializer.currentMedia().meta["dc:duration"])
+    annotation["end"] = this._serializer.currentMedia().meta["dc:duration"];
+      
   
   annotation["type"] = this._serializer.getContributions();
   if (typeof(annotation["type"]) === "undefined")
