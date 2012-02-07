@@ -3,9 +3,10 @@ the IriSP.PopcornReplacement.player and defining the correct functions */
 
 /** jwplayer player wrapper */
 IriSP.PopcornReplacement.dailymotion = function(container, options) {
+    console.log("Calling");
     /* appel du parent pour initialiser les structures communes à tous les players */
-    IriSP.PopcornReplacement.player.call(this, container, options);
-
+    IriSP.PopcornReplacement.player.call(this, container, options);   
+    
     var _this = this;
 
     /* Définition des fonctions de l'API -  */
@@ -36,7 +37,8 @@ IriSP.PopcornReplacement.dailymotion = function(container, options) {
     window.onDailymotionVideoProgress = IriSP.wrap(this, this.progressHandler);
 
     var params = {
-        allowScriptAccess : "always"
+        "allowScriptAccess" : "always",
+        "wmode": "opaque"
     };
     var atts = {
         id : this.container
