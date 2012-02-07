@@ -53,7 +53,7 @@ IriSP.PopcornReplacement.dailymotion.prototype.ready = function() {
     
     this.player.addEventListener("onStateChange", "onDailymotionStateChange");
     this.player.addEventListener("onVideoProgress", "onDailymotionVideoProgress");
-    this.player.loadVideoByUrl(this._options.video);
+    this.player.cueVideoByUrl(this._options.video);
 };
 
 IriSP.PopcornReplacement.dailymotion.prototype.progressHandler = function(progressInfo) {
