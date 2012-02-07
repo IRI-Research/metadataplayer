@@ -117,7 +117,11 @@ IriSP.configurePopcorn = function (layoutManager, options) {
           
           pop = Popcorn.youtube("#" + containerDiv, opts.video, opts);
         break;
-        
+      
+    case "dailymotion":
+        pop = new IriSP.PopcornReplacement.dailymotion("#" + containerDiv, options);
+        break;
+             
       case "allocine":
           /* pass the options as-is to the allocine player and let it handle everything */
           pop = new IriSP.PopcornReplacement.allocine("#" + containerDiv, options);

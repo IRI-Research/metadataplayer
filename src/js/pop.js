@@ -27,6 +27,8 @@ IriSP.PopcornReplacement.player = function(container, options) {
   this.msgPump = {}; /* dictionnary used to receive and send messages */
   this.__codes = []; /* used to schedule the execution of a piece of code in 
                         a segment (similar to the popcorn.code plugin). */
+  
+  this._options = options;
                           
 };
 
