@@ -157,7 +157,9 @@ IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
 
 /** configure modules. @see configureWidgets */
 IriSP.configureModules = function (popcornInstance, modulesList) {
- 
+  if (IriSP.null_or_undefined(modulesList))
+    return;
+  
   var serialFactory = new IriSP.SerializerFactory(IriSP.__dataloader);
   var ret_modules = [];
   var index;
@@ -246,6 +248,11 @@ IriSP.configureDefaults = function(libdir, platform_url) {
   IriSP.paths = IriSP.underscore.defaults(IriSP.paths, IriSP.defaults.paths);
   IriSP.default_templates_vars = IriSP.underscore.defaults(IriSP.default_templates_vars, 
                                        IriSP.defaults.default_templates_vars());
+
+  if (IriSP.null_or_undefined(IriSP.user))
+    IriSP.user = {};
+  
+  IriSP.user = IriSP.underscore.defaults(IriSP.user, IriSP.defaults.user());
 };
 
 /** single point of entry for the metadataplayer */
