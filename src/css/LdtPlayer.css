@@ -110,13 +110,8 @@ button.ui-button-icon-only  {
   font-size:12px;
 }
 
-.Ldt-SaKeywords {
-  background-color:#b9b9b9;
-  color:#4D4D4D;
-  padding:5px;
-  font-weight:bold;
-  text-align:left;
-  float:left;
+.Ldt-SaKeywords {  
+  font-weight:bold;  
   font-size:10px;
 }
 
