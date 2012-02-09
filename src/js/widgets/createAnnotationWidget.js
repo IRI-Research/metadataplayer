@@ -98,17 +98,17 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
           }
           
           _this.selector.find(".Ldt-createAnnotation-Description").val(newVal);
-          // we use a custom event because there's no simple way to test for a js
-          // change in a textfield.
-          _this.selector.find(".Ldt-createAnnotation-Description").trigger("js_mod");
+          
           // also call our update function.
           _this.handleTextChanges();
         }
        }(polemic));
       }    
   
+  // js_mod is a custom event because there's no simple way to test for a js
+  // change in a textfield.                    
   this.selector.find(".Ldt-createAnnotation-Description")
-               .bind("propertychange keyup input paste", IriSP.wrap(this, this.handleTextChanges));
+               .bind("propertychange keyup input paste js_mod", IriSP.wrap(this, this.handleTextChanges));
                
   /* the cinecast version of the player is supposed to pause when the user clicks on the button */
   if (this.cinecast_version) {
