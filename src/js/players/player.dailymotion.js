@@ -13,22 +13,52 @@ IriSP.PopcornReplacement.dailymotion = function(container, options) {
 
     this.playerFns = {
         play : function() {
-            return _this.player.playVideo();
+            if (_this.player) {
+                return _this.player.playVideo();
+            } else {
+                console.log("Play on undefined player");
+                return false;
+            }
         },
         pause : function() {
-            return _this.player.pauseVideo();
+            if (_this.player) {
+                return _this.player.pauseVideo();
+            } else {
+                console.log("Pause on undefined player");
+                return false;
+            }
         },
         getPosition : function() {
-            return _this.player.getCurrentTime();
+            if (_this.player) {
+                return _this.player.getCurrentTime();
+            } else {
+                console.log("getPosition on undefined player");
+                return 0;
+            }
         },
         seek : function(pos) {
-            return _this.player.seekTo(pos);
+            if (_this.player) {
+                return _this.player.seekTo(pos);
+            } else {
+                console.log("seek on undefined player");
+                return false;
+            }
         },
         getMute : function() {
-            return _this.player.isMuted();
+            if (_this.player) {
+                return _this.player.isMuted();
+            } else {
+                console.log("getMute on undefined player");
+                return false;
+            }
         },
         setMute : function(p) {
-            return p ? _this.player.mute() : _this.player.unMute();
+            if (_this.player) {
+                return p ? _this.player.mute() : _this.player.unMute();
+            } else {
+                console.log("setMute on undefined player");
+                return false;
+            }
         }
     }
 
@@ -77,7 +107,9 @@ IriSP.PopcornReplacement.dailymotion.prototype.stateHandler = function(state) {
             break;
 
         case 3:
-            this.callbacks.onSeek();
+            this.callbacks.onSeek({
+                position: this.player.getCurrentTime()
+            });
             break;
 
         case 5:
