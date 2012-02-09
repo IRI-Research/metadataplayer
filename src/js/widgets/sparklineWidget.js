@@ -124,9 +124,16 @@ IriSP.SparklineWidget.prototype.handleNewAnnotation = function(annotation) {
   var duration = +this._serializer.currentMedia().meta["dc:duration"];
   var time_step = Math.round(duration / num_columns); /* the time interval between two columns */
   var begin = +annotation.begin;
+  var end = +annotation.end;
   
-  var index = Math.floor(begin / time_step);
-  this._results[index]++;
+  /* increment all the values between the beginning and the end of the annotation */
+  var index_begin = Math.floor(begin / time_step);
+  var index_end = Math.floor(end / time_step);
+  
+  for (var i = index_begin; i < Math.min(index_end, this._results.length); i++) {
+    this._results[i]++;
+  }
+  
   this.selector.find(".Ldt-sparkLine").sparkline(this._results, {lineColor: "#7492b4", fillColor: "#aeaeb8",
                                                            spotColor: "#b70056",
                                                            width: this.width, height: this.height});
