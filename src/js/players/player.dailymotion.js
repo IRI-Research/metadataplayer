@@ -16,7 +16,6 @@ IriSP.PopcornReplacement.dailymotion = function(container, options) {
             if (_this.player) {
                 return _this.player.playVideo();
             } else {
-                console.log("Play on undefined player");
                 return false;
             }
         },
@@ -24,7 +23,6 @@ IriSP.PopcornReplacement.dailymotion = function(container, options) {
             if (_this.player) {
                 return _this.player.pauseVideo();
             } else {
-                console.log("Pause on undefined player");
                 return false;
             }
         },
@@ -32,7 +30,6 @@ IriSP.PopcornReplacement.dailymotion = function(container, options) {
             if (_this.player) {
                 return _this.player.getCurrentTime();
             } else {
-                console.log("getPosition on undefined player");
                 return 0;
             }
         },
@@ -40,7 +37,6 @@ IriSP.PopcornReplacement.dailymotion = function(container, options) {
             if (_this.player) {
                 return _this.player.seekTo(pos);
             } else {
-                console.log("seek on undefined player");
                 return false;
             }
         },
@@ -48,7 +44,6 @@ IriSP.PopcornReplacement.dailymotion = function(container, options) {
             if (_this.player) {
                 return _this.player.isMuted();
             } else {
-                console.log("getMute on undefined player");
                 return false;
             }
         },
@@ -56,7 +51,6 @@ IriSP.PopcornReplacement.dailymotion = function(container, options) {
             if (_this.player) {
                 return p ? _this.player.mute() : _this.player.unMute();
             } else {
-                console.log("setMute on undefined player");
                 return false;
             }
         }
