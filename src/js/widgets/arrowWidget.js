@@ -64,15 +64,15 @@ IriSP.ArrowWidget.prototype.timeUpdateHandler = function(percents) {
     if (corrected_pixels <= 0)
       corrected_pixels = 0;
     
-    if (corrected_pixels <= 15) {
-      var left_edge_img_templ = IriSP.templToHTML("url('{{img_dir}}/left_edge_arrow.png')"); 
-      this.selector.children(".Ldt-arrowWidget").css("background-image", left_edge_img_templ); 
+    if (corrected_pixels <= 15) {      
+      this.selector.children(".Ldt-arrowWidget").removeClass("Ldt-arrowLeftEdge Ldt-arrowCenter Ldt-arrowRightEdge")
+                                                .addClass("Ldt-arrowLeftEdge"); 
     } else if (corrected_pixels >= totalWidth - 25) {
-      var right_edge_img_templ = IriSP.templToHTML("url('{{img_dir}}/right_edge_arrow.png')"); 
-      this.selector.children(".Ldt-arrowWidget").css("background-image", right_edge_img_templ);
+           this.selector.children(".Ldt-arrowWidget").removeClass("Ldt-arrowLeftEdge Ldt-arrowCenter Ldt-arrowRightEdge")
+                                                .addClass("Ldt-arrowRightEdge"); 
     } else {
-      var img_templ = IriSP.templToHTML("url('{{img_dir}}/arrow.png')"); 
-      this.selector.children(".Ldt-arrowWidget").css("background-image", img_templ);
+      this.selector.children(".Ldt-arrowWidget").removeClass("Ldt-arrowLeftEdge Ldt-arrowCenter Ldt-arrowRightEdge")
+                                                .addClass("Ldt-arrowCenter"); 
     }
     
     this.selector.children(".Ldt-arrowWidget").animate({"left" : corrected_pixels + "px"});
