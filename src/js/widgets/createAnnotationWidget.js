@@ -409,7 +409,8 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   var jsonString = JSON.stringify(apiJson);
   var project_id = this._serializer._data.meta.id;
   
-  var url = Mustache.to_html("{{platf_url}}/ldtplatform/api/ldt/projects/{{id}}.json",
+  //TODO: extract magic url
+  var url = Mustache.to_html("{{platf_url}}/ldtplatform/api/ldt/annotations/{{id}}.json",
                               {platf_url: IriSP.platform_url, id: project_id});
                           
   IriSP.jQuery.ajax({
