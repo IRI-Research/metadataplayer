@@ -164,10 +164,18 @@ button.ui-button-icon-only  {
 }
 
 .Ldt-CtrlPlay {
-  background:url('imgs/play_sprite.png') no-repeat transparent ;
+
   background-position: 0 0;
   width: 59px;
   height: 25px;
+}
+
+.Ldt-CtrlPlay-PlayState {
+  background:url('imgs/play_sprite.png') no-repeat transparent ;
+}
+
+.Ldt-CtrlPlay-PauseState {
+  background:url('imgs/pause_sprite.png') no-repeat transparent ;
 }
 
 .Ldt-CtrlPlay:hover {
@@ -253,12 +261,19 @@ button.ui-button-icon-only  {
 }
 
 .Ldt-CtrlSound {
-  background:url('imgs/sound_sprite.png') no-repeat scroll 0 0 transparent ;
   width: 33px;
   height: 25px;
   border-right: 1px solid #b6b8b8;
   float: right;
   border-left: none;
+}
+
+.Ldt-CtrlSound-SoundState {
+  background:url('imgs/sound_sprite.png') no-repeat scroll 0 0 transparent ;
+}
+
+.Ldt-CtrlSound-MuteState {
+  background:url('imgs/mute_sprite.png') no-repeat scroll 0 0 transparent ;
 }
 
 .Ldt-CtrlSound:hover {

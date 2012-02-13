@@ -85,21 +85,13 @@ IriSP.PlayerWidget.prototype.timeDisplayUpdater = function() {
 IriSP.PlayerWidget.prototype.playButtonUpdater = function() {
   var status = this._Popcorn.media.paused;
   
-  if ( status == true ){        
+  if ( status == true ){
+    /* the background sprite is changed by adding/removing the correct classes */
     this.selector.find(".Ldt-CtrlPlay").attr("title", "Play");
-   
-    // we use templToHTML because it has some predefined
-    // vars like where to get the images
-    var templ = IriSP.templToHTML("url({{img_dir}}/play_sprite.png)");
-    this.selector.find(".Ldt-CtrlPlay").css("background-image", templ);
-
+    this.selector.find(".Ldt-CtrlPlay").removeClass("Ldt-CtrlPlay-PauseState").addClass("Ldt-CtrlPlay-PlayState");
   } else {
     this.selector.find(".Ldt-CtrlPlay").attr("title", "Pause");
-
-    // we use templToHTML because it has some predefined
-    // vars like where to get the images
-    var templ = IriSP.templToHTML("url({{img_dir}}/pause_sprite.png)");
-    this.selector.find(".Ldt-CtrlPlay").css("background-image", templ);
+    this.selector.find(".Ldt-CtrlPlay").removeClass("Ldt-CtrlPlay-PlayState").addClass("Ldt-CtrlPlay-PauseState");
   }  
 
   return;
@@ -129,19 +121,10 @@ IriSP.PlayerWidget.prototype.muteButtonUpdater = function() {
   
   if ( status == true ){        
     this.selector.find(".Ldt-CtrlSound").attr("title", "Unmute");
-   
-    // we use templToHTML because it has some predefined
-    // vars like where to get the images
-    var templ = IriSP.templToHTML("url({{img_dir}}/sound_sprite.png)");
-    this.selector.find(".Ldt-CtrlSound").css("background-image", templ);
-
+    this.selector.find(".Ldt-CtrlSound").removeClass("Ldt-CtrlSound-MuteState").addClass("Ldt-CtrlSound-SoundState");    
   } else {
     this.selector.find(".Ldt-CtrlSound").attr("title", "Mute");
-
-    // we use templToHTML because it has some predefined
-    // vars like where to get the images
-    var templ = IriSP.templToHTML("url({{img_dir}}/mute_sprite.png)");
-    this.selector.find(".Ldt-CtrlSound").css("background-image", templ);
+    this.selector.find(".Ldt-CtrlSound").removeClass("Ldt-CtrlSound-SoundState").addClass("Ldt-CtrlSound-MuteState");
   }  
 
   return;
