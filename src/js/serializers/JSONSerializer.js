@@ -26,19 +26,21 @@ IriSP.JSONSerializer.prototype.sync = function(callback) {
 
   var self = this;
 
-  var fn = function(data) {      
-      self._data = data;  
-      if (typeof(self._data["annotations"]) === "undefined" ||
-          self._data["annotations"] === null)
-          self._data["annotations"] = [];
-      
-      // sort the data too       
-      self._data["annotations"].sort(function(a, b) 
-          { var a_begin = +a.begin;
-            var b_begin = +b.begin;
-            return a_begin - b_begin;
-          });
-     
+  var fn = function(data) {
+	  //TODO: seems taht data can be null here
+	  if (data !== null) {
+		  self._data = data;  
+	      if (typeof(self._data["annotations"]) === "undefined" ||
+	          self._data["annotations"] === null)
+	          self._data["annotations"] = [];
+	      
+	      // sort the data too       
+	      self._data["annotations"].sort(function(a, b) 
+	          { var a_begin = +a.begin;
+	            var b_begin = +b.begin;
+	            return a_begin - b_begin;
+	          });
+	  }     
       callback(data);      
   };
   
