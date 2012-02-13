@@ -801,6 +801,24 @@ button.ui-button-icon-only  {
 .Ldt-createAnnotation-polemic-question.Ldt-createAnnotation-polemic-active {
     background-position: -114px -52px;
 }
+
+.Ldt-createAnnotation-endScreen-TweetLink {
+	width: 54px;
+	height: 20px;
+	background-image('imgs/tweet_button.png');
+}
+
+.Ldt-createAnnotation-endScreen-FbLink {
+	width: 55px;
+	height: 20px;
+	background-image('imgs/facebook_button.png');
+}
+
+.Ldt-createAnnotation-endScreen-GplusLink {
+	width: 50px;
+	height: 20px;
+	background-image('imgs/gplus_button.png');
+}
 /* AnnotationsListWidget */
 
 .Ldt-AnnotationsListWidget {
@@ -834,7 +852,10 @@ button.ui-button-icon-only  {
 .Ldt-AnnotationsList-Caption {
   float: left;
   display: table-cell;
-  vertical-align: middle;  
+  vertical-align: middle;
+  height: 64px;
+  width: 64px;
+  background-image: url('imgs/video_sequence.png');
 }
 
 .Ldt-AnnotationsList-Duration {  
