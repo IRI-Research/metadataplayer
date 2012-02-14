@@ -802,6 +802,13 @@ button.ui-button-icon-only  {
     background-position: -114px -52px;
 }
 
+.Ldt-createAnnotation-spinner {
+	display: inline;
+	width: 16px;
+	height: 16px;
+	background-image('imgs/spinner.gif');
+}
+
 .Ldt-createAnnotation-endScreen-TweetLink {
 	width: 54px;
 	height: 20px;
