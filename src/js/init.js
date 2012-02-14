@@ -150,8 +150,7 @@ IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
   var index;
   
   for (index = 0; index < guiOptions.widgets.length; index++) {    
-    var widgetConfig = IriSP.underscore.defaults(guiOptions.widgets[index], default_options);
-    var widget = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, widgetConfig);
+    var widget = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, guiOptions.widgets[index], default_options);
    
     ret_widgets.push(widget);   
   };
@@ -185,8 +184,14 @@ IriSP.configureModules = function (popcornInstance, modulesList) {
     @param serialFactory serializer factory to instantiate the widget with
     @param layoutManager layout manager
     @param widgetConfig configuration options for the widget
+    @param defaultOptions a dictionnary with some options defined for every widget.
  */
-IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager, widgetConfig) {
+IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager, widgetConfig, defaultOptions) {
+
+    if (IriSP.null_or_undefined(defaultOptions))
+      defaultOptions = {};
+    
+    widgetConfig = IriSP.underscore.defaults(widgetConfig, defaultOptions);
 
     var arr = IriSP.jQuery.extend({}, widgetConfig);
     
@@ -216,7 +221,7 @@ IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager
       var i = 0;
       for(i = 0; i < widgetConfig.requires.length; i++) {
         var widgetName = widgetConfig.requires[i]["type"];
-        widget[widgetName] = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, widgetConfig.requires[i]);
+        widget[widgetName] = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, widgetConfig.requires[i], defaultOptions);
       }
     }       
      
