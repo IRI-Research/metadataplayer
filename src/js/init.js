@@ -142,13 +142,17 @@ IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
   var serialFactory = new IriSP.SerializerFactory(IriSP.__dataloader);
   var params = {width: guiOptions.width, height: guiOptions.height};
 
+  var default_options = guiOptions.default_options;
+  if (IriSP.null_or_undefined(default_options))
+    default_options = {};
+  
   var ret_widgets = [];
   var index;
   
   for (index = 0; index < guiOptions.widgets.length; index++) {    
-    var widgetConfig = guiOptions.widgets[index];
+    var widgetConfig = IriSP.underscore.defaults(guiOptions.widgets[index], default_options);
     var widget = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, widgetConfig);
-        
+   
     ret_widgets.push(widget);   
   };
 

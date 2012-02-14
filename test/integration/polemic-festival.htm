@@ -30,6 +30,13 @@
             height:2100,              
             container:'LdtPlayer',
             css:'../../src/css/LdtPlayer.css',
+			default_options : {
+			 metadata:{
+                          format:'cinelab',
+                          src:json_url,
+                          type:'json'}
+            },
+			
             widgets: [
             {type: "StackGraphWidget",
                 tags : [
@@ -63,38 +70,14 @@
                }],
             },            
             {type: "AnnotationsListWidget",
-             container: "AnnotationsListContainer",             
-                         metadata:{
-                          format:'cinelab',
-                          src:json_url,
-                          type:'json'}
-                        },
+             container: "AnnotationsListContainer"},                                   
             {type: "SparklineWidget",
              width: 640, /* required for this widget */
-             height: 50,            
-                         metadata:{
-                          format:'cinelab',
-                          src:json_url,
-                          type:'json'}
-                        },
-            {type: "SliderWidget",
-                         metadata:{
-                          format:'cinelab',
-                          src:json_url,
-                          type:'json'}
-                        },        
-            {type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
-             mode: "radio",
-             metadata:{
-              format:'cinelab',
-              src:json_url,
-              type:'json'}
-            },
-            {type: "SegmentsWidget",
-             metadata:{
-              format:'cinelab',
-              src:json_url,
-              type:'json'},
+             height: 50,
+			},
+            {type: "SliderWidget"},        
+            {type: "PlayerWidget"},
+            {type: "SegmentsWidget",             
              requires: [{
               type: "TooltipWidget",
               width: 180,
@@ -104,24 +87,11 @@
               }
              }],
             },                     
-            {type: "ArrowWidget",
-             metadata:{
-              format:'cinelab',
-              src:json_url,
-              type:'json'}
+            {type: "ArrowWidget",           
             },
-            {type: "TweetsWidget",
-                         metadata:{
-                          format:'cinelab',
-                          src:json_url,
-                          type:'json'}
-                        },
-            {type: "createAnnotationWidget",
-                         metadata:{
-                          format:'cinelab',
-                          src:json_url,
-                          type:'json'}
-                        }      
+            {type: "TweetsWidget",                       
+            },
+            {type: "createAnnotationWidget"}   
             ]
         },
       player:{

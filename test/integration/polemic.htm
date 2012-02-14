@@ -27,107 +27,50 @@
             width:650,
             height:2100,              
             container:'LdtPlayer',
+			default_options: {
+				metadata:{
+				  format:'cinelab',
+				  src:file,
+				  type:'json'}
+			},
             css:'../../src/css/LdtPlayer.css',
             widgets: [
-              {type: "PolemicWidget",
+            {type: "PolemicWidget",
              width: 640, /* required for this widget */
-             height: 50,
-             metadata:{
-              format:'cinelab',
-              src:file,
-              type:'json'},
-              
+             height: 50,              
              requires: [{
               type: "TooltipWidget",
               width: 180,
               heigh: 160,
               metadata : {
-                format:'cinelab',
-                src:'polemic.json',
                 type:'empty'
               }
              }],
             },
             {type: "SparklineWidget",
              width: 640, /* required for this widget */
-             height: 50,
-						 metadata:{
-						  format:'cinelab',
-						  src:file,
-						  type:'json'}
-						},
-            {type: "TagCloudWidget",             
-                         metadata:{
-                          format:'cinelab',
-                          src:file,
-                          type:'json'}
-                        },
-            {type: "SliderWidget",
-						 metadata:{
-						  format:'cinelab',
-						  src:file,
-						  type:'json'}
-						},
+             height: 50},
+            {type: "SliderWidget"},
             {type: "AnnotationsListWidget",
-             container: "AnnotationsListContainer",             
-						 metadata:{
-						  format:'cinelab',
-						  src:file,
-						  type:'json'}
-						},
-            {type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
-             mode: "radio",
-             metadata:{
-              format:'cinelab',
-              src:file,
-              type:'json'}
-            },
+             container: "AnnotationsListContainer"},
+            {type: "PlayerWidget"},
             {type: "SegmentsWidget",
-             metadata:{
-              format:'cinelab',
-              src:file,
-              type:'json'},
              requires: [{
               type: "TooltipWidget",
-              width: 180,
+			  width: 180,
               heigh: 160,
-              metadata : {
+			  metadata : {
                 type:'empty'
               }
-             }],
+              }],
             },            
-            {type: "SliceWidget",
-             metadata:{
-              format:'cinelab',
-              src:file,
-              type:'json'}
-            },            
-            {type: "ArrowWidget",
-             metadata:{
-              format:'cinelab',
-              src:file,
-              type:'json'}
-            },
+            {type: "SliceWidget"},            
+            {type: "ArrowWidget"},
 
 
-            {type: "AnnotationsWidget",
-						 metadata:{
-						  format:'cinelab',
-						  src:file,
-						  type:'json'}
-						},
-            {type: "TweetsWidget",
-						 metadata:{
-						  format:'cinelab',
-						  src:file,
-						  type:'json'}
-						},
-            {type: "createAnnotationWidget",
-						 metadata:{
-						  format:'cinelab',
-						  src:file,
-						  type:'json'}
-						}      
+            {type: "AnnotationsWidget"},
+            {type: "TweetsWidget"},
+            {type: "createAnnotationWidget"}
             ]
         },
       player:{
@@ -139,11 +82,11 @@
       },
       modules: [
                { type: "MediaFragment",
-  			     		 metadata:{
-	  	  			   format:'cinelab',
-		  				   src:file,
-						     type:'json'}
-						}]
+                            metadata:{
+                           format:'cinelab',
+                             src:file,
+                             type:'json'}
+                        }]
 
     };
     
