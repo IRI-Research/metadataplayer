@@ -40,7 +40,7 @@ IriSP.MediaFragment.prototype.advanceTime = function() {
                     this._serializer.sync(IriSP.wrap(this, function() {
                           this.lookupAnnotation.call(this, annotationId); 
                           }));
-                  }                                    
+                  }
               }
 };
 
@@ -62,6 +62,9 @@ IriSP.MediaFragment.prototype.updateTime = function(time) {
   } else {
     var ntime = time.toFixed(2);
   }
+
+  // used to relay the new hash to the embedder
+  this._Popcorn.trigger("IriSP.Mediafragment.hashchange", "#t=" + ntime);
   
   splitArr = window.location.href.split( "#" )
   history.replaceState( {}, "", splitArr[0] + "#t=" + ntime );
@@ -76,10 +79,15 @@ IriSP.MediaFragment.prototype.updateAnnotation = function(annotationId) {
   if ( !history.pushState ) {
     return false;
   }
+ 
+  
+  // used to relay the new hash to the embedder
+  this._Popcorn.trigger("IriSP.Mediafragment.hashchange", "#id=" + annotationId);
   
   splitArr = window.location.href.split( "#" )
   history.replaceState( {}, "", splitArr[0] + "#id=" + annotationId);
- 
+
+  
   // reset the mutex afterwards to prevent the module from reacting to his own changes.
   window.setTimeout(function() { _this.mutex = false }, 50);
 };
