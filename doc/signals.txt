@@ -1,0 +1,83 @@
+This is the list of the signals sent by the different widgets :
+
+Mediafragments
+==============    
+    IriSP.Mediafragment.hashchange(hashvalue): This message is used by the iframe embed code to relay data
+    outside of the iframe. This message sends as a parameter the
+    new anchor value of the url.
+            
+    IriSP.Mediafragment.showAnnotation(annotationId): This message is sent when the mediafragment code 
+                                                      has fast-forwarded to the beginning of an annotation
+                                                      specified in the url. The subscribing widgets receive
+                                                      the id of the annotation and can highlight it if they
+                                                      want.
+
+PlayerWidget
+============                                                      
+    IriSP.PlayerWidget.AnnotateButton.clicked: sent whenever the "Annotate" button is clicked on the player widget.
+    IriSP.PlayerWidget.MouseOver: sent when the mouse is hovering the widget. Used to maximize the sliderWidget to 
+                                  get a behaviour similar to youtube.
+    IriSP.PlayerWidget.MouseOut: sent when the mouse has left the widget.
+    
+    IriSP.search.open: sent when the searchbox has been opened
+    IriSP.search.closed: sent when the searchbox has been closed
+    IriSP.search(searchQuery): sent whenever the user presses a key in the searchfield. Param searchQuery 
+                               holds the contents of the search field. 
+    
+    IriSP.search.triggeredSearch(searchText): triggered by other widgets when they want to launch a new search. searchText is the search term. 
+    IriSP.search.noMatchFound: triggered by other widgets to indicate that they've not found content matching the search terms.
+    IriSP.search.matchFound: triggered by other widgets to indicate that they've found content matching the search terms.
+    Note: the PlayerWidget changes the highlighting of the search box depending on if it has received these messages.
+    
+ArrowWidget
+===========
+    IriSP.ArrowWidget.blockArrow: prevent the ArrowWidget from moving automatically
+    IriSP.ArrowWidget.releaseArrow: restore the ArrowWidget to its non-blocked state
+
+SliceWidget
+===========
+
+    IriSP.SliceWidget.hide: sent to the SliceWidget. hides the widget.
+    IriSP.SliceWidget.show: sent to the SliceWidget. shows the widget.
+    IriSP.SliceWidget.position, [left, width]: sent to the SliceWidget. Param is an array with the 
+                                               left position and the width of the zone, in percents.
+    IriSP.SliceWidget.zoneChange [left, width]: sent by the widget whenever the user moves the widget. The parameter
+                                                is an array with the left position of the zone its width. Both values
+                                                are in percents.
+
+AnnotationWidget
+================                                               
+    
+    IriSP.AnnotationsWidget.show: received by the AnnotationsWidget. hides the widget.
+    IriSP.AnnotationsWidget.hide: received by the AnnotationsWidget. shows the widget.
+
+
+CreateAnnotationWidget
+======================
+    
+    IriSP.createAnnotationWidget.addedAnnotation(annotation): sent by the widget when an annotation has been created.
+                                                              passes the annotation dict as parameter.
+                                                              
+PolemicWidget
+=============
+    
+    IriSP.PolemicTweet.click(elementId): sent by the widget when the user clicks on it. Passes the annotation id as a param.
+                                         the mediafragment modules listens to this message to update the url accordingly.
+                                         
+SegmentsWidget
+==============
+
+   IriSP.SegmentsWidget.click(annotationId): sent by the widget when the user clicks on it. Passes the annotation id as a param.
+                                         the mediafragment modules listens to this message to update the url accordingly.
+
+SparklineWidget
+===============
+
+     IriSP.SparklineWidget.clicked(newTime): sent whenever the sparkline widget is clicked. Param newTime is the new time the video
+                                             is seeking too. The mediafragment module listens to this.
+                                             
+StackGraphWidget
+=================
+
+     IriSP.StackGraphWidget.clicked(newTime): sent whenever the stackgraph widget is clicked. Param newTime is the new time the video
+                                             is seeking too. The mediafragment module listens to this.
