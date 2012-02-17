@@ -77,6 +77,16 @@ IriSP.configurePopcorn = function (layoutManager, options) {
             opts.file = "";
             opts.streamer = "";
             var fullPath = IriSP.__jsonMetadata["medias"][0]["href"];
+            
+            /* files can either use href or url to refer to the stream */
+            if (IriSP.null_or_undefined(fullPath)) {
+              fullPath = IriSP.__jsonMetadata["medias"][0]["url"];
+            }
+            
+            if (IriSP.null_or_undefined(fullPath)) {
+              console.log("no url or href field defined in the metadata.");
+            }
+            
             var pathSplit = fullPath.split('/');
             
             for (var i = 0; i < pathSplit.length; i++) {
