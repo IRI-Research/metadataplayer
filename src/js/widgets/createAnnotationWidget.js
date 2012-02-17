@@ -7,6 +7,8 @@ IriSP.createAnnotationWidget = function(Popcorn, config, Serializer) {
   this.polemics = IriSP.widgetsDefaults["createAnnotationWidget"].polemics;
   
   this.cinecast_version = IriSP.widgetsDefaults["createAnnotationWidget"].cinecast_version;
+  this.api_endpoint_template = IriSP.widgetsDefaults["createAnnotationWidget"].api_endpoint_template;
+  
   this.ids = {}; /* a dictionnary linking buttons ids to keywords */
   
   /* variables to save the current position of the slicer */
@@ -410,8 +412,8 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   var project_id = this._serializer._data.meta.id;
   
   //TODO: extract magic url
-  var url = Mustache.to_html("{{platf_url}}/ldtplatform/api/ldt/annotations/{{id}}.json",
-                              {platf_url: IriSP.platform_url, id: project_id});
+  var url = Mustache.to_html(this.api_endpoint_template,
+                              {id: project_id});
                           
   IriSP.jQuery.ajax({
       url: url,
