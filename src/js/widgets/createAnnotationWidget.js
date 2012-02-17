@@ -42,6 +42,9 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   
   if (!this.cinecast_version)
     this.selector.hide();
+  else {
+    this.showStartScreen();
+  }
   
   // add the keywords.
   for (var i = 0; i < this.keywords.length; i++) {
@@ -189,7 +192,7 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     
   } else {
     this._Popcorn.trigger("IriSP.AnnotationsWidget.hide");
-    this.showStartScreen();
+    this.showStartScreen();    
     this.selector.show();
     this._hidden = false;
     var currentTime = this._Popcorn.currentTime();
@@ -270,8 +273,19 @@ IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
 IriSP.createAnnotationWidget.prototype.showStartScreen = function() {
   this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
   this.selector.find(".Ldt-createAnnotation-startScreen").show();
-  this.selector.find(".Ldt-createAnnotation-Description").val("Type your annotation here.");
-
+  
+  var jqTextfield = this.selector.find(".Ldt-createAnnotation-Description"); // handle on the textfield. used for the closure
+  
+  /* test if the browser supports the placeholder attribute */
+  if (!IriSP.null_or_undefined(jqTextfield.get(0).placeholder)) {
+    jqTextfield.attr("placeholder", "Type your annotation here."); 
+  } else {
+    jqTextfield.val("Type your annotation here.");
+    jqTextfield.one("click", IriSP.wrap(this, function() { jqTextfield.val(""); }));    
+  }
+  
+ 
+  
   this._state = "startScreen";
 };
 
