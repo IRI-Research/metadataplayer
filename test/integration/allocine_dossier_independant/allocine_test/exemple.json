@@ -1,0 +1,735 @@
+{
+
+    "views": [
+        {
+            "id": "0",
+            "contents": [
+                "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290"
+            ],
+            "annotation_types": [
+                "c_ab04d051-4dc2-11e1-b6f3-c8bcc896c290",
+                "c_ab04d230-4dc2-11e1-975a-c8bcc896c290"
+            ]
+        },
+        {
+            "meta": {
+                "stat": "1,1,1,1,1,1,1,2,1,1,3,3,3,3,3,2,3,3,2,2,3,3,4,3,3,2,2,2,2,5,5,6,9,9,8,7,6,6,6,3,3,3,3,3,4,3,3,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1"
+            },
+            "id": "stat",
+            "contents": [
+                "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290"
+            ]
+        }
+    ],
+    "tags": null,
+    "lists": [
+        {
+            "items": [
+                {
+                    "id-ref": "c_ab04d051-4dc2-11e1-b6f3-c8bcc896c290"
+                },
+                {
+                    "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290"
+                }
+            ],
+            "meta": {
+                "dc:contributor": "undefined",
+                "dc:created": "2012-02-21T10:49:02.323681",
+                "dc:creator": "undefined",
+                "id-ref": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+                "dc:title": "Découpages personnels",
+                "editable": "false",
+                "dc:modified": "2012-02-21T10:49:02.323681",
+                "dc:description": ""
+            },
+            "id": "g_ab04ca73-4dc2-11e1-985a-c8bcc896c290"
+        }
+    ],
+    "medias": [
+        {
+            "origin": "0",
+            "http://advene.liris.cnrs.fr/ns/frame_of_reference/ms": "o=0",
+            "href": "rtmp://localhost/vod/pj_harvey_-_let_england_shake.mp4",
+            "meta": {
+                "dc:contributor": "IRI",
+                "item": {
+                    "name": "streamer",
+                    "value": "rtmp://localhost/vod/"
+                },
+                "dc:created": "2012-02-02T18:23:47.515370",
+                "dc:duration": 252560,
+                "dc:creator": "IRI",
+                "dc:created.contents": "2012-02-06",
+                "dc:title": "pj harvey - let england shake",
+                "dc:creator.contents": "IRI",
+                "dc:modified": "2012-02-06T18:03:11.237247",
+                "dc:description": ""
+            },
+            "id": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "unit": "ms"
+        }
+    ],
+    "meta": {
+        "dc:contributor": "admin",
+        "dc:created": "2012-02-02T18:23:48.096335",
+        "dc:creator": "admin",
+        "main_media": {
+            "id-ref": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290"
+        },
+        "dc:description": "",
+        "dc:title": "front project : pj harvey - let england shake",
+        "id": "aab75563-4dc2-11e1-8cf2-c8bcc896c290",
+        "dc:modified": "2012-02-21T11:48:56.825124"
+    },
+    "annotations": [
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "",
+                "color": "16763904",
+                "polemics": [ ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 1296,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d051-4dc2-11e1-b6f3-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.323709",
+                "dc:modified": "2012-02-21T10:49:02.323709",
+                "dc:creator": "perso"
+            },
+            "end": 29502,
+            "tags": null,
+            "color": "16763904",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_039EC88E-10CB-8864-38CF-9F86A14DD43F"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "",
+                "color": "26316",
+                "polemics": [ ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 30327,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d051-4dc2-11e1-b6f3-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.323709",
+                "dc:modified": "2012-02-21T10:49:02.323709",
+                "dc:creator": "perso"
+            },
+            "end": 87536,
+            "tags": null,
+            "color": "26316",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_67066BA8-E20F-15D7-523A-9F86AFD3A3B0"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "",
+                "color": "10027212",
+                "polemics": [ ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 88036,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d051-4dc2-11e1-b6f3-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.323709",
+                "dc:modified": "2012-02-21T10:49:02.323709",
+                "dc:creator": "perso"
+            },
+            "end": 152703,
+            "tags": null,
+            "color": "10027212",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_6E2F938C-F6C8-67A6-3FE2-9F86B7C5A0CA"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "",
+                "color": "16737792",
+                "polemics": [ ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 153203,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d051-4dc2-11e1-b6f3-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.323709",
+                "dc:modified": "2012-02-21T10:49:02.323709",
+                "dc:creator": "perso"
+            },
+            "end": 174749,
+            "tags": null,
+            "color": "16737792",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_1F2CCE4C-B192-3319-FF60-9F86C0E6003F"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "",
+                "color": "16711680",
+                "polemics": [ ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 175249,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d051-4dc2-11e1-b6f3-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.323709",
+                "dc:modified": "2012-02-21T10:49:02.323709",
+                "dc:creator": "perso"
+            },
+            "end": 250938,
+            "tags": null,
+            "color": "16711680",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_CEECA32C-4033-6A4D-4E64-9F86CD41D5CE"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "globalement --",
+                "color": "2194379",
+                "polemics": [
+                    "KO"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 39491,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 68421,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_a0774ce1-4e5a-11e1-bb2b-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "ok ??",
+                "color": "2194379",
+                "polemics": [
+                    "Q"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 43165,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 56941,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_6bd10b6e-50bb-11e1-951f-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "dude ??",
+                "color": "2194379",
+                "polemics": [
+                    "Q"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 63829,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 212610,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_a40ea52b-50bb-11e1-8226-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "TC ??",
+                "color": "2194379",
+                "polemics": [
+                    "Q"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 82197,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 95514,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_7d450700-50a8-11e1-a79d-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "kar --",
+                "color": "2194379",
+                "polemics": [
+                    "KO"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 114800,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 134546,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_61f0a951-4e5b-11e1-a15a-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "coucou --",
+                "color": "2194379",
+                "polemics": [
+                    "KO"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 116178,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 133168,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_876e13c2-4e5b-11e1-896e-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "alors --",
+                "color": "2194379",
+                "polemics": [
+                    "KO"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 117096,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 140056,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_f70a1e40-4e5a-11e1-8466-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "Dude --",
+                "color": "2194379",
+                "polemics": [
+                    "KO"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 123525,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 149699,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_d355705c-50a4-11e1-af3c-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "alors ??",
+                "color": "2194379",
+                "polemics": [
+                    "Q"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 126280,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 151536,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_cd1158a1-50bb-11e1-a4c6-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "Dude, ça va ==",
+                "color": "2194379",
+                "polemics": [
+                    "REF"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 126280,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 151536,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_72ff6e66-50e4-11e1-a36b-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "Dude --",
+                "color": "2194379",
+                "polemics": [
+                    "KO"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 126280,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 151536,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_0f59c7de-50bb-11e1-9e35-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "contrib",
+                "color": "2194379",
+                "polemics": [ ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 157506,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 182762,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_dbadbd40-4e5b-11e1-b9b3-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "globalement ++",
+                "color": "2194379",
+                "polemics": [
+                    "OK"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 694540,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 833448,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_b2b3cfb5-4e5a-11e1-8adb-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "Dude ++",
+                "color": "2194379",
+                "polemics": [
+                    "OK"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 694540,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 833448,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_b7e5c2d4-50a4-11e1-9f06-c8bcc896c290"
+        },
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "",
+                "img": {
+                    "src": ""
+                },
+                "title": "TC bon. ++",
+                "color": "2194379",
+                "polemics": [
+                    "OK"
+                ],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 694540,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+                "dc:created": "2012-02-21T10:49:02.326350",
+                "dc:modified": "2012-02-21T10:49:02.326350",
+                "dc:creator": "perso"
+            },
+            "end": 833448,
+            "tags": null,
+            "color": "2194379",
+            "media": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290",
+            "id": "s_85dd0bc5-50a8-11e1-a6dc-c8bcc896c290"
+        }
+    ],
+    "annotation-types": [
+        {
+            "dc:contributor": "perso",
+            "dc:creator": "perso",
+            "dc:title": "chapitrage",
+            "id": "c_ab04d051-4dc2-11e1-b6f3-c8bcc896c290",
+            "dc:created": "2012-02-21T10:49:02.323709",
+            "dc:description": "",
+            "dc:modified": "2012-02-21T10:49:02.323709"
+        },
+        {
+            "dc:contributor": "perso",
+            "dc:creator": "perso",
+            "dc:title": "contributions",
+            "id": "c_ab04d230-4dc2-11e1-975a-c8bcc896c290",
+            "dc:created": "2012-02-21T10:49:02.326350",
+            "dc:description": "",
+            "dc:modified": "2012-02-21T10:49:02.326350"
+        }
+    ]
+
+}
