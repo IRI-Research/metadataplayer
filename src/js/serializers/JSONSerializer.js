@@ -286,29 +286,23 @@ IriSP.JSONSerializer.prototype.getTweetIds = function() {
      We've got to jump through a few hoops because the json sometimes defines
      fields with underscores and sometimes with dashes
   */
-  var annotation_types = this._data.views[0]["annotation_types"];
-  if (IriSP.null_or_undefined(annotation_types)) {
-    annotation_types = this._data.views[0]["annotation-types"];
-    if (IriSP.null_or_undefined(annotation_types)) {
+  var annotation_types = IriSP.get_aliased(this._data.views[0], ["annotation_types", "annotation-types"]);
+  if (annotation_types === null) {
       console.log("neither view.annotation_types nor view.annotation-types are defined");      
       return;
-    }
   }
 
-  var available_types = this._data["annotation_types"];    
-  if (IriSP.null_or_undefined(available_types)) {
-    available_types = this._data["annotation-types"];
-    if (IriSP.null_or_undefined(available_types)) {
-      console.log("neither annotation_types nor annotation-types are defined");      
+  var available_types = IriSP.get_aliased(this._data, ["annotation_types", "annotation-types"]);    
+  if (available_types === null) {
+      console.log("neither view.annotation_types nor view.annotation-types are defined");      
       return;
-    }
   }
   
   var potential_types = [];
   
   // Get the list of types which contain "Tw" in their content
   for (var i = 0; i < available_types.length; i++) {
-    if (/Tw/i.test(available_types[i]["dc:title"])) {
+    if (/Tw/i.test(IriSP.get_aliased(available_types[i], ['dc:title', 'title']))) {
       potential_types.push(available_types[i].id);
     }
   }
@@ -329,29 +323,23 @@ IriSP.JSONSerializer.prototype.getNonTweetIds = function() {
      We've got to jump through a few hoops because the json sometimes defines
      fields with underscores and sometimes with dashes
   */
-  var annotation_types = this._data.views[0]["annotation_types"];
-  if (IriSP.null_or_undefined(annotation_types)) {
-    annotation_types = this._data.views[0]["annotation-types"];
-    if (IriSP.null_or_undefined(annotation_types)) {
+  var annotation_types = IriSP.get_aliased(this._data.views[0], ["annotation_types", "annotation-types"]);
+  if (annotation_types === null) {
       console.log("neither view.annotation_types nor view.annotation-types are defined");      
       return;
-    }
   }
 
-  var available_types = this._data["annotation_types"];    
-  if (IriSP.null_or_undefined(available_types)) {
-    available_types = this._data["annotation-types"];
-    if (IriSP.null_or_undefined(available_types)) {
-      console.log("neither annotation_types nor annotation-types are defined");      
+  var available_types = IriSP.get_aliased(this._data, ["annotation_types", "annotation-types"]);    
+  if (available_types === null) {
+      console.log("neither view.annotation_types nor view.annotation-types are defined");      
       return;
-    }
   }
 
   var potential_types = [];
   
   // Get the list of types which do not contain "Tw" in their content
   for (var i = 0; i < available_types.length; i++) {
-    if (!(/Tw/i.test(available_types[i]["dc:title"]))) {
+    if (!(/Tw/i.test(IriSP.get_aliased(available_types[i], ['dc:title', 'title'])))) {
       potential_types.push(available_types[i].id);
     }
   }
@@ -367,17 +355,19 @@ IriSP.JSONSerializer.prototype.getNonTweetIds = function() {
     @param name of the ligne de temps
 */
 IriSP.JSONSerializer.prototype.getId = function(name) {
-  if (IriSP.null_or_undefined(this._data["annotation-types"]))
+   var available_types = IriSP.get_aliased(this._data, ["annotation_types", "annotation-types"]);  
+   
+  if (available_types == null)
     return;
 
   name = name.toUpperCase();
   var e;  
-  e = IriSP.underscore.find(this._data["annotation-types"], 
-                                  function(entry) { 
-                                    if (IriSP.null_or_undefined(entry["dc:title"]))
-                                      return false;
-                                    
-                                    return (entry["dc:title"].toUpperCase().indexOf(name) !== -1) });
+  e = IriSP.underscore.find(available_types, 
+    function(entry) {
+        if (IriSP.get_aliased(entry, ['dc:title', 'title']) === null)
+          return false;
+        return (entry["dc:title"].toUpperCase().indexOf(name) !== -1);
+    });
   
   if (typeof(e) === "undefined")
     return;
@@ -391,13 +381,15 @@ IriSP.JSONSerializer.prototype.getId = function(name) {
     @param name of the ligne de temps
 */
 IriSP.JSONSerializer.prototype.getIds = function(name) {
-  if (IriSP.null_or_undefined(this._data["annotation-types"]))
+   var available_types = IriSP.get_aliased(this._data, ["annotation_types", "annotation-types"]);  
+   
+  if (available_types == null)
     return;
 
   name = name.toUpperCase();
   var e = [];  
-  e = IriSP.underscore.filter(this._data["annotation-types"], 
-                                  function(entry) { return (entry["dc:title"].toUpperCase().indexOf(name) !== -1) });
+  e = IriSP.underscore.filter(available_types, 
+                                  function(entry) { return (IriSP.get_aliased(entry, ['dc:title', 'title']).toUpperCase().indexOf(name) !== -1) });
   return IriSP.underscore.pluck(e, "id");  
 };
 
@@ -441,3 +433,7 @@ IriSP.JSONSerializer.prototype.getContributions = function() {
     
   return val;
 };
+
+IriSP.JSONSerializer.prototype.getDuration = function() {
+    return +(IriSP.get_aliased(this.currentMedia().meta, ["dc:duration", "duration"]) || 0);
+}

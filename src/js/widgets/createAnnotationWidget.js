@@ -200,7 +200,7 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     // block the arrow.
     this._Popcorn.trigger("IriSP.ArrowWidget.blockArrow");
     
-    var duration = +this._serializer.currentMedia().meta["dc:duration"];
+    var duration = this._serializer.getDuration();
         
     var currentChapter = this._serializer.currentChapitre(currentTime);
 
@@ -379,13 +379,13 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   var annotation = apiJson["annotations"][0];
   
   annotation["media"] = this._serializer.currentMedia()["id"];
-  var duration_part = Math.round(this._serializer.currentMedia().meta["dc:duration"] / 20);
+  var duration_part = Math.round(this._serializer.getDuration() / 20);
   
   if (this.cinecast_version) {   
       annotation["begin"] = Math.round(this._Popcorn.currentTime() * 1000 - duration_part);
       annotation["end"] = Math.round(this._Popcorn.currentTime() * 1000 + duration_part);      
   } else {
-    var duration = +this._serializer.currentMedia().meta["dc:duration"];    
+    var duration = this._serializer.getDuration();    
     annotation["begin"] = +((duration * (this.sliceLeft / 100)).toFixed(0));
     annotation["end"] = +((duration * ((this.sliceWidth + this.sliceLeft) / 100)).toFixed(0));
   }
@@ -394,8 +394,8 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   if (annotation["begin"] < 0)
         annotation["begin"] = 0;
   
-  if (annotation["end"] > this._serializer.currentMedia().meta["dc:duration"])
-    annotation["end"] = this._serializer.currentMedia().meta["dc:duration"];
+  if (annotation["end"] > this._serializer.getDuration())
+    annotation["end"] = this._serializer.getDuration();
       
   
   annotation["type"] = this._serializer.getContributions();
@@ -444,7 +444,8 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                       var tmp_view = {"dc:contributor": "perso", "dc:creator": "perso", "dc:title": "Contributions",
                                       "id": json.annotations[0].type}
 
-                      this._serializer._data["annotation-types"].push(tmp_view);
+                      
+                        IriSP.get_aliased(this._serializer._data, ["annotation_types", "annotation-types"]).push(tmp_view);
                     }
                     
                     delete annotation.tags;

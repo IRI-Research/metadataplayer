@@ -157,6 +157,17 @@ IriSP.null_or_undefined = function(val) {
   return (typeof(val) === "undefined" || val === null);
 };
 
+/** get a property that can have multiple names **/
+
+IriSP.get_aliased = function(_obj, _aliases) {
+    for (var _i = 0; _i < _aliases.length; _i++) {
+        if (typeof _obj[_aliases[_i]] !== "undefined") {
+            return _obj[_aliases[_i]];
+        }
+    }
+    return null;
+}
+
 /** issue a call to an url shortener and return the shortened url */
 IriSP.shorten_url = function(url) {
   if (IriSP.config.shortener.hasOwnProperty("shortening_function"))

@@ -1,0 +1,97 @@
+{
+  	"format": "http://advene.org/ns/cinelab/",
+    "medias": [
+    {
+      "id": "Au- nom-du-peuple-italien", 
+      "meta": {
+        "actors": "Ugo Tognazzi, Vittorio Gassman, Ely Galleani", 
+        "directors": "Dino Risi", 
+        "duration": 120000, 
+        "nationalities": "Italie", 
+        "productionYear": "1971", 
+        "synopsis": "Un petit juge ...", 
+        "thumbnail": "http://xxxx.jpg", 
+        "title": "Au nom du peuple italien", 
+        "version": "VOST"
+      }, 
+      "url": "http://allocine-f.akamaihd.net/nmedia/cinecast/inception.mp4"
+    }, 
+    {
+      "id": "Avatar", 
+      "meta": {
+        "duration": 120000, 
+        "thumbnail": "http://xxxx.jpg", 
+        "title": "Avatar"
+      }, 
+      "url": "http://allocine-f.akamaihd.net/nmedia/cinecast/avatar.mp4"
+    }
+  ],
+  "annotation_types": [
+    {
+      "id": "UserAnnotation", 
+      "meta": {
+        "description": "Annotation made during the Cinecast Festival."
+      }
+    }, 
+    {
+      "id": "MovieExtract", 
+      "meta": {
+        "description": "Movie Extract."
+      }
+    }
+  ], 
+  "annotations": [
+    {
+      "begin": 0, 
+      "content": {
+        "data": "Acte 1 Sc 1"
+      }, 
+      "end": 10000, 
+      "id": "1", 
+      "media": "cinecast:Inception", 
+      "meta": {
+        "created": "2012-02-15T00:00:00+01:00", 
+        "creator": "VodKaster", 
+        "thumbnail": "http://xxxx.jpg"
+      }, 
+      "type": "cinecast:MovieExtract",
+      "tags": [ "cinecast:CultScene", "cinecast:CultMusic" ]
+    }, 
+    {
+      "begin": 20000, 
+      "content": {
+        "data": "Acte 2 Sc 2"
+      }, 
+      "end": 30000, 
+      "id": "2", 
+      "media": "cinecast:Inception", 
+      "meta": {
+        "created": "2012-02-15T00:00:00+01:00", 
+        "creator": "VodKaster", 
+        "thumbnail": "http://xxxx.jpg"
+      }, 
+      "type": "cinecast:MovieExtract",
+      "tags": [ "cinecast:Funny", "cinecast:CultMusic" ]
+    }
+  ], 
+  "tags": [
+    {
+      "id": "Funny", 
+      "meta": {
+        "description": "Tain que c'est dr!"
+      }
+    }, 
+    {
+      "id": "CultScene", 
+      "meta": {
+        "description": "La sc du sie !"
+      }
+    }, 
+    {
+      "id": "CultMusic", 
+      "meta": {
+        "description": "Pom pom pi dom  !"
+      }
+    }
+  ]
+}

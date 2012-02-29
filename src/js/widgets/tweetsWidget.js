@@ -25,8 +25,8 @@ IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
     var imageMarkup = IriSP.templToHTML("<img src='{{src}}' alt='user image'></img>", 
                                        {src : img});
     
-    if (typeof(annotation.meta["dc:source"].content) !== "undefined") {
-      var tweetContents = JSON.parse(annotation.meta["dc:source"].content);
+    if (typeof(IriSP.get_aliased(annotation.meta, ["dc:source", "source"]).content) !== "undefined") {
+      var tweetContents = JSON.parse(IriSP.get_aliased(annotation.meta, ["dc:source", "source"]).content);
       var creator = tweetContents.user.screen_name;
       var real_name = tweetContents.user.name;
 

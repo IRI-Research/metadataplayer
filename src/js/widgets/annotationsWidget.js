@@ -19,7 +19,7 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
     var keywords =  "";
     var begin = +annotation.begin / 1000;
     var end = +annotation.end / 1000;
-    var duration = +this._serializer.currentMedia().meta["dc:duration"];
+    var duration = this._serializer.getDuration();
     var tags = "";
     
     var title_templ = "{{title}} - ( {{begin}} - {{end}} )";
@@ -34,7 +34,7 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
       var tag_list = {};
       for (var i = 0; i < this._serializer._data.tags.length; i++) {
         var id = this._serializer._data.tags[i]["id"];
-        var keyword = this._serializer._data.tags[i]["meta"]["dc:title"];
+        var keyword = IriSP.get_aliased(this._serializer._data.tags[i]["meta"], ["dc:title", "title"]);
 
         tag_list[id] = keyword;
       }

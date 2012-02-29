@@ -16,7 +16,7 @@ IriSP.SegmentsWidget.prototype = new IriSP.Widget();
 IriSP.SegmentsWidget.prototype.segmentToPixel = function(annotation) {  
   var begin = Math.round((+ annotation.begin) / 1000);
   var end = Math.round((+ annotation.end) / 1000);    
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   
   var startPourcent 	= IriSP.timeToPourcent(begin, duration);
   var startPixel = Math.floor(this.selector.parent().width() * (startPourcent / 100));
@@ -79,7 +79,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     var annotation = segments_annotations[i];
     var begin = (+ annotation.begin);
     var end = (+ annotation.end);
-    var duration = this._serializer.currentMedia().meta["dc:duration"];
+    var duration = this._serializer.getDuration();
     var id = annotation.id;
         
     var startPixel = Math.floor(this.selector.parent().width() * (begin / duration));
@@ -224,7 +224,7 @@ IriSP.SegmentsWidget.prototype.searchFieldClosedHandler = function() {
 };
 
 IriSP.SegmentsWidget.prototype.positionUpdater = function() {  
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var time = this._Popcorn.currentTime();
   //var position 	= ((time / duration) * 100).toFixed(2);
   var position 	= ((time / duration) * 100).toFixed(2);

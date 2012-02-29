@@ -110,7 +110,7 @@ IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
   var platf_url = IriSP.widgetsDefaults["AnnotationsListWidget"].ajax_url
                                       .replace(/\{/g, '{{').replace(/\}/g, '}}');
   var media_id = this._serializer.currentMedia()["id"];
-  var duration = +this._serializer.currentMedia().meta["dc:duration"];
+  var duration = this._serializer.getDuration();
   
   var begin_timecode = (Math.floor(tcode) - 300) * 1000;
   if (begin_timecode < 0)

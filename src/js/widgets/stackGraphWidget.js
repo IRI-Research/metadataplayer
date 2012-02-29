@@ -45,7 +45,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
         : _defaultDefColor);
     this.paper = new Raphael(this.selector[0], this.width, this.height);
     this.groups = [];
-    this.duration = this._serializer.currentMedia().meta["dc:duration"];
+    this.duration = this._serializer.getDuration();
     
     var _annotationType = this._serializer.getTweets(),
         _sliceDuration = ~~ ( this.duration / this.sliceCount),
@@ -162,7 +162,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
             
             // Also tell the world where the mouse is hovering.
             var relX = event.pageX - _this.selector.offset().left;
-            var duration = _this._serializer.currentMedia().meta["dc:duration"];
+            var duration = _this._serializer.getDuration();
             var Time = ((relX / _this.width) * duration).toFixed(2);
             _this._Popcorn.trigger("IriSP.StackGraphWidget.mouseOver", Time);
 

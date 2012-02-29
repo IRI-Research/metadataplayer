@@ -52,7 +52,7 @@ IriSP.SliderWidget.prototype.sliderUpdater = function() {
   
   var time = this._Popcorn.currentTime();
 
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var percents = time / duration;
   
   /* we do these complicated calculations to center exactly
@@ -92,7 +92,7 @@ IriSP.SliderWidget.prototype.backgroundClickHandler = function(event) {
   var width = this.sliderBackground.width();
   var relX = event.pageX - parentOffset.left;
 
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
 
   this._Popcorn.currentTime(newTime);
@@ -105,7 +105,7 @@ IriSP.SliderWidget.prototype.foregroundClickHandler = function(event) {
   var width = this.sliderBackground.width();
   var relX = event.pageX - parentOffset.left;
 
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
 
   this._Popcorn.currentTime(newTime);
@@ -161,7 +161,7 @@ IriSP.SliderWidget.prototype.positionMarkerDraggedHandler = function(event, ui) 
   var width = this.sliderBackground.width();
   var relX = event.pageX - parentOffset.left;
 
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
 
   this._Popcorn.currentTime(newTime);

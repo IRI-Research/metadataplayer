@@ -44,7 +44,7 @@ IriSP.SparklineWidget.prototype.draw = function() {
   } else {
     console.log("sparklinewidget : computing stats ourselves");
     var num_columns = (this.selector.width()) / IriSP.widgetsDefaults["SparklineWidget"].column_width;
-    var duration = +this._serializer.currentMedia().meta["dc:duration"];
+    var duration = this._serializer.getDuration();
     var time_step = duration / num_columns; /* the time interval between two columns */
     var results = [];
     var i = 0; /* the index in the loop */  
@@ -91,7 +91,7 @@ IriSP.SparklineWidget.prototype.draw = function() {
 /** react to a timeupdate event */
 IriSP.SparklineWidget.prototype.timeUpdateHandler = function() {
   var currentTime = this._Popcorn.currentTime();  
-  var duration = +this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var proportion = ((currentTime / duration) * 100).toFixed(4);
   
   IriSP.jQuery(".Ldt-sparkLinePositionMarker").css("width", proportion + "%");                                    
@@ -111,7 +111,7 @@ IriSP.SparklineWidget.prototype.clickHandler = function(event) {
   var width = this.selector.width();
   var relX = event.pageX - parentOffset.left;
 
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
     
   this._Popcorn.trigger("IriSP.SparklineWidget.clicked", newTime);
@@ -121,7 +121,7 @@ IriSP.SparklineWidget.prototype.clickHandler = function(event) {
 /** react when a new annotation is added */
 IriSP.SparklineWidget.prototype.handleNewAnnotation = function(annotation) {
   var num_columns = this._results.length;
-  var duration = +this._serializer.currentMedia().meta["dc:duration"];
+  var duration = this._serializer.getDuration();
   var time_step = Math.round(duration / num_columns); /* the time interval between two columns */
   var begin = +annotation.begin;
   var end = +annotation.end;
