@@ -3,7 +3,7 @@ the IriSP.PopcornReplacement.player and defining the correct functions */
 
 /** allocine player wrapper */
 IriSP.PopcornReplacement.allocine = function(container, options) {
-    console.log("Calling allocine player");
+//    console.log("Calling allocine player");
     /* appel du parent pour initialiser les structures communes à tous les players */
     IriSP.PopcornReplacement.player.call(this, container, options);   
     
@@ -14,7 +14,7 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
     this.playerFns = {
         play : function() {
             if (_this.player) {
-                console.log("ask play _this.player = " + _this.player);
+            //    console.log("ask play _this.player = " + _this.player);
                 return _this.player.sendToActionScript("play");
             } else {
                 return false;
@@ -22,7 +22,7 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
         },
         pause : function() {
             if (_this.player) {
-                console.log("ask pause _this.player = " + _this.player);
+            //    console.log("ask pause _this.player = " + _this.player);
                 return _this.player.sendToActionScript("pause");
             } else {
                 return false;
@@ -63,8 +63,14 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
     //NOT CALLED window.onAllocineStateChange = IriSP.wrap(this, this.stateHandler);
     window.onTime = IriSP.wrap(this, this.progressHandler);
     
-    var fv = "adVast=false&lg=fr_cinecast&autoPlay="+options.autoPlay+"&directVideoTitle= &urlAcData="+options.urlAcData+"&directVideoPath="+options.directVideoPath+"&host=http://allocine.fr";
-    console.log("fv = " + fv);
+    var _videoUrl = (
+        typeof options.directVideoPath == "string"
+        ? options.directVideoPath
+        : IriSP.get_aliased(IriSP.__jsonMetadata["medias"][0], ["href","url"])
+    );
+    
+    var fv = "streamFMS=true&adVast=false&lg=fr_cinecast&autoPlay=" + options.autoPlay + "&directVideoTitle=&urlAcData=" + options.urlAcData + "&directVideoPath=" + _videoUrl + "&host=http://allocine.fr";
+//    console.log("fv = " + fv);
     
     var params = {
         "allowScriptAccess" : "always",
