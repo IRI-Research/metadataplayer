@@ -1261,6 +1261,17 @@ IriSP.null_or_undefined = function(val) {
   return (typeof(val) === "undefined" || val === null);
 };
 
+/** get a property that can have multiple names **/
+
+IriSP.get_aliased = function(_obj, _aliases) {
+    for (var _i = 0; _i < _aliases.length; _i++) {
+        if (typeof _obj[_aliases[_i]] !== "undefined") {
+            return _obj[_aliases[_i]];
+        }
+    }
+    return null;
+}
+
 /** issue a call to an url shortener and return the shortened url */
 IriSP.shorten_url = function(url) {
   if (IriSP.config.shortener.hasOwnProperty("shortening_function"))
@@ -1625,9 +1636,9 @@ IriSP.widgetsDefaults = {};
 
 IriSP.paths = {};
 
-IriSP.libdir = "/metadataplayer/src/js/libs/";
-IriSP.jwplayer_swf_path = "/metadataplayer/test/libs/player.swf";
-IriSP.platform_url = "http://localhost/pf";
+IriSP.libdir = "js/libs/";
+IriSP.jwplayer_swf_path = "../test/libs/player.swf";
+IriSP.platform_url = "http://192.168.56.101/pf";
 IriSP.default_templates_vars = { };
 
 /** ugly ugly ugly ugly - returns an object defining 
@@ -1696,7 +1707,12 @@ IriSP.defaults.widgetsDefaults = function(platform_url) {
            Ldt-createAnnotation-polemic-equalequal for equalequal, etc.
         */
         polemics: {"++" : "positive", "--" : "negative", "==" : "reference", "??" : "question"}, 
-        cinecast_version: true /* put to false to enable the platform version, true for the festival cinecast one. */
+        cinecast_version: true, /* put to false to enable the platform version, true for the festival cinecast one. */
+        
+        /* where does the widget PUT the annotations - this is a mustache template. id refers to the id of the media ans is filled
+           by the widget. 
+        */
+        api_endpoint_template: platform_url + "/ldtplatform/api/ldt/annotations/{{id}}.json"
     },
     "SparklineWidget" : {
         column_width: 10 // the width of a column in pixels.
@@ -1728,12 +1744,13 @@ IriSP.defaults.widgetsDefaults = function(platform_url) {
 /*
 Override this if you want to change the info the player receives about the user.
 It's typically overrided in server-side templates with user-specific data.
-
-IriSP.user = {
-  "name" : "loic",
-  "avatar" : "http://a1.twimg.com/profile_images/39270812/loicempuria_normal.jpg"
-};
 */
+IriSP.defaults.user = function() { return {
+      "name" : "Anonymous user",
+      "avatar" : IriSP.paths.imgs + "/user_default_icon.png"
+    }
+};
+
 
 IriSP.defaults.paths = {
 //  "imgs": "/tweetlive/res/metadataplayer/src/css/imgs"
@@ -1979,14 +1996,9 @@ IriSP.configurePopcorn = function (layoutManager, options) {
             */
             opts.file = "";
             opts.streamer = "";
-            var fullPath = IriSP.__jsonMetadata["medias"][0]["href"];
+            var fullPath = IriSP.get_aliased(IriSP.__jsonMetadata["medias"][0], ["href","url"]);
             
-            /* files can either use href or url to refer to the stream */
-            if (IriSP.null_or_undefined(fullPath)) {
-              fullPath = IriSP.__jsonMetadata["medias"][0]["url"];
-            }
-            
-            if (IriSP.null_or_undefined(fullPath)) {
+            if (fullPath === null) {
               console.log("no url or href field defined in the metadata.");
             }
             
@@ -2195,7 +2207,7 @@ the IriSP.PopcornReplacement.player and defining the correct functions */
 
 /** allocine player wrapper */
 IriSP.PopcornReplacement.allocine = function(container, options) {
-    console.log("Calling allocine player");
+//    console.log("Calling allocine player");
     /* appel du parent pour initialiser les structures communes à tous les players */
     IriSP.PopcornReplacement.player.call(this, container, options);   
     
@@ -2206,7 +2218,7 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
     this.playerFns = {
         play : function() {
             if (_this.player) {
-                console.log("ask play _this.player = " + _this.player);
+            //    console.log("ask play _this.player = " + _this.player);
                 return _this.player.sendToActionScript("play");
             } else {
                 return false;
@@ -2214,7 +2226,7 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
         },
         pause : function() {
             if (_this.player) {
-                console.log("ask pause _this.player = " + _this.player);
+            //    console.log("ask pause _this.player = " + _this.player);
                 return _this.player.sendToActionScript("pause");
             } else {
                 return false;
@@ -2255,8 +2267,14 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
     //NOT CALLED window.onAllocineStateChange = IriSP.wrap(this, this.stateHandler);
     window.onTime = IriSP.wrap(this, this.progressHandler);
     
-    var fv = "adVast=false&lg=fr_cinecast&autoPlay="+options.autoPlay+"&directVideoTitle= &urlAcData="+options.urlAcData+"&directVideoPath="+options.directVideoPath+"&host=http://allocine.fr";
-    console.log("fv = " + fv);
+    var _videoUrl = (
+        typeof options.directVideoPath == "string"
+        ? options.directVideoPath
+        : IriSP.get_aliased(IriSP.__jsonMetadata["medias"][0], ["href","url"])
+    );
+    
+    var fv = "streamFMS=true&adVast=false&lg=fr_cinecast&autoPlay=" + options.autoPlay + "&directVideoTitle=&urlAcData=" + options.urlAcData + "&directVideoPath=" + _videoUrl + "&host=http://allocine.fr";
+//    console.log("fv = " + fv);
     
     var params = {
         "allowScriptAccess" : "always",
@@ -2708,7 +2726,7 @@ IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
   var platf_url = IriSP.widgetsDefaults["AnnotationsListWidget"].ajax_url
                                       .replace(/\{/g, '{{').replace(/\}/g, '}}');
   var media_id = this._serializer.currentMedia()["id"];
-  var duration = +this._serializer.currentMedia().meta["dc:duration"];
+  var duration = this._serializer.getDuration();
   
   var begin_timecode = (Math.floor(tcode) - 300) * 1000;
   if (begin_timecode < 0)
@@ -2829,7 +2847,7 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
     var keywords =  "";
     var begin = +annotation.begin / 1000;
     var end = +annotation.end / 1000;
-    var duration = +this._serializer.currentMedia().meta["dc:duration"];
+    var duration = this._serializer.getDuration();
     var tags = "";
     
     var title_templ = "{{title}} - ( {{begin}} - {{end}} )";
@@ -2844,7 +2862,7 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
       var tag_list = {};
       for (var i = 0; i < this._serializer._data.tags.length; i++) {
         var id = this._serializer._data.tags[i]["id"];
-        var keyword = this._serializer._data.tags[i]["meta"]["dc:title"];
+        var keyword = IriSP.get_aliased(this._serializer._data.tags[i]["meta"], ["dc:title", "title"]);
 
         tag_list[id] = keyword;
       }
@@ -2983,7 +3001,7 @@ IriSP.ArrowWidget.prototype.timeUpdateHandler = function(percents) {
     var begin = (+ currentAnnotation.begin) / 1000;
     var end = (+ currentAnnotation.end) / 1000;
 
-    var duration = +this._serializer.currentMedia().meta["dc:duration"] / 1000;
+    var duration = this._serializer.getDuration() / 1000;
     var middle_time = (begin + end) / 2;
     var percents = middle_time / duration;
 
@@ -3231,7 +3249,7 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     // block the arrow.
     this._Popcorn.trigger("IriSP.ArrowWidget.blockArrow");
     
-    var duration = +this._serializer.currentMedia().meta["dc:duration"];
+    var duration = this._serializer.getDuration();
         
     var currentChapter = this._serializer.currentChapitre(currentTime);
 
@@ -3410,13 +3428,13 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   var annotation = apiJson["annotations"][0];
   
   annotation["media"] = this._serializer.currentMedia()["id"];
-  var duration_part = Math.round(this._serializer.currentMedia().meta["dc:duration"] / 20);
+  var duration_part = Math.round(this._serializer.getDuration() / 20);
   
   if (this.cinecast_version) {   
       annotation["begin"] = Math.round(this._Popcorn.currentTime() * 1000 - duration_part);
       annotation["end"] = Math.round(this._Popcorn.currentTime() * 1000 + duration_part);      
   } else {
-    var duration = +this._serializer.currentMedia().meta["dc:duration"];    
+    var duration = this._serializer.getDuration();    
     annotation["begin"] = +((duration * (this.sliceLeft / 100)).toFixed(0));
     annotation["end"] = +((duration * ((this.sliceWidth + this.sliceLeft) / 100)).toFixed(0));
   }
@@ -3425,8 +3443,8 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   if (annotation["begin"] < 0)
         annotation["begin"] = 0;
   
-  if (annotation["end"] > this._serializer.currentMedia().meta["dc:duration"])
-    annotation["end"] = this._serializer.currentMedia().meta["dc:duration"];
+  if (annotation["end"] > this._serializer.getDuration())
+    annotation["end"] = this._serializer.getDuration();
       
   
   annotation["type"] = this._serializer.getContributions();
@@ -3475,7 +3493,8 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                       var tmp_view = {"dc:contributor": "perso", "dc:creator": "perso", "dc:title": "Contributions",
                                       "id": json.annotations[0].type}
 
-                      this._serializer._data["annotation-types"].push(tmp_view);
+                      
+                        IriSP.get_aliased(this._serializer._data, ["annotation_types", "annotation-types"]).push(tmp_view);
                     }
                     
                     delete annotation.tags;
@@ -3586,7 +3605,7 @@ IriSP.PlayerWidget.prototype.timeDisplayUpdater = function() {
   }
   
   // we get it at each call because it may change.
-  var duration = +this._serializer.currentMedia().meta["dc:duration"] / 1000; 
+  var duration = this._serializer.getDuration() / 1000; 
   var totalTime = IriSP.secondsToTime(duration);
   var elapsedTime = IriSP.secondsToTime(this._Popcorn.currentTime());
   
@@ -3791,7 +3810,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
     var lineSize      = this.width;        // timeline pixel width 
     var nbrframes     = lineSize/frameSize;     // frame numbers
     var numberOfTweet   = 0;            // number of tweet overide later 
-    var duration      = +this._serializer.currentMedia().meta["dc:duration"];      // timescale width 
+    var duration      = this._serializer.getDuration();      // timescale width 
     var frameLength   = lineSize / frameSize;    // frame timescale  
     var timeline;
     var colors  = new Array("","#1D973D","#C5A62D","#CE0A15","#036AAE","#585858");
@@ -3911,9 +3930,10 @@ IriSP.PolemicWidget.prototype.draw = function() {
           && typeof(item.meta["id-ref"]) !== "undefined"
           && item.meta["id-ref"] === view_type) {
             
-            var MyTJson = {};
-            if (typeof(item.meta['dc:source']) !== "undefined") {
-              var MyTJson = JSON.parse(item.meta['dc:source']['content']);
+            var MyTJson = {},
+                _source = IriSP.get_aliased(item.meta, ['dc:source', 'source']);
+            if (_source !== null) {
+              var MyTJson = JSON.parse(_source['content']);
             }
             
             if (item.content['polemics'] != undefined 
@@ -4121,7 +4141,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 IriSP.PolemicWidget.prototype.sliderUpdater = function() {
 
     var time = +this._Popcorn.currentTime();
-    var duration = +this._serializer.currentMedia().meta["dc:duration"];
+    var duration = this._serializer.getDuration();
     
     this.paperSlider.attr("width", time * (this.width / (duration / 1000)));
         
@@ -4200,7 +4220,7 @@ IriSP.SegmentsWidget.prototype = new IriSP.Widget();
 IriSP.SegmentsWidget.prototype.segmentToPixel = function(annotation) {  
   var begin = Math.round((+ annotation.begin) / 1000);
   var end = Math.round((+ annotation.end) / 1000);    
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   
   var startPourcent 	= IriSP.timeToPourcent(begin, duration);
   var startPixel = Math.floor(this.selector.parent().width() * (startPourcent / 100));
@@ -4263,7 +4283,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     var annotation = segments_annotations[i];
     var begin = (+ annotation.begin);
     var end = (+ annotation.end);
-    var duration = this._serializer.currentMedia().meta["dc:duration"];
+    var duration = this._serializer.getDuration();
     var id = annotation.id;
         
     var startPixel = Math.floor(this.selector.parent().width() * (begin / duration));
@@ -4408,7 +4428,7 @@ IriSP.SegmentsWidget.prototype.searchFieldClosedHandler = function() {
 };
 
 IriSP.SegmentsWidget.prototype.positionUpdater = function() {  
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var time = this._Popcorn.currentTime();
   //var position 	= ((time / duration) * 100).toFixed(2);
   var position 	= ((time / duration) * 100).toFixed(2);
@@ -4635,7 +4655,7 @@ IriSP.SliderWidget.prototype.sliderUpdater = function() {
   
   var time = this._Popcorn.currentTime();
 
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var percents = time / duration;
   
   /* we do these complicated calculations to center exactly
@@ -4675,7 +4695,7 @@ IriSP.SliderWidget.prototype.backgroundClickHandler = function(event) {
   var width = this.sliderBackground.width();
   var relX = event.pageX - parentOffset.left;
 
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
 
   this._Popcorn.currentTime(newTime);
@@ -4688,7 +4708,7 @@ IriSP.SliderWidget.prototype.foregroundClickHandler = function(event) {
   var width = this.sliderBackground.width();
   var relX = event.pageX - parentOffset.left;
 
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
 
   this._Popcorn.currentTime(newTime);
@@ -4744,7 +4764,7 @@ IriSP.SliderWidget.prototype.positionMarkerDraggedHandler = function(event, ui) 
   var width = this.sliderBackground.width();
   var relX = event.pageX - parentOffset.left;
 
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
 
   this._Popcorn.currentTime(newTime);
@@ -4798,7 +4818,7 @@ IriSP.SparklineWidget.prototype.draw = function() {
   } else {
     console.log("sparklinewidget : computing stats ourselves");
     var num_columns = (this.selector.width()) / IriSP.widgetsDefaults["SparklineWidget"].column_width;
-    var duration = +this._serializer.currentMedia().meta["dc:duration"];
+    var duration = this._serializer.getDuration();
     var time_step = duration / num_columns; /* the time interval between two columns */
     var results = [];
     var i = 0; /* the index in the loop */  
@@ -4845,7 +4865,7 @@ IriSP.SparklineWidget.prototype.draw = function() {
 /** react to a timeupdate event */
 IriSP.SparklineWidget.prototype.timeUpdateHandler = function() {
   var currentTime = this._Popcorn.currentTime();  
-  var duration = +this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var proportion = ((currentTime / duration) * 100).toFixed(4);
   
   IriSP.jQuery(".Ldt-sparkLinePositionMarker").css("width", proportion + "%");                                    
@@ -4865,7 +4885,7 @@ IriSP.SparklineWidget.prototype.clickHandler = function(event) {
   var width = this.selector.width();
   var relX = event.pageX - parentOffset.left;
 
-  var duration = this._serializer.currentMedia().meta["dc:duration"] / 1000;
+  var duration = this._serializer.getDuration() / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
     
   this._Popcorn.trigger("IriSP.SparklineWidget.clicked", newTime);
@@ -4875,7 +4895,7 @@ IriSP.SparklineWidget.prototype.clickHandler = function(event) {
 /** react when a new annotation is added */
 IriSP.SparklineWidget.prototype.handleNewAnnotation = function(annotation) {
   var num_columns = this._results.length;
-  var duration = +this._serializer.currentMedia().meta["dc:duration"];
+  var duration = this._serializer.getDuration();
   var time_step = Math.round(duration / num_columns); /* the time interval between two columns */
   var begin = +annotation.begin;
   var end = +annotation.end;
@@ -4898,7 +4918,8 @@ IriSP.SparklineWidget.prototype.handleNewAnnotation = function(annotation) {
 IriSP.StackGraphWidget.prototype = new IriSP.Widget();
 
 IriSP.StackGraphWidget.prototype.draw = function() {
-    var _defaultTags = [
+    var _ = IriSP._,
+        _defaultTags = [
             {
                 "keywords" : [ "++" ],
                 "description" : "positif",
@@ -4929,7 +4950,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
         ? this._config.tags
         : _defaultTags);
     IriSP._(this.tagconf).each(function(_a) {
-        _a.regexp = new RegExp(_a.keywords.map(function(_k) {
+        _a.regexp = new RegExp(_(_a.keywords).map(function(_k) {
             return _k.replace(/([\W])/gm,'\\$1');
         }).join("|"),"im")
     });
@@ -4938,13 +4959,13 @@ IriSP.StackGraphWidget.prototype.draw = function() {
         : _defaultDefColor);
     this.paper = new Raphael(this.selector[0], this.width, this.height);
     this.groups = [];
-    this.duration = this._serializer.currentMedia().meta["dc:duration"];
+    this.duration = this._serializer.getDuration();
     
     var _annotationType = this._serializer.getTweets(),
         _sliceDuration = ~~ ( this.duration / this.sliceCount),
         _annotations = this._serializer._data.annotations,
-        _groupedAnnotations = IriSP._.range(this.sliceCount).map(function(_i) {
-            return _annotations.filter(function(_a){
+        _groupedAnnotations = _(_.range(this.sliceCount)).map(function(_i) {
+            return _(_annotations).filter(function(_a){
                 return (_a.begin <= (1 + _i) * _sliceDuration) && (_a.end >= _i * _sliceDuration)
             });
         }),
@@ -4957,7 +4978,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
         _showDescription = !this._config.excludeDescription;
     
     
-    var _paths = this.tagconf.map(function() {
+    var _paths = _(this.tagconf).map(function() {
         return [];
     });
     _paths.push([]);
@@ -4965,15 +4986,15 @@ IriSP.StackGraphWidget.prototype.draw = function() {
     for (var i = 0; i < this.sliceCount; i++) {
         var _group = _groupedAnnotations[i];
         if (_group) {
-            var _vol = this.tagconf.map(function() {
+            var _vol = _(this.tagconf).map(function() {
                 return 0;
             });
             for (var j = 0; j < _group.length; j++){
            var _txt = (_showTitle ? _group[j].content.title : '') + ' ' + (_showDescription ? _group[j].content.description : '')
-                var _tags = this.tagconf.map(function(_tag) {
+                var _tags = _(this.tagconf).map(function(_tag) {
                         return (_txt.search(_tag.regexp) == -1 ? 0 : 1)
                     }),
-                    _nbtags = _tags.reduce(function(_a,_b) {
+                    _nbtags = _(_tags).reduce(function(_a,_b) {
                         return _a + _b;
                     }, 0);
                 if (_nbtags) {
@@ -4982,7 +5003,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
                     });
                 }
             }
-            var _nbtags = _vol.reduce(function(_a,_b) {
+            var _nbtags = _(_vol).reduce(function(_a,_b) {
                     return _a + _b;
                 }, 0),
                 _nbneutre = _group.length - _nbtags,
@@ -5006,14 +5027,14 @@ IriSP.StackGraphWidget.prototype.draw = function() {
                 }
                 _paths[j+1].push(_base);
             }
-            this.groups.push(_vol.map(function(_v) {
+            this.groups.push(_(_vol).map(function(_v) {
                 return _v / _group.length;
             }))
         } else {
             for (var j = 0; j < _paths.length; j++) {
                 _paths[j].push(this.height);
             }
-            this.groups.push(this.tagconf.map(function() {
+            this.groups.push(_(this.tagconf).map(function() {
                 return 0;
             }));
         }
@@ -5021,7 +5042,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
     
     if (this.isStreamGraph) {
         for (var j = _paths.length - 1; j >= 0; j--) {
-            var _d = _paths[j].reduce(function(_memo, _v, _k) {
+            var _d = _(_paths[j]).reduce(function(_memo, _v, _k) {
                return _memo + ( _k
                    ? 'C' + (_k * _width) + ' ' + _paths[j][_k - 1] + ' ' + (_k * _width) + ' ' + _v + ' ' + ((_k + .5) * _width) + ' ' + _v
                    : 'M0 ' + _v + 'L' + (.5*_width) + ' ' + _v )
@@ -5055,7 +5076,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
             
             // Also tell the world where the mouse is hovering.
             var relX = event.pageX - _this.selector.offset().left;
-            var duration = _this._serializer.currentMedia().meta["dc:duration"];
+            var duration = _this._serializer.getDuration();
             var Time = ((relX / _this.width) * duration).toFixed(2);
             _this._Popcorn.trigger("IriSP.StackGraphWidget.mouseOver", Time);
 
@@ -5093,7 +5114,7 @@ IriSP.StackGraphWidget.prototype.updateTooltip = function(event) {
     var _segment = ~~(this.sliceCount * (event.pageX - this.selector.offset().left)/this.width),
         _valeurs = this.groups[_segment],
         _width = this.width / this.sliceCount,
-        _html = '<ul style="list-style: none; margin: 0; padding: 0;">' + this.tagconf.map(function(_tag, _i) {
+        _html = '<ul style="list-style: none; margin: 0; padding: 0;">' + IriSP._(this.tagconf).map(function(_tag, _i) {
             return '<li style="clear: both;"><span style="float: left; width: 10px; height: 10px; margin: 2px; background: '
                 + _tag.color
                 + ';"></span>'
@@ -5274,8 +5295,8 @@ IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
     var imageMarkup = IriSP.templToHTML("<img src='{{src}}' alt='user image'></img>", 
                                        {src : img});
     
-    if (typeof(annotation.meta["dc:source"].content) !== "undefined") {
-      var tweetContents = JSON.parse(annotation.meta["dc:source"].content);
+    if (typeof(IriSP.get_aliased(annotation.meta, ["dc:source", "source"]).content) !== "undefined") {
+      var tweetContents = JSON.parse(IriSP.get_aliased(annotation.meta, ["dc:source", "source"]).content);
       var creator = tweetContents.user.screen_name;
       var real_name = tweetContents.user.name;
 
@@ -5676,29 +5697,23 @@ IriSP.JSONSerializer.prototype.getTweetIds = function() {
      We've got to jump through a few hoops because the json sometimes defines
      fields with underscores and sometimes with dashes
   */
-  var annotation_types = this._data.views[0]["annotation_types"];
-  if (IriSP.null_or_undefined(annotation_types)) {
-    annotation_types = this._data.views[0]["annotation-types"];
-    if (IriSP.null_or_undefined(annotation_types)) {
+  var annotation_types = IriSP.get_aliased(this._data.views[0], ["annotation_types", "annotation-types"]);
+  if (annotation_types === null) {
       console.log("neither view.annotation_types nor view.annotation-types are defined");      
       return;
-    }
   }
 
-  var available_types = this._data["annotation_types"];    
-  if (IriSP.null_or_undefined(available_types)) {
-    available_types = this._data["annotation-types"];
-    if (IriSP.null_or_undefined(available_types)) {
-      console.log("neither annotation_types nor annotation-types are defined");      
+  var available_types = IriSP.get_aliased(this._data, ["annotation_types", "annotation-types"]);    
+  if (available_types === null) {
+      console.log("neither view.annotation_types nor view.annotation-types are defined");      
       return;
-    }
   }
   
   var potential_types = [];
   
   // Get the list of types which contain "Tw" in their content
   for (var i = 0; i < available_types.length; i++) {
-    if (/Tw/i.test(available_types[i]["dc:title"])) {
+    if (/Tw/i.test(IriSP.get_aliased(available_types[i], ['dc:title', 'title']))) {
       potential_types.push(available_types[i].id);
     }
   }
@@ -5719,29 +5734,23 @@ IriSP.JSONSerializer.prototype.getNonTweetIds = function() {
      We've got to jump through a few hoops because the json sometimes defines
      fields with underscores and sometimes with dashes
   */
-  var annotation_types = this._data.views[0]["annotation_types"];
-  if (IriSP.null_or_undefined(annotation_types)) {
-    annotation_types = this._data.views[0]["annotation-types"];
-    if (IriSP.null_or_undefined(annotation_types)) {
+  var annotation_types = IriSP.get_aliased(this._data.views[0], ["annotation_types", "annotation-types"]);
+  if (annotation_types === null) {
       console.log("neither view.annotation_types nor view.annotation-types are defined");      
       return;
-    }
   }
 
-  var available_types = this._data["annotation_types"];    
-  if (IriSP.null_or_undefined(available_types)) {
-    available_types = this._data["annotation-types"];
-    if (IriSP.null_or_undefined(available_types)) {
-      console.log("neither annotation_types nor annotation-types are defined");      
+  var available_types = IriSP.get_aliased(this._data, ["annotation_types", "annotation-types"]);    
+  if (available_types === null) {
+      console.log("neither view.annotation_types nor view.annotation-types are defined");      
       return;
-    }
   }
 
   var potential_types = [];
   
   // Get the list of types which do not contain "Tw" in their content
   for (var i = 0; i < available_types.length; i++) {
-    if (!(/Tw/i.test(available_types[i]["dc:title"]))) {
+    if (!(/Tw/i.test(IriSP.get_aliased(available_types[i], ['dc:title', 'title'])))) {
       potential_types.push(available_types[i].id);
     }
   }
@@ -5757,17 +5766,19 @@ IriSP.JSONSerializer.prototype.getNonTweetIds = function() {
     @param name of the ligne de temps
 */
 IriSP.JSONSerializer.prototype.getId = function(name) {
-  if (IriSP.null_or_undefined(this._data["annotation-types"]))
+   var available_types = IriSP.get_aliased(this._data, ["annotation_types", "annotation-types"]);  
+   
+  if (available_types == null)
     return;
 
   name = name.toUpperCase();
   var e;  
-  e = IriSP.underscore.find(this._data["annotation-types"], 
-                                  function(entry) { 
-                                    if (IriSP.null_or_undefined(entry["dc:title"]))
-                                      return false;
-                                    
-                                    return (entry["dc:title"].toUpperCase().indexOf(name) !== -1) });
+  e = IriSP.underscore.find(available_types, 
+    function(entry) {
+        if (IriSP.get_aliased(entry, ['dc:title', 'title']) === null)
+          return false;
+        return (entry["dc:title"].toUpperCase().indexOf(name) !== -1);
+    });
   
   if (typeof(e) === "undefined")
     return;
@@ -5781,13 +5792,15 @@ IriSP.JSONSerializer.prototype.getId = function(name) {
     @param name of the ligne de temps
 */
 IriSP.JSONSerializer.prototype.getIds = function(name) {
-  if (IriSP.null_or_undefined(this._data["annotation-types"]))
+   var available_types = IriSP.get_aliased(this._data, ["annotation_types", "annotation-types"]);  
+   
+  if (available_types == null)
     return;
 
   name = name.toUpperCase();
   var e = [];  
-  e = IriSP.underscore.filter(this._data["annotation-types"], 
-                                  function(entry) { return (entry["dc:title"].toUpperCase().indexOf(name) !== -1) });
+  e = IriSP.underscore.filter(available_types, 
+                                  function(entry) { return (IriSP.get_aliased(entry, ['dc:title', 'title']).toUpperCase().indexOf(name) !== -1) });
   return IriSP.underscore.pluck(e, "id");  
 };
 
@@ -5831,3 +5844,7 @@ IriSP.JSONSerializer.prototype.getContributions = function() {
     
   return val;
 };
+
+IriSP.JSONSerializer.prototype.getDuration = function() {
+    return +(IriSP.get_aliased(this.currentMedia().meta, ["dc:duration", "duration"]) || 0);
+}

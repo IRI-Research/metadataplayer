@@ -49,7 +49,7 @@
         {
             "origin": "0",
             "http://advene.liris.cnrs.fr/ns/frame_of_reference/ms": "o=0",
-            "href": "rtmp://localhost/vod/pj_harvey_-_let_england_shake.mp4",
+            "href": "http://hd.fr.mediaplayer.allocine.fr/nmedia/18/86/23/92/19282986_fa3_vost_sd_001.flv",
             "meta": {
                 "dc:contributor": "IRI",
                 "item": {
