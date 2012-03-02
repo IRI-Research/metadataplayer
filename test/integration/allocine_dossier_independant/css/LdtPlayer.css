@@ -391,7 +391,7 @@ button.ui-button-icon-only  {
 }
 
 .Ldt-sliderBackground  {
-  background-color: #B6B8B8;
+  background-color: #333333;
   position: absolute;
   z-index: 2;
   bottom: 1px;
@@ -412,12 +412,10 @@ button.ui-button-icon-only  {
 .Ldt-sliderPositionMarker {
   position: absolute;
   z-index: 100;
-  background-color: #f7268e;
-  height: 5px;
-  width: 5px;
-  bottom: 1px;
-  border-left: 1px solid white;
-  border-right: 1px solid white;
+  background: url('img-cinecast/sliderpos.png');
+  height: 10px !important;
+  width: 10px !important;
+  bottom: 0;
 }
 
 /* tweet Widget */
