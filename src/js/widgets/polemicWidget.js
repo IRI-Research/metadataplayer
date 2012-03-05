@@ -320,14 +320,10 @@ IriSP.PolemicWidget.prototype.draw = function() {
                   e.time = frames[i].mytweetsID[k].timeframe;
                   e.title = frames[i].mytweetsID[k].title;
                   e.id = frames[i].mytweetsID[k].cinecast_id;
-                  var pos = IriSP.jQuery(e.node).offset();                  
-                  e.x = pos.left;
-                  e.y = pos.top;
                   this.svgElements[e.id] = e;
                   
-                  IriSP.jQuery(e.node).mouseenter(function(element) { return function (event) {                        
-                        // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.                        
-                        self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.pageX - 106, event.pageY - 160);
+                  IriSP.jQuery(e.node).mouseenter(function(element) { return function () {                    
+                        self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), element.attrs.x + element.attrs.width / 2, element.attrs.y - 2);
                         element.displayed = true;
                   }}(e)).mousedown(function(element) { return function () {                    
                     self._Popcorn.currentTime(element.time/1000);

@@ -198,7 +198,7 @@ IriSP.StackGraphWidget.prototype.clickHandler = function(event) {
 };
 
 IriSP.StackGraphWidget.prototype.updateTooltip = function(event) {
-    var _segment = ~~(this.sliceCount * (event.pageX - this.selector.offset().left)/this.width),
+    var _segment = Math.floor(this.sliceCount * (event.pageX - this.selector.offset().left)/this.width),
         _valeurs = this.groups[_segment],
         _width = this.width / this.sliceCount,
         _html = '<ul style="list-style: none; margin: 0; padding: 0;">' + IriSP._(this.tagconf).map(function(_tag, _i) {
@@ -211,7 +211,7 @@ IriSP.StackGraphWidget.prototype.updateTooltip = function(event) {
                 + '</li>';
         }).join('') + '</ul>';
     this.TooltipWidget._shown = false; // Vraiment, on ne peut pas ouvrir le widget s'il n'est pas encore ouvert ?
-    this.TooltipWidget.show('','',event.pageX - 105, event.pageY - 160);
+    this.TooltipWidget.show('','',(_segment + .5)* this.width / this.sliceCount, 0);
     this.TooltipWidget.selector.find(".tip").html(_html);
     this.rectangleFocus.attr({
         "x" : _segment * _width,

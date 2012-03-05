@@ -225,8 +225,15 @@ IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager
       
       var i = 0;
       for(i = 0; i < widgetConfig.requires.length; i++) {
-        var widgetName = widgetConfig.requires[i]["type"];
-        widget[widgetName] = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, widgetConfig.requires[i], defaultOptions);
+        var widgetName = widgetConfig.requires[i]["type"],
+            _configobj = IriSP.jQuery.extend({}, widgetConfig.requires[i]),
+            _div = document.createElement('div'),
+            _container = IriSP.guid(arr.container + '_' + widgetName + '_');
+        _configobj.container = _container;
+        _div.id = _container;
+        widget.selector.append(_div);
+        console.log(_configobj);
+        widget[widgetName] = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, _configobj, defaultOptions);
       }
     }       
      
