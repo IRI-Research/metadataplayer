@@ -52,6 +52,24 @@ IriSP.Widget = function(Popcorn, config, Serializer) {
   if (config.hasOwnProperty("layoutManager")) {
      this.layoutManager = config.layoutManager;     
   }
+  if (typeof this.selector != "undefined" && typeof Popcorn != "undefined") {
+      var _id = this._id;
+      this.selector.bind("click mouseover mouseout dragstart dragstop", function(_e) {
+            var _data = {
+                "type": _e.type,
+                "x": _e.clientX,
+                "y": _e.clientY,
+                "widget": _id,
+                "target_name": _e.target.localName,
+                "target_id": _e.target.id,
+                "target_class": _e.target.className,
+                "text": _e.target.textContent.trim(),
+                "title": _e.target.title,
+                "value": _e.target.value
+            };
+            Popcorn.trigger('IriSP.Widget.MouseEvents', _data);
+      })
+  }
   
 };
 

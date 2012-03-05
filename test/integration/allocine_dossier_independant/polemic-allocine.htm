@@ -15,7 +15,7 @@
   
  <!-- START Integration  ###################################### -->
  <!-- SIMPLE PLAYER EXPERIMENTATION -->
-  <script type="text/javascript" src="js/LdtPlayer-release.js" type="text/javascript"></script>   
+  <script type="text/javascript" src="/metadataplayer/build/LdtPlayer-release.js" type="text/javascript"></script>   
   
   <div id="video"></div>
   <div id="LdtPlayer"></div>
@@ -62,7 +62,8 @@
              mode: "radio"},                     
             {type: "ArrowWidget"},
             {type: "TweetsWidget"},
-            {type: "createAnnotationWidget"}      
+            {type: "createAnnotationWidget"},
+            {type: "TraceWidget"}
             ]
         },
       player:{
@@ -70,7 +71,7 @@
               height: 300, 
               width: 640,
               acPlayerUrl: "allocine_test/AcPlayer_v3.0.swf",
-              autoPlay: "false",
+              autoPlay: "true",
               urlAcData: "allocine_test/data_cinecast.xml"
       },
       modules: [
