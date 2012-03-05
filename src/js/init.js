@@ -232,7 +232,6 @@ IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager
         _configobj.container = _container;
         _div.id = _container;
         widget.selector.append(_div);
-        console.log(_configobj);
         widget[widgetName] = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, _configobj, defaultOptions);
       }
     }       

@@ -4,7 +4,6 @@ IriSP.TooltipWidget = function(Popcorn, config, Serializer) {
   this._shown = false;
   this._displayedText = "";
   this._hideTimeout = -1;
-  console.log(config.container);
 };
 
 

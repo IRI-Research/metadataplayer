@@ -858,7 +858,6 @@ button.ui-button-icon-only  {
 
 .Ldt-AnnotationsList-Caption {
   float: left;
-  display: table-cell;
   vertical-align: middle;
   height: 64px;
   width: 64px;
@@ -877,6 +876,7 @@ button.ui-button-icon-only  {
   font-size: 13px;
   display: table-cell;
   width: 80%;
+  margin-left: 64px; margin-bottom: 3px;
 }
 
 /* Tagcloud */
