@@ -50,7 +50,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   if (typeof(view_type) === "undefined") {
     view_type = this._serializer.getNonTweetIds()[0];  
   }
-  this.positionMarker = this.selector.children(":first");
+  this.positionMarker = this.selector.find(".Ldt-SegmentPositionMarker");
   
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.positionUpdater));
 

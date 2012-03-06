@@ -18,7 +18,7 @@
   <script type="text/javascript" src="../../build/LdtPlayer-release.js" type="text/javascript"></script>   
   
   <div id="video"></div>
-  <div id="LdtPlayer" style="float: right; position: relative;"></div>
+  <div id="LdtPlayer"></div>
   
   <script  type="text/javascript">
     var file = "polemic_fr.json";
@@ -67,11 +67,11 @@
             },            
             {type: "SliceWidget"},            
             {type: "ArrowWidget"},
-
-
             {type: "AnnotationsWidget"},
             {type: "TweetsWidget"},
-            {type: "createAnnotationWidget"}
+            {type: "createAnnotationWidget"},
+            {type: "TagCloudWidget",
+            excludeWords: ['#museoweb']}
             ]
         },
       player:{

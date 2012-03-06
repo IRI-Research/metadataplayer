@@ -6,23 +6,29 @@ IriSP.TagCloudWidget.prototype = new IriSP.Widget();
 
 IriSP.TagCloudWidget.prototype.draw = function() {
     
-    var _stopwords = [
-            'aussi', 'and', 'avec', 'aux', 'car', 'cette', 'comme', 'dans', 'donc', 'des', 'elle', 'est',
-            'être', 'eux', 'fait', 'ici', 'ils', 'les', 'leur', 'leurs', 'mais', 'mes', 'même', 'mon', 'notre',
-            'non', 'nos', 'nous', 'ont', 'par', 'pas', 'peu', 'pour', 'que', 'qui', 'ses' ,'son', 'sont', 'sur',
-            'tes', 'très', 'the', 'ton', 'tous', 'tout', 'une', 'votre', 'vos', 'vous'
-        ],
+    var _urlRegExp = /https?:\/\/[0-9a-zA-Z\.%\/-_]+/g,
+        _stopWords = [
+            'aussi', 'and', 'avec', 'aux', 'bien', 'car', 'cette', 'comme', 'dans', 'donc', 'des', 'elle', 'encore', 'est',
+            'être', 'eux', 'faire', 'fait', 'http', 'ici', 'ils', 'les', 'leur', 'leurs', 'mais', 'mes', 'même', 'mon', 'notre',
+            'non', 'nos', 'nous', 'ont', 'par', 'pas', 'peu', 'peut', 'plus', 'pour', 'que', 'qui', 'ses' ,'son', 'sont', 'sur',
+            'tes', 'très', 'the', 'ton', 'tous', 'tout', 'une', 'votre', 'vos', 'vous' ],
         _regexpword = /[^\s\.&;,'"!\?\d\(\)\+\[\]\\\…\-«»:\/]{3,}/g,
         _words = {},
         _showTitle = !this._config.excludeTitle,
         _showDescription = !this._config.excludeDescription,
+        _excludePattern = this._config.excludePattern || null,
         _tagCount = this._config.tagCount || 30;
+    if (typeof this._config.excludeWords !== "undefined" && this._config.excludeWords.length) {
+        IriSP._(this._config.excludeWords).each(function(_w) {
+            _stopWords.push(_w.toLowerCase());
+        });
+    }
     
     IriSP._(this._serializer._data.annotations).each(function(_annotation) {
        if (_annotation.content && _annotation.content.description) {
            var _txt = (_showTitle ? _annotation.content.title : '') + ' ' + (_showDescription ? _annotation.content.description : '')
-           IriSP._(_txt.toLowerCase().match(_regexpword)).each(function(_mot) {
-               if (_stopwords.indexOf(_mot) == -1) {
+           IriSP._(_txt.toLowerCase().replace(_urlRegExp, '').match(_regexpword)).each(function(_mot) {
+               if (_stopWords.indexOf(_mot) == -1 && (_excludePattern == null || !_excludePattern.test(_mot))) {
                    _words[_mot] = 1 + (_words[_mot] || 0);
                }
            })
