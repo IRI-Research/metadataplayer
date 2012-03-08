@@ -192,3 +192,8 @@ if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
    }
 }
 */
+
+/* Creates regexps from text */
+IriSP.regexpFromText = function(_text) {
+    return new RegExp('(' + _text.replace(/(\W)/gim,'\\$1') + ')','gim');
+}

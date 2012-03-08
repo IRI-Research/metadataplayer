@@ -25,11 +25,6 @@
     
     IriSP.user = {name: 'awesome_user_name', avatar: 'allocine_test/avatar.png'};
     IriSP.libdir = "js/libs/";
-    IriSP.widgetsDefaults["createAnnotationWidget"] = {};
-    IriSP.widgetsDefaults["createAnnotationWidget"].cinecast_version = true;
-    IriSP.widgetsDefaults["createAnnotationWidget"].polemic_mode = false;
-    IriSP.widgetsDefaults["createAnnotationWidget"].keywords = ["#allocine", "#vodkaster", "#universcine"];
-    IriSP.widgetsDefaults["createAnnotationWidget"].api_endpoint_template = "coucou/{{id}}.json";
     IriSP.defaults.user = function(){ return IriSP.user; };
     
     var config = {            
@@ -57,13 +52,17 @@
             },            
             {type: "AnnotationsListWidget",
              container: "AnnotationsListContainer"},
-            {type: "SliderWidget"},        
+            {type: "SliderWidget"},
             {type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
              mode: "radio"},                     
             {type: "ArrowWidget"},
             {type: "TweetsWidget"},
-            {type: "createAnnotationWidget"},
-            {type: "TraceWidget"}
+            {type: "createAnnotationWidget",
+            polemic_mode: false,
+            cinecast_version: true,
+            keywords: ['#vodkaster', '#allocine', '#universcine'],
+            api_endpoint_template : "coucou/{{id}}.json",
+            api_method: 'POST'}
             ]
         },
       player:{

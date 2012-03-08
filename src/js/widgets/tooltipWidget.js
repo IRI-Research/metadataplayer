@@ -21,6 +21,10 @@ IriSP.TooltipWidget.prototype.draw = function() {
       "position": "relative"
   });
   this.selector.append(templ);
+  var _this = this;
+  this.selector.mouseover(function() {
+      _this.hide();
+  });
   this.hide();
 
 };

@@ -82,13 +82,14 @@ IriSP.defaults.widgetsDefaults = function(platform_url) {
            Ldt-createAnnotation-polemic-plusplus for plusplus
            Ldt-createAnnotation-polemic-equalequal for equalequal, etc.
         */
-        polemics: {"++" : "positive", "--" : "negative", "==" : "reference", "??" : "question"}, 
+        polemics: [ { "className" : "positive", "keyword" : "++" }, { "className" : "negative", "keyword" : "--" }, { "className" : "reference", "keyword" : "==" }, { "className" : "question", "keyword" : "??" } ],
         cinecast_version: true, /* put to false to enable the platform version, true for the festival cinecast one. */
         
         /* where does the widget PUT the annotations - this is a mustache template. id refers to the id of the media ans is filled
            by the widget. 
         */
-        api_endpoint_template: platform_url + "/ldtplatform/api/ldt/annotations/{{id}}.json"
+        api_endpoint_template: platform_url + "/ldtplatform/api/ldt/annotations/{{id}}.json",
+        api_method: "PUT"
     },
     "SparklineWidget" : {
         column_width: 10 // the width of a column in pixels.

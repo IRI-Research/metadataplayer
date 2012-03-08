@@ -58,9 +58,9 @@ IriSP.PlayerWidget.prototype.draw = function() {
 /* Update the elasped time div */
 IriSP.PlayerWidget.prototype.timeDisplayUpdater = function() {
   
-  if (this._previousSecond === undefined)
+  if (this._previousSecond === undefined) {
     this._previousSecond = this._Popcorn.roundTime();
-  
+  }
   else {
     /* we're still in the same second, so it's not necessary to update time */
     if (this._Popcorn.roundTime() == this._previousSecond)

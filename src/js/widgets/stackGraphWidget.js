@@ -158,14 +158,19 @@ IriSP.StackGraphWidget.prototype.draw = function() {
     var _this = this;
     this.selector
         .click(IriSP.wrap(this, this.clickHandler))
-        .mousemove(function(event) {
-            _this.updateTooltip(event);
-            
-            // Also tell the world where the mouse is hovering.
-            var relX = event.pageX - _this.selector.offset().left;
-            var duration = _this._serializer.getDuration();
-            var Time = ((relX / _this.width) * duration).toFixed(2);
-            _this._Popcorn.trigger("IriSP.StackGraphWidget.mouseOver", Time);
+        .mousemove(function(_e) {
+            _this.updateTooltip(_e);
+            // Trace
+            var relX = _e.pageX - _this.selector.offset().left;
+            var _duration = _this._serializer.getDuration();
+            var _time = parseInt((relX / _this.width) * _duration);
+            _this._Popcorn.trigger("IriSP.TraceWidget.MouseEvents", {
+                "widget" : "StackGraphWidget",
+                "type": "mousemove",
+                "x": _e.pageX,
+                "y": _e.pageY,
+                "time": _time
+            });
 
         })
         .mouseout(function() {
@@ -198,7 +203,7 @@ IriSP.StackGraphWidget.prototype.clickHandler = function(event) {
 };
 
 IriSP.StackGraphWidget.prototype.updateTooltip = function(event) {
-    var _segment = Math.floor(this.sliceCount * (event.pageX - this.selector.offset().left)/this.width),
+    var _segment = Math.max(0,Math.min(this.groups.length - 1, Math.floor(this.sliceCount * (event.pageX - this.selector.offset().left)/this.width))),
         _valeurs = this.groups[_segment],
         _width = this.width / this.sliceCount,
         _html = '<ul style="list-style: none; margin: 0; padding: 0;">' + IriSP._(this.tagconf).map(function(_tag, _i) {

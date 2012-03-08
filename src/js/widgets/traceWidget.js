@@ -12,23 +12,14 @@ IriSP.TraceWidget = function(Popcorn, config, Serializer) {
         "IriSP.SliceWidget.show",
         "IriSP.SliceWidget.hide",
         "IriSP.createAnnotationWidget.addedAnnotation",
-//        "IriSP.PlayerWidget.AnnotateButton.clicked",
-//        "IriSP.PlayerWidget.MouseOver",
-//        "IriSP.PlayerWidget.MouseOut",
         "IriSP.search.open",
         "IriSP.search.closed",
         "IriSP.search",
         "IriSP.search.cleared",
-//        "IriSP.PolemicTweet.click",
         "IriSP.search.matchFound",
         "IriSP.search.noMatchFound",
-//        "IriSP.SegmentsWidget.click",
-        "IriSP.SliceWidget.zoneChange",
-//        "IriSP.SparklineWidget.clicked",
-//        "IriSP.StackGraphWidget.mouseOver",
-//        "IriSP.StackGraphWidget.clicked",
         "IriSP.search.triggeredSearch",
-        "IriSP.Widget.MouseEvents",
+        "IriSP.TraceWidget.MouseEvents",
         "play",
         "pause",
         "volumechange",
@@ -38,8 +29,8 @@ IriSP.TraceWidget = function(Popcorn, config, Serializer) {
         "pause"
     ];
     IriSP._(_listeners).each(function(_listener) {
-      _this._Popcorn.listen(_listener, function() {
-          _this.eventHandler(_listener, arguments);
+      _this._Popcorn.listen(_listener, function(_arg) {
+          _this.eventHandler(_listener, _arg);
       });
     });
   
@@ -48,55 +39,89 @@ IriSP.TraceWidget = function(Popcorn, config, Serializer) {
 IriSP.TraceWidget.prototype = new IriSP.Widget();
 
 IriSP.TraceWidget.prototype.draw = function() {
+    this.mouseLocation = '';
+    var _this = this;
+    IriSP.jQuery(".Ldt-Widget").bind("click mouseover mouseout dragstart dragstop", function(_e) {
+        var _widget = this.id.match('LdtPlayer_widget_([^_]+)')[1],
+            _class = _e.target.className;
+        var _data = {
+            "type": _e.type,
+            "x": _e.clientX,
+            "y": _e.clientY,
+            "widget": _widget
+        }
+        if (typeof _class == "string" && _class.indexOf('Ldt-TraceMe') != -1) {
+            var _name = _e.target.localName,
+                _id = _e.target.id,
+                _text = _e.target.textContent.trim(),
+                _title = _e.target.title,
+                _value = _e.target.value;
+            _data.target = _name + (_id.length ? '#' + _id : '') + (_class.length ? '.' + _class.replace(/\s/g,'.').replace(/\.Ldt-(Widget|TraceMe)/g,'') : '');
+            if (typeof _title == "string" && _title.length && _title.length < 140) {
+                _data.title = _title;
+            }
+            if (typeof _text == "string" && _text.length && _text.length < 140) {
+                _data.text = _text;
+            }
+            if (typeof _value == "string" && _value.length) {
+                _data.value = _value;
+            }
+            _this._Popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
+        } else {
+            //console.log(_e.type+','+_this.mouseLocation+','+_widget);
+            if (_e.type == "mouseover") {
+                if (_this.mouseLocation != _widget) {
+                    _this._Popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
+                } else {
+                    if (typeof _this.moTimeout != "undefined") {
+                        clearTimeout(_this.moTimeout);
+                        delete _this.moTimeout;
+                    }
+                }
+            }
+            if (_e.type == "click") {
+                _this._Popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
+            }
+            if (_e.type == "mouseout") {
+                if (typeof _this.moTimeout != "undefined") {
+                    clearTimeout(_this.moTimeout);
+                }
+                _this.moTimeout = setTimeout(function() {
+                   if (_data.widget != _this.mouseLocation) {
+                       _this._Popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
+                   }
+                },100);
+            }
+        }
+        _this.mouseLocation = _widget;
+    });
 }
 
-IriSP.TraceWidget.prototype.eventHandler = function(_listener, _args) {
-    var _traceName = 'Mdp_',
-        _data = {};
-        
-    function packArgs() {
-        for (var _i = 0; _i < _args.length; _i++) {
-            _data[_i] = _args[_i];
-        }
+IriSP.TraceWidget.prototype.eventHandler = function(_listener, _arg) {
+    var _traceName = 'Mdp_';
+    if (typeof _arg == "string" || typeof _arg == "number") {
+        _arg = { "value" : _arg }
     }
-    
+    if (typeof _arg == "undefined") {
+        _arg = {}
+    }
     switch(_listener) {
-        case 'IriSP.Widget.MouseEvents':
-            var _type = _args[0].type,
-                _name = _args[0].target_name,
-                _class = _args[0].target_class,
-                _id = _args[0].target_id,
-                _widget = _args[0].widget.match(/[^_]+widget/i)[0];
-            _traceName += _widget + '_' + _type;
-            _data.x = _args[0].x;
-            _data.y = _args[0].y;
-            _data.target = _name + (_id.length ? '#' + _id : '') + (_class.length ? '.' + _class.replace(/\s/g,'.') : '');
-            if (typeof _args[0].value == "string" && _args[0].value.length) {
-                _data.value = _args[0].value;
-            }
-            if ((_name == "button" || /button/.test(_class)) && typeof _args[0].text == "string" && _args[0].text.length) {
-                _data.text = _args[0].text;
-            }
-            if (typeof _args[0].title == "string" && _args[0].title.length) {
-                _data.title = _args[0].title;
-            }
-            // Filtrer les événements mouseover quand on se déplace vers des éléments non pertinents
-            if (!_id.length && !_class.length && ( _type == 'mouseover' || _type == 'mouseout' ) && this.lastEvent.search('Mdp_' + _widget) == 0) {
-                return;
-            }
+        case 'IriSP.TraceWidget.MouseEvents':
+            _traceName += _arg.widget + '_' + _arg.type;
+            delete _arg.widget;
+            delete _arg.type;
         break;
+        case 'timeupdate':
         case 'play':
         case 'pause':
+            _arg.time = this._Popcorn.currentTime() * 1000;
         case 'seeked':
-        case 'timeupdate':
         case 'volumechange':
-            _traceName += 'Popcorn' + _listener;
-            packArgs();
+            _traceName += 'Popcorn_' + _listener;
         break;
         default:
             _traceName += _listener.replace('IriSP.','').replace('.','_');
-            packArgs();
     }
     this.lastEvent = _traceName;
-    console.log("trace('" + _traceName + "', " + JSON.stringify(_data) + ");");
+    console.log("trace('" + _traceName + "', " + JSON.stringify(_arg) + ");");
 }

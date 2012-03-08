@@ -54,7 +54,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
     var duration      = this._serializer.getDuration();      // timescale width 
     var frameLength   = lineSize / frameSize;    // frame timescale  
     var timeline;
-    var colors  = new Array("","#1D973D","#C5A62D","#CE0A15","#036AAE","#585858");
+    var colors  = new Array("","#1D973D","#036AAE","#CE0A15","#C5A62D","#585858");
     
     // array 
     //var tweets  = new Array();
@@ -322,9 +322,16 @@ IriSP.PolemicWidget.prototype.draw = function() {
                   e.id = frames[i].mytweetsID[k].cinecast_id;
                   this.svgElements[e.id] = e;
                   
-                  IriSP.jQuery(e.node).mouseenter(function(element) { return function () {                    
+                  IriSP.jQuery(e.node).mouseenter(function(element) { return function (_e) {                    
                         self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), element.attrs.x + element.attrs.width / 2, element.attrs.y - 2);
                         element.displayed = true;
+                        self._Popcorn.trigger("IriSP.TraceWidget.MouseEvents", {
+                            "widget" : "StackGraphWidget",
+                            "type": "mousemove",
+                            "x": _e.pageX,
+                            "y": _e.pageY,
+                            "annotation_id": element.id
+                        });
                   }}(e)).mousedown(function(element) { return function () {                    
                     self._Popcorn.currentTime(element.time/1000);
                     self._Popcorn.trigger("IriSP.PolemicTweet.click", element.id); 

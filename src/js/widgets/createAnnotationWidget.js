@@ -1,15 +1,23 @@
 IriSP.createAnnotationWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this._hidden = true;
-  this.keywords = IriSP.widgetsDefaults["createAnnotationWidget"].keywords;
   
-  this.polemic_mode = IriSP.widgetsDefaults["createAnnotationWidget"].polemic_mode;
-  this.polemics = IriSP.widgetsDefaults["createAnnotationWidget"].polemics;
-  
-  this.cinecast_version = IriSP.widgetsDefaults["createAnnotationWidget"].cinecast_version;
-  this.api_endpoint_template = IriSP.widgetsDefaults["createAnnotationWidget"].api_endpoint_template;
-  
-  this.ids = {}; /* a dictionnary linking buttons ids to keywords */
+  this.checkOption("keywords");
+  this.checkOption("polemic_mode", true);
+  this.checkOption("polemics");
+  this.checkOption("cinecast_version", false);
+  this.checkOption("api_endpoint_template");
+  this.checkOption("show_from_field", true);
+  this.checkOption("api_method");
+                         
+  if (!IriSP.null_or_undefined(IriSP.user)) {
+      if (!IriSP.null_or_undefined(IriSP.user.avatar)) {
+        this.user_avatar = IriSP.user.avatar;
+      }
+      if (!IriSP.null_or_undefined(IriSP.user.name)) {
+        this.user_name = IriSP.user.name;
+      }
+  }
   
   /* variables to save the current position of the slicer */
   if (this.cinecast_version) {
@@ -29,14 +37,9 @@ IriSP.createAnnotationWidget.prototype.clear = function() {
 
 IriSP.createAnnotationWidget.prototype.draw = function() {
   var _this = this;
-  var template_params = {cinecast_version: this.cinecast_version, 
-                         polemic_mode: this.polemic_mode};
-                         
-  if (!IriSP.null_or_undefined(IriSP.user) && !IriSP.null_or_undefined(IriSP.user.avatar))
-    template_params["user_avatar"] = IriSP.user.avatar;
   
   var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template, 
-                                           template_params);
+                                           this);
   
 	this.selector.append(annotationMarkup);
   
@@ -45,70 +48,12 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   else {
     this.showStartScreen();
   }
+
+  // Add onclick event to both polemic and keywords buttons
   
-  // add the keywords.
-  for (var i = 0; i < this.keywords.length; i++) {
-    var keyword = this.keywords[i];
-    var id = IriSP.guid("button_");
-    var templ = IriSP.templToHTML("<button id={{id}} class='Ldt-createAnnotation-absent-keyword'>{{keyword}}</button>", 
-                                  {keyword: keyword, id: id});
-                                  
-    this.ids[keyword] = id; // save it for the function that handle textarea changes.
-    
-    this.selector.find(".Ldt-createAnnotation-keywords").append(templ);
-    this.selector.find("#" + id).click(function(keyword) { return function() {
-      var contents = _this.selector.find(".Ldt-createAnnotation-Description").val();
-      if (contents.indexOf(keyword) != -1) {
-        var newVal = contents.replace(" " + keyword, "");
-        if (newVal == contents)
-          newVal = contents.replace(keyword, "");
-      } else {
-        if (contents === "")
-          var newVal = keyword;
-        else
-          var newVal = contents + " " + keyword;      
-      }
-      
-      _this.selector.find(".Ldt-createAnnotation-Description").val(newVal);
-      // we use a custom event because there's no simple way to test for a js
-      // change in a textfield.
-      _this.selector.find(".Ldt-createAnnotation-Description").trigger("js_mod");
-      // also call our update function.
-      //_this.handleTextChanges();
-    }
-   }(keyword));
-  }
-
-  // add the polemic buttons.
-  if(this.polemic_mode)
-    for (var polemic in this.polemics) {
-
-      var classname = IriSP.templToHTML("Ldt-createAnnotation-polemic-{{classname}}", {classname : this.polemics[polemic]});
-
-      var templ = IriSP.templToHTML("<button class='{{classname}} Ldt-createAnnotation-polemic-button'>{{polemic}}</button>",
-                  {classname: classname, polemic: polemic});
-                  
-      this.selector.find(".Ldt-createAnnotation-polemics").append(templ);
-      this.selector.find("." + classname).click(function(polemic) { return function() {
-          var contents = _this.selector.find(".Ldt-createAnnotation-Description").val();
-          if (contents.indexOf(polemic) != -1) {
-            var newVal = contents.replace(" " + polemic, "");
-            if (newVal == contents)
-              newVal = contents.replace(polemic, "");
-          } else {
-            if (contents === "")
-              var newVal = polemic;
-            else
-              var newVal = contents + " " + polemic;      
-          }
-          
-          _this.selector.find(".Ldt-createAnnotation-Description").val(newVal);
-          
-          // also call our update function.
-          _this.handleTextChanges();
-        }
-       }(polemic));
-      }    
+  this.selector.find(".Ldt-createAnnotation-keywords button, .Ldt-createAnnotation-polemics button").click(function() {
+      _this.addKeyword(IriSP.jQuery(this).text());
+  });
   
   // js_mod is a custom event because there's no simple way to test for a js
   // change in a textfield.                    
@@ -178,6 +123,19 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   }
 };
 
+/* Handles adding keywords and polemics */
+IriSP.createAnnotationWidget.prototype.addKeyword = function(_keyword) {
+    var _field = this.selector.find(".Ldt-createAnnotation-Description"),
+        _rx = IriSP.regexpFromText(_keyword),
+        _contents = _field.val();
+    _contents = ( _rx.test(_contents)
+        ? _contents.replace(_rx,"").replace("  "," ").trim()
+        : _contents.trim() + " " + _keyword
+    );
+    _field.val(_contents);
+    _field.trigger("js_mod");
+}
+
 /** handles clicks on the annotate button. Works only for the non-cinecast version */
 IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
   
@@ -237,24 +195,25 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
 IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
   var contents = this.selector.find(".Ldt-createAnnotation-Description").val();
 
-  for(var keyword in this.ids) {
-  
-    var id = this.ids[keyword];
-
-    if (contents.indexOf(keyword) != -1) {
-      /* the word is present in the textarea but the button is not toggled */
-      if (this.selector.find("#" + id).hasClass("Ldt-createAnnotation-absent-keyword"))
-          this.selector.find("#" + id).removeClass("Ldt-createAnnotation-absent-keyword")
-                                      .addClass("Ldt-createAnnotation-present-keyword");      
-    } else {
-      /* the word is absent from the textarea but the button is toggled */
-      if (this.selector.find("#" + id).hasClass("Ldt-createAnnotation-present-keyword")) {
-          this.selector.find("#" + id).removeClass("Ldt-createAnnotation-present-keyword")
-                                      .addClass("Ldt-createAnnotation-absent-keyword");
+  this.selector.find(".Ldt-createAnnotation-keywords button").each(function() {
+      var _rx = IriSP.regexpFromText(IriSP.jQuery(this).text());
+      if (_rx.test(contents)) {
+          IriSP.jQuery(this).removeClass("Ldt-createAnnotation-absent-keyword")
+            .addClass("Ldt-createAnnotation-present-keyword");
+      } else {
+          IriSP.jQuery(this).addClass("Ldt-createAnnotation-absent-keyword")
+            .removeClass("Ldt-createAnnotation-present-keyword");
       }
-    }
-  }
-  
+  });
+
+  this.selector.find(".Ldt-createAnnotation-polemics button").each(function() {
+      var _rx = IriSP.regexpFromText(IriSP.jQuery(this).text());
+      if (_rx.test(contents)) {
+          IriSP.jQuery(this).addClass("Ldt-createAnnotation-polemic-active");
+      } else {
+          IriSP.jQuery(this).removeClass("Ldt-createAnnotation-polemic-active");
+      }
+  });
   if (this.polemic_mode) {
     /* Also go through the polemics to highlight the buttons */
     for (var polemic in this.polemics) {
@@ -327,7 +286,7 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
   var _this = this;
   var textfield = this.selector.find(".Ldt-createAnnotation-Description");
   var contents = textfield.val();
-
+  
   if (contents === "") {  
     if (this.selector.find(".Ldt-createAnnotation-errorMessage").length === 0) {
       this.selector.find(".Ldt-createAnnotation-Container")
@@ -407,20 +366,23 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   annotation.content["data"] = contents;
   
   var meta = apiJson["meta"];
-  if (!IriSP.null_or_undefined(IriSP.user) && !IriSP.null_or_undefined(IriSP.user.name))
-    meta.creator = IriSP.user.name;    
-  else 
-    meta.creator = "An User";
+  
+  
+  var _username = this.selector.find(".Ldt-createAnnotation-userName").val();
+  meta.creator = (
+      (_username && _username.length)
+      ? _username
+      : (
+          (!IriSP.null_or_undefined(IriSP.user) && !IriSP.null_or_undefined(IriSP.user.name))
+          ? IriSP.user.name
+          : "Anonymous user"
+      )
+  );
   
   meta.created = Date().toString();
   
-  annotation["tags"] = [];
-  
-  for (var i = 0; i < this.keywords.length; i++) {
-    var keyword = this.keywords[i];
-    if (contents.indexOf(keyword) != -1)
-      annotation["tags"].push(keyword);
-  }
+  // All #hashtags are added to tags
+  annotation.tags = contents.match(/(#[\S]*)/g);
   
   var jsonString = JSON.stringify(apiJson);
   var project_id = this._serializer._data.meta.id;
@@ -431,7 +393,7 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                           
   IriSP.jQuery.ajax({
       url: url,
-      type: 'PUT',
+      type: this.api_method,
       contentType: 'application/json',
       data: jsonString,               
       //dataType: 'json',

@@ -21,6 +21,7 @@
   <div id="LdtPlayer"></div>
   
   <script  type="text/javascript">
+IriSP.jwplayer_swf_path = "../libs/player.swf";
     var file = "polemic_fr.json";
     var config = {            
         gui:{
@@ -46,7 +47,8 @@
             },
             {type: "StackGraphWidget",
              width: 640, /* required for this widget */
-             height: 50,              
+             height: 50,
+            streamgraph: true,         
              requires: [{
               type: "TooltipWidget",
               width: 180,
@@ -71,7 +73,9 @@
             {type: "TweetsWidget"},
             {type: "createAnnotationWidget"},
             {type: "TagCloudWidget",
-            excludeWords: ['#museoweb']}
+            excludeWords: ['#museoweb']},
+            {type: "AnnotationsListWidget"},
+            {type: "TraceWidget"}
             ]
         },
       player:{

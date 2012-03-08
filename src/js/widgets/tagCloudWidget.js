@@ -8,9 +8,9 @@ IriSP.TagCloudWidget.prototype.draw = function() {
     
     var _urlRegExp = /https?:\/\/[0-9a-zA-Z\.%\/-_]+/g,
         _stopWords = [
-            'aussi', 'and', 'avec', 'aux', 'bien', 'car', 'cette', 'comme', 'dans', 'donc', 'des', 'elle', 'encore', 'est',
+            'aussi', 'and', 'avec', 'aux', 'bien', 'car', 'cette', 'comme', 'dans', 'donc', 'des', 'elle', 'encore', 'entre', 'est',
             'être', 'eux', 'faire', 'fait', 'http', 'ici', 'ils', 'les', 'leur', 'leurs', 'mais', 'mes', 'même', 'mon', 'notre',
-            'non', 'nos', 'nous', 'ont', 'par', 'pas', 'peu', 'peut', 'plus', 'pour', 'que', 'qui', 'ses' ,'son', 'sont', 'sur',
+            'non', 'nos', 'nous', 'ont', 'par', 'pas', 'peu', 'peut', 'plus', 'pour', 'que', 'qui', 'sans', 'ses' ,'son', 'sont', 'sur',
             'tes', 'très', 'the', 'ton', 'tous', 'tout', 'une', 'votre', 'vos', 'vous' ],
         _regexpword = /[^\s\.&;,'"!\?\d\(\)\+\[\]\\\…\-«»:\/]{3,}/g,
         _words = {},
@@ -61,7 +61,7 @@ IriSP.TagCloudWidget.prototype.draw = function() {
                 .shuffle()
                 .map(function(_word) {
                     var _size = 10 + _scale * Math.sqrt(_word.count - _min);
-                    return '<li style="font-size:'
+                    return '<li class="Ldt-TraceMe" style="font-size:'
                         + _size
                         + 'px;">'
                         + _word.word
@@ -81,7 +81,7 @@ IriSP.TagCloudWidget.prototype.draw = function() {
         var _rgxp = new RegExp("(" + searchString.replace(/(\W)/g,'\\$1') + ")","gi");
         this.selector.find("li").each(function(_i, _e) {
             _e.innerHTML = searchString.length ?
-                _e.textContent.replace(_rgxp,'<span class="Ldt-TagCloud-actif">$1</span>')
+                _e.textContent.replace(_rgxp,'<span class="Ldt-TagCloud-actif Ldt-TraceMe">$1</span>')
                 : _e.textContent;
         });
     }));
