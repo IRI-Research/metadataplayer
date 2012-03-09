@@ -3317,6 +3317,8 @@ IriSP.createAnnotationWidget.prototype.showErrorScreen = function() {
   this.selector.find(".Ldt-createAnnotation-screen").hide();
   this.selector.find(".Ldt-createAnnotation-errorScreen").show();
   this._state = "errorScreen";
+  var _this = this;
+  window.setTimeout(function() { _this.showStartScreen(); }, 2000);
 };
 
 /** update show the final screen with links to share the created annotation */
@@ -3375,7 +3377,7 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
                       if (_this._state == "waitScreen") {
                         _this.showEndScreen(annotation);
                         if (_this.cinecast_version) {
-                          window.setTimeout(IriSP.wrap(_this, function() { this.showStartScreen(); }), 5000);
+                          window.setTimeout(function() { _this.showStartScreen(); }, 5000);
                         }
                       }
                       // hide the slicer widget

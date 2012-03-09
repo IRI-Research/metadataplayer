@@ -1,97 +1,104 @@
 {
-  	"format": "http://advene.org/ns/cinelab/",
+    "format": "http://advene.org/ns/cinelab/",
     "medias": [
-    {
-      "id": "Au- nom-du-peuple-italien", 
-      "meta": {
-        "actors": "Ugo Tognazzi, Vittorio Gassman, Ely Galleani", 
-        "directors": "Dino Risi", 
-        "duration": 120000, 
-        "nationalities": "Italie", 
-        "productionYear": "1971", 
-        "synopsis": "Un petit juge ...", 
-        "thumbnail": "http://xxxx.jpg", 
-        "title": "Au nom du peuple italien", 
-        "version": "VOST"
-      }, 
-      "url": "http://hd.fr.mediaplayer.allocine.fr/nmedia/18/86/23/92/19282986_fa3_vost_sd_001.flv"
-    }, 
-    {
-      "id": "Avatar", 
-      "meta": {
-        "duration": 120000, 
-        "thumbnail": "http://xxxx.jpg", 
-        "title": "Avatar"
-      }, 
-      "url": "http://allocine-f.akamaihd.net/nmedia/cinecast/avatar.mp4"
+        {
+            "id": "Au- nom-du-peuple-italien",
+            "meta": {
+                "actors": "Ugo Tognazzi, Vittorio Gassman, Ely Galleani",
+                "directors": "Dino Risi",
+                "duration": 120000,
+                "nationalities": "Italie",
+                "productionYear": "1971",
+                "synopsis": "Un petit juge ...",
+                "thumbnail": "http://xxxx.jpg",
+                "title": "Au nom du peuple italien",
+                "version": "VOST"
+            },
+            "url": "http://hd.fr.mediaplayer.allocine.fr/nmedia/18/86/23/92/19282986_fa3_vost_sd_001.flv"
+        }, {
+            "id": "Avatar",
+            "meta": {
+                "duration": 120000,
+                "thumbnail": "http://xxxx.jpg",
+                "title": "Avatar"
+            },
+            "url": "http://allocine-f.akamaihd.net/nmedia/cinecast/avatar.mp4"
+        }
+    ],
+    "annotation_types": [
+        {
+            "id": "UserAnnotation",
+            "meta": {
+                "description": "Annotation made during the Cinecast Festival."
+            }
+        }, {
+            "id": "MovieExtract",
+            "meta": {
+                "description": "Movie Extract."
+            }
+        }
+    ],
+    "annotations": [
+        {
+            "begin": 0,
+            "content": {
+                "data": "Acte 1 Sc 1"
+            },
+            "end": 10000,
+            "id": "1",
+            "media": "cinecast:Inception",
+            "meta": {
+                "created": "2012-02-15T00:00:00+01:00",
+                "creator": "VodKaster",
+                "thumbnail": "http://xxxx.jpg"
+            },
+            "type": "cinecast:MovieExtract",
+            "tags": ["cinecast:CultScene", "cinecast:CultMusic"]
+        }, {
+            "begin": 20000,
+            "content": {
+                "data": "Acte 2 Sc 2"
+            },
+            "end": 30000,
+            "id": "2",
+            "media": "cinecast:Inception",
+            "meta": {
+                "created": "2012-02-15T00:00:00+01:00",
+                "creator": "VodKaster",
+                "thumbnail": "http://xxxx.jpg"
+            },
+            "type": "cinecast:MovieExtract",
+            "tags": ["cinecast:Funny", "cinecast:CultMusic"]
+        }
+    ],
+    "tags": [
+        {
+            "id": "Funny",
+            "meta": {
+                "description": "Tain que c'est dr!"
+            }
+        }, {
+            "id": "CultScene",
+            "meta": {
+                "description": "La sc du sie !"
+            }
+        }, {
+            "id": "CultMusic",
+            "meta": {
+                "description": "Pom pom pi dom  !"
+            }
+        }
+    ],
+    "meta": {
+        "contributor": "admin",
+        "created": "2012-02-02T18:23:48.096335",
+        "creator": "admin",
+        "main_media": {
+            "id-ref": "9e6ccd47-4dc2-11e1-b6c2-c8bcc896c290"
+        },
+        "description": "",
+        "title": "front project : pj harvey - let england shake",
+        "id": "aab75563-4dc2-11e1-8cf2-c8bcc896c290",
+        "modified": "2012-02-21T11:48:56.825124"
     }
-  ],
-  "annotation_types": [
-    {
-      "id": "UserAnnotation", 
-      "meta": {
-        "description": "Annotation made during the Cinecast Festival."
-      }
-    }, 
-    {
-      "id": "MovieExtract", 
-      "meta": {
-        "description": "Movie Extract."
-      }
-    }
-  ], 
-  "annotations": [
-    {
-      "begin": 0, 
-      "content": {
-        "data": "Acte 1 Sc 1"
-      }, 
-      "end": 10000, 
-      "id": "1", 
-      "media": "cinecast:Inception", 
-      "meta": {
-        "created": "2012-02-15T00:00:00+01:00", 
-        "creator": "VodKaster", 
-        "thumbnail": "http://xxxx.jpg"
-      }, 
-      "type": "cinecast:MovieExtract",
-      "tags": [ "cinecast:CultScene", "cinecast:CultMusic" ]
-    }, 
-    {
-      "begin": 20000, 
-      "content": {
-        "data": "Acte 2 Sc 2"
-      }, 
-      "end": 30000, 
-      "id": "2", 
-      "media": "cinecast:Inception", 
-      "meta": {
-        "created": "2012-02-15T00:00:00+01:00", 
-        "creator": "VodKaster", 
-        "thumbnail": "http://xxxx.jpg"
-      }, 
-      "type": "cinecast:MovieExtract",
-      "tags": [ "cinecast:Funny", "cinecast:CultMusic" ]
-    }
-  ], 
-  "tags": [
-    {
-      "id": "Funny", 
-      "meta": {
-        "description": "Tain que c'est dr!"
-      }
-    }, 
-    {
-      "id": "CultScene", 
-      "meta": {
-        "description": "La sc du sie !"
-      }
-    }, 
-    {
-      "id": "CultMusic", 
-      "meta": {
-        "description": "Pom pom pi dom  !"
-      }
-    }
-  ]
 }

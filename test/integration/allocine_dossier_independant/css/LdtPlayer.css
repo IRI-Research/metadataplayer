@@ -416,6 +416,7 @@ button.ui-button-icon-only  {
   height: 10px !important;
   width: 10px !important;
   bottom: 0;
+  cursor: pointer;
 }
 
 /* tweet Widget */
@@ -634,6 +635,7 @@ button.ui-button-icon-only  {
     width: 590px; position: relative; clear: both;
     background: url(img-cinecast/createannbgd.png) no-repeat top left;
     padding: 20px 10px 0;
+  min-height: 150px;
 }
 /* */
 
