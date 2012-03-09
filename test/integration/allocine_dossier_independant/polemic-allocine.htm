@@ -29,16 +29,16 @@
     
     var config = {            
         gui:{
-            width:650,
+            width:610,
             height:2100,              
             container:'LdtPlayer',
-            css:'css/LdtPlayer.css',
+            css:'css/LdtPlayer.css?42',
             default_options : {
                 metadata:{
                 format:'cinelab',
                 src: json_url,
                 type:'json'},
-                width: 640
+                width: 610
             },
             widgets: [
             {type: "StackGraphWidget",
@@ -53,10 +53,8 @@
             {type: "AnnotationsListWidget",
              container: "AnnotationsListContainer"},
             {type: "SliderWidget"},
-            {type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
-             mode: "radio"},                     
-            {type: "ArrowWidget"},
-            {type: "TweetsWidget"},
+            {type: "PlayerWidget",
+             disable_annotate_btn: true},
             {type: "createAnnotationWidget",
             polemic_mode: false,
             cinecast_version: true,

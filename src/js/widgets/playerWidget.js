@@ -13,7 +13,7 @@ IriSP.PlayerWidget.prototype.draw = function() {
 	var height = this.height;
 	var heightS = this.height-20;
 	  
-	var playerTempl = IriSP.templToHTML(IriSP.player_template, {"share_template" : IriSP.share_template});
+	var playerTempl = IriSP.templToHTML(IriSP.player_template, this._config);
   this.selector.append(playerTempl);		
 	
   this.selector.children(".Ldt-controler").show();
@@ -39,8 +39,6 @@ IriSP.PlayerWidget.prototype.draw = function() {
   this.selector.find(".Ldt-CtrlSearch").click(function() { self.searchButtonHandler.call(self); });
   
   this.selector.find('.Ldt-CtrlSound').click(function() { self.muteHandler.call(self); } );
-
-  this.selector.find(".Ldt-CtrlPlay").attr( "style", "background-color:#CD21C24;" );
   
   /*
   var searchButtonPos = this.selector.find(".Ldt-CtrlSearch").position();

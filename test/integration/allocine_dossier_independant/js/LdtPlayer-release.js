@@ -1,7 +1,7 @@
 /* 
  * 	
  *	Copyright 2010-2012 Institut de recherche et d'innovation 
- *	contributor(s) : Karim Hamidou, Samuel Huron 
+ *	contributor(s) : Karim Hamidou, Samuel Huron, Raphael Velt, Thibaut Cavalie
  *	 
  *	contact@iri.centrepompidou.fr
  *	http://www.iri.centrepompidou.fr 
@@ -1087,22 +1087,22 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
     });
 };
 IriSP.SparklineWidget_template = "<div class='Ldt-sparklineWidget' style='width: {{width}}px; height: {{height}}px'>    <div class='Ldt-sparkLinePositionMarker' style='width: 0px; height: {{height}}px'></div>    <div class='Ldt-sparkLineClickOverlay' style='width: {{width}}px; height: {{height}}px'></div>    <div class='Ldt-sparkLine' style='width: {{width}}px; height: {{height}}px'>Loading</div></div>";
-IriSP.annotation_template = "{{! template for an annotation displayed in a segmentWidget }}<div title='{{divTitle}}' id='{{id}}'	class='Ldt-iri-chapter' 	style='left: {{startPixel}}px;          width: {{pxWidth}}px;          background-color:#{{hexa_color}};' 	></div>";
-IriSP.annotationWidget_template = "{{! template for the annotation widget }}<div class='Ldt-AnnotationsWidget'>  <!-- ugly div because we want to have a double border -->  <div class='Ldt-Annotation-DoubleBorder'>      <div class='Ldt-AnnotationContent'>          <div class='Ldt-AnnotationShareIcons'>         <a target='_blank' class='Ldt-fbShare' title='share on facebook'></a>         <a target='_blank' class='Ldt-TwShare' title='share on twitter'></a>         <a target='_blank'  class='Ldt-GplusShare' title='share on google+'></a>        </div>        <div class='Ldt-SaTitle'></div>        <div class='Ldt-SaDescription'></div>        <div class='Ldt-SaKeywords'></div>    </div>  </div></div>";
+IriSP.annotation_template = "{{! template for an annotation displayed in a segmentWidget }}<div title='{{divTitle}}' id='{{id}}'	class='Ldt-iri-chapter Ldt-TraceMe' 	style='left: {{startPixel}}px;          width: {{pxWidth}}px;          background-color:#{{hexa_color}};' 	></div>";
+IriSP.annotationWidget_template = "{{! template for the annotation widget }}<div class='Ldt-AnnotationsWidget'>  <!-- ugly div because we want to have a double border -->  <div class='Ldt-Annotation-DoubleBorder'>      <div class='Ldt-AnnotationContent'>          <div class='Ldt-AnnotationShareIcons'>         <a target='_blank' class='Ldt-fbShare Ldt-TraceMe' title='share on facebook'></a>         <a target='_blank' class='Ldt-TwShare Ldt-TraceMe' title='share on twitter'></a>         <a target='_blank'  class='Ldt-GplusShare Ldt-TraceMe' title='share on google+'></a>        </div>        <div class='Ldt-SaTitle'></div>        <div class='Ldt-SaDescription'></div>        <div class='Ldt-SaKeywords'></div>    </div>  </div></div>";
 IriSP.annotation_loading_template = "{{! template shown while the annotation widget is loading }}<div id='Ldt-load-container'><div id='Ldt-loader'>&nbsp;</div> Chargement... </div>";
-IriSP.annotationsListWidget_template = "{{! template for the annotation list widget }}<div class='Ldt-AnnotationsListWidget'>  <!-- ugly div because we want to have a double border -->  <div class='Ldt-Annotation-DoubleBorder'>    <ul>    {{#annotations}}      <li>        {{! if the url is not present, it means that the annotation exists             in the current project }}        {{^url}}        <a href='#id={{id}}'>        {{/url}}        {{! otherwise link to url }}        {{#url}}        <a href='{{url}}#id={{id}}'>        {{/url}}          <div style='overflow: auto; margin-top: 5px; margin-bottom: 5px;'>            <div class='Ldt-AnnotationsList-Caption'>            </div>            <div class='Ldt-AnnotationsList-Duration'>{{begin}} - {{end}}</div>            <div class='Ldt-AnnotationsList-Title'>{{title}}</div>            <div class='Ldt-AnnotationsList-Description'>{{desc}}</div>          </div>        </a>      </li>    {{/annotations}}    </ul>  </div></div>";
+IriSP.annotationsListWidget_template = "{{! template for the annotation list widget }}<div class='Ldt-AnnotationsListWidget'>  <!-- ugly div because we want to have a double border -->  <div class='Ldt-Annotation-DoubleBorder'>    <ul>    {{#annotations}}      <li id='Ldt-Annotation-li-{{id}}' class='Ldt-TraceMe'>        {{! if the url is not present, it means that the annotation exists             in the current project }}        {{^url}}        <a href='#id={{id}}'>        {{/url}}        {{! otherwise link to url }}        {{#url}}        <a href='{{url}}#id={{id}}'>        {{/url}}          <div style='overflow: auto; margin-top: 5px; margin-bottom: 5px;'>            <div class='Ldt-AnnotationsList-Caption'>            </div>            <div class='Ldt-AnnotationsList-Duration'>{{begin}} - {{end}}</div>            <div class='Ldt-AnnotationsList-Title'>{{title}}</div>            <div class='Ldt-AnnotationsList-Description'>{{desc}}</div>          </div>        </a>      </li>    {{/annotations}}    </ul>  </div></div>";
 IriSP.arrowWidget_template = "<div class='Ldt-arrowWidget Ldt-arrowLeftEdge'></div>";
-IriSP.createAnnotationWidget_template = "{{! template for the annotation creation widget }}<div class='Ldt-createAnnotationWidget'>  <!-- ugly div because we want to have a double border -->  <div class='Ldt-createAnnotation-DoubleBorder'>    <div class='Ldt-createAnnotation-startScreen'>      <div style='margin-bottom: 7px; overflow: auto;'>        <div class='Ldt-createAnnotation-Title'></div>        <div class='Ldt-createAnnotation-TimeFrame'></div>        {{^cinecast_version}}          <div class='Ldt-createAnnotation-Minimize' title='Cancel'></div>        {{/cinecast_version}}      </div>            <div class='Ldt-createAnnotation-Container'>        <textarea class='Ldt-createAnnotation-Description'></textarea>        <div class='Ldt-createAnnotation-profileArrow'>                  </div>        <div class='Ldt-createAnnotation-userAvatar'>        {{^user_avatar}}          <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>        {{/user_avatar}}        {{#user_avatar}}          <img src='{{ user_avatar }}'></img>        {{/user_avatar}}        </div>      </div>      <div class='Ldt-createAnnotation-submitButton'>        <div style='position: absolute; bottom: 5px; right: 5px;'>Submit</div>      </div>      <div class='Ldt-createAnnotation-keywords'>        Add keywords :             </div>      {{#polemic_mode}}      <div class='Ldt-createAnnotation-polemics'>        Add polemic keywords           </div>      {{/polemic_mode}}    </div>    <div class='Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>      <div class='Ldt-createAnnotation-spinner'></div>      Please wait while your request is being processed...    </div>    <div class='Ldt-createAnnotation-errorScreen' style='display: none; text-align: center'>      <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>      An error happened while contacting the server. Your annotation has not been saved.    </div>        <div class='Ldt-createAnnotation-endScreen' style='display: none'>      <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>      Thank you, your annotation has been saved.<br>      Would you like to share it on social networks ?      <div style='margin-top: 12px; text-align: center;'>          <a target='_blank' class='Ldt-createAnnotation-endScreen-TweetLink'></a>          <a target='_blank' class='Ldt-createAnnotation-endScreen-FbLink'></a>          <a target='_blank' class='Ldt-createAnnotation-endScreen-GplusLink'></a>                          </div>    </div>  </div></div>";
+IriSP.createAnnotationWidget_template = "{{! template for the annotation creation widget }}<div class='Ldt-createAnnotationWidget'>    <!-- ugly div because we want to have a double border -->    <div class='Ldt-createAnnotation-DoubleBorder'>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-startScreen'>            <div style='margin-bottom: 7px; overflow: auto;'>                <div class='Ldt-createAnnotation-Title'></div>                <div class='Ldt-createAnnotation-TimeFrame'></div>                {{^cinecast_version}} <div class='Ldt-createAnnotation-Minimize Ldt-TraceMe' title='Cancel'></div>                {{/cinecast_version}}            </div>            <div class='Ldt-createAnnotation-Container'>                {{#show_from_field}}                <label>Your name&nbsp;: </label><input class='Ldt-createAnnotation-userName Ldt-TraceMe' value='{{user_name}}' />                {{/show_from_field}}                <textarea class='Ldt-createAnnotation-Description Ldt-TraceMe'></textarea>                <div class='Ldt-createAnnotation-userAvatar Ldt-TraceMe'>                    {{^user_avatar}} <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>                    {{/user_avatar}}                    {{#user_avatar}} <img src='{{ user_avatar }}'></img>                    {{/user_avatar}}                </div>                <div class='Ldt-createAnnotation-profileArrow'></div>            </div>            <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>Submit</button>            {{#keywords.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-keywords'>                <label>Add keywords :</label>                <ul class='Ldt-floatList'>                {{#keywords}}                    <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe'>{{.}}</button></li>                {{/keywords}}                </ul>            </div>            {{/keywords.length}}            {{#polemic_mode}}            {{#polemics.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-polemics'>                <label>Add polemic keywords :</label>                <ul class='Ldt-floatList'>                {{#polemics}}                    <li><button class='Ldt-createAnnotation-polemic-{{className}} Ldt-createAnnotation-polemic-button Ldt-TraceMe'>{{keyword}}</button></li>                {{/polemics}}                </ul>            </div>            {{/polemics.length}}            {{/polemic_mode}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-spinner'></div>            Please wait while your request is being processed...        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-errorScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            An error happened while contacting the server. Your annotation has not been saved.        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-endScreen' style='display: none'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            Thank you, your annotation has been saved.            <br>            Would you like to share it on social networks ?            <div style='margin-top: 12px; text-align: center;'>                <a target='_blank' class='Ldt-createAnnotation-endScreen-TweetLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-FbLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-GplusLink Ldt-TraceMe'></a>            </div>        </div>        <div class='Ldt-floatClear'></div>    </div></div>";
 IriSP.createAnnotation_errorMessage_template = "<p class='Ldt-createAnnotation-errorMessage'>  You must enter text to submit an annotation</p>";
 IriSP.overlay_marker_template = "{{! the template for the small bars which is z-indexed over our segment widget }}<div class='Ldt-SegmentPositionMarker' style='background-color: #F7268E;'></div>";
-IriSP.player_template = "{{! template for the radio player }}<div class='Ldt-controler demo'>	<div class='Ldt-LeftPlayerControls'>    <div class='Ldt-button Ldt-CtrlPlay Ldt-CtrlPlay-PlayState' title='Play/Pause'></div>		<div class='Ldt-button Ldt-CtrlAnnotate' title='Annotate'></div>    <div class='Ldt-button Ldt-CtrlSearch' title='Search'></div>    <div class='LdtSearch'>      <input class='LdtSearchInput' style='margin-top: 2px; margin-bottom: 2px;'></input>    </div>    	</div>	<div class='Ldt-RightPlayerControls'>    <div class='Ldt-Time'>      <div class='Ldt-ElapsedTime' title='Elapsed time'>00:00</div>      <div class='Ldt-TimeSeparator'>/</div>      <div class='Ldt-TotalTime' title='Total time'>00:00</div>    </div>		<div class='Ldt-button Ldt-CtrlSound Ldt-CtrlSound-MuteState' title='Mute/Unmute'></div>	</div></div>";
+IriSP.player_template = "{{! template for the radio player }}<div class='Ldt-controler'>	<div class='Ldt-LeftPlayerControls'>        <div class='Ldt-Ctrl-button Ldt-CtrlPlay Ldt-CtrlPlay-PlayState Ldt-TraceMe' title='Play/Pause'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{^disable_annotate_btn}}    	<div class='Ldt-Ctrl-button Ldt-CtrlAnnotate Ldt-TraceMe' title='Annotate'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{/disable_annotate_btn}}        {{^disable_search_btn}}        <div class='Ldt-Ctrl-button Ldt-CtrlSearch Ldt-TraceMe' title='Search'></div>        {{/disable_search_btn}}        <div class='Ldt-Ctrl-spacer'></div>        <div class='LdtSearch'>          <input class='LdtSearchInput Ldt-TraceMe'></input>        </div>	</div>	<div class='Ldt-RightPlayerControls'>        <div class='Ldt-Ctrl-spacer'></div>        <div class='Ldt-Time'>          <div class='Ldt-ElapsedTime' title='Elapsed time'>00:00</div>          <div class='Ldt-TimeSeparator'>/</div>          <div class='Ldt-TotalTime' title='Total time'>00:00</div>        </div>        <div class='Ldt-Ctrl-spacer'></div>		<div class='Ldt-Ctrl-button Ldt-CtrlSound Ldt-CtrlSound-MuteState Ldt-TraceMe' title='Mute/Unmute'></div>	</div></div>";
 IriSP.search_template = "{{! template for the search container }}<div class='LdtSearchContainer'	style='margin-left: {{margin_left}}; position: absolute; margin-top: -60px;'>	<div class='LdtSearch'		style='display: none; background-color: #EEE; width: 165px; border-color: #CFCFCF; position: absolute; text-align: center;'>		<input class='LdtSearchInput'			style='margin-top: 1px; margin-bottom: 2px;' />	</div></div><div class='cleaner'></div>";
 IriSP.share_template = "{{! social network sharing template }}<a onclick='__IriSP.MyApiPlayer.share(\'delicious\');' title='partager avec delicious'><span class='share shareDelicious'>&nbsp;</span></a>		<a onclick='__IriSP.MyApiPlayer.share(\'facebook\');' title='partager avec facebook'> <span class='share shareFacebook'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'twitter\');' title='partager avec twitter'>  <span class='share shareTwitter'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'myspace\');' title='partager avec Myspace'>  <span class='share shareMySpace'>&nbsp;</span></a>";
 IriSP.sliceWidget_template = "{{! template for the slice widget }}<div class='Ldt-sliceWidget'>  {{! the whole bar }}  <div class='Ldt-sliceBackground'></div>    <div class='Ldt-sliceLeftHandle'></div>  {{! the zone which represents our slice }}  <div class='Ldt-sliceZone'></div>     <div class='Ldt-sliceRightHandle'></div></div>";
-IriSP.sliderWidget_template = "{{! template for the slider widget - it's composed of two divs we one overlayed on top    of the other }}<div class='Ldt-sliderBackground'></div><div class='Ldt-sliderForeground'></div><div class='Ldt-sliderPositionMarker'></div>";
+IriSP.sliderWidget_template = "{{! template for the slider widget - it's composed of two divs we one overlayed on top    of the other }}<div class='Ldt-sliderBackground'></div><div class='Ldt-sliderForeground'></div><div class='Ldt-sliderPositionMarker Ldt-TraceMe'></div>";
 IriSP.tooltip_template = "{{! template used by the jquery ui tooltip }}<div class='Ldt-tooltip'>  <div class='title'>{{title}}</div>  <div class='time'>{{begin}} : {{end}} </div>  <div class='description'>{{description}}</div></div>";
 IriSP.tooltipWidget_template = "{{! template for the tooltip widget }}<div class='tip'>	<div class='tipcolor' style='height:10px;width:10px'></div>	<div class='tiptext'></div>";
-IriSP.tweetWidget_template = "{{! template for the tweet widget }}<div class='Ldt-tweetWidget'>  <div class='Ldt-tweet-DoubleBorder'>      <div class='Ldt-tweetWidgetKeepOpen' title='dont minimize automatically'></div>      <div class='Ldt-tweetWidgetMinimize' title='minimize window'></div>      <div class='Ldt-tweetAvatar'></div>      <div class='Ldt-tweetAvatar-profileArrow'></div>      <div class='Ldt-tweetContents'></div>      <a href='' target='_blank' class='Ldt-Retweet'><div class='Ldt-RetweetIcon'></div> - Retweet </a>      <a href='' target='_blank' class='Ldt-TweetReply'><div class='Ldt-TweetReplyIcon'></div> - Reply</a>  </div></div>";/* utils.js - various utils that don't belong anywhere else */
+IriSP.tweetWidget_template = "{{! template for the tweet widget }}<div class='Ldt-tweetWidget'>  <div class='Ldt-tweet-DoubleBorder'>      <div class='Ldt-tweetWidgetKeepOpen Ldt-TraceMe' title='dont minimize automatically'></div>      <div class='Ldt-tweetWidgetMinimize Ldt-TraceMe' title='minimize window'></div>      <div class='Ldt-tweetAvatar'></div>      <div class='Ldt-tweetAvatar-profileArrow'></div>      <div class='Ldt-tweetContents'></div>      <a href='' target='_blank' class='Ldt-Retweet Ldt-TraceMe'><div class='Ldt-RetweetIcon'></div> - Retweet </a>      <a href='' target='_blank' class='Ldt-TweetReply Ldt-TraceMe'><div class='Ldt-TweetReplyIcon'></div> - Reply</a>  </div></div>";/* utils.js - various utils that don't belong anywhere else */
 
 /* trace function, for debugging */
 
@@ -1296,6 +1296,11 @@ if (Object.prototype.__defineGetter__&&!Object.defineProperty) {
    }
 }
 */
+
+/* Creates regexps from text */
+IriSP.regexpFromText = function(_text) {
+    return new RegExp('(' + _text.replace(/(\W)/gim,'\\$1') + ')','gim');
+}
 /* wrapper that simulates popcorn.js because
    popcorn is a bit unstable at the time */
 
@@ -1636,7 +1641,7 @@ IriSP.widgetsDefaults = {};
 
 IriSP.paths = {};
 
-IriSP.libdir = "js/libs/";
+IriSP.libdir = "/metadataplayer/src/js/libs/";
 IriSP.jwplayer_swf_path = "../test/libs/player.swf";
 IriSP.platform_url = "http://192.168.56.101/pf";
 IriSP.default_templates_vars = { };
@@ -1703,16 +1708,17 @@ IriSP.defaults.widgetsDefaults = function(platform_url) {
         keywords: ["#faux-raccord", "#mot-clef"],
         polemic_mode: true, /* enable polemics ? */
         /* polemics - the corresponding class names defined in the css should be for instance :
-           Ldt-createAnnotation-polemic-plusplus for plusplus
+           Ldt-createAnnotation-polemic-positive for positive
            Ldt-createAnnotation-polemic-equalequal for equalequal, etc.
         */
-        polemics: {"++" : "positive", "--" : "negative", "==" : "reference", "??" : "question"}, 
+        polemics: [ { "className" : "positive", "keyword" : "++" }, { "className" : "negative", "keyword" : "--" }, { "className" : "reference", "keyword" : "==" }, { "className" : "question", "keyword" : "??" } ], 
         cinecast_version: true, /* put to false to enable the platform version, true for the festival cinecast one. */
         
         /* where does the widget PUT the annotations - this is a mustache template. id refers to the id of the media ans is filled
            by the widget. 
         */
-        api_endpoint_template: platform_url + "/ldtplatform/api/ldt/annotations/{{id}}.json"
+        api_endpoint_template: platform_url + "/ldtplatform/api/ldt/annotations/{{id}}.json",
+        api_method: "PUT"
     },
     "SparklineWidget" : {
         column_width: 10 // the width of a column in pixels.
@@ -1815,10 +1821,31 @@ IriSP.Widget = function(Popcorn, config, Serializer) {
   } 
 
   if (config.hasOwnProperty("layoutManager")) {
-     this.layoutManager = config.layoutManager;     
+     this.layoutManager = config.layoutManager;
+  }
+  if (typeof this.selector != "undefined") {
+      this.selector.addClass("Ldt-TraceMe").addClass("Ldt-Widget");
   }
   
 };
+
+// This functions checks for configuration options
+
+IriSP.Widget.prototype.checkOption = function(_name, _default) {
+    this[_name] = (
+        typeof this._config[_name] != "undefined"
+        ? this._config[_name]
+        : (
+            (typeof IriSP.widgetsDefaults[this._config.type] != "undefined" && IriSP.widgetsDefaults[this._config.type][_name] != "undefined")
+            ? IriSP.widgetsDefaults[this._config.type][_name]
+            : (
+                typeof _default != "undefined"
+                ? _default
+                : null
+            )
+        )
+    )
+}
 
 /**
   * This method responsible of drawing a widget on screen.
@@ -2145,8 +2172,14 @@ IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager
       
       var i = 0;
       for(i = 0; i < widgetConfig.requires.length; i++) {
-        var widgetName = widgetConfig.requires[i]["type"];
-        widget[widgetName] = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, widgetConfig.requires[i], defaultOptions);
+        var widgetName = widgetConfig.requires[i]["type"],
+            _configobj = IriSP.jQuery.extend({}, widgetConfig.requires[i]),
+            _div = document.createElement('div'),
+            _container = IriSP.guid(arr.container + '_' + widgetName + '_');
+        _configobj.container = _container;
+        _div.id = _container;
+        widget.selector.append(_div);
+        widget[widgetName] = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, _configobj, defaultOptions);
       }
     }       
      
@@ -3050,15 +3083,23 @@ IriSP.ArrowWidget.prototype.releaseArrow = function() {
 IriSP.createAnnotationWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this._hidden = true;
-  this.keywords = IriSP.widgetsDefaults["createAnnotationWidget"].keywords;
   
-  this.polemic_mode = IriSP.widgetsDefaults["createAnnotationWidget"].polemic_mode;
-  this.polemics = IriSP.widgetsDefaults["createAnnotationWidget"].polemics;
-  
-  this.cinecast_version = IriSP.widgetsDefaults["createAnnotationWidget"].cinecast_version;
-  this.api_endpoint_template = IriSP.widgetsDefaults["createAnnotationWidget"].api_endpoint_template;
-  
-  this.ids = {}; /* a dictionnary linking buttons ids to keywords */
+  this.checkOption("keywords");
+  this.checkOption("polemic_mode", true);
+  this.checkOption("polemics");
+  this.checkOption("cinecast_version", false);
+  this.checkOption("api_endpoint_template");
+  this.checkOption("show_from_field", true);
+  this.checkOption("api_method");
+                         
+  if (!IriSP.null_or_undefined(IriSP.user)) {
+      if (!IriSP.null_or_undefined(IriSP.user.avatar)) {
+        this.user_avatar = IriSP.user.avatar;
+      }
+      if (!IriSP.null_or_undefined(IriSP.user.name)) {
+        this.user_name = IriSP.user.name;
+      }
+  }
   
   /* variables to save the current position of the slicer */
   if (this.cinecast_version) {
@@ -3078,14 +3119,9 @@ IriSP.createAnnotationWidget.prototype.clear = function() {
 
 IriSP.createAnnotationWidget.prototype.draw = function() {
   var _this = this;
-  var template_params = {cinecast_version: this.cinecast_version, 
-                         polemic_mode: this.polemic_mode};
-                         
-  if (!IriSP.null_or_undefined(IriSP.user) && !IriSP.null_or_undefined(IriSP.user.avatar))
-    template_params["user_avatar"] = IriSP.user.avatar;
   
   var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template, 
-                                           template_params);
+                                           this);
   
 	this.selector.append(annotationMarkup);
   
@@ -3094,70 +3130,12 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   else {
     this.showStartScreen();
   }
+
+  // Add onclick event to both polemic and keywords buttons
   
-  // add the keywords.
-  for (var i = 0; i < this.keywords.length; i++) {
-    var keyword = this.keywords[i];
-    var id = IriSP.guid("button_");
-    var templ = IriSP.templToHTML("<button id={{id}} class='Ldt-createAnnotation-absent-keyword'>{{keyword}}</button>", 
-                                  {keyword: keyword, id: id});
-                                  
-    this.ids[keyword] = id; // save it for the function that handle textarea changes.
-    
-    this.selector.find(".Ldt-createAnnotation-keywords").append(templ);
-    this.selector.find("#" + id).click(function(keyword) { return function() {
-      var contents = _this.selector.find(".Ldt-createAnnotation-Description").val();
-      if (contents.indexOf(keyword) != -1) {
-        var newVal = contents.replace(" " + keyword, "");
-        if (newVal == contents)
-          newVal = contents.replace(keyword, "");
-      } else {
-        if (contents === "")
-          var newVal = keyword;
-        else
-          var newVal = contents + " " + keyword;      
-      }
-      
-      _this.selector.find(".Ldt-createAnnotation-Description").val(newVal);
-      // we use a custom event because there's no simple way to test for a js
-      // change in a textfield.
-      _this.selector.find(".Ldt-createAnnotation-Description").trigger("js_mod");
-      // also call our update function.
-      //_this.handleTextChanges();
-    }
-   }(keyword));
-  }
-
-  // add the polemic buttons.
-  if(this.polemic_mode)
-    for (var polemic in this.polemics) {
-
-      var classname = IriSP.templToHTML("Ldt-createAnnotation-polemic-{{classname}}", {classname : this.polemics[polemic]});
-
-      var templ = IriSP.templToHTML("<button class='{{classname}} Ldt-createAnnotation-polemic-button'>{{polemic}}</button>",
-                  {classname: classname, polemic: polemic});
-                  
-      this.selector.find(".Ldt-createAnnotation-polemics").append(templ);
-      this.selector.find("." + classname).click(function(polemic) { return function() {
-          var contents = _this.selector.find(".Ldt-createAnnotation-Description").val();
-          if (contents.indexOf(polemic) != -1) {
-            var newVal = contents.replace(" " + polemic, "");
-            if (newVal == contents)
-              newVal = contents.replace(polemic, "");
-          } else {
-            if (contents === "")
-              var newVal = polemic;
-            else
-              var newVal = contents + " " + polemic;      
-          }
-          
-          _this.selector.find(".Ldt-createAnnotation-Description").val(newVal);
-          
-          // also call our update function.
-          _this.handleTextChanges();
-        }
-       }(polemic));
-      }    
+  this.selector.find(".Ldt-createAnnotation-btnblock button").click(function() {
+      _this.addKeyword(IriSP.jQuery(this).text());
+  });
   
   // js_mod is a custom event because there's no simple way to test for a js
   // change in a textfield.                    
@@ -3227,6 +3205,19 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   }
 };
 
+/* Handles adding keywords and polemics */
+IriSP.createAnnotationWidget.prototype.addKeyword = function(_keyword) {
+    var _field = this.selector.find(".Ldt-createAnnotation-Description"),
+        _rx = IriSP.regexpFromText(_keyword),
+        _contents = _field.val();
+    _contents = ( _rx.test(_contents)
+        ? _contents.replace(_rx,"").replace("  "," ").trim()
+        : _contents.trim() + " " + _keyword
+    );
+    _field.val(_contents);
+    _field.trigger("js_mod");
+}
+
 /** handles clicks on the annotate button. Works only for the non-cinecast version */
 IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
   
@@ -3286,41 +3277,19 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
 IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
   var contents = this.selector.find(".Ldt-createAnnotation-Description").val();
 
-  for(var keyword in this.ids) {
-  
-    var id = this.ids[keyword];
-
-    if (contents.indexOf(keyword) != -1) {
-      /* the word is present in the textarea but the button is not toggled */
-      if (this.selector.find("#" + id).hasClass("Ldt-createAnnotation-absent-keyword"))
-          this.selector.find("#" + id).removeClass("Ldt-createAnnotation-absent-keyword")
-                                      .addClass("Ldt-createAnnotation-present-keyword");      
-    } else {
-      /* the word is absent from the textarea but the button is toggled */
-      if (this.selector.find("#" + id).hasClass("Ldt-createAnnotation-present-keyword")) {
-          this.selector.find("#" + id).removeClass("Ldt-createAnnotation-present-keyword")
-                                      .addClass("Ldt-createAnnotation-absent-keyword");
-      }
-    }
-  }
-  
-  if (this.polemic_mode) {
-    /* Also go through the polemics to highlight the buttons */
-    for (var polemic in this.polemics) {
-      /* Add the active class to the button */
-      var classname = "Ldt-createAnnotation-polemic-" + this.polemics[polemic];
-      if (contents.indexOf(polemic) != -1) {        
-        this.selector.find("." + classname).addClass("Ldt-createAnnotation-polemic-active");
+  this.selector.find(".Ldt-createAnnotation-btnblock button").each(function() {
+      var _rx = IriSP.regexpFromText(IriSP.jQuery(this).text());
+      if (_rx.test(contents)) {
+          IriSP.jQuery(this).parent().addClass("Ldt-createAnnotation-active-button");
       } else {
-        if (this.selector.find("." + classname).addClass("Ldt-createAnnotation-polemic-active"))
-          this.selector.find("." + classname).removeClass("Ldt-createAnnotation-polemic-active")
+          IriSP.jQuery(this).parent().removeClass("Ldt-createAnnotation-active-button");
       }
-    }
-  }
+  });
+  
 };
 
 IriSP.createAnnotationWidget.prototype.showStartScreen = function() {
-  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+  this.selector.find(".Ldt-createAnnotation-screen").hide();
   this.selector.find(".Ldt-createAnnotation-startScreen").show();
   
   var jqTextfield = this.selector.find(".Ldt-createAnnotation-Description"); // handle on the textfield. used for the closure
@@ -3339,20 +3308,20 @@ IriSP.createAnnotationWidget.prototype.showStartScreen = function() {
 };
 
 IriSP.createAnnotationWidget.prototype.showWaitScreen = function() {
-  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+  this.selector.find(".Ldt-createAnnotation-screen").hide();
   this.selector.find(".Ldt-createAnnotation-waitScreen").show();
   this._state = "waitScreen";
 };
 
 IriSP.createAnnotationWidget.prototype.showErrorScreen = function() {
-  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+  this.selector.find(".Ldt-createAnnotation-screen").hide();
   this.selector.find(".Ldt-createAnnotation-errorScreen").show();
   this._state = "errorScreen";
 };
 
 /** update show the final screen with links to share the created annotation */
 IriSP.createAnnotationWidget.prototype.showEndScreen = function(annotation) {
-  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+  this.selector.find(".Ldt-createAnnotation-screen").hide();
   
   if (this.cinecast_version) {
     this.selector.find(".Ldt-createAnnotation-Title").parent().show();      
@@ -3376,7 +3345,7 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
   var _this = this;
   var textfield = this.selector.find(".Ldt-createAnnotation-Description");
   var contents = textfield.val();
-
+  
   if (contents === "") {  
     if (this.selector.find(".Ldt-createAnnotation-errorMessage").length === 0) {
       this.selector.find(".Ldt-createAnnotation-Container")
@@ -3456,20 +3425,23 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   annotation.content["data"] = contents;
   
   var meta = apiJson["meta"];
-  if (!IriSP.null_or_undefined(IriSP.user) && !IriSP.null_or_undefined(IriSP.user.name))
-    meta.creator = IriSP.user.name;    
-  else 
-    meta.creator = "An User";
+  
+  
+  var _username = this.selector.find(".Ldt-createAnnotation-userName").val();
+  meta.creator = (
+      (_username && _username.length)
+      ? _username
+      : (
+          (!IriSP.null_or_undefined(IriSP.user) && !IriSP.null_or_undefined(IriSP.user.name))
+          ? IriSP.user.name
+          : "Anonymous user"
+      )
+  );
   
   meta.created = Date().toString();
   
-  annotation["tags"] = [];
-  
-  for (var i = 0; i < this.keywords.length; i++) {
-    var keyword = this.keywords[i];
-    if (contents.indexOf(keyword) != -1)
-      annotation["tags"].push(keyword);
-  }
+  // All #hashtags are added to tags
+  annotation.tags = contents.match(/(#[\S]*)/g);
   
   var jsonString = JSON.stringify(apiJson);
   var project_id = this._serializer._data.meta.id;
@@ -3480,7 +3452,7 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                           
   IriSP.jQuery.ajax({
       url: url,
-      type: 'PUT',
+      type: this.api_method,
       contentType: 'application/json',
       data: jsonString,               
       //dataType: 'json',
@@ -3549,7 +3521,7 @@ IriSP.PlayerWidget.prototype.draw = function() {
 	var height = this.height;
 	var heightS = this.height-20;
 	  
-	var playerTempl = IriSP.templToHTML(IriSP.player_template, {"share_template" : IriSP.share_template});
+	var playerTempl = IriSP.templToHTML(IriSP.player_template, this._config);
   this.selector.append(playerTempl);		
 	
   this.selector.children(".Ldt-controler").show();
@@ -3575,8 +3547,6 @@ IriSP.PlayerWidget.prototype.draw = function() {
   this.selector.find(".Ldt-CtrlSearch").click(function() { self.searchButtonHandler.call(self); });
   
   this.selector.find('.Ldt-CtrlSound').click(function() { self.muteHandler.call(self); } );
-
-  this.selector.find(".Ldt-CtrlPlay").attr( "style", "background-color:#CD21C24;" );
   
   /*
   var searchButtonPos = this.selector.find(".Ldt-CtrlSearch").position();
@@ -3594,9 +3564,9 @@ IriSP.PlayerWidget.prototype.draw = function() {
 /* Update the elasped time div */
 IriSP.PlayerWidget.prototype.timeDisplayUpdater = function() {
   
-  if (this._previousSecond === undefined)
+  if (this._previousSecond === undefined) {
     this._previousSecond = this._Popcorn.roundTime();
-  
+  }
   else {
     /* we're still in the same second, so it's not necessary to update time */
     if (this._Popcorn.roundTime() == this._previousSecond)
@@ -3813,7 +3783,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
     var duration      = this._serializer.getDuration();      // timescale width 
     var frameLength   = lineSize / frameSize;    // frame timescale  
     var timeline;
-    var colors  = new Array("","#1D973D","#C5A62D","#CE0A15","#036AAE","#585858");
+    var colors  = new Array("","#1D973D","#036AAE","#CE0A15","#C5A62D","#585858");
     
     // array 
     //var tweets  = new Array();
@@ -4079,15 +4049,18 @@ IriSP.PolemicWidget.prototype.draw = function() {
                   e.time = frames[i].mytweetsID[k].timeframe;
                   e.title = frames[i].mytweetsID[k].title;
                   e.id = frames[i].mytweetsID[k].cinecast_id;
-                  var pos = IriSP.jQuery(e.node).offset();                  
-                  e.x = pos.left;
-                  e.y = pos.top;
                   this.svgElements[e.id] = e;
                   
-                  IriSP.jQuery(e.node).mouseenter(function(element) { return function (event) {                        
-                        // event.clientX and event.clientY are to raphael what event.pageX and pageY are to jquery.                        
-                        self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), event.pageX - 106, event.pageY - 160);
+                  IriSP.jQuery(e.node).mouseenter(function(element) { return function (_e) {                    
+                        self.TooltipWidget.show.call(self.TooltipWidget, element.title, element.attr("fill"), element.attrs.x + element.attrs.width / 2, element.attrs.y - 2);
                         element.displayed = true;
+                        self._Popcorn.trigger("IriSP.TraceWidget.MouseEvents", {
+                            "widget" : "StackGraphWidget",
+                            "type": "mousemove",
+                            "x": _e.pageX,
+                            "y": _e.pageY,
+                            "annotation_id": element.id
+                        });
                   }}(e)).mousedown(function(element) { return function () {                    
                     self._Popcorn.currentTime(element.time/1000);
                     self._Popcorn.trigger("IriSP.PolemicTweet.click", element.id); 
@@ -4254,7 +4227,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   if (typeof(view_type) === "undefined") {
     view_type = this._serializer.getNonTweetIds()[0];  
   }
-  this.positionMarker = this.selector.children(":first");
+  this.positionMarker = this.selector.find(".Ldt-SegmentPositionMarker");
   
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.positionUpdater));
 
@@ -4337,16 +4310,9 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     (function(divTitle) { 
      return function(event) {
           IriSP.jQuery(this).animate({opacity: 0.6}, 5);
-          var offset = IriSP.jQuery(this).offset();
-          var correction = IriSP.jQuery(this).outerWidth() / 2;
+          var offset_x = IriSP.jQuery(this).position().left + IriSP.jQuery(this).outerWidth() / 2;
 
-          var offset_x = offset.left + correction - 106;
-          if (offset_x < 0)
-            offset_x = 0;
-          
-          var offset_y = offset.top;          
-
-          self.TooltipWidget.show(divTitle, color, offset_x, offset_y - 160);
+          self.TooltipWidget.show(divTitle, color, offset_x, 0);
     } })(divTitle)).mouseout(function(){
       IriSP.jQuery(this).animate({opacity: 0.3}, 5);
       self.TooltipWidget.hide();
@@ -5071,14 +5037,19 @@ IriSP.StackGraphWidget.prototype.draw = function() {
     var _this = this;
     this.selector
         .click(IriSP.wrap(this, this.clickHandler))
-        .mousemove(function(event) {
-            _this.updateTooltip(event);
-            
-            // Also tell the world where the mouse is hovering.
-            var relX = event.pageX - _this.selector.offset().left;
-            var duration = _this._serializer.getDuration();
-            var Time = ((relX / _this.width) * duration).toFixed(2);
-            _this._Popcorn.trigger("IriSP.StackGraphWidget.mouseOver", Time);
+        .mousemove(function(_e) {
+            _this.updateTooltip(_e);
+            // Trace
+            var relX = _e.pageX - _this.selector.offset().left;
+            var _duration = _this._serializer.getDuration();
+            var _time = parseInt((relX / _this.width) * _duration);
+            _this._Popcorn.trigger("IriSP.TraceWidget.MouseEvents", {
+                "widget" : "StackGraphWidget",
+                "type": "mousemove",
+                "x": _e.pageX,
+                "y": _e.pageY,
+                "time": _time
+            });
 
         })
         .mouseout(function() {
@@ -5111,7 +5082,7 @@ IriSP.StackGraphWidget.prototype.clickHandler = function(event) {
 };
 
 IriSP.StackGraphWidget.prototype.updateTooltip = function(event) {
-    var _segment = ~~(this.sliceCount * (event.pageX - this.selector.offset().left)/this.width),
+    var _segment = Math.max(0,Math.min(this.groups.length - 1, Math.floor(this.sliceCount * (event.pageX - this.selector.offset().left)/this.width))),
         _valeurs = this.groups[_segment],
         _width = this.width / this.sliceCount,
         _html = '<ul style="list-style: none; margin: 0; padding: 0;">' + IriSP._(this.tagconf).map(function(_tag, _i) {
@@ -5124,7 +5095,7 @@ IriSP.StackGraphWidget.prototype.updateTooltip = function(event) {
                 + '</li>';
         }).join('') + '</ul>';
     this.TooltipWidget._shown = false; // Vraiment, on ne peut pas ouvrir le widget s'il n'est pas encore ouvert ?
-    this.TooltipWidget.show('','',event.pageX - 105, event.pageY - 160);
+    this.TooltipWidget.show('','',(_segment + .5)* this.width / this.sliceCount, 0);
     this.TooltipWidget.selector.find(".tip").html(_html);
     this.rectangleFocus.attr({
         "x" : _segment * _width,
@@ -5140,23 +5111,29 @@ IriSP.TagCloudWidget.prototype = new IriSP.Widget();
 
 IriSP.TagCloudWidget.prototype.draw = function() {
     
-    var _stopwords = [
-            'aussi', 'and', 'avec', 'aux', 'car', 'cette', 'comme', 'dans', 'donc', 'des', 'elle', 'est',
-            'être', 'eux', 'fait', 'ici', 'ils', 'les', 'leur', 'leurs', 'mais', 'mes', 'même', 'mon', 'notre',
-            'non', 'nos', 'nous', 'ont', 'par', 'pas', 'peu', 'pour', 'que', 'qui', 'ses' ,'son', 'sont', 'sur',
-            'tes', 'très', 'the', 'ton', 'tous', 'tout', 'une', 'votre', 'vos', 'vous'
-        ],
+    var _urlRegExp = /https?:\/\/[0-9a-zA-Z\.%\/-_]+/g,
+        _stopWords = [
+            'aussi', 'and', 'avec', 'aux', 'bien', 'car', 'cette', 'comme', 'dans', 'donc', 'des', 'elle', 'encore', 'entre', 'est',
+            'être', 'eux', 'faire', 'fait', 'http', 'ici', 'ils', 'les', 'leur', 'leurs', 'mais', 'mes', 'même', 'mon', 'notre',
+            'non', 'nos', 'nous', 'ont', 'par', 'pas', 'peu', 'peut', 'plus', 'pour', 'que', 'qui', 'sans', 'ses' ,'son', 'sont', 'sur',
+            'tes', 'très', 'the', 'ton', 'tous', 'tout', 'une', 'votre', 'vos', 'vous' ],
         _regexpword = /[^\s\.&;,'"!\?\d\(\)\+\[\]\\\…\-«»:\/]{3,}/g,
         _words = {},
         _showTitle = !this._config.excludeTitle,
         _showDescription = !this._config.excludeDescription,
+        _excludePattern = this._config.excludePattern || null,
         _tagCount = this._config.tagCount || 30;
+    if (typeof this._config.excludeWords !== "undefined" && this._config.excludeWords.length) {
+        IriSP._(this._config.excludeWords).each(function(_w) {
+            _stopWords.push(_w.toLowerCase());
+        });
+    }
     
     IriSP._(this._serializer._data.annotations).each(function(_annotation) {
        if (_annotation.content && _annotation.content.description) {
            var _txt = (_showTitle ? _annotation.content.title : '') + ' ' + (_showDescription ? _annotation.content.description : '')
-           IriSP._(_txt.toLowerCase().match(_regexpword)).each(function(_mot) {
-               if (_stopwords.indexOf(_mot) == -1) {
+           IriSP._(_txt.toLowerCase().replace(_urlRegExp, '').match(_regexpword)).each(function(_mot) {
+               if (_stopWords.indexOf(_mot) == -1 && (_excludePattern == null || !_excludePattern.test(_mot))) {
                    _words[_mot] = 1 + (_words[_mot] || 0);
                }
            })
@@ -5189,7 +5166,7 @@ IriSP.TagCloudWidget.prototype.draw = function() {
                 .shuffle()
                 .map(function(_word) {
                     var _size = 10 + _scale * Math.sqrt(_word.count - _min);
-                    return '<li style="font-size:'
+                    return '<li class="Ldt-TraceMe" style="font-size:'
                         + _size
                         + 'px;">'
                         + _word.word
@@ -5209,7 +5186,7 @@ IriSP.TagCloudWidget.prototype.draw = function() {
         var _rgxp = new RegExp("(" + searchString.replace(/(\W)/g,'\\$1') + ")","gi");
         this.selector.find("li").each(function(_i, _e) {
             _e.innerHTML = searchString.length ?
-                _e.textContent.replace(_rgxp,'<span class="Ldt-TagCloud-actif">$1</span>')
+                _e.textContent.replace(_rgxp,'<span class="Ldt-TagCloud-actif Ldt-TraceMe">$1</span>')
                 : _e.textContent;
         });
     }));
@@ -5235,9 +5212,20 @@ IriSP.TooltipWidget.prototype = new IriSP.Widget();
 
 IriSP.TooltipWidget.prototype.draw = function() {
   var templ = Mustache.to_html(IriSP.tooltipWidget_template);
-  // position the widget absolutely relative to document.
-  this.selector.css("position", "static");
+  // position the widget absolutely relative to document. --- NOOOO !!!!
+  this.selector.css({
+      "position": "absolute",
+      "top": 0,
+      "left": 0
+  });
+  this.selector.parent().css({
+      "position": "relative"
+  });
   this.selector.append(templ);
+  var _this = this;
+  this.selector.mouseover(function() {
+      _this.hide();
+  });
   this.hide();
 
 };
@@ -5253,22 +5241,148 @@ IriSP.TooltipWidget.prototype.show = function(text, color, x, y) {
 
   this.selector.find(".tipcolor").css("background-color", color);
   this._displayedText = text;
-	this.selector.find(".tiptext").html(text);
+  this.selector.find(".tiptext").html(text);
   
-  if (x < 0)
-    x = 0;
-  if (y < 0)
-    y = 0;
-  
-  this.selector.find(".tip").css("left", x).css("top", y);
-  this.selector.find(".tip").show();
+  var _tip = this.selector.find(".tip");
+  _tip.show();
+  _tip.css({
+      "left": Math.floor(x - _tip.outerWidth() / 2)+"px",
+      "top": Math.floor(y - _tip.outerHeight())+"px"
+  });
   this._shown = true;
 };
 
 IriSP.TooltipWidget.prototype.hide = function() {                                                   
   this.selector.find(".tip").hide();
   this._shown = false;  
-};/* a widget that displays tweet - used in conjunction with the polemicWidget */
+};IriSP.TraceWidget = function(Popcorn, config, Serializer) {
+  IriSP.Widget.call(this, Popcorn, config, Serializer);
+  this.lastEvent = "";
+  var _this = this,
+    _listeners = [
+        "IriSP.ArrowWidget.releaseArrow",
+        "IriSP.SliceWidget.hide",
+        "IriSP.AnnotationsWidget.show",
+        "IriSP.AnnotationsWidget.hide",
+        "IriSP.ArrowWidget.blockArrow",
+        "IriSP.SliceWidget.position",
+        "IriSP.SliceWidget.show",
+        "IriSP.SliceWidget.hide",
+        "IriSP.createAnnotationWidget.addedAnnotation",
+        "IriSP.search.open",
+        "IriSP.search.closed",
+        "IriSP.search",
+        "IriSP.search.cleared",
+        "IriSP.search.matchFound",
+        "IriSP.search.noMatchFound",
+        "IriSP.search.triggeredSearch",
+        "IriSP.TraceWidget.MouseEvents",
+        "play",
+        "pause",
+        "volumechange",
+        "timeupdate",
+        "seeked",
+        "play",
+        "pause"
+    ];
+    IriSP._(_listeners).each(function(_listener) {
+      _this._Popcorn.listen(_listener, function(_arg) {
+          _this.eventHandler(_listener, _arg);
+      });
+    });
+  
+}
+
+IriSP.TraceWidget.prototype = new IriSP.Widget();
+
+IriSP.TraceWidget.prototype.draw = function() {
+    this.mouseLocation = '';
+    var _this = this;
+    IriSP.jQuery(".Ldt-Widget").bind("click mouseover mouseout dragstart dragstop", function(_e) {
+        var _widget = this.id.match('LdtPlayer_widget_([^_]+)')[1],
+            _class = _e.target.className;
+        var _data = {
+            "type": _e.type,
+            "x": _e.clientX,
+            "y": _e.clientY,
+            "widget": _widget
+        }
+        if (typeof _class == "string" && _class.indexOf('Ldt-TraceMe') != -1) {
+            var _name = _e.target.localName,
+                _id = _e.target.id,
+                _text = _e.target.textContent.trim(),
+                _title = _e.target.title,
+                _value = _e.target.value;
+            _data.target = _name + (_id.length ? '#' + _id : '') + (_class.length ? '.' + _class.replace(/\s/g,'.').replace(/\.Ldt-(Widget|TraceMe)/g,'') : '');
+            if (typeof _title == "string" && _title.length && _title.length < 140) {
+                _data.title = _title;
+            }
+            if (typeof _text == "string" && _text.length && _text.length < 140) {
+                _data.text = _text;
+            }
+            if (typeof _value == "string" && _value.length) {
+                _data.value = _value;
+            }
+            _this._Popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
+        } else {
+            //console.log(_e.type+','+_this.mouseLocation+','+_widget);
+            if (_e.type == "mouseover") {
+                if (_this.mouseLocation != _widget) {
+                    _this._Popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
+                } else {
+                    if (typeof _this.moTimeout != "undefined") {
+                        clearTimeout(_this.moTimeout);
+                        delete _this.moTimeout;
+                    }
+                }
+            }
+            if (_e.type == "click") {
+                _this._Popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
+            }
+            if (_e.type == "mouseout") {
+                if (typeof _this.moTimeout != "undefined") {
+                    clearTimeout(_this.moTimeout);
+                }
+                _this.moTimeout = setTimeout(function() {
+                   if (_data.widget != _this.mouseLocation) {
+                       _this._Popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
+                   }
+                },100);
+            }
+        }
+        _this.mouseLocation = _widget;
+    });
+}
+
+IriSP.TraceWidget.prototype.eventHandler = function(_listener, _arg) {
+    var _traceName = 'Mdp_';
+    if (typeof _arg == "string" || typeof _arg == "number") {
+        _arg = { "value" : _arg }
+    }
+    if (typeof _arg == "undefined") {
+        _arg = {}
+    }
+    switch(_listener) {
+        case 'IriSP.TraceWidget.MouseEvents':
+            _traceName += _arg.widget + '_' + _arg.type;
+            delete _arg.widget;
+            delete _arg.type;
+        break;
+        case 'timeupdate':
+        case 'play':
+        case 'pause':
+            _arg.time = this._Popcorn.currentTime() * 1000;
+        case 'seeked':
+        case 'volumechange':
+            _traceName += 'Popcorn_' + _listener;
+        break;
+        default:
+            _traceName += _listener.replace('IriSP.','').replace('.','_');
+    }
+    this.lastEvent = _traceName;
+    console.log("trace('" + _traceName + "', " + JSON.stringify(_arg) + ");");
+}
+/* a widget that displays tweet - used in conjunction with the polemicWidget */
 
 IriSP.TweetsWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);

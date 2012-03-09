@@ -1,3 +1,19 @@
+/* Some general styling classes */
+
+.Ldt-floatClear {
+    display: block; width: 100%; height: 0; clear: both;
+}
+
+ul.Ldt-floatList {
+    padding: 0; margin: 0; list-style: none;
+}
+
+.Ldt-floatList li {
+    float: left;
+}
+
+/* */
+
 #demo-frame > div.demo { padding: 5px !important; };
 
 button.ui-button-icon-only  {
@@ -139,14 +155,10 @@ button.ui-button-icon-only  {
 
 /* player */
 .Ldt-controler {
-  font-size: 62.5%;
-  font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-  background:url('imgs/player_gradient.png') repeat-x transparent ;
-  height: 25px;
-  border-top: 1px solid #b6b8b8;
-  border-bottom: 1px solid #b6b8b8;
+  font-size: 10px;
+  background:url('img-cinecast/controlbarbgd.png') repeat-x transparent ;
+  height: 34px;
 }
-
 
 .Ldt-LeftPlayerControls {
   float:left;
@@ -156,67 +168,70 @@ button.ui-button-icon-only  {
   float: right;
 }
 
-.Ldt-button {
-  border-left: 1px solid #b6b8b8;
+.Ldt-Ctrl-button {
   float: left;
+  width: 30px; height: 25px;
+  background: url('img-cinecast/player-sprites.png');
   cursor: pointer;
- 
+}
+
+.Ldt-Ctrl-spacer {
+    float: left; width: 2px; background: url(img-cinecast/controlbarspacer.png); height: 34px;
 }
 
 .Ldt-CtrlPlay {
-
-  background-position: 0 0;
-  width: 59px;
-  height: 25px;
+  margin: 4px 15px;
 }
 
 .Ldt-CtrlPlay-PlayState {
-  background:url('imgs/play_sprite.png') no-repeat transparent ;
+  background-position: 0 0;
+}
+
+.Ldt-CtrlPlay-PlayState:hover {
+  background-position: 0 -25px;
+}
+
+.Ldt-CtrlPlay-PlayState:active {
+  background-position: 0 -50px;
 }
 
 .Ldt-CtrlPlay-PauseState {
-  background:url('imgs/pause_sprite.png') no-repeat transparent ;
+  background-position: -30px 0;
 }
 
-.Ldt-CtrlPlay:hover {
-  background-position: 0 -25px;
+.Ldt-CtrlPlay-PauseState:hover {
+  background-position: -30px -25px;
 }
 
-.Ldt-CtrlPlay:active {
-  background-position: 0 -50px;
+.Ldt-CtrlPlay-PauseState:active {
+  background-position: -30px -50px;
 }
+
 
 .Ldt-CtrlAnnotate {
-  background:url('imgs/annotate_sprite.png') no-repeat scroll 0 0 transparent ;
-  width: 33px;
-  height: 25px;
-  border-right: 1px solid #b6b8b8;
-  float: left;
+  margin: 4px 2px;
+  background-position: -60px 0;
 }
 
 .Ldt-CtrlAnnotate:hover {
-  background-position: 0 -25px;
+  background-position: -60px -25px;
 }
 
 .Ldt-CtrlAnnotate:active {
-  background-position: 0 -50px;
+  background-position: -60px -50px;
 }
 
 .Ldt-CtrlSearch {
-  background:url('imgs/search_sprite.png') no-repeat scroll 0 0 transparent ;
-  width: 33px;
-  height: 25px;
-  border-right: 1px solid #b6b8b8;
-  float: left;
-  border-left: none;
+  margin: 4px 2px;
+  background-position: -90px 0;
 }
 
 .Ldt-CtrlSearch:hover {
-  background-position: 0 -25px;
+  background-position: -90px -25px;
 }
 
 .Ldt-CtrlSearch:active {
-  background-position: 0 -50px;
+  background-position: -90px -50px;
 }
 
 .LdtSearch {
@@ -230,68 +245,53 @@ button.ui-button-icon-only  {
 }
 
 .Ldt-Time {
-  position: inherit;
   float: left;
-  border-right: 1px solid #b6b8b8;
-  height: 25px;
-  padding-right: 2px;
+  margin: 8px 5px;
   font-size: 12px;
   font-family: Arial, Verdana, sans-serif;
 }
 
 .Ldt-ElapsedTime {
-  margin-top: 4px;
-  margin-right: 2px;
   float: left;
-  color: #4a4a4a;
 }
 
 .Ldt-TimeSeparator {
-  margin-top: 4px;      
+  margin: 0 4px;      
   float: left;
-  padding-left: 1px;
-  padding-right: 1px;
 }
 
 .Ldt-TotalTime {
-  margin-top: 4px;
-  margin-left: 2px;
   float: left;
-  color: #b2b2b2; 
 }
 
 .Ldt-CtrlSound {
-  width: 33px;
-  height: 25px;
-  border-right: 1px solid #b6b8b8;
-  float: right;
-  border-left: none;
+  margin: 4px 2px;
 }
 
 .Ldt-CtrlSound-SoundState {
-  background:url('imgs/sound_sprite.png') no-repeat scroll 0 0 transparent ;
+  background-position: -120px 0;
+}
+
+.Ldt-CtrlSound-SoundState:hover {
+  background-position: -120px -25px;
+}
+
+.Ldt-CtrlSound-SoundState:active {
+  background-position: -120px -50px;
 }
 
 .Ldt-CtrlSound-MuteState {
-  background:url('imgs/mute_sprite.png') no-repeat scroll 0 0 transparent ;
+  background-position: -150px 0;
 }
 
-.Ldt-CtrlSound:hover {
-  background-position: 0 -25px;
+.Ldt-CtrlSound-MuteState:hover {
+  background-position: -150px -25px;
 }
 
-.Ldt-CtrlSound:active {
-  background-position: 0 -50px;
+.Ldt-CtrlSound-MuteState:active {
+  background-position: -150px -50px;
 }
-/*
-.Ldt-CtrlSound {
-  float: right;
-  border-left: none;
-  height: 25px;
-  top: 7px;
-  position: inherit;
-}
-*/    
+    
 .Ldt-cleaner {
   clear:both;
 }
@@ -623,19 +623,19 @@ button.ui-button-icon-only  {
   z-index: 2;
 }
 
+/* CINECAST Annotation Widget block */
+
 .Ldt-createAnnotationWidget {
-  font-size: 12px;
-  font-family: "Arial",  "Verdana", "sans-serif";
-  background-color:#eeeeee;
-  background:url('imgs/wire_pattern.png') repeat scroll transparent ;
-  border: 1px solid #b6b8b8;  
+    width: 610px; padding-bottom: 10px; clear: both;
+    background: url(img-cinecast/createannbgd.png) no-repeat bottom right;
 }
 
 .Ldt-createAnnotation-DoubleBorder {
-  border: 1px solid white;
-  overflow: auto;
-  padding: 7px;
+    width: 590px; position: relative; clear: both;
+    background: url(img-cinecast/createannbgd.png) no-repeat top left;
+    padding: 20px 10px 0;
 }
+/* */
 
 .Ldt-createAnnotation-Title {
   font-size: 12pt;
@@ -649,78 +649,98 @@ button.ui-button-icon-only  {
   color : #ff5589;  
   float: left;
 }
-
-.Ldt-createAnnotation-Container {  
-  display: table;
-  border-collapse: collapse;
-  width: 100%;
+.Ldt-createAnnotation-Container {
+  float: left; width: 100%; clear: both;
 }
 
-.Ldt-createAnnotation-userAvatar {  
-  width: 48px;
-  display: table-cell;
-  vertical-align: top;
+.Ldt-createAnnotation-userAvatar { 
+  float: right; 
+  width: 64px;
+  height: 64px;
+  border: 1px #ffffff;
+  margin: 5px 0;
 }
 
-.Ldt-createAnnotation-userAvatar img {  
+.Ldt-createAnnotation-userAvatar img { 
+  float: right; 
   display: block;
-  border: 1px solid #babcbc;
+  max-width: 100%;
+  max-height: 100%;
 }
+
+/* CINECAST HIDE ARROW */
 
 .Ldt-createAnnotation-profileArrow {
-  display: table-cell;
-  vertical-align: top;
-  height: 48px;
-  width: 15px;
-  padding-right: 5px;
-  padding-left: 3px;
-  background:url('imgs/profile_arrow.png');
-  background-repeat: no-repeat;
-  background-position: center;
+  display: none;
 }
+
+/* CINECAST SPECIFIC TEXTAREA */
 
 .Ldt-createAnnotation-Description {
-  display: table-cell;   
-  width: 100%;
-  height: 48px;  
-  vertical-align: top;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
+  float: left; background: url(img-cinecast/textarea.png); border: none; margin: 0; padding: 4px 8px 4px 4px; width: 493px; height: 68px;
+  resize: none;
+}
+/* */
+
+.Ldt-createAnnotation-btnblock {
+   float: left; width: 450px; margin: 5px 0;
 }
 
-.Ldt-createAnnotation-present-keyword {
-  border: 1px solid #ffffff;
-  background-color: #217bcb;
-  color: #ffffff;
-  padding: 3px;
-  padding-left: 4px;
-  padding-right: 4px;
-  cursor: pointer;
+.Ldt-createAnnotation-btnblock label {
+    float: left; margin: 2px 8px 2px 0;
 }
 
-.Ldt-createAnnotation-absent-keyword {
-  border: 1px solid #ffffff;
-  background-color: #d93c71;
-  color: #ffffff;
-  padding: 3px;
-  padding-left: 4px;
-  padding-right: 4px;
-  cursor: pointer;
+/* CINECAST SPECIFIC TAG BUTTONS */
+
+.Ldt-createAnnotation-keywords li {
+    border: none; margin: 0 0 0 5px; height: 23px; padding: 0 0 0 20px;
+    background: url(img-cinecast/tag.png) left top no-repeat;
+    cursor: pointer;
 }
+
+.Ldt-createAnnotation-keyword-button {
+  font-size: 14px; color: #ffffff;
+  height: 23px; padding: 0 5px 0 0; border: none; margin: 0;
+  background: url(img-cinecast/tag.png) right top no-repeat;
+    cursor: pointer;
+}
+
+.Ldt-createAnnotation-keywords li:hover {
+  background-position: left -23px;
+}
+
+.Ldt-createAnnotation-keywords li:hover .Ldt-createAnnotation-keyword-button {
+  background-position: right -23px;
+}
+
+.Ldt-createAnnotation-keywords li.Ldt-createAnnotation-active-button {
+  background-position: left -46px;
+}
+
+.Ldt-createAnnotation-keywords li.Ldt-createAnnotation-active-button .Ldt-createAnnotation-keyword-button {
+  background-position: right -46px; padding: 0 15px 0 0;
+}
+/* */
+
+/* CINECAST SUBMIT BUTTON */
 
 .Ldt-createAnnotation-submitButton {
   float: right;
-  background-color: #d93c71;
-  color: #ffffff;
+  width: 96px;
+  height: 34px;
+  background: url(img-cinecast/greenbutton.png);
+  border: none;
+  margin: 8px 0;
+  font-size: 13px;
+  text-transform: uppercase;
   cursor: pointer;
-  background-image: url('imgs/submit_annotation.png');
-  background-repeat: no-repeat;
-  height: 48px;
-  width: 48px;
-  position: relative;
-  margin-top: 3px;
 }
+
+.Ldt-createAnnotation-submitButton:hover {
+    background-position: 0 -34px;
+}
+
+/* */
 
 .Ldt-createAnnotation-endScreen {
   background-color: #ffffff;
@@ -747,58 +767,7 @@ button.ui-button-icon-only  {
   background:url('imgs/minimize.png');
 }
 
-/* polemic tweet annotation buttons */
-.Ldt-createAnnotation-polemics {
-  padding-top: 2px;
-}
-
-.Ldt-createAnnotation-polemic-button {
-  margin: 0;
-  border: 0;
-  padding: 0;
-  margin-right: 2px;
-  width: 38px;
-  height: 26px;
-  text-indent: -999px;
-  background: url(imgs/polemic_buttons_sprite.png);
-}
-
-.Ldt-createAnnotation-polemic-positive:hover {
-    background-position: 0 -26px;
-}
-.Ldt-createAnnotation-polemic-positive.Ldt-createAnnotation-polemic-active {
-    background-position: 0 -52px;
-}
-
-.Ldt-createAnnotation-polemic-negative {
-    background-position: -38px 0;
-}
-.Ldt-createAnnotation-polemic-negative:hover {
-    background-position: -38px -26px;
-}
-.Ldt-createAnnotation-polemic-negative.Ldt-createAnnotation-polemic-active {
-    background-position: -38px -52px;
-}
-
-.Ldt-createAnnotation-polemic-reference {
-    background-position: -76px 0;
-}
-.Ldt-createAnnotation-polemic-reference:hover {
-    background-position: -76px -26px;
-}
-.Ldt-createAnnotation-polemic-reference.Ldt-createAnnotation-polemic-active {
-    background-position: -76px -52px;
-}
-
-.Ldt-createAnnotation-polemic-question {
-    background-position: -114px 0;
-}
-.Ldt-createAnnotation-polemic-question:hover {
-    background-position: -114px -26px;
-}
-.Ldt-createAnnotation-polemic-question.Ldt-createAnnotation-polemic-active {
-    background-position: -114px -52px;
-}
+/* */
 
 .Ldt-createAnnotation-spinner {
 	display: inline;

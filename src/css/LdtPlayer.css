@@ -1,3 +1,20 @@
+/* Some general styling classes */
+
+.Ldt-floatClear {
+    display: block; width: 100%; height: 0; clear: both;
+}
+
+ul.Ldt-floatList {
+    padding: 0; margin: 0; list-style: none;
+}
+
+.Ldt-floatList li {
+    float: left;
+}
+
+
+/* */
+
 #demo-frame > div.demo { padding: 5px !important; };
 
 button.ui-button-icon-only  {
@@ -139,12 +156,11 @@ button.ui-button-icon-only  {
 
 /* player */
 .Ldt-controler {
-  font-size: 62.5%;
+  font-size: 10px;
   font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
   background:url('imgs/player_gradient.png') repeat-x transparent ;
   height: 25px;
-  border-top: 1px solid #b6b8b8;
-  border-bottom: 1px solid #b6b8b8;
+  border: 1px solid #b6b8b8;
 }
 
 
@@ -156,67 +172,70 @@ button.ui-button-icon-only  {
   float: right;
 }
 
-.Ldt-button {
-  border-left: 1px solid #b6b8b8;
+.Ldt-Ctrl-button {
   float: left;
+  width: 30px; height: 25px;
+  background: url('imgs/player-sprites.png');
   cursor: pointer;
- 
+}
+
+.Ldt-Ctrl-spacer {
+    float: left; width: 1px; height: 25px; background: #b6b8b8;
 }
 
 .Ldt-CtrlPlay {
-
-  background-position: 0 0;
-  width: 59px;
-  height: 25px;
+  margin: 0 15px;
 }
 
 .Ldt-CtrlPlay-PlayState {
-  background:url('imgs/play_sprite.png') no-repeat transparent ;
+  background-position: 0 0;
+}
+
+.Ldt-CtrlPlay-PlayState:hover {
+  background-position: 0 -25px;
+}
+
+.Ldt-CtrlPlay-PlayState:active {
+  background-position: 0 -50px;
 }
 
 .Ldt-CtrlPlay-PauseState {
-  background:url('imgs/pause_sprite.png') no-repeat transparent ;
+  background-position: -30px 0;
 }
 
-.Ldt-CtrlPlay:hover {
-  background-position: 0 -25px;
+.Ldt-CtrlPlay-PauseState:hover {
+  background-position: -30px -25px;
 }
 
-.Ldt-CtrlPlay:active {
-  background-position: 0 -50px;
+.Ldt-CtrlPlay-PauseState:active {
+  background-position: -30px -50px;
 }
+
 
 .Ldt-CtrlAnnotate {
-  background:url('imgs/annotate_sprite.png') no-repeat scroll 0 0 transparent ;
-  width: 33px;
-  height: 25px;
-  border-right: 1px solid #b6b8b8;
-  float: left;
+  margin: 0 2px;
+  background-position: -60px 0;
 }
 
 .Ldt-CtrlAnnotate:hover {
-  background-position: 0 -25px;
+  background-position: -60px -25px;
 }
 
 .Ldt-CtrlAnnotate:active {
-  background-position: 0 -50px;
+  background-position: -60px -50px;
 }
 
 .Ldt-CtrlSearch {
-  background:url('imgs/search_sprite.png') no-repeat scroll 0 0 transparent ;
-  width: 33px;
-  height: 25px;
-  border-right: 1px solid #b6b8b8;
-  float: left;
-  border-left: none;
+  margin: 0 2px;
+  background-position: -90px 0;
 }
 
 .Ldt-CtrlSearch:hover {
-  background-position: 0 -25px;
+  background-position: -90px -25px;
 }
 
 .Ldt-CtrlSearch:active {
-  background-position: 0 -50px;
+  background-position: -90px -50px;
 }
 
 .LdtSearch {
@@ -230,68 +249,55 @@ button.ui-button-icon-only  {
 }
 
 .Ldt-Time {
-  position: inherit;
   float: left;
-  border-right: 1px solid #b6b8b8;
-  height: 25px;
-  padding-right: 2px;
+  margin: 5px;
   font-size: 12px;
   font-family: Arial, Verdana, sans-serif;
 }
 
 .Ldt-ElapsedTime {
-  margin-top: 4px;
-  margin-right: 2px;
   float: left;
   color: #4a4a4a;
 }
 
 .Ldt-TimeSeparator {
-  margin-top: 4px;      
+  margin: 0 4px;      
   float: left;
-  padding-left: 1px;
-  padding-right: 1px;
 }
 
 .Ldt-TotalTime {
-  margin-top: 4px;
-  margin-left: 2px;
   float: left;
   color: #b2b2b2; 
 }
 
 .Ldt-CtrlSound {
-  width: 33px;
-  height: 25px;
-  border-right: 1px solid #b6b8b8;
-  float: right;
-  border-left: none;
+  margin: 0 2px;
 }
 
 .Ldt-CtrlSound-SoundState {
-  background:url('imgs/sound_sprite.png') no-repeat scroll 0 0 transparent ;
+  background-position: -120px 0;
+}
+
+.Ldt-CtrlSound-SoundState:hover {
+  background-position: -120px -25px;
+}
+
+.Ldt-CtrlSound-SoundState:active {
+  background-position: -120px -50px;
 }
 
 .Ldt-CtrlSound-MuteState {
-  background:url('imgs/mute_sprite.png') no-repeat scroll 0 0 transparent ;
+  background-position: -150px 0;
 }
 
-.Ldt-CtrlSound:hover {
-  background-position: 0 -25px;
+.Ldt-CtrlSound-MuteState:hover {
+  background-position: -150px -25px;
 }
 
-.Ldt-CtrlSound:active {
-  background-position: 0 -50px;
+.Ldt-CtrlSound-MuteState:active {
+  background-position: -150px -50px;
 }
-/*
-.Ldt-CtrlSound {
-  float: right;
-  border-left: none;
-  height: 25px;
-  top: 7px;
-  position: inherit;
-}
-*/    
+
 .Ldt-cleaner {
   clear:both;
 }
@@ -652,63 +658,59 @@ button.ui-button-icon-only  {
   float: left;
 }
 
-.Ldt-createAnnotation-Container {  
-  display: table;
-  border-collapse: collapse;
-  width: 100%;
+.Ldt-createAnnotation-Container {
+  float: left; width: 100%; clear: both;
 }
 
-.Ldt-createAnnotation-userAvatar {  
+.Ldt-createAnnotation-userAvatar { 
+  float: right; 
   width: 48px;
-  display: table-cell;
-  vertical-align: top;
-}
-
-.Ldt-createAnnotation-userAvatar img {  
-  display: block;
+  height: 48px;
+  margin: 7px 0;
   border: 1px solid #babcbc;
 }
 
+.Ldt-createAnnotation-userAvatar img { 
+  float: right; 
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
 .Ldt-createAnnotation-profileArrow {
-  display: table-cell;
+  float: right;
   vertical-align: top;
   height: 48px;
   width: 15px;
-  padding-right: 5px;
-  padding-left: 3px;
-  background:url('imgs/profile_arrow.png');
-  background-repeat: no-repeat;
-  background-position: center;
+  margin: 7px 5px;
+  background:url('imgs/profile_arrow.png') center no-repeat;
 }
 
 .Ldt-createAnnotation-Description {
-  display: table-cell;   
-  width: 100%;
-  height: 48px;  
-  vertical-align: top;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
+  float: left;
+  width: 520px;
+  height: 56px; padding: 2px;
+  resize: none;
 }
 
-.Ldt-createAnnotation-present-keyword {
+.Ldt-createAnnotation-btnblock {
+   float: left; width: 450px;  margin: 5px 0;
+}
+
+.Ldt-createAnnotation-btnblock label {
+    float: left; margin-left: 12px; margin: 2px 8px 2px 0; font-size: 12px;
+}
+
+.Ldt-createAnnotation-keyword-button {
   border: 1px solid #ffffff;
   background-color: #217bcb;
   color: #ffffff;
-  padding: 3px;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding: 3px 4px;
   cursor: pointer;
 }
 
-.Ldt-createAnnotation-absent-keyword {
-  border: 1px solid #ffffff;
+.Ldt-createAnnotation-active-button .Ldt-createAnnotation-keyword-button {
   background-color: #d93c71;
-  color: #ffffff;
-  padding: 3px;
-  padding-left: 4px;
-  padding-right: 4px;
-  cursor: pointer;
 }
 
 .Ldt-createAnnotation-submitButton {
@@ -722,6 +724,10 @@ button.ui-button-icon-only  {
   width: 48px;
   position: relative;
   margin-top: 3px;
+  padding: 28px 0 0;
+  font-size: 13px;
+  border: none;
+  text-align: center;
 }
 
 .Ldt-createAnnotation-endScreen {
@@ -750,9 +756,6 @@ button.ui-button-icon-only  {
 }
 
 /* polemic tweet annotation buttons */
-.Ldt-createAnnotation-polemics {
-  padding-top: 2px;
-}
 
 .Ldt-createAnnotation-polemic-button {
   margin: 0;
@@ -763,12 +766,13 @@ button.ui-button-icon-only  {
   height: 26px;
   text-indent: -999px;
   background: url(imgs/polemic_buttons_sprite.png);
+  cursor: pointer;
 }
 
 .Ldt-createAnnotation-polemic-positive:hover {
     background-position: 0 -26px;
 }
-.Ldt-createAnnotation-polemic-positive.Ldt-createAnnotation-polemic-active {
+.Ldt-createAnnotation-active-button .Ldt-createAnnotation-polemic-positive {
     background-position: 0 -52px;
 }
 
@@ -778,7 +782,7 @@ button.ui-button-icon-only  {
 .Ldt-createAnnotation-polemic-negative:hover {
     background-position: -38px -26px;
 }
-.Ldt-createAnnotation-polemic-negative.Ldt-createAnnotation-polemic-active {
+.Ldt-createAnnotation-active-button .Ldt-createAnnotation-polemic-negative {
     background-position: -38px -52px;
 }
 
@@ -788,7 +792,7 @@ button.ui-button-icon-only  {
 .Ldt-createAnnotation-polemic-reference:hover {
     background-position: -76px -26px;
 }
-.Ldt-createAnnotation-polemic-reference.Ldt-createAnnotation-polemic-active {
+.Ldt-createAnnotation-active-button .Ldt-createAnnotation-polemic-reference {
     background-position: -76px -52px;
 }
 
@@ -798,7 +802,7 @@ button.ui-button-icon-only  {
 .Ldt-createAnnotation-polemic-question:hover {
     background-position: -114px -26px;
 }
-.Ldt-createAnnotation-polemic-question.Ldt-createAnnotation-polemic-active {
+.Ldt-createAnnotation-active-button .Ldt-createAnnotation-polemic-question {
     background-position: -114px -52px;
 }
 

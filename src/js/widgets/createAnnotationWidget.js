@@ -51,7 +51,7 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
 
   // Add onclick event to both polemic and keywords buttons
   
-  this.selector.find(".Ldt-createAnnotation-keywords button, .Ldt-createAnnotation-polemics button").click(function() {
+  this.selector.find(".Ldt-createAnnotation-btnblock button").click(function() {
       _this.addKeyword(IriSP.jQuery(this).text());
   });
   
@@ -195,42 +195,19 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
 IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
   var contents = this.selector.find(".Ldt-createAnnotation-Description").val();
 
-  this.selector.find(".Ldt-createAnnotation-keywords button").each(function() {
+  this.selector.find(".Ldt-createAnnotation-btnblock button").each(function() {
       var _rx = IriSP.regexpFromText(IriSP.jQuery(this).text());
       if (_rx.test(contents)) {
-          IriSP.jQuery(this).removeClass("Ldt-createAnnotation-absent-keyword")
-            .addClass("Ldt-createAnnotation-present-keyword");
+          IriSP.jQuery(this).parent().addClass("Ldt-createAnnotation-active-button");
       } else {
-          IriSP.jQuery(this).addClass("Ldt-createAnnotation-absent-keyword")
-            .removeClass("Ldt-createAnnotation-present-keyword");
+          IriSP.jQuery(this).parent().removeClass("Ldt-createAnnotation-active-button");
       }
   });
-
-  this.selector.find(".Ldt-createAnnotation-polemics button").each(function() {
-      var _rx = IriSP.regexpFromText(IriSP.jQuery(this).text());
-      if (_rx.test(contents)) {
-          IriSP.jQuery(this).addClass("Ldt-createAnnotation-polemic-active");
-      } else {
-          IriSP.jQuery(this).removeClass("Ldt-createAnnotation-polemic-active");
-      }
-  });
-  if (this.polemic_mode) {
-    /* Also go through the polemics to highlight the buttons */
-    for (var polemic in this.polemics) {
-      /* Add the active class to the button */
-      var classname = "Ldt-createAnnotation-polemic-" + this.polemics[polemic];
-      if (contents.indexOf(polemic) != -1) {        
-        this.selector.find("." + classname).addClass("Ldt-createAnnotation-polemic-active");
-      } else {
-        if (this.selector.find("." + classname).addClass("Ldt-createAnnotation-polemic-active"))
-          this.selector.find("." + classname).removeClass("Ldt-createAnnotation-polemic-active")
-      }
-    }
-  }
+  
 };
 
 IriSP.createAnnotationWidget.prototype.showStartScreen = function() {
-  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+  this.selector.find(".Ldt-createAnnotation-screen").hide();
   this.selector.find(".Ldt-createAnnotation-startScreen").show();
   
   var jqTextfield = this.selector.find(".Ldt-createAnnotation-Description"); // handle on the textfield. used for the closure
@@ -249,20 +226,20 @@ IriSP.createAnnotationWidget.prototype.showStartScreen = function() {
 };
 
 IriSP.createAnnotationWidget.prototype.showWaitScreen = function() {
-  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+  this.selector.find(".Ldt-createAnnotation-screen").hide();
   this.selector.find(".Ldt-createAnnotation-waitScreen").show();
   this._state = "waitScreen";
 };
 
 IriSP.createAnnotationWidget.prototype.showErrorScreen = function() {
-  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+  this.selector.find(".Ldt-createAnnotation-screen").hide();
   this.selector.find(".Ldt-createAnnotation-errorScreen").show();
   this._state = "errorScreen";
 };
 
 /** update show the final screen with links to share the created annotation */
 IriSP.createAnnotationWidget.prototype.showEndScreen = function(annotation) {
-  this.selector.find(".Ldt-createAnnotation-DoubleBorder").children().hide();
+  this.selector.find(".Ldt-createAnnotation-screen").hide();
   
   if (this.cinecast_version) {
     this.selector.find(".Ldt-createAnnotation-Title").parent().show();      

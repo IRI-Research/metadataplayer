@@ -9,39 +9,41 @@
                 {{^cinecast_version}} <div class='Ldt-createAnnotation-Minimize Ldt-TraceMe' title='Cancel'></div>
                 {{/cinecast_version}}
             </div>
-            <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-Container'>
+            <div class='Ldt-createAnnotation-Container'>
                 {{#show_from_field}}
                 <label>Your name&nbsp;: </label><input class='Ldt-createAnnotation-userName Ldt-TraceMe' value='{{user_name}}' />
                 {{/show_from_field}}
                 <textarea class='Ldt-createAnnotation-Description Ldt-TraceMe'></textarea>
-                <div class='Ldt-createAnnotation-profileArrow'></div>
                 <div class='Ldt-createAnnotation-userAvatar Ldt-TraceMe'>
                     {{^user_avatar}} <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>
                     {{/user_avatar}}
                     {{#user_avatar}} <img src='{{ user_avatar }}'></img>
                     {{/user_avatar}}
                 </div>
+                <div class='Ldt-createAnnotation-profileArrow'></div>
             </div>
-            <div class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>
-                <div style='position: absolute; bottom: 5px; right: 5px;'>
-                    Submit
-                </div>
-            </div>
+            <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>Submit</button>
             {{#keywords.length}}
-            <div class='Ldt-createAnnotation-keywords'>
-                Add keywords :
+            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-keywords'>
+                <label>Add keywords :</label>
+                <ul class='Ldt-floatList'>
                 {{#keywords}}
-                    <button class='Ldt-createAnnotation-absent-keyword Ldt-TraceMe'>{{.}}</button>
+                    <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe'>{{.}}</button></li>
                 {{/keywords}}
+                </ul>
             </div>
             {{/keywords.length}}
             {{#polemic_mode}}
-            <div class='Ldt-createAnnotation-polemics'>
-                Add polemic keywords :
+            {{#polemics.length}}
+            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-polemics'>
+                <label>Add polemic keywords :</label>
+                <ul class='Ldt-floatList'>
                 {{#polemics}}
-                    <button class='Ldt-createAnnotation-polemic-{{className}} Ldt-createAnnotation-polemic-button Ldt-TraceMe'>{{keyword}}</button>
+                    <li><button class='Ldt-createAnnotation-polemic-{{className}} Ldt-createAnnotation-polemic-button Ldt-TraceMe'>{{keyword}}</button></li>
                 {{/polemics}}
+                </ul>
             </div>
+            {{/polemics.length}}
             {{/polemic_mode}}
         </div>
         <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>
@@ -63,5 +65,6 @@
                 <a target='_blank' class='Ldt-createAnnotation-endScreen-GplusLink Ldt-TraceMe'></a>
             </div>
         </div>
+        <div class='Ldt-floatClear'></div>
     </div>
 </div>
