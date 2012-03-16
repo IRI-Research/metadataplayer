@@ -54,7 +54,7 @@ button.ui-button-icon-only  {
 }
 .tooltip {
   display:none;
-  background:transparent url(imgs/white_arrow_mini.png);
+  background:transparent url(imgs/black_arrow_mini.png);
   font-size:12px;
   height:55px;
   width:180px;
@@ -358,7 +358,7 @@ button.ui-button-icon-only  {
   padding : 3px;
   z-index: 10000000000;
   max-width: 200px;
-  background: transparent url("imgs/white_arrow_long.png");
+  background: transparent url("imgs/black_arrow_long.png");
   font-size: 12px;
   height: 125px;
   width: 180px;
@@ -366,7 +366,7 @@ button.ui-button-icon-only  {
   padding-left: 15px;
   padding-top: 15px;
   padding-right: 15px;
-  color: black;
+  color: #ffffff;
   font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
   overflow:hidden;
 }
@@ -805,47 +805,80 @@ button.ui-button-icon-only  {
   max-height: 480px;
 }
 
-.Ldt-AnnotationsListWidget ul {
-  padding: 5px;
+.Ldt-AnnotationsList-ul {
+  list-style: none;
+  padding: 0 3px;
 }
 
-.Ldt-AnnotationsListWidget li {
-  list-style-type: none;
+.Ldt-AnnotationsList-li {
   cursor: pointer;
-  display: table-row;
-  padding-top: 2px;
-  height: 64px;
+  float: left; width: 100%; clear: both;
+  margin: 2px 0; padding: 2px 0;
+  position: relative;
+  min-height: 70px;
 }
 
-.Ldt-AnnotationsListWidget li:hover {
-  background-color: #e9e9e9;
+.Ldt-AnnotationsList-li:hover {
+  background-color: #333333;
 }
 
-.Ldt-AnnotationsListWidget li a {
+.Ldt-AnnotationsListWidget a {
   text-decoration: none;
 }
 
-.Ldt-AnnotationsList-Caption {
-  float: left;
-  display: table-cell;
-  vertical-align: middle;
-  height: 64px;
-  width: 64px;
-  background-image: url('imgs/video_sequence.png');
+.Ldt-AnnotationList-Thumbnail {
+    border: none;
+    float: left;
+    max-width: 75px;
+    max-height: 48px;
 }
 
 .Ldt-AnnotationsList-Duration {  
-  color : #f7268e;  
-  float: right;
-  text-align: left;
-  width: 120px;
+  color : #ffffff;
+  position: absolute; top: 55px; left: 5px; text-align: center;
+}
+
+.Ldt-AnnotationsList-TcSeparator, .Ldt-AnnotationsList-End {
+    display: none;
 }
 
 .Ldt-AnnotationsList-Title {
-  color: #0068c4;
   font-size: 13px;
-  display: table-cell;
-  width: 80%;
+  margin: 0 0 2px 80px;
+}
+
+.Ldt-AnnotationsList-Title a {
+  color: #ffffff;
+}
+.Ldt-AnnotationsList-Description {
+    color: #dddddd;
+  font-style: italic;
+  margin: 0 0 2px 80px;
+}
+
+.Ldt-AnnotationsList-Tags {
+    float: left; clear: both; padding: 0; margin: 2px 0 0 80px; list-style: none;
+}
+
+.Ldt-AnnotationsList-Tag-Li {
+    float: left; border: none; margin: 0 0 0 5px; height: 23px; padding: 0 0 0 20px;
+    background: url(img-cinecast/tag.png) left top no-repeat;
+    cursor: pointer;
+}
+
+.Ldt-AnnotationsList-Tag-Div {
+  font-size: 14px; color: #ffffff;
+  height: 20px; padding: 3px 5px 0 0; border: none; margin: 0;
+  background: url(img-cinecast/tag.png) right top no-repeat;
+    cursor: pointer;
+}
+
+.Ldt-AnnotationsList-Tag-Li:hover {
+  background-position: left -23px;
+}
+
+.Ldt-AnnotationsList-Tag-Li:hover .Ldt-AnnotationsList-Tag-Div {
+  background-position: right -23px;
 }
 
 /* Tagcloud */

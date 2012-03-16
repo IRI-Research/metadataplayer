@@ -40,7 +40,7 @@
     ],
     "annotations": [
         {
-            "begin": 0,
+            "begin": 10000,
             "content": {
                 "data": "Acte 1 Sc 1"
             },
@@ -59,7 +59,7 @@
             "content": {
                 "data": "Acte 2 Sc 2"
             },
-            "end": 30000,
+            "end": 20000,
             "id": "2",
             "media": "cinecast:Inception",
             "meta": {

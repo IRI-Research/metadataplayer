@@ -1,29 +1,36 @@
 {{! template for the annotation list widget }}
 <div class='Ldt-AnnotationsListWidget'>
-  <!-- ugly div because we want to have a double border -->
-  <div class='Ldt-Annotation-DoubleBorder'>
-    <ul>
-    {{#annotations}}
-      <li id='Ldt-Annotation-li-{{id}}' class='Ldt-TraceMe'>
-        {{! if the url is not present, it means that the annotation exists 
-            in the current project }}
-        {{^url}}
-        <a href='#id={{id}}'>
-        {{/url}}
-        {{! otherwise link to url }}
-        {{#url}}
-        <a href='{{url}}#id={{id}}'>
-        {{/url}}
-          <div style='overflow: auto; margin-top: 5px; margin-bottom: 5px;'>
-            <div class='Ldt-AnnotationsList-Caption'>
+    <ul class='Ldt-AnnotationsList-ul'>
+        {{#annotations}}
+        <li id='Ldt-Annotation-li-{{id}}' class='Ldt-AnnotationsList-li Ldt-TraceMe'>
+            <img class='Ldt-AnnotationsList-Thumbnail' src='{{thumbnail}}' />
+            <div class='Ldt-AnnotationsList-Duration'>
+                <span class='Ldt-AnnotationsList-Begin'>{{begin}}</span>
+                <span class='Ldt-AnnotationsList-TcSeparator'>-</span>
+                <span class='Ldt-AnnotationsList-End'>{{end}}</span>
             </div>
-            <div class='Ldt-AnnotationsList-Duration'>{{begin}} - {{end}}</div>
-            <div class='Ldt-AnnotationsList-Title'>{{title}}</div>
-            <div class='Ldt-AnnotationsList-Description'>{{desc}}</div>
-          </div>
-        </a>
-      </li>
-    {{/annotations}}
+            <div class='Ldt-AnnotationsList-Title'>
+            {{! if the url is not present, it means that the annotation exists
+            in the current project }}
+            {{^url}} <a href='#id={{id}}'> {{/url}}
+            {{! otherwise link to url }}
+            {{#url}} <a href='{{url}}#id={{id}}'> {{/url}}
+                {{title}}
+            </a>
+            </div>
+            <div class='Ldt-AnnotationsList-Description'>
+                {{desc}}
+            </div>
+            {{#tags.length}}
+            <ul class='Ldt-AnnotationsList-Tags'>
+                {{#tags}}
+                <li class='Ldt-AnnotationsList-Tag-Li'>
+                    <div class='Ldt-AnnotationsList-Tag-Div'>{{.}}</div>
+                </li>
+                {{/tags}}
+            </ul>
+            {{/tags.length}}
+        </li>
+        {{/annotations}}
     </ul>
-  </div>
 </div>

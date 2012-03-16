@@ -1,0 +1,192 @@
+{
+    "medias": [
+        {
+            "id": "cinecast:Bamako",
+            "url": "http://hd.fr.mediaplayer.allocine.fr/nmedia/18/86/23/92/19282986_fa3_vost_sd_001.flv",
+            "meta": {
+                "actors": ["Aïssa Maïga", " Tiécoura Traoré", " Maïmouna Hélène Diarra"],
+                "directors": ["Abderrahmane Sissako"],
+                "nationalities": ["FR"],
+                "duration": 7080000,
+                "productionYear": "2006",
+                "synopsis": null,
+                "thumbnail": "http://www.vodkaster.com/var/vodkaster/storage/images/films/bamako/42851-1-fre-FR/Bamako3_reference.jpg",
+                "title": "Bamako",
+                "version": "VOST"
+            }
+        }
+    ],
+    "annotation_types": {
+        "id": "UserAnnotation",
+        "meta": {
+            "description": "Annotation made during the Cinecast Festival."
+        }
+    },
+    "annotations": [
+        {
+            "id": "ac:3637",
+            "begin": 2516000,
+            "end": 2516000,
+            "timecode": 0,
+            "content": {
+                "data": "sdfdfdfd"
+            },
+            "media": "cinecast:Bamako",
+            "tags": [],
+            "type": "cinecast:UserAnnotation",
+            "meta": {
+                "thumbnail": "/users/02/8/6/4/Z20010705122316617847468/img/1178887619_singe.jpg",
+                "extract": "789849",
+                "status": "active",
+                "timestamp": 12994,
+                "created": "2012-03-16T10:01:00.9370000",
+                "creator": "ac:3"
+            }
+        }, {
+            "id": "ac:3638",
+            "begin": 187000,
+            "end": 187000,
+            "timecode": 0,
+            "content": {
+                "data": "test #vodkaster #allocine #universcine"
+            },
+            "media": "cinecast:Bamako",
+            "tags": ["#vodkaster", "#allocine", "#universcine"],
+            "type": "cinecast:UserAnnotation",
+            "meta": {
+                "thumbnail": "/users/02/7/7/4/Z20110103142031450307477/img/0tyw3myh.cce.jpg",
+                "extract": "789849",
+                "status": "active",
+                "timestamp": 12995,
+                "created": "2012-03-16T11:06:47.3170000",
+                "creator": "ac:495"
+            }
+        }, {
+            "id": "ac:3639",
+            "begin": 164000,
+            "end": 164000,
+            "timecode": 0,
+            "content": {
+                "data": "edtgefvtdtevd dhevdgvbed debzdgbyezgbdyhebzyd bhd ehdbyhebyhddbhegzvdgevd ghdvegvdgezvdg devtgdvgezvd gbvdgevzgdvzegd gedvgezvd #vodkaster #allocine #universcine"
+            },
+            "media": "cinecast:Bamako",
+            "tags": ["#vodkaster", "#allocine", "#universcine"],
+            "type": "cinecast:UserAnnotation",
+            "meta": {
+                "thumbnail": "/users/02/7/7/4/Z20110103142031450307477/img/0tyw3myh.cce.jpg",
+                "extract": "789849",
+                "status": "active",
+                "timestamp": 12999,
+                "created": "2012-03-16T11:14:14.7930000",
+                "creator": "ac:495"
+            }
+        }, {
+            "id": "ac:3640",
+            "begin": 154000,
+            "end": 154000,
+            "timecode": 0,
+            "content": {
+                "data": "tegvdge"
+            },
+            "media": "cinecast:Bamako",
+            "tags": [],
+            "type": "cinecast:UserAnnotation",
+            "meta": {
+                "thumbnail": "/users/02/7/7/4/Z20110103142031450307477/img/0tyw3myh.cce.jpg",
+                "extract": "789849",
+                "status": "active",
+                "timestamp": 13003,
+                "created": "2012-03-16T11:14:30.0930000",
+                "creator": "ac:495"
+            }
+        }, {
+            "id": "ac:3641",
+            "begin": 177000,
+            "end": 177000,
+            "timecode": 0,
+            "content": {
+                "data": "test #vodkaster"
+            },
+            "media": "cinecast:Bamako",
+            "tags": ["#vodkaster"],
+            "type": "cinecast:UserAnnotation",
+            "meta": {
+                "thumbnail": "/users/02/7/7/4/Z20110103142031450307477/img/0tyw3myh.cce.jpg",
+                "extract": "789849",
+                "status": "active",
+                "timestamp": 13004,
+                "created": "2012-03-16T11:27:56.9200000",
+                "creator": "ac:495"
+            }
+        }, {
+            "id": "ac:3642",
+            "begin": 434000,
+            "end": 434000,
+            "timecode": 0,
+            "content": {
+                "data": "fgsdkjfgfsdkjgfkjgfjksdgjkkjgfkjsg"
+            },
+            "media": "cinecast:Bamako",
+            "tags": [],
+            "type": "cinecast:UserAnnotation",
+            "meta": {
+                "thumbnail": "/users/02/5/4/4/Z20101124101755407924445/img/02kehkqh.re1.jpg",
+                "extract": "789849",
+                "status": "active",
+                "timestamp": 13006,
+                "created": "2012-03-16T11:49:33.0770000",
+                "creator": "ac:513"
+            }
+        }, {
+            "id": "ac:3643",
+            "begin": 177000,
+            "end": 177000,
+            "timecode": 0,
+            "content": {
+                "data": "tetsd dgzydg"
+            },
+            "media": "cinecast:Bamako",
+            "tags": [],
+            "type": "cinecast:UserAnnotation",
+            "meta": {
+                "thumbnail": "/users/02/8/6/4/Z20010705122316617847468/img/1178887619_singe.jpg",
+                "extract": "789849",
+                "status": "active",
+                "timestamp": 13007,
+                "created": "2012-03-16T12:50:38.3100000",
+                "creator": "ac:3"
+            }
+        }, {
+            "id": "ac:3644",
+            "begin": 177000,
+            "end": 177000,
+            "timecode": 0,
+            "content": {
+                "data": "coucou"
+            },
+            "media": "cinecast:Bamako",
+            "tags": [],
+            "type": "cinecast:UserAnnotation",
+            "meta": {
+                "thumbnail": "/users/02/4/2/5/Z20090108105245410444524/img/io54r5is.0qi.jpg",
+                "extract": "789849",
+                "status": "active",
+                "timestamp": 13008,
+                "created": "2012-03-16T13:37:48.3600000",
+                "creator": "ac:382"
+            }
+        }
+    ],
+    "meta": {
+        "id": "cinecast:Bamako",
+        "created": "2012-03-16T14:13:37.0460836Z",
+        "creator": "AlloCiné"
+    },
+    "format": "http://advene.org/ns/cinelab/",
+    "imports": [
+        {
+            "id": "cinecast",
+            "url": "http://cinecast.fr/festival/configuration.json"
+        }
+    ]
+}

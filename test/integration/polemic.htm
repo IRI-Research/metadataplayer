@@ -25,7 +25,7 @@ IriSP.jwplayer_swf_path = "../libs/player.swf";
     var file = "polemic_fr.json";
     var config = {            
         gui:{
-            width:650,
+            width:640,
             height:800,              
             container:'LdtPlayer',
 			default_options: {
@@ -36,28 +36,49 @@ IriSP.jwplayer_swf_path = "../libs/player.swf";
 			},
             css:'../../src/css/LdtPlayer.css',
             widgets: [
-            {type: "PolemicWidget",
-             width: 640, /* required for this widget */
+ /*           {type: "PolemicWidget",
+             width: 640,
              height: 50,              
              requires: [{
               type: "TooltipWidget",
               width: 180,
               height: 160,
              }],
-            },
+            }, */
             {type: "StackGraphWidget",
-             width: 640, /* required for this widget */
-             height: 50,
-            streamgraph: true,         
+             height: 150,
+            streamgraph: true,
+/*            tags : [
+            {
+                "keywords" : [ "#ilReste" ],
+                "description" : "#ilReste",
+                "color" : "#1D973D"
+            },
+            {
+                "keywords" : [ "#ilPart" ],
+                "description" : "#ilPart",
+                "color" : "#CE0A15"
+            },
+            {
+                "keywords" : [ "#change2ton" ],
+                "description" : "#change2ton",
+                "color" : "#C5A62D"  
+            },
+            {
+                "keywords" : [ "#cQui" ],
+                "description" : "#cQui",
+                "color" : "#036AAE"
+            } 
+        ],*/
              requires: [{
               type: "TooltipWidget",
               width: 180,
               height: 160,
              }],
             },
-            {type: "SparklineWidget",
-             width: 640, /* required for this widget */
-             height: 50},
+ /*           {type: "SparklineWidget",
+             width: 640,
+             height: 50}, */
             {type: "SliderWidget"},
             {type: "PlayerWidget"},
             {type: "SegmentsWidget",
@@ -74,8 +95,10 @@ IriSP.jwplayer_swf_path = "../libs/player.swf";
             {type: "createAnnotationWidget"},
             {type: "TagCloudWidget",
             excludeWords: ['#museoweb']},
-            {type: "AnnotationsListWidget"},
-            {type: "TraceWidget"}
+            {type: "AnnotationsListWidget",
+            container: "AnnotationsListContainer",
+            ajax_mode: false},
+//            {type: "TraceWidget"}
             ]
         },
       player:{
@@ -95,7 +118,7 @@ IriSP.jwplayer_swf_path = "../libs/player.swf";
 
     };
     
-    IriSP.initPlayer(config, "polemic_fr.json");
+    IriSP.initPlayer(config, file);
   </script>
   
   

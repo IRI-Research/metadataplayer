@@ -1090,7 +1090,7 @@ IriSP.SparklineWidget_template = "<div class='Ldt-sparklineWidget' style='width:
 IriSP.annotation_template = "{{! template for an annotation displayed in a segmentWidget }}<div title='{{divTitle}}' id='{{id}}'	class='Ldt-iri-chapter Ldt-TraceMe' 	style='left: {{startPixel}}px;          width: {{pxWidth}}px;          background-color:#{{hexa_color}};' 	></div>";
 IriSP.annotationWidget_template = "{{! template for the annotation widget }}<div class='Ldt-AnnotationsWidget'>  <!-- ugly div because we want to have a double border -->  <div class='Ldt-Annotation-DoubleBorder'>      <div class='Ldt-AnnotationContent'>          <div class='Ldt-AnnotationShareIcons'>         <a target='_blank' class='Ldt-fbShare Ldt-TraceMe' title='share on facebook'></a>         <a target='_blank' class='Ldt-TwShare Ldt-TraceMe' title='share on twitter'></a>         <a target='_blank'  class='Ldt-GplusShare Ldt-TraceMe' title='share on google+'></a>        </div>        <div class='Ldt-SaTitle'></div>        <div class='Ldt-SaDescription'></div>        <div class='Ldt-SaKeywords'></div>    </div>  </div></div>";
 IriSP.annotation_loading_template = "{{! template shown while the annotation widget is loading }}<div id='Ldt-load-container'><div id='Ldt-loader'>&nbsp;</div> Chargement... </div>";
-IriSP.annotationsListWidget_template = "{{! template for the annotation list widget }}<div class='Ldt-AnnotationsListWidget'>  <!-- ugly div because we want to have a double border -->  <div class='Ldt-Annotation-DoubleBorder'>    <ul>    {{#annotations}}      <li id='Ldt-Annotation-li-{{id}}' class='Ldt-TraceMe'>        {{! if the url is not present, it means that the annotation exists             in the current project }}        {{^url}}        <a href='#id={{id}}'>        {{/url}}        {{! otherwise link to url }}        {{#url}}        <a href='{{url}}#id={{id}}'>        {{/url}}          <div style='overflow: auto; margin-top: 5px; margin-bottom: 5px;'>            <div class='Ldt-AnnotationsList-Caption'>            </div>            <div class='Ldt-AnnotationsList-Duration'>{{begin}} - {{end}}</div>            <div class='Ldt-AnnotationsList-Title'>{{title}}</div>            <div class='Ldt-AnnotationsList-Description'>{{desc}}</div>          </div>        </a>      </li>    {{/annotations}}    </ul>  </div></div>";
+IriSP.annotationsListWidget_template = "{{! template for the annotation list widget }}<div class='Ldt-AnnotationsListWidget'>    <ul class='Ldt-AnnotationsList-ul'>        {{#annotations}}        <li id='Ldt-Annotation-li-{{id}}' class='Ldt-AnnotationsList-li Ldt-TraceMe'>            <div class='Ldt-AnnotationsList-Caption'></div>            <div class='Ldt-AnnotationsList-Duration'>                <span class='Ldt-AnnotationsList-Begin'>{{begin}}</span>                <span class='Ldt-AnnotationsList-TcSeparator'>-</span>                <span class='Ldt-AnnotationsList-End'>{{end}}</span>            </div>            <div class='Ldt-AnnotationsList-Title'>            {{! if the url is not present, it means that the annotation exists            in the current project }}            {{^url}} <a href='#id={{id}}'> {{/url}}            {{! otherwise link to url }}            {{#url}} <a href='{{url}}#id={{id}}'> {{/url}}                {{title}}            </a>            </div>            <div class='Ldt-AnnotationsList-Description'>                {{desc}}            </div>            {{#tags.length}}            <ul class='Ldt-AnnotationsList-Tags'>                {{#tags}}                <li class='Ldt-AnnotationsList-Tag-Li'>                    <div class='Ldt-AnnotationsList-Tag-Div'>{{.}}</div>                </li>                {{/tags}}            </ul>            {{/tags.length}}        </li>        {{/annotations}}    </ul></div>";
 IriSP.arrowWidget_template = "<div class='Ldt-arrowWidget Ldt-arrowLeftEdge'></div>";
 IriSP.createAnnotationWidget_template = "{{! template for the annotation creation widget }}<div class='Ldt-createAnnotationWidget'>    <!-- ugly div because we want to have a double border -->    <div class='Ldt-createAnnotation-DoubleBorder'>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-startScreen'>            <div style='margin-bottom: 7px; overflow: auto;'>                <div class='Ldt-createAnnotation-Title'></div>                <div class='Ldt-createAnnotation-TimeFrame'></div>                {{^cinecast_version}} <div class='Ldt-createAnnotation-Minimize Ldt-TraceMe' title='Cancel'></div>                {{/cinecast_version}}            </div>            <div class='Ldt-createAnnotation-Container'>                {{#show_from_field}}                <label>Your name&nbsp;: </label><input class='Ldt-createAnnotation-userName Ldt-TraceMe' value='{{user_name}}' />                {{/show_from_field}}                <textarea class='Ldt-createAnnotation-Description Ldt-TraceMe'></textarea>                <div class='Ldt-createAnnotation-userAvatar Ldt-TraceMe'>                    {{^user_avatar}} <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>                    {{/user_avatar}}                    {{#user_avatar}} <img src='{{ user_avatar }}'></img>                    {{/user_avatar}}                </div>                <div class='Ldt-createAnnotation-profileArrow'></div>            </div>            <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>Submit</button>            {{#keywords.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-keywords'>                <label>Add keywords :</label>                <ul class='Ldt-floatList'>                {{#keywords}}                    <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe'>{{.}}</button></li>                {{/keywords}}                </ul>            </div>            {{/keywords.length}}            {{#polemic_mode}}            {{#polemics.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-polemics'>                <label>Add polemic keywords :</label>                <ul class='Ldt-floatList'>                {{#polemics}}                    <li><button class='Ldt-createAnnotation-polemic-{{className}} Ldt-createAnnotation-polemic-button Ldt-TraceMe'>{{keyword}}</button></li>                {{/polemics}}                </ul>            </div>            {{/polemics.length}}            {{/polemic_mode}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-spinner'></div>            Please wait while your request is being processed...        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-errorScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            An error happened while contacting the server. Your annotation has not been saved.        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-endScreen' style='display: none'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            Thank you, your annotation has been saved.            <br>            Would you like to share it on social networks ?            <div style='margin-top: 12px; text-align: center;'>                <a target='_blank' class='Ldt-createAnnotation-endScreen-TweetLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-FbLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-GplusLink Ldt-TraceMe'></a>            </div>        </div>        <div class='Ldt-floatClear'></div>    </div></div>";
 IriSP.createAnnotation_errorMessage_template = "<p class='Ldt-createAnnotation-errorMessage'>  You must enter text to submit an annotation</p>";
@@ -1656,11 +1656,16 @@ IriSP.defaults.lib = function(libdir) {
     libdir = IriSP.libdir;
   
   return { 
-      jQuery : "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js",
-      jQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.js",
-      jQueryToolTip : "http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
-      swfObject : "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
-      cssjQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css",
+//      jQuery : "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js",
+    jQuery : libdir + "jquery.min.js",
+//      jQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.js",
+    jQueryUI : libdir + "jquery-ui.min.js",
+//      jQueryToolTip : "http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
+    jQueryToolTip : libdir + "jquery.tools.min.js",
+//      swfObject : "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
+    swfObject : libdir + "swfobject.js",
+//      cssjQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css",
+    cssjQueryUI : libdir + "jquery-ui.css",
       popcorn : libdir + "popcorn.js",
       jwplayer : libdir + "jwplayer.js",
       popcornReplacement: libdir + "pop.js",
@@ -2651,9 +2656,11 @@ IriSP.AnnotationsListWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this.__counter = 0;
   this.__oldList = [];
-  
-  this.ajax_mode = IriSP.widgetsDefaults["AnnotationsListWidget"].ajax_mode;
-  this.project_url = IriSP.widgetsDefaults["AnnotationsListWidget"].project_url;  
+ 
+  this.checkOption('ajax_mode');
+  this.checkOption('project_url');
+  this.checkOption("cinecast_version", false);
+  var _this = this;
 };
 
 
@@ -2671,71 +2678,80 @@ IriSP.AnnotationsListWidget.prototype.do_redraw = function(list) {
     this.selector.html(widgetMarkup);
 };
 
+IriSP.AnnotationsListWidget.prototype.transformAnnotation = function(a) {
+    var _this = this
+    return {
+        "id" : a.id,
+        "title": this.cinecast_version ? a.meta.creator.replace(/^.*:/,'') : a.content.title,
+        "desc" : this.cinecast_version ? a.content.data : a.content.description,
+        "begin": IriSP.msToTime(a.begin),
+        "end" : IriSP.msToTime(a.end),
+        "tags": typeof a.tags == "object"
+            ? IriSP.underscore(a.tags)
+                .chain()
+                .map(function(_t) {
+                    if (typeof _t == "string") {
+                        return _t.replace(/^.*:/,'#');
+                    } else {
+                        if (typeof _t['id-ref'] != "undefined") {
+                            var _f = IriSP.underscore.find(_this._serializer._data.tags, function(_tag) {
+                                return _tag['id-ref'] == _t.id;
+                            });
+                            if (typeof _f != "undefined") {
+                                return IriSP.get_aliased(_f.meta, ['dc:title', 'title']);
+                            }
+                        }
+                    }
+                    return null;
+                })
+                .filter(function(_t) {
+                    return _t !== null && _t !== ""
+                })
+                .value()
+            : []
+    }    
+}
+
 /** draw the annotation list */
 IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
+    console.log('drawList');
   var _this = this;
   
-  var view_type = this._serializer.getContributions();
+//  var view_type = this._serializer.getContributions();
   var annotations = this._serializer._data.annotations;
   var currentTime = this._Popcorn.currentTime();
-    
   var list = [];
 
-  if (typeof(view_type) === "undefined") {    
+/*  if (typeof(view_type) === "undefined") {    
     return;
-  }
-
+} */
   for (i = 0; i < annotations.length; i++) {
-    var annotation = annotations[i];
-
-    /* filter the annotations whose type is not the one we want */
-    if (typeof(annotation.meta) !== "undefined" && typeof(annotation.meta["id-ref"]) !== "undefined"
-          && annotation.meta["id-ref"] !== view_type) {
-        continue;
-    }
-
-    /* only get the annotations happening in the current chapter */
-    if (!(annotation.begin <= currentTime * 1000 && annotation.end > currentTime * 1000)) {        
-        continue;
-    }
-
-    var a = annotation;
-    var obj = {};
-
-    obj["id"] = a.id;
-    obj["title"] = a.content.title;
-    obj["desc"] = a.content.description;
-    obj["begin"] = IriSP.msToTime(annotation.begin);
-    obj["end"] = IriSP.msToTime(annotation.end);
-
+    var obj = this.transformAnnotation(annotations[i]);
+    obj.iterator = i;
+    obj.distance = Math.abs((annotations[i].end + annotations[i].begin) / 2000 - currentTime);
     list.push(obj);
   }
   
+  list = IriSP.underscore(list)
+    .chain()
+    .sortBy(function(_o) {
+        return _o.distance;
+    })
+    .first(10)
+    .sortBy(function(_o) {
+        return _o.iterator;
+    })
+    .value();
+  
   var idList = IriSP.underscore.pluck(list, "id").sort();
 
-  if (idList.length !== this.__oldList.length) {
-    this.do_redraw(list);
-  }
-    
-  var res = 1;
-  for (var i = 0; i < idList.length; i++) {
-    if (idList[i] !== this.__oldList[i])
-      res = 0;
-      break;
-  }
   
-  this.__oldList = idList; /* save for next call */
-  
-  if (typeof(force_redraw) !== "undefined") {
+  if (!IriSP.underscore.isEqual(this.__oldList, idList) || typeof(force_redraw) !== "undefined") {
     this.do_redraw(list);
+    this.__oldList = idList;
   }
+   /* save for next call */
   
-  /* the two lists are equal, no need to redraw */
-  if (res === 1) {
-    return;
-  } else {
-    this.do_redraw(list);
-  }
   
 };
 
@@ -2774,7 +2790,7 @@ IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
 
   /* we create on the fly a serializer to get the ajax */
   var serializer = new IriSP.JSONSerializer(IriSP.__dataloader, templ);
-  serializer.sync(IriSP.wrap(this, function(json) { this.processJson(json, serializer) }));                  
+  serializer.sync(IriSP.wrap(this, function(json) { this.processJson(json, serializer) }));
 };
 
 /** process the received json - it's a bit hackish */
@@ -2793,23 +2809,7 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
   var media = this._serializer.currentMedia()["id"];
   
   for (i = 0; i < annotations.length; i++) {
-      var annotation = annotations[i];
-
-      /* filter the annotations whose type is not the one we want */
-      /* We want _all_ the annotations.
-      if (typeof(annotation.meta) !== "undefined" && typeof(annotation.meta["id-ref"]) !== "undefined"
-            && !IriSP.underscore.include(view_types, annotation.meta["id-ref"])) {
-          continue;
-      }
-      */
-      var a = annotation;
-      var obj = {};
-
-      obj["id"] = a.id;
-      obj["title"] = a.content.title;
-      obj["desc"] = a.content.description;
-      obj["begin"] = IriSP.msToTime(annotation.begin);
-      obj["end"] = IriSP.msToTime(annotation.end);
+    var obj = this.transformAnnotation(annotations[i])
 
       /* only if the annotation isn't present in the document create an
          external link */
@@ -2842,10 +2842,15 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
   }
   
   this.drawList();
+  
+  var _this = this;
     
-  if (!this.ajax_mode) {    
-    this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, function() { this.drawList(true); }));
-    this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.redraw));
+  if (!this.ajax_mode) {
+      var _throttled = IriSP.underscore.throttle(function() {
+      _this.drawList();
+    }, 1500);
+    this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", _throttled);
+    this._Popcorn.listen("timeupdate", _throttled);
   } else {
     /* update the widget when the video has finished loading and when it's seeked and paused */
     this._Popcorn.listen("seeked", IriSP.wrap(this, this.ajaxRedraw));
@@ -2855,10 +2860,6 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
     this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, this.ajaxRedraw));
   }
 
-};
-
-IriSP.AnnotationsListWidget.prototype.redraw = function() {
-  this.drawList();
 };IriSP.AnnotationsWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   /* flag used when we're creating an annotation */
@@ -3399,11 +3400,10 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   var annotation = apiJson["annotations"][0];
   
   annotation["media"] = this._serializer.currentMedia()["id"];
-  var duration_part = Math.round(this._serializer.getDuration() / 20);
   
   if (this.cinecast_version) {   
-      annotation["begin"] = Math.round(this._Popcorn.currentTime() * 1000 - duration_part);
-      annotation["end"] = Math.round(this._Popcorn.currentTime() * 1000 + duration_part);      
+      annotation["begin"] = Math.round(this._Popcorn.currentTime() * 1000);
+      annotation["end"] = annotation["begin"];      
   } else {
     var duration = this._serializer.getDuration();    
     annotation["begin"] = +((duration * (this.sliceLeft / 100)).toFixed(0));

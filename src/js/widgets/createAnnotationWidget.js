@@ -61,11 +61,7 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
                .bind("propertychange keyup input paste js_mod", IriSP.wrap(this, this.handleTextChanges));
                
   /* the cinecast version of the player is supposed to pause when the user clicks on the button */
-  if (this.cinecast_version) {
-    this.selector.find(".Ldt-createAnnotation-Description")
-                 .one("propertychange keyup input paste js_mod", 
-                 function() { if (!_this._Popcorn.media.paused) _this._Popcorn.pause() });
-  }
+
   /* the cinecast version expects the user to comment on a defined segment.
      As the widget is always shown, we need a way to update it's content as
      time passes. We do this like we did with the annotationsWidget : we schedule
@@ -194,7 +190,9 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
 /** watch for changes in the textfield and change the buttons accordingly */
 IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
   var contents = this.selector.find(".Ldt-createAnnotation-Description").val();
-
+  if (this.cinecast_version && !this._Popcorn.media.paused) {
+      this._Popcorn.pause();
+  }
   this.selector.find(".Ldt-createAnnotation-btnblock button").each(function() {
       var _rx = IriSP.regexpFromText(IriSP.jQuery(this).text());
       if (_rx.test(contents)) {
@@ -317,11 +315,10 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   var annotation = apiJson["annotations"][0];
   
   annotation["media"] = this._serializer.currentMedia()["id"];
-  var duration_part = Math.round(this._serializer.getDuration() / 20);
   
   if (this.cinecast_version) {   
-      annotation["begin"] = Math.round(this._Popcorn.currentTime() * 1000 - duration_part);
-      annotation["end"] = Math.round(this._Popcorn.currentTime() * 1000 + duration_part);      
+      annotation["begin"] = Math.round(this._Popcorn.currentTime() * 1000);
+      annotation["end"] = annotation["begin"];      
   } else {
     var duration = this._serializer.getDuration();    
     annotation["begin"] = +((duration * (this.sliceLeft / 100)).toFixed(0));

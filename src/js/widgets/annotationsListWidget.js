@@ -2,9 +2,12 @@ IriSP.AnnotationsListWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this.__counter = 0;
   this.__oldList = [];
-  
-  this.ajax_mode = IriSP.widgetsDefaults["AnnotationsListWidget"].ajax_mode;
-  this.project_url = IriSP.widgetsDefaults["AnnotationsListWidget"].project_url;  
+ 
+  this.checkOption('ajax_mode');
+  this.checkOption('project_url');
+  this.checkOption('default_thumbnail');
+  this.checkOption("cinecast_version", false);
+  var _this = this;
 };
 
 
@@ -22,71 +25,81 @@ IriSP.AnnotationsListWidget.prototype.do_redraw = function(list) {
     this.selector.html(widgetMarkup);
 };
 
+IriSP.AnnotationsListWidget.prototype.transformAnnotation = function(a) {
+    var _this = this
+    return {
+        "id" : a.id,
+        "title": this.cinecast_version ? IriSP.get_aliased(a.meta, ['creator_name', 'creator']) : a.content.title,
+        "desc" : this.cinecast_version ? a.content.data : a.content.description,
+        "begin": IriSP.msToTime(a.begin),
+        "end" : IriSP.msToTime(a.end),
+        "thumbnail" : (typeof a.meta == "object" && typeof a.meta.thumbnail == "string") ? a.meta.thumbnail : this.default_thumbnail,
+        "url" : (typeof a.meta == "object" && typeof a.meta.url == "string") ? a.meta.url : null,
+        "tags": typeof a.tags == "object"
+            ? IriSP.underscore(a.tags)
+                .chain()
+                .map(function(_t) {
+                    if (typeof _t == "string") {
+                        return _t.replace(/^.*:/,'#');
+                    } else {
+                        if (typeof _t['id-ref'] != "undefined") {
+                            var _f = IriSP.underscore.find(_this._serializer._data.tags, function(_tag) {
+                                return _tag['id-ref'] == _t.id;
+                            });
+                            if (typeof _f != "undefined") {
+                                return IriSP.get_aliased(_f.meta, ['dc:title', 'title']);
+                            }
+                        }
+                    }
+                    return null;
+                })
+                .filter(function(_t) {
+                    return _t !== null && _t !== ""
+                })
+                .value()
+            : []
+    }    
+}
+
 /** draw the annotation list */
 IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
   var _this = this;
   
-  var view_type = this._serializer.getContributions();
+//  var view_type = this._serializer.getContributions();
   var annotations = this._serializer._data.annotations;
   var currentTime = this._Popcorn.currentTime();
-    
   var list = [];
 
-  if (typeof(view_type) === "undefined") {    
+/*  if (typeof(view_type) === "undefined") {    
     return;
-  }
-
+} */
   for (i = 0; i < annotations.length; i++) {
-    var annotation = annotations[i];
-
-    /* filter the annotations whose type is not the one we want */
-    if (typeof(annotation.meta) !== "undefined" && typeof(annotation.meta["id-ref"]) !== "undefined"
-          && annotation.meta["id-ref"] !== view_type) {
-        continue;
-    }
-
-    /* only get the annotations happening in the current chapter */
-    if (!(annotation.begin <= currentTime * 1000 && annotation.end > currentTime * 1000)) {        
-        continue;
-    }
-
-    var a = annotation;
-    var obj = {};
-
-    obj["id"] = a.id;
-    obj["title"] = a.content.title;
-    obj["desc"] = a.content.description;
-    obj["begin"] = IriSP.msToTime(annotation.begin);
-    obj["end"] = IriSP.msToTime(annotation.end);
-
+    var obj = this.transformAnnotation(annotations[i]);
+    obj.iterator = i;
+    obj.distance = Math.abs((annotations[i].end + annotations[i].begin) / 2000 - currentTime);
     list.push(obj);
   }
   
+  list = IriSP.underscore(list)
+    .chain()
+    .sortBy(function(_o) {
+        return _o.distance;
+    })
+    .first(10)
+    .sortBy(function(_o) {
+        return _o.iterator;
+    })
+    .value();
+  
   var idList = IriSP.underscore.pluck(list, "id").sort();
 
-  if (idList.length !== this.__oldList.length) {
-    this.do_redraw(list);
-  }
-    
-  var res = 1;
-  for (var i = 0; i < idList.length; i++) {
-    if (idList[i] !== this.__oldList[i])
-      res = 0;
-      break;
-  }
   
-  this.__oldList = idList; /* save for next call */
-  
-  if (typeof(force_redraw) !== "undefined") {
+  if (!IriSP.underscore.isEqual(this.__oldList, idList) || typeof(force_redraw) !== "undefined") {
     this.do_redraw(list);
+    this.__oldList = idList;
   }
+   /* save for next call */
   
-  /* the two lists are equal, no need to redraw */
-  if (res === 1) {
-    return;
-  } else {
-    this.do_redraw(list);
-  }
   
 };
 
@@ -125,7 +138,7 @@ IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
 
   /* we create on the fly a serializer to get the ajax */
   var serializer = new IriSP.JSONSerializer(IriSP.__dataloader, templ);
-  serializer.sync(IriSP.wrap(this, function(json) { this.processJson(json, serializer) }));                  
+  serializer.sync(IriSP.wrap(this, function(json) { this.processJson(json, serializer) }));
 };
 
 /** process the received json - it's a bit hackish */
@@ -144,27 +157,11 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
   var media = this._serializer.currentMedia()["id"];
   
   for (i = 0; i < annotations.length; i++) {
-      var annotation = annotations[i];
-
-      /* filter the annotations whose type is not the one we want */
-      /* We want _all_ the annotations.
-      if (typeof(annotation.meta) !== "undefined" && typeof(annotation.meta["id-ref"]) !== "undefined"
-            && !IriSP.underscore.include(view_types, annotation.meta["id-ref"])) {
-          continue;
-      }
-      */
-      var a = annotation;
-      var obj = {};
-
-      obj["id"] = a.id;
-      obj["title"] = a.content.title;
-      obj["desc"] = a.content.description;
-      obj["begin"] = IriSP.msToTime(annotation.begin);
-      obj["end"] = IriSP.msToTime(annotation.end);
+    var obj = this.transformAnnotation(annotations[i])
 
       /* only if the annotation isn't present in the document create an
          external link */
-      if (!this.annotations_ids.hasOwnProperty(obj["id"])) {
+      if (!this.annotations_ids.indexOf(obj["id"]) != -1) {
         // braindead url; jacques didn't want to create a new one in the platform,
         // so we append the cutting id to the url.
         obj["url"] = this.project_url + "/" + media + "/" + 
@@ -184,19 +181,24 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
   /* build a table of the annotations present in the document for faster 
      lookup
   */
-  this.annotations_ids = {};
+  this.annotations_ids = [];
   
   var annotations = this._serializer._data.annotations;
   var i = 0;
   for(i = 0; i < annotations.length; i++) {
-    this.annotations_ids[annotations[i]["id"]] = 1;
+    this.annotations_ids.push(annotations[i]["id"]);
   }
   
   this.drawList();
+  
+  var _this = this;
     
-  if (!this.ajax_mode) {    
-    this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, function() { this.drawList(true); }));
-    this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.redraw));
+  if (!this.ajax_mode) {
+      var _throttled = IriSP.underscore.throttle(function() {
+      _this.drawList();
+    }, 1500);
+    this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", _throttled);
+    this._Popcorn.listen("timeupdate", _throttled);
   } else {
     /* update the widget when the video has finished loading and when it's seeked and paused */
     this._Popcorn.listen("seeked", IriSP.wrap(this, this.ajaxRedraw));
@@ -206,8 +208,4 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
     this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, this.ajaxRedraw));
   }
 
-};
-
-IriSP.AnnotationsListWidget.prototype.redraw = function() {
-  this.drawList();
 };

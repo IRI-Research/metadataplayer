@@ -27,11 +27,16 @@ IriSP.defaults.lib = function(libdir) {
     libdir = IriSP.libdir;
   
   return { 
-      jQuery : "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js",
-      jQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.js",
-      jQueryToolTip : "http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
-      swfObject : "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
-      cssjQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css",
+//      jQuery : "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js",
+    jQuery : libdir + "jquery.min.js",
+//      jQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.js",
+    jQueryUI : libdir + "jquery-ui.min.js",
+//      jQueryToolTip : "http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
+    jQueryToolTip : libdir + "jquery.tools.min.js",
+//      swfObject : "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
+    swfObject : libdir + "swfobject.js",
+//      cssjQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css",
+    cssjQueryUI : libdir + "jquery-ui.css",
       popcorn : libdir + "popcorn.js",
       jwplayer : libdir + "jwplayer.js",
       popcornReplacement: libdir + "pop.js",
