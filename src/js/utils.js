@@ -123,7 +123,11 @@ IriSP.templToHTML = function(template, values) {
 IriSP.encodeURI = function(str) {
   return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').  
                                  replace(/\)/g, '%29').replace(/\*/g, '%2A');  
-}  
+}
+
+IriSP.jqId = function (myid) { 
+   return IriSP.jQuery('#' + myid.replace(/(:|\.)/g,'\\$1'));
+ }  
 
 IriSP.__guidCounter = 0;
 IriSP.guid = function(prefix) {

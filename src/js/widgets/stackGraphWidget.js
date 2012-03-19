@@ -60,7 +60,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
             return _g.length
         }).length,
         _scale = this.height / _max,
-        _width = this.width / this.sliceCount
+        _width = this.width / this.sliceCount,
         _showTitle = !this._config.excludeTitle,
         _showDescription = !this._config.excludeDescription;
     
