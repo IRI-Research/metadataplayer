@@ -1,94 +1,102 @@
 ﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html dir="ltr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+    <head>
+        <title>Metadataplayer - Polemic tweet integration test</title>
+    </head>
+    <body style="background: #222222; color: #ffffff;">
+        <div style="width:650px;font-family: 'Trebuchet MS', 'Helvetica', 'Arial',  'Verdana', 'sans-serif';">
+            <h1>MetaDataPlayer</h1>
+            Integration test - ALLOCINE PLAYER
+        </div>
+        <!-- START Integration  ###################################### -->
+        <!-- SIMPLE PLAYER EXPERIMENTATION -->
+        <script type="text/javascript" src="/metadataplayer/build/LdtPlayer-release.js" type="text/javascript"></script>
+        <div id="video"></div>
+        <div id="LdtPlayer"></div>
+        <div id="Sparkline"></div>
+        <script  type="text/javascript">
+            var json_url = 'allocine_test/bamako.json';
 
-<head>
-<title>Metadataplayer - Polemic tweet integration test</title>
-</head>
-
-<body style="background: #000000; color: #ffffff;">
-
-  <div style="width:650px;font-family: 'Trebuchet MS', 'Helvetica', 'Arial',  'Verdana', 'sans-serif';">
-  <h1>MetaDataPlayer</h1>
-  Integration test - ALLOCINE PLAYER
-  </div>
-  
-  
- <!-- START Integration  ###################################### -->
- <!-- SIMPLE PLAYER EXPERIMENTATION -->
-  <script type="text/javascript" src="/metadataplayer/build/LdtPlayer-release.js" type="text/javascript"></script>   
-  
-  <div id="video"></div>
-  <div id="LdtPlayer"></div>
-  <div id="Sparkline"></div>
-  <script  type="text/javascript">
-    var json_url = 'allocine_test/allocine.json';
-    
-    IriSP.user = {name: 'awesome_user_name', avatar: 'allocine_test/avatar.png'};
-    IriSP.libdir = "js/libs/";
-    IriSP.defaults.user = function(){ return IriSP.user; };
-    
-    var config = {            
-        gui:{
-            width:610,
-            height:2100,              
-            container:'LdtPlayer',
-            css:'css/LdtPlayer.css?42',
-            default_options : {
-                metadata:{
-                    format:'cinelab',
-                    src: json_url,
-                    type:'json'
-                },
-                cinecast_version: true,
-                width: 610
-            },
-            widgets: [
-            {type: "StackGraphWidget",
-               requires: [{
-                type: "TooltipWidget",
-                width: 180,
-                heigh: 160,
-                metadata : {type:'empty'
-                }
-               }],
-            },            
-            {type: "AnnotationsListWidget",
-             container: "AnnotationsListContainer",
-             ajax_mode: false},
-            {type: "SliderWidget"},
-            {type: "PlayerWidget",
-             disable_annotate_btn: true},
-            {type: "createAnnotationWidget",
-            polemic_mode: false,
-            keywords: ['#vodkaster', '#allocine', '#universcine'],
-            api_endpoint_template : "coucou/{{id}}.json",
-            api_method: 'POST'}
-            ]
-        },
-      player:{
-      type:'allocine', // player type 
-              height: 300, 
-              width: 640,
-              acPlayerUrl: "allocine_test/AcPlayer_v3.0.swf",
-              autoPlay: "false",
-              urlAcData: "allocine_test/data_cinecast.xml"
-      },
-      modules: [
-               { type: "MediaFragment",
-                         metadata:{
-                       format:'cinelab',
-                           src:json_url,
-                             type:'json'}
+            IriSP.user = {
+                name : 'awesome_user_name',
+                avatar : 'allocine_test/avatar.png'
+            };
+            IriSP.libdir = "/metadataplayer/src/js/libs/";
+            IriSP.defaults.user = function() {
+                return IriSP.user;
+            };
+            var config = {
+                gui : {
+                    width : 610,
+                    height : 2100,
+                    container : 'LdtPlayer',
+                    css : 'css/LdtPlayer.css',
+                    default_options : {
+                        metadata : {
+                            format : 'cinelab',
+                            src : json_url,
+                            type : 'json'
+                        },
+                        cinecast_version : true,
+                        width : 610
+                    },
+                    widgets : [{
+                        type : "AnnotationsListWidget",
+                        container : "AnnotationsListContainer",
+                        ajax_mode : false
+                    }, {
+                        type : "SparklineWidget",
+                        height : 50,
+                        lineColor: "#ffffff",
+                        fillColor: "#999999"
+                    }, {
+                        type : "SliderWidget"
+                    }, {
+                        type : "PlayerWidget",
+                        disable_annotate_btn : true,
+                        disable_search_btn : true
+                    }, {
+                        type : "SegmentsWidget",
+                        requires : [{
+                            type : "TooltipWidget",
+                            width : 180,
+                            height : 160,
                         }]
+                    }, {
+                        type : "createAnnotationWidget",
+                        polemic_mode : false,
+                        keywords : ['#vodkaster', '#allocine', '#universcine'],
+                        api_endpoint_template : "coucou/{{id}}.json",
+                        api_method : 'POST'
+                    }, {
+                        type: "TraceWidget",
+                        url: "http://192.168.56.101:5000/",
+                        requestmode: 'GET',
+                        syncmode: "sync"
+                    }]
+                },
+                player : {
+                    type : 'allocine', // player type
+                    height : 300,
+                    width : 610,
+                    acPlayerUrl : "allocine_test/AcPlayer_v3.0.swf",
+                    autoPlay : "false",
+                    urlAcData : "allocine_test/data_cinecast.xml"
+                },
+                modules : [{
+                    type : "MediaFragment",
+                    metadata : {
+                        format : 'cinelab',
+                        src : json_url,
+                        type : 'json'
+                    }
+                }]
 
-    };
-    
-    
-    IriSP.initPlayer(config, json_url);
+            };
 
-  </script>
-  
-  
- </body>
- <div id="AnnotationsListContainer" style="position: absolute; width: 400px; left: 660px; top: 105px;"></div>
- </html>
+            IriSP.initPlayer(config, json_url);
+
+        </script>
+    </body>
+    <div id="AnnotationsListContainer" style="position: absolute; width: 400px; left: 660px; top: 105px;"></div>
+</html>

@@ -54,6 +54,7 @@ IriSP.Widget = function(Popcorn, config, Serializer) {
   }
   if (typeof this.selector != "undefined") {
       this.selector.addClass("Ldt-TraceMe").addClass("Ldt-Widget");
+      this.selector.attr("widget-type", this._config.type);
   }
   
 };

@@ -19,6 +19,8 @@ IriSP.SparklineWidget = function(Popcorn, config, Serializer) {
   if (this._config.background) {
       this.selector.css("background", this._config.background);
   }
+  this.checkOption('cinecast_version');
+  console.log('Cinecast', this.cinecast_version);
 };
 
 
@@ -32,6 +34,7 @@ IriSP.SparklineWidget.prototype.clear = function() {
 IriSP.SparklineWidget.prototype.draw = function() {
     this.duration = this._serializer.getDuration();
     this.paper = new Raphael(this.selector[0], this.width, this.height);
+    var _this = this;
   
   var views = this._serializer._data.views;
   var stat_view;
@@ -56,7 +59,7 @@ IriSP.SparklineWidget.prototype.draw = function() {
             _sliceDuration = Math.floor( this.duration / this.slices),
             _results = _(_.range(this.slices)).map(function(_i) {
                 return _(_annotations).filter(function(_a){
-                    return (_a.begin <= (1 + _i) * _sliceDuration) && (_a.end >= _i * _sliceDuration)
+                    return (_a.begin <= (1 + _i) * _sliceDuration) && (_a.end >= _i * _sliceDuration) && (!_this.cinecast_version || _a.type == "cinecast:UserAnnotation")
                 }).length;
             });
     }

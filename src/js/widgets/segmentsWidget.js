@@ -26,21 +26,18 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   this.positionMarker = this.selector.find(".Ldt-SegmentPositionMarker");
   
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.positionUpdater));
+  var duration = this._serializer.getDuration();
+  
   if (this.cinecast_version) {
-      var _sourceMedia = IriSP.__jsonMetadata.medias[0],
-        _mediaId = _sourceMedia.id,
-        duration = IriSP.__jsonMetadata.medias[0].meta.duration;
-      
       var segments_annotations = IriSP.underscore.filter(
           this._serializer._data.annotations,
           function(_a) {
-              return _a.type == "cinecast:MovieExtract" && _a.media == _mediaId;
+              return _a.type == "cinecast:MovieExtract";
           }
       );
   }
   else {
 
-    var duration = this._serializer.getDuration();
       var view_type = this._serializer.getChapitrage();
       if (typeof(view_type) === "undefined") {
         view_type = this._serializer.getNonTweetIds()[0];  
@@ -69,8 +66,8 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   for (i = 0; i < segments_annotations.length; i++) {
   
     var annotation = segments_annotations[i];
-    var begin = (+ annotation.begin * (this.cinecast_version ? 1000 : 1));
-    var end = (+ annotation.end * (this.cinecast_version ? 1000 : 1));
+    var begin = (+ annotation.begin);
+    var end = (+ annotation.end);
     var id = annotation.id;
         
     var startPixel = Math.floor(_w * (begin / duration));
@@ -192,11 +189,7 @@ IriSP.SegmentsWidget.prototype.searchFieldClosedHandler = function() {
 };
 
 IriSP.SegmentsWidget.prototype.positionUpdater = function() {  
-  if (this.cinecast_version) {
-    var duration = IriSP.__jsonMetadata.medias[0].meta.duration;
-  } else {
-    var duration = this._serializer.getDuration() / 1000;
-  }
+  var duration = this._serializer.getDuration() / 1000;
   var time = this._Popcorn.currentTime();
   //var position 	= ((time / duration) * 100).toFixed(2);
   var position 	= ((time / duration) * 100).toFixed(2);

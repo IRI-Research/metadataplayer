@@ -125,8 +125,12 @@ IriSP.encodeURI = function(str) {
                                  replace(/\)/g, '%29').replace(/\*/g, '%2A');  
 }
 
-IriSP.jqId = function (myid) { 
-   return IriSP.jQuery('#' + myid.replace(/(:|\.)/g,'\\$1'));
+IriSP.jqEscape = function(text) {
+   return text.replace(/(:|\.)/g,'\\$1')
+}
+
+IriSP.jqId = function (text) { 
+   return IriSP.jQuery('#' + IriSP.jqEscape(text));
  }  
 
 IriSP.__guidCounter = 0;

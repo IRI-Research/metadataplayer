@@ -25,17 +25,17 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
     var $L = $LAB.script(libs.jQuery).script(libs.swfObject).wait()
                 .script(libs.jQueryUI);
                                    
-    if (config.player.type === "jwplayer") {
+    if (config.player.type === "jwplayer" || config.player.type === "allocine") {
       // load our popcorn.js lookalike
-      $L = $L.script(libs.jwplayer);
+      $L.script(libs.jwplayer);
     } else {
       // load the real popcorn
-      $L = $L.script(libs.popcorn).script(libs["popcorn.code"]);
+      $L.script(libs.popcorn).script(libs["popcorn.code"]);
       if (config.player.type === "youtube") {
-        $L = $L.script(libs["popcorn.youtube"]);
+        $L.script(libs["popcorn.youtube"]);
       } 
       if (config.player.type === "vimeo")
-        $L = $L.script(libs["popcorn.vimeo"]);
+        $L.script(libs["popcorn.vimeo"]);
       
       /* do nothing for html5 */
     }       
@@ -46,6 +46,9 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
           config.gui.widgets[idx].type === "StackGraphWidget" ||
           config.gui.widgets[idx].type === "SparklineWidget") {        
         $L.script(libs.raphael);
+      }
+      if (config.gui.widgets[idx].type === "TraceWidget") {
+          $L.script(libs.tracemanager)
       }
     }
     

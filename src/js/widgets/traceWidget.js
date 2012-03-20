@@ -2,38 +2,41 @@ IriSP.TraceWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this.lastEvent = "";
   var _this = this,
-    _listeners = [
-        "IriSP.ArrowWidget.releaseArrow",
-        "IriSP.SliceWidget.hide",
-        "IriSP.AnnotationsWidget.show",
-        "IriSP.AnnotationsWidget.hide",
-        "IriSP.ArrowWidget.blockArrow",
-        "IriSP.SliceWidget.position",
-        "IriSP.SliceWidget.show",
-        "IriSP.SliceWidget.hide",
-        "IriSP.createAnnotationWidget.addedAnnotation",
-        "IriSP.search.open",
-        "IriSP.search.closed",
-        "IriSP.search",
-        "IriSP.search.cleared",
-        "IriSP.search.matchFound",
-        "IriSP.search.noMatchFound",
-        "IriSP.search.triggeredSearch",
-        "IriSP.TraceWidget.MouseEvents",
-        "play",
-        "pause",
-        "volumechange",
-        "timeupdate",
-        "seeked",
-        "play",
-        "pause"
-    ];
-    IriSP._(_listeners).each(function(_listener) {
-      _this._Popcorn.listen(_listener, function(_arg) {
-          _this.eventHandler(_listener, _arg);
-      });
+    _listeners = {
+        "IriSP.createAnnotationWidget.addedAnnotation" : 0,
+        "IriSP.search.open" : 0,
+        "IriSP.search.closed" : 0,
+        "IriSP.search" : 0,
+        "IriSP.search.cleared" : 0,
+        "IriSP.search.matchFound" : 0,
+        "IriSP.search.noMatchFound" : 0,
+        "IriSP.search.triggeredSearch" : 0,
+        "IriSP.TraceWidget.MouseEvents" : 0,
+        "play" : 0,
+        "pause" : 0,
+        "volumechange" : 0,
+        "seeked" : 0,
+        "play" : 0,
+        "pause" : 0,
+        "timeupdate" : 2000
+    };
+    IriSP._(_listeners).each(function(_ms, _listener) {
+        var _f = function(_arg) {
+            _this.eventHandler(_listener, _arg);
+        }
+        if (_ms) {
+            _f = IriSP.underscore.throttle(_f, _ms);
+        }
+        _this._Popcorn.listen(_listener, _f);
     });
-  
+    this._Popcorn.listen("timeupdate", IriSP.underscore.throttle(function(_arg) {
+        _this.eventHandler(_listener, _arg);
+    }));
+    
+    this.tracer = IriSP.TraceManager(IriSP.jQuery).init_trace("test", this._config);
+    this.tracer.set_default_subject("default_subject");
+    this.tracer.trace("StartTracing", { "hello": "world" });
+    
 }
 
 IriSP.TraceWidget.prototype = new IriSP.Widget();
@@ -42,7 +45,7 @@ IriSP.TraceWidget.prototype.draw = function() {
     this.mouseLocation = '';
     var _this = this;
     IriSP.jQuery(".Ldt-Widget").bind("click mouseover mouseout dragstart dragstop", function(_e) {
-        var _widget = this.id.match('LdtPlayer_widget_([^_]+)')[1],
+        var _widget = IriSP.jQuery(this).attr("widget-type"),
             _class = _e.target.className;
         var _data = {
             "type": _e.type,
@@ -56,7 +59,7 @@ IriSP.TraceWidget.prototype.draw = function() {
                 _text = _e.target.textContent.trim(),
                 _title = _e.target.title,
                 _value = _e.target.value;
-            _data.target = _name + (_id.length ? '#' + _id : '') + (_class.length ? '.' + _class.replace(/\s/g,'.').replace(/\.Ldt-(Widget|TraceMe)/g,'') : '');
+            _data.target = _name + (_id.length ? '#' + IriSP.jqEscape(_id) : '') + (_class.length ? ('.' + IriSP.jqEscape(_class).replace(/\s/g,'.')).replace(/\.Ldt-(Widget|TraceMe)/g,'') : '');
             if (typeof _title == "string" && _title.length && _title.length < 140) {
                 _data.title = _title;
             }
@@ -123,5 +126,7 @@ IriSP.TraceWidget.prototype.eventHandler = function(_listener, _arg) {
             _traceName += _listener.replace('IriSP.','').replace('.','_');
     }
     this.lastEvent = _traceName;
+    this.tracer.trace(_traceName, _arg);
     console.log("trace('" + _traceName + "', " + JSON.stringify(_arg) + ");");
+    
 }

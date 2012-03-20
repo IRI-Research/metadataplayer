@@ -77,7 +77,10 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
     var obj = this.transformAnnotation(annotations[i]);
     obj.iterator = i;
     obj.distance = Math.abs((annotations[i].end + annotations[i].begin) / 2000 - currentTime);
-    list.push(obj);
+    if (!this.cinecast_version || annotations[i].type == "cinecast:UserAnnotation") {
+        list.push(obj);
+    }
+    
   }
   
   list = IriSP.underscore(list)

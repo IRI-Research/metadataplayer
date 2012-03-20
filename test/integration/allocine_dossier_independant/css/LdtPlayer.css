@@ -76,13 +76,6 @@ button.ui-button-icon-only  {
   font-size: 12px;
   font-family: "Arial",  "Verdana", "sans-serif";
   background-color:#eeeeee;
-  background:url('imgs/wire_pattern.png') repeat scroll transparent ;
-  border: 1px solid #b6b8b8;
-}
-
-.Ldt-Annotation-DoubleBorder {
-  border: 1px solid white;
-  overflow: auto;
 }
 
 .Ldt-AnnotationContent {
@@ -419,142 +412,6 @@ button.ui-button-icon-only  {
   cursor: pointer;
 }
 
-/* tweet Widget */
-.Ldt-tweetWidget {
-  font-size: 12px;
-  font-family: "Arial",  "Verdana", "sans-serif";
-  background:url('imgs/wire_pattern.png') repeat scroll transparent ;
-  border: 1px solid #b6b8b8;
-  border-top: none;
-  overflow: auto;
-}
-
-.Ldt-tweet-DoubleBorder {
-  border: 1px solid white;
-  padding: 5px;
-  overflow: auto;
-}
-
-.Ldt-tweetAvatar {
-  float: left;
-}
-
-.Ldt-tweetAvatar-profileArrow {
-  float: left;
-  height: 48px;
-  margin-left: 5px;
-  margin-right: 5px;
-  background:url('imgs/profile_arrow.png');
-  background-position: 7 10px;
-}
-
-.Ldt-tweet_userHandle {
-   float: left;
-   color: #5c8df1;
-}
-
-.Ldt-tweet_realName {
-  float: left;
-  margin-left: 3px;
-}
-
-.Ldt-tweetContents {
-}
-
-.Ldt-tweet_date {
-  float: left;
-}
-
-.Ldt-tweetWidgetKeepOpen {
-  position: relative;
-  float: right;
-  height: 17px;
-  width: 17px;
-  margin-right: 1px;
-  background:url('imgs/minimize.png');
-}
-
-.Ldt-tweetWidgetMinimize {
-  position: relative;
-  float: right;
-  height: 17px;
-  width: 17px;
-  right: 9px;
-  background:url('imgs/minimize.png');
-}
-
-.Ldt-tweetWidget * a:link {
-  color: #729efa;
-
-}
-
-.Ldt-TweetReply {
-  float: left;
-  margin-left: 16px;
-}
-
-.Ldt-TweetReplyIcon {
-  background:url('imgs/reply_sprite.png') no-repeat scroll 0 0 transparent ;
-  width: 14px;
-  height: 11px;
-  float: left;
-  margin-top: 2px;
-}
-
-.Ldt-TweetReplyIcon:hover {
-  background-position: 0 -11px;
-}
-
-.Ldt-TweetReplyIcon:active {
-  background-position: 0 -22px;
-}
-
-.Ldt-Retweet {
-  float: left;
-  margin-left: 16px;
-}
-
-.Ldt-RetweetIcon {
-  background:url('imgs/retweet_sprite.png') no-repeat scroll 0 0 transparent ;
-  width: 14px;
-  height: 8px;
-  float: left;
-  margin-top: 3px;
-}
-
-.Ldt-RetweetIcon:hover {
-  background-position: 0 -8px;
-}
-
-.Ldt-RetweetIcon:active {
-  background-position: 0 -16px;
-}
-
-/* styling of a "++" in a tweet */
-.Ldt-PolemicPlusPlus {
-  background-color: #1d973d;
-}
-
-/* styling of a "==" in a tweet */
-.Ldt-PolemicEqualEqual {
-  background-color: #5c8df1
-}
-
-/* styling of a "--" in a tweet */
-.Ldt-PolemicMinusMinus {
-  background-color: #ce0a15;
-}
-
-/* styling of a "??" in a tweet */
-.Ldt-PolemicQuestion {
-  background-color: #c5a62d;
-}
-
-/* the styling of a spacer div */
-.Ldt-spacer {
-  background-color:#eeeeee;
-}
-
 /* sparkline widget */
 .Ldt-sparklineWidget {
   position: relative;
@@ -583,45 +440,6 @@ button.ui-button-icon-only  {
   z-index: 4;
   top: 0px;
   opacity: 0.3;
-}
-
-.Ldt-sliceWidget {
-  position: relative;
-  width: 100%;
-  height: 25px;
-  margin-top: 3px;
-}
-
-.Ldt-sliceBackground {
-  width: 100%;
-  background-color: #b6b8b8;
-  height: 12px;
-}
-
-.Ldt-sliceZone {
-  position: absolute;
-  top: 0px;
-  background:url('imgs/wire_pattern.png') repeat scroll transparent;
-  height: 12px;
-  z-index: 2;
-}
-
-.Ldt-sliceLeftHandle {
-  position: absolute;
-  top: 0px;
-  height: 25px;
-  width: 7px;
-  background:url('imgs/left_handle.gif') no-repeat scroll transparent;
-  z-index: 2;
-}
-
-.Ldt-sliceRightHandle {
-  position: absolute;
-  top: 0px;
-  height: 25px;
-  width: 7px;
-  background:url('imgs/right_handle.gif') no-repeat scroll transparent;
-  z-index: 2;
 }
 
 /* CINECAST Annotation Widget block */
@@ -800,9 +618,6 @@ button.ui-button-icon-only  {
 .Ldt-AnnotationsListWidget {
   font-size: 12px;
   font-family: "Arial",  "Verdana", "sans-serif";
-  border: 1px solid #b6b8b8;
-  overflow: auto;
-  max-height: 480px;
 }
 
 .Ldt-AnnotationsList-ul {
@@ -816,6 +631,7 @@ button.ui-button-icon-only  {
   margin: 2px 0; padding: 2px 0;
   position: relative;
   min-height: 70px;
+  background: #000000;
 }
 
 .Ldt-AnnotationsList-li:hover {
@@ -826,7 +642,7 @@ button.ui-button-icon-only  {
   text-decoration: none;
 }
 
-.Ldt-AnnotationList-Thumbnail {
+.Ldt-AnnotationsList-Thumbnail {
     border: none;
     float: left;
     max-width: 75px;
