@@ -81,7 +81,9 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     
     var divTitle = this.cinecast_version
         ? annotation.content.data
-        : IriSP.clean_substr(annotation.content.title + " -<br>" + annotation.content.description, 0, 132) + "...";
+        : annotation.content.title + ( annotation.content.title ? "<br />" : "" ) + annotation.content.description.replace(/(^.{120,140})[\s].+$/,'$1&hellip;');
+    
+    var thumbUrl = annotation.meta.thumbnail || '';
     
     var hexa_color = typeof(annotation.content.color) !== "undefined"
         ? '#' + IriSP.DEC_HEXA_COLOR(annotation.content.color)
@@ -100,7 +102,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
     var annotationTemplate = Mustache.to_html(IriSP.annotation_template,
         {"divTitle" : divTitle, "id" : id, "startPixel" : startPixel,
         "pxWidth" : pxWidth, "hexa_color" : hexa_color,
-        "seekPlace" : Math.round(begin/1000)});
+        "seekPlace" : Math.round(begin/1000), "thumbnailUrl": thumbUrl});
 
         
     this.selector.append(annotationTemplate);
@@ -134,7 +136,9 @@ IriSP.SegmentsWidget.prototype.draw = function() {
             var divObject = IriSP.jQuery(this);
             divObject.fadeTo(0,1);
             var offset_x = divObject.position().left + divObject.outerWidth() / 2;
-            self.TooltipWidget.show(divObject.attr("title"), IriSP.jQuery(this).css("background-color"), offset_x, 0);
+            var thumb = divObject.attr("thumbnail-url");
+            var txt = divObject.attr("title") + (thumb && thumb.length ? '<br /><img src="' + thumb + '" />' : '');
+            self.TooltipWidget.show(txt, IriSP.jQuery(this).css("background-color"), offset_x, 0);
         })
         .mouseout(function(){
             IriSP.jQuery(this).fadeTo(0,.5);

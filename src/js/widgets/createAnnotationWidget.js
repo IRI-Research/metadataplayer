@@ -245,7 +245,9 @@ IriSP.createAnnotationWidget.prototype.showEndScreen = function(annotation) {
     this.selector.find(".Ldt-createAnnotation-Title").parent().show();      
   }
 
-  var url = typeof annotation.url == "string" ? annotation.url : document.location.href + "#id=" + annotation.id;
+  var url = ( (typeof annotation.meta == "object" && typeof annotation.meta.url == "string" && annotation.meta.url.length)
+    ? annotation.meta.url
+    : ( document.location.href + "#id=" + annotation.id ) );
   var twStatus = IriSP.mkTweetUrl(url);
   var gpStatus = IriSP.mkGplusUrl(url);
   var fbStatus = IriSP.mkFbUrl(url);
@@ -312,36 +314,32 @@ IriSP.createAnnotationWidget.prototype.handleSliderChanges = function(params) {
 IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback) {
   var _this = this;
   var apiJson = {annotations : [{}], meta: {}};
-  var annotation = apiJson["annotations"][0];
+  var annotation = apiJson.annotations[0];
   
-  annotation["media"] = this._serializer.currentMedia()["id"];
+  annotation.media = this._serializer.currentMedia()["id"];
   
   if (this.cinecast_version) {   
-      annotation["begin"] = Math.round(this._Popcorn.currentTime() * 1000);
-      annotation["end"] = annotation["begin"];      
+      annotation.begin = Math.round(this._Popcorn.currentTime() * 1000);
+      annotation.end = annotation.begin;      
   } else {
     var duration = this._serializer.getDuration();    
-    annotation["begin"] = +((duration * (this.sliceLeft / 100)).toFixed(0));
-    annotation["end"] = +((duration * ((this.sliceWidth + this.sliceLeft) / 100)).toFixed(0));
+    annotation.begin = +((duration * (this.sliceLeft / 100)).toFixed(0));
+    annotation.end = +((duration * ((this.sliceWidth + this.sliceLeft) / 100)).toFixed(0));
   }
 
   // boundary checks
-  if (annotation["begin"] < 0)
-        annotation["begin"] = 0;
+  annotation.begin = Math.max(0, annotation.begin);
+  annotation.end = Math.min(this._serializer.getDuration(), annotation.end);
   
-  if (annotation["end"] > this._serializer.getDuration())
-    annotation["end"] = this._serializer.getDuration();
-      
+  annotation.type = ( this.cinecast_version ? "cinecast:UserAnnotation" : ( this._serializer.getContributions() || "" ));
+  if (typeof(annotation.type) === "undefined")
+    annotation.type = "";
   
-  annotation["type"] = this._serializer.getContributions();
-  if (typeof(annotation["type"]) === "undefined")
-    annotation["type"] = "";
-  
-  annotation["type_title"] = "Contributions";
+  annotation.type_title = "Contributions";
   annotation.content = {};
-  annotation.content["data"] = contents;
+  annotation.content.data = contents;
   
-  var meta = apiJson["meta"];
+  var meta = apiJson.meta;
   
   
   var _username = this.selector.find(".Ldt-createAnnotation-userName").val();
@@ -358,7 +356,7 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   meta.created = Date().toString();
   
   // All #hashtags are added to tags
-  annotation.tags = contents.match(/(#[\S]*)/g);
+  annotation.tags = contents.match(/#[^#\s]+\b/gim) || [];
   
   var jsonString = JSON.stringify(apiJson);
   var project_id = this._serializer._data.meta.id;
@@ -375,26 +373,29 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
       //dataType: 'json',
       success: IriSP.wrap(this, function(json, textStatus, XMLHttpRequest) {                   
                     /* add the annotation to the annotation and tell the world */
-                    
+                    if (this.cinecast_version) {
+                        var annotation = json.annotations[0];
+                    } else {
                     /* if the media doesn't have a contributions line, we need to add one */
-                    if (typeof(this._serializer.getContributions()) === "undefined") {
-                      /* set up a basic view */
-                      var tmp_view = {"dc:contributor": "perso", "dc:creator": "perso", "dc:title": "Contributions",
-                                      "id": json.annotations[0].type}
-
-                      
-                        IriSP.get_aliased(this._serializer._data, ["annotation_types", "annotation-types"]).push(tmp_view);
+                        if (typeof(this._serializer.getContributions()) === "undefined") {
+                          /* set up a basic view */
+                          var tmp_view = {"dc:contributor": "perso", "dc:creator": "perso", "dc:title": "Contributions",
+                                          "id": json.annotations[0].type}
+    
+                          
+                            IriSP.get_aliased(this._serializer._data, ["annotation_types", "annotation-types"]).push(tmp_view);
+                        }
+                        
+                        delete annotation.tags;
+                        annotation.content.description = annotation.content.data;
+                        annotation.content.title = "";
+                        delete annotation.content.data;
+                        annotation.id = json.annotations[0].id;
+    
+                        annotation.meta = meta;
+                        annotation.meta["id-ref"] = json.annotations[0]["type"];
                     }
-                    
-                    delete annotation.tags;
-                    annotation.content.description = annotation.content.data;
-                    annotation.content.title = "";
-                    delete annotation.content.data;
-                    annotation.id = json.annotations[0].id;
-
-                    annotation.meta = meta;
-                    annotation.meta["id-ref"] = json.annotations[0]["type"];
-                    
+                        
                     // everything is shared so there's no need to propagate the change
                     _this._serializer._data.annotations.push(annotation);
  

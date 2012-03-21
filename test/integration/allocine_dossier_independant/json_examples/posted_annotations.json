@@ -1,0 +1,19 @@
+{
+    "annotations": [
+        {
+            "media": "cinecast:Bamako",
+            "begin": 0,
+            "end": 0,
+            "type": "cinecast:UserAnnotation",
+            "type_title": "Contributions",
+            "content": {
+                "data": "Hello, #world !"
+            },
+            "tags": ["#world"]
+        }
+    ],
+    "meta": {
+        "creator": "user_name_or_id",
+        "created": "Wed Mar 21 2012 15:30:20 GMT+0100"
+    }
+}

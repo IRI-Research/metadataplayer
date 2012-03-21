@@ -353,15 +353,20 @@ button.ui-button-icon-only  {
   max-width: 200px;
   background: transparent url("imgs/black_arrow_long.png");
   font-size: 12px;
-  height: 125px;
+  height: 115px;
   width: 180px;
-  padding: 10px;
-  padding-left: 15px;
-  padding-top: 15px;
-  padding-right: 15px;
+  padding: 15px 15px 20px;
   color: #ffffff;
   font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
   overflow:hidden;
+}
+
+.tipcolor {
+    float: left; margin: 2px 4px 2px 0;
+}
+
+.tip img {
+    max-width: 140px; max-height: 70px; margin: 0 20px;
 }
 
 /* slider */

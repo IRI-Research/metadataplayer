@@ -10,7 +10,7 @@
         </div>
         <!-- START Integration  ###################################### -->
         <!-- SIMPLE PLAYER EXPERIMENTATION -->
-        <script type="text/javascript" src="/metadataplayer/build/LdtPlayer-release.js" type="text/javascript"></script>
+        <script type="text/javascript" src="js/LdtPlayer-release.js" type="text/javascript"></script>
         <div id="video"></div>
         <div id="LdtPlayer"></div>
         <div id="Sparkline"></div>
@@ -21,7 +21,7 @@
                 name : 'awesome_user_name',
                 avatar : 'allocine_test/avatar.png'
             };
-            IriSP.libdir = "/metadataplayer/src/js/libs/";
+            IriSP.libdir = "js/libs/";
             IriSP.defaults.user = function() {
                 return IriSP.user;
             };
@@ -68,12 +68,12 @@
                         keywords : ['#vodkaster', '#allocine', '#universcine'],
                         api_endpoint_template : "coucou/{{id}}.json",
                         api_method : 'POST'
-                    }, {
+                    } /*, {
                         type: "TraceWidget",
                         url: "http://192.168.56.101:5000/",
                         requestmode: 'GET',
                         syncmode: "sync"
-                    }]
+                    } */]
                 },
                 player : {
                     type : 'allocine', // player type

@@ -1,0 +1,84 @@
+{
+    "medias": [
+        {
+            "id": "cinecast:Bamako",
+            "url": "rtmpe://cp41629.edgefcs.net/ondemand/mp4:ondemand/nmedia/cinecast/Bamako1500.m4v",
+            "meta": {
+                "mediaid": 1,
+                "actors": ["Aissa Maiga", "Tiecoura Traore", "Maimouna Helene Diarra"],
+                "directors": ["Abderrahmane Sissako"],
+                "nationalities": ["FR"],
+                "duration": 7080000,
+                "productionYear": "2006",
+                "synopsis": null,
+                "thumbnail": "http://www.vodkaster.com/var/vodkaster/storage/images/films/bamako/42851-1-fre-FR/Bamako3_reference.jpg",
+                "title": "Bamako",
+                "version": "VOST"
+            }
+        }
+    ],
+    "annotation_types": [
+        {
+            "id": "cinecast:UserAnnotation",
+            "meta": {
+                "description": "Annotation made during the Cinecast Festival."
+            }
+        },
+        {
+            "id": "cinecast:MovieExtract",
+            "meta": {
+                "description": "Extract from a Movie."
+            }
+        }
+    ],
+    "annotations": [ {
+            "id": "ac:3638",
+            "begin": 187000,
+            "end": 187000,
+            "timecode": 0,
+            "content": {
+                "data": "test #vodkaster #allocine #universcine"
+            },
+            "media": "cinecast:Bamako",
+            "tags": ["#vodkaster", "#allocine", "#universcine"],
+            "type": "cinecast:UserAnnotation",
+            "meta": {
+                "mediaid": 1,
+                "thumbnail": "/users/02/7/7/4/Z20110103142031450307477/img/0tyw3myh.cce.jpg",
+                "extract": "789849",
+                "status": "active",
+                "timestamp": 12995,
+                "created": "2012-03-16T11:06:47.3170000",
+                "creator": "ac:495",
+                "creator_name": "Pierre",
+                "url": "http:\/\/www.allocine.com/mon_annotation"
+            }
+        }, {
+            "id": "cinecast:789914",
+            "type": "cinecast:MovieExtract",
+            "media": "cinecast:Bamako",
+            "meta": {
+                "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34979\/25593951-2-fre-FR\/34979-Colonialisme-latent1_reference.jpg",
+                "creator": "Vodkaster",
+                "created": "1970-01-01T01:00:00+01:00"
+            },
+            "begin": 3202000,
+            "end": 3359000,
+            "content": {
+                "data": "Colonialisme latent"
+            }
+        }
+    ],
+    "meta": {
+        "id": "cinecast:Bamako",
+        "created": "2012-03-19T17:15:22.4921496Z",
+        "creator": "AlloCine"
+    },
+    "format": "http://advene.org/ns/cinelab/",
+    "imports": [
+        {
+            "id": "cinecast",
+            "url": "http://cinecast.fr/festival/configuration.json"
+        }
+    ]
+}

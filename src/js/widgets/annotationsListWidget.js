@@ -123,7 +123,7 @@ IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
      we have to do that because the platform only knows at run time what view it's displaying.
   */
      
-  var platf_url = IriSP.widgetsDefaults["AnnotationsListWidget"].ajax_url
+  var platf_url = IriSP.widgetsDefaults.AnnotationsListWidget.ajax_url
                                       .replace(/\{/g, '{{').replace(/\}/g, '}}');
   var media_id = this._serializer.currentMedia()["id"];
   var duration = this._serializer.getDuration();
@@ -161,19 +161,19 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
   
   for (i = 0; i < annotations.length; i++) {
     var obj = this.transformAnnotation(annotations[i])
-
-      /* only if the annotation isn't present in the document create an
-         external link */
-      if (!this.annotations_ids.indexOf(obj["id"]) != -1) {
-        // braindead url; jacques didn't want to create a new one in the platform,
-        // so we append the cutting id to the url.
-        obj["url"] = this.project_url + "/" + media + "/" + 
-                     annotation.meta["project"] + "/" +
-                     annotation.meta["id-ref"];
-        
-        // obj["url"] = document.location.href.split("#")[0] + "/" + annotation.meta["project"];
-      }
-      
+      if (typeof obj.url == "undefined" || !obj.url) {
+          /* only if the annotation isn't present in the document create an
+             external link */
+          if (!this.annotations_ids.indexOf(obj.id) != -1) {
+            // braindead url; jacques didn't want to create a new one in the platform,
+            // so we append the cutting id to the url.
+            obj.url = this.project_url + "/" + media + "/" + 
+                         annotations[i].meta.project + "/" +
+                         annotations[i].meta["id-ref"] + '#id=' + annotations[i].id;
+            
+            // obj.url = document.location.href.split("#")[0] + "/" + annotation.meta.project;
+          }
+          }
       l.push(obj);
   }
 
