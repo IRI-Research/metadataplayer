@@ -1087,16 +1087,16 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
     });
 };
 IriSP.annotation_template = "{{! template for an annotation displayed in a segmentWidget }}<div title='{{divTitle}}' id='{{id}}'	class='Ldt-iri-chapter Ldt-TraceMe' 	style='left: {{startPixel}}px;          width: {{pxWidth}}px;          background-color:{{hexa_color}};'    data-seek='{{seekPlace}}'    thumbnail-url='{{thumbnailUrl}}'	></div>";
-IriSP.annotationWidget_template = "{{! template for the annotation widget }}<div class='Ldt-AnnotationsWidget'>  <!-- ugly div because we want to have a double border -->  <div class='Ldt-Annotation-DoubleBorder'>      <div class='Ldt-AnnotationContent'>          <div class='Ldt-AnnotationShareIcons'>         <a target='_blank' class='Ldt-fbShare Ldt-TraceMe' title='share on facebook'></a>         <a target='_blank' class='Ldt-TwShare Ldt-TraceMe' title='share on twitter'></a>         <a target='_blank'  class='Ldt-GplusShare Ldt-TraceMe' title='share on google+'></a>        </div>        <div class='Ldt-SaTitle'></div>        <div class='Ldt-SaDescription'></div>        <div class='Ldt-SaKeywords'></div>    </div>  </div></div>";
+IriSP.annotationWidget_template = "{{! template for the annotation widget }}<div class='Ldt-AnnotationsWidget'>  <!-- ugly div because we want to have a double border -->  <div class='Ldt-Annotation-DoubleBorder'>      <div class='Ldt-AnnotationContent'>          <div class='Ldt-AnnotationShareIcons'>         <a target='_blank' class='Ldt-fbShare Ldt-TraceMe' title='{{i10n.share_on}} Facebook'></a>         <a target='_blank' class='Ldt-TwShare Ldt-TraceMe' title='{{i10n.share_on}} Twitter'></a>         <a target='_blank'  class='Ldt-GplusShare Ldt-TraceMe' title='{{i10n.share_on}} Google+'></a>        </div>        <div class='Ldt-SaTitle'></div>        <div class='Ldt-SaDescription'></div>        <div class='Ldt-SaKeywords'></div>    </div>  </div></div>";
 IriSP.annotation_loading_template = "{{! template shown while the annotation widget is loading }}<div id='Ldt-load-container'><div id='Ldt-loader'>&nbsp;</div> Chargement... </div>";
 IriSP.annotationsListWidget_template = "{{! template for the annotation list widget }}<div class='Ldt-AnnotationsListWidget'>    <ul class='Ldt-AnnotationsList-ul'>        {{#annotations}}        <li id='Ldt-Annotation-li-{{id}}' class='Ldt-AnnotationsList-li Ldt-TraceMe'>            <img class='Ldt-AnnotationsList-Thumbnail' src='{{thumbnail}}' />            <div class='Ldt-AnnotationsList-Duration'>                <span class='Ldt-AnnotationsList-Begin'>{{begin}}</span>                <span class='Ldt-AnnotationsList-TcSeparator'>-</span>                <span class='Ldt-AnnotationsList-End'>{{end}}</span>            </div>            <div class='Ldt-AnnotationsList-Title'>            {{! if the url is not present, it means that the annotation exists            in the current project }}            {{^url}} <a href='#id={{id}}'> {{/url}}            {{! otherwise link to url }}            {{#url}} <a href='{{url}}'> {{/url}}                {{title}}            </a>            </div>            <div class='Ldt-AnnotationsList-Description'>                {{desc}}            </div>            {{#tags.length}}            <ul class='Ldt-AnnotationsList-Tags'>                {{#tags}}                <li class='Ldt-AnnotationsList-Tag-Li'>                    <div class='Ldt-AnnotationsList-Tag-Div'>{{.}}</div>                </li>                {{/tags}}            </ul>            {{/tags.length}}        </li>        {{/annotations}}    </ul></div>";
 IriSP.arrowWidget_template = "<div class='Ldt-arrowWidget Ldt-arrowLeftEdge'></div>";
-IriSP.createAnnotationWidget_template = "{{! template for the annotation creation widget }}<div class='Ldt-createAnnotationWidget'>    <!-- ugly div because we want to have a double border -->    <div class='Ldt-createAnnotation-DoubleBorder'>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-startScreen'>            <div style='margin-bottom: 7px; overflow: auto;'>                <div class='Ldt-createAnnotation-Title'></div>                <div class='Ldt-createAnnotation-TimeFrame'></div>                {{^cinecast_version}} <div class='Ldt-createAnnotation-Minimize Ldt-TraceMe' title='Cancel'></div>                {{/cinecast_version}}            </div>            <div class='Ldt-createAnnotation-Container'>                {{#show_from_field}}                <label>Your name&nbsp;: </label><input class='Ldt-createAnnotation-userName Ldt-TraceMe' value='{{user_name}}' />                {{/show_from_field}}                <textarea class='Ldt-createAnnotation-Description Ldt-TraceMe'></textarea>                <div class='Ldt-createAnnotation-userAvatar Ldt-TraceMe'>                    {{^user_avatar}} <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>                    {{/user_avatar}}                    {{#user_avatar}} <img src='{{ user_avatar }}'></img>                    {{/user_avatar}}                </div>                <div class='Ldt-createAnnotation-profileArrow'></div>            </div>            <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>Submit</button>            {{#keywords.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-keywords'>                <label>Add keywords :</label>                <ul class='Ldt-floatList'>                {{#keywords}}                    <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe'>{{.}}</button></li>                {{/keywords}}                </ul>            </div>            {{/keywords.length}}            {{#polemic_mode}}            {{#polemics.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-polemics'>                <label>Add polemic keywords :</label>                <ul class='Ldt-floatList'>                {{#polemics}}                    <li><button class='Ldt-createAnnotation-polemic-{{className}} Ldt-createAnnotation-polemic-button Ldt-TraceMe'>{{keyword}}</button></li>                {{/polemics}}                </ul>            </div>            {{/polemics.length}}            {{/polemic_mode}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-spinner'></div>            Please wait while your request is being processed...        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-errorScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            An error happened while contacting the server. Your annotation has not been saved.        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-endScreen' style='display: none'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            Thank you, your annotation has been saved.            <br>            Would you like to share it on social networks ?            <div style='margin-top: 12px; text-align: center;'>                <a target='_blank' class='Ldt-createAnnotation-endScreen-TweetLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-FbLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-GplusLink Ldt-TraceMe'></a>            </div>        </div>        <div class='Ldt-floatClear'></div>    </div></div>";
-IriSP.createAnnotation_errorMessage_template = "<p class='Ldt-createAnnotation-errorMessage'>  You must enter text to submit an annotation</p>";
+IriSP.createAnnotationWidget_template = "{{! template for the annotation creation widget }}<div class='Ldt-createAnnotationWidget'>    <!-- ugly div because we want to have a double border -->    <div class='Ldt-createAnnotation-DoubleBorder'>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-startScreen'>            <div style='margin-bottom: 7px; overflow: auto;'>                <div class='Ldt-createAnnotation-Title'></div>                <div class='Ldt-createAnnotation-TimeFrame'></div>                {{^cinecast_version}} <div class='Ldt-createAnnotation-Minimize Ldt-TraceMe' title='Cancel'></div>                {{/cinecast_version}}            </div>            <div class='Ldt-createAnnotation-Container'>                {{#show_from_field}}                <label>{{l10n.your_name}}&nbsp;: </label><input class='Ldt-createAnnotation-userName Ldt-TraceMe' value='{{user_name}}' />                {{/show_from_field}}                <textarea class='Ldt-createAnnotation-Description Ldt-TraceMe'></textarea>                <div class='Ldt-createAnnotation-userAvatar Ldt-TraceMe'>                    {{^user_avatar}} <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>                    {{/user_avatar}}                    {{#user_avatar}} <img src='{{ user_avatar }}'></img>                    {{/user_avatar}}                </div>                <div class='Ldt-createAnnotation-profileArrow'></div>            </div>            <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>{{l10n.submit}}</button>            {{#keywords.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-keywords'>                <label>{{l10n.add_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#keywords}}                    <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe'>{{.}}</button></li>                {{/keywords}}                </ul>            </div>            {{/keywords.length}}            {{#polemic_mode}}            {{#polemics.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-polemics'>                <label>{{l10n.add_polemic_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#polemics}}                    <li><button class='Ldt-createAnnotation-polemic-{{className}} Ldt-createAnnotation-polemic-button Ldt-TraceMe'>{{keyword}}</button></li>                {{/polemics}}                </ul>            </div>            {{/polemics.length}}            {{/polemic_mode}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-spinner'></div>            {{l10n.wait_while_processed}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-errorScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.error_while_contacting}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-endScreen' style='display: none'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.annotation_saved}}            <br>            {{l10n.share_annotation}}            <div style='margin-top: 12px; text-align: center;'>                <a target='_blank' class='Ldt-createAnnotation-endScreen-TweetLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-FbLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-GplusLink Ldt-TraceMe'></a>            </div>        </div>        <div class='Ldt-floatClear'></div>    </div></div>";
+IriSP.createAnnotation_errorMessage_template = "<p class='Ldt-createAnnotation-errorMessage'>  {{l10n.empty_annotation}}</p>";
 IriSP.overlay_marker_template = "{{! the template for the small bars which is z-indexed over our segment widget }}<div class='Ldt-SegmentPositionMarker' style='background-color: #F7268E;'></div>";
-IriSP.player_template = "{{! template for the radio player }}<div class='Ldt-controler'>	<div class='Ldt-LeftPlayerControls'>        <div class='Ldt-Ctrl-button Ldt-CtrlPlay Ldt-CtrlPlay-PlayState Ldt-TraceMe' title='Play/Pause'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{^disable_annotate_btn}}    	<div class='Ldt-Ctrl-button Ldt-CtrlAnnotate Ldt-TraceMe' title='Annotate'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{/disable_annotate_btn}}        {{^disable_search_btn}}        <div class='Ldt-Ctrl-button Ldt-CtrlSearch Ldt-TraceMe' title='Search'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{/disable_search_btn}}        <div class='LdtSearch'>          <input class='LdtSearchInput Ldt-TraceMe'></input>        </div>	</div>	<div class='Ldt-RightPlayerControls'>        <div class='Ldt-Ctrl-spacer'></div>        <div class='Ldt-Time'>          <div class='Ldt-ElapsedTime' title='Elapsed time'>00:00</div>          <div class='Ldt-TimeSeparator'>/</div>          <div class='Ldt-TotalTime' title='Total time'>00:00</div>        </div>        <div class='Ldt-Ctrl-spacer'></div>		<div class='Ldt-Ctrl-button Ldt-CtrlSound Ldt-CtrlSound-MuteState Ldt-TraceMe' title='Mute/Unmute'></div>	</div></div>";
+IriSP.player_template = "{{! template for the radio player }}<div class='Ldt-controler'>	<div class='Ldt-LeftPlayerControls'>        <div class='Ldt-Ctrl-button Ldt-CtrlPlay Ldt-CtrlPlay-PlayState Ldt-TraceMe' title='{{l10n.play_pause}}'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{^disable_annotate_btn}}    	<div class='Ldt-Ctrl-button Ldt-CtrlAnnotate Ldt-TraceMe' title='{{l10n.annotate}}'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{/disable_annotate_btn}}        {{^disable_search_btn}}        <div class='Ldt-Ctrl-button Ldt-CtrlSearch Ldt-TraceMe' title='{{l10n.search}}'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{/disable_search_btn}}        <div class='LdtSearch'>          <input class='LdtSearchInput Ldt-TraceMe'></input>        </div>	</div>	<div class='Ldt-RightPlayerControls'>        <div class='Ldt-Ctrl-spacer'></div>        <div class='Ldt-Time'>          <div class='Ldt-ElapsedTime' title='{{l10n.elapsed_time}}'>00:00</div>          <div class='Ldt-TimeSeparator'>/</div>          <div class='Ldt-TotalTime' title='{{l10n.total_time}}'>00:00</div>        </div>        <div class='Ldt-Ctrl-spacer'></div>		<div class='Ldt-Ctrl-button Ldt-CtrlSound Ldt-CtrlSound-MuteState Ldt-TraceMe' title='{{l10n.mute_unmute}}'></div>	</div></div>";
 IriSP.search_template = "{{! template for the search container }}<div class='LdtSearchContainer'	style='margin-left: {{margin_left}}; position: absolute; margin-top: -60px;'>	<div class='LdtSearch'		style='display: none; background-color: #EEE; width: 165px; border-color: #CFCFCF; position: absolute; text-align: center;'>		<input class='LdtSearchInput'			style='margin-top: 1px; margin-bottom: 2px;' />	</div></div><div class='cleaner'></div>";
-IriSP.share_template = "{{! social network sharing template }}<a onclick='__IriSP.MyApiPlayer.share(\'delicious\');' title='partager avec delicious'><span class='share shareDelicious'>&nbsp;</span></a>		<a onclick='__IriSP.MyApiPlayer.share(\'facebook\');' title='partager avec facebook'> <span class='share shareFacebook'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'twitter\');' title='partager avec twitter'>  <span class='share shareTwitter'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'myspace\');' title='partager avec Myspace'>  <span class='share shareMySpace'>&nbsp;</span></a>";
+IriSP.share_template = "{{! social network sharing template }}<a onclick='__IriSP.MyApiPlayer.share(\'delicious\');' title='{{l10n.share_on}} delicious'><span class='share shareDelicious'>&nbsp;</span></a>		<a onclick='__IriSP.MyApiPlayer.share(\'facebook\');' title='{{l10n.share_on}} facebook'> <span class='share shareFacebook'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'twitter\');' title='{{l10n.share_on}} twitter'>  <span class='share shareTwitter'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'myspace\');' title='{{l10n.share_on}} Myspace'>  <span class='share shareMySpace'>&nbsp;</span></a>";
 IriSP.sliceWidget_template = "{{! template for the slice widget }}<div class='Ldt-sliceWidget'>  {{! the whole bar }}  <div class='Ldt-sliceBackground'></div>    <div class='Ldt-sliceLeftHandle'></div>  {{! the zone which represents our slice }}  <div class='Ldt-sliceZone'></div>     <div class='Ldt-sliceRightHandle'></div></div>";
 IriSP.sliderWidget_template = "{{! template for the slider widget - it's composed of two divs we one overlayed on top    of the other }}<div class='Ldt-sliderBackground'></div><div class='Ldt-sliderForeground'></div><div class='Ldt-sliderPositionMarker Ldt-TraceMe'></div>";
 IriSP.tooltip_template = "{{! template used by the jquery ui tooltip }}<div class='Ldt-tooltip'>  <div class='title'>{{title}}</div>  <div class='time'>{{begin}} : {{end}} </div>  <div class='description'>{{description}}</div></div>";
@@ -1216,7 +1216,11 @@ IriSP.DEC_HEXA_COLOR = function (dec) {
 
 /* shortcut to have global variables in templates */
 IriSP.templToHTML = function(template, values) {
-  var params = IriSP.jQuery.extend(IriSP.default_templates_vars, values);
+  var params = IriSP.jQuery.extend(
+      { "defaults" : IriSP.default_templates_vars,
+        "l10n" : IriSP.i18n.getMessages()
+        },
+      values);
   return Mustache.to_html(template, params);
 };
 
@@ -1646,6 +1650,8 @@ IriSP.jwplayer_swf_path = "../test/libs/player.swf";
 IriSP.platform_url = "http://192.168.56.101/pf";
 IriSP.default_templates_vars = { };
 
+IriSP.language = 'fr';
+
 /** ugly ugly ugly ugly - returns an object defining 
     the paths to the libs
     We need it that way cause it's called at runtime by
@@ -1771,13 +1777,12 @@ IriSP.defaults.paths = {
   "imgs": "/metadataplayer/src/css/imgs"
 };
 
+
 IriSP.defaults.default_templates_vars = function() { 
   return {
   "img_dir" : IriSP.paths.imgs 
   };
-}
-
-/* the widget classes and definitions */
+}/* the widget classes and definitions */
 
 /**
   * @class Widget is an "abstract" class. It's mostly used to define some properties common to every widget.
@@ -2244,7 +2249,114 @@ IriSP.initPlayer = function(config, metadata_url, libdir, platform_url) {
               var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); 
               var modules = IriSP.configureModules(pop, config.modules); 
       });
-};/* To wrap a player the develop should create a new class derived from
+};IriSP.i18n_factory = function() {
+    this.messages = {};
+    this.base_lang = 'en';
+}
+
+IriSP.i18n_factory.prototype.getLanguage = function(lang) {
+    var _lang = (
+        typeof lang != "undefined"
+        ? lang
+        : (
+            typeof IriSP.language != "undefined"
+            ? IriSP.language
+            : this.base_lang
+        )
+    );
+    return (
+        typeof this.messages[_lang] == "object"
+        ? _lang
+        : (
+            typeof this.messages[this.base_lang] == "object"
+            ? this.base_lang
+            : null
+        )
+    )
+}
+
+IriSP.i18n_factory.prototype.getMessages = function(lang) {
+    var _lang = this.getLanguage(lang);
+    return (
+        _lang != null
+        ? this.messages[_lang]
+        : {}
+    );
+}
+
+IriSP.i18n_factory.prototype.getMessage = function(message, lang) {
+    var _msgs = this.getMessages(lang);
+    return (
+        typeof _msgs[message] != "undefined"
+        ? _msgs[message]
+        : message
+    )
+}
+
+IriSP.i18n_factory.prototype.addLanguage = function(lang, messages) {
+    this.messages[lang] = messages;
+}
+
+IriSP.i18n_factory.prototype.addLanguages = function(messages) {
+    var _this = this;
+    IriSP.underscore(messages).each(function(_messages, _lang) {
+        _this.addLanguage(_lang, _messages);
+    });
+}
+
+IriSP.i18n = new IriSP.i18n_factory();
+
+IriSP.i18n.addLanguages(
+    {
+        en: {
+            submit: "Submit",
+            add_keywords: "Add keywords",
+            add_polemic_keywords: "Add polemic keywords",
+            your_name: "Your name",
+            type_here: "Type your annotation here.",
+            wait_while_processed: "Please wait while your request is being processed...",
+            error_while_contacting: "An error happened while contacting the server. Your annotation has not been saved.",
+            empty_annotation: "Your annotation is empty. Please write something before submitting.",
+            annotation_saved: "Thank you, your annotation has been saved.",
+            share_annotation: "Would you like to share it on social networks ?",
+            share_on: "Share on",
+            play_pause: "Play/Pause",
+            mute_unmute: "Mute/Unmute",
+            play: "Play",
+            pause: "Pause",
+            mute: "Mute",
+            unmute: "Unmute",
+            annotate: "Annotate",
+            search: "Search",
+            elapsed_time: "Elapsed time",
+            total_time: "Total time"
+        },
+        fr: {
+            submit: "Envoyer",
+            add_keywords: "Ajouter des mots-clés",
+            add_polemic_keywords: "Ajouter des mots-clés polémiques",
+            your_name: "Votre nom",
+            type_here: "Rédigez votre annotation ici.",
+            wait_while_processed: "Veuillez patienter pendant le traitement de votre requête...",
+            error_while_contacting: "Une erreur s'est produite en contactant le serveur. Votre annotation n'a pas été enregistrée",
+            empty_annotation: "Votre annotation est vide. Merci de rédiger un texte avant de l'envoyer.",
+            annotation_saved: "Merci, votre annotation a été enregistrée.",
+            share_annotation: "Souhaitez-vous la partager sur les réseaux sociaux ?",
+            share_on: "Partager sur",
+            play_pause: "Lecture/Pause",
+            mute_unmute: "Couper/Activer le son",
+            play: "Lecture",
+            pause: "Pause",
+            mute: "Couper le son",
+            unmute: "Activer le son",
+            annotate: "Annoter",
+            search: "Rechercher",
+            elapsed_time: "Durée écoulée",
+            total_time: "Durée totale"
+        }
+    }
+);
+/* To wrap a player the develop should create a new class derived from
 the IriSP.PopcornReplacement.player and defining the correct functions */
 
 /** allocine player wrapper */
@@ -3304,9 +3416,9 @@ IriSP.createAnnotationWidget.prototype.showStartScreen = function() {
   
   /* test if the browser supports the placeholder attribute */
   if (!IriSP.null_or_undefined(jqTextfield.get(0).placeholder)) {
-    jqTextfield.attr("placeholder", "Type your annotation here."); 
+    jqTextfield.attr("placeholder", IriSP.i18n.getMessage('type_here')); 
   } else {
-    jqTextfield.val("Type your annotation here.");
+    jqTextfield.val(IriSP.i18n.getMessage('type_here'));
     jqTextfield.one("click", IriSP.wrap(this, function() { jqTextfield.val(""); }));    
   }
   
@@ -3603,10 +3715,10 @@ IriSP.PlayerWidget.prototype.playButtonUpdater = function() {
   
   if ( status == true ){
     /* the background sprite is changed by adding/removing the correct classes */
-    this.selector.find(".Ldt-CtrlPlay").attr("title", "Play");
+    this.selector.find(".Ldt-CtrlPlay").attr("title", IriSP.i18n.getMessage('play'));
     this.selector.find(".Ldt-CtrlPlay").removeClass("Ldt-CtrlPlay-PauseState").addClass("Ldt-CtrlPlay-PlayState");
   } else {
-    this.selector.find(".Ldt-CtrlPlay").attr("title", "Pause");
+    this.selector.find(".Ldt-CtrlPlay").attr("title", IriSP.i18n.getMessage('pause'));
     this.selector.find(".Ldt-CtrlPlay").removeClass("Ldt-CtrlPlay-PlayState").addClass("Ldt-CtrlPlay-PauseState");
   }  
 
@@ -3636,10 +3748,10 @@ IriSP.PlayerWidget.prototype.muteButtonUpdater = function() {
   var status = this._Popcorn.media.muted;
   
   if ( status == true ){        
-    this.selector.find(".Ldt-CtrlSound").attr("title", "Unmute");
+    this.selector.find(".Ldt-CtrlSound").attr("title", IriSP.i18n.getMessage('unmute'));
     this.selector.find(".Ldt-CtrlSound").removeClass("Ldt-CtrlSound-MuteState").addClass("Ldt-CtrlSound-SoundState");    
   } else {
-    this.selector.find(".Ldt-CtrlSound").attr("title", "Mute");
+    this.selector.find(".Ldt-CtrlSound").attr("title", IriSP.i18n.getMessage('mute'));
     this.selector.find(".Ldt-CtrlSound").removeClass("Ldt-CtrlSound-SoundState").addClass("Ldt-CtrlSound-MuteState");
   }  
 

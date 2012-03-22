@@ -11,7 +11,7 @@
             </div>
             <div class='Ldt-createAnnotation-Container'>
                 {{#show_from_field}}
-                <label>Your name&nbsp;: </label><input class='Ldt-createAnnotation-userName Ldt-TraceMe' value='{{user_name}}' />
+                <label>{{l10n.your_name}}&nbsp;: </label><input class='Ldt-createAnnotation-userName Ldt-TraceMe' value='{{user_name}}' />
                 {{/show_from_field}}
                 <textarea class='Ldt-createAnnotation-Description Ldt-TraceMe'></textarea>
                 <div class='Ldt-createAnnotation-userAvatar Ldt-TraceMe'>
@@ -22,10 +22,10 @@
                 </div>
                 <div class='Ldt-createAnnotation-profileArrow'></div>
             </div>
-            <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>Submit</button>
+            <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>{{l10n.submit}}</button>
             {{#keywords.length}}
             <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-keywords'>
-                <label>Add keywords :</label>
+                <label>{{l10n.add_keywords}} :</label>
                 <ul class='Ldt-floatList'>
                 {{#keywords}}
                     <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe'>{{.}}</button></li>
@@ -36,7 +36,7 @@
             {{#polemic_mode}}
             {{#polemics.length}}
             <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-polemics'>
-                <label>Add polemic keywords :</label>
+                <label>{{l10n.add_polemic_keywords}} :</label>
                 <ul class='Ldt-floatList'>
                 {{#polemics}}
                     <li><button class='Ldt-createAnnotation-polemic-{{className}} Ldt-createAnnotation-polemic-button Ldt-TraceMe'>{{keyword}}</button></li>
@@ -48,17 +48,17 @@
         </div>
         <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>
             <div class='Ldt-createAnnotation-spinner'></div>
-            Please wait while your request is being processed...
+            {{l10n.wait_while_processed}}
         </div>
         <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-errorScreen' style='display: none; text-align: center'>
             <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>
-            An error happened while contacting the server. Your annotation has not been saved.
+            {{l10n.error_while_contacting}}
         </div>
         <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-endScreen' style='display: none'>
             <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>
-            Thank you, your annotation has been saved.
+            {{l10n.annotation_saved}}
             <br>
-            Would you like to share it on social networks ?
+            {{l10n.share_annotation}}
             <div style='margin-top: 12px; text-align: center;'>
                 <a target='_blank' class='Ldt-createAnnotation-endScreen-TweetLink Ldt-TraceMe'></a>
                 <a target='_blank' class='Ldt-createAnnotation-endScreen-FbLink Ldt-TraceMe'></a>

@@ -85,10 +85,10 @@ IriSP.PlayerWidget.prototype.playButtonUpdater = function() {
   
   if ( status == true ){
     /* the background sprite is changed by adding/removing the correct classes */
-    this.selector.find(".Ldt-CtrlPlay").attr("title", "Play");
+    this.selector.find(".Ldt-CtrlPlay").attr("title", IriSP.i18n.getMessage('play'));
     this.selector.find(".Ldt-CtrlPlay").removeClass("Ldt-CtrlPlay-PauseState").addClass("Ldt-CtrlPlay-PlayState");
   } else {
-    this.selector.find(".Ldt-CtrlPlay").attr("title", "Pause");
+    this.selector.find(".Ldt-CtrlPlay").attr("title", IriSP.i18n.getMessage('pause'));
     this.selector.find(".Ldt-CtrlPlay").removeClass("Ldt-CtrlPlay-PlayState").addClass("Ldt-CtrlPlay-PauseState");
   }  
 
@@ -118,10 +118,10 @@ IriSP.PlayerWidget.prototype.muteButtonUpdater = function() {
   var status = this._Popcorn.media.muted;
   
   if ( status == true ){        
-    this.selector.find(".Ldt-CtrlSound").attr("title", "Unmute");
+    this.selector.find(".Ldt-CtrlSound").attr("title", IriSP.i18n.getMessage('unmute'));
     this.selector.find(".Ldt-CtrlSound").removeClass("Ldt-CtrlSound-MuteState").addClass("Ldt-CtrlSound-SoundState");    
   } else {
-    this.selector.find(".Ldt-CtrlSound").attr("title", "Mute");
+    this.selector.find(".Ldt-CtrlSound").attr("title", IriSP.i18n.getMessage('mute'));
     this.selector.find(".Ldt-CtrlSound").removeClass("Ldt-CtrlSound-SoundState").addClass("Ldt-CtrlSound-MuteState");
   }  
 

@@ -212,9 +212,9 @@ IriSP.createAnnotationWidget.prototype.showStartScreen = function() {
   
   /* test if the browser supports the placeholder attribute */
   if (!IriSP.null_or_undefined(jqTextfield.get(0).placeholder)) {
-    jqTextfield.attr("placeholder", "Type your annotation here."); 
+    jqTextfield.attr("placeholder", IriSP.i18n.getMessage('type_here')); 
   } else {
-    jqTextfield.val("Type your annotation here.");
+    jqTextfield.val(IriSP.i18n.getMessage('type_here'));
     jqTextfield.one("click", IriSP.wrap(this, function() { jqTextfield.val(""); }));    
   }
   

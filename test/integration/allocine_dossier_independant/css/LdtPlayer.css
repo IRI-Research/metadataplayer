@@ -493,6 +493,10 @@ button.ui-button-icon-only  {
   max-height: 100%;
 }
 
+.Ldt-createAnnotationWidget .Ldt-floatClear {
+    height: 30px; background: url(img-cinecast/logo.iri.small.png) left no-repeat;
+}
+
 /* CINECAST HIDE ARROW */
 
 .Ldt-createAnnotation-profileArrow {

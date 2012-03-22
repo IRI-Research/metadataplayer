@@ -113,7 +113,11 @@ IriSP.DEC_HEXA_COLOR = function (dec) {
 
 /* shortcut to have global variables in templates */
 IriSP.templToHTML = function(template, values) {
-  var params = IriSP.jQuery.extend(IriSP.default_templates_vars, values);
+  var params = IriSP.jQuery.extend(
+      { "defaults" : IriSP.default_templates_vars,
+        "l10n" : IriSP.i18n.getMessages()
+        },
+      values);
   return Mustache.to_html(template, params);
 };
 
