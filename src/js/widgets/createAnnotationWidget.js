@@ -1,3 +1,36 @@
+/* Internationalization for this widget */
+
+IriSP.i18n.addMessages(
+    {
+        "en": {
+            "submit": "Submit",
+            "add_keywords": "Add keywords",
+            "add_polemic_keywords": "Add polemic keywords",
+            "your_name": "Your name",
+            "type_here": "Type your annotation here.",
+            "wait_while_processed": "Please wait while your request is being processed...",
+            "error_while_contacting": "An error happened while contacting the server. Your annotation has not been saved.",
+            "empty_annotation": "Your annotation is empty. Please write something before submitting.",
+            "annotation_saved": "Thank you, your annotation has been saved.",
+            "share_annotation": "Would you like to share it on social networks ?",
+            "share_on": "Share on"
+        },
+        "fr": {
+            "submit": "Envoyer",
+            "add_keywords": "Ajouter des mots-clés",
+            "add_polemic_keywords": "Ajouter des mots-clés polémiques",
+            "your_name": "Votre nom",
+            "type_here": "Rédigez votre annotation ici.",
+            "wait_while_processed": "Veuillez patienter pendant le traitement de votre requête...",
+            "error_while_contacting": "Une erreur s'est produite en contactant le serveur. Votre annotation n'a pas été enregistrée",
+            "empty_annotation": "Votre annotation est vide. Merci de rédiger un texte avant de l'envoyer.",
+            "annotation_saved": "Merci, votre annotation a été enregistrée.",
+            "share_annotation": "Souhaitez-vous la partager sur les réseaux sociaux ?",
+            "share_on": "Partager sur"
+        }
+    }
+);
+
 IriSP.createAnnotationWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this._hidden = true;
@@ -338,6 +371,15 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   annotation.type_title = "Contributions";
   annotation.content = {};
   annotation.content.data = contents;
+  if (this.cinecast_version) {
+      var _extract = IriSP.underscore(this._serializer._data.annotations)
+          .filter(function(_a) {
+              return (_a.begin <= annotation.begin && _a.end >= annotation.begin && _a.type == "cinecast:MovieExtract");
+          })
+      if (_extract.length) {
+          annotation.extract = _extract[0].id;
+      }
+  }
   
   var meta = apiJson.meta;
   

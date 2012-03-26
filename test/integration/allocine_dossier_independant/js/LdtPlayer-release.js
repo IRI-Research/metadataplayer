@@ -2293,69 +2293,23 @@ IriSP.i18n_factory.prototype.getMessage = function(message, lang) {
     )
 }
 
-IriSP.i18n_factory.prototype.addLanguage = function(lang, messages) {
-    this.messages[lang] = messages;
+IriSP.i18n_factory.prototype.addMessage = function(lang, messagekey, messagevalue) {
+    if (typeof this.messages[lang] == "undefined") {
+        this.messages[lang] = {};
+    }
+    this.messages[lang][messagekey] = messagevalue;
 }
 
-IriSP.i18n_factory.prototype.addLanguages = function(messages) {
+IriSP.i18n_factory.prototype.addMessages = function(messagesObj) {
     var _this = this;
-    IriSP.underscore(messages).each(function(_messages, _lang) {
-        _this.addLanguage(_lang, _messages);
+    IriSP.underscore(messagesObj).each(function(_messages, _lang) {
+        IriSP.underscore(_messages).each(function(_value, _key) {
+            _this.addMessage(_lang, _key, _value);
+        })
     });
 }
 
 IriSP.i18n = new IriSP.i18n_factory();
-
-IriSP.i18n.addLanguages(
-    {
-        en: {
-            submit: "Submit",
-            add_keywords: "Add keywords",
-            add_polemic_keywords: "Add polemic keywords",
-            your_name: "Your name",
-            type_here: "Type your annotation here.",
-            wait_while_processed: "Please wait while your request is being processed...",
-            error_while_contacting: "An error happened while contacting the server. Your annotation has not been saved.",
-            empty_annotation: "Your annotation is empty. Please write something before submitting.",
-            annotation_saved: "Thank you, your annotation has been saved.",
-            share_annotation: "Would you like to share it on social networks ?",
-            share_on: "Share on",
-            play_pause: "Play/Pause",
-            mute_unmute: "Mute/Unmute",
-            play: "Play",
-            pause: "Pause",
-            mute: "Mute",
-            unmute: "Unmute",
-            annotate: "Annotate",
-            search: "Search",
-            elapsed_time: "Elapsed time",
-            total_time: "Total time"
-        },
-        fr: {
-            submit: "Envoyer",
-            add_keywords: "Ajouter des mots-clés",
-            add_polemic_keywords: "Ajouter des mots-clés polémiques",
-            your_name: "Votre nom",
-            type_here: "Rédigez votre annotation ici.",
-            wait_while_processed: "Veuillez patienter pendant le traitement de votre requête...",
-            error_while_contacting: "Une erreur s'est produite en contactant le serveur. Votre annotation n'a pas été enregistrée",
-            empty_annotation: "Votre annotation est vide. Merci de rédiger un texte avant de l'envoyer.",
-            annotation_saved: "Merci, votre annotation a été enregistrée.",
-            share_annotation: "Souhaitez-vous la partager sur les réseaux sociaux ?",
-            share_on: "Partager sur",
-            play_pause: "Lecture/Pause",
-            mute_unmute: "Couper/Activer le son",
-            play: "Lecture",
-            pause: "Pause",
-            mute: "Couper le son",
-            unmute: "Activer le son",
-            annotate: "Annoter",
-            search: "Rechercher",
-            elapsed_time: "Durée écoulée",
-            total_time: "Durée totale"
-        }
-    }
-);
 /* To wrap a player the develop should create a new class derived from
 the IriSP.PopcornReplacement.player and defining the correct functions */
 
@@ -2777,7 +2731,19 @@ IriSP.AnnotationsListWidget = function(Popcorn, config, Serializer) {
   this.checkOption('project_url');
   this.checkOption('default_thumbnail');
   this.checkOption("cinecast_version", false);
+  this.searchRe = null;
+  this._ajax_cache = [];
   var _this = this;
+  
+  this._Popcorn.listen("IriSP.search", function(searchString) {
+      _this.searchHandler(searchString);
+  });
+  this._Popcorn.listen("IriSP.search.closed", function() {
+      _this.searchHandler(false);
+  });
+  this._Popcorn.listen("IriSP.search.cleared", function() {
+      _this.searchHandler(false);
+  });
 };
 
 
@@ -2789,10 +2755,45 @@ IriSP.AnnotationsListWidget.prototype.clear = function() {
 IriSP.AnnotationsListWidget.prototype.clearWidget = function() {
 };
 
+IriSP.AnnotationsListWidget.prototype.searchHandler = function(searchString) {
+  this.searchRe = (searchString && searchString.length) ? IriSP.regexpFromText(searchString) : null;
+  if (this.ajax_mode) {
+      var _this = this,
+        _annotations = (
+            this.searchRe === null
+            ? this._ajax_cache
+            : IriSP.underscore.filter(this._ajax_cache, function(_a) {
+               return (_this.searchRe.test(_a.desc) || _this.searchRe.test(_a.title)); 
+            })
+        );
+    this.do_redraw(_annotations);
+    if (_annotations.length) {
+        this._Popcorn.trigger("IriSP.search.matchFound");
+      } else {
+        this._Popcorn.trigger("IriSP.search.noMatchFound");
+      }    
+  } else {
+      this.drawList();
+  }
+}
+
 /** effectively redraw the widget - called by drawList */
 IriSP.AnnotationsListWidget.prototype.do_redraw = function(list) {
-    var widgetMarkup = IriSP.templToHTML(IriSP.annotationsListWidget_template, {annotations: list});
-    this.selector.html(widgetMarkup);
+    var _html = IriSP.templToHTML(
+        IriSP.annotationsListWidget_template, {
+            annotations: list
+        }),
+        _this = this;
+      
+    this.selector.html(_html);
+    
+    if (this.searchRe !== null) {
+        this.selector.find(".Ldt-AnnotationsList-Title a, .Ldt-AnnotationsList-Description")
+            .each(function()  {
+                var _$ = IriSP.jQuery(this);
+                _$.html(_$.text().replace(_this.searchRe, '<span class="Ldt-AnnotationsList-highlight">$1</span>'))
+            })
+    }
 };
 
 IriSP.AnnotationsListWidget.prototype.transformAnnotation = function(a) {
@@ -2852,6 +2853,17 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
     }
     
   }
+  
+    if (this.searchRe !== null) {
+        list = list.filter(function(_a) {
+            return (_this.searchRe.test(_a.desc) || _this.searchRe.test(_a.title)); 
+        });
+        if (list.length) {
+            this._Popcorn.trigger("IriSP.search.matchFound");
+          } else {
+            this._Popcorn.trigger("IriSP.search.noMatchFound");
+          }
+    }
   
   list = IriSP.underscore(list)
     .chain()
@@ -2946,7 +2958,7 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
           }
       l.push(obj);
   }
-
+  this._ajax_cache = l;
   this.do_redraw(l);
 };
 IriSP.AnnotationsListWidget.prototype.draw = function() {
@@ -2962,16 +2974,15 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
     this.annotations_ids.push(annotations[i]["id"]);
   }
   
-  this.drawList();
-  
   var _this = this;
     
-  if (!this.ajax_mode) {
-      var _throttled = IriSP.underscore.throttle(function() {
-      _this.drawList();
-    }, 1500);
-    this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", _throttled);
-    this._Popcorn.listen("timeupdate", _throttled);
+    if (!this.ajax_mode) {
+        var _throttled = IriSP.underscore.throttle(function() {
+            _this.drawList();
+        }, 1500);
+        _throttled();
+        this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", _throttled);
+        this._Popcorn.listen("timeupdate", _throttled);
   } else {
     /* update the widget when the video has finished loading and when it's seeked and paused */
     this._Popcorn.listen("seeked", IriSP.wrap(this, this.ajaxRedraw));
@@ -2981,7 +2992,20 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
     this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", IriSP.wrap(this, this.ajaxRedraw));
   }
 
-};IriSP.AnnotationsWidget = function(Popcorn, config, Serializer) {
+};/* Internationalization for this widget */
+
+IriSP.i18n.addMessages(
+    {
+        "fr": {
+            "keywords": "Mots-clés"
+        },
+        "en": {
+            "keywords": "Keywords"
+        }
+    }
+);
+
+IriSP.AnnotationsWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   /* flag used when we're creating an annotation */
   this._hidden = false;
@@ -3029,7 +3053,7 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
       }
     }
     
-    tags = "Keywords: " + tags.slice(0, tags.length - 2);
+    tags = IriSP.i18n.getMessage("keywords") + ": " + tags.slice(0, tags.length - 2);
     
     this.selector.find(".Ldt-SaKeywords").text(tags);
     
@@ -3202,6 +3226,39 @@ IriSP.ArrowWidget.prototype.blockArrow = function() {
 IriSP.ArrowWidget.prototype.releaseArrow = function() {
   this._blockArrow = false;   
 };
+/* Internationalization for this widget */
+
+IriSP.i18n.addMessages(
+    {
+        "en": {
+            "submit": "Submit",
+            "add_keywords": "Add keywords",
+            "add_polemic_keywords": "Add polemic keywords",
+            "your_name": "Your name",
+            "type_here": "Type your annotation here.",
+            "wait_while_processed": "Please wait while your request is being processed...",
+            "error_while_contacting": "An error happened while contacting the server. Your annotation has not been saved.",
+            "empty_annotation": "Your annotation is empty. Please write something before submitting.",
+            "annotation_saved": "Thank you, your annotation has been saved.",
+            "share_annotation": "Would you like to share it on social networks ?",
+            "share_on": "Share on"
+        },
+        "fr": {
+            "submit": "Envoyer",
+            "add_keywords": "Ajouter des mots-clés",
+            "add_polemic_keywords": "Ajouter des mots-clés polémiques",
+            "your_name": "Votre nom",
+            "type_here": "Rédigez votre annotation ici.",
+            "wait_while_processed": "Veuillez patienter pendant le traitement de votre requête...",
+            "error_while_contacting": "Une erreur s'est produite en contactant le serveur. Votre annotation n'a pas été enregistrée",
+            "empty_annotation": "Votre annotation est vide. Merci de rédiger un texte avant de l'envoyer.",
+            "annotation_saved": "Merci, votre annotation a été enregistrée.",
+            "share_annotation": "Souhaitez-vous la partager sur les réseaux sociaux ?",
+            "share_on": "Partager sur"
+        }
+    }
+);
+
 IriSP.createAnnotationWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this._hidden = true;
@@ -3542,6 +3599,15 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   annotation.type_title = "Contributions";
   annotation.content = {};
   annotation.content.data = contents;
+  if (this.cinecast_version) {
+      var _extract = IriSP.underscore(this._serializer._data.annotations)
+          .filter(function(_a) {
+              return (_a.begin <= annotation.begin && _a.end >= annotation.begin && _a.type == "cinecast:MovieExtract");
+          })
+      if (_extract.length) {
+          annotation.extract = _extract[0].id;
+      }
+  }
   
   var meta = apiJson.meta;
   
@@ -3628,6 +3694,38 @@ IriSP.HelloWorldWidget.prototype.draw = function() {
         
     console.log(this);
 }
+/* Internationalization for this widget */
+
+IriSP.i18n.addMessages(
+    {
+        "en": {
+            "play_pause": "Play/Pause",
+            "mute_unmute": "Mute/Unmute",
+            "play": "Play",
+            "pause": "Pause",
+            "mute": "Mute",
+            "unmute": "Unmute",
+            "annotate": "Annotate",
+            "search": "Search",
+            "elapsed_time": "Elapsed time",
+            "total_time": "Total time"
+        },
+        "fr": {
+            "play_pause": "Lecture/Pause",
+            "mute_unmute": "Couper/Activer le son",
+            "play": "Lecture",
+            "pause": "Pause",
+            "mute": "Couper le son",
+            "unmute": "Activer le son",
+            "annotate": "Annoter",
+            "search": "Rechercher",
+            "elapsed_time": "Durée écoulée",
+            "total_time": "Durée totale"
+        }
+    }
+);
+
+
 IriSP.PlayerWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   
@@ -4821,16 +4919,16 @@ IriSP.SliderWidget.prototype.positionMarkerDraggingStartedHandler = function(eve
 };
 
 IriSP.SliderWidget.prototype.positionMarkerDraggedHandler = function(event, ui) {   
-  this._disableUpdate = true; // disable slider position updates while dragging is ongoing.
-  window.setTimeout(IriSP.wrap(this, function() { this._disableUpdate = false; }), 500);
 
+/*  this._disableUpdate = true; // disable slider position updates while dragging is ongoing.
+  window.setTimeout(IriSP.wrap(this, function() { this._disableUpdate = false; }), 500);
+*/
   var parentOffset = this.sliderForeground.parent().offset();
   var width = this.sliderBackground.width();
-  var relX = event.pageX - parentOffset.left;
+  var relX = event.originalEvent.pageX - parentOffset.left;
 
   var duration = this._serializer.getDuration() / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
-
   this._Popcorn.currentTime(newTime);
   
   this.draggingOngoing = false;

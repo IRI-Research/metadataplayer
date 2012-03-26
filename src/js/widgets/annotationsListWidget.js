@@ -7,7 +7,19 @@ IriSP.AnnotationsListWidget = function(Popcorn, config, Serializer) {
   this.checkOption('project_url');
   this.checkOption('default_thumbnail');
   this.checkOption("cinecast_version", false);
+  this.searchRe = null;
+  this._ajax_cache = [];
   var _this = this;
+  
+  this._Popcorn.listen("IriSP.search", function(searchString) {
+      _this.searchHandler(searchString);
+  });
+  this._Popcorn.listen("IriSP.search.closed", function() {
+      _this.searchHandler(false);
+  });
+  this._Popcorn.listen("IriSP.search.cleared", function() {
+      _this.searchHandler(false);
+  });
 };
 
 
@@ -19,10 +31,45 @@ IriSP.AnnotationsListWidget.prototype.clear = function() {
 IriSP.AnnotationsListWidget.prototype.clearWidget = function() {
 };
 
+IriSP.AnnotationsListWidget.prototype.searchHandler = function(searchString) {
+  this.searchRe = (searchString && searchString.length) ? IriSP.regexpFromText(searchString) : null;
+  if (this.ajax_mode) {
+      var _this = this,
+        _annotations = (
+            this.searchRe === null
+            ? this._ajax_cache
+            : IriSP.underscore.filter(this._ajax_cache, function(_a) {
+               return (_this.searchRe.test(_a.desc) || _this.searchRe.test(_a.title)); 
+            })
+        );
+    this.do_redraw(_annotations);
+    if (_annotations.length) {
+        this._Popcorn.trigger("IriSP.search.matchFound");
+      } else {
+        this._Popcorn.trigger("IriSP.search.noMatchFound");
+      }    
+  } else {
+      this.drawList();
+  }
+}
+
 /** effectively redraw the widget - called by drawList */
 IriSP.AnnotationsListWidget.prototype.do_redraw = function(list) {
-    var widgetMarkup = IriSP.templToHTML(IriSP.annotationsListWidget_template, {annotations: list});
-    this.selector.html(widgetMarkup);
+    var _html = IriSP.templToHTML(
+        IriSP.annotationsListWidget_template, {
+            annotations: list
+        }),
+        _this = this;
+      
+    this.selector.html(_html);
+    
+    if (this.searchRe !== null) {
+        this.selector.find(".Ldt-AnnotationsList-Title a, .Ldt-AnnotationsList-Description")
+            .each(function()  {
+                var _$ = IriSP.jQuery(this);
+                _$.html(_$.text().replace(_this.searchRe, '<span class="Ldt-AnnotationsList-highlight">$1</span>'))
+            })
+    }
 };
 
 IriSP.AnnotationsListWidget.prototype.transformAnnotation = function(a) {
@@ -82,6 +129,17 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
     }
     
   }
+  
+    if (this.searchRe !== null) {
+        list = list.filter(function(_a) {
+            return (_this.searchRe.test(_a.desc) || _this.searchRe.test(_a.title)); 
+        });
+        if (list.length) {
+            this._Popcorn.trigger("IriSP.search.matchFound");
+          } else {
+            this._Popcorn.trigger("IriSP.search.noMatchFound");
+          }
+    }
   
   list = IriSP.underscore(list)
     .chain()
@@ -176,7 +234,7 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
           }
       l.push(obj);
   }
-
+  this._ajax_cache = l;
   this.do_redraw(l);
 };
 IriSP.AnnotationsListWidget.prototype.draw = function() {
@@ -192,16 +250,15 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
     this.annotations_ids.push(annotations[i]["id"]);
   }
   
-  this.drawList();
-  
   var _this = this;
     
-  if (!this.ajax_mode) {
-      var _throttled = IriSP.underscore.throttle(function() {
-      _this.drawList();
-    }, 1500);
-    this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", _throttled);
-    this._Popcorn.listen("timeupdate", _throttled);
+    if (!this.ajax_mode) {
+        var _throttled = IriSP.underscore.throttle(function() {
+            _this.drawList();
+        }, 1500);
+        _throttled();
+        this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", _throttled);
+        this._Popcorn.listen("timeupdate", _throttled);
   } else {
     /* update the widget when the video has finished loading and when it's seeked and paused */
     this._Popcorn.listen("seeked", IriSP.wrap(this, this.ajaxRedraw));

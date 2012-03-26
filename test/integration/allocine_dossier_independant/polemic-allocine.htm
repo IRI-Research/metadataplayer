@@ -12,7 +12,7 @@
         <!-- SIMPLE PLAYER EXPERIMENTATION -->
         <script type="text/javascript" src="js/LdtPlayer-release.js" type="text/javascript"></script>
         <div id="video"></div>
-        <div id="LdtPlayer"></div>
+        <div id="LdtPlayer" style="float: left;"></div>
         <div id="Sparkline"></div>
         <script  type="text/javascript">
             var json_url = 'allocine_test/bamako.json';
@@ -28,7 +28,7 @@
             var config = {
                 gui : {
                     width : 610,
-                    height : 2100,
+                    height : 900,
                     container : 'LdtPlayer',
                     css : 'css/LdtPlayer.css',
                     default_options : {
@@ -42,7 +42,7 @@
                     },
                     widgets : [{
                         type : "AnnotationsListWidget",
-                        container : "AnnotationsListContainer",
+                        container : "MyListContainer",
                         ajax_mode : false
                     }, {
                         type : "SparklineWidget",
@@ -97,6 +97,6 @@
             IriSP.initPlayer(config, json_url);
 
         </script>
+    <div id="MyListContainer" style="float: left; width: 400px;"></div>
     </body>
-    <div id="AnnotationsListContainer" style="position: absolute; width: 400px; left: 660px; top: 105px;"></div>
 </html>

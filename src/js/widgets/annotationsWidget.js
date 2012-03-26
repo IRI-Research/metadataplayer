@@ -1,3 +1,16 @@
+/* Internationalization for this widget */
+
+IriSP.i18n.addMessages(
+    {
+        "fr": {
+            "keywords": "Mots-clés"
+        },
+        "en": {
+            "keywords": "Keywords"
+        }
+    }
+);
+
 IriSP.AnnotationsWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   /* flag used when we're creating an annotation */
@@ -46,7 +59,7 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
       }
     }
     
-    tags = "Keywords: " + tags.slice(0, tags.length - 2);
+    tags = IriSP.i18n.getMessage("keywords") + ": " + tags.slice(0, tags.length - 2);
     
     this.selector.find(".Ldt-SaKeywords").text(tags);
     

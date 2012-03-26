@@ -1,3 +1,35 @@
+/* Internationalization for this widget */
+
+IriSP.i18n.addMessages(
+    {
+        "en": {
+            "play_pause": "Play/Pause",
+            "mute_unmute": "Mute/Unmute",
+            "play": "Play",
+            "pause": "Pause",
+            "mute": "Mute",
+            "unmute": "Unmute",
+            "annotate": "Annotate",
+            "search": "Search",
+            "elapsed_time": "Elapsed time",
+            "total_time": "Total time"
+        },
+        "fr": {
+            "play_pause": "Lecture/Pause",
+            "mute_unmute": "Couper/Activer le son",
+            "play": "Lecture",
+            "pause": "Pause",
+            "mute": "Couper le son",
+            "unmute": "Activer le son",
+            "annotate": "Annoter",
+            "search": "Rechercher",
+            "elapsed_time": "Durée écoulée",
+            "total_time": "Durée totale"
+        }
+    }
+);
+
+
 IriSP.PlayerWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   
