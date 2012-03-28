@@ -3,7 +3,6 @@
 
 /** jwplayer player wrapper */
 IriSP.PopcornReplacement.jwplayer = function(container, options) {
-
   /* appel du parent pour initialiser les structures communes à tous les players */
   IriSP.PopcornReplacement.player.call(this, container, options);
   
@@ -16,7 +15,9 @@ IriSP.PopcornReplacement.jwplayer = function(container, options) {
     getPosition: function() { return jwplayer(this.container).getPosition(); },
     seek: function(pos) { return jwplayer(this.container).seek(pos); },
     getMute: function() { return jwplayer(this.container).getMute() },
-    setMute: function(p) { return jwplayer(this.container).setMute(p); }
+    setMute: function(p) { return jwplayer(this.container).setMute(p); },
+    getVolume: function() { return jwplayer(this.container).getVolume() / 100; },
+    setVolume: function(p) { return jwplayer(this.container).setVolume(Math.floor(100*p)); }
   }
 
   options.events = this.callbacks;

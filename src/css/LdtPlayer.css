@@ -161,6 +161,7 @@ button.ui-button-icon-only  {
   background:url('imgs/player_gradient.png') repeat-x transparent ;
   height: 25px;
   border: 1px solid #b6b8b8;
+  position: relative;
 }
 
 
@@ -274,28 +275,67 @@ button.ui-button-icon-only  {
   margin: 0 2px;
 }
 
-.Ldt-CtrlSound-SoundState {
+.Ldt-CtrlSound-Full {
   background-position: -120px 0;
 }
 
-.Ldt-CtrlSound-SoundState:hover {
+.Ldt-CtrlSound-Full:hover {
   background-position: -120px -25px;
 }
 
-.Ldt-CtrlSound-SoundState:active {
+.Ldt-CtrlSound-Full:active {
   background-position: -120px -50px;
 }
 
-.Ldt-CtrlSound-MuteState {
+.Ldt-CtrlSound-Mute {
   background-position: -150px 0;
 }
 
-.Ldt-CtrlSound-MuteState:hover {
+.Ldt-CtrlSound-Mute:hover {
   background-position: -150px -25px;
 }
 
-.Ldt-CtrlSound-MuteState:active {
+.Ldt-CtrlSound-Mute:active {
   background-position: -150px -50px;
+}
+
+.Ldt-CtrlSound-Half {
+  background-position: -180px 0;
+}
+
+.Ldt-CtrlSound-Half:hover {
+  background-position: -180px -25px;
+}
+
+.Ldt-CtrlSound-Half:active {
+  background-position: -180px -50px;
+}
+
+.Ldt-Ctrl-Volume-Control {
+    display: none;
+  position: absolute;
+  background:url('imgs/player_gradient.png') repeat-x transparent ;
+  height: 25px;
+  width: 100px; top: 25px; right: -1px; z-index: 100;
+  padding: 0 2px;
+  border: 1px solid #b6b8b8;
+}
+
+.Ldt-Ctrl-Volume-Bar { 
+    height: 5px; margin: 9px 3px 0; background: #cccccc; border: 1px solid #999999; border-radius: 2px;
+}
+
+.Ldt-Ctrl-Volume-Cursor {
+    position: absolute; top: 2px; width: 6px; height: 19px; background: #a8a8a8; border: 1px solid #999999; border-radius: 2px;
+    cursor: pointer;
+}
+
+.Ldt-Ctrl-Volume-Cursor:hover {
+     background: #cccccc;
+}
+
+.Ldt-Ctrl-Volume-Cursor.ui-draggable-dragging {
+    background: #999999;
 }
 
 .Ldt-cleaner {

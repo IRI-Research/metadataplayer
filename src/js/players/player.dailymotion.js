@@ -49,11 +49,26 @@ IriSP.PopcornReplacement.dailymotion = function(container, options) {
         },
         setMute : function(p) {
             if (_this.player) {
-                return p ? _this.player.mute() : _this.player.unMute();
+                if (p) {
+                    _this.player.mute();
+                }
+                else {
+                    _this.player.unMute();
+                }
+            }
+        },
+        getVolume : function() {
+            if (_this.player) {
+                return _this.player.getVolume() / 100;
             } else {
                 return false;
             }
-        }
+        },
+        setVolume : function(p) {
+            if (_this.player) {
+                _this.player.setVolume(Math.floor(100 * p));
+            }
+        },
     }
 
     window.onDailymotionPlayerReady = IriSP.wrap(this, this.ready);

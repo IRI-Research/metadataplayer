@@ -144,6 +144,22 @@ IriSP.PopcornReplacement.player.prototype.muted = function(val) {
   }
 };
 
+IriSP.PopcornReplacement.player.prototype.volume = function(val) {
+    if (typeof this.playerFns.getVolume == "undefined" || typeof this.playerFns.setVolume == "undefined") {
+        return false;
+    }
+    var _vol = this.playerFns.getVolume();
+    if (typeof(val) !== "undefined" && parseFloat(val) !== NaN) {
+        val = Math.max(0, Math.min(1, val));
+        if (parseFloat(val) != parseFloat(_vol)) {
+            this.playerFns.setVolume(val);
+            this.trigger("volumechange");
+            _vol = this.playerFns.getVolume();
+        }
+    }
+    return _vol;
+};
+
 IriSP.PopcornReplacement.player.prototype.mute = IriSP.PopcornReplacement.player.prototype.muted;
 
 IriSP.PopcornReplacement.player.prototype.code = function(options) {

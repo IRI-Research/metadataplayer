@@ -12,7 +12,9 @@ IriSP.i18n.addMessages(
             "annotate": "Annotate",
             "search": "Search",
             "elapsed_time": "Elapsed time",
-            "total_time": "Total time"
+            "total_time": "Total time",
+            "volume": "Volume",
+            "volume_control": "Volume control"
         },
         "fr": {
             "play_pause": "Lecture/Pause",
@@ -24,7 +26,9 @@ IriSP.i18n.addMessages(
             "annotate": "Annoter",
             "search": "Rechercher",
             "elapsed_time": "Durée écoulée",
-            "total_time": "Durée totale"
+            "total_time": "Durée totale",
+            "volume": "Niveau sonore",
+            "volume_control": "Réglage du niveau sonore"
         }
     }
 );
@@ -54,7 +58,7 @@ IriSP.PlayerWidget.prototype.draw = function() {
   this._Popcorn.listen("play", IriSP.wrap(this, this.playButtonUpdater));
   this._Popcorn.listen("pause", IriSP.wrap(this, this.playButtonUpdater));
   
-  this._Popcorn.listen("volumechange", IriSP.wrap(this, this.muteButtonUpdater));
+  this._Popcorn.listen("volumechange", IriSP.wrap(this, this.volumeUpdater));
 
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeDisplayUpdater));  
   // update the time display for the first time.
@@ -70,7 +74,20 @@ IriSP.PlayerWidget.prototype.draw = function() {
                                             { self._Popcorn.trigger("IriSP.PlayerWidget.AnnotateButton.clicked"); });
   this.selector.find(".Ldt-CtrlSearch").click(function() { self.searchButtonHandler.call(self); });
   
-  this.selector.find('.Ldt-CtrlSound').click(function() { self.muteHandler.call(self); } );
+	var _volctrl = this.selector.find(".Ldt-Ctrl-Volume-Control");
+    this.selector.find('.Ldt-CtrlSound')
+        .click(function() { self.muteHandler.call(self); } )
+        .mouseover(function() {
+            _volctrl.show();
+        })
+        .mouseout(function() {
+            _volctrl.hide();
+        });
+    _volctrl.mouseover(function() {
+        _volctrl.show();
+    }).mouseout(function() {
+        _volctrl.hide();
+    });
   
   /*
   var searchButtonPos = this.selector.find(".Ldt-CtrlSearch").position();
@@ -81,8 +98,19 @@ IriSP.PlayerWidget.prototype.draw = function() {
   // trigger an IriSP.PlayerWidget.MouseOver to the widgets that are interested (i.e : sliderWidget)
   this.selector.hover(function() { self._Popcorn.trigger("IriSP.PlayerWidget.MouseOver"); }, 
                       function() { self._Popcorn.trigger("IriSP.PlayerWidget.MouseOut"); });
+  this.selector.find(".Ldt-Ctrl-Volume-Cursor").draggable({
+      axis: "x",
+      drag: function(event, ui) {
+          var _vol = Math.max(0, Math.min( 1, ui.position.left / (ui.helper.parent().width() - ui.helper.outerWidth())));
+          ui.helper.attr("title",IriSP.i18n.getMessage('volume')+': ' + Math.floor(100*_vol) + '%');
+          self._Popcorn.volume(_vol);
+      },
+      containment: "parent"
+  });
  
-  this.muteButtonUpdater(); /* some player - jwplayer notable - save the state of the mute button between sessions */
+ setTimeout(function() {
+     self.volumeUpdater();
+ }, 1000); /* some player - jwplayer notable - save the state of the mute button between sessions */
 };
 
 /* Update the elasped time div */
@@ -139,25 +167,28 @@ IriSP.PlayerWidget.prototype.playHandler = function() {
 };
 
 IriSP.PlayerWidget.prototype.muteHandler = function() {
-  if (!this._Popcorn.muted()) {    
-      this._Popcorn.mute(true);
-    } else {
-      this._Popcorn.mute(false);
-    }
+  this._Popcorn.mute(!this._Popcorn.muted());
 };
 
-IriSP.PlayerWidget.prototype.muteButtonUpdater = function() {
-  var status = this._Popcorn.media.muted;
-  
-  if ( status == true ){        
-    this.selector.find(".Ldt-CtrlSound").attr("title", IriSP.i18n.getMessage('unmute'));
-    this.selector.find(".Ldt-CtrlSound").removeClass("Ldt-CtrlSound-MuteState").addClass("Ldt-CtrlSound-SoundState");    
-  } else {
-    this.selector.find(".Ldt-CtrlSound").attr("title", IriSP.i18n.getMessage('mute'));
-    this.selector.find(".Ldt-CtrlSound").removeClass("Ldt-CtrlSound-SoundState").addClass("Ldt-CtrlSound-MuteState");
-  }  
-
-  return;
+IriSP.PlayerWidget.prototype.volumeUpdater = function() {
+    var _muted = this._Popcorn.muted(),
+        _vol = this._Popcorn.volume();
+    if (_vol === false) {
+        _vol = .5;
+    }
+    var _soundCtl = this.selector.find(".Ldt-CtrlSound");
+    _soundCtl.removeClass("Ldt-CtrlSound-Mute Ldt-CtrlSound-Half Ldt-CtrlSound-Full");
+    if (_muted) {        
+        _soundCtl.attr("title", IriSP.i18n.getMessage('unmute'))
+            .addClass("Ldt-CtrlSound-Mute");    
+    } else {
+        _soundCtl.attr("title", IriSP.i18n.getMessage('mute'))
+            .addClass(_vol < .5 ? "Ldt-CtrlSound-Half" : "Ldt-CtrlSound-Full" )
+    }
+    var _cursor = this.selector.find(".Ldt-Ctrl-Volume-Cursor");
+    _cursor.css({
+        "left": ( _muted ? 0 : Math.floor(_vol * (_cursor.parent().width() - _cursor.outerWidth())) ) + "px"
+    })
 };
 
 IriSP.PlayerWidget.prototype.showSearchBlock = function() {

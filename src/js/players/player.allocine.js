@@ -60,7 +60,7 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
     }
 
     window.onReady = IriSP.wrap(this, this.ready);
-    //NOT CALLED window.onAllocineStateChange = IriSP.wrap(this, this.stateHandler);
+    window.onAllocineStateChange = IriSP.wrap(this, this.stateHandler);
     window.onTime = IriSP.wrap(this, this.progressHandler);
     
     var _videoUrl = (
@@ -102,7 +102,7 @@ IriSP.PopcornReplacement.allocine.prototype.progressHandler = function(progressI
 
 
 IriSP.PopcornReplacement.allocine.prototype.stateHandler = function(state) {
-    
+    console.log("stateHandler");
     switch(state) {
         case 1:
             this.callbacks.onPlay();
