@@ -20,7 +20,6 @@ IriSP.SparklineWidget = function(Popcorn, config, Serializer) {
       this.selector.css("background", this._config.background);
   }
   this.checkOption('cinecast_version');
-  console.log('Cinecast', this.cinecast_version);
 };
 
 
@@ -52,7 +51,7 @@ IriSP.SparklineWidget.prototype.draw = function() {
   // If we've found the correct view, feed the directly the data from the view
   // to jquery sparkline. Otherwise, compute it ourselves.
     if (!IriSP.null_or_undefined(stat_view)) {
-        console.log("sparklinewidget : using stats embedded in the json");
+        //console.log("sparklinewidget : using stats embedded in the json");
         var _results = stat_view.meta.stat.split(",");      
     } else {
         var _annotations = this._serializer._data.annotations,

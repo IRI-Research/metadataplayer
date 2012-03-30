@@ -22,10 +22,9 @@ button.ui-button-icon-only  {
 }
 
 #Ldt-loader {
-  background:url(imgs/loader.gif) no-repeat;
-  width:20px;
-  height:16px;
-  float:left;
+    background:url(imgs/loader.gif) center no-repeat;
+    text-indent: -9999px;
+    position: absolute;
 }
 
 /* general class for all buttons */
@@ -242,6 +241,7 @@ button.ui-button-icon-only  {
   margin: 8px 5px;
   font-size: 12px;
   font-family: Arial, Verdana, sans-serif;
+  color: #ffffff;
 }
 
 .Ldt-ElapsedTime {
@@ -516,7 +516,7 @@ button.ui-button-icon-only  {
 }
 
 .Ldt-createAnnotation-btnblock label {
-    float: left; margin-top: 8px; width: 120px; font-size: 12px; height: 20px;
+    float: left; margin-top: 8px; width: 120px; font-size: 12px; height: 20px; color: #ffffff;
 }
 
 /* CINECAST SPECIFIC TAG BUTTONS */
@@ -692,18 +692,10 @@ button.ui-button-icon-only  {
 }
 
 .Ldt-AnnotationsList-Tag-Div {
-  font-size: 14px; color: #ffffff;
-  height: 20px; padding: 3px 5px 0 0; border: none; margin: 0;
+  font-size: 13px; color: #ffffff;
+  height: 19px; padding: 4px 5px 0 0; border: none; margin: 0;
   background: url(img-cinecast/tag.png) right top no-repeat;
     cursor: pointer;
-}
-
-.Ldt-AnnotationsList-Tag-Li:hover {
-  background-position: left -23px;
-}
-
-.Ldt-AnnotationsList-Tag-Li:hover .Ldt-AnnotationsList-Tag-Div {
-  background-position: right -23px;
 }
 
 /* Tagcloud */

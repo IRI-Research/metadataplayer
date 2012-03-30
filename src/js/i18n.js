@@ -1,9 +1,9 @@
-IriSP.i18n_factory = function() {
+IriSP.I18n = function() {
     this.messages = {};
     this.base_lang = 'en';
 }
 
-IriSP.i18n_factory.prototype.getLanguage = function(lang) {
+IriSP.I18n.prototype.getLanguage = function(lang) {
     var _lang = (
         typeof lang != "undefined"
         ? lang
@@ -24,7 +24,7 @@ IriSP.i18n_factory.prototype.getLanguage = function(lang) {
     )
 }
 
-IriSP.i18n_factory.prototype.getMessages = function(lang) {
+IriSP.I18n.prototype.getMessages = function(lang) {
     var _lang = this.getLanguage(lang);
     return (
         _lang != null
@@ -33,7 +33,7 @@ IriSP.i18n_factory.prototype.getMessages = function(lang) {
     );
 }
 
-IriSP.i18n_factory.prototype.getMessage = function(message, lang) {
+IriSP.I18n.prototype.getMessage = function(message, lang) {
     var _msgs = this.getMessages(lang);
     return (
         typeof _msgs[message] != "undefined"
@@ -42,14 +42,14 @@ IriSP.i18n_factory.prototype.getMessage = function(message, lang) {
     )
 }
 
-IriSP.i18n_factory.prototype.addMessage = function(lang, messagekey, messagevalue) {
+IriSP.I18n.prototype.addMessage = function(lang, messagekey, messagevalue) {
     if (typeof this.messages[lang] == "undefined") {
         this.messages[lang] = {};
     }
     this.messages[lang][messagekey] = messagevalue;
 }
 
-IriSP.i18n_factory.prototype.addMessages = function(messagesObj) {
+IriSP.I18n.prototype.addMessages = function(messagesObj) {
     var _this = this;
     IriSP.underscore(messagesObj).each(function(_messages, _lang) {
         IriSP.underscore(_messages).each(function(_value, _key) {
@@ -58,4 +58,13 @@ IriSP.i18n_factory.prototype.addMessages = function(messagesObj) {
     });
 }
 
-IriSP.i18n = new IriSP.i18n_factory();
+IriSP.i18n = new IriSP.I18n();
+
+IriSP.i18n.addMessages({
+    "fr": {
+        "loading_wait": "Chargement en cours, veuillez patienter&hellip;"
+    },
+    "en": {
+        "loading_wait": "Loading, please wait&hellip;"
+    }
+})

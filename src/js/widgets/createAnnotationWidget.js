@@ -415,9 +415,9 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
       //dataType: 'json',
       success: IriSP.wrap(this, function(json, textStatus, XMLHttpRequest) {                   
                     /* add the annotation to the annotation and tell the world */
-                    if (this.cinecast_version) {
-                        var annotation = json.annotations[0];
-                    } else {
+                    var annotation = json.annotations[0];
+                    
+                    if (!this.cinecast_version) {
                     /* if the media doesn't have a contributions line, we need to add one */
                         if (typeof(this._serializer.getContributions()) === "undefined") {
                           /* set up a basic view */

@@ -277,6 +277,7 @@ IriSP.configureDefaults = function(libdir, platform_url) {
 
 /** single point of entry for the metadataplayer */
 IriSP.initPlayer = function(config, metadata_url, libdir, platform_url) {
+    document.getElementById(config.gui.container).innerHTML = IriSP.templToHTML(IriSP.loading_template, config.gui);
     IriSP.configureDefaults(libdir, platform_url);
     IriSP.loadLibs(IriSP.lib, config, metadata_url,
       function() {   
@@ -287,5 +288,6 @@ IriSP.initPlayer = function(config, metadata_url, libdir, platform_url) {
               
               var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); 
               var modules = IriSP.configureModules(pop, config.modules); 
+              IriSP.jQuery('#Ldt-loader').detach();
       });
 };

@@ -23,10 +23,9 @@ button.ui-button-icon-only  {
 }
 
 #Ldt-loader {
-  background:url(imgs/loader.gif) no-repeat;
-  width:20px;
-  height:16px;
-  float:left;
+    background:url(imgs/loader.gif) center no-repeat;
+    text-indent: -9999px;
+    position: absolute;
 }
 
 /* general class for all buttons */
@@ -885,12 +884,12 @@ button.ui-button-icon-only  {
   max-height: 480px;
 }
 
-.Ldt-AnnotationsList-ul {
+ul.Ldt-AnnotationsList-ul {
   list-style: none;
   padding: 0 3px;
 }
 
-.Ldt-AnnotationsList-li {
+li.Ldt-AnnotationsList-li {
   cursor: pointer;
   float: left; width: 100%; clear: both;
   margin: 2px 0; padding: 2px 0;
@@ -915,7 +914,7 @@ button.ui-button-icon-only  {
   background-image: url('imgs/video_sequence.png');
 }
 
-.Ldt-AnnotationList-Thumbnail {
+.Ldt-AnnotationsList-Thumbnail {
     border: none;
     float: left;
     max-width: 64px;
@@ -938,11 +937,11 @@ button.ui-button-icon-only  {
     margin: 2px 0;
 }
 
-.Ldt-AnnotationsList-Tags {
+ul.Ldt-AnnotationsList-Tags {
     width: 100%; list-style: none; clear: both; padding: 0; margin: 2px 0;
 }
 
-.Ldt-AnnotationsList-Tag-Li {
+li.Ldt-AnnotationsList-Tag-Li {
     float: left; margin: 2px; background: #cc0066; color: #fff; padding: 4px;
 }
 

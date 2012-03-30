@@ -30,7 +30,10 @@ IriSP.LayoutManager = function(options) {
     /* this is a shortcut */
     this.selector = IriSP.jQuery("#" + this._div);
     
-    this.selector.css("width", this._width);
+    this.selector.css({
+        "width": this._width,
+        "clear": "both"
+    });
     
     if (this._height !== undefined)
       this.selector.css("height", this._height);
@@ -60,7 +63,7 @@ IriSP.LayoutManager.prototype.createDiv = function(widgetName) {
     var spacerDiv = IriSP.guid("LdtPlayer_spacer_");
     this._widgets.push([widgetName, newDiv]);    
 
-    var divTempl = "<div id='{{id}}' style='width: {{width}}px; position: relative;'></div";
+    var divTempl = "<div id='{{id}}' style='width: {{width}}px; position: relative; clear: both;'></div";
     var spacerTempl = "<div id='{{spacer_id}}' style='width: {{width}}px; position: relative; height: {{spacer_div_height}};'></div";
     
     var divCode = Mustache.to_html(divTempl, {id: newDiv, width: this._width});

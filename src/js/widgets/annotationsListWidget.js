@@ -91,7 +91,7 @@ IriSP.AnnotationsListWidget.prototype.transformAnnotation = function(a) {
                     } else {
                         if (typeof _t['id-ref'] != "undefined") {
                             var _f = IriSP.underscore.find(_this._serializer._data.tags, function(_tag) {
-                                return _tag['id-ref'] == _t.id;
+                                return _tag.id == _t['id-ref'];
                             });
                             if (typeof _f != "undefined") {
                                 return IriSP.get_aliased(_f.meta, ['dc:title', 'title']);
@@ -222,13 +222,13 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
       if (typeof obj.url == "undefined" || !obj.url) {
           /* only if the annotation isn't present in the document create an
              external link */
-          if (!this.annotations_ids.indexOf(obj.id) != -1) {
+          if (this.annotations_ids.indexOf(obj.id.toLowerCase()) == -1) {
             // braindead url; jacques didn't want to create a new one in the platform,
             // so we append the cutting id to the url.
             obj.url = this.project_url + "/" + media + "/" + 
                          annotations[i].meta.project + "/" +
                          annotations[i].meta["id-ref"] + '#id=' + annotations[i].id;
-            
+                         
             // obj.url = document.location.href.split("#")[0] + "/" + annotation.meta.project;
           }
           }
@@ -242,13 +242,9 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
   /* build a table of the annotations present in the document for faster 
      lookup
   */
-  this.annotations_ids = [];
-  
-  var annotations = this._serializer._data.annotations;
-  var i = 0;
-  for(i = 0; i < annotations.length; i++) {
-    this.annotations_ids.push(annotations[i]["id"]);
-  }
+  this.annotations_ids = IriSP.underscore(this._serializer._data.annotations).map(function(_a) {
+    return _a.id.toLowerCase();
+  });
   
   var _this = this;
     
