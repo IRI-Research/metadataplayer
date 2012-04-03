@@ -114,7 +114,7 @@ IriSP.defaults.widgetsDefaults = function(platform_url) {
            implementers.
            Note that the player has to replace the variables between {{ and }} by its own values.
         */
-        ajax_url: platform_url + "/ldtplatform/api/ldt/segments/{media}/{begin}/{end}", 
+        ajax_url: platform_url + "/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}", 
         
         ajax_granularity: 10000, /* how much ms should we look before and after the
                                    current timecode */

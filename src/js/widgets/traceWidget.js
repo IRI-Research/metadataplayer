@@ -127,6 +127,7 @@ IriSP.TraceWidget.prototype.eventHandler = function(_listener, _arg) {
     }
     this.lastEvent = _traceName;
     this.tracer.trace(_traceName, _arg);
-    console.log("trace('" + _traceName + "', " + JSON.stringify(_arg) + ");");
-    
+    if (this._config.js_console) {
+        console.log("tracer.trace('" + _traceName + "', " + JSON.stringify(_arg) + ");");
+    }
 }

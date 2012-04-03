@@ -1091,10 +1091,11 @@ IriSP.annotationWidget_template = "{{! template for the annotation widget }}<div
 IriSP.annotation_loading_template = "{{! template shown while the annotation widget is loading }}<div id='Ldt-load-container'><div id='Ldt-loader'>&nbsp;</div> Chargement... </div>";
 IriSP.annotationsListWidget_template = "{{! template for the annotation list widget }}<div class='Ldt-AnnotationsListWidget'>    <ul class='Ldt-AnnotationsList-ul'>        {{#annotations}}        <li id='Ldt-Annotation-li-{{id}}' class='Ldt-AnnotationsList-li Ldt-TraceMe'>            <img class='Ldt-AnnotationsList-Thumbnail' src='{{thumbnail}}' />            <div class='Ldt-AnnotationsList-Duration'>                <span class='Ldt-AnnotationsList-Begin'>{{begin}}</span>                <span class='Ldt-AnnotationsList-TcSeparator'>-</span>                <span class='Ldt-AnnotationsList-End'>{{end}}</span>            </div>            <div class='Ldt-AnnotationsList-Title'>            {{! if the url is not present, it means that the annotation exists            in the current project }}            {{^url}} <a href='#id={{id}}'> {{/url}}            {{! otherwise link to url }}            {{#url}} <a href='{{url}}'> {{/url}}                {{title}}            </a>            </div>            <div class='Ldt-AnnotationsList-Description'>                {{desc}}            </div>            {{#tags.length}}            <ul class='Ldt-AnnotationsList-Tags'>                {{#tags}}                <li class='Ldt-AnnotationsList-Tag-Li'>                    <div class='Ldt-AnnotationsList-Tag-Div'>{{.}}</div>                </li>                {{/tags}}            </ul>            {{/tags.length}}        </li>        {{/annotations}}    </ul></div>";
 IriSP.arrowWidget_template = "<div class='Ldt-arrowWidget Ldt-arrowLeftEdge'></div>";
-IriSP.createAnnotationWidget_template = "{{! template for the annotation creation widget }}<div class='Ldt-createAnnotationWidget'>    <!-- ugly div because we want to have a double border -->    <div class='Ldt-createAnnotation-DoubleBorder'>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-startScreen'>            <div style='margin-bottom: 7px; overflow: auto;'>                <div class='Ldt-createAnnotation-Title'></div>                <div class='Ldt-createAnnotation-TimeFrame'></div>                {{^cinecast_version}} <div class='Ldt-createAnnotation-Minimize Ldt-TraceMe' title='Cancel'></div>                {{/cinecast_version}}            </div>            <div class='Ldt-createAnnotation-Container'>                {{#show_from_field}}                <label>{{l10n.your_name}}&nbsp;: </label><input class='Ldt-createAnnotation-userName Ldt-TraceMe' value='{{user_name}}' />                {{/show_from_field}}                <textarea class='Ldt-createAnnotation-Description Ldt-TraceMe'></textarea>                <div class='Ldt-createAnnotation-userAvatar Ldt-TraceMe'>                    {{^user_avatar}} <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>                    {{/user_avatar}}                    {{#user_avatar}} <img src='{{ user_avatar }}'></img>                    {{/user_avatar}}                </div>                <div class='Ldt-createAnnotation-profileArrow'></div>            </div>            <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>{{l10n.submit}}</button>            {{#keywords.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-keywords'>                <label>{{l10n.add_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#keywords}}                    <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe'>{{.}}</button></li>                {{/keywords}}                </ul>            </div>            {{/keywords.length}}            {{#polemic_mode}}            {{#polemics.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-polemics'>                <label>{{l10n.add_polemic_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#polemics}}                    <li><button class='Ldt-createAnnotation-polemic-{{className}} Ldt-createAnnotation-polemic-button Ldt-TraceMe'>{{keyword}}</button></li>                {{/polemics}}                </ul>            </div>            {{/polemics.length}}            {{/polemic_mode}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-spinner'></div>            {{l10n.wait_while_processed}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-errorScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.error_while_contacting}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-endScreen' style='display: none'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.annotation_saved}}            <br>            {{l10n.share_annotation}}            <div style='margin-top: 12px; text-align: center;'>                <a target='_blank' class='Ldt-createAnnotation-endScreen-TweetLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-FbLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-GplusLink Ldt-TraceMe'></a>            </div>        </div>        <div class='Ldt-floatClear'></div>    </div></div>";
+IriSP.createAnnotationWidget_template = "{{! template for the annotation creation widget }}<div class='Ldt-createAnnotationWidget'>    <!-- ugly div because we want to have a double border -->    <div class='Ldt-createAnnotation-DoubleBorder'>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-startScreen'>            <div style='margin-bottom: 7px; overflow: auto;'>                <div class='Ldt-createAnnotation-Title'></div>                <div class='Ldt-createAnnotation-TimeFrame'></div>                {{^cinecast_version}} <div class='Ldt-createAnnotation-Minimize Ldt-TraceMe' title='Cancel'></div>                {{/cinecast_version}}            </div>            <div class='Ldt-createAnnotation-Container'>                {{#show_from_field}}                <label>{{l10n.your_name}}&nbsp;: </label><input class='Ldt-createAnnotation-userName Ldt-TraceMe' value='{{user_name}}' />                {{/show_from_field}}                <textarea class='Ldt-createAnnotation-Description Ldt-TraceMe'></textarea>                <div class='Ldt-createAnnotation-userAvatar Ldt-TraceMe'>                    {{^user_avatar}} <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>                    {{/user_avatar}}                    {{#user_avatar}} <img src='{{ user_avatar }}'></img>                    {{/user_avatar}}                </div>                <div class='Ldt-createAnnotation-profileArrow'></div>            </div>            <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>{{l10n.submit}}</button>            {{#keywords.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-keywords'>                <label>{{l10n.add_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#keywords}}                    <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe'>{{.}}</button></li>                {{/keywords}}                </ul>            </div>            {{#random_keywords}}                <button class='Ldt-createAnnotation-moar-keywordz'>{{l10n.moar_tagz}}</button>            {{/random_keywords}}            {{/keywords.length}}            {{#polemic_mode}}            {{#polemics.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-polemics'>                <label>{{l10n.add_polemic_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#polemics}}                    <li><button class='Ldt-createAnnotation-polemic-{{className}} Ldt-createAnnotation-polemic-button Ldt-TraceMe'>{{keyword}}</button></li>                {{/polemics}}                </ul>            </div>            {{/polemics.length}}            {{/polemic_mode}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-spinner'></div>            {{l10n.wait_while_processed}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-errorScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.error_while_contacting}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-endScreen' style='display: none'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.annotation_saved}}            <br>            {{^disable_share}}            {{l10n.share_annotation}}            <div style='margin-top: 12px; text-align: center;'>                <a target='_blank' class='Ldt-createAnnotation-endScreen-TweetLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-FbLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-GplusLink Ldt-TraceMe'></a>            </div>            {{/disable_share}}        </div>        <div class='Ldt-floatClear'></div>    </div></div>";
 IriSP.createAnnotation_errorMessage_template = "<p class='Ldt-createAnnotation-errorMessage'>  {{l10n.empty_annotation}}</p>";
+IriSP.loading_template = "<div id='Ldt-loader' style='width: {{width}}px; height: {{height}}px;'>{{l10n.loading_wait}}</div>";
 IriSP.overlay_marker_template = "{{! the template for the small bars which is z-indexed over our segment widget }}<div class='Ldt-SegmentPositionMarker' style='background-color: #F7268E;'></div>";
-IriSP.player_template = "{{! template for the radio player }}<div class='Ldt-controler'>	<div class='Ldt-LeftPlayerControls'>        <div class='Ldt-Ctrl-button Ldt-CtrlPlay Ldt-CtrlPlay-PlayState Ldt-TraceMe' title='{{l10n.play_pause}}'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{^disable_annotate_btn}}    	<div class='Ldt-Ctrl-button Ldt-CtrlAnnotate Ldt-TraceMe' title='{{l10n.annotate}}'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{/disable_annotate_btn}}        {{^disable_search_btn}}        <div class='Ldt-Ctrl-button Ldt-CtrlSearch Ldt-TraceMe' title='{{l10n.search}}'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{/disable_search_btn}}        <div class='LdtSearch'>          <input class='LdtSearchInput Ldt-TraceMe'></input>        </div>	</div>	<div class='Ldt-RightPlayerControls'>        <div class='Ldt-Ctrl-spacer'></div>        <div class='Ldt-Time'>          <div class='Ldt-ElapsedTime' title='{{l10n.elapsed_time}}'>00:00</div>          <div class='Ldt-TimeSeparator'>/</div>          <div class='Ldt-TotalTime' title='{{l10n.total_time}}'>00:00</div>        </div>        <div class='Ldt-Ctrl-spacer'></div>		<div class='Ldt-Ctrl-button Ldt-CtrlSound Ldt-CtrlSound-MuteState Ldt-TraceMe' title='{{l10n.mute_unmute}}'></div>	</div></div>";
+IriSP.player_template = "{{! template for the radio player }}<div class='Ldt-controler'>	<div class='Ldt-LeftPlayerControls'>        <div class='Ldt-Ctrl-button Ldt-CtrlPlay Ldt-CtrlPlay-PlayState Ldt-TraceMe' title='{{l10n.play_pause}}'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{^disable_annotate_btn}}    	<div class='Ldt-Ctrl-button Ldt-CtrlAnnotate Ldt-TraceMe' title='{{l10n.annotate}}'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{/disable_annotate_btn}}        {{^disable_search_btn}}        <div class='Ldt-Ctrl-button Ldt-CtrlSearch Ldt-TraceMe' title='{{l10n.search}}'></div>        <div class='Ldt-Ctrl-spacer'></div>        {{/disable_search_btn}}        <div class='LdtSearch'>          <input class='LdtSearchInput Ldt-TraceMe'></input>        </div>	</div>	<div class='Ldt-RightPlayerControls'>        <div class='Ldt-Ctrl-spacer'></div>        <div class='Ldt-Time'>          <div class='Ldt-ElapsedTime' title='{{l10n.elapsed_time}}'>00:00</div>          <div class='Ldt-TimeSeparator'>/</div>          <div class='Ldt-TotalTime' title='{{l10n.total_time}}'>00:00</div>        </div>        <div class='Ldt-Ctrl-spacer'></div>		<div class='Ldt-Ctrl-button Ldt-CtrlSound Ldt-CtrlSound-Full Ldt-TraceMe' title='{{l10n.mute_unmute}}'></div>	</div>	<div class='Ldt-Ctrl-Volume-Control' title='{{l10n.volume_control}}'>	    <div class='Ldt-Ctrl-Volume-Bar'></div>	    <div class='Ldt-Ctrl-Volume-Cursor'></div>	</div></div>";
 IriSP.search_template = "{{! template for the search container }}<div class='LdtSearchContainer'	style='margin-left: {{margin_left}}; position: absolute; margin-top: -60px;'>	<div class='LdtSearch'		style='display: none; background-color: #EEE; width: 165px; border-color: #CFCFCF; position: absolute; text-align: center;'>		<input class='LdtSearchInput'			style='margin-top: 1px; margin-bottom: 2px;' />	</div></div><div class='cleaner'></div>";
 IriSP.share_template = "{{! social network sharing template }}<a onclick='__IriSP.MyApiPlayer.share(\'delicious\');' title='{{l10n.share_on}} delicious'><span class='share shareDelicious'>&nbsp;</span></a>		<a onclick='__IriSP.MyApiPlayer.share(\'facebook\');' title='{{l10n.share_on}} facebook'> <span class='share shareFacebook'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'twitter\');' title='{{l10n.share_on}} twitter'>  <span class='share shareTwitter'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'myspace\');' title='{{l10n.share_on}} Myspace'>  <span class='share shareMySpace'>&nbsp;</span></a>";
 IriSP.sliceWidget_template = "{{! template for the slice widget }}<div class='Ldt-sliceWidget'>  {{! the whole bar }}  <div class='Ldt-sliceBackground'></div>    <div class='Ldt-sliceLeftHandle'></div>  {{! the zone which represents our slice }}  <div class='Ldt-sliceZone'></div>     <div class='Ldt-sliceRightHandle'></div></div>";
@@ -1216,7 +1217,7 @@ IriSP.DEC_HEXA_COLOR = function (dec) {
 
 /* shortcut to have global variables in templates */
 IriSP.templToHTML = function(template, values) {
-  var params = IriSP.jQuery.extend(
+  var params = IriSP.underscore.extend(
       { "defaults" : IriSP.default_templates_vars,
         "l10n" : IriSP.i18n.getMessages()
         },
@@ -1423,11 +1424,11 @@ IriSP.PopcornReplacement.player.prototype.play = function() {
 };
     
 IriSP.PopcornReplacement.player.prototype.pause = function() {
-  if ( !this.media.paused ) {
+//  if ( !this.media.paused ) {
     this.media.paused = true;
     this.trigger( "pause" );
     this.playerFns.pause();
-  }
+//  }
 };
 
 IriSP.PopcornReplacement.player.prototype.muted = function(val) {
@@ -1449,6 +1450,22 @@ IriSP.PopcornReplacement.player.prototype.muted = function(val) {
   } else {
     return this.playerFns.getMute();
   }
+};
+
+IriSP.PopcornReplacement.player.prototype.volume = function(val) {
+    if (typeof this.playerFns.getVolume == "undefined" || typeof this.playerFns.setVolume == "undefined") {
+        return false;
+    }
+    var _vol = this.playerFns.getVolume();
+    if (typeof(val) !== "undefined" && parseFloat(val) !== NaN) {
+        val = Math.max(0, Math.min(1, val));
+        if (parseFloat(val) != parseFloat(_vol)) {
+            this.playerFns.setVolume(val);
+            this.trigger("volumechange");
+            _vol = this.playerFns.getVolume();
+        }
+    }
+    return _vol;
 };
 
 IriSP.PopcornReplacement.player.prototype.mute = IriSP.PopcornReplacement.player.prototype.muted;
@@ -1918,7 +1935,10 @@ IriSP.LayoutManager = function(options) {
     /* this is a shortcut */
     this.selector = IriSP.jQuery("#" + this._div);
     
-    this.selector.css("width", this._width);
+    this.selector.css({
+        "width": this._width,
+        "clear": "both"
+    });
     
     if (this._height !== undefined)
       this.selector.css("height", this._height);
@@ -1948,7 +1968,7 @@ IriSP.LayoutManager.prototype.createDiv = function(widgetName) {
     var spacerDiv = IriSP.guid("LdtPlayer_spacer_");
     this._widgets.push([widgetName, newDiv]);    
 
-    var divTempl = "<div id='{{id}}' style='width: {{width}}px; position: relative;'></div";
+    var divTempl = "<div id='{{id}}' style='width: {{width}}px; position: relative; clear: both;'></div";
     var spacerTempl = "<div id='{{spacer_id}}' style='width: {{width}}px; position: relative; height: {{spacer_div_height}};'></div";
     
     var divCode = Mustache.to_html(divTempl, {id: newDiv, width: this._width});
@@ -2238,6 +2258,7 @@ IriSP.configureDefaults = function(libdir, platform_url) {
 
 /** single point of entry for the metadataplayer */
 IriSP.initPlayer = function(config, metadata_url, libdir, platform_url) {
+    document.getElementById(config.gui.container).innerHTML = IriSP.templToHTML(IriSP.loading_template, config.gui);
     IriSP.configureDefaults(libdir, platform_url);
     IriSP.loadLibs(IriSP.lib, config, metadata_url,
       function() {   
@@ -2248,13 +2269,14 @@ IriSP.initPlayer = function(config, metadata_url, libdir, platform_url) {
               
               var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); 
               var modules = IriSP.configureModules(pop, config.modules); 
+              IriSP.jQuery('#Ldt-loader').detach();
       });
-};IriSP.i18n_factory = function() {
+};IriSP.I18n = function() {
     this.messages = {};
     this.base_lang = 'en';
 }
 
-IriSP.i18n_factory.prototype.getLanguage = function(lang) {
+IriSP.I18n.prototype.getLanguage = function(lang) {
     var _lang = (
         typeof lang != "undefined"
         ? lang
@@ -2275,7 +2297,7 @@ IriSP.i18n_factory.prototype.getLanguage = function(lang) {
     )
 }
 
-IriSP.i18n_factory.prototype.getMessages = function(lang) {
+IriSP.I18n.prototype.getMessages = function(lang) {
     var _lang = this.getLanguage(lang);
     return (
         _lang != null
@@ -2284,7 +2306,7 @@ IriSP.i18n_factory.prototype.getMessages = function(lang) {
     );
 }
 
-IriSP.i18n_factory.prototype.getMessage = function(message, lang) {
+IriSP.I18n.prototype.getMessage = function(message, lang) {
     var _msgs = this.getMessages(lang);
     return (
         typeof _msgs[message] != "undefined"
@@ -2293,14 +2315,14 @@ IriSP.i18n_factory.prototype.getMessage = function(message, lang) {
     )
 }
 
-IriSP.i18n_factory.prototype.addMessage = function(lang, messagekey, messagevalue) {
+IriSP.I18n.prototype.addMessage = function(lang, messagekey, messagevalue) {
     if (typeof this.messages[lang] == "undefined") {
         this.messages[lang] = {};
     }
     this.messages[lang][messagekey] = messagevalue;
 }
 
-IriSP.i18n_factory.prototype.addMessages = function(messagesObj) {
+IriSP.I18n.prototype.addMessages = function(messagesObj) {
     var _this = this;
     IriSP.underscore(messagesObj).each(function(_messages, _lang) {
         IriSP.underscore(_messages).each(function(_value, _key) {
@@ -2309,7 +2331,16 @@ IriSP.i18n_factory.prototype.addMessages = function(messagesObj) {
     });
 }
 
-IriSP.i18n = new IriSP.i18n_factory();
+IriSP.i18n = new IriSP.I18n();
+
+IriSP.i18n.addMessages({
+    "fr": {
+        "loading_wait": "Chargement en cours, veuillez patienter&hellip;"
+    },
+    "en": {
+        "loading_wait": "Loading, please wait&hellip;"
+    }
+})
 /* To wrap a player the develop should create a new class derived from
 the IriSP.PopcornReplacement.player and defining the correct functions */
 
@@ -2325,54 +2356,27 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
 
     this.playerFns = {
         play : function() {
-            if (_this.player) {
-            //    console.log("ask play _this.player = " + _this.player);
-                return _this.player.sendToActionScript("play");
-            } else {
-                return false;
-            }
+            return _this.apiCall("play");
         },
         pause : function() {
-            if (_this.player) {
-            //    console.log("ask pause _this.player = " + _this.player);
-                return _this.player.sendToActionScript("pause");
-            } else {
-                return false;
-            }
+            return _this.apiCall("pause");
         },
         getPosition : function() {
-            if (_this.player) {
-                return _this.player.sendToActionScript("getSeek","return");
-            } else {
-                return 0;
-            }
+            return _this.apiCall("getSeek","return") || 0;
         },
         seek : function(pos) {
-            if (_this.player) {
-                return _this.player.sendToActionScript("seek",pos);
-            } else {
-                return false;
-            }
+            return _this.apiCall("seek",pos);
         },
         getMute : function() {
-            if (_this.player) {
-                return _this.player.sendToActionScript("getMute","return");
-            } else {
-                return false;
-            }
+            return _this.apiCall("getMute","return");
         },
         setMute : function(p) {
-            if (_this.player) {
-                //return p ? _this.player.sendToActionScript("setMute") : _this.player.sendToActionScript("setMute");
-            	_this.player.sendToActionScript("setMute");
-            } else {
-                return false;
-            }
+            return _this.apiCall("setMute", p);
         }
     }
 
     window.onReady = IriSP.wrap(this, this.ready);
-    //NOT CALLED window.onAllocineStateChange = IriSP.wrap(this, this.stateHandler);
+    window.onAllocineStateChange = IriSP.wrap(this, this.stateHandler);
     window.onTime = IriSP.wrap(this, this.progressHandler);
     
     var _videoUrl = (
@@ -2387,12 +2391,13 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
     var params = {
         "allowScriptAccess" : "always",
         "wmode": "opaque",
-        "flashvars" : fv
+        "flashvars" : fv,
+        "allowfullscreen" : true
     };
     var atts = {
         id : this.container
     };
-    swfobject.embedSWF(options.acPlayerUrl, this.container, options.width, options.height, "8", null, null, params, atts);
+    swfobject.embedSWF(options.acPlayerUrl, this.container, options.width, options.height, "10", null, null, params, atts);
 
 };
 
@@ -2401,7 +2406,6 @@ IriSP.PopcornReplacement.allocine.prototype = new IriSP.PopcornReplacement.playe
 IriSP.PopcornReplacement.allocine.prototype.ready = function() {
     this.player = document.getElementById(this.container);
     this.player.addEventListener("onStateChange", "onAllocineStateChange");
-    this.player.addEventListener("onVideoProgress", "onAllocineVideoProgress");
     this.player.cueVideoByUrl(this._options.video);
     this.callbacks.onReady();
 };
@@ -2413,8 +2417,25 @@ IriSP.PopcornReplacement.allocine.prototype.progressHandler = function(progressI
 }
 
 
+IriSP.PopcornReplacement.allocine.prototype.apiCall = function(_method, _arg) {
+    if (this.player) {
+        try {
+            if (typeof _arg == "undefined") {
+                return this.player.sendToActionScript(_method);
+            } else {
+                return this.player.sendToActionScript(_method, _arg);
+            }
+        } catch(e) {
+            console.error('Exception while requesting AcPlayer for "' + _method + (typeof _arg == "undefined" ? '' : '" with argument "' + _arg ) + '"\n', e);
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
 IriSP.PopcornReplacement.allocine.prototype.stateHandler = function(state) {
-    
+    console.log("stateHandler");
     switch(state) {
         case 1:
             this.callbacks.onPlay();
@@ -2488,11 +2509,26 @@ IriSP.PopcornReplacement.dailymotion = function(container, options) {
         },
         setMute : function(p) {
             if (_this.player) {
-                return p ? _this.player.mute() : _this.player.unMute();
+                if (p) {
+                    _this.player.mute();
+                }
+                else {
+                    _this.player.unMute();
+                }
+            }
+        },
+        getVolume : function() {
+            if (_this.player) {
+                return _this.player.getVolume() / 100;
             } else {
                 return false;
             }
-        }
+        },
+        setVolume : function(p) {
+            if (_this.player) {
+                _this.player.setVolume(Math.floor(100 * p));
+            }
+        },
     }
 
     window.onDailymotionPlayerReady = IriSP.wrap(this, this.ready);
@@ -2559,7 +2595,6 @@ IriSP.PopcornReplacement.dailymotion.prototype.stateHandler = function(state) {
 
 /** jwplayer player wrapper */
 IriSP.PopcornReplacement.jwplayer = function(container, options) {
-
   /* appel du parent pour initialiser les structures communes à tous les players */
   IriSP.PopcornReplacement.player.call(this, container, options);
   
@@ -2572,7 +2607,9 @@ IriSP.PopcornReplacement.jwplayer = function(container, options) {
     getPosition: function() { return jwplayer(this.container).getPosition(); },
     seek: function(pos) { return jwplayer(this.container).seek(pos); },
     getMute: function() { return jwplayer(this.container).getMute() },
-    setMute: function(p) { return jwplayer(this.container).setMute(p); }
+    setMute: function(p) { return jwplayer(this.container).setMute(p); },
+    getVolume: function() { return jwplayer(this.container).getVolume() / 100; },
+    setVolume: function(p) { return jwplayer(this.container).setVolume(Math.floor(100*p)); }
   }
 
   options.events = this.callbacks;
@@ -2815,7 +2852,7 @@ IriSP.AnnotationsListWidget.prototype.transformAnnotation = function(a) {
                     } else {
                         if (typeof _t['id-ref'] != "undefined") {
                             var _f = IriSP.underscore.find(_this._serializer._data.tags, function(_tag) {
-                                return _tag['id-ref'] == _t.id;
+                                return _tag.id == _t['id-ref'];
                             });
                             if (typeof _f != "undefined") {
                                 return IriSP.get_aliased(_f.meta, ['dc:title', 'title']);
@@ -2872,7 +2909,7 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
     })
     .first(10)
     .sortBy(function(_o) {
-        return _o.iterator;
+        return (typeof _o.is_new != "undefined" && _o.is_new ? -1 : _o.iterator);
     })
     .value();
   
@@ -2946,13 +2983,13 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
       if (typeof obj.url == "undefined" || !obj.url) {
           /* only if the annotation isn't present in the document create an
              external link */
-          if (!this.annotations_ids.indexOf(obj.id) != -1) {
+          if (this.annotations_ids.indexOf(obj.id.toLowerCase()) == -1) {
             // braindead url; jacques didn't want to create a new one in the platform,
             // so we append the cutting id to the url.
             obj.url = this.project_url + "/" + media + "/" + 
                          annotations[i].meta.project + "/" +
                          annotations[i].meta["id-ref"] + '#id=' + annotations[i].id;
-            
+                         
             // obj.url = document.location.href.split("#")[0] + "/" + annotation.meta.project;
           }
           }
@@ -2966,13 +3003,9 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
   /* build a table of the annotations present in the document for faster 
      lookup
   */
-  this.annotations_ids = [];
-  
-  var annotations = this._serializer._data.annotations;
-  var i = 0;
-  for(i = 0; i < annotations.length; i++) {
-    this.annotations_ids.push(annotations[i]["id"]);
-  }
+  this.annotations_ids = IriSP.underscore(this._serializer._data.annotations).map(function(_a) {
+    return _a.id.toLowerCase();
+  });
   
   var _this = this;
     
@@ -3241,7 +3274,8 @@ IriSP.i18n.addMessages(
             "empty_annotation": "Your annotation is empty. Please write something before submitting.",
             "annotation_saved": "Thank you, your annotation has been saved.",
             "share_annotation": "Would you like to share it on social networks ?",
-            "share_on": "Share on"
+            "share_on": "Share on",
+            "moar_tags": "More tags"
         },
         "fr": {
             "submit": "Envoyer",
@@ -3254,7 +3288,8 @@ IriSP.i18n.addMessages(
             "empty_annotation": "Votre annotation est vide. Merci de rédiger un texte avant de l'envoyer.",
             "annotation_saved": "Merci, votre annotation a été enregistrée.",
             "share_annotation": "Souhaitez-vous la partager sur les réseaux sociaux ?",
-            "share_on": "Partager sur"
+            "share_on": "Partager sur",
+            "moar_tagz": "Plus de mots-clés"
         }
     }
 );
@@ -3270,6 +3305,8 @@ IriSP.createAnnotationWidget = function(Popcorn, config, Serializer) {
   this.checkOption("api_endpoint_template");
   this.checkOption("show_from_field", true);
   this.checkOption("api_method");
+  this.checkOption("random_keywords");
+  this.checkOption("disable_share", false);
                          
   if (!IriSP.null_or_undefined(IriSP.user)) {
       if (!IriSP.null_or_undefined(IriSP.user.avatar)) {
@@ -3297,6 +3334,20 @@ IriSP.createAnnotationWidget.prototype.clear = function() {
 };
 
 IriSP.createAnnotationWidget.prototype.draw = function() {
+    var _this = this;
+    if (typeof this._config.remote_keywords != "undefined" && typeof this._config.remote_keywords) {
+        IriSP.jQuery.getJSON(this._config.remote_keywords, function(_json) {
+            _this.keywords = IriSP.underscore(_json.tags).map(function(_tag) {
+                return _tag.meta.description;
+            });
+            _this.drawCallback();
+        });
+    } else {
+        this.drawCallback();
+    }
+}
+
+IriSP.createAnnotationWidget.prototype.drawCallback = function() {
   var _this = this;
   
   var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template, 
@@ -3309,17 +3360,25 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   else {
     this.showStartScreen();
   }
-
+  
+  if (this.random_keywords) {
+      this.selector.find(".Ldt-createAnnotation-keywords li").hide();
+      this.showMoarTagz();
+      this.selector.find('.Ldt-createAnnotation-moar-keywordz').click(function() {
+          _this.showMoarTagz();
+      })
+  }
   // Add onclick event to both polemic and keywords buttons
   
-  this.selector.find(".Ldt-createAnnotation-btnblock button").click(function() {
+  this.selector.find(".Ldt-createAnnotation-keyword-button, .Ldt-createAnnotation-polemic-button").click(function() {
       _this.addKeyword(IriSP.jQuery(this).text());
+      return false;
   });
   
   // js_mod is a custom event because there's no simple way to test for a js
   // change in a textfield.                    
   this.selector.find(".Ldt-createAnnotation-Description")
-               .bind("propertychange keyup input paste js_mod", IriSP.wrap(this, this.handleTextChanges));
+               .bind("propertychange keyup input paste click js_mod", IriSP.wrap(this, this.handleTextChanges));
                
   /* the cinecast version of the player is supposed to pause when the user clicks on the button */
 
@@ -3380,6 +3439,21 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   }
 };
 
+IriSP.createAnnotationWidget.prototype.showMoarTagz = function() {
+    for (var j=0; j < this.random_keywords; j++) {
+        var _jq = this.selector.find(".Ldt-createAnnotation-keywords li:hidden");
+        if (_jq.length > 1) {
+            IriSP.jQuery(_jq[Math.floor(_jq.length*Math.random())]).show();
+        } else {
+            _jq.show();
+            break;
+        }     
+    }
+    if (this.selector.find(".Ldt-createAnnotation-keywords li:hidden").length == 0) {
+        this.selector.find('.Ldt-createAnnotation-moar-keywordz').hide();
+    }
+}
+
 /* Handles adding keywords and polemics */
 IriSP.createAnnotationWidget.prototype.addKeyword = function(_keyword) {
     var _field = this.selector.find(".Ldt-createAnnotation-Description"),
@@ -3389,7 +3463,7 @@ IriSP.createAnnotationWidget.prototype.addKeyword = function(_keyword) {
         ? _contents.replace(_rx,"").replace("  "," ").trim()
         : _contents.trim() + " " + _keyword
     );
-    _field.val(_contents);
+    _field.val(_contents.trim());
     _field.trigger("js_mod");
 }
 
@@ -3451,7 +3525,7 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
 /** watch for changes in the textfield and change the buttons accordingly */
 IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
   var contents = this.selector.find(".Ldt-createAnnotation-Description").val();
-  if (this.cinecast_version && !this._Popcorn.media.paused) {
+  if (this.cinecast_version) {
       this._Popcorn.pause();
   }
   this.selector.find(".Ldt-createAnnotation-btnblock button").each(function() {
@@ -3626,7 +3700,17 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   meta.created = Date().toString();
   
   // All #hashtags are added to tags
-  annotation.tags = contents.match(/#[^#\s]+\b/gim) || [];
+  var _tags = contents.toLowerCase().match(/#[^#\s]+\b/gim) || [];
+  this.selector.find('.Ldt-createAnnotation-keyword-button').each(function() {
+      var _tx = IriSP.jQuery(this).text(),
+        _rx = IriSP.regexpFromText(_tx);
+        if (_rx.test(contents)) {
+            _tags.push(_tx.toLowerCase())
+        }
+  });
+  
+  annotation.tags = IriSP.underscore.uniq(_tags);
+  
   
   var jsonString = JSON.stringify(apiJson);
   var project_id = this._serializer._data.meta.id;
@@ -3643,9 +3727,9 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
       //dataType: 'json',
       success: IriSP.wrap(this, function(json, textStatus, XMLHttpRequest) {                   
                     /* add the annotation to the annotation and tell the world */
-                    if (this.cinecast_version) {
-                        var annotation = json.annotations[0];
-                    } else {
+                    var annotation = json.annotations[0];
+                    
+                    if (!this.cinecast_version) {
                     /* if the media doesn't have a contributions line, we need to add one */
                         if (typeof(this._serializer.getContributions()) === "undefined") {
                           /* set up a basic view */
@@ -3664,8 +3748,10 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
     
                         annotation.meta = meta;
                         annotation.meta["id-ref"] = json.annotations[0]["type"];
+                    } else {
+                        annotation.type = "cinecast:UserAnnotation";
                     }
-                        
+                    annotation.is_new = true;
                     // everything is shared so there's no need to propagate the change
                     _this._serializer._data.annotations.push(annotation);
  
@@ -3708,7 +3794,9 @@ IriSP.i18n.addMessages(
             "annotate": "Annotate",
             "search": "Search",
             "elapsed_time": "Elapsed time",
-            "total_time": "Total time"
+            "total_time": "Total time",
+            "volume": "Volume",
+            "volume_control": "Volume control"
         },
         "fr": {
             "play_pause": "Lecture/Pause",
@@ -3720,7 +3808,9 @@ IriSP.i18n.addMessages(
             "annotate": "Annoter",
             "search": "Rechercher",
             "elapsed_time": "Durée écoulée",
-            "total_time": "Durée totale"
+            "total_time": "Durée totale",
+            "volume": "Niveau sonore",
+            "volume_control": "Réglage du niveau sonore"
         }
     }
 );
@@ -3750,7 +3840,7 @@ IriSP.PlayerWidget.prototype.draw = function() {
   this._Popcorn.listen("play", IriSP.wrap(this, this.playButtonUpdater));
   this._Popcorn.listen("pause", IriSP.wrap(this, this.playButtonUpdater));
   
-  this._Popcorn.listen("volumechange", IriSP.wrap(this, this.muteButtonUpdater));
+  this._Popcorn.listen("volumechange", IriSP.wrap(this, this.volumeUpdater));
 
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.timeDisplayUpdater));  
   // update the time display for the first time.
@@ -3766,7 +3856,20 @@ IriSP.PlayerWidget.prototype.draw = function() {
                                             { self._Popcorn.trigger("IriSP.PlayerWidget.AnnotateButton.clicked"); });
   this.selector.find(".Ldt-CtrlSearch").click(function() { self.searchButtonHandler.call(self); });
   
-  this.selector.find('.Ldt-CtrlSound').click(function() { self.muteHandler.call(self); } );
+	var _volctrl = this.selector.find(".Ldt-Ctrl-Volume-Control");
+    this.selector.find('.Ldt-CtrlSound')
+        .click(function() { self.muteHandler.call(self); } )
+        .mouseover(function() {
+            _volctrl.show();
+        })
+        .mouseout(function() {
+            _volctrl.hide();
+        });
+    _volctrl.mouseover(function() {
+        _volctrl.show();
+    }).mouseout(function() {
+        _volctrl.hide();
+    });
   
   /*
   var searchButtonPos = this.selector.find(".Ldt-CtrlSearch").position();
@@ -3777,8 +3880,19 @@ IriSP.PlayerWidget.prototype.draw = function() {
   // trigger an IriSP.PlayerWidget.MouseOver to the widgets that are interested (i.e : sliderWidget)
   this.selector.hover(function() { self._Popcorn.trigger("IriSP.PlayerWidget.MouseOver"); }, 
                       function() { self._Popcorn.trigger("IriSP.PlayerWidget.MouseOut"); });
+  this.selector.find(".Ldt-Ctrl-Volume-Cursor").draggable({
+      axis: "x",
+      drag: function(event, ui) {
+          var _vol = Math.max(0, Math.min( 1, ui.position.left / (ui.helper.parent().width() - ui.helper.outerWidth())));
+          ui.helper.attr("title",IriSP.i18n.getMessage('volume')+': ' + Math.floor(100*_vol) + '%');
+          self._Popcorn.volume(_vol);
+      },
+      containment: "parent"
+  });
  
-  this.muteButtonUpdater(); /* some player - jwplayer notable - save the state of the mute button between sessions */
+ setTimeout(function() {
+     self.volumeUpdater();
+ }, 1000); /* some player - jwplayer notable - save the state of the mute button between sessions */
 };
 
 /* Update the elasped time div */
@@ -3835,25 +3949,28 @@ IriSP.PlayerWidget.prototype.playHandler = function() {
 };
 
 IriSP.PlayerWidget.prototype.muteHandler = function() {
-  if (!this._Popcorn.muted()) {    
-      this._Popcorn.mute(true);
-    } else {
-      this._Popcorn.mute(false);
-    }
+  this._Popcorn.mute(!this._Popcorn.muted());
 };
 
-IriSP.PlayerWidget.prototype.muteButtonUpdater = function() {
-  var status = this._Popcorn.media.muted;
-  
-  if ( status == true ){        
-    this.selector.find(".Ldt-CtrlSound").attr("title", IriSP.i18n.getMessage('unmute'));
-    this.selector.find(".Ldt-CtrlSound").removeClass("Ldt-CtrlSound-MuteState").addClass("Ldt-CtrlSound-SoundState");    
-  } else {
-    this.selector.find(".Ldt-CtrlSound").attr("title", IriSP.i18n.getMessage('mute'));
-    this.selector.find(".Ldt-CtrlSound").removeClass("Ldt-CtrlSound-SoundState").addClass("Ldt-CtrlSound-MuteState");
-  }  
-
-  return;
+IriSP.PlayerWidget.prototype.volumeUpdater = function() {
+    var _muted = this._Popcorn.muted(),
+        _vol = this._Popcorn.volume();
+    if (_vol === false) {
+        _vol = .5;
+    }
+    var _soundCtl = this.selector.find(".Ldt-CtrlSound");
+    _soundCtl.removeClass("Ldt-CtrlSound-Mute Ldt-CtrlSound-Half Ldt-CtrlSound-Full");
+    if (_muted) {        
+        _soundCtl.attr("title", IriSP.i18n.getMessage('unmute'))
+            .addClass("Ldt-CtrlSound-Mute");    
+    } else {
+        _soundCtl.attr("title", IriSP.i18n.getMessage('mute'))
+            .addClass(_vol < .5 ? "Ldt-CtrlSound-Half" : "Ldt-CtrlSound-Full" )
+    }
+    var _cursor = this.selector.find(".Ldt-Ctrl-Volume-Cursor");
+    _cursor.css({
+        "left": ( _muted ? 0 : Math.floor(_vol * (_cursor.parent().width() - _cursor.outerWidth())) ) + "px"
+    })
 };
 
 IriSP.PlayerWidget.prototype.showSearchBlock = function() {
@@ -4956,7 +5073,6 @@ IriSP.SparklineWidget = function(Popcorn, config, Serializer) {
       this.selector.css("background", this._config.background);
   }
   this.checkOption('cinecast_version');
-  console.log('Cinecast', this.cinecast_version);
 };
 
 
@@ -4988,7 +5104,7 @@ IriSP.SparklineWidget.prototype.draw = function() {
   // If we've found the correct view, feed the directly the data from the view
   // to jquery sparkline. Otherwise, compute it ourselves.
     if (!IriSP.null_or_undefined(stat_view)) {
-        console.log("sparklinewidget : using stats embedded in the json");
+        //console.log("sparklinewidget : using stats embedded in the json");
         var _results = stat_view.meta.stat.split(",");      
     } else {
         var _annotations = this._serializer._data.annotations,
@@ -5588,8 +5704,9 @@ IriSP.TraceWidget.prototype.eventHandler = function(_listener, _arg) {
     }
     this.lastEvent = _traceName;
     this.tracer.trace(_traceName, _arg);
-    console.log("trace('" + _traceName + "', " + JSON.stringify(_arg) + ");");
-    
+    if (this._config.js_console) {
+        console.log("tracer.trace('" + _traceName + "', " + JSON.stringify(_arg) + ");");
+    }
 }
 /* a widget that displays tweet - used in conjunction with the polemicWidget */
 

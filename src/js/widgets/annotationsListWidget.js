@@ -7,6 +7,7 @@ IriSP.AnnotationsListWidget = function(Popcorn, config, Serializer) {
   this.checkOption('project_url');
   this.checkOption('default_thumbnail');
   this.checkOption("cinecast_version", false);
+  this.checkOption("ajax_url");
   this.searchRe = null;
   this._ajax_cache = [];
   var _this = this;
@@ -73,7 +74,7 @@ IriSP.AnnotationsListWidget.prototype.do_redraw = function(list) {
 };
 
 IriSP.AnnotationsListWidget.prototype.transformAnnotation = function(a) {
-    var _this = this
+    var _this = this;
     return {
         "id" : a.id,
         "title": this.cinecast_version ? IriSP.get_aliased(a.meta, ['creator_name', 'creator']) : a.content.title,
@@ -82,6 +83,7 @@ IriSP.AnnotationsListWidget.prototype.transformAnnotation = function(a) {
         "end" : IriSP.msToTime(a.end),
         "thumbnail" : (typeof a.meta == "object" && typeof a.meta.thumbnail == "string") ? a.meta.thumbnail : this.default_thumbnail,
         "url" : (typeof a.meta == "object" && typeof a.meta.url == "string") ? a.meta.url : null,
+        "created_at" :(typeof a.meta == "object" && typeof a.meta.created == "string") ? Date.parse(a.meta.created.replace(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}\:\d{2}\:\d{2}).*$/,"$2/$3/$1 $4 UTC+0000")) : null,
         "tags": typeof a.tags == "object"
             ? IriSP.underscore(a.tags)
                 .chain()
@@ -140,7 +142,6 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
             this._Popcorn.trigger("IriSP.search.noMatchFound");
           }
     }
-  
   list = IriSP.underscore(list)
     .chain()
     .sortBy(function(_o) {
@@ -148,10 +149,9 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
     })
     .first(10)
     .sortBy(function(_o) {
-        return _o.iterator;
+        return (_this.cinecast_version ? - _o.created_at : _o.iterator);
     })
     .value();
-  
   var idList = IriSP.underscore.pluck(list, "id").sort();
 
   
@@ -176,13 +176,11 @@ IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
   }
    
   
-  /* the platform gives us a special url - of the type : http://path/{media}/{begin}/{end}
+  /* the platform gives us a special url - of the type : http://path/{{media}}/{{begin}}/{{end}}
      we double the braces using regexps and we feed it to mustache to build the correct url
      we have to do that because the platform only knows at run time what view it's displaying.
   */
      
-  var platf_url = IriSP.widgetsDefaults.AnnotationsListWidget.ajax_url
-                                      .replace(/\{/g, '{{').replace(/\}/g, '}}');
   var media_id = this._serializer.currentMedia()["id"];
   var duration = this._serializer.getDuration();
   
@@ -194,7 +192,7 @@ IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
   if (end_timecode > duration)
     end_timecode = duration;
   
-  var templ = Mustache.to_html(platf_url, {media: media_id, begin: begin_timecode,
+  var templ = Mustache.to_html(this.ajax_url, {media: media_id, begin: begin_timecode,
                                  end: end_timecode});
 
   /* we create on the fly a serializer to get the ajax */

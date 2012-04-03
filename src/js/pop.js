@@ -116,11 +116,11 @@ IriSP.PopcornReplacement.player.prototype.play = function() {
 };
     
 IriSP.PopcornReplacement.player.prototype.pause = function() {
-  if ( !this.media.paused ) {
+//  if ( !this.media.paused ) {
     this.media.paused = true;
     this.trigger( "pause" );
     this.playerFns.pause();
-  }
+//  }
 };
 
 IriSP.PopcornReplacement.player.prototype.muted = function(val) {

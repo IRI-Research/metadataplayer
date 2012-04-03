@@ -13,49 +13,22 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
 
     this.playerFns = {
         play : function() {
-            if (_this.player) {
-            //    console.log("ask play _this.player = " + _this.player);
-                return _this.player.sendToActionScript("play");
-            } else {
-                return false;
-            }
+            return _this.apiCall("play");
         },
         pause : function() {
-            if (_this.player) {
-            //    console.log("ask pause _this.player = " + _this.player);
-                return _this.player.sendToActionScript("pause");
-            } else {
-                return false;
-            }
+            return _this.apiCall("pause");
         },
         getPosition : function() {
-            if (_this.player) {
-                return _this.player.sendToActionScript("getSeek","return");
-            } else {
-                return 0;
-            }
+            return _this.apiCall("getSeek","return") || 0;
         },
         seek : function(pos) {
-            if (_this.player) {
-                return _this.player.sendToActionScript("seek",pos);
-            } else {
-                return false;
-            }
+            return _this.apiCall("seek",pos);
         },
         getMute : function() {
-            if (_this.player) {
-                return _this.player.sendToActionScript("getMute","return");
-            } else {
-                return false;
-            }
+            return _this.apiCall("getMute","return");
         },
         setMute : function(p) {
-            if (_this.player) {
-                //return p ? _this.player.sendToActionScript("setMute") : _this.player.sendToActionScript("setMute");
-            	_this.player.sendToActionScript("setMute");
-            } else {
-                return false;
-            }
+            return _this.apiCall("setMute", p);
         }
     }
 
@@ -75,12 +48,13 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
     var params = {
         "allowScriptAccess" : "always",
         "wmode": "opaque",
-        "flashvars" : fv
+        "flashvars" : fv,
+        "allowfullscreen" : true
     };
     var atts = {
         id : this.container
     };
-    swfobject.embedSWF(options.acPlayerUrl, this.container, options.width, options.height, "8", null, null, params, atts);
+    swfobject.embedSWF(options.acPlayerUrl, this.container, options.width, options.height, "10", null, null, params, atts);
 
 };
 
@@ -89,7 +63,6 @@ IriSP.PopcornReplacement.allocine.prototype = new IriSP.PopcornReplacement.playe
 IriSP.PopcornReplacement.allocine.prototype.ready = function() {
     this.player = document.getElementById(this.container);
     this.player.addEventListener("onStateChange", "onAllocineStateChange");
-    this.player.addEventListener("onVideoProgress", "onAllocineVideoProgress");
     this.player.cueVideoByUrl(this._options.video);
     this.callbacks.onReady();
 };
@@ -100,6 +73,23 @@ IriSP.PopcornReplacement.allocine.prototype.progressHandler = function(progressI
     });
 }
 
+
+IriSP.PopcornReplacement.allocine.prototype.apiCall = function(_method, _arg) {
+    if (this.player) {
+        try {
+            if (typeof _arg == "undefined") {
+                return this.player.sendToActionScript(_method);
+            } else {
+                return this.player.sendToActionScript(_method, _arg);
+            }
+        } catch(e) {
+            console.error('Exception while requesting AcPlayer for "' + _method + (typeof _arg == "undefined" ? '' : '" with argument "' + _arg ) + '"\n', e);
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
 
 IriSP.PopcornReplacement.allocine.prototype.stateHandler = function(state) {
     console.log("stateHandler");

@@ -13,7 +13,8 @@ IriSP.i18n.addMessages(
             "empty_annotation": "Your annotation is empty. Please write something before submitting.",
             "annotation_saved": "Thank you, your annotation has been saved.",
             "share_annotation": "Would you like to share it on social networks ?",
-            "share_on": "Share on"
+            "share_on": "Share on",
+            "moar_tags": "More tags"
         },
         "fr": {
             "submit": "Envoyer",
@@ -26,7 +27,8 @@ IriSP.i18n.addMessages(
             "empty_annotation": "Votre annotation est vide. Merci de rédiger un texte avant de l'envoyer.",
             "annotation_saved": "Merci, votre annotation a été enregistrée.",
             "share_annotation": "Souhaitez-vous la partager sur les réseaux sociaux ?",
-            "share_on": "Partager sur"
+            "share_on": "Partager sur",
+            "moar_tagz": "Plus de mots-clés"
         }
     }
 );
@@ -42,6 +44,8 @@ IriSP.createAnnotationWidget = function(Popcorn, config, Serializer) {
   this.checkOption("api_endpoint_template");
   this.checkOption("show_from_field", true);
   this.checkOption("api_method");
+  this.checkOption("random_keywords");
+  this.checkOption("disable_share", false);
                          
   if (!IriSP.null_or_undefined(IriSP.user)) {
       if (!IriSP.null_or_undefined(IriSP.user.avatar)) {
@@ -69,6 +73,20 @@ IriSP.createAnnotationWidget.prototype.clear = function() {
 };
 
 IriSP.createAnnotationWidget.prototype.draw = function() {
+    var _this = this;
+    if (typeof this._config.remote_keywords != "undefined" && typeof this._config.remote_keywords) {
+        IriSP.jQuery.getJSON(this._config.remote_keywords, function(_json) {
+            _this.keywords = IriSP.underscore(_json.tags).map(function(_tag) {
+                return _tag.meta.description;
+            });
+            _this.drawCallback();
+        });
+    } else {
+        this.drawCallback();
+    }
+}
+
+IriSP.createAnnotationWidget.prototype.drawCallback = function() {
   var _this = this;
   
   var annotationMarkup = IriSP.templToHTML(IriSP.createAnnotationWidget_template, 
@@ -81,17 +99,25 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   else {
     this.showStartScreen();
   }
-
+  
+  if (this.random_keywords) {
+      this.selector.find(".Ldt-createAnnotation-keywords li").hide();
+      this.showMoarTagz();
+      this.selector.find('.Ldt-createAnnotation-moar-keywordz').click(function() {
+          _this.showMoarTagz();
+      })
+  }
   // Add onclick event to both polemic and keywords buttons
   
-  this.selector.find(".Ldt-createAnnotation-btnblock button").click(function() {
+  this.selector.find(".Ldt-createAnnotation-keyword-button, .Ldt-createAnnotation-polemic-button").click(function() {
       _this.addKeyword(IriSP.jQuery(this).text());
+      return false;
   });
   
   // js_mod is a custom event because there's no simple way to test for a js
   // change in a textfield.                    
   this.selector.find(".Ldt-createAnnotation-Description")
-               .bind("propertychange keyup input paste js_mod", IriSP.wrap(this, this.handleTextChanges));
+               .bind("propertychange keyup input paste click js_mod", IriSP.wrap(this, this.handleTextChanges));
                
   /* the cinecast version of the player is supposed to pause when the user clicks on the button */
 
@@ -152,6 +178,21 @@ IriSP.createAnnotationWidget.prototype.draw = function() {
   }
 };
 
+IriSP.createAnnotationWidget.prototype.showMoarTagz = function() {
+    for (var j=0; j < this.random_keywords; j++) {
+        var _jq = this.selector.find(".Ldt-createAnnotation-keywords li:hidden");
+        if (_jq.length > 1) {
+            IriSP.jQuery(_jq[Math.floor(_jq.length*Math.random())]).show();
+        } else {
+            _jq.show();
+            break;
+        }     
+    }
+    if (this.selector.find(".Ldt-createAnnotation-keywords li:hidden").length == 0) {
+        this.selector.find('.Ldt-createAnnotation-moar-keywordz').hide();
+    }
+}
+
 /* Handles adding keywords and polemics */
 IriSP.createAnnotationWidget.prototype.addKeyword = function(_keyword) {
     var _field = this.selector.find(".Ldt-createAnnotation-Description"),
@@ -161,7 +202,7 @@ IriSP.createAnnotationWidget.prototype.addKeyword = function(_keyword) {
         ? _contents.replace(_rx,"").replace("  "," ").trim()
         : _contents.trim() + " " + _keyword
     );
-    _field.val(_contents);
+    _field.val(_contents.trim());
     _field.trigger("js_mod");
 }
 
@@ -223,7 +264,7 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
 /** watch for changes in the textfield and change the buttons accordingly */
 IriSP.createAnnotationWidget.prototype.handleTextChanges = function(event) {
   var contents = this.selector.find(".Ldt-createAnnotation-Description").val();
-  if (this.cinecast_version && !this._Popcorn.media.paused) {
+  if (this.cinecast_version) {
       this._Popcorn.pause();
   }
   this.selector.find(".Ldt-createAnnotation-btnblock button").each(function() {
@@ -398,7 +439,17 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   meta.created = Date().toString();
   
   // All #hashtags are added to tags
-  annotation.tags = contents.match(/#[^#\s]+\b/gim) || [];
+  var _tags = contents.toLowerCase().match(/#[^#\s]+\b/gim) || [];
+  this.selector.find('.Ldt-createAnnotation-keyword-button').each(function() {
+      var _tx = IriSP.jQuery(this).text(),
+        _rx = IriSP.regexpFromText(_tx);
+        if (_rx.test(contents)) {
+            _tags.push(_tx.toLowerCase())
+        }
+  });
+  
+  annotation.tags = IriSP.underscore.uniq(_tags);
+  
   
   var jsonString = JSON.stringify(apiJson);
   var project_id = this._serializer._data.meta.id;
@@ -436,8 +487,10 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
     
                         annotation.meta = meta;
                         annotation.meta["id-ref"] = json.annotations[0]["type"];
+                    } else {
+                        annotation.type = "cinecast:UserAnnotation";
                     }
-                        
+                    annotation.is_new = true;
                     // everything is shared so there's no need to propagate the change
                     _this._serializer._data.annotations.push(annotation);
  

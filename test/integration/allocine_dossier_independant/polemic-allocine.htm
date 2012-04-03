@@ -21,7 +21,7 @@
                 name : 'awesome_user_name',
                 avatar : 'allocine_test/avatar.png'
             };
-            IriSP.libdir = "/metadataplayer/src/js/libs/";
+            IriSP.libdir = "js/libs/";
             IriSP.defaults.user = function() {
                 return IriSP.user;
             };
@@ -50,12 +50,6 @@
                         lineColor: "#ffffff",
                         fillColor: "#999999"
                     }, {
-                        type : "SliderWidget"
-                    }, {
-                        type : "PlayerWidget",
-                        disable_annotate_btn : true,
-                        disable_search_btn : true
-                    }, {
                         type : "SegmentsWidget",
                         requires : [{
                             type : "TooltipWidget",
@@ -65,23 +59,26 @@
                     }, {
                         type : "createAnnotationWidget",
                         polemic_mode : false,
-                        keywords : ['#vodkaster', '#allocine', '#universcine', '#FauxRaccord', '#SceneCulte', '#navet'],
+                        remote_keywords : 'http://festival.cinecast.fr/configuration.jsonp?jsonp=?',
+                        random_keywords : 3,
+                        disable_share: true,
                         api_endpoint_template : "coucou/{{id}}.json",
                         api_method : 'POST'
                     }, {
                         type: "TraceWidget",
-                        url: "http://192.168.56.101:5000/",
+                     //   js_console : true,
+                        url: "http://traces.advene.org:5000/",
                         requestmode: 'GET',
                         syncmode: "sync"
-                    }]
+                    } ]
                 },
                 player : {
                     type : 'allocine', // player type
                     height : 300,
                     width : 610,
-                    acPlayerUrl : "allocine_test/AcPlayer_v3.0.swf",
-                    autoPlay : "false",
-                    urlAcData : "allocine_test/data_cinecast.xml"
+                    acPlayerUrl : "allocine_test/AcPlayer_v3.0_new.swf",
+                    autoPlay : "true",
+                    urlAcData : "allocine_test/data_cinecast_new.xml"
                 },
                 modules : [{
                     type : "MediaFragment",

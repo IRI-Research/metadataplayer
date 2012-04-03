@@ -261,28 +261,66 @@ button.ui-button-icon-only  {
   margin: 4px 2px;
 }
 
-.Ldt-CtrlSound-SoundState {
+.Ldt-CtrlSound-Full {
   background-position: -120px 0;
 }
 
-.Ldt-CtrlSound-SoundState:hover {
+.Ldt-CtrlSound-Full:hover {
   background-position: -120px -25px;
 }
 
-.Ldt-CtrlSound-SoundState:active {
+.Ldt-CtrlSound-Full:active {
   background-position: -120px -50px;
 }
 
-.Ldt-CtrlSound-MuteState {
+.Ldt-CtrlSound-Mute {
   background-position: -150px 0;
 }
 
-.Ldt-CtrlSound-MuteState:hover {
+.Ldt-CtrlSound-Mute:hover {
   background-position: -150px -25px;
 }
 
-.Ldt-CtrlSound-MuteState:active {
+.Ldt-CtrlSound-Mute:active {
   background-position: -150px -50px;
+}
+
+.Ldt-CtrlSound-Half {
+  background-position: -180px 0;
+}
+
+.Ldt-CtrlSound-Half:hover {
+  background-position: -180px -25px;
+}
+
+.Ldt-CtrlSound-Half:active {
+  background-position: -180px -50px;
+}
+
+.Ldt-Ctrl-Volume-Control {
+  display: none;
+  position: absolute;
+  background:url('img-cinecast/controlbarbgd.png') repeat-x transparent ;
+  height: 34px;
+  width: 100px; top: 30px; right: 0; z-index: 100;
+  padding: 0 2px;
+}
+
+.Ldt-Ctrl-Volume-Bar { 
+    height: 5px; margin: 13px 3px 0; background: #cccccc; border: 1px solid #999999; border-radius: 2px;
+}
+
+.Ldt-Ctrl-Volume-Cursor {
+    position: absolute; top: 6px; width: 6px; height: 19px; background: #a8a8a8; border: 1px solid #999999; border-radius: 2px;
+    cursor: pointer;
+}
+
+.Ldt-Ctrl-Volume-Cursor:hover {
+     background: #cccccc;
+}
+
+.Ldt-Ctrl-Volume-Cursor.ui-draggable-dragging {
+    background: #999999;
 }
     
 .Ldt-cleaner {
@@ -451,6 +489,7 @@ button.ui-button-icon-only  {
 
 .Ldt-createAnnotationWidget {
     width: 610px; padding-bottom: 10px; clear: both;
+    color: #fff;
     background: url(img-cinecast/createannbgd.png) no-repeat bottom right;
 }
 
@@ -512,23 +551,26 @@ button.ui-button-icon-only  {
 /* */
 
 .Ldt-createAnnotation-btnblock {
-   float: left; width: 480px; margin: 5px 0;
 }
 
 .Ldt-createAnnotation-btnblock label {
-    float: left; margin-top: 8px; width: 120px; font-size: 12px; height: 20px; color: #ffffff;
+    float: left; margin-top: 20px; width: 480px; font-size: 14px; color: #ffffff;
 }
 
 /* CINECAST SPECIFIC TAG BUTTONS */
 
+.Ldt-createAnnotation-keywords ul {
+    width: 100%; clear: both;
+}
+
 .Ldt-createAnnotation-keywords li {
-    border: none; margin: 5px 10px 0 0; height: 23px; padding: 0 0 0 15px;
+    border: none; margin: 0 10px 5px 0; height: 23px; padding: 0 0 0 15px;
     background: url(img-cinecast/tag.png) left top no-repeat;
     cursor: pointer;
 }
 
 .Ldt-createAnnotation-keyword-button {
-  font-size: 13px; color: #ffffff; width: 95px;
+  font-size: 13px; color: #ffffff; width: 170px; text-shadow: 1px 1px 1px #000000;
   height: 23px; padding: 0 5px 0 0; border: none; margin: 0;
   background: url(img-cinecast/tag.png) right top no-repeat;
   cursor: pointer;
@@ -543,11 +585,11 @@ button.ui-button-icon-only  {
 }
 
 .Ldt-createAnnotation-keywords li.Ldt-createAnnotation-active-button {
-  background-position: left -46px; margin: 5px 0 0 0;
+  background-position: left -46px; margin: 0 0 5px 0;
 }
 
 .Ldt-createAnnotation-keywords li.Ldt-createAnnotation-active-button .Ldt-createAnnotation-keyword-button {
-  background-position: right -46px; padding: 0 15px 0 0; width: 105px;
+  background-position: right -46px; padding: 0 15px 0 0; width: 180px;
 }
 /* */
 
@@ -692,10 +734,19 @@ button.ui-button-icon-only  {
 }
 
 .Ldt-AnnotationsList-Tag-Div {
-  font-size: 13px; color: #ffffff;
+  font-size: 13px; color: #ffffff; text-shadow: 1px 1px 1px #000000;
   height: 19px; padding: 4px 5px 0 0; border: none; margin: 0;
   background: url(img-cinecast/tag.png) right top no-repeat;
     cursor: pointer;
+}
+
+.Ldt-createAnnotation-moar-keywordz {
+    float: right; font-size: 13px; color: #ffffff; text-shadow: 1px 1px 1px #000000;
+    width: 140px; height: 23px; background: url(img-cinecast/moar.png); border: none; margin: 0 15px;
+}
+
+.Ldt-createAnnotation-moar-keywordz:hover {
+    background-position: bottom;
 }
 
 /* Tagcloud */
