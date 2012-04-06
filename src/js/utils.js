@@ -182,10 +182,7 @@ IriSP.get_aliased = function(_obj, _aliases) {
 
 /** issue a call to an url shortener and return the shortened url */
 IriSP.shorten_url = function(url) {
-  if (IriSP.config.shortener.hasOwnProperty("shortening_function"))
-    return IriSP.config.shortener.shortening_function(url);
-    
-  return url;
+  return encodeURIComponent(url);
 };
 
 

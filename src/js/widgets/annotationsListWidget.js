@@ -152,7 +152,6 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
     .value();
   var idList = IriSP.underscore.pluck(list, "id").sort();
 
-  
   if (!IriSP.underscore.isEqual(this.__oldList, idList) || this.lastSearch !== this.searchRe || typeof(force_redraw) !== "undefined") {
     this.do_redraw(list);
     this.__oldList = idList;

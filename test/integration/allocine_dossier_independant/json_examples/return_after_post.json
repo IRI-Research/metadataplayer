@@ -1,12 +1,12 @@
 {
     "annotations": [
         {
-            "id": "ac:3639",
-            "begin": 164000,
-            "end": 164000,
+            "id": "ac:new",
+            "begin": 10000,
+            "end": 10000,
             "timecode": 0,
             "content": {
-                "data": "edtgefvtdtevd dhevdgvbed debzdgbyezgbdyhebzyd bhd ehdbyhebyhddbhegzvdgevd ghdvegvdgezvdg devtgdvgezvd gbvdgevzgdvzegd gedvgezvd #vodkaster #allocine #universcine"
+                "data": "Ma nouvelle Annotation"
             },
             "media": "cinecast:Bamako",
             "tags": ["#vodkaster", "#allocine", "#universcine"],
@@ -17,9 +17,9 @@
                 "extract": "789849",
                 "status": "active",
                 "timestamp": 12999,
-                "created": "2012-03-16T11:14:14.7930000",
+                "created": "2012-08-16T11:14:14.7930000",
                 "creator": "ac:495",
-                "creator_name": "Pierre",
+                "creator_name": "Moi",
                 "url": "http:\/\/www.allocine.com/mon_annotation"
             }
         }

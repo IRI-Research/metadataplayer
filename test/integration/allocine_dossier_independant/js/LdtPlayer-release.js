@@ -1302,10 +1302,7 @@ IriSP.get_aliased = function(_obj, _aliases) {
 
 /** issue a call to an url shortener and return the shortened url */
 IriSP.shorten_url = function(url) {
-  if (IriSP.config.shortener.hasOwnProperty("shortening_function"))
-    return IriSP.config.shortener.shortening_function(url);
-    
-  return url;
+  return encodeURIComponent(url);
 };
 
 
@@ -1738,6 +1735,7 @@ IriSP.widgetsDefaults = {
         remote_tags : false,
         random_tags : false,
         show_from_field : false,
+        disable_share : false,
         polemic_mode : true, /* enable polemics ? */
         polemics : [{
             "className" : "positive",
@@ -2244,8 +2242,8 @@ IriSP.initPlayer = function(config, metadata_url) {
 
               var pop = IriSP.configurePopcorn(layoutManager, config.player);
               
-              var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); 
-              var modules = IriSP.configureModules(pop, config.modules); 
+              IriSP._widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); 
+              IriSP._modules = IriSP.configureModules(pop, config.modules); 
               IriSP.jQuery('#Ldt-loader').detach();
       });
 };IriSP.I18n = function() {
@@ -2902,7 +2900,6 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
     .value();
   var idList = IriSP.underscore.pluck(list, "id").sort();
 
-  
   if (!IriSP.underscore.isEqual(this.__oldList, idList) || this.lastSearch !== this.searchRe || typeof(force_redraw) !== "undefined") {
     this.do_redraw(list);
     this.__oldList = idList;
@@ -3364,10 +3361,7 @@ IriSP.createAnnotationWidget.prototype.drawCallback = function() {
   // js_mod is a custom event because there's no simple way to test for a js
   // change in a textfield.                    
   this.selector.find(".Ldt-createAnnotation-Description")
-               .bind("propertychange keyup input paste click js_mod", IriSP.wrap(this, this.handleTextChanges))
-          .keyup(function(_e) {
-              console.log(_e);
-          });
+               .bind("propertychange keyup input paste click js_mod", IriSP.wrap(this, this.handleTextChanges));
                
   /* the cinecast version of the player is supposed to pause when the user clicks on the button */
 
@@ -3452,8 +3446,7 @@ IriSP.createAnnotationWidget.prototype.addKeyword = function(_keyword) {
         ? _contents.replace(_rx,"").replace("  "," ").trim()
         : _contents.trim() + " " + _keyword
     );
-    _field.val(_contents.trim());
-    _field.trigger("js_mod");
+    _field.val(_contents.trim()).trigger("js_mod");
 }
 
 /** handles clicks on the annotate button. Works only for the non-cinecast version */
@@ -3757,9 +3750,8 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                     annotation.is_new = true;
                     // everything is shared so there's no need to propagate the change
                     _this._serializer._data.annotations.push(annotation);
- 
                     _this._Popcorn.trigger("IriSP.createAnnotationWidget.addedAnnotation", annotation);
-                    this.selector.find(".Ldt-createAnnotation-Description").val("");
+                    this.selector.find(".Ldt-createAnnotation-Description").val("").trigger("js_mod");
                     callback(annotation);
       }), 
       error: 

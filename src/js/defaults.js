@@ -67,6 +67,7 @@ IriSP.widgetsDefaults = {
         remote_tags : false,
         random_tags : false,
         show_from_field : false,
+        disable_share : false,
         polemic_mode : true, /* enable polemics ? */
         polemics : [{
             "className" : "positive",

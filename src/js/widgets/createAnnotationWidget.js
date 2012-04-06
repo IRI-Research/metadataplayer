@@ -105,10 +105,7 @@ IriSP.createAnnotationWidget.prototype.drawCallback = function() {
   // js_mod is a custom event because there's no simple way to test for a js
   // change in a textfield.                    
   this.selector.find(".Ldt-createAnnotation-Description")
-               .bind("propertychange keyup input paste click js_mod", IriSP.wrap(this, this.handleTextChanges))
-          .keyup(function(_e) {
-              console.log(_e);
-          });
+               .bind("propertychange keyup input paste click js_mod", IriSP.wrap(this, this.handleTextChanges));
                
   /* the cinecast version of the player is supposed to pause when the user clicks on the button */
 
@@ -193,8 +190,7 @@ IriSP.createAnnotationWidget.prototype.addKeyword = function(_keyword) {
         ? _contents.replace(_rx,"").replace("  "," ").trim()
         : _contents.trim() + " " + _keyword
     );
-    _field.val(_contents.trim());
-    _field.trigger("js_mod");
+    _field.val(_contents.trim()).trigger("js_mod");
 }
 
 /** handles clicks on the annotate button. Works only for the non-cinecast version */
@@ -498,9 +494,8 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                     annotation.is_new = true;
                     // everything is shared so there's no need to propagate the change
                     _this._serializer._data.annotations.push(annotation);
- 
                     _this._Popcorn.trigger("IriSP.createAnnotationWidget.addedAnnotation", annotation);
-                    this.selector.find(".Ldt-createAnnotation-Description").val("");
+                    this.selector.find(".Ldt-createAnnotation-Description").val("").trigger("js_mod");
                     callback(annotation);
       }), 
       error: 
