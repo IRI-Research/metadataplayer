@@ -3,7 +3,11 @@
     <ul class='Ldt-AnnotationsList-ul'>
         {{#annotations}}
         <li id='Ldt-Annotation-li-{{id}}' class='Ldt-AnnotationsList-li Ldt-TraceMe'>
-            <img class='Ldt-AnnotationsList-Thumbnail' src='{{thumbnail}}' />
+            {{^url}} <a href='#id={{id}}'> {{/url}}
+            {{! otherwise link to url }}
+            {{#url}} <a href='{{url}}'> {{/url}}
+                <img class='Ldt-AnnotationsList-Thumbnail' src='{{thumbnail}}' />
+            </a>
             <div class='Ldt-AnnotationsList-Duration'>
                 <span class='Ldt-AnnotationsList-Begin'>{{begin}}</span>
                 <span class='Ldt-AnnotationsList-TcSeparator'>-</span>
@@ -12,14 +16,14 @@
             <div class='Ldt-AnnotationsList-Title'>
             {{! if the url is not present, it means that the annotation exists
             in the current project }}
+                {{title}}
+            </div>
+            <div class='Ldt-AnnotationsList-Description'>
             {{^url}} <a href='#id={{id}}'> {{/url}}
             {{! otherwise link to url }}
             {{#url}} <a href='{{url}}'> {{/url}}
-                {{title}}
-            </a>
-            </div>
-            <div class='Ldt-AnnotationsList-Description'>
                 {{desc}}
+                </a>
             </div>
             {{#tags.length}}
             <ul class='Ldt-AnnotationsList-Tags'>

@@ -64,7 +64,7 @@ IriSP.LayoutManager.prototype.createDiv = function(widgetName) {
     this._widgets.push([widgetName, newDiv]);    
 
     var divTempl = "<div id='{{id}}' style='width: {{width}}px; position: relative; clear: both;'></div";
-    var spacerTempl = "<div id='{{spacer_id}}' style='width: {{width}}px; position: relative; height: {{spacer_div_height}};'></div";
+    var spacerTempl = "<div id='{{spacer_id}}' style='width: {{width}}px; position: relative; height: {{spacer_div_height}}px;'></div";
     
     var divCode = Mustache.to_html(divTempl, {id: newDiv, width: this._width});
     var spacerCode = Mustache.to_html(spacerTempl, {spacer_id: spacerDiv, width: this._width,

@@ -329,12 +329,8 @@ button.ui-button-icon-only  {
     cursor: pointer;
 }
 
-.Ldt-Ctrl-Volume-Cursor:hover {
-     background: #cccccc;
-}
-
-.Ldt-Ctrl-Volume-Cursor.ui-draggable-dragging {
-    background: #999999;
+.Ldt-Ctrl-Volume-Control:hover .Ldt-Ctrl-Volume-Cursor {
+     background: #F7268E;
 }
 
 .Ldt-cleaner {
@@ -900,7 +896,7 @@ li.Ldt-AnnotationsList-li {
 }
 
 .Ldt-AnnotationsList-highlight {
-    background: #cc80ff;
+    background: #F7268E; color: #ffffff;
 }
 
 .Ldt-AnnotationsListWidget a {
@@ -942,7 +938,11 @@ ul.Ldt-AnnotationsList-Tags {
 }
 
 li.Ldt-AnnotationsList-Tag-Li {
-    float: left; margin: 2px; background: #cc0066; color: #fff; padding: 4px;
+    float: left; margin: 2px; background: #0068c4; color: #fff; padding: 4px;
+}
+
+li.Ldt-AnnotationsList-Tag-Li:hover {
+    background: #F7268E;
 }
 
 /* Tagcloud */

@@ -144,210 +144,9 @@ button.ui-button-icon-only  {
   height:0px;
   display:none
 }
-
-/* player */
-.Ldt-controler {
-  font-size: 10px;
-  background:url('img-cinecast/controlbarbgd.png') repeat-x transparent ;
-  height: 34px;
-}
-
-.Ldt-LeftPlayerControls {
-  float:left;
-}
-
-.Ldt-RightPlayerControls {
-  float: right;
-}
-
-.Ldt-Ctrl-button {
-  float: left;
-  width: 30px; height: 25px;
-  background: url('img-cinecast/player-sprites.png');
-  cursor: pointer;
-}
-
-.Ldt-Ctrl-spacer {
-    float: left; width: 2px; background: url(img-cinecast/controlbarspacer.png); height: 34px;
-}
-
-.Ldt-CtrlPlay {
-  margin: 4px 15px;
-}
-
-.Ldt-CtrlPlay-PlayState {
-  background-position: 0 0;
-}
-
-.Ldt-CtrlPlay-PlayState:hover {
-  background-position: 0 -25px;
-}
-
-.Ldt-CtrlPlay-PlayState:active {
-  background-position: 0 -50px;
-}
-
-.Ldt-CtrlPlay-PauseState {
-  background-position: -30px 0;
-}
-
-.Ldt-CtrlPlay-PauseState:hover {
-  background-position: -30px -25px;
-}
-
-.Ldt-CtrlPlay-PauseState:active {
-  background-position: -30px -50px;
-}
-
-
-.Ldt-CtrlAnnotate {
-  margin: 4px 2px;
-  background-position: -60px 0;
-}
-
-.Ldt-CtrlAnnotate:hover {
-  background-position: -60px -25px;
-}
-
-.Ldt-CtrlAnnotate:active {
-  background-position: -60px -50px;
-}
-
-.Ldt-CtrlSearch {
-  margin: 4px 2px;
-  background-position: -90px 0;
-}
-
-.Ldt-CtrlSearch:hover {
-  background-position: -90px -25px;
-}
-
-.Ldt-CtrlSearch:active {
-  background-position: -90px -50px;
-}
-
-.LdtSearch {
-  display: none;
-  width: 165px;
-  height: 25px;
-  border: 1px;
-  border-color: #CFCFCF;
-  float: left;
-  text-align: center;
-}
-
-.Ldt-Time {
-  float: left;
-  margin: 8px 5px;
-  font-size: 12px;
-  font-family: Arial, Verdana, sans-serif;
-  color: #ffffff;
-}
-
-.Ldt-ElapsedTime {
-  float: left;
-}
-
-.Ldt-TimeSeparator {
-  margin: 0 4px;      
-  float: left;
-}
-
-.Ldt-TotalTime {
-  float: left;
-}
-
-.Ldt-CtrlSound {
-  margin: 4px 2px;
-}
-
-.Ldt-CtrlSound-Full {
-  background-position: -120px 0;
-}
-
-.Ldt-CtrlSound-Full:hover {
-  background-position: -120px -25px;
-}
-
-.Ldt-CtrlSound-Full:active {
-  background-position: -120px -50px;
-}
-
-.Ldt-CtrlSound-Mute {
-  background-position: -150px 0;
-}
-
-.Ldt-CtrlSound-Mute:hover {
-  background-position: -150px -25px;
-}
-
-.Ldt-CtrlSound-Mute:active {
-  background-position: -150px -50px;
-}
-
-.Ldt-CtrlSound-Half {
-  background-position: -180px 0;
-}
-
-.Ldt-CtrlSound-Half:hover {
-  background-position: -180px -25px;
-}
-
-.Ldt-CtrlSound-Half:active {
-  background-position: -180px -50px;
-}
-
-.Ldt-Ctrl-Volume-Control {
-  display: none;
-  position: absolute;
-  background:url('img-cinecast/controlbarbgd.png') repeat-x transparent ;
-  height: 34px;
-  width: 100px; top: 30px; right: 0; z-index: 100;
-  padding: 0 2px;
-}
-
-.Ldt-Ctrl-Volume-Bar { 
-    height: 5px; margin: 13px 3px 0; background: #cccccc; border: 1px solid #999999; border-radius: 2px;
-}
-
-.Ldt-Ctrl-Volume-Cursor {
-    position: absolute; top: 6px; width: 6px; height: 19px; background: #a8a8a8; border: 1px solid #999999; border-radius: 2px;
-    cursor: pointer;
-}
-
-.Ldt-Ctrl-Volume-Cursor:hover {
-     background: #cccccc;
-}
-
-.Ldt-Ctrl-Volume-Cursor.ui-draggable-dragging {
-    background: #999999;
-}
     
 .Ldt-cleaner {
   clear:both;
-}
-
-/* Arrow Widget */
-.Ldt-arrowWidget {
-  position: relative;
-
-  height:16px;
-  width:27px;
-  margin-bottom: -3px;
-  z-index: 4;
-  left: 0%;
-}
-
-.Ldt-arrowLeftEdge {
-  background:url('imgs/left_edge_arrow.png') no-repeat scroll 0 0 transparent ;
-}
-
-.Ldt-arrowCenter {
-  background:url('imgs/arrow.png') no-repeat scroll 0 0 transparent ;
-}
-
-.Ldt-arrowRightEdge {
-  background:url('imgs/right_edge_arrow.png') no-repeat scroll 0 0 transparent ;
 }
 
 .cleaner {
@@ -407,53 +206,7 @@ button.ui-button-icon-only  {
     max-width: 140px; max-height: 70px; margin: 0 20px;
 }
 
-/* slider */
-.Ldt-SliderMinimized {
-  height: 6px;
-}
 
-.Ldt-SliderMaximized {
-  height: 11px;
-}
-
-.Ldt-sliderElementMinimized {
-  width: 100%;
-  height: 5px;
-}
-
-.Ldt-sliderElementMaximized {
-  width: 100%;
-  height: 10px;
-}
-
-.Ldt-sliderBackground  {
-  background-color: #333333;
-  position: absolute;
-  z-index: 2;
-  bottom: 1px;
-  width: 100%;
-  height: 5px;
-
-}
-
-.Ldt-sliderForeground  {
-  background-color: #747474;
-  z-index: 2;
-  width: 0px;
-  position: absolute;
-  bottom: 1px;
-  height: 5px;
-}
-
-.Ldt-sliderPositionMarker {
-  position: absolute;
-  z-index: 100;
-  background: url('img-cinecast/sliderpos.png');
-  height: 10px !important;
-  width: 10px !important;
-  bottom: 0;
-  cursor: pointer;
-}
 
 /* sparkline widget */
 .Ldt-sparklineWidget {
@@ -677,7 +430,6 @@ button.ui-button-icon-only  {
 }
 
 .Ldt-AnnotationsList-li {
-  cursor: pointer;
   float: left; width: 100%; clear: both;
   margin: 2px 0; padding: 2px 0;
   position: relative;
@@ -691,6 +443,10 @@ button.ui-button-icon-only  {
 
 .Ldt-AnnotationsListWidget a {
   text-decoration: none;
+}
+
+.Ldt-AnnotationsListWidget a:hover {
+  text-decoration: underline;
 }
 
 .Ldt-AnnotationsList-Thumbnail {
@@ -712,15 +468,16 @@ button.ui-button-icon-only  {
 .Ldt-AnnotationsList-Title {
   font-size: 13px;
   margin: 0 0 2px 80px;
-}
-
-.Ldt-AnnotationsList-Title a {
   color: #ffffff;
 }
+
 .Ldt-AnnotationsList-Description {
-    color: #dddddd;
   font-style: italic;
   margin: 0 0 2px 80px;
+}
+
+.Ldt-AnnotationsList-Description a {
+    color: #dddddd;
 }
 
 .Ldt-AnnotationsList-Tags {
@@ -741,7 +498,7 @@ button.ui-button-icon-only  {
 }
 
 .Ldt-createAnnotation-moar-keywordz {
-    float: right; font-size: 13px; color: #ffffff; text-shadow: 1px 1px 1px #000000;
+    float: right; font-size: 13px; color: #ffffff; text-shadow: 1px 1px 1px #000000; cursor: pointer;
     width: 140px; height: 23px; background: url(img-cinecast/moar.png); border: none; margin: 0 15px;
 }
 

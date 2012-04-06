@@ -240,54 +240,18 @@ IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager
     return widget;
 };
 
-/** Go through the defaults to set a reasonable value */
-IriSP.configureDefaults = function(libdir, platform_url) {
-  /* the defaults configuration is messy and complicated. There are two things to know :
-     - we want to allow overwriting of defaults - that's why we have IriSP.widgetDefaults
-       and IriSP.defaults.widgetDefaults. The first is filled by the embedder and then fleshed out
-       with the contents of the first. We use underscore.defaults for that, but there's one problem with
-       this function : it doesn't work recursively.
-     - we need to compute some values at runtime instead of at compile time
-  */
-    
-  IriSP.lib = IriSP.underscore.defaults(IriSP.lib, IriSP.defaults.lib(libdir));
-  
-  /* get the factory defaults for the widgets and merge them with the default the user
-     may have defined 
-  */
-  var factory_defaults = IriSP.defaults.widgetsDefaults(platform_url);
-  for(var widget in factory_defaults) {
-  
-      /* create the object if it doesn't exists */
-      if (IriSP.null_or_undefined(IriSP.widgetsDefaults[widget]))
-        IriSP.widgetsDefaults[widget] = {};
-        
-      IriSP.widgetsDefaults[widget] = IriSP.underscore.defaults(IriSP.widgetsDefaults[widget], factory_defaults[widget]);
-  }
-  
-  IriSP.paths = IriSP.underscore.defaults(IriSP.paths, IriSP.defaults.paths);
-  IriSP.default_templates_vars = IriSP.underscore.defaults(IriSP.default_templates_vars, 
-                                       IriSP.defaults.default_templates_vars());
-
-  if (IriSP.null_or_undefined(IriSP.user))
-    IriSP.user = {};
-  
-  IriSP.user = IriSP.underscore.defaults(IriSP.user, IriSP.defaults.user());
-};
-
 /** single point of entry for the metadataplayer */
-IriSP.initPlayer = function(config, metadata_url, libdir, platform_url) {
+IriSP.initPlayer = function(config, metadata_url) {
     document.getElementById(config.gui.container).innerHTML = IriSP.templToHTML(IriSP.loading_template, config.gui);
-    IriSP.configureDefaults(libdir, platform_url);
-    IriSP.loadLibs(IriSP.lib, config, metadata_url,
+    IriSP.loadLibs(config, metadata_url,
       function() {   
               
               var layoutManager = new IriSP.LayoutManager(config.gui);
 
               var pop = IriSP.configurePopcorn(layoutManager, config.player);
               
-              var widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); 
-              var modules = IriSP.configureModules(pop, config.modules); 
+              IriSP._widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); 
+              IriSP._modules = IriSP.configureModules(pop, config.modules); 
               IriSP.jQuery('#Ldt-loader').detach();
       });
 };

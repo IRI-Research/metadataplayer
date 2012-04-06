@@ -127,7 +127,7 @@ IriSP.PlayerWidget.prototype.timeDisplayUpdater = function() {
   }
   
   // we get it at each call because it may change.
-  var duration = this._serializer.getDuration() / 1000; 
+  var duration = this.getDuration() / 1000; 
   var totalTime = IriSP.secondsToTime(duration);
   var elapsedTime = IriSP.secondsToTime(this._Popcorn.currentTime());
   

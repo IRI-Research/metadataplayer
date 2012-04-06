@@ -21,7 +21,7 @@ IriSP.JSONSerializer.prototype.deserialize = function(data) {
 /** load JSON-cinelab data and also sort the annotations by start time
     @param callback function to call when the data is ready.
  */
-IriSP.JSONSerializer.prototype.sync = function(callback) {
+IriSP.JSONSerializer.prototype.sync = function(callback, force_refresh) {
   /* we don't have to do much because jQuery handles json for us */
 
   var self = this;
@@ -43,14 +43,22 @@ IriSP.JSONSerializer.prototype.sync = function(callback) {
 	  }     
       callback(data);      
   };
-  
-  this._DataLoader.get(this._url, fn);
+  this._DataLoader.get(this._url, fn, force_refresh);
 };
 
 /** @return the metadata about the media being read FIXME: always return the first media. */
 IriSP.JSONSerializer.prototype.currentMedia = function() {  
-  return this._data.medias[0]; /* FIXME: don't hardcode it */
+  return (typeof this._data.medias == "object" && this._data.medias.length) ? this._data.medias[0] : IriSP.__jsonMetadata.medias[0];
 };
+
+IriSP.JSONSerializer.prototype.getDuration = function() {
+    var _m = this.currentMedia();
+    if (_m === null || typeof _m.meta == "undefined") {
+        return 0;
+    }
+    return +(IriSP.get_aliased(_m.meta, ["dc:duration", "duration"]) || 0);
+}
+
 
 /** searches for an annotation which matches title, description and keyword 
    "" matches any field. 
@@ -433,7 +441,3 @@ IriSP.JSONSerializer.prototype.getContributions = function() {
     
   return val;
 };
-
-IriSP.JSONSerializer.prototype.getDuration = function() {
-    return +(IriSP.get_aliased(this.currentMedia().meta, ["dc:duration", "duration"]) || 0);
-}

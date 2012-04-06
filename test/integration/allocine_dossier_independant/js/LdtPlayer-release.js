@@ -996,7 +996,7 @@ b[c]=a[c])})};var K=0;b.uniqueId=function(a){var b=K++;return a?a+b:b};b.templat
 "'")+",'"}).replace(d.evaluate||null,function(a,b){return"');"+b.replace(/\\'/g,"'").replace(/[\r\n\t]/g," ")+";__p.push('"}).replace(/\r/g,"\\r").replace(/\n/g,"\\n").replace(/\t/g,"\\t")+"');}return __p.join('');",e=new Function("obj","_",d);return c?e(c,b):function(a){return e.call(this,a,b)}};var n=function(a){this._wrapped=a};b.prototype=n.prototype;var u=function(a,c){return c?b(a).chain():a},J=function(a,c){n.prototype[a]=function(){var a=i.call(arguments);H.call(a,this._wrapped);return u(c.apply(b,
 a),this._chain)}};b.mixin(b);j("pop,push,reverse,shift,sort,splice,unshift".split(","),function(a){var b=k[a];n.prototype[a]=function(){b.apply(this._wrapped,arguments);return u(this._wrapped,this._chain)}});j(["concat","join","slice"],function(a){var b=k[a];n.prototype[a]=function(){return u(b.apply(this._wrapped,arguments),this._chain)}});n.prototype.chain=function(){this._chain=true;return this};n.prototype.value=function(){return this._wrapped}}).call(this);
 /* main file */
-
+// Why is it called main ? It only loads the libs !
 
 if ( window.IriSP === undefined && window.__IriSP === undefined ) { 
   /**
@@ -1016,23 +1016,39 @@ if ( window.IriSP === undefined && window.__IriSP === undefined ) {
 IriSP._ = window._.noConflict();
 IriSP.underscore = IriSP._;
 
-IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
+IriSP.getLib = function(lib) {
+    return (
+        IriSP.libFiles.useCdn && typeof IriSP.libFiles.cdn[lib] == "string"
+        ? IriSP.libFiles.cdn[lib]
+        : (
+            typeof IriSP.libFiles.locations[lib] == "string"
+            ? IriSP.libFiles.locations[lib]
+            : (
+                typeof IriSP.libFiles.inDefaultDir[lib] == "string"
+                ? IriSP.libFiles.defaultDir + IriSP.libFiles.inDefaultDir[lib]
+                : null
+            )
+        )
+    )
+}
+
+IriSP.loadLibs = function( config, metadata_url, callback ) {
     // Localize jQuery variable
 		IriSP.jQuery = null;
-    var $L = $LAB.script(libs.jQuery).script(libs.swfObject).wait()
-                .script(libs.jQueryUI);
+    var $L = $LAB.script(IriSP.getLib("jQuery")).script(IriSP.getLib("swfObject")).wait()
+                .script(IriSP.getLib("jQueryUI"));
                                    
     if (config.player.type === "jwplayer" || config.player.type === "allocine") {
       // load our popcorn.js lookalike
-      $L.script(libs.jwplayer);
+      $L.script(IriSP.getLib("jwplayer"));
     } else {
       // load the real popcorn
-      $L.script(libs.popcorn).script(libs["popcorn.code"]);
+      $L.script(IriSP.getLib("popcorn")).script(IriSP.getLib("popcorn.code"));
       if (config.player.type === "youtube") {
-        $L.script(libs["popcorn.youtube"]);
+        $L.script(IriSP.getLib("popcorn.youtube"));
       } 
       if (config.player.type === "vimeo")
-        $L.script(libs["popcorn.vimeo"]);
+        $L.script(IriSP.getLib("popcorn.vimeo"));
       
       /* do nothing for html5 */
     }       
@@ -1042,10 +1058,10 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
       if (config.gui.widgets[idx].type === "PolemicWidget" ||
           config.gui.widgets[idx].type === "StackGraphWidget" ||
           config.gui.widgets[idx].type === "SparklineWidget") {        
-        $L.script(libs.raphael);
+        $L.script(IriSP.getLib("raphael"));
       }
       if (config.gui.widgets[idx].type === "TraceWidget") {
-          $L.script(libs.tracemanager)
+          $L.script(IriSP.getLib("tracemanager"))
       }
     }
     
@@ -1053,7 +1069,7 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
     /*
     for (var idx in config.modules) {
       if (config.modules[idx].type === "PolemicWidget")
-        $L.script(libs.raphaelJs);
+        $L.script(IriSP.getLib("raphaelJs"));
     }
     */
 
@@ -1063,7 +1079,7 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
       var css_link_jquery = IriSP.jQuery( "<link>", { 
         rel: "stylesheet", 
         type: "text/css", 
-        href: libs.cssjQueryUI,
+        href: IriSP.getLib("cssjQueryUI"),
         'class': "dynamic_css"
       } );
       var css_link_custom = IriSP.jQuery( "<link>", { 
@@ -1089,9 +1105,9 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
 IriSP.annotation_template = "{{! template for an annotation displayed in a segmentWidget }}<div title='{{divTitle}}' id='{{id}}'	class='Ldt-iri-chapter Ldt-TraceMe' 	style='left: {{startPixel}}px;          width: {{pxWidth}}px;          background-color:{{hexa_color}};'    data-seek='{{seekPlace}}'    thumbnail-url='{{thumbnailUrl}}'	></div>";
 IriSP.annotationWidget_template = "{{! template for the annotation widget }}<div class='Ldt-AnnotationsWidget'>  <!-- ugly div because we want to have a double border -->  <div class='Ldt-Annotation-DoubleBorder'>      <div class='Ldt-AnnotationContent'>          <div class='Ldt-AnnotationShareIcons'>         <a target='_blank' class='Ldt-fbShare Ldt-TraceMe' title='{{i10n.share_on}} Facebook'></a>         <a target='_blank' class='Ldt-TwShare Ldt-TraceMe' title='{{i10n.share_on}} Twitter'></a>         <a target='_blank'  class='Ldt-GplusShare Ldt-TraceMe' title='{{i10n.share_on}} Google+'></a>        </div>        <div class='Ldt-SaTitle'></div>        <div class='Ldt-SaDescription'></div>        <div class='Ldt-SaKeywords'></div>    </div>  </div></div>";
 IriSP.annotation_loading_template = "{{! template shown while the annotation widget is loading }}<div id='Ldt-load-container'><div id='Ldt-loader'>&nbsp;</div> Chargement... </div>";
-IriSP.annotationsListWidget_template = "{{! template for the annotation list widget }}<div class='Ldt-AnnotationsListWidget'>    <ul class='Ldt-AnnotationsList-ul'>        {{#annotations}}        <li id='Ldt-Annotation-li-{{id}}' class='Ldt-AnnotationsList-li Ldt-TraceMe'>            <img class='Ldt-AnnotationsList-Thumbnail' src='{{thumbnail}}' />            <div class='Ldt-AnnotationsList-Duration'>                <span class='Ldt-AnnotationsList-Begin'>{{begin}}</span>                <span class='Ldt-AnnotationsList-TcSeparator'>-</span>                <span class='Ldt-AnnotationsList-End'>{{end}}</span>            </div>            <div class='Ldt-AnnotationsList-Title'>            {{! if the url is not present, it means that the annotation exists            in the current project }}            {{^url}} <a href='#id={{id}}'> {{/url}}            {{! otherwise link to url }}            {{#url}} <a href='{{url}}'> {{/url}}                {{title}}            </a>            </div>            <div class='Ldt-AnnotationsList-Description'>                {{desc}}            </div>            {{#tags.length}}            <ul class='Ldt-AnnotationsList-Tags'>                {{#tags}}                <li class='Ldt-AnnotationsList-Tag-Li'>                    <div class='Ldt-AnnotationsList-Tag-Div'>{{.}}</div>                </li>                {{/tags}}            </ul>            {{/tags.length}}        </li>        {{/annotations}}    </ul></div>";
+IriSP.annotationsListWidget_template = "{{! template for the annotation list widget }}<div class='Ldt-AnnotationsListWidget'>    <ul class='Ldt-AnnotationsList-ul'>        {{#annotations}}        <li id='Ldt-Annotation-li-{{id}}' class='Ldt-AnnotationsList-li Ldt-TraceMe'>            {{^url}} <a href='#id={{id}}'> {{/url}}            {{! otherwise link to url }}            {{#url}} <a href='{{url}}'> {{/url}}                <img class='Ldt-AnnotationsList-Thumbnail' src='{{thumbnail}}' />            </a>            <div class='Ldt-AnnotationsList-Duration'>                <span class='Ldt-AnnotationsList-Begin'>{{begin}}</span>                <span class='Ldt-AnnotationsList-TcSeparator'>-</span>                <span class='Ldt-AnnotationsList-End'>{{end}}</span>            </div>            <div class='Ldt-AnnotationsList-Title'>            {{! if the url is not present, it means that the annotation exists            in the current project }}                {{title}}            </div>            <div class='Ldt-AnnotationsList-Description'>            {{^url}} <a href='#id={{id}}'> {{/url}}            {{! otherwise link to url }}            {{#url}} <a href='{{url}}'> {{/url}}                {{desc}}                </a>            </div>            {{#tags.length}}            <ul class='Ldt-AnnotationsList-Tags'>                {{#tags}}                <li class='Ldt-AnnotationsList-Tag-Li'>                    <div class='Ldt-AnnotationsList-Tag-Div'>{{.}}</div>                </li>                {{/tags}}            </ul>            {{/tags.length}}        </li>        {{/annotations}}    </ul></div>";
 IriSP.arrowWidget_template = "<div class='Ldt-arrowWidget Ldt-arrowLeftEdge'></div>";
-IriSP.createAnnotationWidget_template = "{{! template for the annotation creation widget }}<div class='Ldt-createAnnotationWidget'>    <!-- ugly div because we want to have a double border -->    <div class='Ldt-createAnnotation-DoubleBorder'>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-startScreen'>            <div style='margin-bottom: 7px; overflow: auto;'>                <div class='Ldt-createAnnotation-Title'></div>                <div class='Ldt-createAnnotation-TimeFrame'></div>                {{^cinecast_version}} <div class='Ldt-createAnnotation-Minimize Ldt-TraceMe' title='Cancel'></div>                {{/cinecast_version}}            </div>            <div class='Ldt-createAnnotation-Container'>                {{#show_from_field}}                <label>{{l10n.your_name}}&nbsp;: </label><input class='Ldt-createAnnotation-userName Ldt-TraceMe' value='{{user_name}}' />                {{/show_from_field}}                <textarea class='Ldt-createAnnotation-Description Ldt-TraceMe'></textarea>                <div class='Ldt-createAnnotation-userAvatar Ldt-TraceMe'>                    {{^user_avatar}} <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>                    {{/user_avatar}}                    {{#user_avatar}} <img src='{{ user_avatar }}'></img>                    {{/user_avatar}}                </div>                <div class='Ldt-createAnnotation-profileArrow'></div>            </div>            <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>{{l10n.submit}}</button>            {{#keywords.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-keywords'>                <label>{{l10n.add_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#keywords}}                    <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe'>{{.}}</button></li>                {{/keywords}}                </ul>            </div>            {{#random_keywords}}                <button class='Ldt-createAnnotation-moar-keywordz'>{{l10n.moar_tagz}}</button>            {{/random_keywords}}            {{/keywords.length}}            {{#polemic_mode}}            {{#polemics.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-polemics'>                <label>{{l10n.add_polemic_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#polemics}}                    <li><button class='Ldt-createAnnotation-polemic-{{className}} Ldt-createAnnotation-polemic-button Ldt-TraceMe'>{{keyword}}</button></li>                {{/polemics}}                </ul>            </div>            {{/polemics.length}}            {{/polemic_mode}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-spinner'></div>            {{l10n.wait_while_processed}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-errorScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.error_while_contacting}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-endScreen' style='display: none'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.annotation_saved}}            <br>            {{^disable_share}}            {{l10n.share_annotation}}            <div style='margin-top: 12px; text-align: center;'>                <a target='_blank' class='Ldt-createAnnotation-endScreen-TweetLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-FbLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-GplusLink Ldt-TraceMe'></a>            </div>            {{/disable_share}}        </div>        <div class='Ldt-floatClear'></div>    </div></div>";
+IriSP.createAnnotationWidget_template = "{{! template for the annotation creation widget }}<div class='Ldt-createAnnotationWidget'>    <!-- ugly div because we want to have a double border -->    <div class='Ldt-createAnnotation-DoubleBorder'>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-startScreen'>            <div style='margin-bottom: 7px; overflow: auto;'>                <div class='Ldt-createAnnotation-Title'></div>                <div class='Ldt-createAnnotation-TimeFrame'></div>                {{^cinecast_version}} <div class='Ldt-createAnnotation-Minimize Ldt-TraceMe' title='Cancel'></div>                {{/cinecast_version}}            </div>            <div class='Ldt-createAnnotation-Container'>                {{#show_from_field}}                <label>{{l10n.your_name}}&nbsp;: </label><input class='Ldt-createAnnotation-userName Ldt-TraceMe' value='{{user_name}}' />                {{/show_from_field}}                <textarea class='Ldt-createAnnotation-Description Ldt-TraceMe'></textarea>                <div class='Ldt-createAnnotation-userAvatar Ldt-TraceMe'>                    {{^user_avatar}} <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>                    {{/user_avatar}}                    {{#user_avatar}} <img src='{{ user_avatar }}'></img>                    {{/user_avatar}}                </div>                <div class='Ldt-createAnnotation-profileArrow'></div>            </div>            <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>{{l10n.submit}}</button>            {{#tags.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-keywords'>                <label>{{l10n.add_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#tags}}                    <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe' tag-id='{{id}}'>{{meta.description}}</button></li>                {{/tags}}                </ul>            </div>            {{#random_tags}}                <button class='Ldt-createAnnotation-moar-keywordz'>{{l10n.more_tags}}</button>            {{/random_tags}}            {{/tags.length}}            {{#polemic_mode}}            {{#polemics.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-polemics'>                <label>{{l10n.add_polemic_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#polemics}}                    <li><button class='Ldt-createAnnotation-polemic-{{className}} Ldt-createAnnotation-polemic-button Ldt-TraceMe'>{{keyword}}</button></li>                {{/polemics}}                </ul>            </div>            {{/polemics.length}}            {{/polemic_mode}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-spinner'></div>            {{l10n.wait_while_processed}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-errorScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.error_while_contacting}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-endScreen' style='display: none'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.annotation_saved}}            <br>            {{^disable_share}}            {{l10n.share_annotation}}            <div style='margin-top: 12px; text-align: center;'>                <a target='_blank' class='Ldt-createAnnotation-endScreen-TweetLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-FbLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-GplusLink Ldt-TraceMe'></a>            </div>            {{/disable_share}}        </div>        <div class='Ldt-floatClear'></div>    </div></div>";
 IriSP.createAnnotation_errorMessage_template = "<p class='Ldt-createAnnotation-errorMessage'>  {{l10n.empty_annotation}}</p>";
 IriSP.loading_template = "<div id='Ldt-loader' style='width: {{width}}px; height: {{height}}px;'>{{l10n.loading_wait}}</div>";
 IriSP.overlay_marker_template = "{{! the template for the small bars which is z-indexed over our segment widget }}<div class='Ldt-SegmentPositionMarker' style='background-color: #F7268E;'></div>";
@@ -1556,15 +1572,16 @@ IriSP.DataLoader = function() {
   this._callbacks = {};
 };
 
-IriSP.DataLoader.prototype.get = function(url, callback) {
-
-  var base_url = url.split("&")[0]
+IriSP.DataLoader.prototype.get = function(url, callback, force_reload) {
+  var base_url = url.split("&")[0];
+  if (typeof force_reload != "undefined" && force_reload && this._cache.hasOwnProperty(base_url)) {
+      delete this._cache[base_url]
+  }
   if (this._cache.hasOwnProperty(base_url)) {
     callback(this._cache[base_url]);
   } else {  
     if (!this._callbacks.hasOwnProperty(base_url)) {
-      this._callbacks[base_url] = [];
-      this._callbacks[base_url].push(callback);   
+      this._callbacks[base_url] = [callback];
       /* we need a closure because this gets lost when it's called back */
   
       // uncomment you don't want to use caching.
@@ -1577,6 +1594,7 @@ IriSP.DataLoader.prototype.get = function(url, callback) {
                   for (i = 0; i < this._callbacks[base_url].length; i++) {
                     this._callbacks[base_url][i](this._cache[base_url]);                                  
                   }
+                  delete this._callbacks[base_url];
       };
       
       /* automagically choose between json and jsonp */
@@ -1614,8 +1632,11 @@ IriSP.Serializer.prototype.deserialize = function(data) {};
 IriSP.Serializer.prototype.currentMedia = function() {  
 };
 
-IriSP.Serializer.prototype.sync = function(callback) {  
-  callback.call(this, this._data);  
+IriSP.Serializer.prototype.getDuration = function() {  
+};
+
+IriSP.Serializer.prototype.sync = function(callback) {
+  this._DataLoader.get(this._url, callback, force_refresh);
 };
 
 IriSP.SerializerFactory = function(DataLoader) {
@@ -1648,157 +1669,145 @@ IriSP.SerializerFactory.prototype.getSerializer = function(metadataOptions) {
       return undefined;
   }
 };
-/* site.js - all our site-dependent config : player chrome, cdn locations, etc...*/
+IriSP.language = 'en';
 
-IriSP.defaults = {};
+IriSP.libFiles = {
+    defaultDir : "js/libs/",
+    inDefaultDir : {
+        jQuery : "jquery.min.js",
+        jQueryUI : "jquery-ui.min.js",
+        jQueryToolTip : "jquery.tools.min.js",
+        swfObject : "swfobject.js",
+        cssjQueryUI : "jquery-ui.css",
+        popcorn : "popcorn.js",
+        jwplayer : "jwplayer.js",
+        raphael : "raphael.js",
+        "popcorn.mediafragment" : "popcorn.mediafragment.js",
+        "popcorn.code" : "popcorn.code.js",
+        "popcorn.jwplayer" : "popcorn.jwplayer.js",
+        "popcorn.youtube" : "popcorn.youtube.js",
+        "tracemanager" : "tracemanager.js"
+    },
+    locations : {
+        // use to define locations outside defautl_dir
+    },
+    cdn : {
+        jQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.js",
+        jQueryToolTip : "http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
+        swfObject : "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
+        cssjQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css"
+    },
+    useCdn : false
+}
 
-/* these objects are filled by configureDefaults. The function doesn't overwrite 
-   defaults that were originally defined by the user.
-*/
-IriSP.lib = {};
-
-/* We need to define those so that the individual settings can be overwritten */
-IriSP.widgetsDefaults = {};
-
-IriSP.paths = {};
-
-IriSP.libdir = "/metadataplayer/src/js/libs/";
-IriSP.jwplayer_swf_path = "../test/libs/player.swf";
-IriSP.platform_url = "http://192.168.56.101/pf";
-IriSP.default_templates_vars = { };
-
-IriSP.language = 'fr';
-
-/** ugly ugly ugly ugly - returns an object defining 
-    the paths to the libs
-    We need it that way cause it's called at runtime by
-    IriSP.configureDefaults.
-*/   
-IriSP.defaults.lib = function(libdir) {
-  if (IriSP.null_or_undefined(libdir))
-    libdir = IriSP.libdir;
-  
-  return { 
-//      jQuery : "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js",
-    jQuery : libdir + "jquery.min.js",
-//      jQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.js",
-    jQueryUI : libdir + "jquery-ui.min.js",
-//      jQueryToolTip : "http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
-    jQueryToolTip : libdir + "jquery.tools.min.js",
-//      swfObject : "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
-    swfObject : libdir + "swfobject.js",
-//      cssjQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css",
-    cssjQueryUI : libdir + "jquery-ui.css",
-      popcorn : libdir + "popcorn.js",
-      jwplayer : libdir + "jwplayer.js",
-      popcornReplacement: libdir + "pop.js",
-      raphael: libdir + "raphael.js",
-      jquery_sparkline: libdir + "jquery.sparkline.js",
-      "popcorn.mediafragment" : libdir + "popcorn.mediafragment.js",
-      "popcorn.code" : libdir + "popcorn.code.js",
-      "popcorn.jwplayer": libdir + "popcorn.jwplayer.js",
-      "popcorn.youtube": libdir + "popcorn.youtube.js",
-      "tracemanager": libdir + "tracemanager.js"
-  };
-};
-
-//Configuration for the player and utility functions.
-// No need to have them configured at runtime
-IriSP.config = {};
-
-IriSP.config.shortener = {
-  // function to call to shorten an url.
-  //shortening_function : IriSP.platform_shorten_url
-};
-
-IriSP.defaults.widgetsDefaults = function(platform_url) { 
-  if (IriSP.null_or_undefined(platform_url))
-    platform_url = IriSP.platform_url;
-  
-  return {
-    "LayoutManager" : {spacer_div_height : "0px" },
-    "PlayerWidget" : {},
-    "AnnotationsWidget": {
-      "share_text" : "I'm watching ",     
-      "fb_link" : "http://www.facebook.com/share.php?u=",
-      "tw_link" : "http://twitter.com/home?status=",
-      "gplus_link" : ""
-      },
-    
+IriSP.widgetsDefaults = {
+    "LayoutManager" : {
+        spacer_div_height : 0
+    },
+    "PlayerWidget" : {
+        
+    },
+    "AnnotationsWidget" : {
+        "share_text" : "I'm watching "
+    },
     "TweetsWidget" : {
         default_profile_picture : "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
-        tweet_display_period: 10000 // how long do we show a tweet ?
-        
+        tweet_display_period : 10000 // how long do we show a tweet ?
     },
     "SliderWidget" : {
-        minimize_period: 850 // how long does the slider stays maximized after the user leaves the zone ?
+        minimize_period : 850 // how long does the slider stays maximized after the user leaves the zone ?
+    },
+    "SegmentsWidget" : {
+        cinecast_version : false
     },
     "createAnnotationWidget" : {
-        keywords: ["#amateur", "#digital-studies"],
-        polemic_mode: true, /* enable polemics ? */
-        /* polemics - the corresponding class names defined in the css should be for instance :
-           Ldt-createAnnotation-polemic-positive for positive
-           Ldt-createAnnotation-polemic-equalequal for equalequal, etc.
-        */
-        polemics: [ { "className" : "positive", "keyword" : "++" }, { "className" : "negative", "keyword" : "--" }, { "className" : "reference", "keyword" : "==" }, { "className" : "question", "keyword" : "??" } ], 
-        cinecast_version: false, /* put to false to enable the platform version, true for the festival cinecast one. */
-        
+        tags : [
+            {
+                "id" : "digitalstudies",
+                "meta" : {
+                    "description" : "#digital-studies"
+                }
+            },
+            {
+                "id" : "amateur",
+                "meta" : {
+                    "description" : "#amateur"
+                },
+            }
+        ],
+        remote_tags : false,
+        random_tags : false,
+        show_from_field : false,
+        polemic_mode : true, /* enable polemics ? */
+        polemics : [{
+            "className" : "positive",
+            "keyword" : "++"
+        }, {
+            "className" : "negative",
+            "keyword" : "--"
+        }, {
+            "className" : "reference",
+            "keyword" : "=="
+        }, {
+            "className" : "question",
+            "keyword" : "??"
+        }],
+        cinecast_version : false, /* put to false to enable the platform version, true for the festival cinecast one. */
+
         /* where does the widget PUT the annotations - this is a mustache template. id refers to the id of the media ans is filled
-           by the widget. 
-        */
-        api_endpoint_template: platform_url + "/ldtplatform/api/ldt/annotations/{{id}}.json",
-        api_method: "PUT"
+         by the widget.
+         */
+        api_endpoint_template : "", // platform_url + "/ldtplatform/api/ldt/annotations/{{id}}.json",
+        api_method : "PUT"
     },
     "SparklineWidget" : {
-        column_width: 10 // the width of a column in pixels.
-    },
-    "Main" : {
-        autoplay: true
+       lineColor : "#7492b4",
+       fillColor : "#aeaeb8",
+       lineWidth : 2
     },
     "AnnotationsListWidget" : {
-        ajax_mode: true, /* use ajax to get information about the annotations.
-                           if set to false, only search in the annotations for the
-                           current project. */
+        ajax_mode : true, /* use ajax to get information about the annotations.
+         if set to false, only search in the annotations for the
+         current project. */
         /* the platform generates some funky urls. We replace them afterwards to point to the
-           correct place - this setting will probably be overwritten by the platform 
-           implementers.
-           Note that the player has to replace the variables between {{ and }} by its own values.
-        */
-        ajax_url: platform_url + "/ldtplatform/api/ldt/segments/{media}/{begin}/{end}", 
-        
-        ajax_granularity: 10000, /* how much ms should we look before and after the
-                                   current timecode */
-      
-        default_thumbnail: "/metadataplayer/src/css/imgs/video_sequence.png",
-        
-        project_url: platform_url + "/ldtplatform/ldt/front/player/" /* the beginning 
-                                                                        of a link to the
-                                                                        new front */
-    } 
-  };
-};
-
-/*
-Override this if you want to change the info the player receives about the user.
-It's typically overrided in server-side templates with user-specific data.
-*/
-IriSP.defaults.user = function() { return {
-      "name" : "Anonymous user",
-      "avatar" : IriSP.paths.imgs + "/user_default_icon.png"
+         correct place - this setting will probably be overwritten by the platform
+         implementers.
+         Note that the player has to replace the variables between {{ and }} by its own values.
+         */
+        ajax_url : "", //platform_url + "/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}",
+        ajax_granularity : 10000, /* how much ms should we look before and after the current timecode */
+        default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png",
+        project_url : "", //platform_url + "/ldtplatform/ldt/front/player/"
+        /* the beginning of a link to the new front */
+        cinecast_version : false,
+        refresh_interval : 10000
+    },
+    "StackGraphWidget" : {
+         defaultcolor : "#585858",
+         tags : [
+            {
+                "keywords" : [ "++" ],
+                "description" : "positif",
+                "color" : "#1D973D"
+            },
+            {
+                "keywords" : [ "--" ],
+                "description" : "negatif",
+                "color" : "#CE0A15"
+            },
+            {
+                "keywords" : [ "==" ],
+                "description" : "reference",
+                "color" : "#C5A62D"  
+            },
+            {
+                "keywords" : [ "??" ],
+                "description" : "question",
+                "color" : "#036AAE"
+            }
+        ],
+        streamgraph : false
     }
-};
-
-
-IriSP.defaults.paths = {
-//  "imgs": "/tweetlive/res/metadataplayer/src/css/imgs"
-  "imgs": "/metadataplayer/src/css/imgs"
-};
-
-
-IriSP.defaults.default_templates_vars = function() { 
-  return {
-  "img_dir" : IriSP.paths.imgs 
-  };
 }/* the widget classes and definitions */
 
 /**
@@ -1858,24 +1867,28 @@ IriSP.Widget = function(Popcorn, config, Serializer) {
       this.selector.attr("widget-type", this._config.type);
   }
   
+  // Parsing Widget Defaults
+  var _this = this;
+  
+  if (typeof config.type == "string" && typeof IriSP.widgetsDefaults[config.type] == "object") {
+      IriSP._(IriSP.widgetsDefaults[config.type]).each(function(_v, _k) {
+          if (typeof config[_k] != "undefined") {
+              _this[_k] = config[_k];
+          } else {
+              _this[_k] = _v;
+          }
+      });
+  }
+  
 };
 
-// This functions checks for configuration options
 
-IriSP.Widget.prototype.checkOption = function(_name, _default) {
-    this[_name] = (
-        typeof this._config[_name] != "undefined"
-        ? this._config[_name]
-        : (
-            (typeof IriSP.widgetsDefaults[this._config.type] != "undefined" && IriSP.widgetsDefaults[this._config.type][_name] != "undefined")
-            ? IriSP.widgetsDefaults[this._config.type][_name]
-            : (
-                typeof _default != "undefined"
-                ? _default
-                : null
-            )
-        )
-    )
+IriSP.Widget.prototype.currentMedia = function() {
+    return this._serializer.currentMedia();
+}
+
+IriSP.Widget.prototype.getDuration = function() {
+    return this._serializer.getDuration();
 }
 
 /**
@@ -1969,7 +1982,7 @@ IriSP.LayoutManager.prototype.createDiv = function(widgetName) {
     this._widgets.push([widgetName, newDiv]);    
 
     var divTempl = "<div id='{{id}}' style='width: {{width}}px; position: relative; clear: both;'></div";
-    var spacerTempl = "<div id='{{spacer_id}}' style='width: {{width}}px; position: relative; height: {{spacer_div_height}};'></div";
+    var spacerTempl = "<div id='{{spacer_id}}' style='width: {{width}}px; position: relative; height: {{spacer_div_height}}px;'></div";
     
     var divCode = Mustache.to_html(divTempl, {id: newDiv, width: this._width});
     var spacerCode = Mustache.to_html(spacerTempl, {spacer_id: spacerDiv, width: this._width,
@@ -2221,46 +2234,10 @@ IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager
     return widget;
 };
 
-/** Go through the defaults to set a reasonable value */
-IriSP.configureDefaults = function(libdir, platform_url) {
-  /* the defaults configuration is messy and complicated. There are two things to know :
-     - we want to allow overwriting of defaults - that's why we have IriSP.widgetDefaults
-       and IriSP.defaults.widgetDefaults. The first is filled by the embedder and then fleshed out
-       with the contents of the first. We use underscore.defaults for that, but there's one problem with
-       this function : it doesn't work recursively.
-     - we need to compute some values at runtime instead of at compile time
-  */
-    
-  IriSP.lib = IriSP.underscore.defaults(IriSP.lib, IriSP.defaults.lib(libdir));
-  
-  /* get the factory defaults for the widgets and merge them with the default the user
-     may have defined 
-  */
-  var factory_defaults = IriSP.defaults.widgetsDefaults(platform_url);
-  for(var widget in factory_defaults) {
-  
-      /* create the object if it doesn't exists */
-      if (IriSP.null_or_undefined(IriSP.widgetsDefaults[widget]))
-        IriSP.widgetsDefaults[widget] = {};
-        
-      IriSP.widgetsDefaults[widget] = IriSP.underscore.defaults(IriSP.widgetsDefaults[widget], factory_defaults[widget]);
-  }
-  
-  IriSP.paths = IriSP.underscore.defaults(IriSP.paths, IriSP.defaults.paths);
-  IriSP.default_templates_vars = IriSP.underscore.defaults(IriSP.default_templates_vars, 
-                                       IriSP.defaults.default_templates_vars());
-
-  if (IriSP.null_or_undefined(IriSP.user))
-    IriSP.user = {};
-  
-  IriSP.user = IriSP.underscore.defaults(IriSP.user, IriSP.defaults.user());
-};
-
 /** single point of entry for the metadataplayer */
-IriSP.initPlayer = function(config, metadata_url, libdir, platform_url) {
+IriSP.initPlayer = function(config, metadata_url) {
     document.getElementById(config.gui.container).innerHTML = IriSP.templToHTML(IriSP.loading_template, config.gui);
-    IriSP.configureDefaults(libdir, platform_url);
-    IriSP.loadLibs(IriSP.lib, config, metadata_url,
+    IriSP.loadLibs(config, metadata_url,
       function() {   
               
               var layoutManager = new IriSP.LayoutManager(config.gui);
@@ -2384,14 +2361,26 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
         ? options.directVideoPath
         : IriSP.get_aliased(IriSP.__jsonMetadata["medias"][0], ["href","url"])
     );
+    var _flashVars = {
+        "streamFMS" : true,
+        "adVast" : false,
+        "lg" : "fr_cinecast",
+        "autoPlay" : options.autoPlay,
+        "directVideoTitle" : "",
+        "urlAcData" : options.urlAcData,
+        "directVideoPath" : _videoUrl,
+        "host" : "http://allocine.fr"
+    }
     
-    var fv = "streamFMS=true&adVast=false&lg=fr_cinecast&autoPlay=" + options.autoPlay + "&directVideoTitle=&urlAcData=" + options.urlAcData + "&directVideoPath=" + _videoUrl + "&host=http://allocine.fr";
-//    console.log("fv = " + fv);
+    if (typeof IriSP.__jsonMetadata["medias"][0].meta == "object" && typeof IriSP.__jsonMetadata["medias"][0].meta.subtitles == "string") {
+        _flashVars.subTitlePath = IriSP.__jsonMetadata["medias"][0].meta.subtitles;
+    }
     
+
     var params = {
         "allowScriptAccess" : "always",
         "wmode": "opaque",
-        "flashvars" : fv,
+        "flashvars" : IriSP.jQuery.param(_flashVars),
         "allowfullscreen" : true
     };
     var atts = {
@@ -2763,11 +2752,6 @@ IriSP.AnnotationsListWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this.__counter = 0;
   this.__oldList = [];
- 
-  this.checkOption('ajax_mode');
-  this.checkOption('project_url');
-  this.checkOption('default_thumbnail');
-  this.checkOption("cinecast_version", false);
   this.searchRe = null;
   this._ajax_cache = [];
   var _this = this;
@@ -2794,7 +2778,7 @@ IriSP.AnnotationsListWidget.prototype.clearWidget = function() {
 
 IriSP.AnnotationsListWidget.prototype.searchHandler = function(searchString) {
   this.searchRe = (searchString && searchString.length) ? IriSP.regexpFromText(searchString) : null;
-  if (this.ajax_mode) {
+  if (this.ajax_mode && !this.cinecast_version) {
       var _this = this,
         _annotations = (
             this.searchRe === null
@@ -2824,17 +2808,21 @@ IriSP.AnnotationsListWidget.prototype.do_redraw = function(list) {
       
     this.selector.html(_html);
     
+    this.selector.find('.Ldt-AnnotationsList-Tag-Li').click(function() {
+        _this._Popcorn.trigger("IriSP.search.triggeredSearch", IriSP.jQuery(this).text().trim());
+    })
+    
     if (this.searchRe !== null) {
         this.selector.find(".Ldt-AnnotationsList-Title a, .Ldt-AnnotationsList-Description")
             .each(function()  {
                 var _$ = IriSP.jQuery(this);
-                _$.html(_$.text().replace(_this.searchRe, '<span class="Ldt-AnnotationsList-highlight">$1</span>'))
+                _$.html(_$.text().trim().replace(_this.searchRe, '<span class="Ldt-AnnotationsList-highlight">$1</span>'))
             })
     }
 };
 
 IriSP.AnnotationsListWidget.prototype.transformAnnotation = function(a) {
-    var _this = this
+    var _this = this;
     return {
         "id" : a.id,
         "title": this.cinecast_version ? IriSP.get_aliased(a.meta, ['creator_name', 'creator']) : a.content.title,
@@ -2843,6 +2831,7 @@ IriSP.AnnotationsListWidget.prototype.transformAnnotation = function(a) {
         "end" : IriSP.msToTime(a.end),
         "thumbnail" : (typeof a.meta == "object" && typeof a.meta.thumbnail == "string") ? a.meta.thumbnail : this.default_thumbnail,
         "url" : (typeof a.meta == "object" && typeof a.meta.url == "string") ? a.meta.url : null,
+        "created_at" :(typeof a.meta == "object" && typeof a.meta.created == "string") ? Date.parse(a.meta.created.replace(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}\:\d{2}\:\d{2}).*$/,"$2/$3/$1 $4 UTC+0000")) : null,
         "tags": typeof a.tags == "object"
             ? IriSP.underscore(a.tags)
                 .chain()
@@ -2901,7 +2890,6 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
             this._Popcorn.trigger("IriSP.search.noMatchFound");
           }
     }
-  
   list = IriSP.underscore(list)
     .chain()
     .sortBy(function(_o) {
@@ -2909,16 +2897,16 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
     })
     .first(10)
     .sortBy(function(_o) {
-        return (typeof _o.is_new != "undefined" && _o.is_new ? -1 : _o.iterator);
+        return (_this.cinecast_version ? - _o.created_at : _o.iterator);
     })
     .value();
-  
   var idList = IriSP.underscore.pluck(list, "id").sort();
 
   
-  if (!IriSP.underscore.isEqual(this.__oldList, idList) || typeof(force_redraw) !== "undefined") {
+  if (!IriSP.underscore.isEqual(this.__oldList, idList) || this.lastSearch !== this.searchRe || typeof(force_redraw) !== "undefined") {
     this.do_redraw(list);
     this.__oldList = idList;
+    this.lastSearch = this.searchRe;
   }
    /* save for next call */
   
@@ -2937,15 +2925,13 @@ IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
   }
    
   
-  /* the platform gives us a special url - of the type : http://path/{media}/{begin}/{end}
+  /* the platform gives us a special url - of the type : http://path/{{media}}/{{begin}}/{{end}}
      we double the braces using regexps and we feed it to mustache to build the correct url
      we have to do that because the platform only knows at run time what view it's displaying.
   */
      
-  var platf_url = IriSP.widgetsDefaults.AnnotationsListWidget.ajax_url
-                                      .replace(/\{/g, '{{').replace(/\}/g, '}}');
-  var media_id = this._serializer.currentMedia()["id"];
-  var duration = this._serializer.getDuration();
+  var media_id = this.currentMedia()["id"];
+  var duration = this.getDuration();
   
   var begin_timecode = (Math.floor(tcode) - 300) * 1000;
   if (begin_timecode < 0)
@@ -2955,7 +2941,7 @@ IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
   if (end_timecode > duration)
     end_timecode = duration;
   
-  var templ = Mustache.to_html(platf_url, {media: media_id, begin: begin_timecode,
+  var templ = Mustache.to_html(this.ajax_url, {media: media_id, begin: begin_timecode,
                                  end: end_timecode});
 
   /* we create on the fly a serializer to get the ajax */
@@ -2976,7 +2962,7 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
   */
   var l = [];
   
-  var media = this._serializer.currentMedia()["id"];
+  var media = this.currentMedia()["id"];
   
   for (i = 0; i < annotations.length; i++) {
     var obj = this.transformAnnotation(annotations[i])
@@ -3009,13 +2995,30 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
   
   var _this = this;
     
-    if (!this.ajax_mode) {
+    if (!this.ajax_mode || this.cinecast_version) {
         var _throttled = IriSP.underscore.throttle(function() {
             _this.drawList();
         }, 1500);
         _throttled();
         this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", _throttled);
         this._Popcorn.listen("timeupdate", _throttled);
+        if (this.cinecast_version) {
+            window.setInterval(function() {
+                var _tmpSerializer = new IriSP.JSONSerializer(IriSP.__dataloader,  _this._config.metadata.src, true);
+                _tmpSerializer.sync(function(json) {
+                    IriSP.underscore(json.annotations).each(function(_a) {
+                        var _j = _this.annotations_ids.indexOf(_a.id);
+                        if (_j == -1) {
+                            _this._serializer._data.annotations.push(_a);
+                            _this.annotations_ids.push(_a.id);
+                        } else {
+                            _this._serializer._data.annotations[_j] = _a;
+                        }
+                        _throttled();
+                    });
+                }, true); // true is for force_refresh
+            },this.refresh_interval);
+        }
   } else {
     /* update the widget when the video has finished loading and when it's seeked and paused */
     this._Popcorn.listen("seeked", IriSP.wrap(this, this.ajaxRedraw));
@@ -3059,7 +3062,7 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
     var keywords =  "";
     var begin = +annotation.begin / 1000;
     var end = +annotation.end / 1000;
-    var duration = this._serializer.getDuration();
+    var duration = this.getDuration();
     var tags = "";
     
     var title_templ = "{{title}} - ( {{begin}} - {{end}} )";
@@ -3091,15 +3094,10 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
     this.selector.find(".Ldt-SaKeywords").text(tags);
     
     // update sharing buttons
-    var defaults = IriSP.widgetsDefaults.AnnotationsWidget;
-    var text = defaults.share_text;
-    var fb_link = defaults.fb_link;
-    var tw_link = defaults.tw_link;
-    var gplus_link = defaults.gplus_link;
     var url = document.location.href + "#id=" + annotation.id;
-    this.selector.find(".Ldt-fbShare").attr("href", IriSP.mkFbUrl(url, text));
-    this.selector.find(".Ldt-TwShare").attr("href", IriSP.mkTweetUrl(url, text));
-    this.selector.find(".Ldt-GplusShare").attr("href", IriSP.mkGplusUrl(url, text));
+    this.selector.find(".Ldt-fbShare").attr("href", IriSP.mkFbUrl(url, this.share_text));
+    this.selector.find(".Ldt-TwShare").attr("href", IriSP.mkTweetUrl(url, this.share_text));
+    this.selector.find(".Ldt-GplusShare").attr("href", IriSP.mkGplusUrl(url, this.share_text));
 };
 
 IriSP.AnnotationsWidget.prototype.clearWidget = function() {   
@@ -3213,7 +3211,7 @@ IriSP.ArrowWidget.prototype.timeUpdateHandler = function(percents) {
     var begin = (+ currentAnnotation.begin) / 1000;
     var end = (+ currentAnnotation.end) / 1000;
 
-    var duration = this._serializer.getDuration() / 1000;
+    var duration = this.getDuration() / 1000;
     var middle_time = (begin + end) / 2;
     var percents = middle_time / duration;
 
@@ -3275,7 +3273,7 @@ IriSP.i18n.addMessages(
             "annotation_saved": "Thank you, your annotation has been saved.",
             "share_annotation": "Would you like to share it on social networks ?",
             "share_on": "Share on",
-            "moar_tags": "More tags"
+            "more_tags": "More tags"
         },
         "fr": {
             "submit": "Envoyer",
@@ -3289,7 +3287,7 @@ IriSP.i18n.addMessages(
             "annotation_saved": "Merci, votre annotation a été enregistrée.",
             "share_annotation": "Souhaitez-vous la partager sur les réseaux sociaux ?",
             "share_on": "Partager sur",
-            "moar_tagz": "Plus de mots-clés"
+            "more_tags": "Plus de mots-clés"
         }
     }
 );
@@ -3297,16 +3295,6 @@ IriSP.i18n.addMessages(
 IriSP.createAnnotationWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this._hidden = true;
-  
-  this.checkOption("keywords");
-  this.checkOption("polemic_mode", true);
-  this.checkOption("polemics");
-  this.checkOption("cinecast_version", false);
-  this.checkOption("api_endpoint_template");
-  this.checkOption("show_from_field", true);
-  this.checkOption("api_method");
-  this.checkOption("random_keywords");
-  this.checkOption("disable_share", false);
                          
   if (!IriSP.null_or_undefined(IriSP.user)) {
       if (!IriSP.null_or_undefined(IriSP.user.avatar)) {
@@ -3335,11 +3323,9 @@ IriSP.createAnnotationWidget.prototype.clear = function() {
 
 IriSP.createAnnotationWidget.prototype.draw = function() {
     var _this = this;
-    if (typeof this._config.remote_keywords != "undefined" && typeof this._config.remote_keywords) {
-        IriSP.jQuery.getJSON(this._config.remote_keywords, function(_json) {
-            _this.keywords = IriSP.underscore(_json.tags).map(function(_tag) {
-                return _tag.meta.description;
-            });
+    if (typeof this.remote_tags == "object") {
+        IriSP.jQuery.getJSON((typeof this.remote_tags.alias == "string" ? this.remote_tags.alias : this.remote_tags.url), function(_json) {
+            _this.tags = _json.tags;
             _this.drawCallback();
         });
     } else {
@@ -3361,11 +3347,11 @@ IriSP.createAnnotationWidget.prototype.drawCallback = function() {
     this.showStartScreen();
   }
   
-  if (this.random_keywords) {
+  if (this.random_tags) {
       this.selector.find(".Ldt-createAnnotation-keywords li").hide();
-      this.showMoarTagz();
+      this.showMoreTags();
       this.selector.find('.Ldt-createAnnotation-moar-keywordz').click(function() {
-          _this.showMoarTagz();
+          _this.showMoreTags();
       })
   }
   // Add onclick event to both polemic and keywords buttons
@@ -3378,7 +3364,10 @@ IriSP.createAnnotationWidget.prototype.drawCallback = function() {
   // js_mod is a custom event because there's no simple way to test for a js
   // change in a textfield.                    
   this.selector.find(".Ldt-createAnnotation-Description")
-               .bind("propertychange keyup input paste click js_mod", IriSP.wrap(this, this.handleTextChanges));
+               .bind("propertychange keyup input paste click js_mod", IriSP.wrap(this, this.handleTextChanges))
+          .keyup(function(_e) {
+              console.log(_e);
+          });
                
   /* the cinecast version of the player is supposed to pause when the user clicks on the button */
 
@@ -3439,8 +3428,8 @@ IriSP.createAnnotationWidget.prototype.drawCallback = function() {
   }
 };
 
-IriSP.createAnnotationWidget.prototype.showMoarTagz = function() {
-    for (var j=0; j < this.random_keywords; j++) {
+IriSP.createAnnotationWidget.prototype.showMoreTags = function() {
+    for (var j=0; j < this.random_tags; j++) {
         var _jq = this.selector.find(".Ldt-createAnnotation-keywords li:hidden");
         if (_jq.length > 1) {
             IriSP.jQuery(_jq[Math.floor(_jq.length*Math.random())]).show();
@@ -3489,7 +3478,7 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     // block the arrow.
     this._Popcorn.trigger("IriSP.ArrowWidget.blockArrow");
     
-    var duration = this._serializer.getDuration();
+    var duration = this.getDuration();
         
     var currentChapter = this._serializer.currentChapitre(currentTime);
 
@@ -3648,23 +3637,28 @@ IriSP.createAnnotationWidget.prototype.handleSliderChanges = function(params) {
 
 IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback) {
   var _this = this;
-  var apiJson = {annotations : [{}], meta: {}};
+  var apiJson = {
+      format : "http://advene.org/ns/cinelab/",
+      annotations : [
+        {}
+        ],
+        meta: {}};
   var annotation = apiJson.annotations[0];
   
-  annotation.media = this._serializer.currentMedia()["id"];
+  annotation.media = this.currentMedia()["id"];
   
   if (this.cinecast_version) {   
       annotation.begin = Math.round(this._Popcorn.currentTime() * 1000);
       annotation.end = annotation.begin;      
   } else {
-    var duration = this._serializer.getDuration();    
+    var duration = this.getDuration();    
     annotation.begin = +((duration * (this.sliceLeft / 100)).toFixed(0));
     annotation.end = +((duration * ((this.sliceWidth + this.sliceLeft) / 100)).toFixed(0));
   }
 
   // boundary checks
   annotation.begin = Math.max(0, annotation.begin);
-  annotation.end = Math.min(this._serializer.getDuration(), annotation.end);
+  annotation.end = Math.min(this.getDuration(), annotation.end);
   
   annotation.type = ( this.cinecast_version ? "cinecast:UserAnnotation" : ( this._serializer.getContributions() || "" ));
   if (typeof(annotation.type) === "undefined")
@@ -3699,18 +3693,27 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   
   meta.created = Date().toString();
   
-  // All #hashtags are added to tags
-  var _tags = contents.toLowerCase().match(/#[^#\s]+\b/gim) || [];
-  this.selector.find('.Ldt-createAnnotation-keyword-button').each(function() {
-      var _tx = IriSP.jQuery(this).text(),
-        _rx = IriSP.regexpFromText(_tx);
+  var _tags = [];
+  IriSP._(this.tags).each(function(_v) {
+      var _rx = IriSP.regexpFromText(_v.meta.description);
         if (_rx.test(contents)) {
-            _tags.push(_tx.toLowerCase())
+            _tags.push(_v.id);
         }
   });
-  
+
+  if (typeof this.remote_tags == "object") {
+     _tags = IriSP._(_tags).map(function(_t) {
+         return _this.remote_tags.id + ':' + _t
+     });
+    if (typeof apiJson.imports == "undefined") {
+       apiJson.imports = [];
+    }
+    apiJson.imports.push({
+        "id" : this.remote_tags.id,
+        "url" : this.remote_tags.url
+    })
+  }
   annotation.tags = IriSP.underscore.uniq(_tags);
-  
   
   var jsonString = JSON.stringify(apiJson);
   var project_id = this._serializer._data.meta.id;
@@ -3756,6 +3759,7 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                     _this._serializer._data.annotations.push(annotation);
  
                     _this._Popcorn.trigger("IriSP.createAnnotationWidget.addedAnnotation", annotation);
+                    this.selector.find(".Ldt-createAnnotation-Description").val("");
                     callback(annotation);
       }), 
       error: 
@@ -3909,7 +3913,7 @@ IriSP.PlayerWidget.prototype.timeDisplayUpdater = function() {
   }
   
   // we get it at each call because it may change.
-  var duration = this._serializer.getDuration() / 1000; 
+  var duration = this.getDuration() / 1000; 
   var totalTime = IriSP.secondsToTime(duration);
   var elapsedTime = IriSP.secondsToTime(this._Popcorn.currentTime());
   
@@ -4117,7 +4121,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
     var lineSize      = this.width;        // timeline pixel width 
     var nbrframes     = lineSize/frameSize;     // frame numbers
     var numberOfTweet   = 0;            // number of tweet overide later 
-    var duration      = this._serializer.getDuration();      // timescale width 
+    var duration      = this.getDuration();      // timescale width 
     var frameLength   = lineSize / frameSize;    // frame timescale  
     var timeline;
     var colors  = new Array("","#1D973D","#036AAE","#CE0A15","#C5A62D","#585858");
@@ -4451,7 +4455,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 IriSP.PolemicWidget.prototype.sliderUpdater = function() {
 
     var time = +this._Popcorn.currentTime();
-    var duration = this._serializer.getDuration();
+    var duration = this.getDuration();
     
     this.paperSlider.attr("width", time * (this.width / (duration / 1000)));
         
@@ -4523,7 +4527,6 @@ IriSP.SegmentsWidget = function(Popcorn, config, Serializer) {
   this._Popcorn.listen("IriSP.search.closed", function() { self.searchFieldClosedHandler.call(self); });
   this._Popcorn.listen("IriSP.search.cleared", function() { self.searchFieldClearedHandler.call(self); });
   
-  this.checkOption("cinecast_version");
   this.defaultColors = ["#1f77b4","#aec7e8","#ff7f0e","#ffbb78","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5","#8c564b","#c49c94","#e377c2","#f7b6d2","#7f7f7f","#c7c7c7","#bcbd22","#dbdb8d","#17becf","#9edae5"]
 };
 
@@ -4540,7 +4543,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   this.positionMarker = this.selector.find(".Ldt-SegmentPositionMarker");
   
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.positionUpdater));
-  var duration = this._serializer.getDuration();
+  var duration = this.getDuration();
   
   if (this.cinecast_version) {
       var segments_annotations = IriSP.underscore.filter(
@@ -4707,7 +4710,7 @@ IriSP.SegmentsWidget.prototype.searchFieldClosedHandler = function() {
 };
 
 IriSP.SegmentsWidget.prototype.positionUpdater = function() {  
-  var duration = this._serializer.getDuration() / 1000;
+  var duration = this.getDuration() / 1000;
   var time = this._Popcorn.currentTime();
   //var position 	= ((time / duration) * 100).toFixed(2);
   var position 	= ((time / duration) * 100).toFixed(2);
@@ -4934,7 +4937,7 @@ IriSP.SliderWidget.prototype.sliderUpdater = function() {
   
   var time = this._Popcorn.currentTime();
 
-  var duration = this._serializer.getDuration() / 1000;
+  var duration = this.getDuration() / 1000;
   var percents = time / duration;
   
   /* we do these complicated calculations to center exactly
@@ -4974,7 +4977,7 @@ IriSP.SliderWidget.prototype.backgroundClickHandler = function(event) {
   var width = this.sliderBackground.width();
   var relX = event.pageX - parentOffset.left;
 
-  var duration = this._serializer.getDuration() / 1000;
+  var duration = this.getDuration() / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
 
   this._Popcorn.currentTime(newTime);
@@ -4987,7 +4990,7 @@ IriSP.SliderWidget.prototype.foregroundClickHandler = function(event) {
   var width = this.sliderBackground.width();
   var relX = event.pageX - parentOffset.left;
 
-  var duration = this._serializer.getDuration() / 1000;
+  var duration = this.getDuration() / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
 
   this._Popcorn.currentTime(newTime);
@@ -5015,7 +5018,7 @@ IriSP.SliderWidget.prototype.mouseOverHandler = function(event) {
 IriSP.SliderWidget.prototype.mouseOutHandler = function(event) {
 
   this.timeOutId = window.setTimeout(IriSP.wrap(this, this.minimizeOnTimeout),
-                                     IriSP.widgetsDefaults.SliderWidget.minimize_period);
+                                     this.minimize_period);
 };
 
 IriSP.SliderWidget.prototype.minimizeOnTimeout = function(event) {
@@ -5044,7 +5047,7 @@ IriSP.SliderWidget.prototype.positionMarkerDraggedHandler = function(event, ui) 
   var width = this.sliderBackground.width();
   var relX = event.originalEvent.pageX - parentOffset.left;
 
-  var duration = this._serializer.getDuration() / 1000;
+  var duration = this.getDuration() / 1000;
   var newTime = ((relX / width) * duration).toFixed(2);
   this._Popcorn.currentTime(newTime);
   
@@ -5058,9 +5061,6 @@ IriSP.SparklineWidget = function(Popcorn, config, Serializer) {
   this._oldAnnotation = null;
   this._results = [];
   
-  this.lineColor = this._config.lineColor || "#7492b4";
-  this.fillColor = this._config.fillColor || "#aeaeb8";
-  this.lineWidth = this._config.lineWidth || 2;
   this.slices = this._config.slices || Math.floor(this.width/20);
   if (!this.width) {
       this.width = this.selector.width();
@@ -5072,7 +5072,6 @@ IriSP.SparklineWidget = function(Popcorn, config, Serializer) {
   if (this._config.background) {
       this.selector.css("background", this._config.background);
   }
-  this.checkOption('cinecast_version');
 };
 
 
@@ -5084,7 +5083,7 @@ IriSP.SparklineWidget.prototype.clear = function() {
 
 /** draw the sparkline using jquery sparkline */
 IriSP.SparklineWidget.prototype.draw = function() {
-    this.duration = this._serializer.getDuration();
+    this.duration = this.getDuration();
     this.paper = new Raphael(this.selector[0], this.width, this.height);
     var _this = this;
   
@@ -5111,7 +5110,7 @@ IriSP.SparklineWidget.prototype.draw = function() {
             _sliceDuration = Math.floor( this.duration / this.slices),
             _results = _(_.range(this.slices)).map(function(_i) {
                 return _(_annotations).filter(function(_a){
-                    return (_a.begin <= (1 + _i) * _sliceDuration) && (_a.end >= _i * _sliceDuration) && (!_this.cinecast_version || _a.type == "cinecast:UserAnnotation")
+                    return (_a.begin <= (1 + _i) * _sliceDuration) && (_a.end >= _i * _sliceDuration)
                 }).length;
             });
     }
@@ -5204,53 +5203,23 @@ IriSP.SparklineWidget.prototype.handleNewAnnotation = function(annotation) {
 IriSP.StackGraphWidget.prototype = new IriSP.Widget();
 
 IriSP.StackGraphWidget.prototype.draw = function() {
-    var _ = IriSP._,
-        _defaultTags = [
-            {
-                "keywords" : [ "++" ],
-                "description" : "positif",
-                "color" : "#1D973D"
-            },
-            {
-                "keywords" : [ "--" ],
-                "description" : "negatif",
-                "color" : "#CE0A15"
-            },
-            {
-                "keywords" : [ "==" ],
-                "description" : "reference",
-                "color" : "#C5A62D"  
-            },
-            {
-                "keywords" : [ "??" ],
-                "description" : "question",
-                "color" : "#036AAE"
-            }
-        ],
-        _defaultDefColor = "#585858";
+    var _ = IriSP._;
     this.height =  this._config.height || 50;
     this.width = this.selector.width();
-    this.isStreamGraph = this._config.streamgraph || false;
-    this.sliceCount = this._config.slices || ~~(this.width/(this.isStreamGraph ? 20 : 5));
-    this.tagconf = (this._config.tags
-        ? this._config.tags
-        : _defaultTags);
-    IriSP._(this.tagconf).each(function(_a) {
+    this.slices = this._config.slices || ~~(this.width/(this.streamgraph ? 20 : 5));
+    _(this.tags).each(function(_a) {
         _a.regexp = new RegExp(_(_a.keywords).map(function(_k) {
             return _k.replace(/([\W])/gm,'\\$1');
         }).join("|"),"im")
     });
-    this.defaultcolorconf = (this._config.defaultcolor
-        ? this._config.defaultcolor
-        : _defaultDefColor);
     this.paper = new Raphael(this.selector[0], this.width, this.height);
     this.groups = [];
-    this.duration = this._serializer.getDuration();
+    this.duration = this.getDuration();
     
     var _annotationType = this._serializer.getTweets(),
-        _sliceDuration = ~~ ( this.duration / this.sliceCount),
+        _sliceDuration = ~~ ( this.duration / this.slices),
         _annotations = this._serializer._data.annotations,
-        _groupedAnnotations = _(_.range(this.sliceCount)).map(function(_i) {
+        _groupedAnnotations = _(_.range(this.slices)).map(function(_i) {
             return _(_annotations).filter(function(_a){
                 return (_a.begin <= (1 + _i) * _sliceDuration) && (_a.end >= _i * _sliceDuration)
             });
@@ -5259,25 +5228,25 @@ IriSP.StackGraphWidget.prototype.draw = function() {
             return _g.length
         }).length,
         _scale = this.height / _max,
-        _width = this.width / this.sliceCount,
+        _width = this.width / this.slices,
         _showTitle = !this._config.excludeTitle,
         _showDescription = !this._config.excludeDescription;
     
     
-    var _paths = _(this.tagconf).map(function() {
+    var _paths = _(this.tags).map(function() {
         return [];
     });
     _paths.push([]);
     
-    for (var i = 0; i < this.sliceCount; i++) {
+    for (var i = 0; i < this.slices; i++) {
         var _group = _groupedAnnotations[i];
         if (_group) {
-            var _vol = _(this.tagconf).map(function() {
+            var _vol = _(this.tags).map(function() {
                 return 0;
             });
             for (var j = 0; j < _group.length; j++){
            var _txt = (_showTitle ? _group[j].content.title : '') + ' ' + (_showDescription ? _group[j].content.description : '')
-                var _tags = _(this.tagconf).map(function(_tag) {
+                var _tags = _(this.tags).map(function(_tag) {
                         return (_txt.search(_tag.regexp) == -1 ? 0 : 1)
                     }),
                     _nbtags = _(_tags).reduce(function(_a,_b) {
@@ -5295,20 +5264,20 @@ IriSP.StackGraphWidget.prototype.draw = function() {
                 _nbneutre = _group.length - _nbtags,
                 _h = _nbneutre * _scale,
                 _base = this.height - _h;
-            if (!this.isStreamGraph) {
+            if (!this.streamgraph) {
                 this.paper.rect(i * _width, _base, _width - 1, _h ).attr({
                     "stroke" : "none",
-                    "fill" : this.defaultcolorconf
+                    "fill" : this.defaultcolor
                 });
             }
            _paths[0].push(_base);
-            for (var j = 0; j < this.tagconf.length; j++) {
+            for (var j = 0; j < this.tags.length; j++) {
                 _h = _vol[j] * _scale;
                 _base = _base - _h;
-                if (!this.isStreamGraph) {
+                if (!this.streamgraph) {
                     this.paper.rect(i * _width, _base, _width - 1, _h ).attr({
                         "stroke" : "none",
-                        "fill" : this.tagconf[j].color
+                        "fill" : this.tags[j].color
                     });
                 }
                 _paths[j+1].push(_base);
@@ -5320,13 +5289,13 @@ IriSP.StackGraphWidget.prototype.draw = function() {
             for (var j = 0; j < _paths.length; j++) {
                 _paths[j].push(this.height);
             }
-            this.groups.push(_(this.tagconf).map(function() {
+            this.groups.push(_(this.tags).map(function() {
                 return 0;
             }));
         }
     }
     
-    if (this.isStreamGraph) {
+    if (this.streamgraph) {
         for (var j = _paths.length - 1; j >= 0; j--) {
             var _d = _(_paths[j]).reduce(function(_memo, _v, _k) {
                return _memo + ( _k
@@ -5335,7 +5304,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
             },'') + 'L' + this.width + ' ' + _paths[j][_paths[j].length - 1] + 'L' + this.width + ' ' + this.height + 'L0 ' + this.height;
             this.paper.path(_d).attr({
                 "stroke" : "none",
-                "fill" : (j ? this.tagconf[j-1].color : this.defaultcolorconf)
+                "fill" : (j ? this.tags[j-1].color : this.defaultcolor)
             });
         }
     }
@@ -5361,7 +5330,7 @@ IriSP.StackGraphWidget.prototype.draw = function() {
             _this.updateTooltip(_e);
             // Trace
             var relX = _e.pageX - _this.selector.offset().left;
-            var _duration = _this._serializer.getDuration();
+            var _duration = _this.getDuration();
             var _time = parseInt((relX / _this.width) * _duration);
             _this._Popcorn.trigger("IriSP.TraceWidget.MouseEvents", {
                 "widget" : "StackGraphWidget",
@@ -5402,10 +5371,10 @@ IriSP.StackGraphWidget.prototype.clickHandler = function(event) {
 };
 
 IriSP.StackGraphWidget.prototype.updateTooltip = function(event) {
-    var _segment = Math.max(0,Math.min(this.groups.length - 1, Math.floor(this.sliceCount * (event.pageX - this.selector.offset().left)/this.width))),
+    var _segment = Math.max(0,Math.min(this.groups.length - 1, Math.floor(this.slices * (event.pageX - this.selector.offset().left)/this.width))),
         _valeurs = this.groups[_segment],
-        _width = this.width / this.sliceCount,
-        _html = '<ul style="list-style: none; margin: 0; padding: 0;">' + IriSP._(this.tagconf).map(function(_tag, _i) {
+        _width = this.width / this.slices,
+        _html = '<ul style="list-style: none; margin: 0; padding: 0;">' + IriSP._(this.tags).map(function(_tag, _i) {
             return '<li style="clear: both;"><span style="float: left; width: 10px; height: 10px; margin: 2px; background: '
                 + _tag.color
                 + ';"></span>'
@@ -5415,7 +5384,7 @@ IriSP.StackGraphWidget.prototype.updateTooltip = function(event) {
                 + '</li>';
         }).join('') + '</ul>';
     this.TooltipWidget._shown = false; // Vraiment, on ne peut pas ouvrir le widget s'il n'est pas encore ouvert ?
-    this.TooltipWidget.show('','',(_segment + .5)* this.width / this.sliceCount, 0);
+    this.TooltipWidget.show('','',(_segment + .5)* this.width / this.slices, 0);
     this.TooltipWidget.selector.find(".tip").html(_html);
     this.rectangleFocus.attr({
         "x" : _segment * _width,
@@ -5729,7 +5698,7 @@ IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
     var title = IriSP.formatTweet(annotation.content.title);
     var img = annotation.content.img.src;
     if (typeof(img) === "undefined" || img === "" || img === "None") {
-      img = IriSP.widgetsDefaults.TweetsWidget.default_profile_picture;
+      img = this.default_profile_picture;
     }
 
     var imageMarkup = IriSP.templToHTML("<img src='{{src}}' alt='user image'></img>", 
@@ -5773,7 +5742,7 @@ IriSP.TweetsWidget.prototype.displayTweet = function(annotation) {
   this.drawTweet(annotation);
 
   var time = this._Popcorn.currentTime();  
-  this._timeoutId = window.setTimeout(IriSP.wrap(this, this.clearPanel), IriSP.widgetsDefaults.TweetsWidget.tweet_display_period);
+  this._timeoutId = window.setTimeout(IriSP.wrap(this, this.clearPanel), this.tweet_display_period);
 };
 
 
@@ -5872,7 +5841,7 @@ IriSP.JSONSerializer.prototype.deserialize = function(data) {
 /** load JSON-cinelab data and also sort the annotations by start time
     @param callback function to call when the data is ready.
  */
-IriSP.JSONSerializer.prototype.sync = function(callback) {
+IriSP.JSONSerializer.prototype.sync = function(callback, force_refresh) {
   /* we don't have to do much because jQuery handles json for us */
 
   var self = this;
@@ -5894,14 +5863,22 @@ IriSP.JSONSerializer.prototype.sync = function(callback) {
 	  }     
       callback(data);      
   };
-  
-  this._DataLoader.get(this._url, fn);
+  this._DataLoader.get(this._url, fn, force_refresh);
 };
 
 /** @return the metadata about the media being read FIXME: always return the first media. */
 IriSP.JSONSerializer.prototype.currentMedia = function() {  
-  return this._data.medias[0]; /* FIXME: don't hardcode it */
+  return (typeof this._data.medias == "object" && this._data.medias.length) ? this._data.medias[0] : IriSP.__jsonMetadata.medias[0];
 };
+
+IriSP.JSONSerializer.prototype.getDuration = function() {
+    var _m = this.currentMedia();
+    if (_m === null || typeof _m.meta == "undefined") {
+        return 0;
+    }
+    return +(IriSP.get_aliased(_m.meta, ["dc:duration", "duration"]) || 0);
+}
+
 
 /** searches for an annotation which matches title, description and keyword 
    "" matches any field. 
@@ -6284,7 +6261,3 @@ IriSP.JSONSerializer.prototype.getContributions = function() {
     
   return val;
 };
-
-IriSP.JSONSerializer.prototype.getDuration = function() {
-    return +(IriSP.get_aliased(this.currentMedia().meta, ["dc:duration", "duration"]) || 0);
-}

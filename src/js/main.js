@@ -1,5 +1,5 @@
 /* main file */
-
+// Why is it called main ? It only loads the libs !
 
 if ( window.IriSP === undefined && window.__IriSP === undefined ) { 
   /**
@@ -19,23 +19,39 @@ if ( window.IriSP === undefined && window.__IriSP === undefined ) {
 IriSP._ = window._.noConflict();
 IriSP.underscore = IriSP._;
 
-IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
+IriSP.getLib = function(lib) {
+    return (
+        IriSP.libFiles.useCdn && typeof IriSP.libFiles.cdn[lib] == "string"
+        ? IriSP.libFiles.cdn[lib]
+        : (
+            typeof IriSP.libFiles.locations[lib] == "string"
+            ? IriSP.libFiles.locations[lib]
+            : (
+                typeof IriSP.libFiles.inDefaultDir[lib] == "string"
+                ? IriSP.libFiles.defaultDir + IriSP.libFiles.inDefaultDir[lib]
+                : null
+            )
+        )
+    )
+}
+
+IriSP.loadLibs = function( config, metadata_url, callback ) {
     // Localize jQuery variable
 		IriSP.jQuery = null;
-    var $L = $LAB.script(libs.jQuery).script(libs.swfObject).wait()
-                .script(libs.jQueryUI);
+    var $L = $LAB.script(IriSP.getLib("jQuery")).script(IriSP.getLib("swfObject")).wait()
+                .script(IriSP.getLib("jQueryUI"));
                                    
     if (config.player.type === "jwplayer" || config.player.type === "allocine") {
       // load our popcorn.js lookalike
-      $L.script(libs.jwplayer);
+      $L.script(IriSP.getLib("jwplayer"));
     } else {
       // load the real popcorn
-      $L.script(libs.popcorn).script(libs["popcorn.code"]);
+      $L.script(IriSP.getLib("popcorn")).script(IriSP.getLib("popcorn.code"));
       if (config.player.type === "youtube") {
-        $L.script(libs["popcorn.youtube"]);
+        $L.script(IriSP.getLib("popcorn.youtube"));
       } 
       if (config.player.type === "vimeo")
-        $L.script(libs["popcorn.vimeo"]);
+        $L.script(IriSP.getLib("popcorn.vimeo"));
       
       /* do nothing for html5 */
     }       
@@ -45,10 +61,10 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
       if (config.gui.widgets[idx].type === "PolemicWidget" ||
           config.gui.widgets[idx].type === "StackGraphWidget" ||
           config.gui.widgets[idx].type === "SparklineWidget") {        
-        $L.script(libs.raphael);
+        $L.script(IriSP.getLib("raphael"));
       }
       if (config.gui.widgets[idx].type === "TraceWidget") {
-          $L.script(libs.tracemanager)
+          $L.script(IriSP.getLib("tracemanager"))
       }
     }
     
@@ -56,7 +72,7 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
     /*
     for (var idx in config.modules) {
       if (config.modules[idx].type === "PolemicWidget")
-        $L.script(libs.raphaelJs);
+        $L.script(IriSP.getLib("raphaelJs"));
     }
     */
 
@@ -66,7 +82,7 @@ IriSP.loadLibs = function( libs, config, metadata_url, callback ) {
       var css_link_jquery = IriSP.jQuery( "<link>", { 
         rel: "stylesheet", 
         type: "text/css", 
-        href: libs.cssjQueryUI,
+        href: IriSP.getLib("cssjQueryUI"),
         'class': "dynamic_css"
       } );
       var css_link_custom = IriSP.jQuery( "<link>", { 

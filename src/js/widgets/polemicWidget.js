@@ -51,7 +51,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
     var lineSize      = this.width;        // timeline pixel width 
     var nbrframes     = lineSize/frameSize;     // frame numbers
     var numberOfTweet   = 0;            // number of tweet overide later 
-    var duration      = this._serializer.getDuration();      // timescale width 
+    var duration      = this.getDuration();      // timescale width 
     var frameLength   = lineSize / frameSize;    // frame timescale  
     var timeline;
     var colors  = new Array("","#1D973D","#036AAE","#CE0A15","#C5A62D","#585858");
@@ -385,7 +385,7 @@ IriSP.PolemicWidget.prototype.draw = function() {
 IriSP.PolemicWidget.prototype.sliderUpdater = function() {
 
     var time = +this._Popcorn.currentTime();
-    var duration = this._serializer.getDuration();
+    var duration = this.getDuration();
     
     this.paperSlider.attr("width", time * (this.width / (duration / 1000)));
         

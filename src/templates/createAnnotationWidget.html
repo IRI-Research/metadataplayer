@@ -23,19 +23,19 @@
                 <div class='Ldt-createAnnotation-profileArrow'></div>
             </div>
             <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>{{l10n.submit}}</button>
-            {{#keywords.length}}
+            {{#tags.length}}
             <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-keywords'>
                 <label>{{l10n.add_keywords}} :</label>
                 <ul class='Ldt-floatList'>
-                {{#keywords}}
-                    <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe'>{{.}}</button></li>
-                {{/keywords}}
+                {{#tags}}
+                    <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe' tag-id='{{id}}'>{{meta.description}}</button></li>
+                {{/tags}}
                 </ul>
             </div>
-            {{#random_keywords}}
-                <button class='Ldt-createAnnotation-moar-keywordz'>{{l10n.moar_tagz}}</button>
-            {{/random_keywords}}
-            {{/keywords.length}}
+            {{#random_tags}}
+                <button class='Ldt-createAnnotation-moar-keywordz'>{{l10n.more_tags}}</button>
+            {{/random_tags}}
+            {{/tags.length}}
             {{#polemic_mode}}
             {{#polemics.length}}
             <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-polemics'>

@@ -2,12 +2,6 @@ IriSP.AnnotationsListWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this.__counter = 0;
   this.__oldList = [];
- 
-  this.checkOption('ajax_mode');
-  this.checkOption('project_url');
-  this.checkOption('default_thumbnail');
-  this.checkOption("cinecast_version", false);
-  this.checkOption("ajax_url");
   this.searchRe = null;
   this._ajax_cache = [];
   var _this = this;
@@ -34,7 +28,7 @@ IriSP.AnnotationsListWidget.prototype.clearWidget = function() {
 
 IriSP.AnnotationsListWidget.prototype.searchHandler = function(searchString) {
   this.searchRe = (searchString && searchString.length) ? IriSP.regexpFromText(searchString) : null;
-  if (this.ajax_mode) {
+  if (this.ajax_mode && !this.cinecast_version) {
       var _this = this,
         _annotations = (
             this.searchRe === null
@@ -64,11 +58,15 @@ IriSP.AnnotationsListWidget.prototype.do_redraw = function(list) {
       
     this.selector.html(_html);
     
+    this.selector.find('.Ldt-AnnotationsList-Tag-Li').click(function() {
+        _this._Popcorn.trigger("IriSP.search.triggeredSearch", IriSP.jQuery(this).text().trim());
+    })
+    
     if (this.searchRe !== null) {
         this.selector.find(".Ldt-AnnotationsList-Title a, .Ldt-AnnotationsList-Description")
             .each(function()  {
                 var _$ = IriSP.jQuery(this);
-                _$.html(_$.text().replace(_this.searchRe, '<span class="Ldt-AnnotationsList-highlight">$1</span>'))
+                _$.html(_$.text().trim().replace(_this.searchRe, '<span class="Ldt-AnnotationsList-highlight">$1</span>'))
             })
     }
 };
@@ -155,9 +153,10 @@ IriSP.AnnotationsListWidget.prototype.drawList = function(force_redraw) {
   var idList = IriSP.underscore.pluck(list, "id").sort();
 
   
-  if (!IriSP.underscore.isEqual(this.__oldList, idList) || typeof(force_redraw) !== "undefined") {
+  if (!IriSP.underscore.isEqual(this.__oldList, idList) || this.lastSearch !== this.searchRe || typeof(force_redraw) !== "undefined") {
     this.do_redraw(list);
     this.__oldList = idList;
+    this.lastSearch = this.searchRe;
   }
    /* save for next call */
   
@@ -181,8 +180,8 @@ IriSP.AnnotationsListWidget.prototype.ajaxRedraw = function(timecode) {
      we have to do that because the platform only knows at run time what view it's displaying.
   */
      
-  var media_id = this._serializer.currentMedia()["id"];
-  var duration = this._serializer.getDuration();
+  var media_id = this.currentMedia()["id"];
+  var duration = this.getDuration();
   
   var begin_timecode = (Math.floor(tcode) - 300) * 1000;
   if (begin_timecode < 0)
@@ -213,7 +212,7 @@ IriSP.AnnotationsListWidget.prototype.processJson = function(json, serializer) {
   */
   var l = [];
   
-  var media = this._serializer.currentMedia()["id"];
+  var media = this.currentMedia()["id"];
   
   for (i = 0; i < annotations.length; i++) {
     var obj = this.transformAnnotation(annotations[i])
@@ -246,13 +245,30 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
   
   var _this = this;
     
-    if (!this.ajax_mode) {
+    if (!this.ajax_mode || this.cinecast_version) {
         var _throttled = IriSP.underscore.throttle(function() {
             _this.drawList();
         }, 1500);
         _throttled();
         this._Popcorn.listen("IriSP.createAnnotationWidget.addedAnnotation", _throttled);
         this._Popcorn.listen("timeupdate", _throttled);
+        if (this.cinecast_version) {
+            window.setInterval(function() {
+                var _tmpSerializer = new IriSP.JSONSerializer(IriSP.__dataloader,  _this._config.metadata.src, true);
+                _tmpSerializer.sync(function(json) {
+                    IriSP.underscore(json.annotations).each(function(_a) {
+                        var _j = _this.annotations_ids.indexOf(_a.id);
+                        if (_j == -1) {
+                            _this._serializer._data.annotations.push(_a);
+                            _this.annotations_ids.push(_a.id);
+                        } else {
+                            _this._serializer._data.annotations[_j] = _a;
+                        }
+                        _throttled();
+                    });
+                }, true); // true is for force_refresh
+            },this.refresh_interval);
+        }
   } else {
     /* update the widget when the video has finished loading and when it's seeked and paused */
     this._Popcorn.listen("seeked", IriSP.wrap(this, this.ajaxRedraw));

@@ -1,239 +1,23 @@
 {
-    "medias": [
+    "format": "http:\/\/advene.org\/ns\/cinelab\/",
+    "imports": [
         {
-            "id": "cinecast:Bamako",
-            "url": "rtmpe://cp41629.edgefcs.net/ondemand/mp4:ondemand/nmedia/cinecast/Bamako1500.m4v",
-            "meta": {
-                "mediaid": 1,
-                "actors": ["Aissa Maiga", "Tiecoura Traore", "Maimouna Helene Diarra"],
-                "directors": ["Abderrahmane Sissako"],
-                "nationalities": ["FR"],
-                "duration": 7080000,
-                "productionYear": "2006",
-                "synopsis": null,
-                "thumbnail": "http://www.vodkaster.com/var/vodkaster/storage/images/films/bamako/42851-1-fre-FR/Bamako3_reference.jpg",
-                "title": "Bamako",
-                "version": "VOST"
-            }
+            "id": "cinecast",
+            "url": "http:\/\/festival.cinecast.fr\/configuration.json"
+        }, {
+            "id": "medias",
+            "url": "http:\/\/festival.cinecast.fr\/medias.json"
         }
     ],
-    "annotation_types": [
-        {
-            "id": "cinecast:UserAnnotation",
-            "meta": {
-                "description": "Annotation made during the Cinecast Festival."
-            }
-        },
-        {
-            "id": "cinecast:MovieExtract",
-            "meta": {
-                "description": "Extract from a Movie."
-            }
-        }
-    ],
+    "meta": {
+        "creator": "Vodkaster",
+        "created": "2012-04-04T16:21:41+02:00"
+    },
     "annotations": [
         {
-            "id": "ac:3637",
-            "begin": 2516000,
-            "end": 2516000,
-            "timecode": 0,
-            "content": {
-                "data": "sdfdfdfd"
-            },
-            "media": "cinecast:Bamako",
-            "tags": [],
-            "type": "cinecast:UserAnnotation",
-            "meta": {
-                "mediaid": 1,
-                "thumbnail": "/users/02/8/6/4/Z20010705122316617847468/img/1178887619_singe.jpg",
-                "extract": "789849",
-                "status": "active",
-                "timestamp": 12994,
-                "created": "2012-03-16T10:01:00.9370000",
-                "creator": "ac:3",
-                "creator_name": "Pierre",
-                "url": "http:\/\/www.allocine.com/"
-            }
-        }, {
-            "id": "ac:3638",
-            "begin": 187000,
-            "end": 187000,
-            "timecode": 0,
-            "content": {
-                "data": "test #vodkaster #allocine #universcine"
-            },
-            "media": "cinecast:Bamako",
-            "tags": ["#vodkaster", "#allocine", "#universcine"],
-            "type": "cinecast:UserAnnotation",
-            "meta": {
-                "mediaid": 1,
-                "thumbnail": "/users/02/7/7/4/Z20110103142031450307477/img/0tyw3myh.cce.jpg",
-                "extract": "789849",
-                "status": "active",
-                "timestamp": 12995,
-                "created": "2012-03-16T11:06:47.3170000",
-                "creator": "ac:495",
-                "creator_name": "Paul",
-                "url": "http:\/\/www.allocine.com/"
-            }
-        }, {
-            "id": "ac:3639",
-            "begin": 164000,
-            "end": 164000,
-            "timecode": 0,
-            "content": {
-                "data": "edtgefvtdtevd dhevdgvbed debzdgbyezgbdyhebzyd bhd ehdbyhebyhddbhegzvdgevd ghdvegvdgezvdg devtgdvgezvd gbvdgevzgdvzegd gedvgezvd #vodkaster #allocine #universcine"
-            },
-            "media": "cinecast:Bamako",
-            "tags": ["#vodkaster", "#allocine", "#universcine"],
-            "type": "cinecast:UserAnnotation",
-            "meta": {
-                "mediaid": 1,
-                "thumbnail": "/users/02/7/7/4/Z20110103142031450307477/img/0tyw3myh.cce.jpg",
-                "extract": "789849",
-                "status": "active",
-                "timestamp": 12999,
-                "created": "2012-03-16T11:14:14.7930000",
-                "creator": "ac:495",
-                "creator_name": "Paul",
-                "url": "http:\/\/www.allocine.com/"
-            }
-        }, {
-            "id": "ac:3640",
-            "begin": 154000,
-            "end": 154000,
-            "timecode": 0,
-            "content": {
-                "data": "tegvdge"
-            },
-            "media": "cinecast:Bamako",
-            "tags": [],
-            "type": "cinecast:UserAnnotation",
-            "meta": {
-                "mediaid": 1,
-                "thumbnail": "/users/02/7/7/4/Z20110103142031450307477/img/0tyw3myh.cce.jpg",
-                "extract": "789849",
-                "status": "active",
-                "timestamp": 13003,
-                "created": "2012-03-16T11:14:30.0930000",
-                "creator": "ac:495",
-                "creator_name": "Paul",
-                "url": "http:\/\/www.allocine.com/"
-            }
-        }, {
-            "id": "ac:3641",
-            "begin": 177000,
-            "end": 177000,
-            "timecode": 0,
-            "content": {
-                "data": "test #vodkaster"
-            },
-            "media": "cinecast:Bamako",
-            "tags": ["#vodkaster"],
-            "type": "cinecast:UserAnnotation",
-            "meta": {
-                "mediaid": 1,
-                "thumbnail": "/users/02/7/7/4/Z20110103142031450307477/img/0tyw3myh.cce.jpg",
-                "extract": "789849",
-                "status": "active",
-                "timestamp": 13004,
-                "created": "2012-03-16T11:27:56.9200000",
-                "creator": "ac:495",
-                "creator_name": "Paul",
-                "url": "http:\/\/www.allocine.com/"
-            }
-        }, {
-            "id": "ac:3642",
-            "begin": 434000,
-            "end": 434000,
-            "timecode": 0,
-            "content": {
-                "data": "fgsdkjfgfsdkjgfkjgfjksdgjkkjgfkjsg"
-            },
-            "media": "cinecast:Bamako",
-            "tags": [],
-            "type": "cinecast:UserAnnotation",
-            "meta": {
-                "mediaid": 1,
-                "thumbnail": "/users/02/5/4/4/Z20101124101755407924445/img/02kehkqh.re1.jpg",
-                "extract": "789849",
-                "status": "active",
-                "timestamp": 13006,
-                "created": "2012-03-16T11:49:33.0770000",
-                "creator": "ac:513",
-                "creator_name": "Jacques",
-                "url": "http:\/\/www.allocine.com/"
-            }
-        }, {
-            "id": "ac:3643",
-            "begin": 177000,
-            "end": 177000,
-            "timecode": 0,
-            "content": {
-                "data": "tetsd dgzydg"
-            },
-            "media": "cinecast:Bamako",
-            "tags": [],
-            "type": "cinecast:UserAnnotation",
-            "meta": {
-                "mediaid": 1,
-                "thumbnail": "/users/02/8/6/4/Z20010705122316617847468/img/1178887619_singe.jpg",
-                "extract": "789849",
-                "status": "active",
-                "timestamp": 13007,
-                "created": "2012-03-16T12:50:38.3100000",
-                "creator": "ac:3",
-                "creator_name": "Pierre",
-                "url": "http:\/\/www.allocine.com/"
-            }
-        }, {
-            "id": "ac:3644",
-            "begin": 177000,
-            "end": 177000,
-            "timecode": 0,
-            "content": {
-                "data": "coucou"
-            },
-            "media": "cinecast:Bamako",
-            "tags": [],
-            "type": "cinecast:UserAnnotation",
-            "meta": {
-                "mediaid": 1,
-                "thumbnail": "/users/02/4/2/5/Z20090108105245410444524/img/io54r5is.0qi.jpg",
-                "extract": "789849",
-                "status": "active",
-                "timestamp": 13008,
-                "created": "2012-03-16T13:37:48.3600000",
-                "creator": "ac:382",
-                "creator_name": "Martin",
-                "url": "http:\/\/www.allocine.com/"
-            }
-        }, {
-            "id": "ac:10806",
-            "begin": 120000,
-            "end": 120000,
-            "timecode": 0,
-            "content": {
-                "data": "tetzfdtfzd"
-            },
-            "media": "cinecast:Bamako",
-            "tags": [],
-            "type": "cinecast:UserAnnotation",
-            "meta": {
-                "mediaid": 1,
-                "thumbnail": "/users/02/7/7/4/Z20110103142031450307477/img/0tyw3myh.cce.jpg",
-                "extract": "789849",
-                "status": "active",
-                "timestamp": 20201,
-                "created": "2012-03-19T14:26:17.4870000",
-                "creator": "ac:495",
-                "creator_name": "Paul",
-                "url": "http:\/\/www.allocine.com/"
-            }
-        }, {
-            "id": "cinecast:789808",
+            "id": "789808",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34952\/25592345-4-fre-FR\/34952-Generique-de-debut-et-preparation-a-l-audience1_reference.jpg",
                 "creator": "Vodkaster",
@@ -245,9 +29,9 @@
                 "data": "G\u00e9n\u00e9rique de d\u00e9but et pr\u00e9paration \u00e0 l'audience"
             }
         }, {
-            "id": "cinecast:789812",
+            "id": "789812",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34953\/25592424-3-fre-FR\/34953-Debut-de-l-audience1_reference.jpg",
                 "creator": "Vodkaster",
@@ -259,9 +43,9 @@
                 "data": "D\u00e9but de l'audience"
             }
         }, {
-            "id": "cinecast:789816",
+            "id": "789816",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34954\/25592478-3-fre-FR\/34954-Fin-du-spectacle-et-reprise-de-l-audience1_reference.jpg",
                 "creator": "Vodkaster",
@@ -273,9 +57,9 @@
                 "data": "Fin du spectacle et reprise de l'audience"
             }
         }, {
-            "id": "cinecast:789818",
+            "id": "789818",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34955\/25592528-3-fre-FR\/34955-Corruption-et-seduction1_reference.jpg",
                 "creator": "Vodkaster",
@@ -287,9 +71,9 @@
                 "data": "Corruption et s\u00e9duction"
             }
         }, {
-            "id": "cinecast:789820",
+            "id": "789820",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34956\/25592566-2-fre-FR\/34956-Des-chiffres-africains-calamiteux1_reference.jpg",
                 "creator": "Vodkaster",
@@ -301,23 +85,23 @@
                 "data": "Des chiffres africains calamiteux"
             }
         }, {
-            "id": "cinecast:789822",
+            "id": "789822",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
-                "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34957\/25592606-2-fre-FR\/34957-un-ideal-de-societe-inadaptee1_reference.jpg",
+                "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34957\/25592606-3-fre-FR\/34957-Un-ideal-de-societe-inadaptee1_reference.jpg",
                 "creator": "Vodkaster",
                 "created": "1970-01-01T01:00:00+01:00"
             },
             "begin": 797000,
             "end": 977000,
             "content": {
-                "data": "un id\u00e9al de soci\u00e9t\u00e9 inadapt\u00e9e"
+                "data": "Un id\u00e9al de soci\u00e9t\u00e9 inadapt\u00e9e"
             }
         }, {
-            "id": "cinecast:789824",
+            "id": "789824",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34958\/25592668-2-fre-FR\/34958-Supercherie-du-G81_reference.jpg",
                 "creator": "Vodkaster",
@@ -329,9 +113,9 @@
                 "data": "\"Supercherie\" du G8 ?"
             }
         }, {
-            "id": "cinecast:789825",
+            "id": "789825",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34959\/25592703-2-fre-FR\/34959-C-est-un-debat-qui-depasse-l-Afrique1_reference.jpg",
                 "creator": "Vodkaster",
@@ -343,9 +127,9 @@
                 "data": "C'est un d\u00e9bat qui d\u00e9passe l'Afrique"
             }
         }, {
-            "id": "cinecast:789839",
+            "id": "789839",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34960\/25592937-2-fre-FR\/34960-Ce-monde-est-ouvert-aux-blancs-mais-pas-aux-noirs1_reference.jpg",
                 "creator": "Vodkaster",
@@ -357,9 +141,9 @@
                 "data": "Ce monde est ouvert aux blancs mais pas aux noirs"
             }
         }, {
-            "id": "cinecast:789849",
+            "id": "789849",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34961\/25593042-2-fre-FR\/34961-Standby1_reference.jpg",
                 "creator": "Vodkaster",
@@ -371,9 +155,9 @@
                 "data": "Standby"
             }
         }, {
-            "id": "cinecast:789854",
+            "id": "789854",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34963\/25593121-2-fre-FR\/34963-Expose-du-periple1_reference.jpg",
                 "creator": "Vodkaster",
@@ -385,9 +169,9 @@
                 "data": "Expos\u00e9 du p\u00e9riple"
             }
         }, {
-            "id": "cinecast:789874",
+            "id": "789874",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34967\/25593375-2-fre-FR\/34967-Expose-du-periple-21_reference.jpg",
                 "creator": "Vodkaster",
@@ -399,9 +183,9 @@
                 "data": "Expos\u00e9 du p\u00e9riple 2"
             }
         }, {
-            "id": "cinecast:789878",
+            "id": "789878",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34968\/25593421-2-fre-FR\/34968-L-audience-est-suspendue1_reference.jpg",
                 "creator": "Vodkaster",
@@ -413,9 +197,9 @@
                 "data": "L'audience est suspendue"
             }
         }, {
-            "id": "cinecast:789880",
+            "id": "789880",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34969\/25593461-2-fre-FR\/34969-Activites-et-problemes-du-soir1_reference.jpg",
                 "creator": "Vodkaster",
@@ -427,9 +211,9 @@
                 "data": "Activit\u00e9s et probl\u00e8mes du soir"
             }
         }, {
-            "id": "cinecast:789884",
+            "id": "789884",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34970\/25593533-4-fre-FR\/34970-Death-in-Tumbuktu-11_reference.jpg",
                 "creator": "Vodkaster",
@@ -441,9 +225,9 @@
                 "data": "Death in Tumbuktu 1"
             }
         }, {
-            "id": "cinecast:789888",
+            "id": "789888",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34971\/25593579-2-fre-FR\/34971-Death-in-Tumbuktu-21_reference.jpg",
                 "creator": "Vodkaster",
@@ -455,9 +239,9 @@
                 "data": "Death in Tumbuktu 2"
             }
         }, {
-            "id": "cinecast:789891",
+            "id": "789891",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34972\/25593626-3-fre-FR\/34972-Une-vie-et-un-couple-precaires1_reference.jpg",
                 "creator": "Vodkaster",
@@ -469,9 +253,9 @@
                 "data": "Une vie et un couple pr\u00e9caires"
             }
         }, {
-            "id": "cinecast:789896",
+            "id": "789896",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34973\/25593677-3-fre-FR\/34973-Un-mariage-interrompt-l-audience1_reference.jpg",
                 "creator": "Vodkaster",
@@ -483,9 +267,9 @@
                 "data": "Un mariage interrompt l'audience"
             }
         }, {
-            "id": "cinecast:789901",
+            "id": "789901",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34974\/25593734-2-fre-FR\/34974-L-Afrique-n-a-t-elle-plus-aucun-moyen-financier1_reference.jpg",
                 "creator": "Vodkaster",
@@ -497,9 +281,9 @@
                 "data": "L'Afrique n'a-t-elle plus aucun moyen financier ?"
             }
         }, {
-            "id": "cinecast:789904",
+            "id": "789904",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34975\/25593779-2-fre-FR\/34975-BM-ET-FMI-les-seuls-coupables1_reference.jpg",
                 "creator": "Vodkaster",
@@ -511,9 +295,9 @@
                 "data": "BM ET FMI : les seuls coupables ?"
             }
         }, {
-            "id": "cinecast:789906",
+            "id": "789906",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34976\/25593821-2-fre-FR\/34976-Reflexion-sur-le-role-des-banques1_reference.jpg",
                 "creator": "Vodkaster",
@@ -525,9 +309,9 @@
                 "data": "R\u00e9flexion sur le r\u00f4le des banques"
             }
         }, {
-            "id": "cinecast:789911",
+            "id": "789911",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34978\/25593906-2-fre-FR\/34978-Absence-d-ambassade-d-Israel-preuve-de-l-anti-developpement1_reference.jpg",
                 "creator": "Vodkaster",
@@ -539,9 +323,9 @@
                 "data": "Absence d'ambassade d'Isra\u00ebl = preuve de l'anti-d\u00e9veloppement ?"
             }
         }, {
-            "id": "cinecast:789914",
+            "id": "789914",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34979\/25593951-2-fre-FR\/34979-Colonialisme-latent1_reference.jpg",
                 "creator": "Vodkaster",
@@ -553,9 +337,9 @@
                 "data": "Colonialisme latent"
             }
         }, {
-            "id": "cinecast:789917",
+            "id": "789917",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34981\/25594026-2-fre-FR\/34981-Colonialisme-latent-21_reference.jpg",
                 "creator": "Vodkaster",
@@ -567,9 +351,9 @@
                 "data": "Colonialisme latent 2"
             }
         }, {
-            "id": "cinecast:789919",
+            "id": "789919",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34982\/25594093-2-fre-FR\/34982-Colonialisme-latent-31_reference.jpg",
                 "creator": "Vodkaster",
@@ -581,9 +365,9 @@
                 "data": "Colonialisme latent 3"
             }
         }, {
-            "id": "cinecast:789921",
+            "id": "789921",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34983\/25594133-2-fre-FR\/34983-Sermon-du-pasteur1_reference.jpg",
                 "creator": "Vodkaster",
@@ -595,9 +379,9 @@
                 "data": "Sermon du pasteur"
             }
         }, {
-            "id": "cinecast:789925",
+            "id": "789925",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34985\/25594213-2-fre-FR\/34985-Standby-21_reference.jpg",
                 "creator": "Vodkaster",
@@ -609,9 +393,9 @@
                 "data": "Standby 2"
             }
         }, {
-            "id": "cinecast:789927",
+            "id": "789927",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34986\/25594280-2-fre-FR\/34986-Samba-Diakite1_reference.jpg",
                 "creator": "Vodkaster",
@@ -623,9 +407,9 @@
                 "data": "Samba Diakit\u00e9"
             }
         }, {
-            "id": "cinecast:789928",
+            "id": "789928",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34987\/25594315-2-fre-FR\/34987-Audience-et-contre-audience1_reference.jpg",
                 "creator": "Vodkaster",
@@ -637,9 +421,9 @@
                 "data": "Audience et contre-audience"
             }
         }, {
-            "id": "cinecast:789929",
+            "id": "789929",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34988\/25594350-3-fre-FR\/34988-Theorie-du-complot1_reference.jpg",
                 "creator": "Vodkaster",
@@ -651,9 +435,9 @@
                 "data": "Th\u00e9orie du complot"
             }
         }, {
-            "id": "cinecast:789931",
+            "id": "789931",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34989\/25594417-3-fre-FR\/34989-Reponse-a-la-theorie-du-complot1_reference.jpg",
                 "creator": "Vodkaster",
@@ -665,9 +449,9 @@
                 "data": "R\u00e9ponse \u00e0 la th\u00e9orie du complot"
             }
         }, {
-            "id": "cinecast:789933",
+            "id": "789933",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34990\/25594484-2-fre-FR\/34990-Recit-d-un-reve1_reference.jpg",
                 "creator": "Vodkaster",
@@ -679,9 +463,9 @@
                 "data": "R\u00e9cit d'un r\u00eave"
             }
         }, {
-            "id": "cinecast:789934",
+            "id": "789934",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34991\/25594519-2-fre-FR\/34991-Aucune-preuve-qui-soutienne-la-theorie-du-complot1_reference.jpg",
                 "creator": "Vodkaster",
@@ -693,9 +477,9 @@
                 "data": "Aucune preuve qui soutienne la th\u00e9orie du complot"
             }
         }, {
-            "id": "cinecast:789940",
+            "id": "789940",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34992\/25594575-2-fre-FR\/34992-Triste-soiree1_reference.jpg",
                 "creator": "Vodkaster",
@@ -707,9 +491,9 @@
                 "data": "Triste soir\u00e9e"
             }
         }, {
-            "id": "cinecast:789941",
+            "id": "789941",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34993\/25594610-2-fre-FR\/34993-Le-tissu-social-est-il-detruit1_reference.jpg",
                 "creator": "Vodkaster",
@@ -721,9 +505,9 @@
                 "data": "Le tissu social est-il d\u00e9truit ?"
             }
         }, {
-            "id": "cinecast:789945",
+            "id": "789945",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34994\/25594660-2-fre-FR\/34994-Plaidoirie-de-Maitre-Rappaport1_reference.jpg",
                 "creator": "Vodkaster",
@@ -735,9 +519,9 @@
                 "data": "Plaidoirie de Ma\u00eetre Rappaport"
             }
         }, {
-            "id": "cinecast:790160",
+            "id": "790160",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/35018\/25597011-3-fre-FR\/35018-Plaidoirie-de-Maitre-Rappaport-21_reference.jpg",
                 "creator": "Vodkaster",
@@ -749,9 +533,9 @@
                 "data": "Plaidoirie de Ma\u00eetre Rappaport 2"
             }
         }, {
-            "id": "cinecast:790173",
+            "id": "790173",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/35020\/25597155-2-fre-FR\/35020-Chanter-pour-se-faire-entendre1_reference.jpg",
                 "creator": "Vodkaster",
@@ -763,9 +547,9 @@
                 "data": "Chanter pour se faire entendre"
             }
         }, {
-            "id": "cinecast:790194",
+            "id": "790194",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/35021\/25597543-3-fre-FR\/35021-Plaidoirie-de-Maitre-William-Bourdon1_reference.jpg",
                 "creator": "Vodkaster",
@@ -777,9 +561,9 @@
                 "data": "Plaidoirie de Ma\u00eetre William Bourdon"
             }
         }, {
-            "id": "cinecast:790201",
+            "id": "790201",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/35022\/25597618-3-fre-FR\/35022-Plaidoirie-de-Maitre-William-Bourdon-21_reference.jpg",
                 "creator": "Vodkaster",
@@ -791,9 +575,9 @@
                 "data": "Plaidoirie de Ma\u00eetre William Bourdon 2"
             }
         }, {
-            "id": "cinecast:790207",
+            "id": "790207",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/35023\/25597704-3-fre-FR\/35023-Plaidoirie-de-Wiliam-Bourdon-41_reference.jpg",
                 "creator": "Vodkaster",
@@ -805,9 +589,9 @@
                 "data": "Plaidoirie de Wiliam Bourdon 4"
             }
         }, {
-            "id": "cinecast:790210",
+            "id": "790210",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/35024\/25597774-3-fre-FR\/35024-Plaidoirie-de-Aissata-Tall-Sall1_reference.jpg",
                 "creator": "Vodkaster",
@@ -819,9 +603,9 @@
                 "data": "Plaidoirie de A\u00efssata Tall Sall"
             }
         }, {
-            "id": "cinecast:790212",
+            "id": "790212",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/35025\/25597812-3-fre-FR\/35025-Plaidoirie-de-Aissata-Tall-Sall-21_reference.jpg",
                 "creator": "Vodkaster",
@@ -833,9 +617,9 @@
                 "data": "Plaidoirie de A\u00efssata Tall Sall 2"
             }
         }, {
-            "id": "cinecast:790215",
+            "id": "790215",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/35026\/25597857-3-fre-FR\/35026-Interlude-musical1_reference.jpg",
                 "creator": "Vodkaster",
@@ -847,9 +631,9 @@
                 "data": "Interlude musical"
             }
         }, {
-            "id": "cinecast:790217",
+            "id": "790217",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/35027\/25597895-2-fre-FR\/35027-SPOILER-Suicide1_reference.jpg",
                 "creator": "Vodkaster",
@@ -861,9 +645,9 @@
                 "data": "SPOILER - Suicide"
             }
         }, {
-            "id": "cinecast:790218",
+            "id": "790218",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/35028\/25597930-2-fre-FR\/35028-Funerailles1_reference.jpg",
                 "creator": "Vodkaster",
@@ -875,9 +659,9 @@
                 "data": "Fun\u00e9railles"
             }
         }, {
-            "id": "cinecast:790219",
+            "id": "790219",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/35029\/25597965-2-fre-FR\/35029-Documentaire-sur-les-funerailles1_reference.jpg",
                 "creator": "Vodkaster",
@@ -889,9 +673,9 @@
                 "data": "Documentaire sur les fun\u00e9railles"
             }
         }, {
-            "id": "cinecast:790220",
+            "id": "790220",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/35030\/25598000-2-fre-FR\/35030-Generique-de-fin-11_reference.jpg",
                 "creator": "Vodkaster",
@@ -903,9 +687,9 @@
                 "data": "G\u00e9n\u00e9rique de fin 1"
             }
         }, {
-            "id": "cinecast:790221",
+            "id": "790221",
             "type": "cinecast:MovieExtract",
-            "media": "cinecast:Bamako",
+            "media": "medias:bamako",
             "meta": {
                 "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/35031\/25598035-2-fre-FR\/35031-Generique-de-fin-21_reference.jpg",
                 "creator": "Vodkaster",
@@ -916,18 +700,6 @@
             "content": {
                 "data": "G\u00e9n\u00e9rique de fin 2"
             }
-        }
-    ],
-    "meta": {
-        "id": "cinecast:Bamako",
-        "created": "2012-03-19T17:15:22.4921496Z",
-        "creator": "AlloCine"
-    },
-    "format": "http://advene.org/ns/cinelab/",
-    "imports": [
-        {
-            "id": "cinecast",
-            "url": "http://cinecast.fr/festival/configuration.json"
         }
     ]
 }

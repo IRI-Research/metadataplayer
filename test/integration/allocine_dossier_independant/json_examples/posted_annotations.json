@@ -1,4 +1,11 @@
 {
+    "format": "http://advene.org/ns/cinelab/",
+    "imports": [
+        {
+            "id": "cinecast",
+            "url": "http://festival.cinecast.fr/configuration.json"
+        }
+    ],
     "annotations": [
         {
             "media": "cinecast:Bamako",
@@ -9,7 +16,7 @@
             "content": {
                 "data": "Hello, #world !"
             },
-            "tags": ["#world"]
+            "tags": ["cinecast:world"]
         }
     ],
     "meta": {

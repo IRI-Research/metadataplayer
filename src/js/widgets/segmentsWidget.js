@@ -9,7 +9,6 @@ IriSP.SegmentsWidget = function(Popcorn, config, Serializer) {
   this._Popcorn.listen("IriSP.search.closed", function() { self.searchFieldClosedHandler.call(self); });
   this._Popcorn.listen("IriSP.search.cleared", function() { self.searchFieldClearedHandler.call(self); });
   
-  this.checkOption("cinecast_version");
   this.defaultColors = ["#1f77b4","#aec7e8","#ff7f0e","#ffbb78","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5","#8c564b","#c49c94","#e377c2","#f7b6d2","#7f7f7f","#c7c7c7","#bcbd22","#dbdb8d","#17becf","#9edae5"]
 };
 
@@ -26,7 +25,7 @@ IriSP.SegmentsWidget.prototype.draw = function() {
   this.positionMarker = this.selector.find(".Ldt-SegmentPositionMarker");
   
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.positionUpdater));
-  var duration = this._serializer.getDuration();
+  var duration = this.getDuration();
   
   if (this.cinecast_version) {
       var segments_annotations = IriSP.underscore.filter(
@@ -193,7 +192,7 @@ IriSP.SegmentsWidget.prototype.searchFieldClosedHandler = function() {
 };
 
 IriSP.SegmentsWidget.prototype.positionUpdater = function() {  
-  var duration = this._serializer.getDuration() / 1000;
+  var duration = this.getDuration() / 1000;
   var time = this._Popcorn.currentTime();
   //var position 	= ((time / duration) * 100).toFixed(2);
   var position 	= ((time / duration) * 100).toFixed(2);

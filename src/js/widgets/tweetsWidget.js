@@ -19,7 +19,7 @@ IriSP.TweetsWidget.prototype.drawTweet = function(annotation) {
     var title = IriSP.formatTweet(annotation.content.title);
     var img = annotation.content.img.src;
     if (typeof(img) === "undefined" || img === "" || img === "None") {
-      img = IriSP.widgetsDefaults.TweetsWidget.default_profile_picture;
+      img = this.default_profile_picture;
     }
 
     var imageMarkup = IriSP.templToHTML("<img src='{{src}}' alt='user image'></img>", 
@@ -63,7 +63,7 @@ IriSP.TweetsWidget.prototype.displayTweet = function(annotation) {
   this.drawTweet(annotation);
 
   var time = this._Popcorn.currentTime();  
-  this._timeoutId = window.setTimeout(IriSP.wrap(this, this.clearPanel), IriSP.widgetsDefaults.TweetsWidget.tweet_display_period);
+  this._timeoutId = window.setTimeout(IriSP.wrap(this, this.clearPanel), this.tweet_display_period);
 };
 
 

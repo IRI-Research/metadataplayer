@@ -43,7 +43,7 @@ IriSP.ArrowWidget.prototype.timeUpdateHandler = function(percents) {
     var begin = (+ currentAnnotation.begin) / 1000;
     var end = (+ currentAnnotation.end) / 1000;
 
-    var duration = this._serializer.getDuration() / 1000;
+    var duration = this.getDuration() / 1000;
     var middle_time = (begin + end) / 2;
     var percents = middle_time / duration;
 

@@ -41,14 +41,26 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
         ? options.directVideoPath
         : IriSP.get_aliased(IriSP.__jsonMetadata["medias"][0], ["href","url"])
     );
+    var _flashVars = {
+        "streamFMS" : true,
+        "adVast" : false,
+        "lg" : "fr_cinecast",
+        "autoPlay" : options.autoPlay,
+        "directVideoTitle" : "",
+        "urlAcData" : options.urlAcData,
+        "directVideoPath" : _videoUrl,
+        "host" : "http://allocine.fr"
+    }
     
-    var fv = "streamFMS=true&adVast=false&lg=fr_cinecast&autoPlay=" + options.autoPlay + "&directVideoTitle=&urlAcData=" + options.urlAcData + "&directVideoPath=" + _videoUrl + "&host=http://allocine.fr";
-//    console.log("fv = " + fv);
+    if (typeof IriSP.__jsonMetadata["medias"][0].meta == "object" && typeof IriSP.__jsonMetadata["medias"][0].meta.subtitles == "string") {
+        _flashVars.subTitlePath = IriSP.__jsonMetadata["medias"][0].meta.subtitles;
+    }
     
+
     var params = {
         "allowScriptAccess" : "always",
         "wmode": "opaque",
-        "flashvars" : fv,
+        "flashvars" : IriSP.jQuery.param(_flashVars),
         "allowfullscreen" : true
     };
     var atts = {

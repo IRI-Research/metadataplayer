@@ -12,15 +12,16 @@ IriSP.DataLoader = function() {
   this._callbacks = {};
 };
 
-IriSP.DataLoader.prototype.get = function(url, callback) {
-
-  var base_url = url.split("&")[0]
+IriSP.DataLoader.prototype.get = function(url, callback, force_reload) {
+  var base_url = url.split("&")[0];
+  if (typeof force_reload != "undefined" && force_reload && this._cache.hasOwnProperty(base_url)) {
+      delete this._cache[base_url]
+  }
   if (this._cache.hasOwnProperty(base_url)) {
     callback(this._cache[base_url]);
   } else {  
     if (!this._callbacks.hasOwnProperty(base_url)) {
-      this._callbacks[base_url] = [];
-      this._callbacks[base_url].push(callback);   
+      this._callbacks[base_url] = [callback];
       /* we need a closure because this gets lost when it's called back */
   
       // uncomment you don't want to use caching.
@@ -33,6 +34,7 @@ IriSP.DataLoader.prototype.get = function(url, callback) {
                   for (i = 0; i < this._callbacks[base_url].length; i++) {
                     this._callbacks[base_url][i](this._cache[base_url]);                                  
                   }
+                  delete this._callbacks[base_url];
       };
       
       /* automagically choose between json and jsonp */
@@ -70,8 +72,11 @@ IriSP.Serializer.prototype.deserialize = function(data) {};
 IriSP.Serializer.prototype.currentMedia = function() {  
 };
 
-IriSP.Serializer.prototype.sync = function(callback) {  
-  callback.call(this, this._data);  
+IriSP.Serializer.prototype.getDuration = function() {  
+};
+
+IriSP.Serializer.prototype.sync = function(callback) {
+  this._DataLoader.get(this._url, callback, force_refresh);
 };
 
 IriSP.SerializerFactory = function(DataLoader) {

@@ -32,7 +32,7 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
     var keywords =  "";
     var begin = +annotation.begin / 1000;
     var end = +annotation.end / 1000;
-    var duration = this._serializer.getDuration();
+    var duration = this.getDuration();
     var tags = "";
     
     var title_templ = "{{title}} - ( {{begin}} - {{end}} )";
@@ -64,15 +64,10 @@ IriSP.AnnotationsWidget.prototype.displayAnnotation = function(annotation) {
     this.selector.find(".Ldt-SaKeywords").text(tags);
     
     // update sharing buttons
-    var defaults = IriSP.widgetsDefaults.AnnotationsWidget;
-    var text = defaults.share_text;
-    var fb_link = defaults.fb_link;
-    var tw_link = defaults.tw_link;
-    var gplus_link = defaults.gplus_link;
     var url = document.location.href + "#id=" + annotation.id;
-    this.selector.find(".Ldt-fbShare").attr("href", IriSP.mkFbUrl(url, text));
-    this.selector.find(".Ldt-TwShare").attr("href", IriSP.mkTweetUrl(url, text));
-    this.selector.find(".Ldt-GplusShare").attr("href", IriSP.mkGplusUrl(url, text));
+    this.selector.find(".Ldt-fbShare").attr("href", IriSP.mkFbUrl(url, this.share_text));
+    this.selector.find(".Ldt-TwShare").attr("href", IriSP.mkTweetUrl(url, this.share_text));
+    this.selector.find(".Ldt-GplusShare").attr("href", IriSP.mkGplusUrl(url, this.share_text));
 };
 
 IriSP.AnnotationsWidget.prototype.clearWidget = function() {   

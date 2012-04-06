@@ -57,24 +57,28 @@ IriSP.Widget = function(Popcorn, config, Serializer) {
       this.selector.attr("widget-type", this._config.type);
   }
   
+  // Parsing Widget Defaults
+  var _this = this;
+  
+  if (typeof config.type == "string" && typeof IriSP.widgetsDefaults[config.type] == "object") {
+      IriSP._(IriSP.widgetsDefaults[config.type]).each(function(_v, _k) {
+          if (typeof config[_k] != "undefined") {
+              _this[_k] = config[_k];
+          } else {
+              _this[_k] = _v;
+          }
+      });
+  }
+  
 };
 
-// This functions checks for configuration options
 
-IriSP.Widget.prototype.checkOption = function(_name, _default) {
-    this[_name] = (
-        typeof this._config[_name] != "undefined"
-        ? this._config[_name]
-        : (
-            (typeof IriSP.widgetsDefaults[this._config.type] != "undefined" && IriSP.widgetsDefaults[this._config.type][_name] != "undefined")
-            ? IriSP.widgetsDefaults[this._config.type][_name]
-            : (
-                typeof _default != "undefined"
-                ? _default
-                : null
-            )
-        )
-    )
+IriSP.Widget.prototype.currentMedia = function() {
+    return this._serializer.currentMedia();
+}
+
+IriSP.Widget.prototype.getDuration = function() {
+    return this._serializer.getDuration();
 }
 
 /**

@@ -14,7 +14,7 @@ IriSP.i18n.addMessages(
             "annotation_saved": "Thank you, your annotation has been saved.",
             "share_annotation": "Would you like to share it on social networks ?",
             "share_on": "Share on",
-            "moar_tags": "More tags"
+            "more_tags": "More tags"
         },
         "fr": {
             "submit": "Envoyer",
@@ -28,7 +28,7 @@ IriSP.i18n.addMessages(
             "annotation_saved": "Merci, votre annotation a été enregistrée.",
             "share_annotation": "Souhaitez-vous la partager sur les réseaux sociaux ?",
             "share_on": "Partager sur",
-            "moar_tagz": "Plus de mots-clés"
+            "more_tags": "Plus de mots-clés"
         }
     }
 );
@@ -36,16 +36,6 @@ IriSP.i18n.addMessages(
 IriSP.createAnnotationWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
   this._hidden = true;
-  
-  this.checkOption("keywords");
-  this.checkOption("polemic_mode", true);
-  this.checkOption("polemics");
-  this.checkOption("cinecast_version", false);
-  this.checkOption("api_endpoint_template");
-  this.checkOption("show_from_field", true);
-  this.checkOption("api_method");
-  this.checkOption("random_keywords");
-  this.checkOption("disable_share", false);
                          
   if (!IriSP.null_or_undefined(IriSP.user)) {
       if (!IriSP.null_or_undefined(IriSP.user.avatar)) {
@@ -74,11 +64,9 @@ IriSP.createAnnotationWidget.prototype.clear = function() {
 
 IriSP.createAnnotationWidget.prototype.draw = function() {
     var _this = this;
-    if (typeof this._config.remote_keywords != "undefined" && typeof this._config.remote_keywords) {
-        IriSP.jQuery.getJSON(this._config.remote_keywords, function(_json) {
-            _this.keywords = IriSP.underscore(_json.tags).map(function(_tag) {
-                return _tag.meta.description;
-            });
+    if (typeof this.remote_tags == "object") {
+        IriSP.jQuery.getJSON((typeof this.remote_tags.alias == "string" ? this.remote_tags.alias : this.remote_tags.url), function(_json) {
+            _this.tags = _json.tags;
             _this.drawCallback();
         });
     } else {
@@ -100,11 +88,11 @@ IriSP.createAnnotationWidget.prototype.drawCallback = function() {
     this.showStartScreen();
   }
   
-  if (this.random_keywords) {
+  if (this.random_tags) {
       this.selector.find(".Ldt-createAnnotation-keywords li").hide();
-      this.showMoarTagz();
+      this.showMoreTags();
       this.selector.find('.Ldt-createAnnotation-moar-keywordz').click(function() {
-          _this.showMoarTagz();
+          _this.showMoreTags();
       })
   }
   // Add onclick event to both polemic and keywords buttons
@@ -117,7 +105,10 @@ IriSP.createAnnotationWidget.prototype.drawCallback = function() {
   // js_mod is a custom event because there's no simple way to test for a js
   // change in a textfield.                    
   this.selector.find(".Ldt-createAnnotation-Description")
-               .bind("propertychange keyup input paste click js_mod", IriSP.wrap(this, this.handleTextChanges));
+               .bind("propertychange keyup input paste click js_mod", IriSP.wrap(this, this.handleTextChanges))
+          .keyup(function(_e) {
+              console.log(_e);
+          });
                
   /* the cinecast version of the player is supposed to pause when the user clicks on the button */
 
@@ -178,8 +169,8 @@ IriSP.createAnnotationWidget.prototype.drawCallback = function() {
   }
 };
 
-IriSP.createAnnotationWidget.prototype.showMoarTagz = function() {
-    for (var j=0; j < this.random_keywords; j++) {
+IriSP.createAnnotationWidget.prototype.showMoreTags = function() {
+    for (var j=0; j < this.random_tags; j++) {
         var _jq = this.selector.find(".Ldt-createAnnotation-keywords li:hidden");
         if (_jq.length > 1) {
             IriSP.jQuery(_jq[Math.floor(_jq.length*Math.random())]).show();
@@ -228,7 +219,7 @@ IriSP.createAnnotationWidget.prototype.handleAnnotateSignal = function() {
     // block the arrow.
     this._Popcorn.trigger("IriSP.ArrowWidget.blockArrow");
     
-    var duration = this._serializer.getDuration();
+    var duration = this.getDuration();
         
     var currentChapter = this._serializer.currentChapitre(currentTime);
 
@@ -387,23 +378,28 @@ IriSP.createAnnotationWidget.prototype.handleSliderChanges = function(params) {
 
 IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback) {
   var _this = this;
-  var apiJson = {annotations : [{}], meta: {}};
+  var apiJson = {
+      format : "http://advene.org/ns/cinelab/",
+      annotations : [
+        {}
+        ],
+        meta: {}};
   var annotation = apiJson.annotations[0];
   
-  annotation.media = this._serializer.currentMedia()["id"];
+  annotation.media = this.currentMedia()["id"];
   
   if (this.cinecast_version) {   
       annotation.begin = Math.round(this._Popcorn.currentTime() * 1000);
       annotation.end = annotation.begin;      
   } else {
-    var duration = this._serializer.getDuration();    
+    var duration = this.getDuration();    
     annotation.begin = +((duration * (this.sliceLeft / 100)).toFixed(0));
     annotation.end = +((duration * ((this.sliceWidth + this.sliceLeft) / 100)).toFixed(0));
   }
 
   // boundary checks
   annotation.begin = Math.max(0, annotation.begin);
-  annotation.end = Math.min(this._serializer.getDuration(), annotation.end);
+  annotation.end = Math.min(this.getDuration(), annotation.end);
   
   annotation.type = ( this.cinecast_version ? "cinecast:UserAnnotation" : ( this._serializer.getContributions() || "" ));
   if (typeof(annotation.type) === "undefined")
@@ -438,18 +434,27 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
   
   meta.created = Date().toString();
   
-  // All #hashtags are added to tags
-  var _tags = contents.toLowerCase().match(/#[^#\s]+\b/gim) || [];
-  this.selector.find('.Ldt-createAnnotation-keyword-button').each(function() {
-      var _tx = IriSP.jQuery(this).text(),
-        _rx = IriSP.regexpFromText(_tx);
+  var _tags = [];
+  IriSP._(this.tags).each(function(_v) {
+      var _rx = IriSP.regexpFromText(_v.meta.description);
         if (_rx.test(contents)) {
-            _tags.push(_tx.toLowerCase())
+            _tags.push(_v.id);
         }
   });
-  
+
+  if (typeof this.remote_tags == "object") {
+     _tags = IriSP._(_tags).map(function(_t) {
+         return _this.remote_tags.id + ':' + _t
+     });
+    if (typeof apiJson.imports == "undefined") {
+       apiJson.imports = [];
+    }
+    apiJson.imports.push({
+        "id" : this.remote_tags.id,
+        "url" : this.remote_tags.url
+    })
+  }
   annotation.tags = IriSP.underscore.uniq(_tags);
-  
   
   var jsonString = JSON.stringify(apiJson);
   var project_id = this._serializer._data.meta.id;
@@ -495,6 +500,7 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                     _this._serializer._data.annotations.push(annotation);
  
                     _this._Popcorn.trigger("IriSP.createAnnotationWidget.addedAnnotation", annotation);
+                    this.selector.find(".Ldt-createAnnotation-Description").val("");
                     callback(annotation);
       }), 
       error: 
