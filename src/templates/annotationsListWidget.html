@@ -1,0 +1,40 @@
+{{! template for the annotation list widget }}
+<div class='Ldt-AnnotationsListWidget'>
+    <ul class='Ldt-AnnotationsList-ul'>
+        {{#annotations}}
+        <li id='Ldt-Annotation-li-{{id}}' class='Ldt-AnnotationsList-li Ldt-TraceMe'>
+            {{^url}} <a href='#id={{id}}'> {{/url}}
+            {{! otherwise link to url }}
+            {{#url}} <a href='{{url}}'> {{/url}}
+                <img class='Ldt-AnnotationsList-Thumbnail' src='{{thumbnail}}' />
+            </a>
+            <div class='Ldt-AnnotationsList-Duration'>
+                <span class='Ldt-AnnotationsList-Begin'>{{begin}}</span>
+                <span class='Ldt-AnnotationsList-TcSeparator'>-</span>
+                <span class='Ldt-AnnotationsList-End'>{{end}}</span>
+            </div>
+            <div class='Ldt-AnnotationsList-Title'>
+            {{! if the url is not present, it means that the annotation exists
+            in the current project }}
+                {{title}}
+            </div>
+            <div class='Ldt-AnnotationsList-Description'>
+            {{^url}} <a href='#id={{id}}'> {{/url}}
+            {{! otherwise link to url }}
+            {{#url}} <a href='{{url}}'> {{/url}}
+                {{desc}}
+                </a>
+            </div>
+            {{#tags.length}}
+            <ul class='Ldt-AnnotationsList-Tags'>
+                {{#tags}}
+                <li class='Ldt-AnnotationsList-Tag-Li'>
+                    <div class='Ldt-AnnotationsList-Tag-Div'>{{.}}</div>
+                </li>
+                {{/tags}}
+            </ul>
+            {{/tags.length}}
+        </li>
+        {{/annotations}}
+    </ul>
+</div>

@@ -1,0 +1,198 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<AcVision>
+    <AcVisionVideo refType="mediatheme"
+    ref="18644642"
+    refTitle="La Minute"
+    cmedia="19299288"
+    videoTitle="La Minute N°1033 - Mardi 17 janvier 2012"
+    mediaType="show"
+    genre=""
+    urlGen="/video/emissions/laminute/episode/?cmedia=19299288"
+    ld_path="http://b.fr.mediaplayer.allocine.fr/nmedia/18/64/46/42/19299288_minute_2012_01_17_l_001.flv"
+    md_path="http://h.fr.mediaplayer.allocine.fr/nmedia/18/64/46/42/19299288_minute_2012_01_17_m_001.flv"
+    hd_path="http://hd.fr.mediaplayer.allocine.fr/nmedia/18/64/46/42/19299288_minute_2012_01_17_sd_001.flv"
+    xt_title="19299288_la_minute_emission_allocinetv"
+    thumb=""
+    urlFiche="laminute_home"
+/>
+    <AcVisionVideoSlides>
+        <AcVisionVideoSlide title="La Minute N°1043 - Mardi 31 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19303868_minute_2012_01_31.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19303868" />
+        <AcVisionVideoSlide title="La Minute N°1042 - Lundi 30 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19303866_minute_2012_01_30.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19303866" />
+        <AcVisionVideoSlide title="La Minute N°1041 - Samedi 28 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19303864_minute_2012_01_28.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19303864" />
+        <AcVisionVideoSlide title="La Minute N°1040 - Jeudi 26 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19303192_minute_2012_01_26.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19303192" />
+        <AcVisionVideoSlide title="La Minute N°1039 - Mercredi 25 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19302927_minute_2012_01_25.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19302927" />
+        <AcVisionVideoSlide title="La Minute N°1038 - Mardi 24 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19300902_minute_2012_01_24.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19300902" />
+        <AcVisionVideoSlide title="La Minute N°1037 - Lundi 23 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19300590_minute_2012_01_23.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19300590" />
+        <AcVisionVideoSlide title="La Minute N°1036 - Vendredi 20 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19300162_minute_2012_01_20.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19300162" />
+        <AcVisionVideoSlide title="La Minute N°1035 - Jeudi 19 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19299668_minute_2012_01_19.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19299668" />
+        <AcVisionVideoSlide title="La Minute N°1034 - Mercredi 18 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19299358_minute_2012_01_18.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19299358" />
+        <AcVisionVideoSlide title="La Minute N°1032 - Lundi 16 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19298693_minute_2012_01_16.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19298693" />
+        <AcVisionVideoSlide title="La Minute N°1031 - Vendredi 13 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19298503_minute_2012_01_13.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19298503" />
+        <AcVisionVideoSlide title="La Minute N°1030 - Jeudi 12 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19298131_minute_2012_01_12.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19298131" />
+
+        <AcVisionVideoSlide title="La Minute N°1029 - Mercredi 11 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19296197_minute_2012_01_11.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19296197" />
+        <AcVisionVideoSlide title="La Minute N°1028 - Mardi 10 janvier 2012"
+        thumb="/c_100_80/medias/nmedia/18/64/46/42/19290943_minute_2012_01_10.jpg"
+        link="/video/emissions/laminute/episode/?cmedia=19290943" />
+    </AcVisionVideoSlides>
+    <!-- skinSource: update cinecast -->
+    <AcVisionSkin skinSource="allocine_test/skin_fr.swf">
+        <clip nameId="titleTopPostRoll">
+            <label>
+                <![CDATA[AlloCiné présente: | Cliquez ici pour en savoir plus]]>
+            </label>
+        </clip>
+        <clip nameId="mcAddPostRoll" layer1="McAddPostRoll" x="0" y="0">
+            <label>
+                <![CDATA[Vidéo suivante dans|secondes]]>
+            </label>
+        </clip>
+        <clip nameId="bgAddPostRoll" layer1="BgAddPostRoll" y="20"/>
+        <clip nameId="pixAddPostRoll" y="20"/>
+        <clip nameId="titleAddPostRoll" y="30" x="100"/>
+
+        <clip nameId="accountAddPostRoll" x="10" y="2"/>
+        <clip nameId="fondNavPlayer" layer1="FondNavPlayer" width="760" height="36"/>
+        <clip nameId="soundVolume" x="77" y="13" width="36" height="36" layer3="SoundVolumeLayer1" layer2="SoundVolumeLayer2" layer1="SoundVolumeLayer3">
+            <info>
+                <![CDATA[Modifier le volume de la vidéo]]>
+            </info>
+        </clip>
+        <clip nameId="cutSound" x="55" y="13" stateOn="BtCutSoundOn" stateOff="BtCutSoundOff" stateClickOff="BtCutSoundClickOff" stateClickOn="BtCutSoundClickOn">
+            <info>
+                <![CDATA[Couper le son de la vidéo]]>
+            </info>
+        </clip>
+        <clip nameId="puceTimeLine" stateOn="PuceTimeLineOn" stateOff="PuceTimeLineOff"/>
+        <clip nameId="btPlay" x="4" y="11" width="42" height="22" stateOn="BtPlayOn" stateOff="BtPlayOff"/>
+        <clip nameId="btPause" x="4" y="11" width="42" height="22" stateOn="BtPauseOn" stateOff="BtPauseOff"/>
+        <clip nameId="btReplay2" x="4" y="11" width="42" height="22" stateOn="BtReplay2On" stateOff="BtReplay2Off" />
+        <clip nameId="btBigPlay" stateOn="BtBigPlayOn" stateOff="BtBigPlayOff"/>
+
+        <clip nameId="btHd" x="553" y="11" stateOn="BtHdOn" stateOff="BtHdOff" stateClickOn="BtHdClickOn">
+            <info>
+                <![CDATA[Changer la qualité de la vidéo]]>
+            </info>
+        </clip>
+        <clip nameId="btMenu" x="626" y="11" stateOn="BtMenuOn" stateOff="BtMenuOff"/>
+        <clip nameId="btMarque" link="www.allocine.fr" linkTarget="_blank" x="688" y="16" stateOn="BtMarqueOn" stateOff="BtMarqueOff">
+            <info>
+                <![CDATA[Se rendre sur allocine.fr]]>
+            </info>
+        </clip>
+        <clip nameId="btFullScreen" x="593" y="11" stateOn="BtFullScreenOn" stateOff="BtFullScreenOff" stateClickOn="BtFullScreenClickOn" stateClickOff="BtFullScreenClickOff">
+            <info>
+                <![CDATA[Mettre la vidéo en plein écran]]>
+            </info>
+        </clip>
+        <clip nameId="textTimer" x="120" y="13" color="0x444444"/>
+
+        <clip nameId="menuSubtitle" x="330" y="-2" color="0x9ea6b8"/>
+        <clip nameId="menuFlow" x="230" y="-2" color="0x9ea6b8"/>
+        <clip nameId="textTitle" x="215" y="13" color="0x005ea8" />
+        <clip nameId="btClose" stateOn="BtCloseOn" stateOff="BtCloseOff"/>
+        <clip nameId="logo" layer1="Logo" x="0" y="5"/>
+        <clip nameId="timeLine" x="2" y="2" round="false" width="756" height="5" color1="0xD6D6D6" color2="0x898989" color3="0x005ea8"/>
+        <clip nameId="btSearch" x="507" y="12" width="103" height="32" stateOn="BtSearchOn" stateOff="BtSearchOff">
+            <label>
+                <![CDATA[<b>Recherche</b>]]>
+            </label>
+        </clip>
+        <clip nameId="searchEngine">
+            <label>
+                <![CDATA[/recherche/?q=|&x=73&y=14&rub=0]]>
+            </label>
+        </clip>
+        <clip nameId="btCopy" x="360" width="73" height="30" stateOn="BtCopyOn" stateOff="BtCopyOff">
+
+            <label>
+                <![CDATA[<b>Copier</b>]]>
+            </label>
+        </clip>
+        <clip nameId="mcShare">
+            <label>
+                <![CDATA[Permalien :]]>
+            </label>
+        </clip>
+        <clip nameId="mcBlog">
+            <label>
+                <![CDATA[Lecteur exportable :|allocine_blog]]>
+            </label>
+        </clip>
+        <clip nameId="btScrollRight" stateOn="BtScrollRightOn" stateOff="BtScrollRightOff"/>
+        <clip nameId="btScrollLeft" stateOn="BtScrollLeftOn" stateOff="BtScrollLeftOff"/>
+        <clip nameId="btReplay" type="navCenter" action="replayHandler" y="115" stateOn="BtReplayOn" stateOff="BtReplayOff">
+
+            <label>
+                <![CDATA[<b>REJOUER</b>]]>
+            </label>
+        </clip>
+        <clip nameId="btShare" type="navCenter" action="shareHandler" x="110" y="115" stateOn="BtShareOn" stateOff="BtShareOff">
+            <label>
+                <![CDATA[<b>PARTAGER</b>]]>
+            </label>
+        </clip>
+        <clip nameId="btBlog" type="navCenter" action="blogHandler" x="220 " y="115" stateOn="BtBlogOn" stateOff="BtBlogOff">
+            <label>
+                <![CDATA[<b>SUR MON BLOG</b>]]>
+            </label>
+        </clip>
+        <clip nameId="btVideoSim" type="navCenter" action="videoSimHandler" x="330" y="115" stateOn="BtVideoSimOn" stateOff="BtVideoSimOff">
+            <label>
+                <![CDATA[<b>VIDÉOS <br>SIMILAIRES</b>]]>
+
+            </label>
+        </clip>
+        <clip nameId="titleEndScreen" >
+            <label>
+                <![CDATA[<b>Choisissez votre prochaine vidéo </b>]]>
+            </label>
+        </clip>
+        <clip nameId="textError" >
+            <label>
+                <![CDATA[<b>Erreur : cette vidéo n'est pas disponible.</b>]]>
+            </label>
+        </clip>
+        <clip nameId="errorAdBlock" >
+            <label>
+                <![CDATA[Cette vidéo ne se lance pas ?<br>Vous avez probablement activé une extension comme AdBlock dans votre navigateur. Merci de la désactiver et de recharger la page afin de lire cette vidéo.<br>Si votre problème persiste, n’hésitez pas à <b><a href='http://allocine.uservoice.com/forums/30575-allocin-v6-probl-mes-et-erreurs'>nous contacter</a></b> !]]>
+            </label>
+        </clip>
+
+    </AcVisionSkin>
+    <services>
+        <!--service className="McXitiService" nameService="xiti" file="services/xitiService.swf" pathConfig="http://www.allocine.fr/Modules/video/xml/XiTiTag.xml" /-->
+        <service className="McVastService" nameService="vast" file="services/vastService.swf" pathConfig="http://smart.allocine.fr/call/pubx/10936/[part]/7292/S/[timestamp]/[target]" >
+            <![CDATA[<b>Publicité</b> : votre vidéo commence dans | secondes]]>
+        </service>
+        <!---->
+    </services>
+</AcVision>

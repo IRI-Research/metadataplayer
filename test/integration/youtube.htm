@@ -1,0 +1,97 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html dir="ltr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+
+<head>
+
+</head>
+
+<body>
+
+	<div style="width:650px;font-family: 'Trebuchet MS', 'Helvetica', 'Arial',  'Verdana', 'sans-serif';">
+	<h1>MetaDataPlayer </h1>
+	Test d'intégration du widget du player avec Popcorn (Youtube).
+	</div>
+	
+	
+ <!-- START Integration  ###################################### -->
+ <!-- SIMPLE PLAYER EXPERIMENTATION -->
+	<script type="text/javascript" src="../../build/LdtPlayer-release.js"></script> 
+
+	<div id="LdtPlayer"></div>
+	
+	<script  type="text/javascript">
+		var config = {						
+				gui:{
+						width:650,
+						height:2100,							
+						container:'LdtPlayer',
+						css:'../../src/css/LdtPlayer.css',
+					  widgets: [					  	
+						{type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
+						 mode: "radio",
+						 metadata:{
+						  format:'cinelab',
+						  src:'../test.json',
+						  type:'json'}
+						},
+            {type: "SliderWidget",
+						 metadata:{
+						  format:'cinelab',
+						  src:'../test.json',
+						  type:'json'}
+						},
+
+						{type: "SegmentsWidget", // please note that type refers directly to the constructor of the widget.
+						 mode: "radio",
+						 metadata:{
+						  format:'cinelab',
+						  src:'../test.json',
+						  type:'json'},
+              requires: [{
+              type: "TooltipWidget",
+              width: 180,
+              heigh: 160,
+              metadata : {
+                type:'empty'
+              }
+             }]
+						},
+												
+						{type: "ArrowWidget", // please note that type refers directly to the constructor of the widget.
+						 mode: "radio",
+						 metadata:{
+						  format:'cinelab',
+						  src:'../test.json',
+						  type:'json'}
+						},
+            
+						{type: "AnnotationsWidget", // please note that type refers directly to the constructor of the widget.
+						 mode: "radio",
+						 metadata:{
+						  format:'cinelab',
+						  src:'../test.json',
+						  type:'json'}
+						},
+					  	
+					  ]
+			  },
+			player:{
+				type:'youtube', // player type
+				  // the rest is player-dependent configuration options.
+				  video: "http://www.youtube.com/watch?v=rrkrvAUbU9Y",
+				  height: 400, 
+				  width: 640, 
+				  provider: "rtmp" 
+				}
+		};
+		
+    IriSP.initPlayer(config, "../test.json");
+
+	</script>
+<div id='Ldt-Root'>
+	<div id='Ldt-PlaceHolder'>
+	</div>
+</div>	
+<!-- END  ################  ###################################### -->
+ </body>
+ </html>

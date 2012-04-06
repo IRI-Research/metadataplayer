@@ -1,86 +1,111 @@
 /* data.js - this file deals with how the players gets and sends data */
 
-IriSP.getMetadata = function() {
-	
-	IriSP.jQuery.ajax({
-		  dataType: IriSP.config.metadata.load,
-		  url:IriSP.config.metadata.src,
-		  success : function( json ){
-		  
-				IriSP.trace( "ajax", "success" );
-				
-				// START PARSING ----------------------- 
-				if( json === "" ){
-					alert( "Json load error" );
-				} else {							  							  
-					// # CREATE MEDIA  							//
-					// # JUSTE ONE PLAYER FOR THE MOMENT		//
-					//__IriSP.jQuery("<div></div>").appendTo("#output");
-					var MyMedia = new  __IriSP.Media(
-														json.medias[0].id,
-														json.medias[0].href,
-														json.medias[0]['meta']['dc:duration'],
-														json.medias[0]['dc:title'],
-														json.medias[0]['dc:description']);
-					
-					IriSP.trace( "__IriSP.MyApiPlayer",
-														IriSP.config.gui.width+"   "
-														+ IriSP.config.gui.height + " "
-														+ json.medias[0].href + " "
-														+ json.medias[0]['meta']['dc:duration'] + " "
-														+ json.medias[0]['meta']['item']['value']);
-					
-					// Create APIplayer
-					IriSP.MyApiPlayer = new __IriSP.APIplayer (
-														IriSP.config.gui.width,
-														IriSP.config.gui.height,
-														json.medias[0].href,
-														json.medias[0]['meta']['dc:duration'],
-														json.medias[0]['meta']['item']['value']);
-				
-					// # CREATE THE FIRST LINE  				//
-					IriSP.trace( "__IriSP.init.main","__IriSP.Ligne" );
-					IriSP.MyLdt = new __IriSP.Ligne(
-														json['annotation-types'][0].id,
-														json['annotation-types'][0]['dc:title'],
-														json['annotation-types'][0]['dc:description'],
-														json.medias[0]['meta']['dc:duration']);			
-					
-					// CREATE THE TAG CLOUD 					//
-					IriSP.trace( "__IriSP.init.main","__IriSP.Tags" );
-					IriSP.MyTags =  new __IriSP.Tags( json.tags );
-				
-					// CREATE THE ANNOTATIONS  				    //
-					// JUSTE FOR THE FIRST TYPE   			 	//
-					/* FIXME: make it support more than one ligne de temps */
-					IriSP.jQuery.each( json.annotations, function(i,item) {
-						if (item.meta['id-ref'] == IriSP.MyLdt.id) {
-							//__IriSP.trace("__IriSP.init.main","__IriSP.MyLdt.addAnnotation");
-							IriSP.MyLdt.addAnnotation(
-										item.id,
-										item.begin,
-										item.end,
-										item.media,
-										item.content.title,
-										item.content.description,
-										item.content.color,
-										item.tags);
-						}
-							//MyTags.addAnnotation(item);
-					} );	
-					IriSP.jQuery.each( json.lists, function(i,item) {
-						IriSP.trace("lists","");
-					} );	
-					IriSP.jQuery.each( json.views, function(i,item) {
-						IriSP.trace("views","");
-					} );	
-				}
-				// END PARSING ----------------------- //  
-			
-							
-		}, error : function(data){
-			  alert("ERROR : "+data);
-		}
-	  });	
+IriSP.DataLoader = function() {
+  this._cache = {};
+  
+  /*
+    A structure to hold callbacks for specific urls. We need it because
+    ajax calls are asynchronous, so it means that sometimes we ask
+    multiple times for a ressource because the first call hasn't been
+    received yet.
+  */
+  this._callbacks = {};
+};
 
+IriSP.DataLoader.prototype.get = function(url, callback, force_reload) {
+  var base_url = url.split("&")[0];
+  if (typeof force_reload != "undefined" && force_reload && this._cache.hasOwnProperty(base_url)) {
+      delete this._cache[base_url]
+  }
+  if (this._cache.hasOwnProperty(base_url)) {
+    callback(this._cache[base_url]);
+  } else {  
+    if (!this._callbacks.hasOwnProperty(base_url)) {
+      this._callbacks[base_url] = [callback];
+      /* we need a closure because this gets lost when it's called back */
+  
+      // uncomment you don't want to use caching.
+      // IriSP.jQuery.get(url, callback);
+      
+      var func = function(data) {
+                  this._cache[base_url] = data;                                
+                  var i = 0;
+                  
+                  for (i = 0; i < this._callbacks[base_url].length; i++) {
+                    this._callbacks[base_url][i](this._cache[base_url]);                                  
+                  }
+                  delete this._callbacks[base_url];
+      };
+      
+      /* automagically choose between json and jsonp */
+      if (url.indexOf(document.location.hostname) === -1 &&
+          url.indexOf("http://") !== -1 /* not a relative url */ ) {
+        // we contacting a foreign domain, use JSONP
+
+        IriSP.jQuery.get(url, {}, IriSP.wrap(this, func), "jsonp");
+      } else {
+
+        // otherwise, hey, whatever rows your boat
+        IriSP.jQuery.get(url, IriSP.wrap(this, func));
+      }
+    
+    } else {
+      /* simply push the callback - it'll get called when the ressource
+         has been received */
+      
+      this._callbacks[base_url].push(callback);   
+   
+    }
+  }
 }
+
+/* the base abstract "class" */
+IriSP.Serializer = function(DataLoader, url) {
+  this._DataLoader = DataLoader;
+  this._url = url;
+  this._data = [];
+};
+
+IriSP.Serializer.prototype.serialize = function(data) { };
+IriSP.Serializer.prototype.deserialize = function(data) {};
+
+IriSP.Serializer.prototype.currentMedia = function() {  
+};
+
+IriSP.Serializer.prototype.getDuration = function() {  
+};
+
+IriSP.Serializer.prototype.sync = function(callback) {
+  this._DataLoader.get(this._url, callback, force_refresh);
+};
+
+IriSP.SerializerFactory = function(DataLoader) {
+  this._dataloader = DataLoader;
+};
+
+IriSP.SerializerFactory.prototype.getSerializer = function(metadataOptions) {
+  /* This function returns serializer set-up with the correct
+     configuration - takes a metadata struct describing the metadata source
+  */
+  
+  if (metadataOptions === undefined)
+    /* return an empty serializer */
+    return IriSP.Serializer("", "");
+            
+  switch(metadataOptions.type) {
+    case "json":
+      return new IriSP.JSONSerializer(this._dataloader, metadataOptions.src);
+      break;
+    
+    case "dummy": /* only used for unit testing - not defined in production */
+      return new IriSP.MockSerializer(this._dataloader, metadataOptions.src);
+      break;
+    
+    case "empty":
+      return new IriSP.Serializer("", "empty");
+      break;
+      
+    default:      
+      return undefined;
+  }
+};

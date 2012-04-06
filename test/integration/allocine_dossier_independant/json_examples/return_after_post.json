@@ -1,0 +1,27 @@
+{
+    "annotations": [
+        {
+            "id": "ac:3639",
+            "begin": 164000,
+            "end": 164000,
+            "timecode": 0,
+            "content": {
+                "data": "edtgefvtdtevd dhevdgvbed debzdgbyezgbdyhebzyd bhd ehdbyhebyhddbhegzvdgevd ghdvegvdgezvdg devtgdvgezvd gbvdgevzgdvzegd gedvgezvd #vodkaster #allocine #universcine"
+            },
+            "media": "cinecast:Bamako",
+            "tags": ["#vodkaster", "#allocine", "#universcine"],
+            "type": "cinecast:UserAnnotation",
+            "meta": {
+                "mediaid": 1,
+                "thumbnail": "/users/02/7/7/4/Z20110103142031450307477/img/0tyw3myh.cce.jpg",
+                "extract": "789849",
+                "status": "active",
+                "timestamp": 12999,
+                "created": "2012-03-16T11:14:14.7930000",
+                "creator": "ac:495",
+                "creator_name": "Pierre",
+                "url": "http:\/\/www.allocine.com/mon_annotation"
+            }
+        }
+    ]
+}

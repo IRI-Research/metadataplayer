@@ -1,0 +1,142 @@
+{
+    "format": "http:\/\/advene.org\/ns\/cinelab\/",
+    "imports": [
+        {
+            "id": "cinecast",
+            "url": "http:\/\/festival.cinecast.fr\/configuration.json"
+        }, {
+            "id": "medias",
+            "url": "http:\/\/festival.cinecast.fr\/medias.json"
+        }, {
+            "id": "extracts",
+            "url": "http:\/\/festival.cinecast.fr\/movie-extracts.json"
+        }
+    ],
+    "meta": {
+        "creator": "Vodkaster",
+        "created": "2012-04-04T16:21:02+02:00"
+    },
+    "annotations": [
+        {
+            "id": "ac-12",
+            "type": "cinecast:UserAnnotation",
+            "media": "cinecast-bamako",
+            "meta": {
+                "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34956\/25592566-2-fre-FR\/34956-Des-chiffres-africains-calamiteux1_reference.jpg",
+                "creator": "login",
+                "created": "2012-03-09T16:21:28+01:00",
+                "extract": "789820"
+            },
+            "begin": 678000,
+            "end": 678000,
+            "content": {
+                "data": "eeeee"
+            }
+        }, {
+            "id": "ac-13",
+            "type": "cinecast:UserAnnotation",
+            "media": "cinecast-bamako",
+            "meta": {
+                "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34954\/25592478-3-fre-FR\/34954-Fin-du-spectacle-et-reprise-de-l-audience1_reference.jpg",
+                "creator": "login",
+                "created": "2012-03-09T16:31:43+01:00",
+                "extract": "789816"
+            },
+            "begin": 519000,
+            "end": 519000,
+            "content": {
+                "data": "8minute38 #mot-clef"
+            }
+        }, {
+            "id": "ac-21",
+            "type": "cinecast:UserAnnotation",
+            "media": "cinecast-bamako",
+            "meta": {
+                "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34961\/25593042-2-fre-FR\/34961-Standby1_reference.jpg",
+                "creator": "login",
+                "created": "2012-03-09T18:09:22+01:00",
+                "extract": "789849"
+            },
+            "begin": 177000,
+            "end": 177000,
+            "content": {
+                "data": "addadad #faux-raccord #mot-clef"
+            }
+        }, {
+            "id": "ac-22",
+            "type": "cinecast:UserAnnotation",
+            "media": "cinecast-bamako",
+            "meta": {
+                "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34961\/25593042-2-fre-FR\/34961-Standby1_reference.jpg",
+                "creator": "login",
+                "created": "2012-03-12T10:31:04+01:00",
+                "extract": "789849"
+            },
+            "begin": 177000,
+            "end": 177000,
+            "content": {
+                "data": "ddddddddddddd"
+            }
+        }, {
+            "id": "ac-6",
+            "type": "cinecast:UserAnnotation",
+            "media": "cinecast-bamako",
+            "meta": {
+                "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34952\/25592345-4-fre-FR\/34952-Generique-de-debut-et-preparation-a-l-audience1_reference.jpg",
+                "creator": "login",
+                "created": "2012-03-09T15:19:25+01:00",
+                "extract": "789808"
+            },
+            "begin": 7000,
+            "end": 7000,
+            "content": {
+                "data": "aaaa #mot-clef"
+            }
+        }, {
+            "id": "ac-7",
+            "type": "cinecast:UserAnnotation",
+            "media": "cinecast-bamako",
+            "meta": {
+                "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34952\/25592345-4-fre-FR\/34952-Generique-de-debut-et-preparation-a-l-audience1_reference.jpg",
+                "creator": "login",
+                "created": "2012-03-09T15:35:35+01:00",
+                "extract": "789808"
+            },
+            "begin": 120000,
+            "end": 120000,
+            "content": {
+                "data": "test"
+            }
+        }, {
+            "id": "ac-8",
+            "type": "cinecast:UserAnnotation",
+            "media": "cinecast-bamako",
+            "meta": {
+                "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/bamako\/34952\/25592345-4-fre-FR\/34952-Generique-de-debut-et-preparation-a-l-audience1_reference.jpg",
+                "creator": "login",
+                "created": "2012-03-09T15:42:35+01:00",
+                "extract": "789808"
+            },
+            "begin": 64000,
+            "end": 64000,
+            "content": {
+                "data": "test 1"
+            }
+        }, {
+            "id": "vk-11",
+            "type": "cinecast:UserAnnotation",
+            "media": "cinecast-bamako",
+            "meta": {
+                "thumbnail": "http:\/\/www.vodkaster.com\/var\/vodkaster\/storage\/images\/films\/entre-les-murs\/13226\/19768606-6-fre-FR\/13226-Rentree-des-classes1_reference.jpg",
+                "creator": "hugo",
+                "created": "2012-04-01T00:00:00+02:00",
+                "extract": "246390"
+            },
+            "begin": 335189,
+            "end": 335189,
+            "content": {
+                "data": " #europe"
+            }
+        }
+    ]
+}

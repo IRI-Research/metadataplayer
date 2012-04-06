@@ -16,7 +16,7 @@
 	<delete dir="${basedir}/../../build" />
 	<mkdir  dir="${basedir}/../../build" />
 		
-	<target name="makeall" depends="concatenate,compile" />
+	<target name="makeall" depends="concatenate" />
 	
 	<target name="make_templates" description="Concatenate the html templates together">
 	    <for param="file">
@@ -44,8 +44,51 @@
 	    	</sequential>
 		</for>
 	</target>
+		    	
+	<target name="concatenate" description="Build the developer release file" depends="make_templates">
+	    <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-release.js">
+			<filelist dir="../../src/js/" files="header.js" />
+			
+      <filelist dir="../../src/js/libs" 
+                files="lab.js mustache.js underscore.js"/> 
+     
+      <!-- required file before everything else -->
+	    <filelist dir="../../src/js" files="main.js" />
+
+      <!-- templates -->
+    	<filelist dir="../../build" files="compiled_templates.js" />
+      
+      <!-- core files -->
+    	<filelist dir="../../src/js" files="utils.js pop.js data.js defaults.js widgets.js modules.js layout.js init.js i18n.js" />
+
+      <!-- players -->
+			<fileset dir="../../src/js/players" casesensitive="yes">
+					<include name="**/*.js"/>					
+			</fileset>
+
+      <!-- modules -->
+			<fileset dir="../../src/js/modules" casesensitive="yes">
+					<include name="**/*.js"/>					
+			</fileset>
+
+
+      <!-- widgets -->
+			<fileset dir="../../src/js/widgets" casesensitive="yes">
+					<include name="**/*.js"/>					
+			</fileset>
+
+      <!-- serializers -->
+			<fileset dir="../../src/js/serializers" casesensitive="yes">
+					<include name="**/*.js"/>					
+			</fileset>
+	    	<filterchain>
+	    	    <deletecharacters chars="&#xFEFF;" />
+	    	</filterchain>
+	    </concat>
+      <delete file="../../build/compiled_templates.js" />
+	</target>
 	
-	<target name="compile" depends="make_templates">
+  <target name="minify" depends="concatenate">
 		<jscomp compilationLevel="simple" warning="quiet" debug="false"
 			output="../../build/LdtPlayer.min.raw.js">
 			<externs dir="${basedir}/../../res/">
@@ -54,8 +97,8 @@
 				<file name="js/jquery-ui.min.js" />
 				<file name="js/swfobject.js" />
 			</externs>
-			<sources dir="${basedir}/../../src/js">
-				<file name="LdtPlayer.js" />
+			<sources dir="${basedir}/../../build">
+				<file name="LdtPlayer-release.js" />
 			</sources>
 		</jscomp>
 		<concat destfile="../../build/LdtPlayer.min.js"
@@ -64,17 +107,21 @@
 	        <filelist dir="../../build/" files="LdtPlayer.min.raw.js" />
 		</concat>
 		<delete file="../../build/LdtPlayer.min.raw.js" />
-		<delete file="../../build/compiled_templates.js" />
 	</target>
-	    	
-	<target name="concatenate" description="Build the developer release file" depends="make_templates">
-	    <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-release.js">
-	        <filelist dir="../../src/js" files="LdtPlayer.js" />
-	    	<filelist dir="../../build" files="compiled_templates.js" />
-	    	<filelist dir="../../src/js" files="mustache.js utils.js data.js site.js ui.js" />
-	    	<filterchain>
-	    	    <deletecharacters chars="&#xFEFF;" />
-	    	</filterchain>
-	    </concat>
+  
+	<property name="rhino.jar" value="${basedir}/../res/rhino.jar"/>  
+	<property name="jslint-wrapper.js" value="${basedir}/../res/jslint-wrapper.js"/>
+	<property name="jslint.js" value="${basedir}/../res/jslint.js"/>
+	
+	<target name="jslint" description="Run jslint on the files" depends="concatenate">
+		<apply executable="java" parallel="false">  
+			<filelist dir="../../build">  
+				<file name="LdtPlayer-release.js"/>  
+			</filelist>  
+			<arg line="-jar"/>  
+			<arg path="${rhino.jar}"/>  
+			<arg path="${jslint-wrapper.js}"/>  
+			<arg path="${jslint.js}"/>  
+		</apply>
 	</target>
 </project>

@@ -1,0 +1,59 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html dir="ltr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+
+<head>
+
+</head>
+
+<body>
+
+	<div style="width:650px;font-family: 'Trebuchet MS', 'Helvetica', 'Arial',  'Verdana', 'sans-serif';">
+	<h1>MetaDataPlayer </h1>
+	Test d'intégration du widget du player avec Popcorn (jwplayer).
+	</div>
+	
+	
+ <!-- START Integration  ###################################### -->
+ <!-- SIMPLE PLAYER EXPERIMENTATION -->
+	<script type="text/javascript" src="../../build/LdtPlayer-release.js"></script> 
+	<script src="../../res/js/jquery.min.js"></script>
+	<script src="../../res/js/jquery.tools.min.js"></script>
+	<script src="../../res/js/jquery-ui.min.js"></script>
+	<div id="LdtPlayer"></div>
+	
+	<script  type="text/javascript">
+		$(document).ready(function() {
+      var config = {
+						gui:{
+							width:650,
+							height:1,
+							mode:'video',
+							container:'LdtPlayer',
+							debug:true,
+							css:'../../src/css/LdtPlayer.css',
+              widgets : [{ 
+                  type: "PlayerWidget", // please note that type refers directly to the constructor of the widget.
+                  mode: "radio",
+                  metadata:{
+                  format:'cinelab',
+                  src:'../test.json',
+                  type:'json'}
+              }, 
+              {type: "SliderWidget",
+               metadata:{
+                format:'cinelab',
+                src:'../test.json',
+                type:'json'}
+              },
+              ]},
+						player:{
+							type:'html5',							
+              file:'../trailer.ogv',
+              duration: 50}
+					};
+		
+      IriSP.initPlayer(config, "polemic_fr.json");
+	</script>
+  
+ </body>
+ </html>

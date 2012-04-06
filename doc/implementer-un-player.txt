@@ -1,0 +1,21 @@
+API qu'un player doit implémenter pour espérer être supporté facilement par le
+metadataplayer :
+
+En gros, il faut une api similaire à celle du jwplayer 
+(cf : http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference).
+
+Cependant on n'a besoin que des fonctions suivantes :
+- play() - sans argument. Met le player en lecture, s'il était en pause, et ne fait rien autrement
+- pause - sans arguments. Pause le player s'il était en train de lire
+- seek(duree_secondes) - Met la vidéo à duree_secondes depuis le début
+- getMute - sans arguments. Retourne true si le player est muté, false sinon
+- setMute - prend un booléen comme argument, coupe le son s'il est à true, et l'active s'il est à false
+- getPosition - sans arguments. Retourne le nombre de seconds ecoulées depuis le début del
+  la vidéo
+
+On a également besoin que le player ait des callbacks pour les évenements suivants :
+- quand le lecteur a fini d'être initialisé (onReady pour jwplayer)
+- declenché à chaque fois que le player change d'image (onTime)
+- declenché quand la lecture de la vidéo commence (onPlay)
+- declenché quand la vidéo est mise sur pause (onPause)
+- declenché quand l'utilisateur seek (onSeek)

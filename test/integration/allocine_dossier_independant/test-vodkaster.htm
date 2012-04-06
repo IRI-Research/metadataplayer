@@ -1,0 +1,111 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html dir="ltr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+    <head>
+        <title>Metadataplayer - Polemic tweet integration test</title>
+    </head>
+    <body style="background: #222222; color: #ff00ff;">
+        <div style="width:650px;">
+            <h1>MetaDataPlayer</h1>
+            Integration test - ALLOCINE PLAYER
+        </div>
+        <!-- START Integration  ###################################### -->
+        <!-- SIMPLE PLAYER EXPERIMENTATION -->
+        <script type="text/javascript" src="js/LdtPlayer-release.js" type="text/javascript"></script>
+        <div id="video"></div>
+        <div id="LdtPlayer" style="float: left;"></div>
+        <div id="Sparkline"></div>
+        <script  type="text/javascript">
+            var json_urls = {
+                'media' : 'json_examples/media.json', // http://cinecastdev.vodkaster.com/api/medias/cinecast-bamako/
+                'extracts' : 'json_examples/extracts.json', // http://cinecastdev.vodkaster.com/api/medias/cinecast-bamako/extracts
+                'annotations' : 'json_examples/annotations.json' // http://cinecastdev.vodkaster.com/api/medias/cinecast-bamako/annotations
+            }
+            
+            IriSP.user = {
+                name : 'awesome_user_name',
+                avatar : 'allocine_test/avatar.png'
+            };
+            IriSP.libFiles.defaultDir = "/metadataplayer/src/js/libs/";
+            
+            var config = {
+                gui : {
+                    width : 610,
+                    height : 900,
+                    container : 'LdtPlayer',
+                    css : 'css/LdtPlayer.css',
+                    default_options : {
+                        width: 610,
+                        cinecast_version: true,
+                        metadata : {
+                            format : 'cinelab',
+                            src : json_urls['annotations'],
+                            type : 'json'
+                        }
+                    },
+                    widgets : [{
+                        type : "AnnotationsListWidget",
+                        container : "MyListContainer", // div dans lequel sera affiché "Annotations Liées"
+                        ajax_mode : false, // nécessaire pour des raisons historiques
+                        refresh_interval : 15 *60 * 1000 // 15 minutes
+                    }, {
+                        type : "SparklineWidget",
+                        height : 50,
+                        lineColor: "#ffffff",
+                        fillColor: "#999999"
+                    }, {
+                        type : "SegmentsWidget",
+                        metadata : {
+                            format : 'cinelab',
+                            src : json_urls['extracts'],
+                            type : 'json'
+                        },
+                        requires : [{
+                            type : "TooltipWidget",
+                            width : 180,
+                            height : 160,
+                        }]
+                    }, {
+                        type : "createAnnotationWidget",
+                        polemic_mode : false,
+                        remote_tags : {
+                            id : "cinecast",
+                            url : "http://festival.cinecast.fr/configuration.json",
+                            alias : 'http://festival.cinecast.fr/configuration.jsonp?jsonp=?'
+                        },
+                        random_tags : 3,
+                        disable_share: true,
+                        api_endpoint_template : "endpoint/{{id}}.json",
+                        api_method : 'POST'
+                    }, {
+                        type: "TraceWidget",
+                     //   js_console : true,
+                        url: "http://traces.advene.org:5000/",
+                        requestmode: 'GET',
+                        syncmode: "sync"
+                    } ]
+                },
+                player : {
+                    type : 'allocine', // player type
+                    height : 300,
+                    width : 610,
+                    acPlayerUrl : "allocine_test/AcPlayer_v3.0_new.swf",
+                    autoPlay : "true",
+                    urlAcData : "allocine_test/data_cinecast_new.xml"
+                },
+                modules : [{
+                    type : "MediaFragment",
+                    metadata : {
+                        format : 'cinelab',
+                        src : json_urls['media'],
+                        type : 'json'
+                    }
+                }]
+
+            };
+
+            IriSP.initPlayer(config, json_urls['media']);
+
+        </script>
+    <div id="MyListContainer" style="float: left; width: 400px;"></div>
+    </body>
+</html>

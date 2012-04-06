@@ -1,0 +1,128 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html dir="ltr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+
+<head>
+<title>Metadataplayer - Polemic tweet integration test</title>
+</head>
+
+<body>
+
+  <div style="width:650px;font-family: 'Trebuchet MS', 'Helvetica', 'Arial',  'Verdana', 'sans-serif';">
+  <h1>MetaDataPlayer</h1>
+  Polemic tweet integration test - using Popcorn, jwplayer and the <a href="http://polemictweet.com">PolemicTweet</a> widget.<br>
+  </div>
+  
+  
+ <!-- START Integration  ###################################### -->
+ <!-- SIMPLE PLAYER EXPERIMENTATION -->
+  <script type="text/javascript" src="../../build/LdtPlayer-release.js" type="text/javascript"></script>   
+  
+  <div id="video"></div>
+  <div id="LdtPlayer"></div>
+  
+  <script  type="text/javascript">
+  IriSP.libFiles.defaultDir = "/metadataplayer/src/js/libs/";
+IriSP.jwplayer_swf_path = "../libs/player.swf";
+    var file = "polemic_fr.json";
+    var config = {            
+        gui:{
+            width:640,
+            height:800,              
+            container:'LdtPlayer',
+			default_options: {
+				metadata:{
+				  format:'cinelab',
+				  src:file,
+				  type:'json'}
+			},
+            css:'../../src/css/LdtPlayer.css',
+            widgets: [
+ /*           {type: "PolemicWidget",
+             width: 640,
+             height: 50,              
+             requires: [{
+              type: "TooltipWidget",
+              width: 180,
+              height: 160,
+             }],
+            }, */
+            {type: "StackGraphWidget",
+             height: 150,
+            streamgraph: true,
+/*            tags : [
+            {
+                "keywords" : [ "#ilReste" ],
+                "description" : "#ilReste",
+                "color" : "#1D973D"
+            },
+            {
+                "keywords" : [ "#ilPart" ],
+                "description" : "#ilPart",
+                "color" : "#CE0A15"
+            },
+            {
+                "keywords" : [ "#change2ton" ],
+                "description" : "#change2ton",
+                "color" : "#C5A62D"  
+            },
+            {
+                "keywords" : [ "#cQui" ],
+                "description" : "#cQui",
+                "color" : "#036AAE"
+            } 
+        ],*/
+             requires: [{
+              type: "TooltipWidget",
+              width: 180,
+              height: 160,
+             }],
+            },
+            {type: "SparklineWidget",
+             width: 640,
+             height: 50},
+            {type: "SliderWidget"},
+            {type: "PlayerWidget"},
+            {type: "SegmentsWidget",
+             requires: [{
+              type: "TooltipWidget",
+			  width: 180,
+              heigh: 160,
+              }],
+            },            
+            {type: "SliceWidget"},            
+            {type: "ArrowWidget"},
+            {type: "AnnotationsWidget"},
+            {type: "TweetsWidget"},
+            {type: "createAnnotationWidget"},
+            {type: "TagCloudWidget",
+            excludeWords: ['#museoweb']},
+            {type: "AnnotationsListWidget",
+            container: "AnnotationsListContainer",
+            ajax_mode: false},
+//            {type: "TraceWidget"}
+            ]
+        },
+      player:{
+          type:'jwplayer', // player type - 
+          live: true, 
+          height: 300, 
+          width: 640, 
+          provider: "rtmp" 
+      },
+      modules: [
+               { type: "MediaFragment",
+                            metadata:{
+                           format:'cinelab',
+                             src:file,
+                             type:'json'}
+                        }]
+
+    };
+    
+    IriSP.initPlayer(config, file);
+  </script>
+  
+  
+ </body>
+ <div id="AnnotationsListContainer" style="position: absolute; width: 400px; left: 660px; top: 105px;"></div>
+ </html>
