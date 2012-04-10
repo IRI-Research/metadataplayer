@@ -491,9 +491,14 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                     } else {
                         annotation.type = "cinecast:UserAnnotation";
                     }
-                    annotation.is_new = true;
                     // everything is shared so there's no need to propagate the change
-                    _this._serializer._data.annotations.push(annotation);
+                    var _an_ids = IriSP.underscore(this._serializer._data.annotations).map(function(_a) {
+                        return _a.id.toLowerCase();
+                    });
+                    if (_an_ids.indexOf(annotation.id.toLowerCase()) == -1) {
+                        _this._serializer._data.annotations.push(annotation);
+                    }
+                    
                     _this._Popcorn.trigger("IriSP.createAnnotationWidget.addedAnnotation", annotation);
                     this.selector.find(".Ldt-createAnnotation-Description").val("").trigger("js_mod");
                     callback(annotation);

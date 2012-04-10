@@ -3003,6 +3003,9 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
             window.setInterval(function() {
                 var _tmpSerializer = new IriSP.JSONSerializer(IriSP.__dataloader,  _this._config.metadata.src, true);
                 _tmpSerializer.sync(function(json) {
+                    _this.annotations_ids = IriSP.underscore(_this._serializer._data.annotations).map(function(_a) {
+                      return _a.id.toLowerCase();
+                    });
                     IriSP.underscore(json.annotations).each(function(_a) {
                         var _j = _this.annotations_ids.indexOf(_a.id);
                         if (_j == -1) {
@@ -3747,9 +3750,14 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                     } else {
                         annotation.type = "cinecast:UserAnnotation";
                     }
-                    annotation.is_new = true;
                     // everything is shared so there's no need to propagate the change
-                    _this._serializer._data.annotations.push(annotation);
+                    var _an_ids = IriSP.underscore(this._serializer._data.annotations).map(function(_a) {
+                        return _a.id.toLowerCase();
+                    });
+                    if (_an_ids.indexOf(annotation.id.toLowerCase()) == -1) {
+                        _this._serializer._data.annotations.push(annotation);
+                    }
+                    
                     _this._Popcorn.trigger("IriSP.createAnnotationWidget.addedAnnotation", annotation);
                     this.selector.find(".Ldt-createAnnotation-Description").val("").trigger("js_mod");
                     callback(annotation);

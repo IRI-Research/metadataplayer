@@ -255,6 +255,9 @@ IriSP.AnnotationsListWidget.prototype.draw = function() {
             window.setInterval(function() {
                 var _tmpSerializer = new IriSP.JSONSerializer(IriSP.__dataloader,  _this._config.metadata.src, true);
                 _tmpSerializer.sync(function(json) {
+                    _this.annotations_ids = IriSP.underscore(_this._serializer._data.annotations).map(function(_a) {
+                      return _a.id.toLowerCase();
+                    });
                     IriSP.underscore(json.annotations).each(function(_a) {
                         var _j = _this.annotations_ids.indexOf(_a.id);
                         if (_j == -1) {
