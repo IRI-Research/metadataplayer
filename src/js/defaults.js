@@ -93,7 +93,8 @@ IriSP.widgetsDefaults = {
     "SparklineWidget" : {
        lineColor : "#7492b4",
        fillColor : "#aeaeb8",
-       lineWidth : 2
+       lineWidth : 2,
+       cinecast_version : false
     },
     "AnnotationsListWidget" : {
         ajax_mode : true, /* use ajax to get information about the annotations.

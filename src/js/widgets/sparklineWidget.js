@@ -50,8 +50,13 @@ IriSP.SparklineWidget.prototype.draw = function() {
         //console.log("sparklinewidget : using stats embedded in the json");
         var _results = stat_view.meta.stat.split(",");      
     } else {
-        var _annotations = this._serializer._data.annotations,
-            _sliceDuration = Math.floor( this.duration / this.slices),
+        var _annotations = this._serializer._data.annotations;
+        if (this.cinecast_version) {
+            _annotations = _(_annotations).filter(function(_a) {
+                return _a.type !== "cinecast:MovieExtract";
+            });
+        }
+        var _sliceDuration = Math.floor( this.duration / this.slices),
             _results = _(_.range(this.slices)).map(function(_i) {
                 return _(_annotations).filter(function(_a){
                     return (_a.begin <= (1 + _i) * _sliceDuration) && (_a.end >= _i * _sliceDuration)
