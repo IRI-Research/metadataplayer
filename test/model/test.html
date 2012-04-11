@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Test Modèle de Données</title>
+        <script type="text/javascript" src="../../src/js/libs/jquery.min.js"></script>
+        <script type="text/javascript" src="../../src/js/libs/underscore.js"></script>
+        <script type="text/javascript">
+            IriSP = {}
+        </script>
+        <script type="text/javascript" src="../../src/js/model.js"></script>
+        <script type="text/javascript" src="../../src/js/serializers/PlatformSerializer.js"></script>
+        <script type="text/javascript">
+            IriSP.jQuery = jQuery;
+            IriSP._ = _;
+            var _directory = new IriSP.Model.Directory();
+            var _source = _directory.source("../integration/polemic_fr.json", IriSP.serializers.platform);
+        </script>
+    </head>
+    <body>
+        <h1></h1>
+    </body>
+</html>
