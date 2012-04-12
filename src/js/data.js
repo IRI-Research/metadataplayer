@@ -76,7 +76,7 @@ IriSP.Serializer.prototype.getDuration = function() {
 };
 
 IriSP.Serializer.prototype.sync = function(callback) {
-  this._DataLoader.get(this._url, callback, force_refresh);
+    callback.call(this, this._data);
 };
 
 IriSP.SerializerFactory = function(DataLoader) {
@@ -87,7 +87,6 @@ IriSP.SerializerFactory.prototype.getSerializer = function(metadataOptions) {
   /* This function returns serializer set-up with the correct
      configuration - takes a metadata struct describing the metadata source
   */
-  
   if (metadataOptions === undefined)
     /* return an empty serializer */
     return IriSP.Serializer("", "");
