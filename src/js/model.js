@@ -4,67 +4,99 @@ IriSP.Model = {
     SOURCE_STATUS_EMPTY : 0,
     SOURCE_STATUS_WAITING : 1,
     SOURCE_STATUS_READY : 2,
-    IDS_AUTO_INCREMENT : 0,
-    IDS_PREFIX : 'autoid-'
+    ID_AUTO_INCREMENT : 0
 }
 
 /* */
 
-IriSP.Model.List = function() {
-    this.contents = {};
+IriSP.Model.List = function(_directory) {
+    this.contents = [];
+    this.directory = _directory;
 }
 
 IriSP.Model.List.prototype.toString = function() {
     return 'List of Elements, length=' + this.length();
 }
 
-IriSP.Model.List.prototype.keys = function() {
-    return IriSP._(this.contents).keys();
-}
-
 IriSP.Model.List.prototype.length = function() {
-    return this.keys().length;
+    return this.contents.length;
 }
 
 IriSP.Model.List.prototype.getElement = function(_id) {
-    return this.contents[_id];
+    return this.directory.getElement(_id);
 }
 
-IriSP.Model.List.prototype.getFirst = function() {
-    return this.contents(this.keys()[0]);
+IriSP.Model.List.prototype.getElementAt = function(_pos) {
+    if (_pos >= 0 && _pos < this.length()) {
+        return this.getElement(this.contents[_pos]);
+    }
 }
 
 IriSP.Model.List.prototype.each = function(_callback) {
     var _this = this;
-    IriSP._(this.contents).each(function(_element, _id) {
-        _callback.call(_this, _element, _id);
+    IriSP._(this.contents).each(function(_id) {
+        _callback.call(_this, _this.getElement(_id), _id);
     });
 }
 
 IriSP.Model.List.prototype.map = function(_callback) {
     var _this = this;
-    return IriSP._(this.contents).map(function(_element, _id) {
-        return _callback.call(_this, _element, _id);
+    return IriSP._(this.contents).map(function(_id) {
+        return _callback.call(_this, _this.getElement(_id), _id);
     });
 }
 
-IriSP.Model.List.prototype.addElement = function(_element) {
-    if ( typeof _element.id === "undefined" ) {
-        IriSP.Model.AUTO_INCREMENT++;
-        _element.id = IriSP.Model.IDS_PREFIX + IriSP.Model.IDS_AUTO_INCREMENT;
-    }
-    this.contents[_element.id] = _element;
-    if ( this.hasParent ) {
-        this.parent.addElement(_element);
+IriSP.Model.List.prototype.filter = function(_callback) {
+    var _this = this,
+        _res = new IriSP.Model.List(this.directory);
+    _res.contents = IriSP._(this.contents).filter(function(_id) {
+        return _callback.call(_this, _this.getElement(_id), _id);
+    });
+    return _res;
+}
+
+IriSP.Model.List.prototype.searchByTitle = function(_text) {
+    var _rgxp = new RegExp('(' + _text.replace(/(\W)/gm,'\\$1') + ')','gim');
+    return this.filter(function(_element) {
+        return _rgxp.test(_element.text);
+    });
+}
+
+IriSP.Model.List.prototype.searchByDescription = function(_text) {
+    var _rgxp = new RegExp('(' + _text.replace(/(\W)/gm,'\\$1') + ')','gim');
+    return this.filter(function(_element) {
+        return _rgxp.test(_element.description);
+    });
+}
+
+IriSP.Model.List.prototype.searchByTextFields = function(_text) {
+    var _rgxp = new RegExp('(' + _text.replace(/(\W)/gm,'\\$1') + ')','gim');
+    return this.filter(function(_element) {
+        return _rgxp.test(_element.description);
+    });
+}
+
+IriSP.Model.List.prototype.addId = function(_id) {
+    if (this.contents.indexOf(_id) === -1) {
+        this.contents.push(_id);
     }
 }
 
-IriSP.Model.List.prototype.addElements = function(_list) {
-    var _this = this;
-    _list.each(function(_element) {
-        _this.addElement(_element);
-    });
+IriSP.Model.List.prototype.addElement = function(_el) {
+    this.addId(_el.id);
 }
+
+IriSP.Model.List.prototype.addIdsFromArray = function(_array) {
+    var _l = _array.length;
+    for (var _i = 0; _i < _l; _i++) {
+        this.addId(_array[_i]);
+    }
+}
+
+IriSP.Model.List.prototype.addIdsFromList = function(_list) {
+    this.addIdsFromArray(_list.contents);
+}
+
 /* */
 
 IriSP.Model.Time = function(_milliseconds) {
@@ -105,95 +137,61 @@ IriSP.Model.Time.prototype.toString = function() {
     return _res;
 }
 
-IriSP.Model.BrokenReference = function(_elementType, _idRef) {
-    this.id = _idRef;
-    this.elementType = 'brokenReference';
-    this.originalElementType = _elementType;
-    this.isSolved = false;
-}
+/* */
 
-IriSP.Model.BrokenReference.prototype.toString = function() {
-    return 'Broken reference to ' + IriSP.Model.ELEMENT_TYPES[_elementType].element_str + ', id=' + this.id;
-}
-
-IriSP.Model.BrokenReference.prototype.tryToSolve = function(_container) {
-    if (this.isSolved) {
-        return this.solution;
-    }
-    var _obj = _container.getElement(this.originalElementType, this.id);
-    if (typeof _obj !== "undefined") {
-        this.isSolved = true;
-        this.solution = _obj;
-        return this.solution;
+IriSP.Model.Reference = function(_directory, _idRef) {
+    this.directory = _directory;
+    if (typeof _idRef === "object") {
+        this.isList = true;
+        this.contents = new IriSP.Model.List(this.directory);
+        this.contents.addIdsFromArray(_idRef);
     } else {
-        return undefined;
+        this.isList = false;
+        this.contents = _idRef;
     }
+}
+
+IriSP.Model.Reference.prototype.getContents = function() {
+    return (this.isList ? this.contents : this.directory.getElement(this.contents));
 }
 
 /* */
 
 IriSP.Model.Element = function(_id, _source) {
     this.elementType = 'element';
-    if (typeof _id === "undefined") {
-        IriSP.Model.IDS_AUTO_INCREMENT++;
-        this.id = IriSP.Model.IDS_PREFIX + IriSP.Model.AUTO_INCREMENT;
-    } else {
+    if (typeof _id !== "undefined" && typeof _source !== "undefined") {
+        this.source = _source;
         this.id = _id;
+        this.title = "";
+        this.description = "";
+        this.source.directory.addElement(this);
     }
-    this.source = _source;
-    this.title = "";
-    this.description = "";
 }
 
 IriSP.Model.Element.prototype.toString = function() {
-    return this.elementType + ', id=' + this.id + ', title="' + this.title + '"';
+    return this.elementType + (this.elementType !== 'element' ? ', id=' + this.id + ', title="' + this.title + '"' : '');
 }
 
-IriSP.Model.Element.prototype.getReference = function(_container, _elementType, _idRef) {
-    var _obj = _container.getElement(_elementType, _idRef);
-    if (typeof _obj === "undefined") {
-        _obj = new IriSP.Model.BrokenReference(_elementType, _idRef);
-    }
-    _obj.backReference(this);
-    return _obj;
+IriSP.Model.Element.prototype.setReference = function(_elementType, _idRef) {
+    this[_elementType] = new IriSP.Model.Reference(this.source.directory, _idRef);
 }
 
-IriSP.Model.Element.prototype.backReference = function(_object) {
-    if (typeof this.referencedBy === "undefined") {
-        this.referencedBy = {}
+IriSP.Model.Element.prototype.getReference = function(_elementType) {
+    if (typeof this[_elementType] !== "undefined") {
+        return this[_elementType].getContents();
     }
-    if (typeof this.referencedBy[_object.elementType] === "undefined") {
-        this.referencedBy[_object.elementType] = new IriSP.Model.List();
-    }
-    this.referencedBy[_object.elementType].addElement(_object);
 }
 
-IriSP.Model.Element.prototype.otmCrossReference = function(_container, _elementType, _idRef) {
-    if (typeof this.referencing === "undefined") {
-        this.referencing = {};
-    }
-    this.referencing[_elementType] = this.getReference(_container, _elementType, _idRef);
-}
-
-IriSP.Model.Element.prototype.mtmCrossReference = function(_container, _elementType, _idRefList) {
-    if (typeof this.referencing === "undefined") {
-        this.referencing = {};
-    }
-    this.referencing[_elementType] = new IriSP.Model.List;
-    for (var _i = 0; _i < _idRefList.length; _i++) {
-        this.referencing[_elementType].addElement(this.getReference(_container, _elementType, _idRefList[_i]));
-    }
-}
 /* */
 
-IriSP.Model.Media = function(_id, _source) {
-    IriSP.Model.Element.call(this, _id, _source);
+IriSP.Model.Media = function(_id, _directory) {
+    IriSP.Model.Element.call(this, _id, _directory);
     this.elementType = 'media';
     this.duration = new IriSP.Model.Time();
     this.url = '';
 }
 
-IriSP.Model.Media.prototype = new IriSP.Model.Element(null);
+IriSP.Model.Media.prototype = new IriSP.Model.Element();
 
 IriSP.Model.Media.prototype.setDuration = function(_durationMs) {
     this.duration.milliseconds = _durationMs;
@@ -201,18 +199,27 @@ IriSP.Model.Media.prototype.setDuration = function(_durationMs) {
 
 /* */
 
-IriSP.Model.AnnotationType = function(_id, _source) {
-    IriSP.Model.Element.call(this, _id, _source);
+IriSP.Model.Tag = function(_id, _directory) {
+    IriSP.Model.Element.call(this, _id, _directory);
+    this.elementType = 'tag';
+}
+
+IriSP.Model.Tag.prototype = new IriSP.Model.Element();
+
+/* */
+
+IriSP.Model.AnnotationType = function(_id, _directory) {
+    IriSP.Model.Element.call(this, _id, _directory);
     this.elementType = 'annotationType';
 }
 
-IriSP.Model.AnnotationType.prototype = new IriSP.Model.Element(null);
+IriSP.Model.AnnotationType.prototype = new IriSP.Model.Element();
 
 /* Annotation
  * */
 
-IriSP.Model.Annotation = function(_id, _source) {
-    IriSP.Model.Element.call(this, _id, _source);
+IriSP.Model.Annotation = function(_id, _directory) {
+    IriSP.Model.Element.call(this, _id, _directory);
     this.elementType = 'annotation';
     this.begin = new IriSP.Model.Time();
     this.end = new IriSP.Model.Time();
@@ -228,129 +235,84 @@ IriSP.Model.Annotation.prototype.setEnd = function(_beginMs) {
     this.end.milliseconds = _beginMs;
 }
 
-IriSP.Model.Annotation.prototype.setMedia = function(_idRef, _container) {
-    this.otmCrossReference(_container, "media" , _idRef);
+IriSP.Model.Annotation.prototype.setMedia = function(_idRef) {
+    this.setReference("media", _idRef);
 }
 
 IriSP.Model.Annotation.prototype.getMedia = function() {
-    return this.referencing.media;
+    return this.getReference("media");
 }
 
-IriSP.Model.Annotation.prototype.setAnnotationType = function(_idRef, _container) {
-    this.otmCrossReference(_container, "annotationType" , _idRef);
+IriSP.Model.Annotation.prototype.setAnnotationType = function(_idRef) {
+    this.setReference("annotationType", _idRef);
 }
 
 IriSP.Model.Annotation.prototype.getAnnotationType = function() {
-    return this.referencing.annotation_type;
+    return this.getReference("annotationType");
 }
 
-/* A Container contains lists of elements. It corresponds to the root of Cinelab
- * */
-
-IriSP.Model.Container = function(_parent) {
-    this.hasParent = (typeof _parent !== "undefined");
-    if (this.hasParent) {
-        this.parent = _parent;
-    }
-    this.contents = {}
+IriSP.Model.Annotation.prototype.setTags = function(_idRefs) {
+    this.setReference("tag", _idRefs);
 }
 
-IriSP.Model.Container.prototype.each = function(_callback) {
-    var _this = this;
-    IriSP._(this.contents).each(function(_element, _id) {
-        _callback.call(_this, _element, _id);
-    });
+IriSP.Model.Annotation.prototype.getTags = function() {
+    return this.getReference("tag");
 }
 
-IriSP.Model.Container.prototype.map = function(_callback) {
-    var _this = this;
-    return IriSP._(this.contents).map(function(_element, _id) {
-        return _callback.call(_this, _element, _id);
-    });
+/* */
+
+IriSP.Model.Source = function(_properties) {
+    this.status = IriSP.Model.SOURCE_STATUS_EMPTY;
+    this.config = _properties;
+    this.callbackQueue = [];
+    this.contents = {};
+    this.get();
 }
 
-IriSP.Model.Container.prototype.addList = function(_listId, _contents) {
-    if (this.hasParent) {
-        this.parent.addList(_listId, _contents);
-    }
+IriSP.Model.Source.prototype.addList = function(_listId, _contents) {
     if (typeof this.contents[_listId] === "undefined") {
-        this.contents[_listId] = _contents;
-    } else {
-        this.contents[_listId].addElements(_contents);
+        this.contents[_listId] = new IriSP.Model.List(this.config.directory);
     }
+    this.contents[_listId].addIdsFromList(_contents);
 }
 
-IriSP.Model.Container.prototype.getList = function(_listId) {
+IriSP.Model.Source.prototype.getList = function(_listId) {
     if (typeof this.contents[_listId] === "undefined") {
-        if (this.hasParent) {
-            return this.parent.getList(_listId);
-        } else {
-            return undefined;
-        }
+        return this.config.directory.getGlobalList.filter(function(_e) {
+            return (_e.elType === _listId);
+        });
     } else {
         return this.contents[_listId];
     }
 }
 
-IriSP.Model.Container.prototype.getElement = function(_listId, _elId) {
+IriSP.Model.Source.prototype.getElement = function(_listId, _elId) {
     var _list = this.getList(_listId);
     return (typeof _list !== "undefined" ? _list.getElement(_elId) : undefined);
 }
 
-IriSP.Model.Container.prototype.getMedias = function(_contents) {
-    return this.getList("media");
-}
-
-IriSP.Model.Container.prototype.getAnnotations = function(_contents) {
-    return this.getList("annotation");
-}
-
-IriSP.Model.Container.prototype.setCurrentMediaById = function(_idRef) {
+IriSP.Model.Source.prototype.setCurrentMediaId = function(_idRef) {
     if (typeof _idRef !== "undefined") {
-        this.currentMedia = this.getElement("media", _idRef);
+        this.currentMedia = _idRef;
     }
 }
 
-IriSP.Model.Container.prototype.setDefaultCurrentMedia = function() {
+IriSP.Model.Source.prototype.setDefaultCurrentMedia = function() {
     if (typeof this.currentMedia === "undefined") {
-        this.currentMedia = this.getMedias().getFirst();
+        this.currentMedia = this.getList("media")[0];
     }
-}
-
-/* */
-
-IriSP.Model.Source = function(_directory, _url, _serializer) {
-    this.status = IriSP.Model.SOURCE_STATUS_EMPTY;
-    if (typeof _directory === "undefined") {
-        throw "Error : Model.Source called with no parent directory";
-    }
-    if (typeof _url === "undefined") {
-        throw "Error : Model.Source called with no URL";
-    }
-    if (typeof _serializer === "undefined") {
-        throw "Error : Model.Source called with no serializer";
-    }
-    this.directory = _directory;
-    this.serializer = _serializer;
-    this.url = _url;
-    this.callbackQueue = [];
-    this.container = new IriSP.Model.Container(_directory.consolidated);
-    this.get();
 }
 
 IriSP.Model.Source.prototype.get = function() {
     this.status = IriSP.Model.SOURCE_STATUS_WAITING;
+    this.status = IriSP.Model.SOURCE_STATUS_READY;
     var _this = this;
-    IriSP.jQuery.getJSON(this.url, function(_result) {
-        _this.serializer.deSerialize(_result, _this.container);
-        if (_this.callbackQueue.length) {
-            IriSP._.each(_this.callbackQueue, function(_callback) {
-                _callback.call(_this);
-            });
-        }
-        _this.callbackQueue = [];
-        _this.status = IriSP.Model.SOURCE_STATUS_READY;
-    });
+    if (_this.callbackQueue.length) {
+        IriSP._.each(_this.callbackQueue, function(_callback) {
+            _callback.call(_this);
+        });
+    }
+    _this.callbackQueue = [];
 }
 
 IriSP.Model.Source.prototype.addCallback = function(_callback) {
@@ -362,38 +324,69 @@ IriSP.Model.Source.prototype.addCallback = function(_callback) {
 }
 
 IriSP.Model.Source.prototype.getAnnotations = function() {
-    return this.container.getAnnotations();
+    return this.getList("annotation");
 }
 
 IriSP.Model.Source.prototype.getMedias = function() {
-    return this.container.getMedias();
-}
-
-IriSP.Model.Source.prototype.getCurrentMedia = function() {
-    return this.container.currentMedia;
+    return this.getList("media");
 }
 
 IriSP.Model.Source.prototype.getDuration = function() {
-    return this.getCurrentMedia().duration;
+    return this.currentMedia.duration;
+}
+
+/* */
+
+IriSP.Model.RemoteSource = function() {
+    IriSP.Model.Element.call(this, _id, _directory);
+    this.elementType = 'tag';
+}
+
+IriSP.Model.RemoteSource.prototype = new IriSP.Model.Source();
+
+IriSP.Model.RemoteSource.prototype.get = function() {
+    this.status = IriSP.Model.SOURCE_STATUS_WAITING;
+    var _this = this;
+    IriSP.jQuery.getJSON(this.url, function(_result) {
+        _this.serializer.deSerialize(_result, _this);
+        if (_this.callbackQueue.length) {
+            IriSP._.each(_this.callbackQueue, function(_callback) {
+                _callback.call(_this);
+            });
+        }
+        _this.callbackQueue = [];
+        _this.status = IriSP.Model.SOURCE_STATUS_READY;
+    });
 }
 
 /* */
 
 IriSP.Model.Directory = function() {
-    this.sources = {};
-    this.imports = {};
-    this.consolidated = new IriSP.Model.Container();
+    this.remoteSources = {};
+    this.localSource = [];
+    this.elements = {};
+    this.nameSpaces = {};
 }
 
-IriSP.Model.Directory.prototype.addSource = function(_source, _serializer) {
-    this.sources[_source] = new IriSP.Model.Source(this, _source, _serializer);
-}
-
-IriSP.Model.Directory.prototype.source = function(_source, _serializer) {
-    if (typeof this.sources[_source] === "undefined") {
-        this.addSource(_source, _serializer);
+IriSP.Model.Directory.prototype.remoteSource = function(_properties) {
+    if (typeof this.remoteSources[_properties.url] === "undefined") {
+        this.remoteSources[_properties.url] = new IriSP.Model.RemoteSource(_properties);
     }
-    return this.sources[_source];
+    return this.remoteSources[_properties.url];
+}
+
+IriSP.Model.Directory.prototype.getElement = function(_id) {
+    return this.elements[_id];
+}
+
+IriSP.Model.Directory.prototype.addElement = function(_element) {
+    this.elements[_element.id] = _element;
+}
+
+IriSP.Model.Directory.prototype.getGlobalList = function() {
+    var _res = new IriSP.Model.List(this);
+    _res.addIdsFromArray(IriSP._(this.elements).keys());
+    return _res;
 }
 
 /* */
