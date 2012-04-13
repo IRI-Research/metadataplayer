@@ -15,10 +15,24 @@
             IriSP.jQuery = jQuery;
             IriSP._ = _;
             var _directory = new IriSP.Model.Directory();
-            var _source = _directory.source("../integration/polemic_fr.json", "ns", "ns", IriSP.serializers.platform);
+            var _source = _directory.remoteSource({
+                url: "../integration/polemic_fr.json",
+                namespace: "metadataplayer",
+                serializer: IriSP.serializers.platform
+            });
+            function showExport() {
+                console.log(_source.serialize());
+                $("body").html(JSON.stringify(_source.serialize()).replace(/(\[|\{)/g,'$1<ul><li>').replace(/(\]|\})/g,'</li></ul>$1').replace(/,/g,',</li><li>'))
+            }
         </script>
+        <style type="text/css">
+            ul, li {
+                list-style: none;
+                margin: 0;
+            }
+        </style>
     </head>
     <body>
-        <h1></h1>
+        <a href="#" onclick="showExport(); return false;">Export Json</a>
     </body>
 </html>
