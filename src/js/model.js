@@ -72,6 +72,10 @@ IriSP.Model.List.prototype.getElementAt = function(_pos) {
     }
 }
 
+IriSP.Model.List.prototype.hasId = function(_id) {
+    return (IriSP._(this.contents).indexOf(_id) !== -1);
+}
+
 IriSP.Model.List.prototype.each = function(_callback) {
     var _this = this;
     IriSP._(this.contents).each(function(_id) {
@@ -95,10 +99,19 @@ IriSP.Model.List.prototype.filter = function(_callback) {
     return _res;
 }
 
+IriSP.Model.List.prototype.sortBy = function(_callback) {
+    var _this = this,
+        _res = new IriSP.Model.List(this.directory);
+    _res.contents = IriSP._(this.contents).sortBy(function(_id) {
+        return _callback.call(_this, _this.getElement(_id), _id);
+    });
+    return _res;
+}
+
 IriSP.Model.List.prototype.searchByTitle = function(_text) {
     var _rgxp = new RegExp('(' + _text.replace(/(\W)/gm,'\\$1') + ')','gim');
     return this.filter(function(_element) {
-        return _rgxp.test(_element.text);
+        return _rgxp.test(_element.title);
     });
 }
 
@@ -112,12 +125,12 @@ IriSP.Model.List.prototype.searchByDescription = function(_text) {
 IriSP.Model.List.prototype.searchByTextFields = function(_text) {
     var _rgxp = new RegExp('(' + _text.replace(/(\W)/gm,'\\$1') + ')','gim');
     return this.filter(function(_element) {
-        return _rgxp.test(_element.description);
+        return _rgxp.test(_element.description) || _rgxp.test(_element.title);
     });
 }
 
 IriSP.Model.List.prototype.addId = function(_id) {
-    if (this.contents.indexOf(_id) === -1) {
+    if (!this.hasId(_id)) {
         this.contents.push(_id);
     }
 }
@@ -227,10 +240,23 @@ IriSP.Model.Element.prototype.getReference = function(_elementType) {
     }
 }
 
+IriSP.Model.Element.prototype.getRelated = function(_elementType) {
+    var _this = this;
+    return this.source.getList(_elementType).filter(function(_el) {
+        var _ref = _el[_this.elementType];
+        if (_ref.isList) {
+            return _ref.contents.hasId(_this.id);
+        }
+        else {
+            return _ref.contents === _this.id;
+        }
+    });
+}
+
 /* */
 
-IriSP.Model.Media = function(_id, _directory) {
-    IriSP.Model.Element.call(this, _id, _directory);
+IriSP.Model.Media = function(_id, _source) {
+    IriSP.Model.Element.call(this, _id, _source);
     this.elementType = 'media';
     this.duration = new IriSP.Model.Time();
     this.url = '';
@@ -242,29 +268,41 @@ IriSP.Model.Media.prototype.setDuration = function(_durationMs) {
     this.duration.milliseconds = _durationMs;
 }
 
+IriSP.Model.Media.prototype.getAnnotations = function() {
+    return this.getRelated("annotation");
+}
+
 /* */
 
-IriSP.Model.Tag = function(_id, _directory) {
-    IriSP.Model.Element.call(this, _id, _directory);
+IriSP.Model.Tag = function(_id, _source) {
+    IriSP.Model.Element.call(this, _id, _source);
     this.elementType = 'tag';
 }
 
 IriSP.Model.Tag.prototype = new IriSP.Model.Element();
 
+IriSP.Model.Tag.prototype.getAnnotations = function() {
+    return this.getRelated("annotation");
+}
+
 /* */
 
-IriSP.Model.AnnotationType = function(_id, _directory) {
-    IriSP.Model.Element.call(this, _id, _directory);
+IriSP.Model.AnnotationType = function(_id, _source) {
+    IriSP.Model.Element.call(this, _id, _source);
     this.elementType = 'annotationType';
 }
 
 IriSP.Model.AnnotationType.prototype = new IriSP.Model.Element();
 
+IriSP.Model.AnnotationType.prototype.getAnnotations = function() {
+    return this.getRelated("annotation");
+}
+
 /* Annotation
  * */
 
-IriSP.Model.Annotation = function(_id, _directory) {
-    IriSP.Model.Element.call(this, _id, _directory);
+IriSP.Model.Annotation = function(_id, _source) {
+    IriSP.Model.Element.call(this, _id, _source);
     this.elementType = 'annotation';
     this.begin = new IriSP.Model.Time();
     this.end = new IriSP.Model.Time();
@@ -384,17 +422,18 @@ IriSP.Model.Source.prototype.setCurrentMediaId = function(_idRef) {
 
 IriSP.Model.Source.prototype.setDefaultCurrentMedia = function() {
     if (typeof this.currentMedia === "undefined") {
-        this.currentMedia = this.getList("media")[0];
+        this.currentMedia = this.getList("media").getElementAt(0);
     }
 }
 
-IriSP.Model.Source.prototype.listNamespaces = function() {
+IriSP.Model.Source.prototype.listNamespaces = function(_excludeSelf) {
     var _this = this,
-        _nsls = [];
+        _nsls = [],
+        _excludeSelf = (typeof _excludeSelf !== "undefined" && _excludeSelf);
     this.each(function(_list) {
         IriSP._(_list.contents).each(function(_id) {
             var _ns = _id.replace(/:.*$/,'');
-            if (_nsls.indexOf(_ns) === -1) {
+            if (IriSP._(_nsls).indexOf(_ns) === -1 && (!_excludeSelf || _ns !== _this.namespace)) {
                 _nsls.push(_ns);
             }
         })
@@ -431,6 +470,17 @@ IriSP.Model.Source.prototype.getAnnotations = function() {
 
 IriSP.Model.Source.prototype.getMedias = function() {
     return this.getList("media");
+}
+
+IriSP.Model.Source.prototype.getAnnotationTypes = function() {
+    return this.getList("annotationType");
+}
+
+IriSP.Model.Source.prototype.getAnnotationTypeByTitle = function(_title) {
+    var _res = this.getAnnotationTypes().searchByTitle(_title);
+    if (_res.length() > 0) {
+        return _res.getElementAt(0);
+    }
 }
 
 IriSP.Model.Source.prototype.getDuration = function() {
