@@ -187,10 +187,10 @@ IriSP.createAnnotationWidget.prototype.addKeyword = function(_keyword) {
         _rx = IriSP.regexpFromText(_keyword),
         _contents = _field.val();
     _contents = ( _rx.test(_contents)
-        ? _contents.replace(_rx,"").replace("  "," ").trim()
-        : _contents.trim() + " " + _keyword
+        ? _contents.replace(_rx,"").replace("  "," ").replace(/(^\s+|\s+$)/g,'')
+        : _contents.replace(/(^\s+|\s+$)/g,'') + " " + _keyword
     );
-    _field.val(_contents.trim()).trigger("js_mod");
+    _field.val(_contents.replace(/(^\s+|\s+$)/g,'')).trigger("js_mod");
 }
 
 /** handles clicks on the annotate button. Works only for the non-cinecast version */
@@ -495,7 +495,7 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                     var _an_ids = IriSP.underscore(this._serializer._data.annotations).map(function(_a) {
                         return _a.id.toLowerCase();
                     });
-                    if (_an_ids.indexOf(annotation.id.toLowerCase()) == -1) {
+                    if (IriSP._(_an_ids).indexOf(annotation.id.toLowerCase()) == -1) {
                         _this._serializer._data.annotations.push(annotation);
                     }
                     
