@@ -966,3 +966,12 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 .Ldt-TagCloud-actif {
     color: #c000c0;
 }
+
+/* SlideShare Widget css */ 
+.Ldt-SlideShare {
+    font-family: "Arial","Verdana","sans-serif";
+    font-size: 14px;
+}
+.Ldt-SlideShare .sync_links{
+    text-align: right;
+}

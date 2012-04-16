@@ -441,3 +441,18 @@ IriSP.JSONSerializer.prototype.getContributions = function() {
     
   return val;
 };
+
+/** return the id of the ligne de temps named "Slideshare" */
+IriSP.JSONSerializer.prototype.getSlideShareType = function() {
+  var val = this.getId("slideshare");
+  if (typeof(val) === "undefined")
+    val = this.getId("Slides");   
+  if (typeof(val) === "undefined")
+    val = this.getId("Slide");
+  if (typeof(val) === "undefined")
+    val = this.getId("slide-Share");
+  if (typeof(val) === "undefined")
+	val = this.getId("slide Share");
+    
+  return val;
+};
