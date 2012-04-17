@@ -1107,7 +1107,7 @@ IriSP.annotationWidget_template = "{{! template for the annotation widget }}<div
 IriSP.annotation_loading_template = "{{! template shown while the annotation widget is loading }}<div id='Ldt-load-container'><div id='Ldt-loader'>&nbsp;</div> Chargement... </div>";
 IriSP.annotationsListWidget_template = "{{! template for the annotation list widget }}<div class='Ldt-AnnotationsListWidget'>    <ul class='Ldt-AnnotationsList-ul'>        {{#annotations}}        <li id='Ldt-Annotation-li-{{id}}' class='Ldt-AnnotationsList-li Ldt-TraceMe'>            {{^url}} <a href='#id={{id}}'> {{/url}}            {{! otherwise link to url }}            {{#url}} <a href='{{url}}'> {{/url}}                <img class='Ldt-AnnotationsList-Thumbnail' src='{{thumbnail}}' />            </a>            <div class='Ldt-AnnotationsList-Duration'>                <span class='Ldt-AnnotationsList-Begin'>{{begin}}</span>                <span class='Ldt-AnnotationsList-TcSeparator'>-</span>                <span class='Ldt-AnnotationsList-End'>{{end}}</span>            </div>            <div class='Ldt-AnnotationsList-Title'>            {{! if the url is not present, it means that the annotation exists            in the current project }}                {{title}}            </div>            <div class='Ldt-AnnotationsList-Description'>            {{^url}} <a href='#id={{id}}'> {{/url}}            {{! otherwise link to url }}            {{#url}} <a href='{{url}}'> {{/url}}                {{desc}}                </a>            </div>            {{#tags.length}}            <ul class='Ldt-AnnotationsList-Tags'>                {{#tags}}                <li class='Ldt-AnnotationsList-Tag-Li'>                    <div class='Ldt-AnnotationsList-Tag-Div'>{{.}}</div>                </li>                {{/tags}}            </ul>            {{/tags.length}}        </li>        {{/annotations}}    </ul></div>";
 IriSP.arrowWidget_template = "<div class='Ldt-arrowWidget Ldt-arrowLeftEdge'></div>";
-IriSP.createAnnotationWidget_template = "{{! template for the annotation creation widget }}<div class='Ldt-createAnnotationWidget'>    <!-- ugly div because we want to have a double border -->    <div class='Ldt-createAnnotation-DoubleBorder'>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-startScreen'>            <div style='margin-bottom: 7px; overflow: auto;'>                <div class='Ldt-createAnnotation-Title'></div>                <div class='Ldt-createAnnotation-TimeFrame'></div>                {{^cinecast_version}} <div class='Ldt-createAnnotation-Minimize Ldt-TraceMe' title='Cancel'></div>                {{/cinecast_version}}            </div>            <div class='Ldt-createAnnotation-Container'>                {{#show_from_field}}                <label>{{l10n.your_name}}&nbsp;: </label><input class='Ldt-createAnnotation-userName Ldt-TraceMe' value='{{user_name}}' />                {{/show_from_field}}                <textarea class='Ldt-createAnnotation-Description Ldt-TraceMe'></textarea>                <div class='Ldt-createAnnotation-userAvatar Ldt-TraceMe'>                    {{^user_avatar}} <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>                    {{/user_avatar}}                    {{#user_avatar}} <img src='{{ user_avatar }}'></img>                    {{/user_avatar}}                </div>                <div class='Ldt-createAnnotation-profileArrow'></div>            </div>            <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>{{l10n.submit}}</button>            {{#tags.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-keywords'>                <label>{{l10n.add_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#tags}}                    <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe' tag-id='{{id}}'>{{meta.description}}</button></li>                {{/tags}}                </ul>            </div>            {{#random_tags}}                <button class='Ldt-createAnnotation-moar-keywordz'>{{l10n.more_tags}}</button>            {{/random_tags}}            {{/tags.length}}            {{#polemic_mode}}            {{#polemics.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-polemics'>                <label>{{l10n.add_polemic_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#polemics}}                    <li><button class='Ldt-createAnnotation-polemic-{{className}} Ldt-createAnnotation-polemic-button Ldt-TraceMe'>{{keyword}}</button></li>                {{/polemics}}                </ul>            </div>            {{/polemics.length}}            {{/polemic_mode}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-spinner'></div>            {{l10n.wait_while_processed}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-errorScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.error_while_contacting}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-endScreen' style='display: none'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.annotation_saved}}            <br>            {{^disable_share}}            {{l10n.share_annotation}}            <div style='margin-top: 12px; text-align: center;'>                <a target='_blank' class='Ldt-createAnnotation-endScreen-TweetLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-FbLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-GplusLink Ldt-TraceMe'></a>            </div>            {{/disable_share}}        </div>        <div class='Ldt-floatClear'></div>    </div></div>";
+IriSP.createAnnotationWidget_template = "{{! template for the annotation creation widget }}<div class='Ldt-createAnnotationWidget'>    <!-- ugly div because we want to have a double border -->    <div class='Ldt-createAnnotation-DoubleBorder'>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-startScreen'>            <div style='margin-bottom: 7px; overflow: auto;'>                <div class='Ldt-createAnnotation-Title'></div>                <div class='Ldt-createAnnotation-TimeFrame'></div>                {{^cinecast_version}} <div class='Ldt-createAnnotation-Minimize Ldt-TraceMe' title='Cancel'></div>                {{/cinecast_version}}            </div>            <div class='Ldt-createAnnotation-Container'>                {{#show_from_field}}                <label>{{l10n.your_name}}&nbsp;: </label><input class='Ldt-createAnnotation-userName Ldt-TraceMe' value='{{user_name}}' />                {{/show_from_field}}                <textarea class='Ldt-createAnnotation-Description Ldt-TraceMe'></textarea>                <div class='Ldt-createAnnotation-userAvatar Ldt-TraceMe'>                    {{^user_avatar}} <img src='https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png'></img>                    {{/user_avatar}}                    {{#user_avatar}} <img src='{{ user_avatar }}'></img>                    {{/user_avatar}}                </div>                <div class='Ldt-createAnnotation-profileArrow'></div>            </div>            <button class='Ldt-createAnnotation-submitButton Ldt-TraceMe'>{{l10n.submit}}</button>            {{#tags.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-keywords'>                <label>{{l10n.add_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#tags}}                    <li><button class='Ldt-createAnnotation-keyword-button Ldt-TraceMe' tag-id='{{id}}'>{{meta.description}}</button></li>                {{/tags}}                </ul>            </div>            {{#random_tags}}                <button class='Ldt-createAnnotation-moar-keywordz'>{{l10n.more_tags}}</button>            {{/random_tags}}            {{/tags.length}}            {{#polemic_mode}}            {{#polemics.length}}            <div class='Ldt-createAnnotation-btnblock Ldt-createAnnotation-polemics'>                <label>{{l10n.add_polemic_keywords}} :</label>                <ul class='Ldt-floatList'>                {{#polemics}}                    <li><button class='Ldt-createAnnotation-polemic-{{className}} Ldt-createAnnotation-polemic-button Ldt-TraceMe'>{{keyword}}</button></li>                {{/polemics}}                </ul>            </div>            {{/polemics.length}}            {{/polemic_mode}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-waitScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-spinner'></div>            {{l10n.wait_while_processed}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-errorScreen' style='display: none; text-align: center'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.error_while_contacting}}        </div>        <div class='Ldt-createAnnotation-screen Ldt-createAnnotation-endScreen' style='display: none'>            <div class='Ldt-createAnnotation-Minimize' title='Hide'></div>            {{l10n.annotation_saved}}            <br>            {{^disable_share}}            {{l10n.share_annotation}}            <div class='Ldt-createAnnotation-endScreen-linkList'>                <a target='_blank' class='Ldt-createAnnotation-endScreen-link Ldt-createAnnotation-endScreen-TweetLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-link Ldt-createAnnotation-endScreen-FbLink Ldt-TraceMe'></a>                <a target='_blank' class='Ldt-createAnnotation-endScreen-link Ldt-createAnnotation-endScreen-GplusLink Ldt-TraceMe'></a>            </div>            {{/disable_share}}        </div>        <div class='Ldt-floatClear'></div>    </div></div>";
 IriSP.createAnnotation_errorMessage_template = "<p class='Ldt-createAnnotation-errorMessage'>  {{l10n.empty_annotation}}</p>";
 IriSP.loading_template = "<div id='Ldt-loader' style='width: {{width}}px; height: {{height}}px;'>{{l10n.loading_wait}}</div>";
 IriSP.overlay_marker_template = "{{! the template for the small bars which is z-indexed over our segment widget }}<div class='Ldt-SegmentPositionMarker' style='background-color: #F7268E;'></div>";
@@ -1115,6 +1115,7 @@ IriSP.player_template = "{{! template for the radio player }}<div class='Ldt-con
 IriSP.search_template = "{{! template for the search container }}<div class='LdtSearchContainer'	style='margin-left: {{margin_left}}; position: absolute; margin-top: -60px;'>	<div class='LdtSearch'		style='display: none; background-color: #EEE; width: 165px; border-color: #CFCFCF; position: absolute; text-align: center;'>		<input class='LdtSearchInput'			style='margin-top: 1px; margin-bottom: 2px;' />	</div></div><div class='cleaner'></div>";
 IriSP.share_template = "{{! social network sharing template }}<a onclick='__IriSP.MyApiPlayer.share(\'delicious\');' title='{{l10n.share_on}} delicious'><span class='share shareDelicious'>&nbsp;</span></a>		<a onclick='__IriSP.MyApiPlayer.share(\'facebook\');' title='{{l10n.share_on}} facebook'> <span class='share shareFacebook'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'twitter\');' title='{{l10n.share_on}} twitter'>  <span class='share shareTwitter'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'myspace\');' title='{{l10n.share_on}} Myspace'>  <span class='share shareMySpace'>&nbsp;</span></a>";
 IriSP.sliceWidget_template = "{{! template for the slice widget }}<div class='Ldt-sliceWidget'>  {{! the whole bar }}  <div class='Ldt-sliceBackground'></div>    <div class='Ldt-sliceLeftHandle'></div>  {{! the zone which represents our slice }}  <div class='Ldt-sliceZone'></div>     <div class='Ldt-sliceRightHandle'></div></div>";
+IriSP.slideShareWidget_template = "{{! template for the slideShare widget of the other }}<div class='Ldt-SlideShare'><!-- >p class='sync_links'><a class='sync_on'>Synchronise</a> - <a class='sync_off'>Ne synchronise pas</a></p--><div class='SlideShareContainer'></div></div>";
 IriSP.sliderWidget_template = "{{! template for the slider widget - it's composed of two divs we one overlayed on top    of the other }}<div class='Ldt-sliderBackground'></div><div class='Ldt-sliderForeground'></div><div class='Ldt-sliderPositionMarker Ldt-TraceMe'></div>";
 IriSP.tooltip_template = "{{! template used by the jquery ui tooltip }}<div class='Ldt-tooltip'>  <div class='title'>{{title}}</div>  <div class='time'>{{begin}} : {{end}} </div>  <div class='description'>{{description}}</div></div>";
 IriSP.tooltipWidget_template = "{{! template for the tooltip widget }}<div class='tip'>	<div class='tipcolor' style='height:10px;width:10px'></div>	<div class='tiptext'></div>";
@@ -1633,7 +1634,7 @@ IriSP.Serializer.prototype.getDuration = function() {
 };
 
 IriSP.Serializer.prototype.sync = function(callback) {
-  this._DataLoader.get(this._url, callback, force_refresh);
+    callback.call(this, this._data);
 };
 
 IriSP.SerializerFactory = function(DataLoader) {
@@ -1644,7 +1645,6 @@ IriSP.SerializerFactory.prototype.getSerializer = function(metadataOptions) {
   /* This function returns serializer set-up with the correct
      configuration - takes a metadata struct describing the metadata source
   */
-  
   if (metadataOptions === undefined)
     /* return an empty serializer */
     return IriSP.Serializer("", "");
@@ -1761,7 +1761,8 @@ IriSP.widgetsDefaults = {
     "SparklineWidget" : {
        lineColor : "#7492b4",
        fillColor : "#aeaeb8",
-       lineWidth : 2
+       lineWidth : 2,
+       cinecast_version : false
     },
     "AnnotationsListWidget" : {
         ajax_mode : true, /* use ajax to get information about the annotations.
@@ -2145,11 +2146,10 @@ IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
   
   var ret_widgets = [];
   var index;
-  
-  for (index = 0; index < guiOptions.widgets.length; index++) {    
+  for (index = 0; index < guiOptions.widgets.length; index++) {
     var widget = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, guiOptions.widgets[index], default_options);
    
-    ret_widgets.push(widget);   
+    ret_widgets.push(widget);
   };
 
   return ret_widgets;
@@ -2185,8 +2185,12 @@ IriSP.configureModules = function (popcornInstance, modulesList) {
  */
 IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager, widgetConfig, defaultOptions) {
 
-    if (IriSP.null_or_undefined(defaultOptions))
+    if (IriSP.null_or_undefined(defaultOptions)) {
       defaultOptions = {};
+    }
+    if (IriSP.null_or_undefined(widgetConfig)) {
+      return;
+    }
     
     widgetConfig = IriSP.underscore.defaults(widgetConfig, defaultOptions);
 
@@ -3446,10 +3450,10 @@ IriSP.createAnnotationWidget.prototype.addKeyword = function(_keyword) {
         _rx = IriSP.regexpFromText(_keyword),
         _contents = _field.val();
     _contents = ( _rx.test(_contents)
-        ? _contents.replace(_rx,"").replace("  "," ").trim()
-        : _contents.trim() + " " + _keyword
+        ? _contents.replace(_rx,"").replace("  "," ").replace(/(^\s+|\s+$)/g,'')
+        : _contents.replace(/(^\s+|\s+$)/g,'') + " " + _keyword
     );
-    _field.val(_contents.trim()).trigger("js_mod");
+    _field.val(_contents.replace(/(^\s+|\s+$)/g,'')).trigger("js_mod");
 }
 
 /** handles clicks on the annotate button. Works only for the non-cinecast version */
@@ -3615,7 +3619,7 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
                       if (_this._state == "waitScreen") {
                         _this.showEndScreen(annotation);
                         if (_this.cinecast_version) {
-                          window.setTimeout(function() { _this.showStartScreen(); }, 5000);
+                          window.setTimeout(function() { _this.showStartScreen(); }, typeof this.disable_share !== "undefined" && this.disable_share ? 5000 : 10000);
                         }
                       }
                       // hide the slicer widget
@@ -3754,7 +3758,7 @@ IriSP.createAnnotationWidget.prototype.sendLdtData = function(contents, callback
                     var _an_ids = IriSP.underscore(this._serializer._data.annotations).map(function(_a) {
                         return _a.id.toLowerCase();
                     });
-                    if (_an_ids.indexOf(annotation.id.toLowerCase()) == -1) {
+                    if (IriSP._(_an_ids).indexOf(annotation.id.toLowerCase()) == -1) {
                         _this._serializer._data.annotations.push(annotation);
                     }
                     
@@ -4883,7 +4887,139 @@ IriSP.SliceWidget.prototype.show = function() {
 
 IriSP.SliceWidget.prototype.hide = function() {
   this.selector.hide();
-};IriSP.SliderWidget = function(Popcorn, config, Serializer) {
+};
+/** A widget to display slide show from embed slide share */
+IriSP.SlideShareWidget = function(Popcorn, config, Serializer) {
+  IriSP.Widget.call(this, Popcorn, config, Serializer);
+};
+
+IriSP.SlideShareWidget.prototype = new IriSP.Widget();
+
+IriSP.SlideShareWidget.prototype.draw = function() {
+  var self = this;
+  
+  var templ = Mustache.to_html(IriSP.slideShareWidget_template);
+  this.selector.append(templ);
+  
+  // Synchro management
+  this._disableUpdate = false;
+  this.selector.find('.sync_on').click(function(event) { self.syncHandler.call(self, event); });
+  this.selector.find('.sync_off').click(function(event) { self.unSyncHandler.call(self, event); });
+  
+  // global variables used to keep the position and width of the zone.  
+  this.zoneLeft = 0;
+  this.zoneWidth = 0;
+  // global variable to save the last slide url
+  this.lastSlide = "";
+  this.containerDiv = this.selector.find('.SlideShareContainer');
+  
+  // Update the slide from timeupdate event
+  this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.slideShareUpdater));
+  
+  this._Popcorn.listen("IriSP.SlideShareWidget.show", IriSP.wrap(this, this.show));
+  this._Popcorn.listen("IriSP.SlideShareWidget.hide", IriSP.wrap(this, this.hide));
+  
+  // Get data from "slideshare" cutting/annotation-type
+  var annotations = this._serializer._data.annotations;
+  var view_type = this._serializer.getSlideShareType();
+  if(typeof(view_type) === "undefined") {
+    return;  
+  }
+  var i = 0;
+  this.segments_slides = [];
+  var nb_annot = annotations.length;
+  for (i = 0; i < nb_annot; i++) {
+    var annotation = annotations[i];
+    /* filter the annotations whose type is not the one we want */
+    if (view_type != "" && typeof(annotation.meta) !== "undefined" && typeof(annotation.meta["id-ref"]) !== "undefined"
+          && annotation.meta["id-ref"] != view_type) {
+        continue;
+    }
+    this.segments_slides.push(annotation);
+  }
+};
+
+/* update the slider and the position marker as time passes */
+IriSP.SlideShareWidget.prototype.slideShareUpdater = function() {
+  // If it is asked not to synchronize, we do nothing
+  if(this._disableUpdate)
+    return;
+  
+  var self = this;
+  
+  // We search if a segments_slides is in the current timecode
+  var time = this._Popcorn.currentTime() * 1000;
+  var nb_slides = this.segments_slides.length;
+  var found = false;
+  for (i = 0; i < nb_slides; i++) {
+    var segment_slide = this.segments_slides[i];
+    if(segment_slide.begin<time && time<segment_slide.end){
+    	found = true;
+    	if(segment_slide.content.description!=this.lastSlide){
+			// The url is like http://stuf.com#X and X is the slide number. So we split and save it.
+    		this.lastSlide = segment_slide.content.description;
+    		var description_ar = this.lastSlide.split("#");
+    		console.log("description_ar = " + description_ar);
+    		var slideUrl = description_ar[0];
+    		var slideNb = description_ar[1];
+    		// We have the slideshare oembed url.
+    		var url = "http://www.slideshare.net/api/oembed/2?format=jsonp&url=" + slideUrl;
+    		
+    		IriSP.jQuery.ajax({
+				url: url,
+				dataType: "jsonp",
+				success: function(data) {
+					ss_id = data["slideshow_id"];
+					embed_code = data["html"];
+					// If slideNb exist, we hack the embed code to add ?startSlide=X
+					if(slideNb){
+						embed_code = embed_code.replace(new RegExp("embed_code/"+ss_id), "embed_code/" + ss_id + "?startSlide=" + slideNb);
+					}
+					self.containerDiv.html(embed_code);
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					self.containerDiv.html("Error while downloading the slideshow. jqXHR = " + jqXHR + ", textStatus = " + textStatus + ", errorThrown = " + errorThrown);
+				}
+    		});
+    		return;
+    	}
+    }
+  }
+  if(found==false){
+  	this.lastSlide = "";
+  	this.containerDiv.html("");
+  }
+
+};
+
+// Functions to stop or trigger sync between timeupdate event and slides        
+IriSP.SlideShareWidget.prototype.unSyncHandler = function(params) {
+	//console.log("slideShare NO SYNC !");
+	this._disableUpdate = true;
+};
+IriSP.SlideShareWidget.prototype.syncHandler = function(params) {
+	//console.log("slideShare SYNC PLEASE !");
+	this._disableUpdate = false;
+};
+
+
+/** responds to an "IriSP.SlideShareWidget.position" message
+    @param params an array with the first element being the left distance in
+           percents and the second element the width of the slice in pixels
+*/        
+IriSP.SlideShareWidget.prototype.positionSlideShareHandler = function(params) {
+  //console.log("positionSlideShareHandler");
+};
+
+
+IriSP.SlideShareWidget.prototype.show = function() {
+  this.selector.show();
+};
+
+IriSP.SlideShareWidget.prototype.hide = function() {
+  this.selector.hide();
+};
+IriSP.SliderWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
 };
 
@@ -5106,8 +5242,13 @@ IriSP.SparklineWidget.prototype.draw = function() {
         //console.log("sparklinewidget : using stats embedded in the json");
         var _results = stat_view.meta.stat.split(",");      
     } else {
-        var _annotations = this._serializer._data.annotations,
-            _sliceDuration = Math.floor( this.duration / this.slices),
+        var _annotations = this._serializer._data.annotations;
+        if (this.cinecast_version) {
+            _annotations = _(_annotations).filter(function(_a) {
+                return _a.type !== "cinecast:MovieExtract";
+            });
+        }
+        var _sliceDuration = Math.floor( this.duration / this.slices),
             _results = _(_.range(this.slices)).map(function(_i) {
                 return _(_annotations).filter(function(_a){
                     return (_a.begin <= (1 + _i) * _sliceDuration) && (_a.end >= _i * _sliceDuration)
@@ -6258,6 +6399,21 @@ IriSP.JSONSerializer.prototype.getContributions = function() {
     val = this.getId("Contr");
   if (typeof(val) === "undefined")
     val = this.getId("Publ");
+    
+  return val;
+};
+
+/** return the id of the ligne de temps named "Slideshare" */
+IriSP.JSONSerializer.prototype.getSlideShareType = function() {
+  var val = this.getId("slideshare");
+  if (typeof(val) === "undefined")
+    val = this.getId("Slides");   
+  if (typeof(val) === "undefined")
+    val = this.getId("Slide");
+  if (typeof(val) === "undefined")
+    val = this.getId("slide-Share");
+  if (typeof(val) === "undefined")
+	val = this.getId("slide Share");
     
   return val;
 };

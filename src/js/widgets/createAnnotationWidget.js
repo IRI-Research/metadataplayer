@@ -356,7 +356,7 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
                       if (_this._state == "waitScreen") {
                         _this.showEndScreen(annotation);
                         if (_this.cinecast_version) {
-                          window.setTimeout(function() { _this.showStartScreen(); }, 5000);
+                          window.setTimeout(function() { _this.showStartScreen(); }, typeof this.disable_share !== "undefined" && this.disable_share ? 5000 : 10000);
                         }
                       }
                       // hide the slicer widget

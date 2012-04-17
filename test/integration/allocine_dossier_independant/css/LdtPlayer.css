@@ -367,19 +367,14 @@ button.ui-button-icon-only  {
 /* */
 
 .Ldt-createAnnotation-endScreen {
-  background-color: #ffffff;
-  margin-left: 5px;
-  margin-right: 5px;
-  border: 1px solid #d6d6d6;
   padding: 10px;
   font-size: 13px;
   font-weight: bold;
-  color : #f7268e;
   text-align: center;
 }
 
 .Ldt-createAnnotation-errorMessage {
-  color: #D93C71;
+  color: #ff80cc;
 }
 
 .Ldt-createAnnotation-Minimize {
@@ -397,25 +392,31 @@ button.ui-button-icon-only  {
 	display: inline;
 	width: 16px;
 	height: 16px;
-	background-image('imgs/spinner.gif');
+	background: url('imgs/spinner.gif');
+}
+
+.Ldt-createAnnotation-endScreen-linkList {
+    margin: 12px auto;
+}
+
+.Ldt-createAnnotation-endScreen-link {
+    display: inline-block;
+    height: 20px;
 }
 
 .Ldt-createAnnotation-endScreen-TweetLink {
 	width: 54px;
-	height: 20px;
-	background-image('imgs/tweet_button.png');
+	background: url('imgs/tweet_button.png');
 }
 
 .Ldt-createAnnotation-endScreen-FbLink {
 	width: 55px;
-	height: 20px;
-	background-image('imgs/facebook_button.png');
+	background: url('imgs/facebook_button.png');
 }
 
 .Ldt-createAnnotation-endScreen-GplusLink {
 	width: 50px;
-	height: 20px;
-	background-image('imgs/gplus_button.png');
+	background: url('imgs/gplus_button.png');
 }
 /* AnnotationsListWidget */
 
