@@ -1,8 +1,10 @@
+/* LDT Platform Serializer */
+
 if (typeof IriSP.serializers === "undefined") {
     IriSP.serializers = {}
 }
 
-IriSP.serializers.platform = {
+IriSP.serializers.ldt = {
     types :  {
         media : {
             serialized_name : "medias",
@@ -148,3 +150,4 @@ IriSP.serializers.platform = {
         _source.setDefaultCurrentMedia();
     }
 }
+

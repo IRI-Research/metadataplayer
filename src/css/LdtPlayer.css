@@ -22,7 +22,8 @@ button.ui-button-icon-only  {
   width:1.5em;
 }
 
-#Ldt-loader {
+.Ldt-loader {
+    min-height: 128px;
     background:url(imgs/loader.gif) center no-repeat;
     text-indent: -9999px;
     position: absolute;

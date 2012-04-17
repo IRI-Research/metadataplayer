@@ -1,3 +1,5 @@
+/* Cinecast Cinelab Serializer */
+
 if (typeof IriSP.serializers === "undefined") {
     IriSP.serializers = {}
 }
@@ -180,3 +182,4 @@ IriSP.serializers.cinecast = {
         _source.setDefaultCurrentMedia();
     }
 }
+

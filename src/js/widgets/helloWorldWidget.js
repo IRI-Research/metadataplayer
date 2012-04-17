@@ -6,12 +6,10 @@ IriSP.HelloWorldWidget.prototype = new IriSP.Widget();
 
 IriSP.HelloWorldWidget.prototype.draw = function() {
     this.selector
-        .html('Hello, world')
+        .append('Hello, world')
         .css({
             "text-align" : "center",
             "padding": "10px 0",
             "font-size" : "14px"
         });
-        
-    console.log(this);
 }

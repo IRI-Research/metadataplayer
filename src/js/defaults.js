@@ -29,10 +29,13 @@ IriSP.libFiles = {
     useCdn : false
 }
 
+IriSP.guiDefaults = {
+    width : 640,            
+    container : 'LdtPlayer',
+    spacer_div_height : 0
+}
+
 IriSP.widgetsDefaults = {
-    "LayoutManager" : {
-        spacer_div_height : 0
-    },
     "PlayerWidget" : {
         
     },

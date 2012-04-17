@@ -1,90 +1,79 @@
 /* the widget classes and definitions */
 
 /**
-  * @class Widget is an "abstract" class. It's mostly used to define some properties common to every widget.
-  *
-  *  Note that widget constructors are never called directly by the user. Instead, the widgets are instantiated by functions
-  *  defined in init.js
-  *  
-  * @constructor
-  * @param Popcorn a reference to the popcorn Object
-  * @param config configuration options for the widget
-  * @param Serializer a serializer instance from which the widget reads data fromCharCode  
-*/
-IriSP.Widget = function(Popcorn, config, Serializer) {
+ * @class IriSP.Widget is an "abstract" class. It's mostly used to define some properties common to every widget.
+ *
+ *  Note that widget constructors are never called directly by the user. Instead, the widgets are instantiated by functions
+ *  defined in init.js
+ *
+ * @constructor
+ * @param player - a reference to the player widget
+ * @param config - configuration options for the widget
+ */
+IriSP.Widget = function(player, config) {
 
-  if (config === undefined || config === null) {
-    config = {}
-  }
-  
-  this._Popcorn = Popcorn;
-  this._config = config;  
-  this._serializer = Serializer;
-  
-  if (config.hasOwnProperty("container")) {
-     this._id = config.container;
-     this.selector = IriSP.jQuery("#" + this._id);
-  }
-
-  if (config.hasOwnProperty("spacer")) {
-     this._spacerId = config.spacer;
-     this.spacer = IriSP.jQuery("#" + this._spacerId);
-  }
-
-
-  if (config.hasOwnProperty("width")) {
-     // this.width and not this._width because we consider it public.
-     this.width = config.width;     
-  }
-  
-  if (config.hasOwnProperty("height")) {    
-     this.height = config.height;     
-  }
-  
-  if (config.hasOwnProperty("heightmax")) {
-     this.heightmax = config.heightmax;     
-  }
-
-  if (config.hasOwnProperty("widthmax")) {
-     this.widthmax = config.widthmax;     
-  } 
-
-  if (config.hasOwnProperty("layoutManager")) {
-     this.layoutManager = config.layoutManager;
-  }
-  if (typeof this.selector != "undefined") {
-      this.selector.addClass("Ldt-TraceMe").addClass("Ldt-Widget");
-      this.selector.attr("widget-type", this._config.type);
-  }
-  
-  // Parsing Widget Defaults
-  var _this = this;
-  
-  if (typeof config.type == "string" && typeof IriSP.widgetsDefaults[config.type] == "object") {
-      config = IriSP._.defaults(IriSP.widgetsDefaults[config.type]);
-  }
-  
+    if( typeof player === "undefined") {
+        /* Probably an abstract call of the class when
+         * individual widgets set their prototype */
+        return;
+    }
+    
+    /* Setting all the configuration options */
+    var _type = config.type,
+        _config = IriSP._.defaults({}, config, _player.config.gui.default_options, IriSP.widgetsDefaults[_type]),
+        _this = this;
+    
+    /* Creating containers if needed */
+    if (typeof _config.container === "undefined") {
+        var _divs = _player.layoutDivs(_type);
+        _config.container = _divs[0];
+        _config.spacer = _divs[1];
+    }
+    
+    IriSP._(_config).forEach(function(_value, _key) {
+       _this[_key] = _value;
+    });
+    
+    /* Setting this.player at the end in case it's been overriden
+     * by a configuration option of the same name :-(
+     */
+    this.player = player;
+    
+    /* Getting metadata */
+    this.source = _player.loadMetadata(this.metadata);
+    
+    /* Call draw when loaded */
+    this.source.onLoad(function() {
+        _this.draw();
+    })
+   
+    /* Adding classes and html attributes */
+    this.selector = IriSP.jQuery(this.container);
+    this.selector.addClass("Ldt-TraceMe").addClass("Ldt-Widget").attr("widget-type", _type);
+    
+    /* Does the widget require other widgets ? */
+    if (typeof this.requires !== "undefined") {
+        for (var _i = 0; _i < this.requires.length; _i++) {
+            var _subconfig = this.requires[_i],
+                _div = IriSP.jQuery('<div>');
+            _subconfig.container = IriSP.guid(this.container + '_' + _subconfig.type + '_');
+            _div.id = _subconfig.container;
+            this.selector.append(_div);
+            this[_subconfig.type] = new IriSP.Widgets(_player, _subconfig);
+        }
+    }
+    
 };
 
-
-IriSP.Widget.prototype.currentMedia = function() {
-    return this._serializer.currentMedia();
-}
-
-IriSP.Widget.prototype.getDuration = function() {
-    return this._serializer.getDuration();
-}
-
 /**
-  * This method responsible of drawing a widget on screen.
-  */
+ * This method responsible of drawing a widget on screen.
+ */
 IriSP.Widget.prototype.draw = function() {
-  /* implemented by "sub-classes" */  
+    /* implemented by "sub-classes" */
 };
-
 /**
-  * Optional method if you want your widget to support redraws.
-  */
+ * Optional method if you want your widget to support redraws.
+ */
 IriSP.Widget.prototype.redraw = function() {
-  /* implemented by "sub-classes" */  
+    /* implemented by "sub-classes" */
 };

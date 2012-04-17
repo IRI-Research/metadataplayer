@@ -1,12 +1,12 @@
 /* model.js is where data is stored in a standard form, whatever the serializer */
 
 IriSP.Model = {
-    SOURCE_STATUS_EMPTY : 0,
-    SOURCE_STATUS_WAITING : 1,
-    SOURCE_STATUS_READY : 2,
-    ID_AUTO_INCREMENT : 0,
+    _SOURCE_STATUS_EMPTY : 0,
+    _SOURCE_STATUS_WAITING : 1,
+    _SOURCE_STATUS_READY : 2,
+    _ID_AUTO_INCREMENT : 0,
     getAI : function() {
-        return "autoid-" + (++this.ID_AUTO_INCREMENT);
+        return "autoid-" + (++this._ID_AUTO_INCREMENT);
     },
     isoToDate : function(_str) {
         // http://delete.me.uk/2005/03/iso8601.html
@@ -44,8 +44,9 @@ IriSP.Model = {
     }
 }
 
-/* */
-
+/*
+ * IriSP.Model.List is a class for a list of elements (e.g. annotations, medias, etc. that each have a distinct ID)
+ */
 IriSP.Model.List = function(_directory) {
     Array.call(this);
     this.directory = _directory;
@@ -67,6 +68,9 @@ IriSP.Model.List.prototype.hasId = function(_id) {
     return (IriSP._(this.idIndex).indexOf(_id) !== -1);
 }
 
+/* On recent browsers, forEach and map are defined and do what we want.
+ * Otherwise, we'll use the Underscore.js functions
+ */
 if (typeof Array.prototype.forEach === "undefined") {
     IriSP.Model.List.prototype.forEach = function(_callback) {
         var _this = this;
@@ -85,7 +89,8 @@ if (typeof Array.prototype.map === "undefined") {
     }
 }
 
-/* We override Array's filter function because it doesn't return an IriSP.Model.List */
+/* We override Array's filter function because it doesn't return an IriSP.Model.List
+ */
 IriSP.Model.List.prototype.filter = function(_callback) {
     var _this = this,
         _res = new IriSP.Model.List(this.directory);
@@ -95,6 +100,9 @@ IriSP.Model.List.prototype.filter = function(_callback) {
     return _res;
 }
 
+/* Array has a sort function, but it's not as interesting as Underscore.js's sortBy
+ * and won't return a new IriSP.Model.List
+ */
 IriSP.Model.List.prototype.sortBy = function(_callback) {
     var _this = this,
         _res = new IriSP.Model.List(this.directory);
@@ -104,6 +112,9 @@ IriSP.Model.List.prototype.sortBy = function(_callback) {
     return _res;
 }
 
+/* Title and Description are basic information for (almost) all element types,
+ * here we can search by these criteria
+ */
 IriSP.Model.List.prototype.searchByTitle = function(_text) {
     var _rgxp = new RegExp('(' + _text.replace(/(\W)/gm,'\\$1') + ')','gim');
     return this.filter(function(_element) {
@@ -137,8 +148,13 @@ IriSP.Model.List.prototype.push = function(_el) {
     if (typeof this.directory.getElement(_el.id) === "undefined") {
         this.directory.addElement(_el);
     }
-    this.idIndex.push(_el.id);
-    Array.prototype.push.call(this, _el);
+    var _index = (IriSP._(this.idIndex).indexOf(_el.id));
+    if (_index === -1) {
+        this.idIndex.push(_el.id);
+        Array.prototype.push.call(this, _el);
+    } else {
+        this[_index] = _el;
+    }
 }
 
 IriSP.Model.List.prototype.addIds = function(_array) {
@@ -157,7 +173,9 @@ IriSP.Model.List.prototype.addElements = function(_array) {
     });
 }
 
-/* */
+/* A simple time management object, that helps converting millisecs to seconds and strings,
+ * without the clumsiness of the original Date object.
+ */
 
 IriSP.Model.Time = function(_milliseconds) {
     this.milliseconds = parseInt(typeof _milliseconds !== "undefined" ? _milliseconds : 0);
@@ -197,7 +215,8 @@ IriSP.Model.Time.prototype.toString = function() {
     return _res;
 }
 
-/* */
+/* IriSP.Model.Reference handles references between elements
+ */
 
 IriSP.Model.Reference = function(_source, _idRef) {
     this.source = _source;
@@ -209,12 +228,8 @@ IriSP.Model.Reference = function(_source, _idRef) {
         }));
     } else {
         this.isList = false;
-        this.contents = _source.getNamespaced(_idRef).fullname;
+        this.contents = this.source.directory.getElement(_source.getNamespaced(_idRef).fullname);
     }
-}
-
-IriSP.Model.Reference.prototype.getContents = function() {
-    return (this.isList ? this.contents : this.source.directory.getElement(this.contents));
 }
 
 /* */
@@ -243,7 +258,7 @@ IriSP.Model.Element.prototype.setReference = function(_elementType, _idRef) {
 
 IriSP.Model.Element.prototype.getReference = function(_elementType) {
     if (typeof this[_elementType] !== "undefined") {
-        return this[_elementType].getContents();
+        return this[_elementType].contents;
     }
 }
 
@@ -255,7 +270,7 @@ IriSP.Model.Element.prototype.getRelated = function(_elementType) {
             return _ref.contents.hasId(_this.id);
         }
         else {
-            return _ref.contents === _this.id;
+            return _ref.contents.id === _this.id;
         }
     });
 }
@@ -352,7 +367,7 @@ IriSP.Model.Annotation.prototype.getTags = function() {
 /* */
 
 IriSP.Model.Source = function(_config) {
-    this.status = IriSP.Model.SOURCE_STATUS_EMPTY;
+    this.status = IriSP.Model._SOURCE_STATUS_EMPTY;
     if (typeof _config !== "undefined") {
         var _this = this;
         IriSP._(_config).forEach(function(_v, _k) {
@@ -448,7 +463,7 @@ IriSP.Model.Source.prototype.listNamespaces = function(_excludeSelf) {
 }
 
 IriSP.Model.Source.prototype.get = function() {
-    this.status = IriSP.Model.SOURCE_STATUS_READY;
+    this.status = IriSP.Model._SOURCE_STATUS_READY;
     var _this = this;
     if (_this.callbackQueue.length) {
         IriSP._(_this.callbackQueue).forEach(function(_callback) {
@@ -463,9 +478,14 @@ IriSP.Model.Source.prototype.serialize = function() {
 }
 
 IriSP.Model.Source.prototype.onLoad = function(_callback) {
-    if (this.status === IriSP.Model.SOURCE_STATUS_READY) {
-        callback.call(this);
+    if (this.status === IriSP.Model._SOURCE_STATUS_READY) {
+        console.log("Called on load, Ready");
+        var _this = this;
+        IriSP._.defer(function() {
+            _callback.call(_this);
+        });        
     } else {
+        console.log("Called on load, not ready");
         this.callbackQueue.push(_callback);
     }
 }
@@ -505,17 +525,18 @@ IriSP.Model.RemoteSource = function(_config) {
 IriSP.Model.RemoteSource.prototype = new IriSP.Model.Source();
 
 IriSP.Model.RemoteSource.prototype.get = function() {
-    this.status = IriSP.Model.SOURCE_STATUS_WAITING;
+    this.status = IriSP.Model._SOURCE_STATUS_WAITING;
     var _this = this;
     IriSP.jQuery.getJSON(this.url, function(_result) {
         _this.serializer.deSerialize(_result, _this);
+        console.log('Received data, we have '+_this.callbackQueue.length+' callbacks waiting');
         if (_this.callbackQueue.length) {
             IriSP._(_this.callbackQueue).forEach(function(_callback) {
                 _callback.call(_this);
             });
         }
         _this.callbackQueue = [];
-        _this.status = IriSP.Model.SOURCE_STATUS_READY;
+        _this.status = IriSP.Model._SOURCE_STATUS_READY;
     });
 }
 

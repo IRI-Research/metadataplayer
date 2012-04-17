@@ -1,21 +1,147 @@
 /* init.js - initialization and configuration of Popcorn and the widgets
 exemple json configuration:
-
 */
 
-/** do some magic to configure popcorn according to the options object passed.
- Works for html5, jwplayer and youtube videos
- */
-IriSP.configurePopcorn = function(layoutManager, options) {
-    var pop;
-    var ret = layoutManager.createDiv();
-    var containerDiv = ret[0];
-    var spacerDiv = ret[1];
+/* The Metadataplayer Object, single point of entry, replaces IriSP.init_player */
 
-    /* insert one pixel of margin between the video and the first widget, using the
-     spacer.
+IriSP.Metadataplayer = function(config, video_metadata) {
+    IriSP._.defaults(config.gui, IriSP.guiDefaults);
+    var _container = document.getElementById(config.gui.container);
+    _container.innerHTML = IriSP.templToHTML(IriSP.loading_template, config.gui);
+    this.video_metadata = video_metadata;
+    this.sourceManager = new IriSP.Model.Directory();
+    this.config = config;
+    this.loadLibs();
+}
+
+IriSP.Metadataplayer.prototype.toString = function() {
+    return 'A Metadataplayer in DIV #' + this.config.gui.container;
+}
+
+IriSP.Metadataplayer.prototype.loadLibs = function() {
+    console.log("Loading Libs");
+    // Localize jQuery variable
+    IriSP.jQuery = null;
+    var $L = $LAB.script(IriSP.getLib("jQuery")).script(IriSP.getLib("swfObject")).wait().script(IriSP.getLib("jQueryUI"));
+
+    if(this.config.player.type === "jwplayer" || this.config.player.type === "allocine" || this.config.player.type === "dailymotion") {
+        // load our popcorn.js lookalike
+        $L.script(IriSP.getLib("jwplayer"));
+    } else {
+        // load the real popcorn
+        $L.script(IriSP.getLib("popcorn")).script(IriSP.getLib("popcorn.code"));
+        // load plugins if necessary
+        if(this.config.player.type === "youtube") {
+            $L.script(IriSP.getLib("popcorn.youtube"));
+        }
+        if(this.config.player.type === "vimeo"){
+            $L.script(IriSP.getLib("popcorn.vimeo"));
+        }
+    }
+
+    /* widget specific requirements */
+    for(var _i = 0; _i < this.config.gui.widgets.length; _i++) {
+        if(this.config.gui.widgets[_i].type === "PolemicWidget" || this.config.gui.widgets[_i].type === "StackGraphWidget" || this.config.gui.widgets[_i].type === "SparklineWidget") {
+            $L.script(IriSP.getLib("raphael"));
+        }
+        if(this.config.gui.widgets[_i].type === "TraceWidget") {
+            $L.script(IriSP.getLib("tracemanager"))
+        }
+    }
+    
+    var _this = this;
+    
+    $L.wait(function() {
+        console.log("jQuery is loaded");
+        IriSP.jQuery = window.jQuery.noConflict(true);
+
+        var css_link_jquery = IriSP.jQuery("<link>", {
+            rel : "stylesheet",
+            type : "text/css",
+            href : IriSP.getLib("cssjQueryUI")
+        });
+        var css_link_custom = IriSP.jQuery("<link>", {
+            rel : "stylesheet",
+            type : "text/css",
+            href : _this.config.gui.css
+        });
+        console.log('Appending CSS');
+
+        css_link_jquery.appendTo('head');
+        css_link_custom.appendTo('head');
+        
+        console.log(_this);
+        _this.onLibsLoaded();
+        
+    });
+}
+
+IriSP.Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {
+    if (typeof _metadataInfo.serializer === "undefined" && typeof _metadataInfo.format !== "undefined") {
+        _metadataInfo.serializer = IriSP.serializers[_metadataInfo.format];
+    }
+    if (typeof _metadataInfo.url === "undefined" && typeof _metadataInfo.src !== "undefined") {
+        _metadataInfo.url = _metadataInfo.src;
+    }
+    console.log(_metadataInfo);
+    if (typeof _metadataInfo.url !== "undefined" && typeof _metadataInfo.serializer !== "undefined") {
+        return this.sourceManager.remoteSource(_metadataInfo);
+    } else {
+        return this.sourceManager.newLocalSource(_metadataInfo);
+    }
+}
+
+IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
+    console.log("Libs Loaded");
+    this.videoData = this.loadMetadata(this.video_metadata);
+    console.log(this.videoData);
+    this.$ = IriSP.jQuery('#' + this.config.gui.container);
+    this.$.css({
+        "width": this.config.gui.width,
+        "clear": "both"
+    });
+    if (typeof this.config.gui.height !== "undefined") {
+        this.$.css("height", this.config.gui.height);
+    }
+      
+    var _this = this;
+    console.log("calling OnLoad");
+    this.videoData.onLoad(function() {
+        _this.onVideoDataLoaded();
+    });
+}
+
+IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
+    console.log("Video Data Loaded");
+    if (typeof this.videoData !== "undefined" && typeof this.config.player.video === "undefined") {
+        var _media = this.videoData.currentMedia;
+        if (typeof _media !== "undefined") {
+            config.player.video = _media.video;
+            if (typeof _media.streamer !== "undefined") {
+                config.player.streamer = _media.streamer;
+                config.player.video = _media.video.replace(_media.streamer,'');
+            }
+        }
+        
+    }
+    this.configurePopcorn(config.player);
+    this.widgets = [];
+    for(var i = 0; i < this.config.gui.widgets.length; i++) {
+        this.widgets.push(new IriSP.Widgets[_config.type](this, this.config.gui.widgets[i]));
+    };
+    this.$('.Ldt-loader').detach();
+}
+
+IriSP.Metadataplayer.prototype.configurePopcorn = function() {
+    var pop,
+        ret = this.layoutDivs(),
+        containerDiv = ret[0],
+        spacerDiv = ret[1];
+
+    /* insert one pixel of margin between the video and the first widget,
+     * using the spacer.
      */
-    IriSP.jQuery("#" + spacerDiv).css("height", "1px");
+    IriSP.jQuery("#" + spacerDiv).css("height", Math.max(1, this.config.gui.spacer_div_height) + "px");
 
     switch(options.type) {
         /*
@@ -72,134 +198,40 @@ IriSP.configurePopcorn = function(layoutManager, options) {
             /* pass the options as-is to the allocine player and let it handle everything */
             pop = new IriSP.PopcornReplacement.allocine("#" + containerDiv, options);
             break;
-
+        
         default:
             pop = undefined;
     };
 
-    return pop;
-};
-/** Configure the gui and instantiate the widgets passed as parameters
- @param guiOptions the gui object as seen in the examples.
- */
-IriSP.configureWidgets = function(popcornInstance, layoutManager, guiOptions) {
+    this.popcorn = pop;
+}
 
-    var serialFactory = new IriSP.SerializerFactory(IriSP.__dataloader);
-    var params = {
-        width : guiOptions.width,
-        height : guiOptions.height
-    };
-
-    var default_options = guiOptions.default_options;
-    if(IriSP.null_or_undefined(default_options))
-        default_options = {};
-
-    var ret_widgets = [];
-    var index;
-
-    for( index = 0; index < guiOptions.widgets.length; index++) {
-        var widget = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, guiOptions.widgets[index], default_options);
-
-        ret_widgets.push(widget);
-    };
-
-    return ret_widgets;
-};
-/** configure modules. @see configureWidgets */
-IriSP.configureModules = function(popcornInstance, modulesList) {
-/*    if(IriSP.null_or_undefined(modulesList))
-        return;
-
-    var serialFactory = new IriSP.SerializerFactory(IriSP.__dataloader);
-    var ret_modules = [];
-    var index;
-
-    for( index = 0; index < modulesList.length; index++) {
-        var moduleConfig = modulesList[index];
-
-        var serializer = serialFactory.getSerializer(moduleConfig.metadata);
-        var module = new IriSP[moduleConfig.type](popcornInstance, moduleConfig, serializer);
-        ret_modules.push(module);
-    };
-
-    return ret_modules; */
-};
-/** instantiate a widget - only called by configureWidgets, never by the user. Handles widget
- dependencies.
- @param popcornInstance popcorn instance the widget will user
- @param serialFactory serializer factory to instantiate the widget with
- @param layoutManager layout manager
- @param widgetConfig configuration options for the widget
- @param defaultOptions a dictionnary with some options defined for every widget.
- */
-IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager, widgetConfig, defaultOptions) {
-
-    if(IriSP.null_or_undefined(defaultOptions))
-        defaultOptions = {};
-    widgetConfig = IriSP.underscore.defaults(widgetConfig, defaultOptions);
-
-    var arr = IriSP.jQuery.extend({}, widgetConfig);
-
-    /* create a div for those widgets who didn't already specify a container; */
-    if(!arr.hasOwnProperty("container")) {
-        /* create div returns us a container for the widget and a spacer */
-        var ret = layoutManager.createDiv(widgetConfig.type);
-        var container = ret[0];
-        var spacer = ret[1];
-        arr.container = container;
-        arr.spacer = spacer;
-        arr.layoutManager = layoutManager;
+/** create a subdiv with an unique id, and a spacer div as well.
+    @param widgetName the name of the widget.
+    @return an array of the form [createdivId, spacerdivId].
+*/
+IriSP.Metadataplayer.prototype.layoutDivs = function(_name) {
+    if (typeof(_name) === "undefined") {
+       _name = "";
     }
-    var serializer = serialFactory.getSerializer(widgetConfig.metadata);
-
-    if( typeof serializer == "undefined")
-        debugger;
-
-    // instantiate the object passed as a string
-    var widget = new IriSP[widgetConfig.type](popcornInstance, arr, serializer);
-
-    if(widgetConfig.hasOwnProperty("requires")) {
-        // also create the widgets this one depends on.
-        // the dependency widget is available in the parent widget context as
-        // this.WidgetName (for instance, this.TipWidget);
-
-        var i = 0;
-        for( i = 0; i < widgetConfig.requires.length; i++) {
-            var widgetName = widgetConfig.requires[i]["type"], _configobj = IriSP.jQuery.extend({}, widgetConfig.requires[i]), _div = document.createElement('div'), _container = IriSP.guid(arr.container + '_' + widgetName + '_');
-            _configobj.container = _container;
-            _div.id = _container;
-            widget.selector.append(_div);
-            widget[widgetName] = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, _configobj, defaultOptions);
-        }
-    }
-
-    serializer.sync(IriSP.wrap(widget, function() {
-        this.draw();
-    }));
-    return widget;
-};
-/** single point of entry for the metadataplayer */
-IriSP.initPlayer = function(config, metadata_url, format) {
-    document.getElementById(config.gui.container).innerHTML = IriSP.templToHTML(IriSP.loading_template, config.gui);
-    IriSP.loadLibs(config, metadata_url, format, function() {
-
-        var layoutManager = new IriSP.LayoutManager(config.gui);
-        
-        if (typeof IriSP._videoData !== "undefined" && typeof config.player.video === "undefined") {
-            var _media = IriSP._videoData.currentMedia;
-            if (typeof _media !== "undefined") {
-                config.player.video = _media.video;
-                if (typeof _media.streamer !== "undefined") {
-                    config.player.streamer = _media.streamer;
-                    config.player.video = _media.video.replace(_media.streamer,'');
-                }
-            }
+    var newDiv = IriSP.guid(this.container + "_widget_" + _name + "_"),
+        spacerDiv = IriSP.guid("LdtPlayer_spacer_"),
+        divTempl = "<div id='{{id}}' style='width: {{width}}px; position: relative; clear: both;'></div>",
+        spacerTempl = "<div id='{{spacer_id}}' style='width: {{width}}px; position: relative; height: {{spacer_div_height}}px;'></div>",
+        divHtml = Mustache.to_html( divTempl,
+            {
+                id: newDiv,
+                width: this.config.gui.width
+            }),
+        spacerHtml = Mustache.to_html( spacerTempl,
+            {
+                spacer_id: spacerDiv,
+                width: this.config.gui.width,
+                spacer_div_height: this.config.gui.height
+            });
             
-        }
-        
-        var pop = IriSP.configurePopcorn(layoutManager, config.player);
+    this.$.append(divCode);
+    this.$.append(spacerCode);
 
-        IriSP._widgets = IriSP.configureWidgets(pop, layoutManager, config.gui);
-        IriSP.jQuery('#Ldt-loader').detach();
-    });
+    return [newDiv, spacerDiv];
 };
