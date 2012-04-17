@@ -61,13 +61,7 @@ IriSP.Widget = function(Popcorn, config, Serializer) {
   var _this = this;
   
   if (typeof config.type == "string" && typeof IriSP.widgetsDefaults[config.type] == "object") {
-      IriSP._(IriSP.widgetsDefaults[config.type]).each(function(_v, _k) {
-          if (typeof config[_k] != "undefined") {
-              _this[_k] = config[_k];
-          } else {
-              _this[_k] = _v;
-          }
-      });
+      config = IriSP._.defaults(IriSP.widgetsDefaults[config.type]);
   }
   
 };

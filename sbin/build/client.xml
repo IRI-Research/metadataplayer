@@ -59,7 +59,7 @@
     	<filelist dir="../../build" files="compiled_templates.js" />
       
       <!-- core files -->
-    	<filelist dir="../../src/js" files="utils.js pop.js data.js defaults.js widgets.js modules.js layout.js init.js i18n.js" />
+    	<filelist dir="../../src/js" files="utils.js pop.js model.js defaults.js widgets.js modules.js layout.js init.js i18n.js" />
 
       <!-- players -->
 			<fileset dir="../../src/js/players" casesensitive="yes">

@@ -36,11 +36,6 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
     window.onAllocineStateChange = IriSP.wrap(this, this.stateHandler);
     window.onTime = IriSP.wrap(this, this.progressHandler);
     
-    var _videoUrl = (
-        typeof options.directVideoPath == "string"
-        ? options.directVideoPath
-        : IriSP.get_aliased(IriSP.__jsonMetadata["medias"][0], ["href","url"])
-    );
     var _flashVars = {
         "streamFMS" : true,
         "adVast" : false,
@@ -48,7 +43,7 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
         "autoPlay" : options.autoPlay,
         "directVideoTitle" : "",
         "urlAcData" : options.urlAcData,
-        "directVideoPath" : _videoUrl,
+        "directVideoPath" : options.video,
         "host" : "http://allocine.fr"
     }
     

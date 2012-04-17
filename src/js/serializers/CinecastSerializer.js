@@ -9,7 +9,7 @@ IriSP.serializers.cinecast = {
             model_name : "media",
             deserializer : function(_data, _source) {
                 var _res = new IriSP.Model.Media(_data.id, _source);
-                _res.url = _data.href;
+                _res.video = _data.url;
                 _res.title = _data.meta.title;
                 _res.description = _data.meta.synopsis;
                 _res.setDuration(_data.meta.duration);
@@ -18,7 +18,7 @@ IriSP.serializers.cinecast = {
             serializer : function(_data, _source) {
                 return {
                     id : _source.unNamespace(_data.id),
-                    url : _data.url,
+                    url : _data.video,
                     meta : {
                         title : _data.title,
                         synopsis : _data.description,
@@ -97,7 +97,7 @@ IriSP.serializers.cinecast = {
                             .replace(/[^A-Za-z0-9_]/g,''),
                             _tag = new IriSP.Model.Tag(_id, _source);
                         _tag.title = _t;
-                        _source.contents.tag.addElement(_tag);
+                        _source.contents.tag.push(_tag);
                         return _id;
                     }
                 }));
@@ -143,7 +143,7 @@ IriSP.serializers.cinecast = {
                })
            } 
         }
-        _source.each(function(_list, _typename) {
+        _source.forEach(function(_list, _typename) {
             if (typeof _this.types[_typename] !== "undefined") {
                 _res[_this.types[_typename].serialized_name] = _list.map(function(_el) {
                     return _this.types[_typename].serializer(_el, _source);
@@ -154,28 +154,28 @@ IriSP.serializers.cinecast = {
     },
     deSerialize : function(_data, _source) {
         if (typeof _data.imports !== "undefined") {
-            IriSP._(_data.imports).each(function(_import) {
+            IriSP._(_data.imports).forEach(function(_import) {
                 _source.directory.namespaces[_import.id] = _import.url;
             })
         }
-        IriSP._(this.types).each(function(_type, _typename) {
+        IriSP._(this.types).forEach(function(_type, _typename) {
             var _listdata = _data[_type.serialized_name];
             if (typeof _listdata !== "undefined") {
                 var _list = new IriSP.Model.List(_source.directory);
                 if (_listdata.hasOwnProperty("length")) {
                     var _l = _listdata.length;
                     for (var _i = 0; _i < _l; _i++) {
-                        _list.addElement(_type.deserializer(_listdata[_i], _source));
+                        _list.push(_type.deserializer(_listdata[_i], _source));
                     }
                 } else {
-                    _list.addElement(_type.deserializer(_listdata, _source));
+                    _list.push(_type.deserializer(_listdata, _source));
                 }
                 _source.addList(_typename, _list);
             }
         });
         
         if (typeof _data.meta !== "undefined" && typeof _data.meta.main_media !== "undefined" && typeof _data.meta.main_media["id-ref"] !== "undefined") {
-            _source.setCurrentMediaId(_data.meta.main_media["id-ref"]);
+            _source.setCurrentMediaId(_data.meta.id);
         }
         _source.setDefaultCurrentMedia();
     }

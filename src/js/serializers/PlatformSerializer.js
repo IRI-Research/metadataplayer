@@ -9,7 +9,18 @@ IriSP.serializers.platform = {
             model_name : "media",
             deserializer : function(_data, _source) {
                 var _res = new IriSP.Model.Media(_data.id, _source);
-                _res.url = _data.href;
+                _res.video = (
+                    typeof _data.url !== "undefined"
+                    ? _data.url
+                    : (
+                        typeof _data.href !== "undefined"
+                        ? _data.href
+                        : null
+                    )
+                );
+                if (typeof _data.meta.item !== "undefined" && _data.meta.item.name === "streamer") {
+                    _res.streamer = _data.meta.item.value;
+                }
                 _res.title = _data.meta["dc:title"];
                 _res.description = _data.meta["dc:description"];
                 _res.setDuration(_data.meta["dc:duration"]);
@@ -18,7 +29,7 @@ IriSP.serializers.platform = {
             serializer : function(_data, _source) {
                 return {
                     id : _source.unNamespace(_data.id),
-                    href : _data.url,
+                    url : _data.video,
                     meta : {
                         "dc:title" : _data.title,
                         "dc:description" : _data.description,
@@ -105,7 +116,7 @@ IriSP.serializers.platform = {
     serialize : function(_source) {
         var _res = {},
             _this = this;
-        _source.each(function(_list, _typename) {
+        _source.forEach(function(_list, _typename) {
             if (typeof _this.types[_typename] !== "undefined") {
                 _res[_this.types[_typename].serialized_name] = _list.map(function(_el) {
                     return _this.types[_typename].serializer(_el, _source);
@@ -115,17 +126,17 @@ IriSP.serializers.platform = {
         return _res;
     },
     deSerialize : function(_data, _source) {
-        IriSP._(this.types).each(function(_type, _typename) {
+        IriSP._(this.types).forEach(function(_type, _typename) {
             var _listdata = _data[_type.serialized_name];
             if (typeof _listdata !== "undefined") {
                 var _list = new IriSP.Model.List(_source.directory);
                 if (_listdata.hasOwnProperty("length")) {
                     var _l = _listdata.length;
                     for (var _i = 0; _i < _l; _i++) {
-                        _list.addElement(_type.deserializer(_listdata[_i], _source));
+                        _list.push(_type.deserializer(_listdata[_i], _source));
                     }
                 } else {
-                    _list.addElement(_type.deserializer(_listdata, _source));
+                    _list.push(_type.deserializer(_listdata, _source));
                 }
                 _source.addList(_typename, _list);
             }
