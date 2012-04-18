@@ -7,7 +7,7 @@ IriSP.libFiles = {
         jQueryUI : "jquery-ui.min.js",
         jQueryToolTip : "jquery.tools.min.js",
         swfObject : "swfobject.js",
-        cssjQueryUI : "jquery-ui.css",
+        //cssjQueryUI : "jquery-ui.css",
         popcorn : "popcorn.js",
         jwplayer : "jwplayer.js",
         raphael : "raphael.js",

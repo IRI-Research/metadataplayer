@@ -847,10 +847,10 @@ button.ui-button-icon-only  {
 }
 
 .Ldt-createAnnotation-spinner {
-	display: inline;
-	width: 16px;
-	height: 16px;
-	background-image('imgs/spinner.gif');
+    display: inline;
+    width: 16px;
+    height: 16px;
+    background-image('imgs/spinner.gif');
 }
 
 .Ldt-createAnnotation-endScreen-linkList {
@@ -975,7 +975,6 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 
 /* SlideShare Widget css */ 
 .Ldt-SlideShare {
-    font-family: "Arial","Verdana","sans-serif";
     font-size: 14px;
 }
 .Ldt-SlideShare .sync_links{

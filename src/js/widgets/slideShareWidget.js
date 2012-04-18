@@ -21,7 +21,9 @@ IriSP.SlideShareWidget.prototype.draw = function() {
   this.zoneLeft = 0;
   this.zoneWidth = 0;
   // global variable to save the last slide url
-  this.lastSlide = "";
+  this.lastSSFullUrl = "";
+  this.lastSSUrl = "";
+  this.lastSSId = "";
   this.containerDiv = this.selector.find('.SlideShareContainer');
   
   // Update the slide from timeupdate event
@@ -66,38 +68,54 @@ IriSP.SlideShareWidget.prototype.slideShareUpdater = function() {
     var segment_slide = this.segments_slides[i];
     if(segment_slide.begin<time && time<segment_slide.end){
     	found = true;
-    	if(segment_slide.content.description!=this.lastSlide){
+    	if(segment_slide.content.description!=this.lastSSFullUrl){
 			// The url is like http://stuf.com#X and X is the slide number. So we split and save it.
-    		this.lastSlide = segment_slide.content.description;
-    		var description_ar = this.lastSlide.split("#");
-    		console.log("description_ar = " + description_ar);
-    		var slideUrl = description_ar[0];
-    		var slideNb = description_ar[1];
-    		// We have the slideshare oembed url.
-    		var url = "http://www.slideshare.net/api/oembed/2?format=jsonp&url=" + slideUrl;
-    		
-    		IriSP.jQuery.ajax({
-				url: url,
-				dataType: "jsonp",
-				success: function(data) {
-					ss_id = data["slideshow_id"];
-					embed_code = data["html"];
-					// If slideNb exist, we hack the embed code to add ?startSlide=X
-					if(slideNb){
-						embed_code = embed_code.replace(new RegExp("embed_code/"+ss_id), "embed_code/" + ss_id + "?startSlide=" + slideNb);
+    		this.lastSSFullUrl = segment_slide.content.description;
+    		var description_ar = this.lastSSFullUrl.split("#id=");
+    		var slideNb = 1;
+    		if(description_ar[1]){
+    			slideNb = description_ar[1];
+    		}
+    		if(description_ar[0]!=this.lastSSUrl){
+    			this.lastSSUrl = description_ar[0];
+	    		// We have the slideshare oembed url.
+	    		var url = "http://www.slideshare.net/api/oembed/1?format=jsonp&url=" + this.lastSSUrl;
+	    		
+	    		IriSP.jQuery.ajax({
+					url: url,
+					dataType: "jsonp",
+					success: function(data) {
+						self.lastSSId = data["slideshow_id"];
+						embed_code = data["html"];
+						// If slideNb exist, we hack the embed code to add ?startSlide=X
+						if(slideNb){
+							embed_code = embed_code.replace(new RegExp("ssplayer2.swf\\?","g"), "ssplayer2.swf?startSlide=" + slideNb + "&");
+						}
+						self.containerDiv.html(embed_code);
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						self.containerDiv.html("Error while downloading the slideshow. jqXHR = " + jqXHR + ", textStatus = " + textStatus + ", errorThrown = " + errorThrown);
 					}
-					self.containerDiv.html(embed_code);
-				},
-				error: function(jqXHR, textStatus, errorThrown){
-					self.containerDiv.html("Error while downloading the slideshow. jqXHR = " + jqXHR + ", textStatus = " + textStatus + ", errorThrown = " + errorThrown);
-				}
-    		});
+	    		});
+    		}
+    		else{
+    			// If the presentation was already loaded, we only use the ss js api to load the wanted slide number
+    			if(this.lastSSId!=""){
+    				// We get the embed flash element
+    				var embed = document.getElementsByName("__sse" + this.lastSSId)[0];
+    				if(embed){
+    					embed.jumpTo(parseInt(slideNb));
+    				}
+    			}
+    		}
     		return;
     	}
     }
   }
   if(found==false){
-  	this.lastSlide = "";
+	this.lastSSFullUrl = "";
+	this.lastSSUrl = "";
+	this.lastSSId = "";
   	this.containerDiv.html("");
   }
 
