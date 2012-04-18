@@ -19,7 +19,6 @@ IriSP.Metadataplayer.prototype.toString = function() {
 }
 
 IriSP.Metadataplayer.prototype.loadLibs = function() {
-    console.log("Loading Libs");
     // Localize jQuery variable
     IriSP.jQuery = null;
     var $L = $LAB.script(IriSP.getLib("jQuery")).script(IriSP.getLib("swfObject")).wait().script(IriSP.getLib("jQueryUI"));
@@ -52,7 +51,6 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
     var _this = this;
     
     $L.wait(function() {
-        console.log("jQuery is loaded");
         IriSP.jQuery = window.jQuery.noConflict(true);
 
         var css_link_jquery = IriSP.jQuery("<link>", {
@@ -65,12 +63,10 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
             type : "text/css",
             href : _this.config.gui.css
         });
-        console.log('Appending CSS');
 
         css_link_jquery.appendTo('head');
         css_link_custom.appendTo('head');
         
-        console.log(_this);
         _this.onLibsLoaded();
         
     });
@@ -83,7 +79,6 @@ IriSP.Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {
     if (typeof _metadataInfo.url === "undefined" && typeof _metadataInfo.src !== "undefined") {
         _metadataInfo.url = _metadataInfo.src;
     }
-    console.log(_metadataInfo);
     if (typeof _metadataInfo.url !== "undefined" && typeof _metadataInfo.serializer !== "undefined") {
         return this.sourceManager.remoteSource(_metadataInfo);
     } else {
@@ -92,9 +87,7 @@ IriSP.Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {
 }
 
 IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
-    console.log("Libs Loaded");
     this.videoData = this.loadMetadata(this.video_metadata);
-    console.log(this.videoData);
     this.$ = IriSP.jQuery('#' + this.config.gui.container);
     this.$.css({
         "width": this.config.gui.width,
@@ -105,7 +98,6 @@ IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
     }
       
     var _this = this;
-    console.log("calling OnLoad");
     this.videoData.onLoad(function() {
         _this.onVideoDataLoaded();
     });
@@ -115,26 +107,33 @@ IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
     console.log("Video Data Loaded");
     if (typeof this.videoData !== "undefined" && typeof this.config.player.video === "undefined") {
         var _media = this.videoData.currentMedia;
+        console.log(_media);
         if (typeof _media !== "undefined") {
-            config.player.video = _media.video;
+            this.config.player.video = _media.video;
             if (typeof _media.streamer !== "undefined") {
-                config.player.streamer = _media.streamer;
-                config.player.video = _media.video.replace(_media.streamer,'');
+                this.config.player.streamer = _media.streamer;
+                this.config.player.video = _media.video.replace(_media.streamer,'');
             }
         }
         
     }
-    this.configurePopcorn(config.player);
+    this.configurePopcorn();
     this.widgets = [];
+    console.log("Now instantiating widgets");
     for(var i = 0; i < this.config.gui.widgets.length; i++) {
-        this.widgets.push(new IriSP.Widgets[_config.type](this, this.config.gui.widgets[i]));
+        var _widget = this.config.gui.widgets[i];
+        if (typeof IriSP[_widget.type] !== "undefined") {
+            this.widgets.push(new IriSP[_widget.type](this, _widget));
+        } else {
+            console.log("Error, Call to Undefined Widget Type");
+        }
     };
-    this.$('.Ldt-loader').detach();
+    this.$.find('.Ldt-loader').detach();
 }
 
 IriSP.Metadataplayer.prototype.configurePopcorn = function() {
     var pop,
-        ret = this.layoutDivs(),
+        ret = this.layoutDivs("video"),
         containerDiv = ret[0],
         spacerDiv = ret[1];
 
@@ -142,43 +141,45 @@ IriSP.Metadataplayer.prototype.configurePopcorn = function() {
      * using the spacer.
      */
     IriSP.jQuery("#" + spacerDiv).css("height", Math.max(1, this.config.gui.spacer_div_height) + "px");
+    
+    console.log(this.config.player);
 
-    switch(options.type) {
+    switch(this.config.player.type) {
         /*
          todo : dynamically create the div/video tag which
          will contain the video.
          */
         case "html5":
             var tmpId = Popcorn.guid("video");
-            IriSP.jQuery("#" + containerDiv).append("<video src='" + options.video + "' id='" + tmpId + "'></video>");
+            IriSP.jQuery("#" + containerDiv).append("<video src='" + this.config.player.video + "' id='" + tmpId + "'></video>");
 
             if(options.hasOwnProperty("width"))
-                IriSP.jQuery("#" + containerDiv).css("width", options.width);
+                IriSP.jQuery("#" + containerDiv).css("width", this.config.player.width);
 
             if(options.hasOwnProperty("height"))
-                IriSP.jQuery("#" + containerDiv).css("height", options.height);
+                IriSP.jQuery("#" + containerDiv).css("height", this.config.player.height);
             pop = Popcorn("#" + tmpId);
             break;
 
         case "jwplayer":
-            var opts = IriSP.jQuery.extend({}, options);
+            var opts = IriSP.jQuery.extend({}, this.config.player);
             delete opts.container;
             delete opts.type;
             opts.file = opts.video;
             delete opts.video;
 
-            if(!options.hasOwnProperty("flashplayer")) {
+            if(!opts.hasOwnProperty("flashplayer")) {
                 opts.flashplayer = IriSP.jwplayer_swf_path;
             }
 
-            if(!options.hasOwnProperty("controlbar.position")) {
+            if(!opts.hasOwnProperty("controlbar.position")) {
                 opts["controlbar.position"] = "none";
             }
             pop = new IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
             break;
 
         case "youtube":
-            var opts = IriSP.jQuery.extend({}, options);
+            var opts = IriSP.jQuery.extend({}, this.config.player);
             delete opts.container;
             opts.controls = 0;
             opts.autostart = false;
@@ -191,12 +192,12 @@ IriSP.Metadataplayer.prototype.configurePopcorn = function() {
             break;
 
         case "dailymotion":
-            pop = new IriSP.PopcornReplacement.dailymotion("#" + containerDiv, options);
+            pop = new IriSP.PopcornReplacement.dailymotion("#" + containerDiv, this.config.player);
             break;
 
         case "allocine":
             /* pass the options as-is to the allocine player and let it handle everything */
-            pop = new IriSP.PopcornReplacement.allocine("#" + containerDiv, options);
+            pop = new IriSP.PopcornReplacement.allocine("#" + containerDiv, this.config.player);
             break;
         
         default:
@@ -214,8 +215,8 @@ IriSP.Metadataplayer.prototype.layoutDivs = function(_name) {
     if (typeof(_name) === "undefined") {
        _name = "";
     }
-    var newDiv = IriSP.guid(this.container + "_widget_" + _name + "_"),
-        spacerDiv = IriSP.guid("LdtPlayer_spacer_"),
+    var newDiv = IriSP._.uniqueId(this.config.gui.container + "_widget_" + _name + "_"),
+        spacerDiv = IriSP._.uniqueId("LdtPlayer_spacer_"),
         divTempl = "<div id='{{id}}' style='width: {{width}}px; position: relative; clear: both;'></div>",
         spacerTempl = "<div id='{{spacer_id}}' style='width: {{width}}px; position: relative; height: {{spacer_div_height}}px;'></div>",
         divHtml = Mustache.to_html( divTempl,
@@ -227,11 +228,11 @@ IriSP.Metadataplayer.prototype.layoutDivs = function(_name) {
             {
                 spacer_id: spacerDiv,
                 width: this.config.gui.width,
-                spacer_div_height: this.config.gui.height
+                spacer_div_height: this.config.gui.spacer_div_height
             });
             
-    this.$.append(divCode);
-    this.$.append(spacerCode);
+    this.$.append(divHtml);
+    this.$.append(spacerHtml);
 
     return [newDiv, spacerDiv];
 };

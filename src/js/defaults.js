@@ -99,21 +99,21 @@ IriSP.widgetsDefaults = {
        lineWidth : 2
     },
     "AnnotationsListWidget" : {
-        ajax_mode : true, /* use ajax to get information about the annotations.
-         if set to false, only search in the annotations for the
-         current project. */
         /* the platform generates some funky urls. We replace them afterwards to point to the
          correct place - this setting will probably be overwritten by the platform
          implementers.
          Note that the player has to replace the variables between {{ and }} by its own values.
          */
-        ajax_url : "", //platform_url + "/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}",
-        ajax_granularity : 10000, /* how much ms should we look before and after the current timecode */
+        ajax_url : false, //platform_url + "/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}",
+        ajax_granularity : 300000, /* how much ms should we look before and after the current timecode */
         default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png",
         project_url : "", //platform_url + "/ldtplatform/ldt/front/player/"
         /* the beginning of a link to the new front */
         cinecast_version : false,
-        refresh_interval : 10000
+        annotation_type : false,
+        refresh_interval : 300000,
+        limit_count : 10,
+        newest_first : false
     },
     "StackGraphWidget" : {
          defaultcolor : "#585858",

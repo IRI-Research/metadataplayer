@@ -325,12 +325,12 @@ button.ui-button-icon-only  {
     height: 5px; margin: 9px 3px 0; background: #cccccc; border: 1px solid #999999; border-radius: 2px;
 }
 
-.Ldt-Ctrl-Volume-Cursor {
-    position: absolute; top: 2px; width: 6px; height: 19px; background: #a8a8a8; border: 1px solid #999999; border-radius: 2px;
+.Ldt-Ctrl-Volume-Control .ui-slider-handle {
+    width: 6px; height: 19px; background: #a8a8a8; border: 1px solid #999999; border-radius: 2px; top: -8px; margin-left: -4px;
     cursor: pointer;
 }
 
-.Ldt-Ctrl-Volume-Control:hover .Ldt-Ctrl-Volume-Cursor {
+.Ldt-Ctrl-Volume-Control:hover .ui-slider-handle {
      background: #F7268E;
 }
 

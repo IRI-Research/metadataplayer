@@ -5,7 +5,7 @@ IriSP.Model = {
     _SOURCE_STATUS_WAITING : 1,
     _SOURCE_STATUS_READY : 2,
     _ID_AUTO_INCREMENT : 0,
-    getAI : function() {
+    getUID : function() {
         return "autoid-" + (++this._ID_AUTO_INCREMENT);
     },
     isoToDate : function(_str) {
@@ -59,8 +59,9 @@ IriSP.Model.List = function(_directory) {
 IriSP.Model.List.prototype = new Array();
 
 IriSP.Model.List.prototype.getElement = function(_id) {
-    if (this.hasId(_id)) {
-        return this;
+    var _index = (IriSP._(this.idIndex).indexOf(_id));
+    if (_index !== -1) {
+        return this[_index];
     }
 }
 
@@ -100,15 +101,21 @@ IriSP.Model.List.prototype.filter = function(_callback) {
     return _res;
 }
 
+IriSP.Model.List.prototype.slice = function(_start, _end) {
+    var _res = new IriSP.Model.List(this.directory);
+    _res.addElements(Array.prototype.slice.call(this, _start, _end));
+    return _res;
+}
+
 /* Array has a sort function, but it's not as interesting as Underscore.js's sortBy
  * and won't return a new IriSP.Model.List
  */
 IriSP.Model.List.prototype.sortBy = function(_callback) {
     var _this = this,
         _res = new IriSP.Model.List(this.directory);
-    _res.contents = IriSP._(this).sortBy(function(_value, _key) {
+    _res.addElements(IriSP._(this).sortBy(function(_value, _key) {
         return _callback(_value, _key, _this);
-    });
+    }));
     return _res;
 }
 
@@ -133,6 +140,12 @@ IriSP.Model.List.prototype.searchByTextFields = function(_text) {
     var _rgxp = new RegExp('(' + _text.replace(/(\W)/gm,'\\$1') + ')','gim');
     return this.filter(function(_element) {
         return _rgxp.test(_element.description) || _rgxp.test(_element.title);
+    });
+}
+
+IriSP.Model.List.prototype.getTitles = function() {
+    return this.map(function(_el) {
+        return _el.title;
     });
 }
 
@@ -166,8 +179,7 @@ IriSP.Model.List.prototype.addIds = function(_array) {
 }
 
 IriSP.Model.List.prototype.addElements = function(_array) {
-    var _l = _array.length,
-        _this = this;
+    var _this = this;
     IriSP._(_array).forEach(function(_el) {
         _this.push(_el);
     });
@@ -238,10 +250,11 @@ IriSP.Model.Element = function(_id, _source) {
     this.elementType = 'element';
     if (typeof _source !== "undefined") {
         if (typeof _id === "undefined" || !_id) {
-            _id = IriSP.Model.getAI();
+            _id = IriSP.Model.getUID();
         }
         this.source = _source;
-        this.id = _source.getNamespaced(_id).fullname;
+        this.namespacedId = _source.getNamespaced(_id)
+        this.id = this.namespacedId.fullname;
         this.title = "";
         this.description = "";
         this.source.directory.addElement(this);
@@ -364,6 +377,10 @@ IriSP.Model.Annotation.prototype.getTags = function() {
     return this.getReference("tag");
 }
 
+IriSP.Model.Annotation.prototype.getTagTexts = function() {
+    return this.getTags().getTitles();
+}
+
 /* */
 
 IriSP.Model.Source = function(_config) {
@@ -376,7 +393,7 @@ IriSP.Model.Source = function(_config) {
         this.callbackQueue = [];
         this.contents = {};
         if (typeof this.namespace === "undefined") {
-            this.namespace = IriSP.Model.getAI();
+            this.namespace = IriSP.Model.getUID();
         }
         if (typeof this.namespaceUrl === "undefined") {
             this.namespaceUrl = (typeof this.url !== "undefined" ? this.url : this.namespaceUrl);
@@ -463,31 +480,39 @@ IriSP.Model.Source.prototype.listNamespaces = function(_excludeSelf) {
 }
 
 IriSP.Model.Source.prototype.get = function() {
-    this.status = IriSP.Model._SOURCE_STATUS_READY;
+    this.status = IriSP.Model._SOURCE_STATUS_WAITING;
+    this.handleCallbacks();
+}
+
+/* We defer the callbacks calls so they execute after the queue is cleared */
+IriSP.Model.Source.prototype.deferCallback = function(_callback) {
     var _this = this;
-    if (_this.callbackQueue.length) {
-        IriSP._(_this.callbackQueue).forEach(function(_callback) {
-            _callback.call(_this);
-        });
+    IriSP._.defer(function() {
+        _callback.call(_this);
+    });
+}
+
+IriSP.Model.Source.prototype.handleCallbacks = function() {
+    this.status = IriSP.Model._SOURCE_STATUS_READY;
+    while (this.callbackQueue.length) {
+        this.deferCallback(this.callbackQueue.splice(0,1)[0]);
     }
-    _this.callbackQueue = [];
+}
+
+IriSP.Model.Source.prototype.onLoad = function(_callback) {
+    if (this.status === IriSP.Model._SOURCE_STATUS_READY) {
+        this.deferCallback(_callback);
+    } else {
+        this.callbackQueue.push(_callback);
+    }
 }
 
 IriSP.Model.Source.prototype.serialize = function() {
     return this.serializer.serialize(this);
 }
 
-IriSP.Model.Source.prototype.onLoad = function(_callback) {
-    if (this.status === IriSP.Model._SOURCE_STATUS_READY) {
-        console.log("Called on load, Ready");
-        var _this = this;
-        IriSP._.defer(function() {
-            _callback.call(_this);
-        });        
-    } else {
-        console.log("Called on load, not ready");
-        this.callbackQueue.push(_callback);
-    }
+IriSP.Model.Source.prototype.deSerialize = function(_data) {
+    this.serializer.deSerialize(_data, this);
 }
 
 IriSP.Model.Source.prototype.getAnnotations = function() {
@@ -506,6 +531,13 @@ IriSP.Model.Source.prototype.getAnnotationTypeByTitle = function(_title) {
     var _res = this.getAnnotationTypes().searchByTitle(_title);
     if (_res.length) {
         return _res[0];
+    }
+}
+
+IriSP.Model.Source.prototype.getAnnotationsByTypeTitle = function(_title) {
+    var _annType = this.getAnnotationTypeByTitle(_title);
+    if (typeof _annType !== "undefined") {
+        return _annType.getAnnotations();
     }
 }
 
@@ -528,15 +560,8 @@ IriSP.Model.RemoteSource.prototype.get = function() {
     this.status = IriSP.Model._SOURCE_STATUS_WAITING;
     var _this = this;
     IriSP.jQuery.getJSON(this.url, function(_result) {
-        _this.serializer.deSerialize(_result, _this);
-        console.log('Received data, we have '+_this.callbackQueue.length+' callbacks waiting');
-        if (_this.callbackQueue.length) {
-            IriSP._(_this.callbackQueue).forEach(function(_callback) {
-                _callback.call(_this);
-            });
-        }
-        _this.callbackQueue = [];
-        _this.status = IriSP.Model._SOURCE_STATUS_READY;
+        _this.deSerialize(_result);
+        _this.handleCallbacks();
     });
 }
 

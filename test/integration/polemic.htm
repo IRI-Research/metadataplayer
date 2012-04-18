@@ -24,12 +24,12 @@
   IriSP.libFiles.defaultDir = "/metadataplayer/src/js/libs/";
 IriSP.jwplayer_swf_path = "../libs/player.swf";
     var _metadata = {
-        url: 'polemic_fr.json',
+        url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/13b0aa52-336b-11e0-b233-00145ea49a02?callback=?',
         format: 'ldt'
     };
     var _config = {            
-        gui:{
-            width:640,
+        gui: {
+        width:640,
             height:800,              
             container:'LdtPlayer',
 			default_options: {
@@ -58,7 +58,6 @@ IriSP.jwplayer_swf_path = "../libs/player.swf";
             {type: "SparklineWidget",
              width: 640,
              height: 50},
-            {type: "SliderWidget"},
             {type: "PlayerWidget"},
             {type: "SegmentsWidget",
              requires: [{
@@ -73,15 +72,23 @@ IriSP.jwplayer_swf_path = "../libs/player.swf";
             {type: "TweetsWidget"},
             {type: "createAnnotationWidget"},
             {type: "TagCloudWidget",
-            excludeWords: ['#museoweb']},
-            {type: "AnnotationsListWidget",
-            container: "AnnotationsListContainer",
-            ajax_mode: false}, */
+            excludeWords: ['#museoweb']},, */
 //            {type: "TraceWidget"}
+                {
+                    type: "PlayerWidget"
+                },
+                {
+                    type: "HelloWorldWidget"
+                },
+                {
+                    type: "AnnotationsListWidget",
+                /*    ajax_url : "http://ldt.iri.centrepompidou.fr/ldt/api/ldt/segments/{{media}}/{{begin}}/{{end}}", */
+                    container: "AnnotationsListContainer"
+                }
             ]
         },
       player:{
-          type:'jwplayer', // player type - 
+          type:'jwplayer', // player type
           live: true, 
           height: 300, 
           width: 640, 

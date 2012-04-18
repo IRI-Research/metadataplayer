@@ -20,12 +20,12 @@ IriSP.Widget = function(player, config) {
     
     /* Setting all the configuration options */
     var _type = config.type,
-        _config = IriSP._.defaults({}, config, _player.config.gui.default_options, IriSP.widgetsDefaults[_type]),
+        _config = IriSP._.defaults({}, config, player.config.gui.default_options, IriSP.widgetsDefaults[_type]),
         _this = this;
     
     /* Creating containers if needed */
     if (typeof _config.container === "undefined") {
-        var _divs = _player.layoutDivs(_type);
+        var _divs = player.layoutDivs(_type);
         _config.container = _divs[0];
         _config.spacer = _divs[1];
     }
@@ -40,30 +40,47 @@ IriSP.Widget = function(player, config) {
     this.player = player;
     
     /* Getting metadata */
-    this.source = _player.loadMetadata(this.metadata);
+    this.source = player.loadMetadata(this.metadata);
     
     /* Call draw when loaded */
     this.source.onLoad(function() {
         _this.draw();
-    })
+    });
    
     /* Adding classes and html attributes */
-    this.selector = IriSP.jQuery(this.container);
-    this.selector.addClass("Ldt-TraceMe").addClass("Ldt-Widget").attr("widget-type", _type);
+    console.log(this.container);
+    this.$ = IriSP.jQuery('#' + this.container);
+    this.$.addClass("Ldt-TraceMe").addClass("Ldt-Widget").attr("widget-type", _type);
     
     /* Does the widget require other widgets ? */
     if (typeof this.requires !== "undefined") {
         for (var _i = 0; _i < this.requires.length; _i++) {
             var _subconfig = this.requires[_i],
                 _div = IriSP.jQuery('<div>');
-            _subconfig.container = IriSP.guid(this.container + '_' + _subconfig.type + '_');
+            _subconfig.container = IriSP._.uniqueId(this.container + '_' + _subconfig.type + '_');
             _div.id = _subconfig.container;
-            this.selector.append(_div);
-            this[_subconfig.type] = new IriSP.Widgets(_player, _subconfig);
+            this.$.append(_div);
+            this[_subconfig.type] = new IriSP.Widgets(player, _subconfig);
         }
     }
     
 };
+
+IriSP.Widget.prototype.functionWrapper = function(_name) {
+    var _this = this,
+        _function = this[_name];
+    if (typeof _function !== "undefined") {
+        return function() {
+            return _function.apply(_this, Array.prototype.slice.call(arguments, 0));
+        }
+    } else {
+        console.log("Error, Unknown function IriSP." + this.type + "." + _name)
+    }
+}
+
+IriSP.Widget.prototype.bindPopcorn = function(_popcornEvent, _functionName) {
+    this.player.popcorn.listen(_popcornEvent, this.functionWrapper(_functionName))
+}
 
 /**
  * This method responsible of drawing a widget on screen.

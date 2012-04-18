@@ -8,13 +8,15 @@ IriSP.PopcornReplacement = {
  */
 IriSP.PopcornReplacement.player = function(container, options) {
   /* the jwplayer calls the callbacks in the global space so we need to 
-     preserve them using IriSP.wrap */
+     preserve them this way */
+    var _this = this;
+    
   this.callbacks = {
-      onReady:  IriSP.wrap(this, this.__initApi),
-      onTime:   IriSP.wrap(this, this.__timeHandler),
-      onPlay:   IriSP.wrap(this, this.__playHandler),
-      onPause:  IriSP.wrap(this, this.__pauseHandler),
-      onSeek:   IriSP.wrap(this, this.__seekHandler) 
+      onReady:  IriSP._.bind(this.__initApi, this),
+      onTime:   IriSP._.bind(this.__timeHandler, this),
+      onPlay:   IriSP._.bind(this.__playHandler, this),
+      onPause:  IriSP._.bind(this.__pauseHandler, this),
+      onSeek:   IriSP._.bind(this.__seekHandler, this) 
   };
   
   this.media = { 
@@ -80,23 +82,6 @@ IriSP.PopcornReplacement.player.prototype.__initApi = function() {
     }
   }
 };
-
-/*
-IriSP.PopcornReplacement.jwplayer = function(container, options) {
-  IriSP.PopcornReplacement._container = container.slice(1); //eschew the '#'
-  options.events = {
-      onReady: IriSP.PopcornReplacement.__initApi,
-      onTime: IriSP.PopcornReplacement.__timeHandler,
-      onPlay: IriSP.PopcornReplacement.__playHandler,
-      onPause: IriSP.PopcornReplacement.__pauseHandler,
-      onSeek: IriSP.PopcornReplacement.__seekHandler 
-      }
-    
-  jwplayer(IriSP.PopcornReplacement._container).setup(options);
-  IriSP.PopcornReplacement.media.duration = options.duration;
-  return IriSP.PopcornReplacement;
-};
-*/
 
 IriSP.PopcornReplacement.player.prototype.currentTime = function(time) {
   if (typeof(time) === "undefined") {        
