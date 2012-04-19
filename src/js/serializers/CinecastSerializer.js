@@ -116,15 +116,15 @@ IriSP.serializers.cinecast = {
                     },
                     begin : _data.begin.milliseconds,
                     end : _data.begin.milliseconds,
-                    media : _source.unNamespace(_data.media.contents),
-                    type : _source.unNamespace(_data.annotationType.contents),
+                    media : _source.unNamespace(_data.media.id),
+                    type : _source.unNamespace(_data.annotationType.id),
                     meta : {
                         created : IriSP.Model.dateToIso(_data.created),
                         creator : _data.creator,
                         creator_name : _data.title
                     },
-                    tags : _data.getTags().map(function(_el) {
-                        return _source.unNamespace(_el.id)
+                    tags : _data.tag.id.map(function(_id) {
+                        return _source.unNamespace(_id)
                     })
                 }
             }
@@ -154,7 +154,13 @@ IriSP.serializers.cinecast = {
         });
         return _res;
     },
+    loadData : function(_url, _callback) {
+        IriSP.jQuery.getJSON(_url, _callback)
+    },
     deSerialize : function(_data, _source) {
+        if (typeof _data !== "object" && _data === null) {
+            return;
+        }
         if (typeof _data.imports !== "undefined") {
             IriSP._(_data.imports).forEach(function(_import) {
                 _source.directory.namespaces[_import.id] = _import.url;

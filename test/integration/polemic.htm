@@ -29,7 +29,7 @@ IriSP.jwplayer_swf_path = "../libs/player.swf";
     };
     var _config = {            
         gui: {
-        width:640,
+            width:640,
             height:800,              
             container:'LdtPlayer',
 			default_options: {
@@ -78,11 +78,16 @@ IriSP.jwplayer_swf_path = "../libs/player.swf";
                     type: "PlayerWidget"
                 },
                 {
+                    type: "PolemicNewWidget"
+                },
+                {
                     type: "HelloWorldWidget"
                 },
                 {
                     type: "AnnotationsListWidget",
-                /*    ajax_url : "http://ldt.iri.centrepompidou.fr/ldt/api/ldt/segments/{{media}}/{{begin}}/{{end}}", */
+                    ajax_url : "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?",
+                    foreign_url : "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}",
+                    annotation_type : "tweet",
                     container: "AnnotationsListContainer"
                 }
             ]

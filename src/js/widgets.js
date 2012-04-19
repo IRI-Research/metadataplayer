@@ -34,6 +34,10 @@ IriSP.Widget = function(player, config) {
        _this[_key] = _value;
     });
     
+    if (typeof this.width === "undefined") {
+        this.width = player.config.gui.width;
+    }
+    
     /* Setting this.player at the end in case it's been overriden
      * by a configuration option of the same name :-(
      */

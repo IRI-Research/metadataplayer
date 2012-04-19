@@ -77,8 +77,8 @@ IriSP.serializers.ldt = {
             serialized_name : "annotations",
             deserializer : function(_data, _source) {
                 var _res = new IriSP.Model.Annotation(_data.id, _source);
-                _res.title = _data.content.title;
-                _res.description = _data.content.description;
+                _res.title = _data.content.title || "";
+                _res.description = _data.content.description || "";
                 _res.created = IriSP.Model.isoToDate(_data.meta["dc:created"]);
                 var _c = parseInt(_data.color).toString(16);
                 while (_c.length < 6) {
@@ -91,6 +91,7 @@ IriSP.serializers.ldt = {
                 _res.setBegin(_data.begin);
                 _res.setEnd(_data.end);
                 _res.creator = _data.meta["dc:creator"];
+                _res.project = _data.meta.project;
                 return _res;
             },
             serializer : function(_data, _source) {
@@ -100,13 +101,14 @@ IriSP.serializers.ldt = {
                         title : _data.title,
                         description : _data.description
                     },
-                    media : _source.unNamespace(_data.media.contents),
+                    media : _source.unNamespace(_data.media.id),
                     meta : {
-                        "id-ref" : _source.unNamespace(_data.annotationType.contents),
+                        "id-ref" : _source.unNamespace(_data.annotationType.id),
                         "dc:created" : IriSP.Model.dateToIso(_data.created),
-                        "dc:creator" : _data.creator
+                        "dc:creator" : _data.creator,
+                        project : _source.projectId
                     },
-                    tags : _data.getTags().map(function(_el, _id) {
+                    tags : IriSP._(_data.tag.id).map(function(_d) {
                        return {
                            "id-ref" : _source.unNamespace(_id)
                        } 
@@ -127,7 +129,13 @@ IriSP.serializers.ldt = {
         });
         return _res;
     },
+    loadData : function(_url, _callback) {
+        IriSP.jQuery.getJSON(_url, _callback)
+    },
     deSerialize : function(_data, _source) {
+        if (typeof _data !== "object" && _data === null) {
+            return;
+        }
         IriSP._(this.types).forEach(function(_type, _typename) {
             var _listdata = _data[_type.serialized_name];
             if (typeof _listdata !== "undefined") {
@@ -143,6 +151,10 @@ IriSP.serializers.ldt = {
                 _source.addList(_typename, _list);
             }
         });
+        
+        if (typeof _data.meta !== "undefined") {
+            _source.projectId = _data.meta.id;
+        }
         
         if (typeof _data.meta !== "undefined" && typeof _data.meta.main_media !== "undefined" && typeof _data.meta.main_media["id-ref"] !== "undefined") {
             _source.setCurrentMediaId(_data.meta.main_media["id-ref"]);

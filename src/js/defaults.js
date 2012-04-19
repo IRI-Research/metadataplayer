@@ -104,20 +104,25 @@ IriSP.widgetsDefaults = {
          implementers.
          Note that the player has to replace the variables between {{ and }} by its own values.
          */
-        ajax_url : false, //platform_url + "/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}",
+        ajax_url : false,
+        /* URL when the annotations are to be reloaded from an LDT-like segment API
+         * e.g. http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?
+         */
         ajax_granularity : 300000, /* how much ms should we look before and after the current timecode */
         default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png",
-        project_url : "", //platform_url + "/ldtplatform/ldt/front/player/"
-        /* the beginning of a link to the new front */
+        foreign_url : "",
+        /* URL when the annotation is not in the current project,
+         * e.g. http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}
+         */
         cinecast_version : false,
         annotation_type : false,
-        refresh_interval : 300000,
+        refresh_interval : 0,
         limit_count : 10,
         newest_first : false
     },
     "StackGraphWidget" : {
-         defaultcolor : "#585858",
-         tags : [
+        defaultcolor : "#585858",
+        tags : [
             {
                 "keywords" : [ "++" ],
                 "description" : "positif",
@@ -140,5 +145,34 @@ IriSP.widgetsDefaults = {
             }
         ],
         streamgraph : false
+    },
+    "PolemicNewWidget" : {
+        element_width : 5,
+        element_height : 5,
+        annotation_type : "tweet",
+        defaultcolor : "#585858",
+        foundcolor : "#fc00ff",
+        tags : [
+            {
+                "keywords" : [ "++" ],
+                "description" : "positif",
+                "color" : "#1D973D"
+            },
+            {
+                "keywords" : [ "--" ],
+                "description" : "negatif",
+                "color" : "#CE0A15"
+            },
+            {
+                "keywords" : [ "==" ],
+                "description" : "reference",
+                "color" : "#C5A62D"  
+            },
+            {
+                "keywords" : [ "??" ],
+                "description" : "question",
+                "color" : "#036AAE"
+            }
+        ]
     }
 }
