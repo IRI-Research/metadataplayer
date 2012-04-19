@@ -62,7 +62,8 @@
                             height : 160,
                         }]
                     }, {
-                        type : "SlideShareWidget"
+                        type : "SlideShareWidget",
+                        container : "MySlideShareContainer"
                     }, {
                         type : "createAnnotationWidget",
                         polemic_mode : false,
@@ -97,6 +98,7 @@
             IriSP.initPlayer(config, json_url);
 
         </script>
+    <div id="MySlideShareContainer" style="float: left; width: 400px;"></div>
     <div id="MyListContainer" style="float: left; width: 400px;"></div>
     </body>
 </html>

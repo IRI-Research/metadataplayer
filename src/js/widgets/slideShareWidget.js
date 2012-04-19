@@ -9,8 +9,13 @@ IriSP.SlideShareWidget.prototype = new IriSP.Widget();
 IriSP.SlideShareWidget.prototype.draw = function() {
   var self = this;
   
+  // If the div supposed to host the slides does not exist, we cancel
+  if(this.selector.length==0){
+	  if(console){ if(console.log){ console.log("No div for slideshare widget, this widget is canceled. id = " + this._id); } }
+	  return;
+  }
   var templ = Mustache.to_html(IriSP.slideShareWidget_template);
-  this.selector.append(templ);
+  this.selector.html(templ);
   
   // Synchro management
   this._disableUpdate = false;
@@ -36,7 +41,8 @@ IriSP.SlideShareWidget.prototype.draw = function() {
   var annotations = this._serializer._data.annotations;
   var view_type = this._serializer.getSlideShareType();
   if(typeof(view_type) === "undefined") {
-    return;  
+	  if(console){ if(console.log){ console.log("No annotation-type for slideshare widget, this widget is canceled."); } }
+	  return;
   }
   var i = 0;
   this.segments_slides = [];
