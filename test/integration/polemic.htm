@@ -35,7 +35,7 @@ IriSP.jwplayer_swf_path = "../libs/player.swf";
 			default_options: {
 				metadata: _metadata
 			},
-            css:'../../src/css/LdtPlayer.css',
+            css:'../../src/css/LdtPlayer-release.css',
             widgets: [
  /*           {type: "PolemicWidget",
              width: 640,
@@ -75,17 +75,20 @@ IriSP.jwplayer_swf_path = "../libs/player.swf";
             excludeWords: ['#museoweb']},, */
 //            {type: "TraceWidget"}
                 {
+                    type: "SliderWidget"
+                },
+                {
                     type: "PlayerWidget"
                 },
                 {
-                    type: "PolemicNewWidget"
+                    type: "PolemicWidget"
                 },
                 {
                     type: "HelloWorldWidget"
                 },
                 {
                     type: "AnnotationsListWidget",
-                    ajax_url : "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?",
+                    ajax_url : "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?", 
                     foreign_url : "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}",
                     annotation_type : "tweet",
                     container: "AnnotationsListContainer"

@@ -59,12 +59,15 @@ IriSP.Widget = function(player, config) {
     /* Does the widget require other widgets ? */
     if (typeof this.requires !== "undefined") {
         for (var _i = 0; _i < this.requires.length; _i++) {
-            var _subconfig = this.requires[_i],
-                _div = IriSP.jQuery('<div>');
-            _subconfig.container = IriSP._.uniqueId(this.container + '_' + _subconfig.type + '_');
-            _div.id = _subconfig.container;
-            this.$.append(_div);
-            this[_subconfig.type] = new IriSP.Widgets(player, _subconfig);
+            var _subconfig = this.requires[_i];
+            if (typeof IriSP[_subconfig.type] !== "undefined") {
+                _subconfig.container = IriSP._.uniqueId(this.container + '_' + _subconfig.type + '_');
+                this.$.append(IriSP.jQuery('<div>').attr("id",_subconfig.container));
+                console.log(this.$.html());
+                this[_subconfig.type] = new IriSP[_subconfig.type](player, _subconfig);
+            } else {
+                console.log("Error, Call to Undefined Widget Type : "+_subconfig.type);
+            }
         }
     }
     

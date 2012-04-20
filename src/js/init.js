@@ -40,7 +40,7 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
 
     /* widget specific requirements */
     for(var _i = 0; _i < this.config.gui.widgets.length; _i++) {
-        if(this.config.gui.widgets[_i].type === "PolemicWidget" || this.config.gui.widgets[_i].type === "StackGraphWidget" || this.config.gui.widgets[_i].type === "SparklineWidget") {
+        if(this.config.gui.widgets[_i].type === "StackGraphWidget" || this.config.gui.widgets[_i].type === "SparklineWidget") {
             $L.script(IriSP.getLib("raphael"));
         }
         if(this.config.gui.widgets[_i].type === "TraceWidget") {
@@ -104,10 +104,8 @@ IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
 }
 
 IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
-    console.log("Video Data Loaded");
     if (typeof this.videoData !== "undefined" && typeof this.config.player.video === "undefined") {
         var _media = this.videoData.currentMedia;
-        console.log(_media);
         if (typeof _media !== "undefined") {
             this.config.player.video = _media.video;
             if (typeof _media.streamer !== "undefined") {
@@ -119,13 +117,12 @@ IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
     }
     this.configurePopcorn();
     this.widgets = [];
-    console.log("Now instantiating widgets");
     for(var i = 0; i < this.config.gui.widgets.length; i++) {
         var _widget = this.config.gui.widgets[i];
         if (typeof IriSP[_widget.type] !== "undefined") {
             this.widgets.push(new IriSP[_widget.type](this, _widget));
         } else {
-            console.log("Error, Call to Undefined Widget Type");
+            console.log("Error, Call to Undefined Widget Type : "+_widget.type);
         }
     };
     this.$.find('.Ldt-loader').detach();
@@ -136,13 +133,6 @@ IriSP.Metadataplayer.prototype.configurePopcorn = function() {
         ret = this.layoutDivs("video"),
         containerDiv = ret[0],
         spacerDiv = ret[1];
-
-    /* insert one pixel of margin between the video and the first widget,
-     * using the spacer.
-     */
-    IriSP.jQuery("#" + spacerDiv).css("height", Math.max(1, this.config.gui.spacer_div_height) + "px");
-    
-    console.log(this.config.player);
 
     switch(this.config.player.type) {
         /*
@@ -217,18 +207,20 @@ IriSP.Metadataplayer.prototype.layoutDivs = function(_name) {
     }
     var newDiv = IriSP._.uniqueId(this.config.gui.container + "_widget_" + _name + "_"),
         spacerDiv = IriSP._.uniqueId("LdtPlayer_spacer_"),
-        divTempl = "<div id='{{id}}' style='width: {{width}}px; position: relative; clear: both;'></div>",
-        spacerTempl = "<div id='{{spacer_id}}' style='width: {{width}}px; position: relative; height: {{spacer_div_height}}px;'></div>",
-        divHtml = Mustache.to_html( divTempl,
-            {
-                id: newDiv,
-                width: this.config.gui.width
+        divHtml = IriSP.jQuery('<div>')
+            .attr("id",newDiv)
+            .css({
+                width: this.config.gui.width + "px",
+                position: "relative",
+                clear: "both"
             }),
-        spacerHtml = Mustache.to_html( spacerTempl,
-            {
-                spacer_id: spacerDiv,
-                width: this.config.gui.width,
-                spacer_div_height: this.config.gui.spacer_div_height
+        spacerHtml = IriSP.jQuery('<div>')
+            .attr("id",spacerDiv)
+            .css({
+                width: this.config.gui.width + "px",
+                height: this.config.gui.spacer_div_height + "px",
+                position: "relative",
+                clear: "both"
             });
             
     this.$.append(divHtml);

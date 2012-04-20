@@ -5,7 +5,6 @@ IriSP.libFiles = {
     inDefaultDir : {
         jQuery : "jquery.min.js",
         jQueryUI : "jquery-ui.min.js",
-        jQueryToolTip : "jquery.tools.min.js",
         swfObject : "swfobject.js",
         cssjQueryUI : "jquery-ui.css",
         popcorn : "popcorn.js",
@@ -22,7 +21,6 @@ IriSP.libFiles = {
     },
     cdn : {
         jQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.js",
-        jQueryToolTip : "http://cdn.jquerytools.org/1.2.4/all/jquery.tools.min.js",
         swfObject : "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
         cssjQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css"
     },
@@ -47,7 +45,9 @@ IriSP.widgetsDefaults = {
         tweet_display_period : 10000 // how long do we show a tweet ?
     },
     "SliderWidget" : {
-        minimize_period : 850 // how long does the slider stays maximized after the user leaves the zone ?
+        minimized_height : 4,
+        maximized_height : 10,
+        minimize_timeout : 1500 // time before minimizing slider after mouseout
     },
     "SegmentsWidget" : {
         cinecast_version : false
@@ -146,7 +146,7 @@ IriSP.widgetsDefaults = {
         ],
         streamgraph : false
     },
-    "PolemicNewWidget" : {
+    "PolemicWidget" : {
         element_width : 5,
         element_height : 5,
         annotation_type : "tweet",
@@ -172,6 +172,11 @@ IriSP.widgetsDefaults = {
                 "keywords" : [ "??" ],
                 "description" : "question",
                 "color" : "#036AAE"
+            }
+        ],
+        requires : [
+            {
+                type: "TooltipWidget"
             }
         ]
     }

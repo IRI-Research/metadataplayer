@@ -1,0 +1,25 @@
+/* ToolTip Widget */
+
+.Ldt-Tooltip {
+  position: absolute;
+  padding : 3px;
+  z-index: 10000000000;
+  max-width: 200px;
+  background: transparent url("imgs/white_arrow_long.png");
+  font-size: 12px;
+  height: 115px;
+  width: 180px;
+  padding: 15px 15px 20px;
+  color: black;
+  font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
+  overflow:hidden;
+}
+
+.Ldt-Tooltip-Color {
+    float: left; margin: 2px 4px 2px 0; width: 10px; height: 10px;
+}
+
+.Ldt-Tooltip img {
+    max-width: 140px; max-height: 70px; margin: 0 20px;
+}
+

@@ -1,171 +1,105 @@
-IriSP.SliderWidget = function(Popcorn, config, Serializer) {
-  IriSP.Widget.call(this, Popcorn, config, Serializer);
+/*
+ The Slider Widget fits right under the video
+ */
+
+IriSP.SliderWidget = function(player, config) {
+    IriSP.Widget.call(this, player, config);
+    this.bindPopcorn("timeupdate","onTimeupdate");
+    this.bindPopcorn("IriSP.PlayerWidget.MouseOver","onMouseover");
+    this.bindPopcorn("IriSP.PlayerWidget.MouseOut","onMouseout");
 };
 
 IriSP.SliderWidget.prototype = new IriSP.Widget();
 
 IriSP.SliderWidget.prototype.draw = function() {
-  var self = this;
-
-  this.selector.append(Mustache.to_html(IriSP.sliderWidget_template, {}));
-  this.selector.addClass("Ldt-SliderMinimized");
-
-  this.sliderBackground = this.selector.find(".Ldt-sliderBackground");
-  this.sliderForeground = this.selector.find(".Ldt-sliderForeground");
-  this.positionMarker = this.selector.find(".Ldt-sliderPositionMarker");
-
-
-  // a special variable to stop methods from tinkering
-  // with the positionMarker when the user is dragging it
-  this.draggingOngoing = false;
-
-  // another special variable used by the timeout handler to
-  // open or close the slider.
-  this.sliderMaximized = false;
-  this.timeOutId = null;
-
-  
-  this.positionMarker.draggable({axis: "x",
-  start: IriSP.wrap(this, this.positionMarkerDraggingStartedHandler),
-  stop: IriSP.wrap(this, this.positionMarkerDraggedHandler),
-  containment: "parent"
-  });
-  this.positionMarker.css("position", "absolute");
-  
-  this.sliderBackground.click(function(event) { self.backgroundClickHandler.call(self, event); });
-  this.sliderForeground.click(function(event) { self.foregroundClickHandler.call(self, event); });
-
-  this.selector.hover(IriSP.wrap(this, this.mouseOverHandler), IriSP.wrap(this, this.mouseOutHandler));
-
-  // update the positions
-  this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.sliderUpdater));
-
-  // special messages :
-  this._Popcorn.listen("IriSP.PlayerWidget.MouseOver", IriSP.wrap(this, this.mouseOverHandler));
-  this._Popcorn.listen("IriSP.PlayerWidget.MouseOut", IriSP.wrap(this, this.mouseOutHandler));
+    
+    this.$slider = IriSP.jQuery('<div>')
+        .addClass("Ldt-Slider")
+        .css(this.calculateSliderCss(this.minimized_height));
+    
+    this.$.append(this.$slider);
+    
+    var _this = this;
+    
+    this.$slider.slider({
+        range: "min",
+        value: 0,
+        min: 0,
+        max: this.source.getDuration().getSeconds(),
+        slide: function(event, ui) {
+            _this.player.popcorn.currentTime(ui.value);
+        }
+    });
+    
+    this.$handle = this.$slider.find('.ui-slider-handle');
+    
+    this.$handle.css(this.calculateHandleCss(this.minimized_height));
+    
+    this.$
+        .mouseover(this.functionWrapper("onMouseover"))
+        .mouseout(this.functionWrapper("onMouseout"));
+    
+    this.maximized = false;
+    this.timeoutId = false;
 };
 
-/* update the slider and the position marker as time passes */
-IriSP.SliderWidget.prototype.sliderUpdater = function() {
-  if(this.draggingOngoing || this._disableUpdate)
-    return;
-  
-  var time = this._Popcorn.currentTime();
+IriSP.SliderWidget.prototype.onTimeupdate = function() {
+    this.$slider.slider("value",this.player.popcorn.currentTime());
+}
 
-  var duration = this.getDuration() / 1000;
-  var percents = time / duration;
-  
-  /* we do these complicated calculations to center exactly
-     the position Marker */
+IriSP.SliderWidget.prototype.onMouseover = function() {
+    if (this.timeoutId) {
+        window.clearTimeout(this.timeoutId);
+        this.timeoutId = false;
+    }
+    if (!this.maximized) {
+       this.animateToHeight(this.maximized_height);
+       this.maximized = true;
+    }
+}
 
-  var divWidth = this.selector.width();
-  var pixels = Math.floor(this.selector.width() * percents);
-  var positionMarker_width = this.positionMarker.width();
-  var correction = (positionMarker_width / 2);
+IriSP.SliderWidget.prototype.onMouseout = function() {
+    if (this.timeoutId) {
+        window.clearTimeout(this.timeoutId);
+        this.timeoutId = false;
+    }
+    var _this = this;
+    this.timeoutId = window.setTimeout(function() {
+        if (_this.maximized) {
+            _this.animateToHeight(_this.minimized_height);
+            _this.maximized = false;
+        }
+        _this.timeoutId = false;
+    }, this.minimize_timeout);
+    
+}
 
-  /* check that we don't leave the left side */
-  var newPos = pixels - correction;
-  if (newPos <= 0)
-    newPos = 0;
-  
-  /* check that we don't leave the right side */
-  var rightEdgePos = pixels + 1 * correction;
+IriSP.SliderWidget.prototype.animateToHeight = function(_height) {
+    this.$slider.stop().animate(
+        this.calculateSliderCss(_height),
+        500,
+        function() {
+            IriSP.jQuery(this).css("overflow","visible");
+        });
+    this.$handle.stop().animate(
+        this.calculateHandleCss(_height),
+        500,
+        function() {
+            IriSP.jQuery(this).css("overflow","visible");
+        });
+}
 
-  if (rightEdgePos >= divWidth)
-    newPos = divWidth - 1 * correction - 1;
-  
-  this.sliderForeground.css("width", pixels + "px");
-  this.positionMarker.css("left", newPos + "px");
+IriSP.SliderWidget.prototype.calculateSliderCss = function(_size) {
+    return {
+        height: _size + "px",
+        "margin-top": (this.minimized_height - _size) + "px"
+    };
+}
 
-};
-
-IriSP.SliderWidget.prototype.backgroundClickHandler = function(event) {
-  /* this piece of code is a little bit convoluted - here's how it works :
-     we want to handle clicks on the progress bar and convert those to seeks in the media.
-     However, jquery only gives us a global position, and we want a number of pixels relative
-     to our container div, so we get the parent position, and compute an offset to this position,
-     and finally compute the progress ratio in the media.
-     Finally we multiply this ratio with the duration to get the correct time
-  */
-
-  var parentOffset = this.sliderBackground.parent().offset();
-  var width = this.sliderBackground.width();
-  var relX = event.pageX - parentOffset.left;
-
-  var duration = this.getDuration() / 1000;
-  var newTime = ((relX / width) * duration).toFixed(2);
-
-  this._Popcorn.currentTime(newTime);
-};
-
-/* same function as the previous one, except that it handles clicks
-   on the foreground element */
-IriSP.SliderWidget.prototype.foregroundClickHandler = function(event) {
-  var parentOffset = this.sliderForeground.parent().offset();
-  var width = this.sliderBackground.width();
-  var relX = event.pageX - parentOffset.left;
-
-  var duration = this.getDuration() / 1000;
-  var newTime = ((relX / width) * duration).toFixed(2);
-
-  this._Popcorn.currentTime(newTime);
-};
-
-/* handles mouse over the slider */
-IriSP.SliderWidget.prototype.mouseOverHandler = function(event) {
-  
-  if (this.timeOutId !== null) {
-    window.clearTimeout(this.timeOutId);
-  }
- 
-  this.sliderMaximized = true;
-
-  this.sliderBackground.animate({"height": "9px"}, 100);
-  this.sliderForeground.animate({"height": "9px"}, 100);
-  this.positionMarker.animate({"height": "9px", "width": "9px"}, 100);
-  //this.positionMarker.css("margin-top", "-4px");
-  
-//  this.selector.removeClass("Ldt-SliderMinimized");
-//  this.selector.addClass("Ldt-SliderMaximized");
-};
-
-/* handles when the mouse leaves the slider */
-IriSP.SliderWidget.prototype.mouseOutHandler = function(event) {
-
-  this.timeOutId = window.setTimeout(IriSP.wrap(this, this.minimizeOnTimeout),
-                                     this.minimize_period);
-};
-
-IriSP.SliderWidget.prototype.minimizeOnTimeout = function(event) {
-  this.sliderBackground.animate({"height": "5px"}, 100);
-  this.sliderForeground.animate({"height": "5px"}, 100);
-  this.positionMarker.animate({"height": "5px", "width": "5px"}, 100);
-  this.positionMarker.css("margin-top", "0px");
-  this.sliderMinimized = true;
-  
-//  this.selector.removeClass("Ldt-SliderMaximized");
-//  this.selector.addClass("Ldt-SliderMinimized");
-
-};
-
-// called when the user starts dragging the position indicator
-IriSP.SliderWidget.prototype.positionMarkerDraggingStartedHandler = function(event, ui) {  
-  this.draggingOngoing = true;
-};
-
-IriSP.SliderWidget.prototype.positionMarkerDraggedHandler = function(event, ui) {   
-
-/*  this._disableUpdate = true; // disable slider position updates while dragging is ongoing.
-  window.setTimeout(IriSP.wrap(this, function() { this._disableUpdate = false; }), 500);
-*/
-  var parentOffset = this.sliderForeground.parent().offset();
-  var width = this.sliderBackground.width();
-  var relX = event.originalEvent.pageX - parentOffset.left;
-
-  var duration = this.getDuration() / 1000;
-  var newTime = ((relX / width) * duration).toFixed(2);
-  this._Popcorn.currentTime(newTime);
-  
-  this.draggingOngoing = false;
-};
-
+IriSP.SliderWidget.prototype.calculateHandleCss = function(_size) {
+    return {
+        height: (2 + _size) + "px",
+        width: (2 + _size) + "px",
+        "margin-left": -Math.ceil(2 + _size / 2) + "px" 
+    }
+}

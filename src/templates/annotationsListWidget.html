@@ -3,28 +3,24 @@
     <ul class='Ldt-AnnotationsList-ul'>
         {{#annotations}}
         <li id='Ldt-Annotation-li-{{id}}' class='Ldt-AnnotationsList-li Ldt-TraceMe'>
-            {{#url}} <a href='{{url}}'> {{/url}}
-                <img class='Ldt-AnnotationsList-Thumbnail' src='{{thumbnail}}' />
-            </a>
-            <div class='Ldt-AnnotationsList-Duration'>
-                <span class='Ldt-AnnotationsList-Begin'>{{begin}}</span>
-                <span class='Ldt-AnnotationsList-TcSeparator'>-</span>
-                <span class='Ldt-AnnotationsList-End'>{{end}}</span>
+            <div class='Ldt-AnnotationsList-ThumbContainer'>
+                <a href='{{url}}'>
+                    <img class='Ldt-AnnotationsList-Thumbnail' src='{{thumbnail}}' />
+                </a>
             </div>
-            <div class='Ldt-AnnotationsList-Title'>
-            {{#url}} <a href='{{url}}'> {{/url}}
-                {{title}}
-            </a>
-            </div>
-            <div class='Ldt-AnnotationsList-Description'>
-                {{description}}
-            </div>
+            <div class='Ldt-AnnotationsList-Duration'>{{begin}} - {{end}}</div>
+            <h3 class='Ldt-AnnotationsList-Title'>
+                <a href='{{url}}'>{{title}}</a>
+            </h3>
+            <p class='Ldt-AnnotationsList-Description'>{{description}}</p>
             {{#tags.length}}
             <ul class='Ldt-AnnotationsList-Tags'>
                 {{#tags}}
+                {{#.}}
                 <li class='Ldt-AnnotationsList-Tag-Li'>
                     <div class='Ldt-AnnotationsList-Tag-Div'>{{.}}</div>
                 </li>
+                {{/.}}
                 {{/tags}}
             </ul>
             {{/tags.length}}

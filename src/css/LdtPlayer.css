@@ -395,6 +395,8 @@ button.ui-button-icon-only  {
   background-position:0 -1808px;
 }
 
+/* Tooltip Widget */
+
 .tip{
   position: absolute;
   padding : 3px;
@@ -411,7 +413,7 @@ button.ui-button-icon-only  {
 }
 
 .tipcolor {
-    float: left; margin: 2px 4px 2px 0;
+    float: left; margin: 2px 4px 2px 0; width: 10px; height: 10px;
 }
 
 .tip img {
@@ -907,7 +909,7 @@ li.Ldt-AnnotationsList-li {
 .Ldt-AnnotationsList-Thumb-Placeholder {
   float: left;
   height: 64px;
-  width: 64px;
+  width: 30px;
   background-image: url('imgs/video_sequence.png');
 }
 
@@ -915,7 +917,7 @@ li.Ldt-AnnotationsList-li {
     border: none;
     float: left;
     max-width: 64px;
-    max-height: 64px;
+    max-height: 30px;
 }
 
 .Ldt-AnnotationsList-Duration {  
@@ -924,13 +926,12 @@ li.Ldt-AnnotationsList-li {
 }
 
 .Ldt-AnnotationsList-Title {
-  color: #0068c4;
-  font-size: 13px;
-  margin: 0 0 2px 64px;
+    color: #0068c4;
+    font-size: 13px;
+    margin: 0 0 2px 64px;
 }
 
 .Ldt-AnnotationsList-Description {
-    clear: both;
     margin: 2px 0;
 }
 

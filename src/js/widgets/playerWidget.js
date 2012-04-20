@@ -49,9 +49,9 @@ IriSP.PlayerWidget.prototype.draw = function() {
     this.$.append(_html);
     
     // Define blocks
-    this.$playButton = this.$.find(".Ldt-CtrlPlay");
-    this.$searchBlock = this.$.find(".LdtSearch");
-    this.$searchInput = this.$.find(".LdtSearchInput");
+    this.$playButton = this.$.find(".Ldt-Ctrl-Play");
+    this.$searchBlock = this.$.find(".Ldt-Ctrl-Search");
+    this.$searchInput = this.$.find(".Ldt-Ctrl-SearchInput");
     this.$volumeBar = this.$.find(".Ldt-Ctrl-Volume-Bar");
     
     // handle events
@@ -67,15 +67,15 @@ IriSP.PlayerWidget.prototype.draw = function() {
     // handle clicks
     this.$playButton.click(this.functionWrapper("playHandler"));
     
-    this.$.find(".Ldt-CtrlAnnotate").click(function() {
+    this.$.find(".Ldt-Ctrl-Annotate").click(function() {
         _this.player.popcorn.trigger("IriSP.PlayerWidget.AnnotateButton.clicked");
     });
-    this.$.find(".Ldt-CtrlSearch").click(this.functionWrapper("searchButtonHandler"));
+    this.$.find(".Ldt-Ctrl-SearchBtn").click(this.functionWrapper("searchButtonHandler"));
     
     this.$searchInput.keyup(this.functionWrapper("searchHandler") );
   
 	var _volctrl = this.$.find(".Ldt-Ctrl-Volume-Control");
-    this.$.find('.Ldt-CtrlSound')
+    this.$.find('.Ldt-Ctrl-Sound')
         .click(this.functionWrapper("muteHandler"))
         .mouseover(function() {
             _volctrl.show();
@@ -124,8 +124,8 @@ IriSP.PlayerWidget.prototype.timeDisplayUpdater = function() {
         
     _elapsedTime.setSeconds(_curTime);
   
-    this.$.find(".Ldt-ElapsedTime").html(_elapsedTime.toString());
-    this.$.find(".Ldt-TotalTime").html(_totalTime.toString());
+    this.$.find(".Ldt-Ctrl-Time-Elapsed").html(_elapsedTime.toString());
+    this.$.find(".Ldt-Ctrl-Time-Total").html(_totalTime.toString());
     this._previousSecond = _curTime;
 };
 
@@ -141,13 +141,13 @@ IriSP.PlayerWidget.prototype.playButtonUpdater = function() {
     /* the background sprite is changed by adding/removing the correct classes */
         this.$playButton
             .attr("title", IriSP.i18n.getMessage('play'))
-            .removeClass("Ldt-CtrlPlay-PauseState")
-            .addClass("Ldt-CtrlPlay-PlayState");
+            .removeClass("Ldt-Ctrl-Play-PauseState")
+            .addClass("Ldt-Ctrl-Play-PlayState");
     } else {
         this.$playButton
             .attr("title", IriSP.i18n.getMessage('pause'))
-            .removeClass("Ldt-CtrlPlay-PlayState")
-            .addClass("Ldt-CtrlPlay-PauseState");
+            .removeClass("Ldt-Ctrl-Play-PlayState")
+            .addClass("Ldt-Ctrl-Play-PauseState");
     }
 };
 
@@ -173,14 +173,14 @@ IriSP.PlayerWidget.prototype.volumeUpdater = function() {
     if (_vol === false) {
         _vol = .5;
     }
-    var _soundCtl = this.$.find(".Ldt-CtrlSound");
-    _soundCtl.removeClass("Ldt-CtrlSound-Mute Ldt-CtrlSound-Half Ldt-CtrlSound-Full");
+    var _soundCtl = this.$.find(".Ldt-Ctrl-Sound");
+    _soundCtl.removeClass("Ldt-Ctrl-Sound-Mute Ldt-Ctrl-Sound-Half Ldt-Ctrl-Sound-Full");
     if (_muted) {        
         _soundCtl.attr("title", IriSP.i18n.getMessage('unmute'))
-            .addClass("Ldt-CtrlSound-Mute");    
+            .addClass("Ldt-Ctrl-Sound-Mute");    
     } else {
         _soundCtl.attr("title", IriSP.i18n.getMessage('mute'))
-            .addClass(_vol < .5 ? "Ldt-CtrlSound-Half" : "Ldt-CtrlSound-Full" )
+            .addClass(_vol < .5 ? "Ldt-Ctrl-Sound-Half" : "Ldt-Ctrl-Sound-Full" )
     }
     this.$volumeBar.slider("value", _muted ? 0 : 100 * _vol);
 };
@@ -213,7 +213,6 @@ IriSP.PlayerWidget.prototype.hideSearchBlock = function() {
 
 /** react to clicks on the search button */
 IriSP.PlayerWidget.prototype.searchButtonHandler = function() {
-    
     if ( this.$searchBlock.is(":hidden") ) {
         this.showSearchBlock();
         this.$searchInput.val(this._searchLastValue);      

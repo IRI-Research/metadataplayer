@@ -1,0 +1,14 @@
+/* Slider Widget */
+
+.Ldt-Slider {
+    border: none; border-radius: 0; padding: 0; margin: 0; background: #B6B8B8;
+}
+
+.Ldt-Slider .ui-slider-handle {
+    border-radius: 8px; top: -2px; background: #fc00ff; border: 1px solid #ffffff;
+}
+
+.Ldt-Slider .ui-slider-range {
+    background: #747474;
+}
+

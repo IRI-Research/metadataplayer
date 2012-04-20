@@ -137,7 +137,7 @@ IriSP.AnnotationsListWidget.prototype.refresh = function(_forceRedraw) {
     }
     
     if (this.ajax_url && this.ajax_granularity) {
-        if (Math.abs(_currentTime - this.lastAjaxQuery) > this.ajax_granularity / 2) {
+        if (Math.abs(_currentTime - this.lastAjaxQuery) > (this.ajax_granularity / 2000)) {
             this.ajaxSource();
         }
     }

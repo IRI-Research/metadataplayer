@@ -8,3 +8,6 @@ build/LdtPlayer.min.js
 *.orig
 src/js/site.js
 doc/jsdoc/*
+
+syntax: regexp
+^src/css/LdtPlayer-release\.css$

@@ -1,29 +1,29 @@
 {{! template for the radio player }}
-<div class='Ldt-controler'>
-	<div class='Ldt-LeftPlayerControls'>
-        <div class='Ldt-Ctrl-button Ldt-CtrlPlay Ldt-CtrlPlay-PlayState Ldt-TraceMe' title='{{l10n.play_pause}}'></div>
+<div class='Ldt-Ctrl'>
+	<div class='Ldt-Ctrl-Left'>
+        <div class='Ldt-Ctrl-button Ldt-Ctrl-Play Ldt-Ctrl-Play-PlayState Ldt-TraceMe' title='{{l10n.play_pause}}'></div>
         <div class='Ldt-Ctrl-spacer'></div>
         {{^disable_annotate_btn}}
-    	<div class='Ldt-Ctrl-button Ldt-CtrlAnnotate Ldt-TraceMe' title='{{l10n.annotate}}'></div>
+    	<div class='Ldt-Ctrl-button Ldt-Ctrl-Annotate Ldt-TraceMe' title='{{l10n.annotate}}'></div>
         <div class='Ldt-Ctrl-spacer'></div>
         {{/disable_annotate_btn}}
         {{^disable_search_btn}}
-        <div class='Ldt-Ctrl-button Ldt-CtrlSearch Ldt-TraceMe' title='{{l10n.search}}'></div>
+        <div class='Ldt-Ctrl-button Ldt-Ctrl-SearchBtn Ldt-TraceMe' title='{{l10n.search}}'></div>
         <div class='Ldt-Ctrl-spacer'></div>
         {{/disable_search_btn}}
-        <div class='LdtSearch'>
-          <input class='LdtSearchInput Ldt-TraceMe'></input>
+        <div class='Ldt-Ctrl-Search'>
+          <input class='Ldt-Ctrl-SearchInput Ldt-TraceMe'></input>
         </div>
 	</div>
-	<div class='Ldt-RightPlayerControls'>
+	<div class='Ldt-Ctrl-Right'>
         <div class='Ldt-Ctrl-spacer'></div>
-        <div class='Ldt-Time'>
-          <div class='Ldt-ElapsedTime' title='{{l10n.elapsed_time}}'>00:00</div>
-          <div class='Ldt-TimeSeparator'>/</div>
-          <div class='Ldt-TotalTime' title='{{l10n.total_time}}'>00:00</div>
+        <div class='Ldt-Ctrl-Time'>
+          <div class='Ldt-Ctrl-Time-Elapsed' title='{{l10n.elapsed_time}}'>00:00</div>
+          <div class='Ldt-Ctrl-Time-Separator'>/</div>
+          <div class='Ldt-Ctrl-Time-Total' title='{{l10n.total_time}}'>00:00</div>
         </div>
         <div class='Ldt-Ctrl-spacer'></div>
-		<div class='Ldt-Ctrl-button Ldt-CtrlSound Ldt-CtrlSound-Full Ldt-TraceMe' title='{{l10n.mute_unmute}}'></div>
+		<div class='Ldt-Ctrl-button Ldt-Ctrl-Sound Ldt-Ctrl-Sound-Full Ldt-TraceMe' title='{{l10n.mute_unmute}}'></div>
 	</div>
 	<div class='Ldt-Ctrl-Volume-Control' title='{{l10n.volume_control}}'>
 	    <div class='Ldt-Ctrl-Volume-Bar'></div>
