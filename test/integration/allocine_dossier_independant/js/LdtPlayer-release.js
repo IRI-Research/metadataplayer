@@ -1115,7 +1115,7 @@ IriSP.player_template = "{{! template for the radio player }}<div class='Ldt-con
 IriSP.search_template = "{{! template for the search container }}<div class='LdtSearchContainer'	style='margin-left: {{margin_left}}; position: absolute; margin-top: -60px;'>	<div class='LdtSearch'		style='display: none; background-color: #EEE; width: 165px; border-color: #CFCFCF; position: absolute; text-align: center;'>		<input class='LdtSearchInput'			style='margin-top: 1px; margin-bottom: 2px;' />	</div></div><div class='cleaner'></div>";
 IriSP.share_template = "{{! social network sharing template }}<a onclick='__IriSP.MyApiPlayer.share(\'delicious\');' title='{{l10n.share_on}} delicious'><span class='share shareDelicious'>&nbsp;</span></a>		<a onclick='__IriSP.MyApiPlayer.share(\'facebook\');' title='{{l10n.share_on}} facebook'> <span class='share shareFacebook'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'twitter\');' title='{{l10n.share_on}} twitter'>  <span class='share shareTwitter'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'myspace\');' title='{{l10n.share_on}} Myspace'>  <span class='share shareMySpace'>&nbsp;</span></a>";
 IriSP.sliceWidget_template = "{{! template for the slice widget }}<div class='Ldt-sliceWidget'>  {{! the whole bar }}  <div class='Ldt-sliceBackground'></div>    <div class='Ldt-sliceLeftHandle'></div>  {{! the zone which represents our slice }}  <div class='Ldt-sliceZone'></div>     <div class='Ldt-sliceRightHandle'></div></div>";
-IriSP.slideShareWidget_template = "{{! template for the slideShare widget of the other }}<div class='Ldt-SlideShare'><!-- >p class='sync_links'><a class='sync_on'>Synchronise</a> - <a class='sync_off'>Ne synchronise pas</a></p--><div class='SlideShareContainer'></div></div>";
+IriSP.slideShareWidget_template = "{{! template for the slideShare widget of the other }}<div class='Ldt-SlideShare'><!--p> class='sync_links'><a class='sync_on'>Synchronise</a> - <a class='sync_off'>Ne synchronise pas</a></p--><div class='SlideShareContainer'></div></div>";
 IriSP.sliderWidget_template = "{{! template for the slider widget - it's composed of two divs we one overlayed on top    of the other }}<div class='Ldt-sliderBackground'></div><div class='Ldt-sliderForeground'></div><div class='Ldt-sliderPositionMarker Ldt-TraceMe'></div>";
 IriSP.tooltip_template = "{{! template used by the jquery ui tooltip }}<div class='Ldt-tooltip'>  <div class='title'>{{title}}</div>  <div class='time'>{{begin}} : {{end}} </div>  <div class='description'>{{description}}</div></div>";
 IriSP.tooltipWidget_template = "{{! template for the tooltip widget }}<div class='tip'>	<div class='tipcolor' style='height:10px;width:10px'></div>	<div class='tiptext'></div>";
@@ -1675,7 +1675,7 @@ IriSP.libFiles = {
         jQueryUI : "jquery-ui.min.js",
         jQueryToolTip : "jquery.tools.min.js",
         swfObject : "swfobject.js",
-        cssjQueryUI : "jquery-ui.css",
+        //cssjQueryUI : "jquery-ui.css",
         popcorn : "popcorn.js",
         jwplayer : "jwplayer.js",
         raphael : "raphael.js",
@@ -1736,6 +1736,7 @@ IriSP.widgetsDefaults = {
         random_tags : false,
         show_from_field : false,
         disable_share : false,
+        return_delay : 10000,
         polemic_mode : true, /* enable polemics ? */
         polemics : [{
             "className" : "positive",
@@ -3619,7 +3620,7 @@ IriSP.createAnnotationWidget.prototype.handleButtonClick = function(event) {
                       if (_this._state == "waitScreen") {
                         _this.showEndScreen(annotation);
                         if (_this.cinecast_version) {
-                          window.setTimeout(function() { _this.showStartScreen(); }, typeof this.disable_share !== "undefined" && this.disable_share ? 5000 : 10000);
+                          window.setTimeout(function() { _this.showStartScreen(); }, _this.return_delay);
                         }
                       }
                       // hide the slicer widget
@@ -4898,8 +4899,13 @@ IriSP.SlideShareWidget.prototype = new IriSP.Widget();
 IriSP.SlideShareWidget.prototype.draw = function() {
   var self = this;
   
+  // If the div supposed to host the slides does not exist, we cancel
+  if(this.selector.length==0){
+	  if(console){ if(console.log){ console.log("No div for slideshare widget, this widget is canceled. id = " + this._id); } }
+	  return;
+  }
   var templ = Mustache.to_html(IriSP.slideShareWidget_template);
-  this.selector.append(templ);
+  this.selector.html(templ);
   
   // Synchro management
   this._disableUpdate = false;
@@ -4910,7 +4916,9 @@ IriSP.SlideShareWidget.prototype.draw = function() {
   this.zoneLeft = 0;
   this.zoneWidth = 0;
   // global variable to save the last slide url
-  this.lastSlide = "";
+  this.lastSSFullUrl = "";
+  this.lastSSUrl = "";
+  this.lastSSId = "";
   this.containerDiv = this.selector.find('.SlideShareContainer');
   
   // Update the slide from timeupdate event
@@ -4923,7 +4931,8 @@ IriSP.SlideShareWidget.prototype.draw = function() {
   var annotations = this._serializer._data.annotations;
   var view_type = this._serializer.getSlideShareType();
   if(typeof(view_type) === "undefined") {
-    return;  
+	  if(console){ if(console.log){ console.log("No annotation-type for slideshare widget, this widget is canceled."); } }
+	  return;
   }
   var i = 0;
   this.segments_slides = [];
@@ -4955,38 +4964,54 @@ IriSP.SlideShareWidget.prototype.slideShareUpdater = function() {
     var segment_slide = this.segments_slides[i];
     if(segment_slide.begin<time && time<segment_slide.end){
     	found = true;
-    	if(segment_slide.content.description!=this.lastSlide){
+    	if(segment_slide.content.description!=this.lastSSFullUrl){
 			// The url is like http://stuf.com#X and X is the slide number. So we split and save it.
-    		this.lastSlide = segment_slide.content.description;
-    		var description_ar = this.lastSlide.split("#");
-    		console.log("description_ar = " + description_ar);
-    		var slideUrl = description_ar[0];
-    		var slideNb = description_ar[1];
-    		// We have the slideshare oembed url.
-    		var url = "http://www.slideshare.net/api/oembed/2?format=jsonp&url=" + slideUrl;
-    		
-    		IriSP.jQuery.ajax({
-				url: url,
-				dataType: "jsonp",
-				success: function(data) {
-					ss_id = data["slideshow_id"];
-					embed_code = data["html"];
-					// If slideNb exist, we hack the embed code to add ?startSlide=X
-					if(slideNb){
-						embed_code = embed_code.replace(new RegExp("embed_code/"+ss_id), "embed_code/" + ss_id + "?startSlide=" + slideNb);
+    		this.lastSSFullUrl = segment_slide.content.description;
+    		var description_ar = this.lastSSFullUrl.split("#id=");
+    		var slideNb = 1;
+    		if(description_ar[1]){
+    			slideNb = description_ar[1];
+    		}
+    		if(description_ar[0]!=this.lastSSUrl){
+    			this.lastSSUrl = description_ar[0];
+	    		// We have the slideshare oembed url.
+	    		var url = "http://www.slideshare.net/api/oembed/1?format=jsonp&url=" + this.lastSSUrl;
+	    		
+	    		IriSP.jQuery.ajax({
+					url: url,
+					dataType: "jsonp",
+					success: function(data) {
+						self.lastSSId = data["slideshow_id"];
+						embed_code = data["html"];
+						// If slideNb exist, we hack the embed code to add ?startSlide=X
+						if(slideNb){
+							embed_code = embed_code.replace(new RegExp("ssplayer2.swf\\?","g"), "ssplayer2.swf?startSlide=" + slideNb + "&");
+						}
+						self.containerDiv.html(embed_code);
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						self.containerDiv.html("Error while downloading the slideshow. jqXHR = " + jqXHR + ", textStatus = " + textStatus + ", errorThrown = " + errorThrown);
 					}
-					self.containerDiv.html(embed_code);
-				},
-				error: function(jqXHR, textStatus, errorThrown){
-					self.containerDiv.html("Error while downloading the slideshow. jqXHR = " + jqXHR + ", textStatus = " + textStatus + ", errorThrown = " + errorThrown);
-				}
-    		});
+	    		});
+    		}
+    		else{
+    			// If the presentation was already loaded, we only use the ss js api to load the wanted slide number
+    			if(this.lastSSId!=""){
+    				// We get the embed flash element
+    				var embed = document.getElementsByName("__sse" + this.lastSSId)[0];
+    				if(embed){
+    					embed.jumpTo(parseInt(slideNb));
+    				}
+    			}
+    		}
     		return;
     	}
     }
   }
   if(found==false){
-  	this.lastSlide = "";
+	this.lastSSFullUrl = "";
+	this.lastSSUrl = "";
+	this.lastSSId = "";
   	this.containerDiv.html("");
   }
 
