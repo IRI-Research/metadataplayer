@@ -9,7 +9,9 @@ IriSP.PopcornReplacement = {
 IriSP.PopcornReplacement.player = function(container, options) {
   /* the jwplayer calls the callbacks in the global space so we need to 
      preserve them this way */
-    var _this = this;
+  if (typeof IriSP._ === "undefined") {
+      return;
+  }
     
   this.callbacks = {
       onReady:  IriSP._.bind(this.__initApi, this),

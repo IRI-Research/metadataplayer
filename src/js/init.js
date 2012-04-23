@@ -5,9 +5,13 @@ exemple json configuration:
 /* The Metadataplayer Object, single point of entry, replaces IriSP.init_player */
 
 IriSP.Metadataplayer = function(config, video_metadata) {
-    IriSP._.defaults(config.gui, IriSP.guiDefaults);
+    for (var key in IriSP.guiDefaults) {
+        if (IriSP.guiDefaults.hasOwnProperty(key) && !config.gui.hasOwnProperty('key')) {
+            config.gui[key] = IriSP.guiDefaults[key]
+        }
+    }
     var _container = document.getElementById(config.gui.container);
-    _container.innerHTML = IriSP.templToHTML(IriSP.loading_template, config.gui);
+    _container.innerHTML = '<div class="Ldt-Loader">Loading... Chargement...</div>';
     this.video_metadata = video_metadata;
     this.sourceManager = new IriSP.Model.Directory();
     this.config = config;
@@ -21,7 +25,7 @@ IriSP.Metadataplayer.prototype.toString = function() {
 IriSP.Metadataplayer.prototype.loadLibs = function() {
     // Localize jQuery variable
     IriSP.jQuery = null;
-    var $L = $LAB.script(IriSP.getLib("jQuery")).script(IriSP.getLib("swfObject")).wait().script(IriSP.getLib("jQueryUI"));
+    var $L = $LAB.script(IriSP.getLib("underscore")).script(IriSP.getLib("Mustache")).script(IriSP.getLib("jQuery")).script(IriSP.getLib("swfObject")).wait().script(IriSP.getLib("jQueryUI"));
 
     if(this.config.player.type === "jwplayer" || this.config.player.type === "allocine" || this.config.player.type === "dailymotion") {
         // load our popcorn.js lookalike
@@ -40,7 +44,7 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
 
     /* widget specific requirements */
     for(var _i = 0; _i < this.config.gui.widgets.length; _i++) {
-        if(this.config.gui.widgets[_i].type === "StackGraphWidget" || this.config.gui.widgets[_i].type === "SparklineWidget") {
+        if(this.config.gui.widgets[_i].type === "Sparkline") {
             $L.script(IriSP.getLib("raphael"));
         }
         if(this.config.gui.widgets[_i].type === "TraceWidget") {
@@ -52,23 +56,31 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
     
     $L.wait(function() {
         IriSP.jQuery = window.jQuery.noConflict(true);
-
-        var css_link_jquery = IriSP.jQuery("<link>", {
-            rel : "stylesheet",
-            type : "text/css",
-            href : IriSP.getLib("cssjQueryUI")
-        });
-        var css_link_custom = IriSP.jQuery("<link>", {
-            rel : "stylesheet",
-            type : "text/css",
-            href : _this.config.gui.css
-        });
-
-        css_link_jquery.appendTo('head');
-        css_link_custom.appendTo('head');
+        IriSP._ = window._.noConflict();
+        
+        IriSP.loadCss(IriSP.getLib("cssjQueryUI"))
+        IriSP.loadCss(_this.config.gui.css);
         
         _this.onLibsLoaded();
         
+    });
+}
+
+IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
+    console.log('OnLibsLoaded');
+    this.videoData = this.loadMetadata(this.video_metadata);
+    this.$ = IriSP.jQuery('#' + this.config.gui.container);
+    this.$.css({
+        "width": this.config.gui.width,
+        "clear": "both"
+    });
+    if (typeof this.config.gui.height !== "undefined") {
+        this.$.css("height", this.config.gui.height);
+    }
+      
+    var _this = this;
+    this.videoData.onLoad(function() {
+        _this.onVideoDataLoaded();
     });
 }
 
@@ -86,23 +98,6 @@ IriSP.Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {
     }
 }
 
-IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
-    this.videoData = this.loadMetadata(this.video_metadata);
-    this.$ = IriSP.jQuery('#' + this.config.gui.container);
-    this.$.css({
-        "width": this.config.gui.width,
-        "clear": "both"
-    });
-    if (typeof this.config.gui.height !== "undefined") {
-        this.$.css("height", this.config.gui.height);
-    }
-      
-    var _this = this;
-    this.videoData.onLoad(function() {
-        _this.onVideoDataLoaded();
-    });
-}
-
 IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
     if (typeof this.videoData !== "undefined" && typeof this.config.player.video === "undefined") {
         var _media = this.videoData.currentMedia;
@@ -117,15 +112,36 @@ IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
     }
     this.configurePopcorn();
     this.widgets = [];
+    var _this = this;
     for(var i = 0; i < this.config.gui.widgets.length; i++) {
-        var _widget = this.config.gui.widgets[i];
-        if (typeof IriSP[_widget.type] !== "undefined") {
-            this.widgets.push(new IriSP[_widget.type](this, _widget));
-        } else {
-            console.log("Error, Call to Undefined Widget Type : "+_widget.type);
-        }
+        this.loadWidget(this.config.gui.widgets[i], function(_widget) {
+            _this.widgets.push(_widget)
+        });
     };
-    this.$.find('.Ldt-loader').detach();
+    this.$.find('.Ldt-Loader').detach();
+}
+
+IriSP.Metadataplayer.prototype.loadWidget = function(_widgetConfig, _callback) {
+    /* Creating containers if needed */
+    if (typeof _widgetConfig.container === "undefined") {
+        var _divs = this.layoutDivs(_widgetConfig.type);
+        _widgetConfig.container = _divs[0];
+    }
+    
+    var _this = this;
+    
+    if (typeof IriSP.Widgets[_widgetConfig.type] !== "undefined") {
+        IriSP._.defer(function() {
+            _callback(new IriSP.Widgets[_widgetConfig.type](_this, _widgetConfig));
+        });
+    } else {
+        /* Loading Widget CSS   */
+        IriSP.loadCss(IriSP.widgetsDir + '/' + _widgetConfig.type + '.css');
+        /* Loading Widget JS    */
+        $LAB.script(IriSP.widgetsDir + '/' + _widgetConfig.type + '.js').wait(function() {
+            _callback(new IriSP.Widgets[_widgetConfig.type](_this, _widgetConfig));
+        });
+    }
 }
 
 IriSP.Metadataplayer.prototype.configurePopcorn = function() {

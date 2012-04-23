@@ -3,7 +3,7 @@
 .Ldt-Ctrl {
   font-size: 10px;
   font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-  background:url('imgs/player_gradient.png') repeat-x transparent ;
+  background:url('img/player_gradient.png') repeat-x transparent ;
   height: 25px;
   border: 1px solid #b6b8b8;
   position: relative;
@@ -20,7 +20,7 @@
 .Ldt-Ctrl-button {
   float: left;
   width: 30px; height: 25px;
-  background: url('imgs/player-sprites.png');
+  background: url('img/player-sprites.png');
   cursor: pointer;
 }
 
@@ -157,7 +157,7 @@
 .Ldt-Ctrl-Volume-Control {
     display: none;
   position: absolute;
-  background:url('imgs/player_gradient.png') repeat-x transparent ;
+  background:url('img/player_gradient.png') repeat-x transparent ;
   height: 25px;
   width: 100px; top: 25px; right: -1px; z-index: 100;
   padding: 0 2px;

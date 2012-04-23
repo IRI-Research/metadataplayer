@@ -70,11 +70,6 @@ IriSP.serializers.cinecast = {
                 _res.title = _data.meta.creator_name;
                 _res.description = _data.content.data;
                 _res.created = IriSP.Model.isoToDate(_data.meta.created);
-                var _c = parseInt(_data.color).toString(16);
-                while (_c.length < 6) {
-                    _c = '0' + _c;
-                }
-                _res.color = '#' + _c;
                 _res.setMedia(_data.media, _source);
                 _res.setAnnotationType(_data.type);
                 _res.setTags(IriSP._(_data.tags).map(function(_t) {

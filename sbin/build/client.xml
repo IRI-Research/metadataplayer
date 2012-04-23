@@ -37,21 +37,11 @@
             </sequential>
         </for>
     </target>
-    <target name="buildcss" description="Build the CSS Files">
-        <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../src/css/LdtPlayer-release.css">
-            <!-- Has to be with the images -->
-            <filelist dir="../../src/css/" files="base.css" />
-            <!-- widgets -->
-            <fileset dir="../../src/css/widgets" casesensitive="yes">
-                <include name="**/*.css"/>
-            </fileset>
-        </concat>
-    </target>
-    <target name="concatenate" description="Build the developer release file" depends="make_templates,buildcss">
-        <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-release.js">
+    <target name="concatenate" description="Build the developer release file" depends="make_templates">
+        <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-core.js">
             <filelist dir="../../src/js/" files="header.js" />
             <filelist dir="../../src/js/libs"
-            files="lab.js mustache.js underscore.js"/>
+            files="lab.js"/>
             <!-- required file before everything else -->
             <filelist dir="../../src/js" files="main.js" />
             <!-- templates -->
@@ -60,14 +50,6 @@
             <filelist dir="../../src/js" files="utils.js pop.js model.js defaults.js widgets.js modules.js layout.js init.js i18n.js" />
             <!-- players -->
             <fileset dir="../../src/js/players" casesensitive="yes">
-                <include name="**/*.js"/>
-            </fileset>
-            <!-- modules -->
-            <fileset dir="../../src/js/modules" casesensitive="yes">
-                <include name="**/*.js"/>
-            </fileset>
-            <!-- widgets -->
-            <fileset dir="../../src/js/widgets" casesensitive="yes">
                 <include name="**/*.js"/>
             </fileset>
             <!-- serializers -->

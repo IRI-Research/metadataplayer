@@ -1,17 +1,18 @@
 /* this widget displays a small tooltip */
-IriSP.TooltipWidget = function(Popcorn, config, Serializer) {
-    IriSP.Widget.call(this, Popcorn, config, Serializer);
+IriSP.Widgets.Tooltip = function(Popcorn, config, Serializer) {
+    IriSP.Widgets.Widget.call(this, Popcorn, config, Serializer);
 };
 
-IriSP.TooltipWidget.prototype = new IriSP.Widget();
+IriSP.Widgets.Tooltip.prototype = new IriSP.Widgets.Widget();
 
-IriSP.TooltipWidget.prototype.draw = function() {
-    var _html = Mustache.to_html(IriSP.tooltipWidget_template),
-        _this = this;
+IriSP.Widgets.Tooltip.prototype.template = '<div class="Ldt-Tooltip"><div class="Ldt-Tooltip-Color"></div><div class="Ldt-Tooltip-Text"></div></div>';
+
+IriSP.Widgets.Tooltip.prototype.draw = function() {
+    _this = this;
+    this.$.html(this.template);
     this.$.parent().css({
         "position" : "relative"
     });
-    this.$.append(_html);
     this.$tip = this.$.find(".Ldt-Tooltip");
     this.$.mouseover(function() {
         _this.$tip.hide();
@@ -19,7 +20,7 @@ IriSP.TooltipWidget.prototype.draw = function() {
     this.hide();
 };
 
-IriSP.TooltipWidget.prototype.show = function(x, y, text, color) {
+IriSP.Widgets.Tooltip.prototype.show = function(x, y, text, color) {
     
     if (typeof color !== "undefined") {
         this.$.find(".Ldt-Tooltip-Color").show().css("background-color", color);
@@ -36,6 +37,6 @@ IriSP.TooltipWidget.prototype.show = function(x, y, text, color) {
     });
 };
 
-IriSP.TooltipWidget.prototype.hide = function() {
+IriSP.Widgets.Tooltip.prototype.hide = function() {
     this.$tip.hide();
 };

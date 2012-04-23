@@ -1,5 +1,26 @@
 /* utils.js - various utils that don't belong anywhere else */
 
+IriSP.getLib = function(lib) {
+    if (IriSP.libFiles.useCdn && typeof IriSP.libFiles.cdn[lib] == "string") {
+        return IriSP.libFiles.cdn[lib];
+    }
+    if (typeof IriSP.libFiles.locations[lib] == "string") {
+        return IriSP.libFiles.locations[lib];
+    }
+    if (typeof IriSP.libFiles.inDefaultDir[lib] == "string") {
+        return IriSP.libFiles.defaultDir + IriSP.libFiles.inDefaultDir[lib];
+    }
+}
+
+IriSP.loadCss = function(_cssFile) {
+    IriSP.jQuery("<link>", {
+        rel : "stylesheet",
+        type : "text/css",
+        href : _cssFile
+    }).appendTo('head');
+}
+
+/*
 IriSP.padWithZeros = function(num) {
   if (Math.abs(num) < 10) {
     return "0" + num.toString();
@@ -10,7 +31,7 @@ IriSP.padWithZeros = function(num) {
 
 /* convert a number of milliseconds to a tuple of the form 
    [hours, minutes, seconds]
-*/
+
 IriSP.msToTime = function(ms) {
   return IriSP.secondsToTime(ms / 1000);
 }
@@ -38,7 +59,7 @@ IriSP.formatTweet = function(tweet) {
   
   return tweet;
 };
-
+/*
 IriSP.countProperties = function(obj) {
     var count = 0;
 
@@ -62,9 +83,9 @@ IriSP.DEC_HEXA_COLOR = function (dec) {
   return zeroes + str;
 };
 
-/* shortcut to have global variables in templates */
+/* shortcut to have global variables in templates
 IriSP.templToHTML = function(template, values) {
-  var params = IriSP.underscore.extend(
+  var params = IriSP._.extend(
       {
           "l10n" : IriSP.i18n.getMessages()
       },

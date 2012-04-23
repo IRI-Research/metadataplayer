@@ -1,17 +1,45 @@
-﻿IriSP.PolemicWidget = function(player, config) {
-    IriSP.Widget.call(this, player, config);
-    this.bindPopcorn("IriSP.search", "searchHandler");
-    this.bindPopcorn("IriSP.search.closed", "searchHandler");
-    this.bindPopcorn("IriSP.search.cleared", "searchHandler");
-    this.bindPopcorn("timeupdate", "onTimeupdate");
-    this.sliceCount = Math.floor( this.width / this.element_width );
-    this.$zone = IriSP.jQuery('<div>');
-    this.$.append(this.$zone);
+﻿IriSP.Widgets.Polemic = function(player, config) {
+    IriSP.Widgets.Widget.call(this, player, config);
 };
 
-IriSP.PolemicWidget.prototype = new IriSP.Widget();
+IriSP.Widgets.Polemic.prototype = new IriSP.Widgets.Widget();
 
-IriSP.PolemicWidget.prototype.searchHandler = function(searchString) {
+IriSP.Widgets.Polemic.prototype.defaults = {
+    element_width : 5,
+    element_height : 5,
+    annotation_type : "tweet",
+    defaultcolor : "#585858",
+    foundcolor : "#fc00ff",
+    tags : [
+        {
+            "keywords" : [ "++" ],
+            "description" : "positif",
+            "color" : "#1D973D"
+        },
+        {
+            "keywords" : [ "--" ],
+            "description" : "negatif",
+            "color" : "#CE0A15"
+        },
+        {
+            "keywords" : [ "==" ],
+            "description" : "reference",
+            "color" : "#C5A62D"  
+        },
+        {
+            "keywords" : [ "??" ],
+            "description" : "question",
+            "color" : "#036AAE"
+        }
+    ],
+    requires : [
+        {
+            type: "Tooltip"
+        }
+    ]
+};
+
+IriSP.Widgets.Polemic.prototype.searchHandler = function(searchString) {
     this.searchString = typeof searchString !== "undefined" ? searchString : '';
     var _found = 0,
         _re = IriSP.Model.regexpFromTextOrArray(searchString)
@@ -47,15 +75,24 @@ IriSP.PolemicWidget.prototype.searchHandler = function(searchString) {
     }
 }
 
-IriSP.PolemicWidget.prototype.draw = function() {
+IriSP.Widgets.Polemic.prototype.draw = function() {
+    
+    this.bindPopcorn("IriSP.search", "searchHandler");
+    this.bindPopcorn("IriSP.search.closed", "searchHandler");
+    this.bindPopcorn("IriSP.search.cleared", "searchHandler");
+    this.bindPopcorn("timeupdate", "onTimeupdate");
+    this.$zone = IriSP.jQuery('<div>');
+    this.$.append(this.$zone);
+    
     var _slices = [],
+        _slice_count = Math.floor( this.width / this.element_width ),
         _duration = this.source.getDuration(),
         _max = 0,
         _list = this.annotation_type ? this.source.getAnnotationsByTypeTitle(this.annotation_type) : this.source.getAnnotations();
     
-    for (var _i = 0; _i < this.sliceCount; _i++) {
-        var _begin = new IriSP.Model.Time(_i*_duration/this.sliceCount),
-            _end = new IriSP.Model.Time((_i+1)*_duration/this.sliceCount),
+    for (var _i = 0; _i < _slice_count; _i++) {
+        var _begin = new IriSP.Model.Time( _i * _duration / _slice_count ),
+            _end = new IriSP.Model.Time( ( _i + 1 ) * _duration / _slice_count ),
             _count = 0,
             _res = {
                 annotations : _list.filter(function(_annotation) {
@@ -138,25 +175,17 @@ IriSP.PolemicWidget.prototype.draw = function() {
     
     this.$tweets = this.$.find(".Ldt-Polemic-TweetDiv");
     
-    this.$position = IriSP.jQuery('<div>')
-        .css({
-            background: '#fc00ff',
-            position: "absolute",
-            top: 0,
-            left: "-1px",
-            width: "2px",
-            height: "100%"
-        });
+    this.$position = IriSP.jQuery('<div>').addClass("Ldt-Polemic-Position");
         
     this.$zone.append(this.$position);
     
     this.$tweets
         .mouseover(function() {
             var _el = IriSP.jQuery(this);
-            _this.TooltipWidget.show(_el.attr("pos-x"), _el.attr("pos-y"), _el.attr("tweet-title"), _el.attr("polemic-color"));
+            _this.tooltip.show(_el.attr("pos-x"), _el.attr("pos-y"), _el.attr("tweet-title"), _el.attr("polemic-color"));
         })
         .mouseout(function() {
-            _this.TooltipWidget.hide();
+            _this.tooltip.hide();
         });
     
     //TODO: Display Tweet in Tweet Widget on click
@@ -167,12 +196,12 @@ IriSP.PolemicWidget.prototype.draw = function() {
     });
 }
 
-IriSP.PolemicWidget.prototype.onTimeupdate = function() {
+IriSP.Widgets.Polemic.prototype.onTimeupdate = function() {
     var _x = Math.floor( this.width * this.player.popcorn.currentTime() / this.source.getDuration().getSeconds());
     this.$elapsed.css({
         width:  _x + "px"
     });
     this.$position.css({
-        left: (_x - 1) + "px"
+        left: _x + "px"
     })
 }

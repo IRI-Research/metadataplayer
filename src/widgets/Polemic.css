@@ -1,0 +1,9 @@
+.Ldt-Polemic-Position {
+    background: #fc00ff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: -1px;
+    width: 2px;
+    height: 100%;
+}

@@ -2,16 +2,22 @@
  The Slider Widget fits right under the video
  */
 
-IriSP.SliderWidget = function(player, config) {
-    IriSP.Widget.call(this, player, config);
+IriSP.Widgets.Slider = function(player, config) {
+    IriSP.Widgets.Widget.call(this, player, config);
     this.bindPopcorn("timeupdate","onTimeupdate");
     this.bindPopcorn("IriSP.PlayerWidget.MouseOver","onMouseover");
     this.bindPopcorn("IriSP.PlayerWidget.MouseOut","onMouseout");
 };
 
-IriSP.SliderWidget.prototype = new IriSP.Widget();
+IriSP.Widgets.Slider.prototype = new IriSP.Widgets.Widget();
 
-IriSP.SliderWidget.prototype.draw = function() {
+IriSP.Widgets.Slider.prototype.defaults = {
+    minimized_height : 4,
+    maximized_height : 10,
+    minimize_timeout : 1500 // time before minimizing slider after mouseout
+};
+
+IriSP.Widgets.Slider.prototype.draw = function() {
     
     this.$slider = IriSP.jQuery('<div>')
         .addClass("Ldt-Slider")
@@ -43,11 +49,11 @@ IriSP.SliderWidget.prototype.draw = function() {
     this.timeoutId = false;
 };
 
-IriSP.SliderWidget.prototype.onTimeupdate = function() {
+IriSP.Widgets.Slider.prototype.onTimeupdate = function() {
     this.$slider.slider("value",this.player.popcorn.currentTime());
 }
 
-IriSP.SliderWidget.prototype.onMouseover = function() {
+IriSP.Widgets.Slider.prototype.onMouseover = function() {
     if (this.timeoutId) {
         window.clearTimeout(this.timeoutId);
         this.timeoutId = false;
@@ -58,7 +64,7 @@ IriSP.SliderWidget.prototype.onMouseover = function() {
     }
 }
 
-IriSP.SliderWidget.prototype.onMouseout = function() {
+IriSP.Widgets.Slider.prototype.onMouseout = function() {
     if (this.timeoutId) {
         window.clearTimeout(this.timeoutId);
         this.timeoutId = false;
@@ -74,7 +80,7 @@ IriSP.SliderWidget.prototype.onMouseout = function() {
     
 }
 
-IriSP.SliderWidget.prototype.animateToHeight = function(_height) {
+IriSP.Widgets.Slider.prototype.animateToHeight = function(_height) {
     this.$slider.stop().animate(
         this.calculateSliderCss(_height),
         500,
@@ -89,14 +95,14 @@ IriSP.SliderWidget.prototype.animateToHeight = function(_height) {
         });
 }
 
-IriSP.SliderWidget.prototype.calculateSliderCss = function(_size) {
+IriSP.Widgets.Slider.prototype.calculateSliderCss = function(_size) {
     return {
         height: _size + "px",
         "margin-top": (this.minimized_height - _size) + "px"
     };
 }
 
-IriSP.SliderWidget.prototype.calculateHandleCss = function(_size) {
+IriSP.Widgets.Slider.prototype.calculateHandleCss = function(_size) {
     return {
         height: (2 + _size) + "px",
         width: (2 + _size) + "px",

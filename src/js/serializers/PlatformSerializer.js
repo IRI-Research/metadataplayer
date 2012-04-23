@@ -80,11 +80,13 @@ IriSP.serializers.ldt = {
                 _res.title = _data.content.title || "";
                 _res.description = _data.content.description || "";
                 _res.created = IriSP.Model.isoToDate(_data.meta["dc:created"]);
-                var _c = parseInt(_data.color).toString(16);
-                while (_c.length < 6) {
-                    _c = '0' + _c;
+                if (typeof _data.color !== "undefined") {
+                    var _c = parseInt(_data.color).toString(16);
+                    while (_c.length < 6) {
+                        _c = '0' + _c;
+                    }
+                    _res.color = '#' + _c;
                 }
-                _res.color = '#' + _c;
                 _res.setMedia(_data.media, _source);
                 _res.setAnnotationType(_data.meta["id-ref"]);
                 _res.setTags(IriSP._(_data.tags).pluck("id-ref"));

@@ -1,5 +1,5 @@
-IriSP.AnnotationsListWidget = function(player, config) {
-    IriSP.Widget.call(this, player, config);
+IriSP.Widgets.AnnotationsList = function(player, config) {
+    IriSP.Widgets.Widget.call(this, player, config);
     this.bindPopcorn("IriSP.search", "searchHandler");
     this.bindPopcorn("IriSP.search.closed", "searchHandler");
     this.bindPopcorn("IriSP.search.cleared", "searchHandler");
@@ -11,15 +11,66 @@ IriSP.AnnotationsListWidget = function(player, config) {
     }, 1500);
 };
 
-IriSP.AnnotationsListWidget.prototype = new IriSP.Widget();
+IriSP.Widgets.AnnotationsList.prototype = new IriSP.Widgets.Widget();
 
-IriSP.AnnotationsListWidget.prototype.clear = function() {
+IriSP.Widgets.AnnotationsList.prototype.defaults = {
+    /* URL when the annotations are to be reloaded from an LDT-like segment API
+     * e.g. http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?
+     */
+    ajax_url : false,
+    /* how much ms should we look before and after the current timecode in the segment API
+     */
+    ajax_granularity : 300000, 
+    default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png",
+    /* URL when the annotation is not in the current project,
+     * e.g. http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}
+     */
+    foreign_url : "",
+    cinecast_version : false,
+    annotation_type : false,
+    refresh_interval : 0,
+    limit_count : 10,
+    newest_first : false
 };
 
-IriSP.AnnotationsListWidget.prototype.clearWidget = function() {
+IriSP.Widgets.AnnotationsList.prototype.template =
+    '<div class="Ldt-AnnotationsListWidget">'
+    + '<ul class="Ldt-AnnotationsList-ul">'
+    + '{{#annotations}}'
+    + '<li id="Ldt-Annotation-li-{{id}}" class="Ldt-AnnotationsList-li Ldt-TraceMe">'
+    + '<div class="Ldt-AnnotationsList-ThumbContainer">'
+    + '<a href="{{url}}">'
+    + '<img class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
+    + '</a>'
+    + '</div>'
+    + '<div class="Ldt-AnnotationsList-Duration">{{begin}} - {{end}}</div>'
+    + '<h3 class="Ldt-AnnotationsList-Title">'
+    + '<a href="{{url}}">{{title}}</a>'
+    + '</h3>'
+    + '<p class="Ldt-AnnotationsList-Description">{{description}}</p>'
+    + '{{#tags.length}}'
+    + '<ul class="Ldt-AnnotationsList-Tags">'
+    + '{{#tags}}'
+    + '{{#.}}'
+    + '<li class="Ldt-AnnotationsList-Tag-Li">'
+    + '<div class="Ldt-AnnotationsList-Tag-Div">{{.}}</div>'
+    + '</li>'
+    + '{{/.}}'
+    + '{{/tags}}'
+    + '</ul>'
+    + '{{/tags.length}}'
+    + '</li>'
+    + '{{/annotations}}'
+    + '</ul>'
+    + '</div>';
+
+IriSP.Widgets.AnnotationsList.prototype.clear = function() {
 };
 
-IriSP.AnnotationsListWidget.prototype.searchHandler = function(searchString) {
+IriSP.Widgets.AnnotationsList.prototype.clearWidget = function() {
+};
+
+IriSP.Widgets.AnnotationsList.prototype.searchHandler = function(searchString) {
     this.searchString = typeof searchString !== "undefined" ? searchString : '';
     var _n = this.refresh(true);
     if (this.searchString) {
@@ -33,7 +84,7 @@ IriSP.AnnotationsListWidget.prototype.searchHandler = function(searchString) {
 
 //obj.url = this.project_url + "/" + media + "/" + annotations[i].meta.project + "/" + annotations[i].meta["id-ref"] + '#id=' + annotations[i].id;
 
-IriSP.AnnotationsListWidget.prototype.ajaxSource = function() {
+IriSP.Widgets.AnnotationsList.prototype.ajaxSource = function() {
     var _currentTime = this.player.popcorn.currentTime(),
         _duration = this.source.getDuration();
     if (typeof _currentTime == "undefined") {
@@ -51,7 +102,7 @@ IriSP.AnnotationsListWidget.prototype.ajaxSource = function() {
     }, this.metadata));
 }
 
-IriSP.AnnotationsListWidget.prototype.refresh = function(_forceRedraw) {
+IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
     _forceRedraw = (typeof _forceRedraw !== "undefined" && _forceRedraw);
     if (this.currentSource.status !== IriSP.Model._SOURCE_STATUS_READY) {
         return 0;
@@ -86,8 +137,8 @@ IriSP.AnnotationsListWidget.prototype.refresh = function(_forceRedraw) {
         /* This part only gets executed if the list needs updating */
         this.lastIds = _ids;
        
-        var _html = IriSP.templToHTML(
-            IriSP.annotationsListWidget_template,
+        var _html = Mustache.to_html(
+            this.template,
             {
                 annotations : _list.map(function(_annotation) {
                     var _url = (
@@ -144,7 +195,7 @@ IriSP.AnnotationsListWidget.prototype.refresh = function(_forceRedraw) {
     return _list.length;
 }
 
-IriSP.AnnotationsListWidget.prototype.draw = function() {
+IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     var _this = this;
     
     if (this.ajax_url && this.ajax_granularity) {

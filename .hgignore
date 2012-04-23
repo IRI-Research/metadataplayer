@@ -11,3 +11,5 @@ doc/jsdoc/*
 
 syntax: regexp
 ^src/css/LdtPlayer-release\.css$
+syntax: regexp
+^build$
