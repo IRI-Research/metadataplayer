@@ -1,3 +1,5 @@
+// TODO: Trigger IriSP.SegmentsWidget.click and IriSP.Mediafragment.showAnnotation
+
 IriSP.Widgets.Segments = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
 };
@@ -17,17 +19,24 @@ IriSP.Widgets.Segments.prototype.defaults = {
 
 IriSP.Widgets.Segments.prototype.template =
     '<div class="Ldt-Segments-List">{{#segments}}'
-    + '<div class="Ldt-Segments-Segment" segment-id="{{id}}" segment-text="{{text}}" segment-color="{{color}}" center-pos="{{center}}" style="left:{{left}}px; width:{{width}}px; background:{{color}}"></div>'
+    + '<div class="Ldt-Segments-Segment" segment-id="{{id}}" segment-text="{{text}}" segment-color="{{color}}" center-pos="{{center}}" begin-seconds="{{beginseconds}}"'
+    + 'style="left:{{left}}px; width:{{width}}px; background:{{color}}"></div>'
     + '{{/segments}}</div>'
     + '<div class="Ldt-Segments-Position"></div>';
 
 IriSP.Widgets.Segments.prototype.draw = function() {
-    var _list = this.annotation_type ? this.source.getAnnotationsByTypeTitle(this.annotation_type) : this.source.getAnnotations(),
+    this.bindPopcorn("IriSP.search", "onSearch");
+    this.bindPopcorn("IriSP.search.closed", "onSearch");
+    this.bindPopcorn("IriSP.search.cleared", "onSearch");
+    this.bindPopcorn("timeupdate", "onTimeupdate");
+    
+    var _list = this.getWidgetAnnotations(),
         _this = this,
         _scale = this.width / this.source.getDuration();
     this.$.css({
         width : this.width + "px",
-        height : this.height + "px"
+        height : (this.height - 2) + "px",
+        margin : "1px 0"
     });
     this.$.append(Mustache.to_html(this.template, {
         segments : _list.map(function(_annotation, _k) {
@@ -37,6 +46,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             return {
                 text : _annotation.title + ( _annotation.description ? '<br />' + _annotation.description.replace(/(^.{120,140})[\s].+$/,'$1&hellip;') : ''),
                 color : ( typeof _annotation.color !== "undefined" && _annotation.color ? _annotation.color : _this.colors[_k % _this.colors.length] ),
+                beginseconds : _annotation.begin.getSeconds() ,
                 left : Math.floor( _left ),
                 width : Math.floor( _width ),
                 center : Math.floor( _center ),
@@ -44,18 +54,51 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             }
         })
     }));
-    var _seglist = this.$.find('.Ldt-Segments-Segment');
+    this.$segments = this.$.find('.Ldt-Segments-Segment');
     
-    _seglist.mouseover(function() {
+    this.$segments.mouseover(function() {
         var _el = IriSP.jQuery(this);
-        _seglist.removeClass("active").addClass("inactive");
+        _this.$segments.removeClass("active").addClass("inactive");
         _this.tooltip.show( _el.attr("center-pos"), 0, _el.attr("segment-text"), _el.attr("segment-color"));
         _el.removeClass("inactive").addClass("active");
-    }).mouseout(function() {
-        _seglist.removeClass("inactive active");
+    })
+    .mouseout(function() {
+        _this.tooltip.hide();
+        _this.$segments.removeClass("inactive active");
+    })
+    .click(function() {
+        var _el = IriSP.jQuery(this);
+        _this.player.popcorn.currentTime(_el.attr("begin-seconds"));
     });
 }
 
-IriSP.Widgets.Segments.prototype.searchHandler = function(searchString) {
-   
+IriSP.Widgets.Segments.prototype.onSearch = function(searchString) {
+    this.searchString = typeof searchString !== "undefined" ? searchString : '';
+    var _found = 0,
+        _re = IriSP.Model.regexpFromTextOrArray(searchString);
+    if (this.searchString) {
+        this.$segments.each(function() {
+            var _el = IriSP.jQuery(this);
+            if (_re.test(_el.attr("segment-text"))) {
+                _el.removeClass("unfound").addClass("found");
+                _found++;
+            } else {
+                _el.removeClass("found").addClass("unfound");
+            }
+        });
+        if (_found) {
+            this.player.popcorn.trigger("IriSP.search.matchFound");
+        } else {
+            this.player.popcorn.trigger("IriSP.search.noMatchFound");
+        }
+    } else {
+        this.$segments.removeClass("found unfound");
+    }
+}
+
+IriSP.Widgets.Segments.prototype.onTimeupdate = function() {
+    var _x = Math.floor( this.width * this.player.popcorn.currentTime() / this.source.getDuration().getSeconds());
+    this.$.find('.Ldt-Segments-Position').css({
+        left: _x + "px"
+    })
 }

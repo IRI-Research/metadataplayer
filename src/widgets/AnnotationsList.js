@@ -1,8 +1,5 @@
 IriSP.Widgets.AnnotationsList = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
-    this.bindPopcorn("IriSP.search", "searchHandler");
-    this.bindPopcorn("IriSP.search.closed", "searchHandler");
-    this.bindPopcorn("IriSP.search.cleared", "searchHandler");
     this.searchString = false;
     this.lastIds = [];
     var _this = this;
@@ -70,7 +67,7 @@ IriSP.Widgets.AnnotationsList.prototype.clear = function() {
 IriSP.Widgets.AnnotationsList.prototype.clearWidget = function() {
 };
 
-IriSP.Widgets.AnnotationsList.prototype.searchHandler = function(searchString) {
+IriSP.Widgets.AnnotationsList.prototype.onSearch = function(searchString) {
     this.searchString = typeof searchString !== "undefined" ? searchString : '';
     var _n = this.refresh(true);
     if (this.searchString) {
@@ -136,18 +133,14 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
     if (_forceRedraw || !IriSP._.isEqual(_ids, this.lastIds)) {
         /* This part only gets executed if the list needs updating */
         this.lastIds = _ids;
-       
-        var _html = Mustache.to_html(
-            this.template,
-            {
-                annotations : _list.map(function(_annotation) {
+        var _data = _list.map(function(_annotation) {
                     var _url = (
-                        ( typeof _annotation.url !== "undefined" )
+                        ( typeof _annotation.url !== "undefined" && _annotation.url)
                         ? _annotation.url
                         : (
-                            ( typeof _this.source.projectId !== "undefined" && typeof _annotation.project !== "undefined" && _this.source.projectId !== _annotation.project )
+                            ( typeof _this.source.projectId !== "undefined" && typeof _annotation.project !== "undefined" && _annotation.project && _this.source.projectId !== _annotation.project )
                             ? Mustache.to_html(
-                                this.foreign_url,
+                                _this.foreign_url,
                                 {
                                     project : _annotation.project,
                                     media : _annotation.media.id.replace(/^.*:/,''),
@@ -164,13 +157,17 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         description : _annotation.description,
                         begin : _annotation.begin.toString(),
                         end : _annotation.end.toString(),
-                        thumbnail : typeof _annotation.thumbnail !== "undefined" ? _annotation.thumbnail : _this.default_thumbnail,
+                        thumbnail : typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail,
                         url : _url,
                         tags : _annotation.getTagTexts()
                     }
                     return _res;
-                })
-            });
+            }),
+            _html = Mustache.to_html(
+                this.template,
+                {
+                    annotations : _data
+                });
     
         this.$.html(_html);
     
@@ -196,6 +193,11 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
 }
 
 IriSP.Widgets.AnnotationsList.prototype.draw = function() {
+    
+    this.bindPopcorn("IriSP.search", "onSearch");
+    this.bindPopcorn("IriSP.search.closed", "onSearch");
+    this.bindPopcorn("IriSP.search.cleared", "onSearch");
+    
     var _this = this;
     
     if (this.ajax_url && this.ajax_granularity) {

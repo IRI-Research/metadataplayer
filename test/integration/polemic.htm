@@ -25,13 +25,13 @@
   IriSP.widgetsDir = "/metadataplayer/src/widgets"
 IriSP.jwplayer_swf_path = "../libs/player.swf";
     var _metadata = {
-        url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/13b0aa52-336b-11e0-b233-00145ea49a02?callback=?',
+        url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/f1a17368-2bc8-11e1-b21a-00145ea49a02?callback=?',
         format: 'ldt'
     };
     var _config = {            
         gui: {
             width:640,
-            height:800,              
+            height:800,
             container:'LdtPlayer',
 			default_options: {
 				metadata: _metadata
@@ -91,11 +91,14 @@ IriSP.jwplayer_swf_path = "../libs/player.swf";
                     type: "Segments"
                 },
                 {
-                    type: "HelloWorld"
+                    type: "Arrow"
+                },
+                {
+                    type: "Annotation"
                 },
                 {
                     type: "AnnotationsList",
-                    ajax_url : "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?", 
+                    //ajax_url : "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?", 
                     foreign_url : "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}",
                     annotation_type : "tweet",
                     container: "AnnotationsListContainer"

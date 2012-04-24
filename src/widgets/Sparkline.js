@@ -18,7 +18,7 @@ IriSP.Widgets.Sparkline.prototype.draw = function() {
     var _slices = [],
         _duration = this.source.getDuration(),
         _max = 0,
-        _list = this.annotation_type ? this.source.getAnnotationsByTypeTitle(this.annotation_type) : this.source.getAnnotations();
+        _list = this.getWidgetAnnotations();
     
     for (var _i = 0; _i < this.slice_count; _i++) {
         var _begin = new IriSP.Model.Time(_i*_duration/this.slice_count),

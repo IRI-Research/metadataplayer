@@ -39,10 +39,10 @@ IriSP.Widgets.Polemic.prototype.defaults = {
     ]
 };
 
-IriSP.Widgets.Polemic.prototype.searchHandler = function(searchString) {
+IriSP.Widgets.Polemic.prototype.onSearch = function(searchString) {
     this.searchString = typeof searchString !== "undefined" ? searchString : '';
     var _found = 0,
-        _re = IriSP.Model.regexpFromTextOrArray(searchString)
+        _re = IriSP.Model.regexpFromTextOrArray(searchString),
         _this = this;
     this.$tweets.each(function() {
         var _el = IriSP.jQuery(this);
@@ -77,9 +77,9 @@ IriSP.Widgets.Polemic.prototype.searchHandler = function(searchString) {
 
 IriSP.Widgets.Polemic.prototype.draw = function() {
     
-    this.bindPopcorn("IriSP.search", "searchHandler");
-    this.bindPopcorn("IriSP.search.closed", "searchHandler");
-    this.bindPopcorn("IriSP.search.cleared", "searchHandler");
+    this.bindPopcorn("IriSP.search", "onSearch");
+    this.bindPopcorn("IriSP.search.closed", "onSearch");
+    this.bindPopcorn("IriSP.search.cleared", "onSearch");
     this.bindPopcorn("timeupdate", "onTimeupdate");
     this.$zone = IriSP.jQuery('<div>');
     this.$.append(this.$zone);
@@ -88,7 +88,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
         _slice_count = Math.floor( this.width / this.element_width ),
         _duration = this.source.getDuration(),
         _max = 0,
-        _list = this.annotation_type ? this.source.getAnnotationsByTypeTitle(this.annotation_type) : this.source.getAnnotations();
+        _list = this.getWidgetAnnotations();
     
     for (var _i = 0; _i < _slice_count; _i++) {
         var _begin = new IriSP.Model.Time( _i * _duration / _slice_count ),
@@ -133,28 +133,23 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
     this.$zone.append(this.$elapsed);
     
     var _x = 0,
-        _this = this;
+        _this = this,
+        _html = '';
     
     function displayElement(_x, _y, _color, _id, _title) {
-        var _el = IriSP.jQuery('<div>')
-            .attr({
-                "tweet-title" : _title,
-                "pos-x" : Math.floor(_x + (_this.element_width - 1) / 2),
-                "pos-y" : _y,
-                "polemic-color" : _color,
-                "annotation-id" : _id
-            })
-            .css({
-                position: "absolute",
-                width: (_this.element_width-1) + "px",
-                height: _this.element_height + "px",
-                left: _x + "px",
-                top: _y + "px",
-                background: _color
-            })
-            .addClass("Ldt-Polemic-TweetDiv");
-        _this.$zone.append(_el);
-        return _el;
+        _html += Mustache.to_html(
+            '<div class="Ldt-Polemic-TweetDiv" annotation-id="{{id}}" tweet-title="{{title}}" pos-x="{{posx}}" pos-y="{{top}}" polemic-color="{{color}}"'
+            + ' style="width: {{width}}px; height: {{height}}px; top: {{top}}px; left: {{left}}px; background: {{color}}"></div>',
+        {
+            id: _id,
+            title: _title,
+            posx: Math.floor(_x + (_this.element_width - 1) / 2),
+            left: _x,
+            top: _y,
+            color: _color,
+            width: (_this.element_width-1),
+            height: _this.element_height
+        });
     }
     
     IriSP._(_slices).forEach(function(_slice) {
@@ -172,6 +167,8 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
         });
         _x += _this.element_width;
     });
+    
+    this.$zone.append(_html);
     
     this.$tweets = this.$.find(".Ldt-Polemic-TweetDiv");
     

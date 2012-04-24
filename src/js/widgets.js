@@ -100,6 +100,10 @@ IriSP.Widgets.Widget.prototype.bindPopcorn = function(_popcornEvent, _functionNa
     this.player.popcorn.listen(_popcornEvent, this.functionWrapper(_functionName))
 }
 
+IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function() {
+    return typeof this.annotation_type !== "undefined" && this.annotation_type ? this.source.getAnnotationsByTypeTitle(this.annotation_type) : this.source.getAnnotations();
+}
+
 /**
  * This method responsible of drawing a widget on screen.
  */

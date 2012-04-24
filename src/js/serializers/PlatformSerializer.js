@@ -79,6 +79,9 @@ IriSP.serializers.ldt = {
                 var _res = new IriSP.Model.Annotation(_data.id, _source);
                 _res.title = _data.content.title || "";
                 _res.description = _data.content.description || "";
+                if (typeof _data.content.img !== "undefined" && _data.content.img.src !== "undefined") {
+                    _res.thumbnail = _data.content.img.src;
+                }
                 _res.created = IriSP.Model.isoToDate(_data.meta["dc:created"]);
                 if (typeof _data.color !== "undefined") {
                     var _c = parseInt(_data.color).toString(16);
@@ -92,8 +95,9 @@ IriSP.serializers.ldt = {
                 _res.setTags(IriSP._(_data.tags).pluck("id-ref"));
                 _res.setBegin(_data.begin);
                 _res.setEnd(_data.end);
-                _res.creator = _data.meta["dc:creator"];
-                _res.project = _data.meta.project;
+                _res.creator = _data.meta["dc:creator"] || "";
+                _res.project = _data.meta.project || "";
+                _res.source = _data.meta["dc:source"] || {};
                 return _res;
             },
             serializer : function(_data, _source) {
