@@ -1,0 +1,22 @@
+/* Slider Widget */
+
+.Ldt-Slice {
+    border-radius: 0; border: none; padding: 0; margin: 2px 0 12px; background: #B6B8B8; height: 8px;
+}
+
+.Ldt-Slice .ui-slider-handle {
+    width: 6px; height: 20px; top: 0; border: none; margin: 0; padding: 0; background: url(img/slice-handles.png);
+}
+
+.ui-slider-handle.Ldt-Slice-left-handle {
+    margin-left: -6px;
+}
+
+.ui-slider-handle.Ldt-Slice-right-handle {
+    margin-left: 0; background-position: -6px 0;
+}
+
+.Ldt-Slice .ui-slider-range {
+    background: url(img/pinstripe.png);
+}
+

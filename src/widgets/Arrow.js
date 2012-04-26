@@ -1,5 +1,6 @@
 IriSP.Widgets.Arrow = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
+    this.current_pilot_widget = this.pilot_widget
 };
 
 IriSP.Widgets.Arrow.prototype = new IriSP.Widgets.Widget();
@@ -7,17 +8,14 @@ IriSP.Widgets.Arrow.prototype = new IriSP.Widgets.Widget();
 IriSP.Widgets.Arrow.prototype.defaults = {
     arrow_height : 16,
     arrow_width : 24,
-    base_height : 2,
+    base_height : 0,
     base_curve : 0,
     fill_url: IriSP.widgetsDir + '/img/pinstripe.png',
-    fill_color: "#ffffff",
-    inner_stroke_color: "#ffffff",
-    inner_stroke_width: 4,
-    outer_stroke_color: "#B6B8B8",
-    outer_stroke_width: 1,
+    fill_color: "#ffffff", //Gradients can be used, e.g. "90-#000-#fff" for vertical white-to-black
+    stroke_color: "#b7b7b7",
+    stroke_width: 1.5,
     animation_speed: 20,
-    follow_current_time: false,
-    annotation_type: "chap"
+    pilot_widget: "Annotation"
 }
 
 IriSP.Widgets.Arrow.prototype.draw = function() {
@@ -25,20 +23,16 @@ IriSP.Widgets.Arrow.prototype.draw = function() {
     this.$.addClass("Ldt-Arrow").css("height", this.height + "px");
     this.paper = new Raphael(this.container, this.width, this.height );
     window.myArrow = this;
-    this.innerArrow = this.paper.path('M0,' + this.height + 'L' + this.width + ',' + this.height);
-    this.outerArrow = this.paper.path('M0,' + this.height + 'L' + this.width + ',' + this.height);
-    this.innerArrow.attr({
-        stroke: this.inner_stroke_color,
-        "stroke-width": this.inner_stroke_width,
+    this.svgArrow = this.paper.path('M0,' + this.height + 'L' + this.width + ',' + this.height);
+    this.svgArrow.attr({
+        stroke: this.stroke_color,
+        "stroke-width": this.stroke_width,
         fill: this.fill_url ? ( 'url(' + this.fill_url + ')' ) : this.fill_color
     });
-    this.outerArrow.attr({
-        stroke: this.outer_stroke_color,
-        "stroke-width": this.outer_stroke_width,
-        fill: "none"
-    });
     this.moveTo(0);
-    this.bindPopcorn("timeupdate","onTimeupdate");
+    this.bindPopcorn("IriSP.Arrow.updatePosition","onUpdatePosition");
+    this.bindPopcorn("IriSP.Arrow.takeover","onTakeover");
+    this.bindPopcorn("IriSP.Arrow.release","onRelease");
 }
 
 IriSP.Widgets.Arrow.prototype.drawAt = function(_x) {
@@ -56,10 +50,7 @@ IriSP.Widgets.Arrow.prototype.drawAt = function(_x) {
         + 'Q' + this.width + ',' + this.arrow_height
         + ' ' + this.width + ',' + Math.min( this.height, this.arrow_height + this.base_curve)
         + 'L' + this.width + ',' + this.height;
-    this.innerArrow.attr({
-        path: _d
-    });
-    this.outerArrow.attr({
+    this.svgArrow.attr({
         path: _d
     });
 }
@@ -92,17 +83,20 @@ IriSP.Widgets.Arrow.prototype.increment = function() {
     this.drawAt(this.currentX);
 }
 
-IriSP.Widgets.Arrow.prototype.onTimeupdate = function() {
-    var _list = [],
-        _time = Math.floor(this.player.popcorn.currentTime() * 1000);
-    if (!this.follow_current_time) {
-        _list = this.getWidgetAnnotations().filter(function(_annotation) {
-            return _annotation.begin <= _time && _annotation.end > _time;
-        });
+IriSP.Widgets.Arrow.prototype.onUpdatePosition = function(_param) {
+    if (_param.widget === this.current_pilot_widget) {
+        if (typeof _param.x !== "undefined") {
+            this.moveTo(_param.x);
+        } else {
+            this.moveTo(this.width * _param.time / this.source.getDuration());
+        }
     }
-    if (_list.length) {
-        _time = ( _list[0].begin + _list[0].end ) / 2;
-    }
-    var _x = this.width * _time / this.source.getDuration();
-    this.moveTo(_x);
+}
+
+IriSP.Widgets.Arrow.prototype.onTakeover = function(_widget) {
+    this.current_pilot_widget = _widget;
+}
+
+IriSP.Widgets.Arrow.prototype.onRelease = function(_widget) {
+    this.current_pilot_widget = this.pilot_widget;
 }

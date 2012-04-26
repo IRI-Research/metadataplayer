@@ -97,7 +97,9 @@ IriSP.serializers.ldt = {
                 _res.setEnd(_data.end);
                 _res.creator = _data.meta["dc:creator"] || "";
                 _res.project = _data.meta.project || "";
-                _res.source = _data.meta["dc:source"] || {};
+                if (typeof _data.meta["dc:source"] !== "undefined" && typeof _data.meta["dc:source"].content !== "undefined") {
+                    _res.source = JSON.parse(_data.meta["dc:source"].content);
+                }
                 return _res;
             },
             serializer : function(_data, _source) {

@@ -10,7 +10,7 @@ IriSP.Widgets.Polemic.prototype.defaults = {
     annotation_type : "tweet",
     defaultcolor : "#585858",
     foundcolor : "#fc00ff",
-    tags : [
+    polemics : [
         {
             "keywords" : [ "++" ],
             "description" : "positif",
@@ -101,12 +101,12 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 polemicStacks : []
             }
             
-        for (var _j = 0; _j < this.tags.length; _j++) {
-            var _polemic = _res.annotations.searchByDescription(this.tags[_j].keywords);
+        for (var _j = 0; _j < this.polemics.length; _j++) {
+            var _polemic = _res.annotations.searchByDescription(this.polemics[_j].keywords);
             _count += _polemic.length;
             _res.polemicStacks.push(_polemic);
         }
-        for (var _j = 0; _j < this.tags.length; _j++) {
+        for (var _j = 0; _j < this.polemics.length; _j++) {
             _res.annotations.removeElements(_res.polemicStacks[_j]);
         }
         _count += _res.annotations.length;
@@ -156,13 +156,13 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
         var _y = _this.height;
         _slice.annotations.forEach(function(_annotation) {
             _y -= _this.element_height;
-            displayElement(_x, _y, _this.defaultcolor, _annotation.namespacedId.name, _annotation.title);
+            displayElement(_x, _y, _this.defaultcolor, _annotation.id, _annotation.title);
         });
         IriSP._(_slice.polemicStacks).forEach(function(_annotations, _j) {
-            var _color = _this.tags[_j].color;
+            var _color = _this.polemics[_j].color;
             _annotations.forEach(function(_annotation) {
                 _y -= _this.element_height;
-                displayElement(_x, _y, _color, _annotation.namespacedId.name, _annotation.title);
+                displayElement(_x, _y, _color, _annotation.id, _annotation.title);
             });
         });
         _x += _this.element_width;
@@ -183,9 +183,10 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
         })
         .mouseout(function() {
             _this.tooltip.hide();
+        })
+        .click(function() {
+            _this.player.popcorn.trigger("IriSP.Tweet.show", IriSP.jQuery(this).attr("annotation-id"));
         });
-    
-    //TODO: Display Tweet in Tweet Widget on click
     
     this.$zone.click(function(_e) {
         var _x = _e.pageX - _this.$zone.offset().left;

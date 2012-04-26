@@ -50,7 +50,9 @@ IriSP.Widgets.Slider.prototype.draw = function() {
 };
 
 IriSP.Widgets.Slider.prototype.onTimeupdate = function() {
-    this.$slider.slider("value",this.player.popcorn.currentTime());
+    var _time = this.player.popcorn.currentTime();
+    this.$slider.slider("value",_time);
+    this.player.popcorn.trigger("IriSP.Arrow.updatePosition",{widget: this.type, time: 1000 * _time});
 }
 
 IriSP.Widgets.Slider.prototype.onMouseover = function() {

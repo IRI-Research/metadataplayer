@@ -73,7 +73,7 @@ IriSP.Model.List = function(_directory) {
 IriSP.Model.List.prototype = new Array();
 
 IriSP.Model.List.prototype.getElement = function(_id) {
-    var _index = (IriSP._(this.idIndex).indexOf(_id));
+    var _index = (IriSP._(this.idIndex).indexOf(this.source.getNamespaced(_id).fullName));
     if (_index !== -1) {
         return this[_index];
     }
@@ -538,7 +538,7 @@ IriSP.Model.Source.prototype.forEach = function(_callback) {
 }
 
 IriSP.Model.Source.prototype.getElement = function(_elId) {
-    return this.directory.getElement(_elId);
+    return this.directory.getElement(_this.getNamespaced(_elId).fullname);
 }
 
 IriSP.Model.Source.prototype.setCurrentMediaId = function(_idRef) {

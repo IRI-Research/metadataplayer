@@ -3,7 +3,8 @@
     border-width: 1px;
     border-color: #b7b7b7;
     padding: 0 1px 1px;
-    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    margin: 0;
+    font-family: Helvetica, Arial, sans-serif;
 }
 
 .Ldt-Annotation-Widget.Ldt-Annotation-ShowTop {
@@ -14,11 +15,12 @@
 .Ldt-Annotation-Inner {
     background: url(img/pinstripe.png);
     padding: 5px;
+    margin: 0;
 }
 
 .Ldt-Annotation-Inner h3 {
     margin: 5px 0;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .Ldt-Annotation-Title {
@@ -30,7 +32,7 @@
 }
 
 .Ldt-Annotation-Inner p {
-    margin: 5px 0; font-size: 14px;
+    margin: 5px 0; font-size: 12px;
 }
 
 .Ldt-Annotation-ShareIcons {
@@ -38,7 +40,7 @@
 }
 
 .Ldt-Annotation-Share {
-    display: inline-block; width: 24px; height: 24px; margin: 2px; background: url(img/socialbuttons.png);
+    display: inline-block; width: 24px; height: 24px; margin: 2px 0 0 2px; background: url(img/socialbuttons.png);
 }
 
 .Ldt-Annotation-Twitter {
@@ -65,8 +67,16 @@
     background-position: -48px -24px;
 }
 
+.Ldt-Annotation-Tags-Block {
+    font-size: 12px;
+}
+
+.Ldt-Annotation-NoTags {
+    display: none;
+}
+
 ul.Ldt-Annotation-Tags {
-    font-size: 12px; list-style: none; padding: 0; margin: 5px 0;
+    list-style: none; padding: 0; margin: 5px 0;
 }
 
 .Ldt-Annotation-Tags li {
@@ -76,3 +86,12 @@ ul.Ldt-Annotation-Tags {
 .Ldt-Annotation-TagLabel {
     font-weight: bold;
 }
+
+.Ldt-Annotation-Empty .Ldt-Annotation-HiddenWhenEmpty {
+    display: none;
+}
+
+.Ldt-Annotation-Minimized .Ldt-Annotation-HiddenWhenMinimized {
+    display: none;
+}
+

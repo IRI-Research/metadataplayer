@@ -122,7 +122,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     // Allow Volume Cursor Dragging
     this.$volumeBar.slider({
         slide: function(event, ui) {
-            _this.$volumeBar.attr("title",this.l10n.volume+': ' + ui.value + '%');
+            _this.$volumeBar.attr("title",_this.l10n.volume+': ' + ui.value + '%');
             _this.player.popcorn.volume(ui.value / 100);
         },
         stop: this.functionWrapper("volumeUpdater")
