@@ -15,7 +15,7 @@ IriSP.SlideShareWidget.prototype.draw = function() {
 	  return;
   }
   var templ = Mustache.to_html(IriSP.slideShareWidget_template);
-  this.selector.html(templ);
+  this.selector.append(templ);
   
   // Synchro management
   this._disableUpdate = false;
@@ -41,7 +41,8 @@ IriSP.SlideShareWidget.prototype.draw = function() {
   var annotations = this._serializer._data.annotations;
   var view_type = this._serializer.getSlideShareType();
   if(typeof(view_type) === "undefined") {
-	  if(console){ if(console.log){ console.log("No annotation-type for slideshare widget, this widget is canceled."); } }
+	  if(console){ if(console.log){ console.log("No annotation-type for slideshare widget, this widget is canceled and the container is visible hidden."); } }
+	  this.selector.hide();
 	  return;
   }
   var i = 0;
