@@ -44,7 +44,7 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
 
     /* widget specific requirements */
     for(var _i = 0; _i < this.config.gui.widgets.length; _i++) {
-        if(this.config.gui.widgets[_i].type === "Sparkline") {
+        if(this.config.gui.widgets[_i].type === "Sparkline" || this.config.gui.widgets[_i].type === "Arrow") {
             $L.script(IriSP.getLib("raphael"));
         }
         if(this.config.gui.widgets[_i].type === "TraceWidget") {

@@ -185,7 +185,9 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             _this.tooltip.hide();
         })
         .click(function() {
-            _this.player.popcorn.trigger("IriSP.Tweet.show", IriSP.jQuery(this).attr("annotation-id"));
+            var _id = IriSP.jQuery(this).attr("annotation-id");
+            _this.player.popcorn.trigger("IriSP.Mediafragment.setHashToAnnotation", _id);
+            _this.player.popcorn.trigger("IriSP.Tweet.show", _id);
         });
     
     this.$zone.click(function(_e) {

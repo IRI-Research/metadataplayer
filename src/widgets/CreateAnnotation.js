@@ -7,17 +7,21 @@ IriSP.Widgets.CreateAnnotation.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     single_time_mode : false,
-    
+    show_title_field : true,
+    user_avatar : "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png"
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.messages = {
     "en": {
         "from_time" : "from",
         "to_time" : "to",
+        "at_time" : "at",
         "submit": "Submit",
         "add_keywords": "Add keywords",
         "add_polemic_keywords": "Add polemic keywords",
         "your_name": "Your name",
+        "no_title" : "Annotate this video",
+        "type_title": "Annotation title",
         "type_description": "Type the full description of your annotation here.",
         "wait_while_processing": "Please wait while your request is being processed...",
         "error_while_contacting": "An error happened while contacting the server. Your annotation has not been saved.",
@@ -31,10 +35,13 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
     "fr": {
         "from_time" : "from",
         "to_time" : "à",
+        "at_time" : "à",
         "submit": "Envoyer",
         "add_keywords": "Ajouter des mots-clés",
         "add_polemic_keywords": "Ajouter des mots-clés polémiques",
         "your_name": "Votre nom",
+        "no_title" : "Annoter cette vidéo",
+        "type_title": "Titre de l'annotation",
         "type_description": "Rédigez le contenu de votre annotation ici.",
         "wait_while_processing": "Veuillez patienter pendant le traitement de votre requête...",
         "error_while_contacting": "Une erreur s'est produite en contactant le serveur. Votre annotation n'a pas été enregistrée",
@@ -48,12 +55,17 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.template =
-    '<div class="Ldt-CreateAnnotation">'
-    + '    <div class="Ldt-CreateAnnotation-Inner">'
+    '<div class="Ldt-CreateAnnotation"><div class="Ldt-CreateAnnotation-Inner">'
+    + '<form class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Main">'
+    + '<h3>{{#show_title_field}}<input class="Ldt-CreateAnnotation-Title" placeholder="{{l10n.type_title}}" />{{/show_title_field}}'
+    + '{{^show_title_field}}<span class="Ldt-CreateAnnotation-NoTitle">{{l10n.no_title}}</span>{{/show_title_field}}'
+    + ' <span class="Ldt-CreateAnnotation-Times">{{#single_time_mode}}{{l10n.at_time}}{{/single_time_mode}}'
+    + '{{^single_time_mode}}{{l10n.from_time}}{{/single_time_mode}} <span class="Ldt-CreateAnnotation-Begin"></span>'
+    + ' {{^single_time_mode}}{{l10n.to_time}} <span class="Ldt-CreateAnnotation-End"></span>{{/single_time_mode}}</span></h3>'
+    + ''
     
-    
-    + '    </div>'
-    + '</div>'
+    + '</form>'
+    + '</div></div>'
     
 /*    
     + '        <div class="Ldt-CreateAnnotation-Screen Ldt-createAnnotation-startScreen">'

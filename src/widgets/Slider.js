@@ -34,6 +34,7 @@ IriSP.Widgets.Slider.prototype.draw = function() {
         max: this.source.getDuration().getSeconds(),
         slide: function(event, ui) {
             _this.player.popcorn.currentTime(ui.value);
+            _this.player.popcorn.trigger("IriSP.Mediafragment.setHashToTime");
         }
     });
     

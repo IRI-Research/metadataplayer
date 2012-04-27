@@ -69,6 +69,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
     .click(function() {
         var _el = IriSP.jQuery(this);
         _this.player.popcorn.currentTime(_el.attr("begin-seconds"));
+        _this.player.popcorn.trigger("IriSP.Mediafragment.setHashToAnnotation", _el.attr("segment-id"));
     });
 }
 
