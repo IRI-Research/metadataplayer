@@ -2,6 +2,15 @@
 /** A widget to display slide show from embed slide share */
 IriSP.SlideShareWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
+  // Default flash embed size
+  this.embed_width = 425;
+  this.embed_height = 355;
+  if(this._config.embed_width){
+	  this.embed_width = this._config.embed_width;
+  }
+  if(this._config.embed_height){
+	  this.embed_height = this._config.embed_height;
+  }
 };
 
 IriSP.SlideShareWidget.prototype = new IriSP.Widget();
@@ -17,11 +26,6 @@ IriSP.SlideShareWidget.prototype.draw = function() {
   var templ = Mustache.to_html(IriSP.slideShareWidget_template);
   this.selector.append(templ);
   
-  // Synchro management
-  this._disableUpdate = false;
-  this.selector.find('.sync_on').click(function(event) { self.syncHandler.call(self, event); });
-  this.selector.find('.sync_off').click(function(event) { self.unSyncHandler.call(self, event); });
-  
   // global variables used to keep the position and width of the zone.  
   this.zoneLeft = 0;
   this.zoneWidth = 0;
@@ -30,6 +34,16 @@ IriSP.SlideShareWidget.prototype.draw = function() {
   this.lastSSUrl = "";
   this.lastSSId = "";
   this.containerDiv = this.selector.find('.SlideShareContainer');
+  
+  // Synchro management
+  this._disableUpdate = false;
+  this.buttonsDiv = this.selector.find('.SlideShareButtons');
+  this.buttonsDiv.width(this.embed_width - 2); // -2 because of css borders 328 -> 235px
+  this.buttonsDiv.find('.left_icon').css("margin-left",(this.embed_width-96)+"px");
+  this.buttonsDiv.find('.ss_sync_on').click(function(event) { self.unSyncHandler.call(self, event); });
+  this.buttonsDiv.find('.ss_sync_off').click(function(event) { self.syncHandler.call(self, event); });
+  this.buttonsDiv.find('.ss_sync_off').hide();
+  this.buttonsDiv.hide();
   
   // Update the slide from timeupdate event
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.slideShareUpdater));
@@ -82,6 +96,7 @@ IriSP.SlideShareWidget.prototype.slideShareUpdater = function() {
     			forceEmpty = true;
     		}
     		else{
+    			this.buttonsDiv.show();
 	    		var description_ar = this.lastSSFullUrl.split("#id=");
 	    		var slideNb = 1;
 	    		if(description_ar[1]){
@@ -102,6 +117,11 @@ IriSP.SlideShareWidget.prototype.slideShareUpdater = function() {
 							if(slideNb){
 								embed_code = embed_code.replace(new RegExp("ssplayer2.swf\\?","g"), "ssplayer2.swf?startSlide=" + slideNb + "&");
 							}
+							// The embed always send the default width and height, so we can easily change them.
+							embed_code = embed_code.replace(new RegExp("425","g"), self.embed_width);
+							embed_code = embed_code.replace(new RegExp("355","g"), self.embed_height);
+							// We hide the title upon the slides.
+							embed_code = embed_code.replace(new RegExp("block"), "none");
 							self.containerDiv.html(embed_code);
 						},
 						error: function(jqXHR, textStatus, errorThrown){
@@ -113,8 +133,8 @@ IriSP.SlideShareWidget.prototype.slideShareUpdater = function() {
 	    			this.lastSSUrl = description_ar[0];
 	    			this.lastSSId = "";
 		    		// In this case, we only have an id that is meant to build the flash embed
-					embed_code = '<div style="width:425px"><embed src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=' + this.lastSSUrl + '&startSlide=' + slideNb + '" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" wmode="transparent" width="425" height="355"></embed></div>';
-					self.containerDiv.html(embed_code);
+					embed_code = '<div style="width:425px"><embed src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=' + this.lastSSUrl + '&startSlide=' + slideNb + '" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" wmode="transparent" width="'+this.embed_width+'" height="'+this.embed_height+'"></embed></div>';
+					this.containerDiv.html(embed_code);
 	    		}
 	    		else{
 	    			// If the presentation was already loaded, we only use the ss js api to load the wanted slide number
@@ -141,18 +161,23 @@ IriSP.SlideShareWidget.prototype.slideShareUpdater = function() {
 	this.lastSSUrl = "";
 	this.lastSSId = "";
   	this.containerDiv.html("");
+  	this.buttonsDiv.hide();
   }
 
 };
 
 // Functions to stop or trigger sync between timeupdate event and slides        
-IriSP.SlideShareWidget.prototype.unSyncHandler = function(params) {
+IriSP.SlideShareWidget.prototype.unSyncHandler = function() {
 	//console.log("slideShare NO SYNC !");
 	this._disableUpdate = true;
+	this.buttonsDiv.find('.ss_sync_on').hide();
+	this.buttonsDiv.find('.ss_sync_off').show();
 };
-IriSP.SlideShareWidget.prototype.syncHandler = function(params) {
+IriSP.SlideShareWidget.prototype.syncHandler = function() {
 	//console.log("slideShare SYNC PLEASE !");
 	this._disableUpdate = false;
+	this.buttonsDiv.find('.ss_sync_on').show();
+	this.buttonsDiv.find('.ss_sync_off').hide();
 };
 
 

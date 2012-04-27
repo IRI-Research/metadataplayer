@@ -977,6 +977,39 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 .Ldt-SlideShare {
     font-size: 14px;
 }
-.Ldt-SlideShare .sync_links{
-    text-align: right;
+.Ldt-SlideShare .SlideShareButtons{
+    background: url("./imgs/slideshare_btn_bg.png") repeat-x scroll 0 0 #F8F6F7;
+    height: 25px;
+    margin-top: -4px;
+    border-bottom: 1px solid #bababa;
+    border-left: 1px solid #bababa;
+    border-right: 1px solid #bababa;
+}
+.Ldt-SlideShare .SlideShareButtons ul{
+    margin-top: 2px;
+    padding-left: 0px;
+}
+.Ldt-SlideShare .SlideShareButtons ul, .Ldt-SlideShare .SlideShareButtons ul li{
+    float: left;
+    list-style: none;
+}
+.SlideShareButtons .ss_sync_on, .SlideShareButtons .ss_sync_off, .SlideShareButtons .ss_link, .SlideShareButtons .ss_tooltip{
+    width: 30px;
+    height: 20px;
+}
+.Ldt-SlideShare .SlideShareButtons .ss_sync_on{
+    background: url("./imgs/slideshare_btn_sync_violet.png") center no-repeat;
+    border-right: 1px solid #BABABA;
+}
+.Ldt-SlideShare .SlideShareButtons .ss_sync_off{
+    background: url("./imgs/slideshare_btn_sync_grey.png") center no-repeat;
+    border-right: 1px solid #BABABA;
+}
+.Ldt-SlideShare .SlideShareButtons .ss_link{
+    background: url("./imgs/slideshare_btn_link.png") center no-repeat;
+    border-right: 1px solid #BABABA;
+}
+.Ldt-SlideShare .SlideShareButtons .ss_tooltip{
+    background: url("./imgs/slideshare_btn_info.png") center no-repeat;
+    border-left: 1px solid #BABABA;
 }
