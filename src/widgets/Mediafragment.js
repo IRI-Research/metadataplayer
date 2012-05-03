@@ -2,6 +2,13 @@ IriSP.Widgets.Mediafragment = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
     this.last_hash = "";
     window.onhashchange = this.functionWrapper("goToHash");
+    if (typeof window.addEventListener !== "undefined") {
+        window.addEventListener('message', function(_msg) {
+            if (_msg.data.type === "hashchange") {
+                document.location.hash = _msg.data.hash;
+            }
+        })
+    };
     this.bindPopcorn("pause","setHashToTime");
     this.bindPopcorn("seeked","setHashToTime");
     this.bindPopcorn("IriSP.Mediafragment.setHashToAnnotation","setHashToAnnotation");
@@ -43,6 +50,12 @@ IriSP.Widgets.Mediafragment.prototype.setHash = function(_hash) {
     if (!this.blocked && this.last_hash !== _hash) {
         this.last_hash = _hash;
         document.location.hash = _hash;
+        if (window.parent !== window) {
+            window.parent.postMessage({
+                type: "hashchange",
+                hash: _hash
+            })
+        }
         this.block();
     }
 }

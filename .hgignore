@@ -13,3 +13,7 @@ syntax: regexp
 ^src/css/LdtPlayer-release\.css$
 syntax: regexp
 ^build$
+syntax: regexp
+^test/libs$
+syntax: regexp
+^test/metadataplayer$

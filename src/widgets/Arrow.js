@@ -20,7 +20,10 @@ IriSP.Widgets.Arrow.prototype.defaults = {
 
 IriSP.Widgets.Arrow.prototype.draw = function() {
     this.height = this.arrow_height + this.base_height;
-    this.$.addClass("Ldt-Arrow").css("height", this.height + "px");
+    this.$.addClass("Ldt-Arrow").css({
+        height: this.height + "px",
+        "margin-top": "1px"
+    });
     this.paper = new Raphael(this.container, this.width, this.height );
     window.myArrow = this;
     this.svgArrow = this.paper.path('M0,' + this.height + 'L' + this.width + ',' + this.height);

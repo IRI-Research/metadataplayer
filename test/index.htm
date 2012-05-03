@@ -2,50 +2,78 @@
 <html dir="ltr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr">
 
 <head>
-
+<title>Metadataplayer - Polemic tweet integration test</title>
 </head>
 
 <body>
 
-	<div style="width:650px;font-family: 'Trebuchet MS', 'Helvetica', 'Arial',  'Verdana', 'sans-serif';">
-	<h1>MetaDataPlayer </h1>
-	Iri MetaDataPlayer is a javascript's Widget interface to augment existing flash or html5 video player. 
-	It's made to show time annotation and different metadata on video.
-	To implement it on your website it's 's really simple.
-	You just need to insert a div and a script, like the exemple under this lines.<br/><br/>
-	This player was test on : firefox 3.6.9 / Chrome 6.0.472.55 / Safari 5.0.2 / Internet Explore 8<br/><br/>
-	This Player is a freeSoftware under <a href="http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html"> CeCILL-C</a> license.
-	This program is made by <a href="http://www.iri.centrepompidou.fr/" >Institut de recherche et d innovation</a>
-	more information on <a href="http://www.iri.centrepompidou.fr/outils/agmented-player/" >this page</a>.
-	</div>
-	
-	
+  <div style="width:650px;font-family: 'Trebuchet MS', 'Helvetica', 'Arial',  'Verdana', 'sans-serif';">
+  <h1>MetaDataPlayer</h1>
+  Polemic tweet integration test - using Popcorn, jwplayer and the <a href="http://polemictweet.com">PolemicTweet</a> widget.<br>
+  </div>
+  
+  
  <!-- START Integration  ###################################### -->
  <!-- SIMPLE PLAYER EXPERIMENTATION -->
-	<script type="text/javascript" src="../build/LdtPlayer-release.js"></script> 
-	<div id="LdtPlayer"></div>
-	
-	<script  type="text/javascript">	
-		var config = {
-						metadata:{
-							format:'cinelab',
-							src:'test.json',
-							load:'json'},
-						gui:{
-							width:650,
-							height:1,
-							mode:'radio',
-							container:'LdtPlayer',
-							debug:true,
-							css:'../src/css/LdtPlayer.css'},
-						player:{
-							type:'jwplayer',
-							src:'../res/swf/player.swf'}
-					};
-		IriSP.init(config);     
-	</script>
-	
-
-<!-- END  ################  ###################################### -->
+  <script type="text/javascript" src="../build/LdtPlayer-core.js" type="text/javascript"></script>   
+  
+  <div id="video"></div>
+  <div id="LdtPlayer"></div>
+  
+  <script  type="text/javascript">
+  IriSP.libFiles.defaultDir = "../src/js/libs/";
+  IriSP.widgetsDir = "../src/widgets"
+  IriSP.jwplayer_swf_path = "player.swf";
+    var _metadata = {
+        url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/13b0aa52-336b-11e0-b233-00145ea49a02?callback=?',
+        format: 'ldt'
+    };
+    var _config = {            
+        gui: {
+            width:620,
+            height:800,
+            container:'LdtPlayer',
+			default_options: {
+				metadata: _metadata
+			},
+            css:'../src/css/LdtPlayer-core.css',
+            widgets: [
+                { type: "Sparkline" },
+                { type: "Slider" },
+                { type: "Controller" },
+                { type: "Polemic" },
+                { type: "Segments" },
+                { type: "Slice" },
+                { type: "Arrow" },
+                { type: "Annotation" },
+                { type: "Tweet" },
+                { type: "Tagcloud" },
+                {
+                    type: "AnnotationsList",
+                    //ajax_url : "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?", 
+                    //foreign_url : "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}",
+                    container: "AnnotationsListContainer"
+                },
+                { type: "Mediafragment"},
+/*                {
+                    type: "Trace",
+                    js_console: true
+                }
+*/            ]
+        },
+        player:{
+            type:'jwplayer', // player type
+            live: true, 
+            height: 300, 
+            width: 620, 
+            provider: "rtmp" 
+        }
+    };
+    
+    var _myPlayer = new IriSP.Metadataplayer(_config, _metadata);
+  </script>
+  
+  
  </body>
+ <div id="AnnotationsListContainer" style="position: absolute; width: 400px; left: 660px; top: 105px;"></div>
  </html>

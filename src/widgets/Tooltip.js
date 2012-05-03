@@ -27,13 +27,13 @@ IriSP.Widgets.Tooltip.prototype.show = function(x, y, text, color) {
     } else {
         this.$.find(".Ldt-Tooltip-Color").hide();
     }
-    
+
     this.$.find(".Ldt-Tooltip-Text").html(text);
 
     this.$tip.show();
     this.$tip.css({
         "left" : Math.floor(x - this.$tip.outerWidth() / 2) + "px",
-        "top" : Math.floor(y - this.$tip.outerHeight() - 5) + "px"
+        "top" : Math.floor(y - this.$tip.outerHeight()) + "px"
     });
 };
 

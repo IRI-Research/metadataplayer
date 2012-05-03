@@ -10,8 +10,6 @@
   height: 115px;
   width: 180px;
   padding: 15px 15px 20px;
-  color: black;
-  font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
   overflow:hidden;
 }
 
@@ -23,3 +21,7 @@
     max-width: 140px; max-height: 70px; margin: 0 20px;
 }
 
+.Ldt-Tooltip p {
+    margin: 2px 0;
+  font-size: 12px;
+}

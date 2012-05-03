@@ -1,6 +1,6 @@
 IriSP.Widgets.Tagcloud = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
-    this.stopwords = IriSP._.uniq(IriSP._.extend([], this.custom_stopwords, this.stopword_lists[this.stopword_language]));
+    this.stopwords = IriSP._.uniq([].concat(this.custom_stopwords).concat(this.stopword_lists[this.stopword_language]));
 }
 
 IriSP.Widgets.Tagcloud.prototype = new IriSP.Widgets.Widget();

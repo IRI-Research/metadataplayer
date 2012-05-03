@@ -1,17 +1,20 @@
 /* init.js - initialization and configuration of Popcorn and the widgets
-exemple json configuration:
 */
+
+if (typeof window.IriSP === "undefined") {
+    IriSP = {};
+}
 
 /* The Metadataplayer Object, single point of entry, replaces IriSP.init_player */
 
 IriSP.Metadataplayer = function(config, video_metadata) {
     for (var key in IriSP.guiDefaults) {
-        if (IriSP.guiDefaults.hasOwnProperty(key) && !config.gui.hasOwnProperty('key')) {
+        if (IriSP.guiDefaults.hasOwnProperty(key) && !config.gui.hasOwnProperty(key)) {
             config.gui[key] = IriSP.guiDefaults[key]
         }
     }
     var _container = document.getElementById(config.gui.container);
-    _container.innerHTML = '<div class="Ldt-Loader">Loading... Chargement...</div>';
+    _container.innerHTML = '<h3 class="Ldt-Loader">Loading... Chargement...</h3>';
     this.video_metadata = video_metadata;
     this.sourceManager = new IriSP.Model.Directory();
     this.config = config;
@@ -23,8 +26,7 @@ IriSP.Metadataplayer.prototype.toString = function() {
 }
 
 IriSP.Metadataplayer.prototype.loadLibs = function() {
-    // Localize jQuery variable
-    IriSP.jQuery = null;
+    
     var $L = $LAB.script(IriSP.getLib("underscore")).script(IriSP.getLib("Mustache")).script(IriSP.getLib("jQuery")).script(IriSP.getLib("swfObject")).wait().script(IriSP.getLib("jQueryUI"));
 
     if(this.config.player.type === "jwplayer" || this.config.player.type === "allocine" || this.config.player.type === "dailymotion") {
@@ -44,18 +46,16 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
 
     /* widget specific requirements */
     for(var _i = 0; _i < this.config.gui.widgets.length; _i++) {
-        if(this.config.gui.widgets[_i].type === "Sparkline" || this.config.gui.widgets[_i].type === "Arrow") {
-            $L.script(IriSP.getLib("raphael"));
-        }
-        if(this.config.gui.widgets[_i].type === "TraceWidget") {
-            $L.script(IriSP.getLib("tracemanager"))
+        var _t = this.config.gui.widgets[_i].type;
+        if (typeof IriSP.widgetsRequirements[_t] !== "undefined" && typeof IriSP.widgetsRequirements[_t].requires !== "undefined") {
+            $L.script(IriSP.getLib(IriSP.widgetsRequirements[_t].requires));
         }
     }
     
     var _this = this;
     
     $L.wait(function() {
-        IriSP.jQuery = window.jQuery.noConflict(true);
+        IriSP.jQuery = window.jQuery.noConflict();
         IriSP._ = window._.noConflict();
         
         IriSP.loadCss(IriSP.getLib("cssjQueryUI"))
@@ -67,7 +67,6 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
 }
 
 IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
-    console.log('OnLibsLoaded');
     this.videoData = this.loadMetadata(this.video_metadata);
     this.$ = IriSP.jQuery('#' + this.config.gui.container);
     this.$.css({
@@ -135,8 +134,10 @@ IriSP.Metadataplayer.prototype.loadWidget = function(_widgetConfig, _callback) {
             _callback(new IriSP.Widgets[_widgetConfig.type](_this, _widgetConfig));
         });
     } else {
-        /* Loading Widget CSS   */
-        IriSP.loadCss(IriSP.widgetsDir + '/' + _widgetConfig.type + '.css');
+        /* Loading Widget CSS */
+        if (typeof IriSP.widgetsRequirements[_widgetConfig.type] === "undefined" || typeof IriSP.widgetsRequirements[_widgetConfig.type].noCss === "undefined" || !IriSP.widgetsRequirements[_widgetConfig.type].noCss) {
+            IriSP.loadCss(IriSP.widgetsDir + '/' + _widgetConfig.type + '.css');
+        }
         /* Loading Widget JS    */
         $LAB.script(IriSP.widgetsDir + '/' + _widgetConfig.type + '.js').wait(function() {
             _callback(new IriSP.Widgets[_widgetConfig.type](_this, _widgetConfig));

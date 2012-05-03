@@ -153,7 +153,7 @@ IriSP.serializers.cinecast = {
         IriSP.jQuery.getJSON(_url, _callback)
     },
     deSerialize : function(_data, _source) {
-        if (typeof _data !== "object" && _data === null) {
+        if (typeof _data !== "object" || _data === null) {
             return;
         }
         if (typeof _data.imports !== "undefined") {
@@ -163,7 +163,7 @@ IriSP.serializers.cinecast = {
         }
         IriSP._(this.types).forEach(function(_type, _typename) {
             var _listdata = _data[_type.serialized_name];
-            if (typeof _listdata !== "undefined") {
+            if (typeof _listdata !== "undefined" && _listdata !== null) {
                 var _list = new IriSP.Model.List(_source.directory);
                 if (_listdata.hasOwnProperty("length")) {
                     var _l = _listdata.length;

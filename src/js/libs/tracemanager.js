@@ -1,7 +1,24 @@
 /*
  * Modelled Trace API
+ *
+ * This file is part of ktbs4js.
+ *
+ * ktbs4js is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * ktbs4js is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with ktbs4js.  If not, see <http://www.gnu.org/licenses/>.
+ *
  */
-IriSP.TraceManager = function($) {
+/* FIXME: properly use require.js feature. This will do for debugging in the meantime */
+window.tracemanager = (function($) {
      // If there are more than MAX_FAILURE_COUNT synchronisation
      // failures, then disable synchronisation
      MAX_FAILURE_COUNT = 20;
@@ -43,7 +60,7 @@ IriSP.TraceManager = function($) {
                      // Swap " (very frequent, which will be
                      // serialized into %22) and ; (rather rare), this
                      // saves some bytes
-                     data = data.replace(/[;"]/g, function(s){ return s == ';' ? '"' : ';'; }).replace(/#/g, '%23');
+                     data = data.replace(/[;"#]/g, function(s){ return s == ';' ? '"' : ( s == '"' ? ';' : '%23'); });
                      // FIXME: check data length (< 2K is safe)
                      var request=$('<img />').error( function() { this.failureCount += 1; })
                          .load( function() { this.failureCount = 0; })
@@ -74,10 +91,10 @@ IriSP.TraceManager = function($) {
          /* Sync mode: delayed, sync (immediate sync), none (no
           * synchronisation with server, the trace has to be explicitly saved
           * if needed */
-         set_sync_mode: function(mode) {
+         set_sync_mode: function(mode, default_subject) {
              this.sync_mode = mode;
              if (! this.isReady && mode !== "none")
-                 this.init();
+                 this.init(default_subject);
              if (mode == 'delayed') {
                  this.start_timer();
              } else {
@@ -120,14 +137,16 @@ IriSP.TraceManager = function($) {
          /*
           * Initialize the sync service
           */
-         init: function() {
+         init: function(default_subject) {
              var self = this;
              if (this.isReady)
                  /* Already initialized */
                  return;
+             if (typeof default_subject === 'undefined')
+                 default_subject = 'anonymous';
              if (this.mode == 'GET')
              {
-                 var request=$('<img/>').attr('src', this.url + 'login?userinfo={"name":"ktbs4js"}');
+                 var request=$('<img/>').attr('src', this.url + 'login?userinfo={"default_subject": "' + default_subject + '"}');
                  // Do not wait for the return, assume it is
                  // initialized. This assumption will not work anymore
                  // if login returns some necessary information
@@ -137,7 +156,7 @@ IriSP.TraceManager = function($) {
              {
                  $.ajax({ url: this.url + 'login',
                           type: 'POST',
-                          data: 'userinfo={"name":"ktbs4js"}',
+                          data: 'userinfo={"default_subject":"' + default_subject + '"}',
                           success: function(data, textStatus, jqXHR) {
                               self.isReady = true;
                               if (self.buffer.length) {
@@ -195,7 +214,7 @@ IriSP.TraceManager = function($) {
           * if needed */
          set_sync_mode: function(mode) {
              if (this.syncservice !== null) {
-                 this.syncservice.set_sync_mode(mode);
+                 this.syncservice.set_sync_mode(mode, this.default_subject);
              }
          },
 
@@ -248,6 +267,9 @@ IriSP.TraceManager = function($) {
          },
 
          set_default_subject: function(subject) {
+             // FIXME: if we call this method after the sync_service
+             // init method, then the default_subject will not be
+             // consistent anymore. Maybe we should then call init() again?
              this.default_subject = subject;
          },
 
@@ -347,7 +369,7 @@ IriSP.TraceManager = function($) {
          list_attribute_types: function() {
              var result = [];
              for (var prop in this.attributes) {
-                 if (this.hasOwnProperty(prop))
+                 if (this.attributes.hasOwnProperty(prop))
                      result.push(prop);
              }
              /* FIXME: we return URIs here instead of AttributeType elements */
@@ -420,7 +442,7 @@ IriSP.TraceManager = function($) {
                  "subject": this.subject
              };
              for (var prop in this.attributes) {
-                 if (this.hasOwnProperty(prop))
+                 if (this.attributes.hasOwnProperty(prop))
                      r[prop] = this.attributes[prop];
              }
              return r;
@@ -432,17 +454,23 @@ IriSP.TraceManager = function($) {
           */
          toCompactJSON: function() {
              var r = {
-                 "@i": this.id,
                  "@t": (this.trace.shorthands.hasOwnProperty(this.type) ? this.trace.shorthands[this.type] : this.type),
                  "@b": this.begin,
-                 "@s": this.subject
              };
+             // Transmit subject only if different from default_subject
+             if (this.subject !== this.trace.default_subject)
+                 r["@s"] = this.subject;
+
              // Store duration (to save some bytes) and only if it is non-null
              if (this.begin !== this.end)
                  r["@d"] = this.end - this.begin;
 
+             // Store id only if != ""
+             if (this.id !== "")
+                 r["@i"] = this.id;
+
              for (var prop in this.attributes) {
-                 if (this.hasOwnProperty(prop))
+                 if (this.attributes.hasOwnProperty(prop))
                  {
                      var v = this.attributes[prop];
                      r[prop] = this.trace.shorthands.hasOwnProperty(v) ? this.trace.shorthands[v] : v;
@@ -495,8 +523,8 @@ IriSP.TraceManager = function($) {
              syncmode = params.syncmode ? params.syncmode : "none";
              default_subject = params.default_subject ? params.default_subject : "default";
              var t = new Trace(url, requestmode);
-             t.set_sync_mode(syncmode);
              t.set_default_subject(default_subject);
+             t.set_sync_mode(syncmode);
              this.traces[name] = t;
              return t;
          }
@@ -509,4 +537,4 @@ IriSP.TraceManager = function($) {
 
      var tracemanager  = new TraceManager();
      return tracemanager;
- };
+ })(jQuery);

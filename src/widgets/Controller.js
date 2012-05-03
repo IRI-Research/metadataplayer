@@ -8,7 +8,10 @@ IriSP.Widgets.Controller = function(player, config) {
 
 IriSP.Widgets.Controller.prototype = new IriSP.Widgets.Widget();
 
-IriSP.Widgets.Controller.prototype.defaults = {}
+IriSP.Widgets.Controller.prototype.defaults = {
+    disable_annotate_btn: false,
+    disable_search_btn: false
+}
 
 IriSP.Widgets.Controller.prototype.template =
     '<div class="Ldt-Ctrl">'
@@ -43,33 +46,33 @@ IriSP.Widgets.Controller.prototype.template =
     + '</div>';
 
 IriSP.Widgets.Controller.prototype.messages = {
-    "en": {
-        "play_pause": "Play/Pause",
-        "mute_unmute": "Mute/Unmute",
-        "play": "Play",
-        "pause": "Pause",
-        "mute": "Mute",
-        "unmute": "Unmute",
-        "annotate": "Annotate",
-        "search": "Search",
-        "elapsed_time": "Elapsed time",
-        "total_time": "Total time",
-        "volume": "Volume",
-        "volume_control": "Volume control"
+    en: {
+        play_pause: "Play/Pause",
+        mute_unmute: "Mute/Unmute",
+        play: "Play",
+        pause: "Pause",
+        mute: "Mute",
+        unmute: "Unmute",
+        annotate: "Annotate",
+        search: "Search",
+        elapsed_time: "Elapsed time",
+        total_time: "Total time",
+        volume: "Volume",
+        volume_control: "Volume control"
     },
-    "fr": {
-        "play_pause": "Lecture/Pause",
-        "mute_unmute": "Couper/Activer le son",
-        "play": "Lecture",
-        "pause": "Pause",
-        "mute": "Couper le son",
-        "unmute": "Activer le son",
-        "annotate": "Annoter",
-        "search": "Rechercher",
-        "elapsed_time": "Durée écoulée",
-        "total_time": "Durée totale",
-        "volume": "Niveau sonore",
-        "volume_control": "Réglage du niveau sonore"
+    fr: {
+        play_pause: "Lecture/Pause",
+        mute_unmute: "Couper/Activer le son",
+        play: "Lecture",
+        pause: "Pause",
+        mute: "Couper le son",
+        unmute: "Activer le son",
+        annotate: "Annoter",
+        search: "Rechercher",
+        elapsed_time: "Durée écoulée",
+        total_time: "Durée totale",
+        volume: "Niveau sonore",
+        volume_control: "Réglage du niveau sonore"
     }
 };
 

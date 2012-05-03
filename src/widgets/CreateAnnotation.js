@@ -9,48 +9,88 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     single_time_mode : false,
     show_title_field : true,
     user_avatar : "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png"
+/*
+        tags : [
+            {
+                id: "digitalstudies",
+                meta: {
+                    description: "#digital-studies"
+                }
+            },
+            {
+                id: "amateur",
+                meta: {
+                    description: "#amateur"
+                },
+            }
+        ],
+        remote_tags : false,
+        random_tags : false,
+        show_from_field : false,
+        disable_share : false,
+        polemic_mode : true, // enable polemics
+        polemics : [{
+            className: "positive",
+            keyword: "++"
+        }, {
+            className: "negative",
+            keyword: "--"
+        }, {
+            className: "reference",
+            keyword: "=="
+        }, {
+            className: "question",
+            keyword: "??"
+        }],
+        cinecast_version : false, // put to false to enable the platform version, true for the festival cinecast one.
+
+        // where does the widget PUT the annotations - this is a mustache template. id refers to the id of the media and is filled by the widget.
+         
+        api_endpoint_template : "", // platform_url + "/ldtplatform/api/ldt/annotations/{{id}}.json",
+        api_method : "PUT"
+ */
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.messages = {
-    "en": {
-        "from_time" : "from",
-        "to_time" : "to",
-        "at_time" : "at",
-        "submit": "Submit",
-        "add_keywords": "Add keywords",
-        "add_polemic_keywords": "Add polemic keywords",
-        "your_name": "Your name",
-        "no_title" : "Annotate this video",
-        "type_title": "Annotation title",
-        "type_description": "Type the full description of your annotation here.",
-        "wait_while_processing": "Please wait while your request is being processed...",
-        "error_while_contacting": "An error happened while contacting the server. Your annotation has not been saved.",
-        "empty_annotation": "Your annotation is empty. Please write something before submitting.",
-        "annotation_saved": "Thank you, your annotation has been saved.",
-        "share_annotation": "Would you like to share it on social networks ?",
-        "share_on": "Share on",
-        "more_tags": "More tags",
-        "cancel": "Cancel"
+    en: {
+        from_time: "from",
+        to_time: "to",
+        at_time: "at",
+        submit: "Submit",
+        add_keywords: "Add keywords",
+        add_polemic_keywords: "Add polemic keywords",
+        your_name: "Your name",
+        no_title: "Annotate this video",
+        type_title: "Annotation title",
+        type_description: "Type the full description of your annotation here.",
+        wait_while_processing: "Please wait while your request is being processed...",
+        error_while_contacting: "An error happened while contacting the server. Your annotation has not been saved.",
+        empty_annotation: "Your annotation is empty. Please write something before submitting.",
+        annotation_saved: "Thank you, your annotation has been saved.",
+        share_annotation: "Would you like to share it on social networks ?",
+        share_on: "Share on",
+        more_tags: "More tags",
+        cancel: "Cancel"
     },
-    "fr": {
-        "from_time" : "from",
-        "to_time" : "à",
-        "at_time" : "à",
-        "submit": "Envoyer",
-        "add_keywords": "Ajouter des mots-clés",
-        "add_polemic_keywords": "Ajouter des mots-clés polémiques",
-        "your_name": "Votre nom",
-        "no_title" : "Annoter cette vidéo",
-        "type_title": "Titre de l'annotation",
-        "type_description": "Rédigez le contenu de votre annotation ici.",
-        "wait_while_processing": "Veuillez patienter pendant le traitement de votre requête...",
-        "error_while_contacting": "Une erreur s'est produite en contactant le serveur. Votre annotation n'a pas été enregistrée",
-        "empty_annotation": "Votre annotation est vide. Merci de rédiger un texte avant de l'envoyer.",
-        "annotation_saved": "Merci, votre annotation a été enregistrée.",
-        "share_annotation": "Souhaitez-vous la partager sur les réseaux sociaux ?",
-        "share_on": "Partager sur",
-        "more_tags": "Plus de mots-clés",
-        "cancel": "Cancel"
+    fr: {
+        from_time: "from",
+        to_time: "à",
+        at_time: "à",
+        submit: "Envoyer",
+        add_keywords: "Ajouter des mots-clés",
+        add_polemic_keywords: "Ajouter des mots-clés polémiques",
+        your_name: "Votre nom",
+        no_title: "Annoter cette vidéo",
+        type_title: "Titre de l'annotation",
+        type_description: "Rédigez le contenu de votre annotation ici.",
+        wait_while_processing: "Veuillez patienter pendant le traitement de votre requête...",
+        error_while_contacting: "Une erreur s'est produite en contactant le serveur. Votre annotation n'a pas été enregistrée",
+        empty_annotation: "Votre annotation est vide. Merci de rédiger un texte avant de l'envoyer.",
+        annotation_saved: "Merci, votre annotation a été enregistrée.",
+        share_annotation: "Souhaitez-vous la partager sur les réseaux sociaux ?",
+        share_on: "Partager sur",
+        more_tags: "Plus de mots-clés",
+        cancel: "Cancel"
     }
 }
 
