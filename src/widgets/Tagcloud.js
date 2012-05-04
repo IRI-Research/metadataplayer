@@ -66,6 +66,9 @@ IriSP.Widgets.Tagcloud.prototype.draw = function() {
         })
         .first(this.tag_count)
         .value();
+    if (!_words.length) {
+        return;
+    }
     var _max = _words[0].count,
         _min = Math.min(_words[_words.length - 1].count, _max - 1),
         _scale = (this.max_font_size - this.min_font_size) / Math.sqrt(_max - _min);

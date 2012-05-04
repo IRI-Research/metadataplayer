@@ -224,7 +224,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             _html = '',
             _scale = this.max_elements * this.element_height / _max;
             
-        function displayElement(_x, _y, _h, _color, _nums, _begin, _end) {
+        function displayStackElement(_x, _y, _h, _color, _nums, _begin, _end) {
             _html += Mustache.to_html(
                 '<div class="Ldt-Polemic-TweetDiv" pos-x="{{posx}}" pos-y="{{top}}" annotation-counts="{{nums}}" begin-time="{{begin}}" end-time="{{end}}"'
                 + ' style="width: {{width}}px; height: {{height}}px; top: {{top}}px; left: {{left}}px; background: {{color}}"></div>',
@@ -249,14 +249,14 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             if (_slice.annotations.length) {
                 var _h = Math.ceil(_scale * _slice.annotations.length);
                 _y -= _h;
-                displayElement(_x, _y, _h, _this.defaultcolor, _nums, _slice.begin, _slice.end);
+                displayStackElement(_x, _y, _h, _this.defaultcolor, _nums, _slice.begin, _slice.end);
             }
             IriSP._(_slice.polemicStacks).forEach(function(_annotations, _j) {
                 if (_annotations.length) {
                     var _color = _this.polemics[_j].color,
                         _h = Math.ceil(_scale * _annotations.length);
                     _y -= _h;
-                    displayElement(_x, _y, _h, _color, _nums, _slice.begin, _slice.end);
+                    displayStackElement(_x, _y, _h, _color, _nums, _slice.begin, _slice.end);
                 }
             });
             _x += _this.element_width;

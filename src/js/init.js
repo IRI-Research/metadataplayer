@@ -34,14 +34,7 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
         $L.script(IriSP.getLib("jwplayer"));
     } else {
         // load the real popcorn
-        $L.script(IriSP.getLib("popcorn")).script(IriSP.getLib("popcorn.code"));
-        // load plugins if necessary
-        if(this.config.player.type === "youtube") {
-            $L.script(IriSP.getLib("popcorn.youtube"));
-        }
-        if(this.config.player.type === "vimeo"){
-            $L.script(IriSP.getLib("popcorn.vimeo"));
-        }
+        $L.script(IriSP.getLib("popcorn"));
     }
 
     /* widget specific requirements */
@@ -186,16 +179,21 @@ IriSP.Metadataplayer.prototype.configurePopcorn = function() {
             break;
 
         case "youtube":
-            var opts = IriSP.jQuery.extend({}, this.config.player);
-            delete opts.container;
-            opts.controls = 0;
-            opts.autostart = false;
             // Popcorn.youtube wants us to specify the size of the player in the style attribute of its container div.
             IriSP.jQuery("#" + containerDiv).css({
-                width : opts.width + "px",
-                height : opts.height + "px"
-            })
-            pop = Popcorn.youtube("#" + containerDiv, opts.video, opts);
+                width : this.config.player.width + "px",
+                height : this.config.player.height + "px"
+            });
+            var _urlparts = this.config.player.video.split(/[?&]/),
+                _params = {};
+            for (var _j = 1; _j < _urlparts.length; _j++) {
+                var _ppart = _urlparts[_j].split('=');
+                _params[_ppart[0]] = decodeURIComponent(_ppart[1]);
+            }
+            _params.controls = 0;
+            _params.modestbranding = 1;
+            _url = _urlparts[0] + '?' + IriSP.jQuery.param(_params);
+            pop = Popcorn.youtube("#" + containerDiv, _url);
             break;
 
         case "dailymotion":

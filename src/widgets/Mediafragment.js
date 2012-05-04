@@ -42,8 +42,9 @@ IriSP.Widgets.Mediafragment.prototype.setHashToAnnotation = function(_annotation
 }
 
 IriSP.Widgets.Mediafragment.prototype.setHashToTime = function(_time) {
-    _time = (typeof _time !== "undefined" ? _time : this.player.popcorn.currentTime() );
-    this.setHash( '#t=' + _time );
+    if (_time !== NaN) {
+        this.setHash( '#t=' + this.player.popcorn.currentTime() );
+    }
 }
 
 IriSP.Widgets.Mediafragment.prototype.setHash = function(_hash) {

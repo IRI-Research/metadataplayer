@@ -9,13 +9,9 @@ IriSP.libFiles = {
         jQueryUI : "jquery-ui.min.js",
         swfObject : "swfobject.js",
         cssjQueryUI : "jquery-ui.css",
-        popcorn : "popcorn.js",
+        popcorn : "popcorn-complete.min.js",
         jwplayer : "jwplayer.js",
         raphael : "raphael-min.js",
-        "popcorn.mediafragment" : "popcorn.mediafragment.js",
-        "popcorn.code" : "popcorn.code.js",
-        "popcorn.jwplayer" : "popcorn.jwplayer.js",
-        "popcorn.youtube" : "popcorn.youtube.js",
         tracemanager : "tracemanager.js"
     },
     locations : {
