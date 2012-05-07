@@ -32,9 +32,15 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
         }
     }
 
-    window.onReady = IriSP.wrap(this, this.ready);
-    window.onAllocineStateChange = IriSP.wrap(this, this.stateHandler);
-    window.onTime = IriSP.wrap(this, this.progressHandler);
+    window.onReady = function() {
+        _this.ready();
+    };
+    window.onAllocineStateChange = function(_state) {
+        _this.stateHandler(_state)
+    }
+    window.onTime = function(_progress) {
+        _this.progressHandler(_progress)
+    };
     
     var _flashVars = {
         "streamFMS" : true,

@@ -27,13 +27,19 @@ IriSP.Metadataplayer.prototype.toString = function() {
 
 IriSP.Metadataplayer.prototype.loadLibs = function() {
     
-    var $L = $LAB.script(IriSP.getLib("underscore")).script(IriSP.getLib("Mustache")).script(IriSP.getLib("jQuery")).script(IriSP.getLib("swfObject")).wait().script(IriSP.getLib("jQueryUI"));
+    var $L = $LAB
+        .script(IriSP.getLib("underscore"))
+        .script(IriSP.getLib("Mustache"))
+        .script(IriSP.getLib("jQuery"))
+        .script(IriSP.getLib("swfObject"))
+        .wait()
+        .script(IriSP.getLib("jQueryUI"));
 
-    if(this.config.player.type === "jwplayer" || this.config.player.type === "allocine" || this.config.player.type === "dailymotion") {
-        // load our popcorn.js lookalike
+    if (this.config.player.type === "jwplayer" || this.config.player.type === "auto") {
         $L.script(IriSP.getLib("jwplayer"));
-    } else {
-        // load the real popcorn
+    }
+    
+    if (this.config.player.type !== "jwplayer" && this.config.player.type !== "allocine" && this.config.player.type !== "dailymotion") {
         $L.script(IriSP.getLib("popcorn"));
     }
 
@@ -142,7 +148,22 @@ IriSP.Metadataplayer.prototype.configurePopcorn = function() {
     var pop,
         ret = this.layoutDivs("video"),
         containerDiv = ret[0],
-        spacerDiv = ret[1];
+        spacerDiv = ret[1],
+        _this = this,
+        _types = {
+            "html5" : /\.(ogv|webm|mp4)$/,
+            "youtube" : /^(https?:\/\/)?(www\.)?youtube\.com/,
+            "dailymotion" : /^(https?:\/\/)?(www\.)?dailymotion\.com/
+        };
+    
+    if (this.config.player.type === "auto") {
+        this.config.player.type = "jwplayer";
+        IriSP._(_types).each(function(_v, _k) {
+            if (_v.test(_this.config.player.video)) {
+                _this.config.player.type = _k
+            }
+        });
+    }
 
     switch(this.config.player.type) {
         /*
