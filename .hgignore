@@ -8,3 +8,10 @@ build/LdtPlayer.min.js
 *.orig
 src/js/site.js
 doc/jsdoc/*
+
+syntax: regexp
+^test/libs$
+syntax: regexp
+^test/metadataplayer$
+syntax: regexp
+^build/LdtPlayer-core\.js$
