@@ -1,0 +1,1239 @@
+<DOMDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" currentTimeline="1" xflVersion="2.0" creatorInfo="Adobe Flash Professional CS5" platform="Macintosh" versionInfo="Saved by Adobe Flash Macintosh 11.0 build 489" majorVersion="11" buildNumber="489" nextSceneIdentifier="2" playOptionsPlayLoop="false" playOptionsPlayPages="false" playOptionsPlayFrameActions="false" hasAccessibleData="true">
+     <folders>
+          <DOMFolderItem name="Component Assets" itemID="44e488a0-000016d6"/>
+          <DOMFolderItem name="Component Assets/_private" itemID="4573a4bc-000003c6"/>
+          <DOMFolderItem name="Component Assets/ProgressBarSkins" itemID="44c91c22-00000249"/>
+     </folders>
+     <media>
+          <DOMCompiledClipItem name="Component Assets/_private/ComponentShim" itemID="4b858ac3-000002a3" linkageExportForAS="true" linkageClassName="fl.core.ComponentShim" sourceLastImported="1267043011" displayAsComponent="false" customIconID="0" actionscriptClass="fl.core.ComponentShim" swfScmHRef="a4evqyd4nn.swf" swfScmSourceFilename="C:\Documents and Settings\jkamerer\Local Settings\Application Data\Adobe\Flash CS5\en_US\Configuration\TMPa3zn4yd4n3..swf" persistLivePreview11="true" livePreview11ScmHRef="a4evqyd4nn1.swf" livePreview11ScmSourceFilename="C:\Documents and Settings\jkamerer\Local Settings\Application Data\Adobe\Flash CS5\en_US\Configuration\TMPa3zn4yd4n3..swf" editFrameIndex="1" requiredMinimumPlayerVersion="0" requiredMinimumASVersion="0" parametersAreLocked="true" swcPath="Component Assets/_private/ComponentShim.xml" rootSymbolLinkageID="fl.core.ComponentShim" playerVersion="9" actionscriptVersion="3" hashKey="kfuaIecnz3BPM/B8Awo4b.">
+               <classProperties><![CDATA[<component id="fl/core/ComponentShim" class="fl.core.ComponentShim" modified="1267043003888">
+<movieBounds xmin="0" xmax="0" ymin="0" ymax="0" />
+<classDefs>
+	<classDef id="fl.core.AccessibilityShim"/>
+	<classDef id="fl.controls.CheckBox"/>
+	<classDef id="fl.controls.LabelButton"/>
+	<classDef id="fl.controls.List"/>
+	<classDef id="fl.controls.ComboBox"/>
+	<classDef id="fl.controls.ProgressBarDirection"/>
+	<classDef id="fl.data.SimpleCollectionItem"/>
+	<classDef id="fl.controls.TextArea"/>
+	<classDef id="fl.controls.Slider"/>
+	<classDef id="fl.events.DataChangeEvent"/>
+	<classDef id="fl.accessibility.ComboBoxAccImpl"/>
+	<classDef id="fl.events.DataChangeType"/>
+	<classDef id="fl.accessibility.TileListAccImpl"/>
+	<classDef id="fl.accessibility.ButtonAccImpl"/>
+	<classDef id="fl.controls.BaseButton"/>
+	<classDef id="fl.core.UIComponent"/>
+	<classDef id="fl.controls.DataGrid"/>
+	<classDef id="fl.containers.BaseScrollPane"/>
+	<classDef id="fl.livepreview.LivePreviewParent"/>
+	<classDef id="fl.controls.Label"/>
+	<classDef id="fl.managers.IFocusManagerComponent"/>
+	<classDef id="fl.controls.UIScrollBar"/>
+	<classDef id="fl.controls.listClasses.ICellRenderer"/>
+	<classDef id="fl.controls.dataGridClasses.DataGridCellEditor"/>
+	<classDef id="fl.controls.ColorPicker"/>
+	<classDef id="fl.managers.FocusManager"/>
+	<classDef id="fl.events.DataGridEventReason"/>
+	<classDef id="fl.events.SliderEvent"/>
+	<classDef id="fl.events.SliderEventClickTarget"/>
+	<classDef id="fl.controls.progressBarClasses.IndeterminateBar"/>
+	<classDef id="fl.controls.listClasses.ListData"/>
+	<classDef id="fl.core.InvalidationType"/>
+	<classDef id="fl.controls.RadioButtonGroup"/>
+	<classDef id="fl.controls.NumericStepper"/>
+	<classDef id="fl.accessibility.LabelButtonAccImpl"/>
+	<classDef id="fl.containers.UILoader"/>
+	<classDef id="fl.events.ColorPickerEvent"/>
+	<classDef id="fl.controls.ButtonLabelPlacement"/>
+	<classDef id="fl.accessibility.CheckBoxAccImpl"/>
+	<classDef id="fl.managers.StyleManager"/>
+	<classDef id="fl.controls.TileList"/>
+	<classDef id="fl.controls.RadioButton"/>
+	<classDef id="fl.containers.ScrollPane"/>
+	<classDef id="fl.controls.listClasses.TileListData"/>
+	<classDef id="fl.events.InteractionInputType"/>
+	<classDef id="fl.controls.Button"/>
+	<classDef id="fl.core.ComponentShim"/>
+	<classDef id="fl.accessibility.UIComponentAccImpl"/>
+	<classDef id="fl.controls.SelectableList"/>
+	<classDef id="fl.events.ComponentEvent"/>
+	<classDef id="fl.accessibility.RadioButtonAccImpl"/>
+	<classDef id="fl.controls.listClasses.CellRenderer"/>
+	<classDef id="fl.managers.IFocusManagerGroup"/>
+	<classDef id="fl.controls.ScrollPolicy"/>
+	<classDef id="fl.controls.ScrollBar"/>
+	<classDef id="fl.controls.ProgressBar"/>
+	<classDef id="fl.controls.listClasses.ImageCell"/>
+	<classDef id="fl.managers.IFocusManager"/>
+	<classDef id="fl.controls.ProgressBarMode"/>
+	<classDef id="fl.accessibility.SelectableListAccImpl"/>
+	<classDef id="fl.controls.TextInput"/>
+	<classDef id="fl.events.ListEvent"/>
+	<classDef id="fl.accessibility.AccImpl"/>
+	<classDef id="fl.accessibility.DataGridAccImpl"/>
+	<classDef id="fl.controls.dataGridClasses.DataGridColumn"/>
+	<classDef id="fl.events.ScrollEvent"/>
+	<classDef id="fl.events.DataGridEvent"/>
+	<classDef id="fl.data.TileListCollectionItem"/>
+	<classDef id="fl.data.DataProvider"/>
+	<classDef id="fl.accessibility.ListAccImpl"/>
+	<classDef id="fl.controls.dataGridClasses.HeaderRenderer"/>
+	<classDef id="fl.controls.ScrollBarDirection"/>
+	<classDef id="fl.controls.SliderDirection"/>
+</classDefs>
+<class id="fl.core.ComponentShim" >
+	<method id="ComponentShim" isConstructor="true" isProperty="false">
+	</method>
+</class></component>
+]]></classProperties>
+               <customIcon>
+                    <CustomIcon rowByteCount="72" colorDepth="32" width="18" height="18" frameRight="360" frameBottom="360" isTransparent="true" href="a4ew6yd4nn.dat"/>
+               </customIcon>
+               <SwcItem name="fl.core.ComponentShim" version="1267043003" isTopLevel="true"/>
+          </DOMCompiledClipItem>
+          <DOMCompiledClipItem name="FLVPlayback 2.5" itemID="4faa3474-0000004b" linkageExportForAS="true" linkageClassName="fl.video.FLVPlayback" sourceLastImported="1268346527" sourcePlatform="macintosh" tooltip="FLVPlayback component 2.5" customIconID="0" actionscriptClass="fl.video.FLVPlayback" livePreviewScmHRef="50KJV3R4CP.swf" livePreviewScmSourceFilename="/Users/tc/Library/Application Support/Adobe/Flash CS5/fr_FR/Configuration/TMP50KJV3R4CP..swf" persistLivePreview11="true" livePreview11ScmHRef="50KJW3R4CP.swf" livePreview11ScmSourceFilename="/Users/tc/Library/Application Support/Adobe/Flash CS5/fr_FR/Configuration/TMP50KJT3R4CP..swf" editFrameIndex="1" requiredMinimumPlayerVersion="0" requiredMinimumASVersion="0" parametersAreLocked="true" swcPath="FLVPlayback 2.5.xml" rootSymbolLinkageID="fl.video.FLVPlayback" movieRectRight="6401" movieRectBottom="4800" playerVersion="10" actionscriptVersion="3" hashKey="LWJ4qfDKC.LqmxYv0myxv1">
+               <parametersAsXML><![CDATA[   <property id="align">
+      <Inspectable name="align" variable="align" category="" verbose="0" defaultValue="center" enumeration="center,top,left,bottom,right,topLeft,topRight,bottomLeft,bottomRight" type="List"/>
+   </property>
+   <property id="autoPlay">
+      <Inspectable name="autoPlay" variable="autoPlay" category="" verbose="0" defaultValue="true" type="Boolean"/>
+   </property>
+   <property id="cuePoints">
+      <Inspectable name="cuePoints" variable="cuePoints" category="" verbose="0" defaultValue="" type="Video Cue Points"/>
+   </property>
+   <property id="dvrFixedDuration">
+      <Inspectable name="dvrFixedDuration" variable="dvrFixedDuration" category="" verbose="0" defaultValue="false" type="Boolean"/>
+   </property>
+   <property id="dvrIncrement">
+      <Inspectable name="dvrIncrement" variable="dvrIncrement" category="" verbose="0" defaultValue="1800" type="Number"/>
+   </property>
+   <property id="dvrIncrementVariance">
+      <Inspectable name="dvrIncrementVariance" variable="dvrIncrementVariance" category="" verbose="0" defaultValue="300" type="Number"/>
+   </property>
+   <property id="dvrSnapToLive">
+      <Inspectable name="dvrSnapToLive" variable="dvrSnapToLive" category="" verbose="0" defaultValue="true" type="Boolean"/>
+   </property>
+   <property id="isDVR">
+      <Inspectable name="isDVR" variable="isDVR" category="" verbose="0" defaultValue="false" type="Boolean"/>
+   </property>
+   <property id="isLive">
+      <Inspectable name="isLive" variable="isLive" category="" verbose="0" defaultValue="false" type="Boolean"/>
+   </property>
+   <property id="preview">
+      <Inspectable name="preview" variable="preview" category="" verbose="0" defaultValue="" type="Video Preview"/>
+   </property>
+   <property id="scaleMode">
+      <Inspectable name="scaleMode" variable="scaleMode" category="" verbose="0" defaultValue="maintainAspectRatio" enumeration="maintainAspectRatio,noScale,exactFit" type="List"/>
+   </property>
+   <property id="skin">
+      <Inspectable name="skin" variable="skin" category="" verbose="0" defaultValue="" type="Video Skin"/>
+   </property>
+   <property id="skinAutoHide">
+      <Inspectable name="skinAutoHide" variable="skinAutoHide" category="" verbose="0" defaultValue="false" type="Boolean"/>
+   </property>
+   <property id="skinBackgroundAlpha">
+      <Inspectable name="skinBackgroundAlpha" variable="skinBackgroundAlpha" category="" verbose="0" defaultValue="0.85" type="Number"/>
+   </property>
+   <property id="skinBackgroundColor">
+      <Inspectable name="skinBackgroundColor" variable="skinBackgroundColor" category="" verbose="0" defaultValue="#47ABCB" type="Color"/>
+   </property>
+   <property id="source">
+      <Inspectable name="source" variable="source" category="" verbose="0" defaultValue="" type="Video Content Path"/>
+   </property>
+   <property id="volume">
+      <Inspectable name="volume" variable="volume" category="" verbose="0" defaultValue="1" type="Number"/>
+   </property>
+]]></parametersAsXML>
+               <classProperties><![CDATA[<component id="fl/video/FLVPlayback" class="fl.video.FLVPlayback" livePreviewClass="FLVPlaybackStageLivePreview" modified="1268346527643">
+<movieBounds xmin="0" xmax="6400" ymin="0" ymax="4800" />
+<classDefs>
+	<classDef id="fl.video.CuePointType"/>
+	<classDef id="fl.video.ParseResults"/>
+	<classDef id="fl.video.VideoPlayerState"/>
+	<classDef id="fl.video.NCManagerDynamicStream"/>
+	<classDef id="fl.video.NCManagerNativeShim"/>
+	<classDef id="fl.video.FMSCapabilities"/>
+	<classDef id="fl.video.ConnectClientDynamicStream"/>
+	<classDef id="fl.video.VideoError"/>
+	<classDef id="fl.video.VideoEvent"/>
+	<classDef id="fl.video.AutoLayoutEvent"/>
+	<classDef id="fl.video.SkinErrorEvent"/>
+	<classDef id="fl.video.VolumeBarAccImpl"/>
+	<classDef id="fl.video.FPADManager"/>
+	<classDef id="fl.video.SeekBarAccImpl"/>
+	<classDef id="fl.video.ReconnectClient"/>
+	<classDef id="fl.video.VideoScaleMode"/>
+	<classDef id="fl.video.ConnectClient"/>
+	<classDef id="fl.livepreview.LivePreviewParent"/>
+	<classDef id="fl.video.NCManagerNative"/>
+	<classDef id="fl.video.DynamicStreamItem"/>
+	<classDef id="fl.video.VideoPlayerClient"/>
+	<classDef id="fl.video.LayoutEvent"/>
+	<classDef id="fl.video.Icon"/>
+	<classDef id="fl.video.DynamicStream"/>
+	<classDef id="fl.video.ControlData"/>
+	<classDef id="fl.video.FPMediaCapabilities"/>
+	<classDef id="fl.video.VideoState"/>
+	<classDef id="fl.video.QueuedCommand"/>
+	<classDef id="fl.video.VideoProgressEvent"/>
+	<classDef id="fl.video.VideoAlign"/>
+	<classDef id="fl.video.CuePointManager"/>
+	<classDef id="fl.video.IVPEvent"/>
+	<classDef id="fl.video.VideoPlayer"/>
+	<classDef id="fl.video.UIManager"/>
+	<classDef id="fl.video.ConnectClientNative"/>
+	<classDef id="fl.video.INCManager"/>
+	<classDef id="fl.video.SoundEvent"/>
+	<classDef id="fl.video.FLVPlayback"/>
+	<classDef id="fl.video.MetadataEvent"/>
+	<classDef id="fl.video.SMILManager"/>
+	<classDef id="fl.video.NCManager"/>
+	<classDef id="fl.video.DVRManager"/>
+</classDefs>
+<class id="fl.video.FLVPlayback" >
+	<LivePreviewVersion param1="1" />
+	<RequiresDataBinding param1="true" />
+	<minimumPlayerVersion param1="10" />
+	<IconFile param1="FLVPlayback.png" />
+	<Event param1="soundUpdate" type="fl.video.SoundEvent" />
+	<Event param1="stoppedStateEntered" type="fl.video.VideoEvent" />
+	<Event param1="unsupportedPlayerVersion" type="fl.video.VideoEvent" />
+	<Event param1="stateChange" type="fl.video.VideoEvent" />
+	<Event param1="skinLoaded" type="fl.video.VideoEvent" />
+	<Event param1="skinError" type="fl.video.SkinErrorEvent" />
+	<Event param1="seeked" type="fl.video.VideoEvent" />
+	<Event param1="scrubStart" type="fl.video.VideoEvent" />
+	<Event param1="scrubFinish" type="fl.video.VideoEvent" />
+	<Event param1="rewind" type="fl.video.VideoEvent" />
+	<Event param1="layout" type="fl.video.LayoutEvent" />
+	<Event param1="ready" type="fl.video.VideoEvent" />
+	<Event param1="progress" type="fl.video.VideoProgressEvent" />
+	<Event param1="playheadUpdate" type="fl.video.VideoEvent" />
+	<Event param1="playingStateEntered" type="fl.video.VideoEvent" />
+	<Event param1="pausedStateEntered" type="fl.video.VideoEvent" />
+	<Event param1="metadataReceived" type="fl.video.MetadataEvent" />
+	<Event param1="fastForward" type="fl.video.VideoEvent" />
+	<Event param1="cuePoint" type="fl.video.MetadataEvent" />
+	<Event param1="complete" type="fl.video.VideoEvent" />
+	<Event param1="close" type="fl.video.VideoEvent" />
+	<Event param1="bufferingStateEntered" type="fl.video.VideoEvent" />
+	<Event param1="autoRewound" type="fl.video.VideoEvent" />
+	<Event param1="autoLayout" type="fl.video.AutoLayoutEvent" />
+	<__go_to_ctor_definition_help file="C:\devsrc\flashfarm\media_frameworks\branches\FLVPlayback_AS3_DVR\FLVPlayback\..\fl\video\FLVPlayback.as" pos="31557" />
+	<method id="playheadPercentage" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="activeVideoPlayerIndex" returnType="uint" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="align" returnType="String" isProperty="true" permissions="readwrite">
+		<Inspectable type="List" enumeration="center,top,left,bottom,right,topLeft,topRight,bottomLeft,bottomRight" defaultValue="center" />
+	</method>
+	<method id="autoPlay" returnType="Boolean" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="true" />
+	</method>
+	<method id="autoRewind" returnType="Boolean" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="bitrate" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="buffering" returnType="Boolean" isProperty="true" permissions="readonly">
+	</method>
+	<method id="bufferingBar" returnType="Sprite" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="bufferingBarHidesAndDisablesOthers" returnType="Boolean" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="backButton" returnType="Sprite" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="bufferTime" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="bytesLoaded" returnType="uint" isProperty="true" permissions="readonly">
+	</method>
+	<method id="bytesTotal" returnType="uint" isProperty="true" permissions="readonly">
+	</method>
+	<method id="source" returnType="String" isProperty="true" permissions="readwrite">
+		<Inspectable type="Video Content Path" />
+	</method>
+	<method id="dvrIncrement" returnType="Number" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="1800" />
+	</method>
+	<method id="dvrIncrementVariance" returnType="Number" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="300" />
+	</method>
+	<method id="dvrFixedDuration" returnType="Boolean" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="false" />
+	</method>
+	<method id="dvrSnapToLive" returnType="Boolean" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="true" />
+	</method>
+	<method id="enableLiveCast" returnType="Boolean" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="forwardButton" returnType="Sprite" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="fullScreenBackgroundColor" returnType="uint" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="fullScreenButton" returnType="Sprite" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="fullScreenSkinDelay" returnType="int" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="fullScreenTakeOver" returnType="Boolean" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="height" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="idleTimeout" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="isDVR" returnType="Boolean" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="false" />
+	</method>
+	<method id="isRTMP" returnType="Boolean" isProperty="true" permissions="readonly">
+	</method>
+	<method id="isLive" returnType="Boolean" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="false" />
+	</method>
+	<method id="metadata" returnType="Object" isProperty="true" permissions="readonly">
+	</method>
+	<method id="metadataLoaded" returnType="Boolean" isProperty="true" permissions="readonly">
+	</method>
+	<method id="muteButton" returnType="Sprite" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="ncMgr" returnType="INCManager" isProperty="true" permissions="readonly">
+	</method>
+	<method id="pauseButton" returnType="Sprite" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="paused" returnType="Boolean" isProperty="true" permissions="readonly">
+	</method>
+	<method id="playButton" returnType="Sprite" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="playheadTime" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="playheadUpdateInterval" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="playing" returnType="Boolean" isProperty="true" permissions="readonly">
+	</method>
+	<method id="playPauseButton" returnType="Sprite" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="preferredHeight" returnType="int" isProperty="true" permissions="readonly">
+	</method>
+	<method id="preferredWidth" returnType="int" isProperty="true" permissions="readonly">
+	</method>
+	<method id="progressInterval" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="registrationX" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="registrationY" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="registrationWidth" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="registrationHeight" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="scaleMode" returnType="String" isProperty="true" permissions="readwrite">
+		<Inspectable type="List" enumeration="maintainAspectRatio,noScale,exactFit" defaultValue="maintainAspectRatio" />
+	</method>
+	<method id="scaleX" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="scaleY" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="scrubbing" returnType="Boolean" isProperty="true" permissions="readonly">
+	</method>
+	<method id="seekBar" returnType="Sprite" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="seekBarInterval" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="seekBarScrubTolerance" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="seekToPrevOffset" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="skin" returnType="String" isProperty="true" permissions="readwrite">
+		<Inspectable type="Video Skin" />
+	</method>
+	<method id="skinAutoHide" returnType="Boolean" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="false" />
+	</method>
+	<method id="skinBackgroundAlpha" returnType="Number" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="0.85" />
+	</method>
+	<method id="skinBackgroundColor" returnType="uint" isProperty="true" permissions="readwrite">
+		<Inspectable type="Color" defaultValue="#47ABCB" />
+	</method>
+	<method id="skinFadeTime" returnType="int" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="skinScaleMaximum" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="soundTransform" returnType="SoundTransform" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="state" returnType="String" isProperty="true" permissions="readonly">
+	</method>
+	<method id="stateResponsive" returnType="Boolean" isProperty="true" permissions="readonly">
+	</method>
+	<method id="stopButton" returnType="Sprite" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="stopped" returnType="Boolean" isProperty="true" permissions="readonly">
+	</method>
+	<method id="totalTime" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="visibleVideoPlayerIndex" returnType="uint" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="volume" returnType="Number" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="1" />
+	</method>
+	<method id="volumeBar" returnType="Sprite" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="volumeBarInterval" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="volumeBarScrubTolerance" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="width" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="x" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="y" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="endTabIndex" returnType="int" isProperty="true" permissions="readonly">
+	</method>
+	<method id="startTabIndex" returnType="int" isProperty="true" permissions="readonly">
+	</method>
+	<method id="preview" returnType="String" isProperty="true" permissions="writeonly">
+		<Inspectable type="Video Preview" />
+	</method>
+	<method id="componentInspectorSetting" returnType="Boolean" isProperty="true" permissions="writeonly">
+	</method>
+	<method id="cuePoints" returnType="Array" isProperty="true" permissions="writeonly">
+		<Inspectable type="Video Cue Points" />
+	</method>
+	<method id="boundingBox_mc" returnType="DisplayObject" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="setSize" returnType="void" isProperty="false">
+	</method>
+	<method id="setScale" returnType="void" isProperty="false">
+	</method>
+	<method id="load" returnType="void" isProperty="false">
+	</method>
+	<method id="play" returnType="void" isProperty="false">
+	</method>
+	<method id="play2" returnType="void" isProperty="false">
+	</method>
+	<method id="playWhenEnoughDownloaded" returnType="void" isProperty="false">
+	</method>
+	<method id="pause" returnType="void" isProperty="false">
+	</method>
+	<method id="stop" returnType="void" isProperty="false">
+	</method>
+	<method id="seek" returnType="void" isProperty="false">
+	</method>
+	<method id="seekSeconds" returnType="void" isProperty="false">
+	</method>
+	<method id="seekPercent" returnType="void" isProperty="false">
+	</method>
+	<method id="seekToNavCuePoint" returnType="void" isProperty="false">
+	</method>
+	<method id="seekToNextNavCuePoint" returnType="void" isProperty="false">
+	</method>
+	<method id="seekToPrevNavCuePoint" returnType="void" isProperty="false">
+	</method>
+	<method id="addASCuePoint" returnType="Object" isProperty="false">
+	</method>
+	<method id="removeASCuePoint" returnType="Object" isProperty="false">
+	</method>
+	<method id="findCuePoint" returnType="Object" isProperty="false">
+	</method>
+	<method id="findNearestCuePoint" returnType="Object" isProperty="false">
+	</method>
+	<method id="findNextCuePointWithName" returnType="Object" isProperty="false">
+	</method>
+	<method id="setFLVCuePointEnabled" returnType="Number" isProperty="false">
+	</method>
+	<method id="isFLVCuePointEnabled" returnType="Boolean" isProperty="false">
+	</method>
+	<method id="bringVideoPlayerToFront" returnType="void" isProperty="false">
+	</method>
+	<method id="getVideoPlayer" returnType="VideoPlayer" isProperty="false">
+	</method>
+	<method id="closeVideoPlayer" returnType="void" isProperty="false">
+	</method>
+	<method id="enterFullScreenDisplayState" returnType="void" isProperty="false">
+	</method>
+	<method id="assignTabIndexes" returnType="int" isProperty="false">
+	</method>
+	<method id="FLVPlayback" isConstructor="true" isProperty="false">
+	</method>
+</class><livePreview class="FLVPlaybackStageLivePreview">
+<movieBounds xmin="0" xmax="6401" ymin="0" ymax="4800" />
+<classDefs>
+	<classDef id="fl.livepreview.IEditContextV1"/>
+	<classDef id="fl.livepreview.IPreviewInterface"/>
+	<classDef id="fl.video.CuePointType"/>
+	<classDef id="fl.video.VideoPlayerState"/>
+	<classDef id="fl.video.DynamicStreamItem"/>
+	<classDef id="fl.video.ControlData"/>
+	<classDef id="fl.video.CuePointManager"/>
+	<classDef id="fl.video.UIManager"/>
+	<classDef id="fl.video.INCManager"/>
+	<classDef id="fl.video.VideoScaleMode"/>
+	<classDef id="fl.livepreview.EditContextFlags"/>
+	<classDef id="fl.video.VideoState"/>
+	<classDef id="fl.video.QueuedCommand"/>
+	<classDef id="fl.video.IVPEvent"/>
+	<classDef id="fl.video.ParseResults"/>
+	<classDef id="fl.video.FPMediaCapabilities"/>
+	<classDef id="fl.video.SMILManager"/>
+	<classDef id="fl.video.FPADManager"/>
+	<classDef id="fl.video.FMSCapabilities"/>
+	<classDef id="fl.video.VideoAlign"/>
+	<classDef id="fl.video.ConnectClient"/>
+	<classDef id="fl.video.ReconnectClient"/>
+	<classDef id="fl.video.VideoPlayerClient"/>
+	<classDef id="fl.video.LayoutEvent"/>
+	<classDef id="fl.video.SoundEvent"/>
+	<classDef id="fl.video.VolumeBarAccImpl"/>
+	<classDef id="fl.video.SeekBarAccImpl"/>
+	<classDef id="fl.livepreview.IVideoInterfaceV1"/>
+	<classDef id="fl.video.VideoError"/>
+	<classDef id="UIManagerStage"/>
+	<classDef id="fl.video.NCManager"/>
+	<classDef id="fl.video.VideoEvent"/>
+	<classDef id="fl.video.MetadataEvent"/>
+	<classDef id="fl.video.ConnectClientDynamicStream"/>
+	<classDef id="fl.video.ConnectClientNative"/>
+	<classDef id="fl.video.DVRManager"/>
+	<classDef id="fl.video.VideoProgressEvent"/>
+	<classDef id="fl.video.AutoLayoutEvent"/>
+	<classDef id="fl.video.NCManagerDynamicStream"/>
+	<classDef id="fl.video.NCManagerNative"/>
+	<classDef id="fl.video.DynamicStream"/>
+	<classDef id="fl.video.SkinErrorEvent"/>
+	<classDef id="fl.video.VideoPlayer"/>
+	<classDef id="FLVPlaybackStageLivePreview"/>
+	<classDef id="fl.stage.video.StopButtonDown"/>
+	<classDef id="fl.stage.video.StopButtonNormal"/>
+	<classDef id="fl.stage.video.StopButtonOver"/>
+	<classDef id="fl.video.FLVPlayback"/>
+	<classDef id="fl.stage.video.ComponentVersionView"/>
+	<classDef id="fl.stage.video.BackgroundBox"/>
+	<classDef id="FLVPlaybackStage"/>
+	<classDef id="fl.livepreview.LivePreviewParent"/>
+	<classDef id="fl.video.Icon"/>
+</classDefs>
+<class id="FLVPlaybackStageLivePreview" >
+	<method id="width" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="height" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="source" returnType="String" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="isLive" returnType="Boolean" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="volume" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="align" returnType="String" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="skinAutoHide" returnType="Boolean" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="scaleMode" returnType="String" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="autoPlay" returnType="Boolean" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="skin" returnType="String" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="skinBackgroundAlpha" returnType="Number" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="skinBackgroundColor" returnType="uint" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="DocumentRoot" returnType="String" isProperty="true" permissions="writeonly">
+	</method>
+	<method id="FullPathSourceFromRelativePath" returnType="String" isProperty="true" permissions="writeonly">
+	</method>
+	<method id="avatar_mc" returnType="DisplayObject" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="caPreviewClass" returnType="ComponentVersionView" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="createButtonsOverlay" returnType="void" isProperty="false">
+	</method>
+	<method id="destroyButtonsOverlay" returnType="void" isProperty="false">
+	</method>
+	<method id="SetFLVplaybackPlayheadUpdateTimer" returnType="void" isProperty="false">
+	</method>
+	<method id="initFLVplaybackPlayheadUpdateTimer" returnType="void" isProperty="false">
+	</method>
+	<method id="stopFLVplaybackPlayheadUpdateTimer" returnType="void" isProperty="false">
+	</method>
+	<method id="onFLVplaybackPlayheadUpdateTimer" returnType="void" isProperty="false">
+	</method>
+	<method id="startFLVplaybackRemotePreloadBufferingTimer" returnType="void" isProperty="false">
+	</method>
+	<method id="stopFLVplaybackRemotePreloadBufferingTimer" returnType="void" isProperty="false">
+	</method>
+	<method id="onFLVplaybackRemotePreloadBufferingTimer" returnType="void" isProperty="false">
+	</method>
+	<method id="FileExist" returnType="Boolean" isProperty="false">
+	</method>
+	<method id="setSize" returnType="void" isProperty="false">
+	</method>
+	<method id="draw" returnType="void" isProperty="false">
+	</method>
+	<method id="setIPreviewInterface" returnType="void" isProperty="false">
+	</method>
+	<method id="designTimeEdit" returnType="Boolean" isProperty="false">
+	</method>
+	<method id="load" returnType="void" isProperty="false">
+	</method>
+	<method id="play" returnType="void" isProperty="false">
+	</method>
+	<method id="pause" returnType="void" isProperty="false">
+	</method>
+	<method id="stop" returnType="void" isProperty="false">
+	</method>
+	<method id="seek" returnType="void" isProperty="false">
+	</method>
+	<method id="seekVideo" returnType="void" isProperty="false">
+	</method>
+	<method id="seekSeconds" returnType="void" isProperty="false">
+	</method>
+	<method id="startSeek" returnType="Boolean" isProperty="false">
+	</method>
+	<method id="stopSeek" returnType="void" isProperty="false">
+	</method>
+	<method id="setDocumentRoot" returnType="void" isProperty="false">
+	</method>
+	<method id="ResetSource" returnType="void" isProperty="false">
+	</method>
+	<method id="DisableSetSource" returnType="void" isProperty="false">
+	</method>
+	<method id="EnableSetSource" returnType="void" isProperty="false">
+	</method>
+	<method id="loadPreview" returnType="void" isProperty="false">
+	</method>
+	<method id="unloadPreview" returnType="void" isProperty="false">
+	</method>
+	<method id="close" returnType="void" isProperty="false">
+	</method>
+	<method id="Mute" returnType="void" isProperty="false">
+	</method>
+	<method id="grabBitmap" returnType="Boolean" isProperty="false">
+	</method>
+	<method id="FLVPlaybackStageLivePreview" isConstructor="true" isProperty="false">
+	</method>
+</class></livePreview>
+</component>
+]]></classProperties>
+               <customIcon>
+                    <CustomIcon rowByteCount="72" colorDepth="32" width="18" height="18" frameRight="360" frameBottom="360" isTransparent="true" href="50KJY3R4CP.dat"/>
+               </customIcon>
+               <SwcItem name="fl.video.FLVPlayback" version="1268346527" isTopLevel="true"/>
+          </DOMCompiledClipItem>
+          <DOMCompiledClipItem name="FLVPlaybackCaptioning" itemID="4faa3474-00000059" linkageExportForAS="true" linkageClassName="fl.video.FLVPlaybackCaptioning" sourceLastImported="1263907861" sourcePlatform="macintosh" customIconID="0" actionscriptClass="fl.video.FLVPlaybackCaptioning" livePreviewScmHRef="50O3J3R4CU.swf" livePreviewScmSourceFilename="/Users/tc/Library/Application Support/Adobe/Flash CS5/fr_FR/Configuration/TMP50O3I3R4CU..swf" persistLivePreview11="true" livePreview11ScmHRef="50O3J3R4CU2.swf" livePreview11ScmSourceFilename="/Users/tc/Library/Application Support/Adobe/Flash CS5/fr_FR/Configuration/TMP50O3H3R4CU..swf" editFrameIndex="1" requiredMinimumPlayerVersion="0" requiredMinimumASVersion="0" parametersAreLocked="true" swcPath="FLVPlaybackCaptioning.xml" rootSymbolLinkageID="fl.video.FLVPlaybackCaptioning" movieRectRight="1440" movieRectBottom="1680" playerVersion="9" actionscriptVersion="3" hashKey="u6WoxbQBPf5MDbMcy6Jt7.">
+               <parametersAsXML><![CDATA[   <property id="autoLayout">
+      <Inspectable name="autoLayout" variable="autoLayout" category="" verbose="0" defaultValue="true" type="Boolean"/>
+   </property>
+   <property id="captionTargetName">
+      <Inspectable name="captionTargetName" variable="captionTargetName" category="" verbose="0" defaultValue="auto" type="String"/>
+   </property>
+   <property id="flvPlaybackName">
+      <Inspectable name="flvPlaybackName" variable="flvPlaybackName" category="" verbose="0" defaultValue="auto" type="String"/>
+   </property>
+   <property id="showCaptions">
+      <Inspectable name="showCaptions" variable="showCaptions" category="" verbose="0" defaultValue="true" type="Boolean"/>
+   </property>
+   <property id="simpleFormatting">
+      <Inspectable name="simpleFormatting" variable="simpleFormatting" category="" verbose="0" defaultValue="false" type="Boolean"/>
+   </property>
+   <property id="source">
+      <Inspectable name="source" variable="source" category="" verbose="0" defaultValue="" type="String"/>
+   </property>
+]]></parametersAsXML>
+               <classProperties><![CDATA[<component id="fl/video/FLVPlaybackCaptioning" class="fl.video.FLVPlaybackCaptioning" modified="1263907861046">
+<movieBounds xmin="0" xmax="1440" ymin="0" ymax="1680" />
+<classDefs>
+	<classDef id="fl.livepreview.LivePreviewParent"/>
+	<classDef id="fl.video.TimedTextManager"/>
+	<classDef id="fl.video.CaptionChangeEvent"/>
+	<classDef id="fl.video.CaptionTargetEvent"/>
+	<classDef id="fl.video.FLVPlaybackCaptioning"/>
+</classDefs>
+<class id="fl.video.FLVPlaybackCaptioning" >
+	<RequiresDataBinding param1="true" />
+	<IconFile param1="FLVPlaybackCaptioning.png" />
+	<Event param1="securityError" type="flash.events.SecurityErrorEvent" />
+	<Event param1="progress" type="flash.events.ProgressEvent" />
+	<Event param1="open" type="flash.events.Event" />
+	<Event param1="ioError" type="flash.events.IOErrorEvent" />
+	<Event param1="httpStatus" type="flash.events.HTTPStatusEvent" />
+	<Event param1="complete" type="flash.events.Event" />
+	<Event param1="captionTargetCreated" type="fl.video.CaptionTargetEvent" />
+	<Event param1="captionChange" type="fl.video.CaptionChangeEvent" />
+	<method id="showCaptions" returnType="Boolean" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="true" />
+	</method>
+	<method id="source" returnType="String" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="" />
+	</method>
+	<method id="autoLayout" returnType="Boolean" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="true" />
+	</method>
+	<method id="captionTargetName" returnType="String" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="auto" />
+	</method>
+	<method id="captionTarget" returnType="DisplayObject" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="captionButton" returnType="Sprite" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="flvPlaybackName" returnType="String" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="auto" />
+	</method>
+	<method id="flvPlayback" returnType="FLVPlayback" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="track" returnType="uint" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="videoPlayerIndex" returnType="uint" isProperty="true" permissions="readwrite">
+	</method>
+	<method id="simpleFormatting" returnType="Boolean" isProperty="true" permissions="readwrite">
+		<Inspectable defaultValue="false" />
+	</method>
+	<method id="getCaptionsAsTranscript" returnType="String" isProperty="false">
+	</method>
+	<method id="getCaptionsAsArray" returnType="Array" isProperty="false">
+	</method>
+	<method id="secondsToTime" returnType="String" isProperty="false">
+	</method>
+	<method id="findInCaptions" returnType="Array" isProperty="false">
+	</method>
+	<method id="FLVPlaybackCaptioning" isConstructor="true" isProperty="false">
+	</method>
+</class></component>
+]]></classProperties>
+               <customIcon>
+                    <CustomIcon rowByteCount="64" colorDepth="32" width="16" height="16" frameRight="320" frameBottom="320" isTransparent="true" href="50O3K3R4CU.dat"/>
+               </customIcon>
+               <SwcItem name="fl.video.FLVPlaybackCaptioning" version="1263907861" isTopLevel="true"/>
+          </DOMCompiledClipItem>
+     </media>
+     <symbols>
+          <Include href="Component Assets/_private/Component_avatar.xml" loadImmediate="false"/>
+          <Include href="Component Assets/ProgressBarSkins/ProgressBar_barSkin.xml"/>
+          <Include href="Component Assets/ProgressBarSkins/ProgressBar_indeterminateSkin.xml"/>
+          <Include href="Component Assets/ProgressBarSkins/ProgressBar_trackSkin.xml"/>
+          <Include href="ProgressBar.xml"/>
+     </symbols>
+     <timelines>
+          <DOMTimeline name="Séquence 1">
+               <layers>
+                    <DOMLayer name="Calque 1" color="#4FFF4F" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timelines>
+     <swatchLists>
+          <swatchList>
+               <swatches>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#003300" hue="80" saturation="239" brightness="24"/>
+                    <SolidSwatchItem color="#006600" hue="80" saturation="239" brightness="48"/>
+                    <SolidSwatchItem color="#009900" hue="80" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#00CC00" hue="80" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#00FF00" hue="80" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#330000" saturation="239" brightness="24"/>
+                    <SolidSwatchItem color="#333300" hue="40" saturation="239" brightness="24"/>
+                    <SolidSwatchItem color="#336600" hue="60" saturation="239" brightness="48"/>
+                    <SolidSwatchItem color="#339900" hue="67" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#33CC00" hue="70" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#33FF00" hue="72" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#660000" saturation="239" brightness="48"/>
+                    <SolidSwatchItem color="#663300" hue="20" saturation="239" brightness="48"/>
+                    <SolidSwatchItem color="#666600" hue="40" saturation="239" brightness="48"/>
+                    <SolidSwatchItem color="#669900" hue="53" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#66CC00" hue="60" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#66FF00" hue="64" saturation="239" brightness="120"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#333333" brightness="48"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#000033" hue="160" saturation="239" brightness="24"/>
+                    <SolidSwatchItem color="#003333" hue="120" saturation="239" brightness="24"/>
+                    <SolidSwatchItem color="#006633" hue="100" saturation="239" brightness="48"/>
+                    <SolidSwatchItem color="#009933" hue="93" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#00CC33" hue="90" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#00FF33" hue="88" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#330033" hue="200" saturation="239" brightness="24"/>
+                    <SolidSwatchItem color="#333333" brightness="48"/>
+                    <SolidSwatchItem color="#336633" hue="80" saturation="80" brightness="72"/>
+                    <SolidSwatchItem color="#339933" hue="80" saturation="120" brightness="96"/>
+                    <SolidSwatchItem color="#33CC33" hue="80" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#33FF33" hue="80" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#660033" hue="220" saturation="239" brightness="48"/>
+                    <SolidSwatchItem color="#663333" saturation="80" brightness="72"/>
+                    <SolidSwatchItem color="#666633" hue="40" saturation="80" brightness="72"/>
+                    <SolidSwatchItem color="#669933" hue="60" saturation="120" brightness="96"/>
+                    <SolidSwatchItem color="#66CC33" hue="67" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#66FF33" hue="70" saturation="239" brightness="144"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#666666" brightness="96"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#000066" hue="160" saturation="239" brightness="48"/>
+                    <SolidSwatchItem color="#003366" hue="140" saturation="239" brightness="48"/>
+                    <SolidSwatchItem color="#006666" hue="120" saturation="239" brightness="48"/>
+                    <SolidSwatchItem color="#009966" hue="107" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#00CC66" hue="100" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#00FF66" hue="96" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#330066" hue="180" saturation="239" brightness="48"/>
+                    <SolidSwatchItem color="#333366" hue="160" saturation="80" brightness="72"/>
+                    <SolidSwatchItem color="#336666" hue="120" saturation="80" brightness="72"/>
+                    <SolidSwatchItem color="#339966" hue="100" saturation="120" brightness="96"/>
+                    <SolidSwatchItem color="#33CC66" hue="93" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#33FF66" hue="90" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#660066" hue="200" saturation="239" brightness="48"/>
+                    <SolidSwatchItem color="#663366" hue="200" saturation="80" brightness="72"/>
+                    <SolidSwatchItem color="#666666" brightness="96"/>
+                    <SolidSwatchItem color="#669966" hue="80" saturation="48" brightness="120"/>
+                    <SolidSwatchItem color="#66CC66" hue="80" saturation="120" brightness="144"/>
+                    <SolidSwatchItem color="#66FF66" hue="80" saturation="239" brightness="168"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#999999" brightness="144"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#000099" hue="160" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#003399" hue="147" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#006699" hue="133" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#009999" hue="120" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#00CC99" hue="110" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#00FF99" hue="104" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#330099" hue="173" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#333399" hue="160" saturation="120" brightness="96"/>
+                    <SolidSwatchItem color="#336699" hue="140" saturation="120" brightness="96"/>
+                    <SolidSwatchItem color="#339999" hue="120" saturation="120" brightness="96"/>
+                    <SolidSwatchItem color="#33CC99" hue="107" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#33FF99" hue="100" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#660099" hue="187" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#663399" hue="180" saturation="120" brightness="96"/>
+                    <SolidSwatchItem color="#666699" hue="160" saturation="48" brightness="120"/>
+                    <SolidSwatchItem color="#669999" hue="120" saturation="48" brightness="120"/>
+                    <SolidSwatchItem color="#66CC99" hue="100" saturation="120" brightness="144"/>
+                    <SolidSwatchItem color="#66FF99" hue="93" saturation="239" brightness="168"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#CCCCCC" brightness="192"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#0000CC" hue="160" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#0033CC" hue="150" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#0066CC" hue="140" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#0099CC" hue="130" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#00CCCC" hue="120" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#00FFCC" hue="112" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#3300CC" hue="170" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#3333CC" hue="160" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#3366CC" hue="147" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#3399CC" hue="133" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#33CCCC" hue="120" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#33FFCC" hue="110" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#6600CC" hue="180" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#6633CC" hue="173" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#6666CC" hue="160" saturation="120" brightness="144"/>
+                    <SolidSwatchItem color="#6699CC" hue="140" saturation="120" brightness="144"/>
+                    <SolidSwatchItem color="#66CCCC" hue="120" saturation="120" brightness="144"/>
+                    <SolidSwatchItem color="#66FFCC" hue="107" saturation="239" brightness="168"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#FFFFFF" brightness="240"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#0000FF" hue="160" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#0033FF" hue="152" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#0066FF" hue="144" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#0099FF" hue="136" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#00CCFF" hue="128" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#00FFFF" hue="120" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#3300FF" hue="168" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#3333FF" hue="160" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#3366FF" hue="150" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#3399FF" hue="140" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#33CCFF" hue="130" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#33FFFF" hue="120" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#6600FF" hue="176" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#6633FF" hue="170" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#6666FF" hue="160" saturation="239" brightness="168"/>
+                    <SolidSwatchItem color="#6699FF" hue="147" saturation="239" brightness="168"/>
+                    <SolidSwatchItem color="#66CCFF" hue="133" saturation="239" brightness="168"/>
+                    <SolidSwatchItem color="#66FFFF" hue="120" saturation="239" brightness="168"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#FF0000" saturation="239" brightness="120"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#990000" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#993300" hue="13" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#996600" hue="27" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#999900" hue="40" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#99CC00" hue="50" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#99FF00" hue="56" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#CC0000" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#CC3300" hue="10" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#CC6600" hue="20" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#CC9900" hue="30" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#CCCC00" hue="40" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#CCFF00" hue="48" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#FF0000" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#FF3300" hue="8" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#FF6600" hue="16" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#FF9900" hue="24" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#FFCC00" hue="32" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#FFFF00" hue="40" saturation="239" brightness="120"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#00FF00" hue="80" saturation="239" brightness="120"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#990033" hue="227" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#993333" saturation="120" brightness="96"/>
+                    <SolidSwatchItem color="#996633" hue="20" saturation="120" brightness="96"/>
+                    <SolidSwatchItem color="#999933" hue="40" saturation="120" brightness="96"/>
+                    <SolidSwatchItem color="#99CC33" hue="53" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#99FF33" hue="60" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#CC0033" hue="230" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#CC3333" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#CC6633" hue="13" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#CC9933" hue="27" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#CCCC33" hue="40" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#CCFF33" hue="50" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#FF0033" hue="232" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#FF3333" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#FF6633" hue="10" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#FF9933" hue="20" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#FFCC33" hue="30" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#FFFF33" hue="40" saturation="239" brightness="144"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#0000FF" hue="160" saturation="239" brightness="120"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#990066" hue="213" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#993366" hue="220" saturation="120" brightness="96"/>
+                    <SolidSwatchItem color="#996666" saturation="48" brightness="120"/>
+                    <SolidSwatchItem color="#999966" hue="40" saturation="48" brightness="120"/>
+                    <SolidSwatchItem color="#99CC66" hue="60" saturation="120" brightness="144"/>
+                    <SolidSwatchItem color="#99FF66" hue="67" saturation="239" brightness="168"/>
+                    <SolidSwatchItem color="#CC0066" hue="220" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#CC3366" hue="227" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#CC6666" saturation="120" brightness="144"/>
+                    <SolidSwatchItem color="#CC9966" hue="20" saturation="120" brightness="144"/>
+                    <SolidSwatchItem color="#CCCC66" hue="40" saturation="120" brightness="144"/>
+                    <SolidSwatchItem color="#CCFF66" hue="53" saturation="239" brightness="168"/>
+                    <SolidSwatchItem color="#FF0066" hue="224" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#FF3366" hue="230" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#FF6666" saturation="239" brightness="168"/>
+                    <SolidSwatchItem color="#FF9966" hue="13" saturation="239" brightness="168"/>
+                    <SolidSwatchItem color="#FFCC66" hue="27" saturation="239" brightness="168"/>
+                    <SolidSwatchItem color="#FFFF66" hue="40" saturation="239" brightness="168"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#FFFF00" hue="40" saturation="239" brightness="120"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#990099" hue="200" saturation="239" brightness="72"/>
+                    <SolidSwatchItem color="#993399" hue="200" saturation="120" brightness="96"/>
+                    <SolidSwatchItem color="#996699" hue="200" saturation="48" brightness="120"/>
+                    <SolidSwatchItem color="#999999" brightness="144"/>
+                    <SolidSwatchItem color="#99CC99" hue="80" saturation="80" brightness="168"/>
+                    <SolidSwatchItem color="#99FF99" hue="80" saturation="239" brightness="192"/>
+                    <SolidSwatchItem color="#CC0099" hue="210" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#CC3399" hue="213" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#CC6699" hue="220" saturation="120" brightness="144"/>
+                    <SolidSwatchItem color="#CC9999" saturation="80" brightness="168"/>
+                    <SolidSwatchItem color="#CCCC99" hue="40" saturation="80" brightness="168"/>
+                    <SolidSwatchItem color="#CCFF99" hue="60" saturation="239" brightness="192"/>
+                    <SolidSwatchItem color="#FF0099" hue="216" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#FF3399" hue="220" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#FF6699" hue="227" saturation="239" brightness="168"/>
+                    <SolidSwatchItem color="#FF9999" saturation="239" brightness="192"/>
+                    <SolidSwatchItem color="#FFCC99" hue="20" saturation="239" brightness="192"/>
+                    <SolidSwatchItem color="#FFFF99" hue="40" saturation="239" brightness="192"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#00FFFF" hue="120" saturation="239" brightness="120"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#9900CC" hue="190" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#9933CC" hue="187" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#9966CC" hue="180" saturation="120" brightness="144"/>
+                    <SolidSwatchItem color="#9999CC" hue="160" saturation="80" brightness="168"/>
+                    <SolidSwatchItem color="#99CCCC" hue="120" saturation="80" brightness="168"/>
+                    <SolidSwatchItem color="#99FFCC" hue="100" saturation="239" brightness="192"/>
+                    <SolidSwatchItem color="#CC00CC" hue="200" saturation="239" brightness="96"/>
+                    <SolidSwatchItem color="#CC33CC" hue="200" saturation="144" brightness="120"/>
+                    <SolidSwatchItem color="#CC66CC" hue="200" saturation="120" brightness="144"/>
+                    <SolidSwatchItem color="#CC99CC" hue="200" saturation="80" brightness="168"/>
+                    <SolidSwatchItem color="#CCCCCC" brightness="192"/>
+                    <SolidSwatchItem color="#CCFFCC" hue="80" saturation="239" brightness="216"/>
+                    <SolidSwatchItem color="#FF00CC" hue="208" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#FF33CC" hue="210" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#FF66CC" hue="213" saturation="239" brightness="168"/>
+                    <SolidSwatchItem color="#FF99CC" hue="220" saturation="239" brightness="192"/>
+                    <SolidSwatchItem color="#FFCCCC" saturation="239" brightness="216"/>
+                    <SolidSwatchItem color="#FFFFCC" hue="40" saturation="239" brightness="216"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#FF00FF" hue="200" saturation="239" brightness="120"/>
+                    <SolidSwatchItem/>
+                    <SolidSwatchItem color="#9900FF" hue="184" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#9933FF" hue="180" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#9966FF" hue="173" saturation="239" brightness="168"/>
+                    <SolidSwatchItem color="#9999FF" hue="160" saturation="239" brightness="192"/>
+                    <SolidSwatchItem color="#99CCFF" hue="140" saturation="239" brightness="192"/>
+                    <SolidSwatchItem color="#99FFFF" hue="120" saturation="239" brightness="192"/>
+                    <SolidSwatchItem color="#CC00FF" hue="192" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#CC33FF" hue="190" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#CC66FF" hue="187" saturation="239" brightness="168"/>
+                    <SolidSwatchItem color="#CC99FF" hue="180" saturation="239" brightness="192"/>
+                    <SolidSwatchItem color="#CCCCFF" hue="160" saturation="239" brightness="216"/>
+                    <SolidSwatchItem color="#CCFFFF" hue="120" saturation="239" brightness="216"/>
+                    <SolidSwatchItem color="#FF00FF" hue="200" saturation="239" brightness="120"/>
+                    <SolidSwatchItem color="#FF33FF" hue="200" saturation="239" brightness="144"/>
+                    <SolidSwatchItem color="#FF66FF" hue="200" saturation="239" brightness="168"/>
+                    <SolidSwatchItem color="#FF99FF" hue="200" saturation="239" brightness="192"/>
+                    <SolidSwatchItem color="#FFCCFF" hue="200" saturation="239" brightness="216"/>
+                    <SolidSwatchItem color="#FFFFFF" brightness="240"/>
+               </swatches>
+          </swatchList>
+     </swatchLists>
+     <extendedSwatchLists>
+          <swatchList>
+               <swatches>
+                    <LinearGradientSwatchItem>
+                         <GradientEntry color="#FFFFFF" ratio="0"/>
+                         <GradientEntry ratio="1"/>
+                    </LinearGradientSwatchItem>
+                    <RadialGradientSwatchItem>
+                         <GradientEntry color="#FFFFFF" ratio="0"/>
+                         <GradientEntry ratio="1"/>
+                    </RadialGradientSwatchItem>
+                    <RadialGradientSwatchItem>
+                         <GradientEntry color="#FF0000" ratio="0"/>
+                         <GradientEntry ratio="1"/>
+                    </RadialGradientSwatchItem>
+                    <RadialGradientSwatchItem>
+                         <GradientEntry color="#00FF00" ratio="0"/>
+                         <GradientEntry ratio="1"/>
+                    </RadialGradientSwatchItem>
+                    <RadialGradientSwatchItem>
+                         <GradientEntry color="#0000FF" ratio="0"/>
+                         <GradientEntry ratio="1"/>
+                    </RadialGradientSwatchItem>
+                    <LinearGradientSwatchItem>
+                         <GradientEntry color="#0066FD" ratio="0"/>
+                         <GradientEntry color="#FFFFFF" ratio="0.376470588235294"/>
+                         <GradientEntry color="#FFFFFF" ratio="0.47843137254902"/>
+                         <GradientEntry color="#996600" ratio="0.501960784313725"/>
+                         <GradientEntry color="#FFCC00" ratio="0.666666666666667"/>
+                         <GradientEntry color="#FFFFFF" ratio="1"/>
+                    </LinearGradientSwatchItem>
+                    <LinearGradientSwatchItem>
+                         <GradientEntry color="#FF0000" ratio="0"/>
+                         <GradientEntry color="#FFFF00" ratio="0.164705882352941"/>
+                         <GradientEntry color="#00FF00" ratio="0.364705882352941"/>
+                         <GradientEntry color="#00FFFF" ratio="0.498039215686275"/>
+                         <GradientEntry color="#0000FF" ratio="0.666666666666667"/>
+                         <GradientEntry color="#FF00FF" ratio="0.831372549019608"/>
+                         <GradientEntry color="#FF0000" ratio="1"/>
+                    </LinearGradientSwatchItem>
+               </swatches>
+          </swatchList>
+     </extendedSwatchLists>
+     <PrinterSettings platform="macintosh"/>
+     <publishHistory>
+          <PublishItem publishSize="106532" publishTime="1336579908"/>
+          <PublishItem publishSize="106533" publishTime="1336579839"/>
+          <PublishItem publishSize="106534" publishTime="1336579721"/>
+          <PublishItem publishSize="1049" publishTime="1336579579"/>
+          <PublishItem publishSize="106428" publishTime="1336579255"/>
+          <PublishItem publishSize="106426" publishTime="1336579214"/>
+          <PublishItem publishSize="106430" publishTime="1336579166"/>
+          <PublishItem publishSize="106430" publishTime="1336579160"/>
+          <PublishItem publishSize="106430" publishTime="1336579147"/>
+          <PublishItem publishSize="106423" publishTime="1336579090"/>
+          <PublishItem publishSize="106425" publishTime="1336579044"/>
+          <PublishItem publishSize="106425" publishTime="1336579005"/>
+          <PublishItem publishSize="106423" publishTime="1336578994"/>
+          <PublishItem publishSize="106421" publishTime="1336578948"/>
+          <PublishItem publishSize="106418" publishTime="1336578913"/>
+          <PublishItem publishSize="106380" publishTime="1336576813"/>
+          <PublishItem publishSize="106377" publishTime="1336576800"/>
+          <PublishItem publishSize="106381" publishTime="1336576788"/>
+          <PublishItem publishSize="106381" publishTime="1336576750"/>
+          <PublishItem publishSize="106378" publishTime="1336576734"/>
+     </publishHistory>
+     <swcCache>
+          <Swc hashKey="LWJ4qfDKC.LqmxYv0myxv1" href="511TA3R4DC.swc">
+               <classDefinitions>
+                    <ClassDefinition value="fl.video.CuePointType"/>
+                    <ClassDefinition value="fl.video.ParseResults"/>
+                    <ClassDefinition value="fl.video.VideoPlayerState"/>
+                    <ClassDefinition value="fl.video.NCManagerDynamicStream"/>
+                    <ClassDefinition value="fl.video.NCManagerNativeShim"/>
+                    <ClassDefinition value="fl.video.FMSCapabilities"/>
+                    <ClassDefinition value="fl.video.ConnectClientDynamicStream"/>
+                    <ClassDefinition value="fl.video.VideoError"/>
+                    <ClassDefinition value="fl.video.VideoEvent"/>
+                    <ClassDefinition value="fl.video.AutoLayoutEvent"/>
+                    <ClassDefinition value="fl.video.SkinErrorEvent"/>
+                    <ClassDefinition value="fl.video.VolumeBarAccImpl"/>
+                    <ClassDefinition value="fl.video.FPADManager"/>
+                    <ClassDefinition value="fl.video.SeekBarAccImpl"/>
+                    <ClassDefinition value="fl.video.ReconnectClient"/>
+                    <ClassDefinition value="fl.video.VideoScaleMode"/>
+                    <ClassDefinition value="fl.video.ConnectClient"/>
+                    <ClassDefinition value="fl.livepreview.LivePreviewParent"/>
+                    <ClassDefinition value="fl.video.NCManagerNative"/>
+                    <ClassDefinition value="fl.video.DynamicStreamItem"/>
+                    <ClassDefinition value="fl.video.VideoPlayerClient"/>
+                    <ClassDefinition value="fl.video.LayoutEvent"/>
+                    <ClassDefinition value="fl.video.Icon"/>
+                    <ClassDefinition value="fl.video.DynamicStream"/>
+                    <ClassDefinition value="fl.video.ControlData"/>
+                    <ClassDefinition value="fl.video.FPMediaCapabilities"/>
+                    <ClassDefinition value="fl.video.VideoState"/>
+                    <ClassDefinition value="fl.video.QueuedCommand"/>
+                    <ClassDefinition value="fl.video.VideoProgressEvent"/>
+                    <ClassDefinition value="fl.video.VideoAlign"/>
+                    <ClassDefinition value="fl.video.CuePointManager"/>
+                    <ClassDefinition value="fl.video.IVPEvent"/>
+                    <ClassDefinition value="fl.video.VideoPlayer"/>
+                    <ClassDefinition value="fl.video.UIManager"/>
+                    <ClassDefinition value="fl.video.ConnectClientNative"/>
+                    <ClassDefinition value="fl.video.INCManager"/>
+                    <ClassDefinition value="fl.video.SoundEvent"/>
+                    <ClassDefinition value="fl.video.FLVPlayback"/>
+                    <ClassDefinition value="fl.video.MetadataEvent"/>
+                    <ClassDefinition value="fl.video.SMILManager"/>
+                    <ClassDefinition value="fl.video.NCManager"/>
+                    <ClassDefinition value="fl.video.DVRManager"/>
+                    <ClassDefinition value="fl.livepreview.IEditContextV1"/>
+                    <ClassDefinition value="fl.livepreview.IPreviewInterface"/>
+                    <ClassDefinition value="fl.video.CuePointType"/>
+                    <ClassDefinition value="fl.video.VideoPlayerState"/>
+                    <ClassDefinition value="fl.video.DynamicStreamItem"/>
+                    <ClassDefinition value="fl.video.ControlData"/>
+                    <ClassDefinition value="fl.video.CuePointManager"/>
+                    <ClassDefinition value="fl.video.UIManager"/>
+                    <ClassDefinition value="fl.video.INCManager"/>
+                    <ClassDefinition value="fl.video.VideoScaleMode"/>
+                    <ClassDefinition value="fl.livepreview.EditContextFlags"/>
+                    <ClassDefinition value="fl.video.VideoState"/>
+                    <ClassDefinition value="fl.video.QueuedCommand"/>
+                    <ClassDefinition value="fl.video.IVPEvent"/>
+                    <ClassDefinition value="fl.video.ParseResults"/>
+                    <ClassDefinition value="fl.video.FPMediaCapabilities"/>
+                    <ClassDefinition value="fl.video.SMILManager"/>
+                    <ClassDefinition value="fl.video.FPADManager"/>
+                    <ClassDefinition value="fl.video.FMSCapabilities"/>
+                    <ClassDefinition value="fl.video.VideoAlign"/>
+                    <ClassDefinition value="fl.video.ConnectClient"/>
+                    <ClassDefinition value="fl.video.ReconnectClient"/>
+                    <ClassDefinition value="fl.video.VideoPlayerClient"/>
+                    <ClassDefinition value="fl.video.LayoutEvent"/>
+                    <ClassDefinition value="fl.video.SoundEvent"/>
+                    <ClassDefinition value="fl.video.VolumeBarAccImpl"/>
+                    <ClassDefinition value="fl.video.SeekBarAccImpl"/>
+                    <ClassDefinition value="fl.livepreview.IVideoInterfaceV1"/>
+                    <ClassDefinition value="fl.video.VideoError"/>
+                    <ClassDefinition value="UIManagerStage"/>
+                    <ClassDefinition value="fl.video.NCManager"/>
+                    <ClassDefinition value="fl.video.VideoEvent"/>
+                    <ClassDefinition value="fl.video.MetadataEvent"/>
+                    <ClassDefinition value="fl.video.ConnectClientDynamicStream"/>
+                    <ClassDefinition value="fl.video.ConnectClientNative"/>
+                    <ClassDefinition value="fl.video.DVRManager"/>
+                    <ClassDefinition value="fl.video.VideoProgressEvent"/>
+                    <ClassDefinition value="fl.video.AutoLayoutEvent"/>
+                    <ClassDefinition value="fl.video.NCManagerDynamicStream"/>
+                    <ClassDefinition value="fl.video.NCManagerNative"/>
+                    <ClassDefinition value="fl.video.DynamicStream"/>
+                    <ClassDefinition value="fl.video.SkinErrorEvent"/>
+                    <ClassDefinition value="fl.video.VideoPlayer"/>
+                    <ClassDefinition value="FLVPlaybackStageLivePreview"/>
+                    <ClassDefinition value="fl.stage.video.StopButtonDown"/>
+                    <ClassDefinition value="fl.stage.video.StopButtonNormal"/>
+                    <ClassDefinition value="fl.stage.video.StopButtonOver"/>
+                    <ClassDefinition value="fl.video.FLVPlayback"/>
+                    <ClassDefinition value="fl.stage.video.ComponentVersionView"/>
+                    <ClassDefinition value="fl.stage.video.BackgroundBox"/>
+                    <ClassDefinition value="FLVPlaybackStage"/>
+                    <ClassDefinition value="fl.livepreview.LivePreviewParent"/>
+                    <ClassDefinition value="fl.video.Icon"/>
+               </classDefinitions>
+          </Swc>
+          <Swc hashKey="kfuaIecnz3BPM/B8Awo4b." href="511TD3R4DC.swc">
+               <classDefinitions>
+                    <ClassDefinition value="fl.core.AccessibilityShim"/>
+                    <ClassDefinition value="fl.controls.CheckBox"/>
+                    <ClassDefinition value="fl.controls.LabelButton"/>
+                    <ClassDefinition value="fl.controls.List"/>
+                    <ClassDefinition value="fl.controls.ComboBox"/>
+                    <ClassDefinition value="fl.controls.ProgressBarDirection"/>
+                    <ClassDefinition value="fl.data.SimpleCollectionItem"/>
+                    <ClassDefinition value="fl.controls.TextArea"/>
+                    <ClassDefinition value="fl.controls.Slider"/>
+                    <ClassDefinition value="fl.events.DataChangeEvent"/>
+                    <ClassDefinition value="fl.accessibility.ComboBoxAccImpl"/>
+                    <ClassDefinition value="fl.events.DataChangeType"/>
+                    <ClassDefinition value="fl.accessibility.TileListAccImpl"/>
+                    <ClassDefinition value="fl.accessibility.ButtonAccImpl"/>
+                    <ClassDefinition value="fl.controls.BaseButton"/>
+                    <ClassDefinition value="fl.core.UIComponent"/>
+                    <ClassDefinition value="fl.controls.DataGrid"/>
+                    <ClassDefinition value="fl.containers.BaseScrollPane"/>
+                    <ClassDefinition value="fl.livepreview.LivePreviewParent"/>
+                    <ClassDefinition value="fl.controls.Label"/>
+                    <ClassDefinition value="fl.managers.IFocusManagerComponent"/>
+                    <ClassDefinition value="fl.controls.UIScrollBar"/>
+                    <ClassDefinition value="fl.controls.listClasses.ICellRenderer"/>
+                    <ClassDefinition value="fl.controls.dataGridClasses.DataGridCellEditor"/>
+                    <ClassDefinition value="fl.controls.ColorPicker"/>
+                    <ClassDefinition value="fl.managers.FocusManager"/>
+                    <ClassDefinition value="fl.events.DataGridEventReason"/>
+                    <ClassDefinition value="fl.events.SliderEvent"/>
+                    <ClassDefinition value="fl.events.SliderEventClickTarget"/>
+                    <ClassDefinition value="fl.controls.progressBarClasses.IndeterminateBar"/>
+                    <ClassDefinition value="fl.controls.listClasses.ListData"/>
+                    <ClassDefinition value="fl.core.InvalidationType"/>
+                    <ClassDefinition value="fl.controls.RadioButtonGroup"/>
+                    <ClassDefinition value="fl.controls.NumericStepper"/>
+                    <ClassDefinition value="fl.accessibility.LabelButtonAccImpl"/>
+                    <ClassDefinition value="fl.containers.UILoader"/>
+                    <ClassDefinition value="fl.events.ColorPickerEvent"/>
+                    <ClassDefinition value="fl.controls.ButtonLabelPlacement"/>
+                    <ClassDefinition value="fl.accessibility.CheckBoxAccImpl"/>
+                    <ClassDefinition value="fl.managers.StyleManager"/>
+                    <ClassDefinition value="fl.controls.TileList"/>
+                    <ClassDefinition value="fl.controls.RadioButton"/>
+                    <ClassDefinition value="fl.containers.ScrollPane"/>
+                    <ClassDefinition value="fl.controls.listClasses.TileListData"/>
+                    <ClassDefinition value="fl.events.InteractionInputType"/>
+                    <ClassDefinition value="fl.controls.Button"/>
+                    <ClassDefinition value="fl.core.ComponentShim"/>
+                    <ClassDefinition value="fl.accessibility.UIComponentAccImpl"/>
+                    <ClassDefinition value="fl.controls.SelectableList"/>
+                    <ClassDefinition value="fl.events.ComponentEvent"/>
+                    <ClassDefinition value="fl.accessibility.RadioButtonAccImpl"/>
+                    <ClassDefinition value="fl.controls.listClasses.CellRenderer"/>
+                    <ClassDefinition value="fl.managers.IFocusManagerGroup"/>
+                    <ClassDefinition value="fl.controls.ScrollPolicy"/>
+                    <ClassDefinition value="fl.controls.ScrollBar"/>
+                    <ClassDefinition value="fl.controls.ProgressBar"/>
+                    <ClassDefinition value="fl.controls.listClasses.ImageCell"/>
+                    <ClassDefinition value="fl.managers.IFocusManager"/>
+                    <ClassDefinition value="fl.controls.ProgressBarMode"/>
+                    <ClassDefinition value="fl.accessibility.SelectableListAccImpl"/>
+                    <ClassDefinition value="fl.controls.TextInput"/>
+                    <ClassDefinition value="fl.events.ListEvent"/>
+                    <ClassDefinition value="fl.accessibility.AccImpl"/>
+                    <ClassDefinition value="fl.accessibility.DataGridAccImpl"/>
+                    <ClassDefinition value="fl.controls.dataGridClasses.DataGridColumn"/>
+                    <ClassDefinition value="fl.events.ScrollEvent"/>
+                    <ClassDefinition value="fl.events.DataGridEvent"/>
+                    <ClassDefinition value="fl.data.TileListCollectionItem"/>
+                    <ClassDefinition value="fl.data.DataProvider"/>
+                    <ClassDefinition value="fl.accessibility.ListAccImpl"/>
+                    <ClassDefinition value="fl.controls.dataGridClasses.HeaderRenderer"/>
+                    <ClassDefinition value="fl.controls.ScrollBarDirection"/>
+                    <ClassDefinition value="fl.controls.SliderDirection"/>
+               </classDefinitions>
+          </Swc>
+          <Swc hashKey="u6WoxbQBPf5MDbMcy6Jt7." href="511TG3R4DC.swc">
+               <classDefinitions>
+                    <ClassDefinition value="fl.livepreview.LivePreviewParent"/>
+                    <ClassDefinition value="fl.video.TimedTextManager"/>
+                    <ClassDefinition value="fl.video.CaptionChangeEvent"/>
+                    <ClassDefinition value="fl.video.CaptionTargetEvent"/>
+                    <ClassDefinition value="fl.video.FLVPlaybackCaptioning"/>
+               </classDefinitions>
+          </Swc>
+     </swcCache>
+</DOMDocument>

@@ -8,3 +8,6 @@ build/LdtPlayer.min.js
 *.orig
 src/js/site.js
 doc/jsdoc/*
+
+syntax: regexp
+^assets/player_bab_ldt/player_bab_ldt/bin$
