@@ -31,9 +31,9 @@ IriSP.Widgets.Slider.prototype.draw = function() {
         range: "min",
         value: 0,
         min: 0,
-        max: this.source.getDuration().getSeconds(),
+        max: this.source.getDuration().milliseconds,
         slide: function(event, ui) {
-            _this.player.popcorn.currentTime(ui.value);
+            _this.player.popcorn.currentTime(ui.value / 1000);
             _this.player.popcorn.trigger("IriSP.Mediafragment.setHashToTime");
         }
     });
@@ -51,9 +51,9 @@ IriSP.Widgets.Slider.prototype.draw = function() {
 };
 
 IriSP.Widgets.Slider.prototype.onTimeupdate = function() {
-    var _time = this.player.popcorn.currentTime();
+    var _time = 1000 * this.player.popcorn.currentTime();
     this.$slider.slider("value",_time);
-    this.player.popcorn.trigger("IriSP.Arrow.updatePosition",{widget: this.type, time: 1000 * _time});
+    this.player.popcorn.trigger("IriSP.Arrow.updatePosition",{widget: this.type, time: _time});
 }
 
 IriSP.Widgets.Slider.prototype.onMouseover = function() {

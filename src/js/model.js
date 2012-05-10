@@ -241,7 +241,22 @@ IriSP.Model.List.prototype.removeElements = function(_list) {
  */
 
 IriSP.Model.Time = function(_milliseconds) {
-    this.milliseconds = parseInt(typeof _milliseconds !== "undefined" ? _milliseconds : 0);
+    switch(typeof _milliseconds) {
+        case "string":
+            this.milliseconds = parseFloat(_milliseconds);
+            break;
+        case "number":
+            this.milliseconds = _milliseconds;
+            break;
+        case "object":
+            this.milliseconds = parseFloat(_milliseconds.valueOf());
+            break;
+        default:
+            this.milliseconds = 0;
+    }
+    if (this.milliseconds === NaN) {
+        this.milliseconds = 0;
+    }
 }
 
 IriSP.Model.Time.prototype.setSeconds = function(_seconds) {
@@ -259,6 +274,10 @@ IriSP.Model.Time.prototype.getHMS = function() {
         minutes : (Math.floor(_totalSeconds / 60) % 60),
         seconds : _totalSeconds % 60
     } 
+}
+
+IriSP.Model.Time.prototype.add = function(_milliseconds) {
+    this.milliseconds += new IriSP.Model.Time(_milliseconds).milliseconds;
 }
 
 IriSP.Model.Time.prototype.valueOf = function() {
@@ -458,6 +477,61 @@ IriSP.Model.Annotation.prototype.getTagTexts = function() {
     return this.getTags().getTitles();
 }
 
+/* */
+
+IriSP.Model.MashedAnnotation = function(_annotation, _offset) {
+    IriSP.Model.Element.call(this, IriSP.Model.getUID(), _annotation.source);
+    this.elementType = 'mashedAnnotation';
+    this.annotation = _annotation;
+    this.begin = new IriSP.Model.Time(_offset);
+    var _duration = (this.annotation.end - this.annotation.begin);
+    this.end = new IriSP.Model.Time(_offset + _duration)
+    this.title = this.annotation.title;
+    this.description = this.annotation.description;
+}
+
+IriSP.Model.MashedAnnotation.prototype = new IriSP.Model.Element(null);
+
+IriSP.Model.MashedAnnotation.prototype.getMedia = function() {
+    return this.annotation.getReference("media");
+}
+
+IriSP.Model.MashedAnnotation.prototype.getAnnotationType = function() {
+    return this.annotation.getReference("annotationType");
+}
+
+IriSP.Model.MashedAnnotation.prototype.getTags = function() {
+    return this.annotation.getReference("tag");
+}
+
+IriSP.Model.MashedAnnotation.prototype.getTagTexts = function() {
+    return this.annotation.getTags().getTitles();
+}
+
+/* */
+
+IriSP.Model.Mashup = function(_id, _source) {
+    IriSP.Model.Element.call(this, _id, _source);
+    this.elementType = 'mashup';
+    this.duration = new IriSP.Model.Time();
+    this.segments = new IriSP.Model.List();
+    this.medias = new IriSP.Model.List();
+}
+
+IriSP.Model.Mashup.prototype = new IriSP.Model.Element();
+
+IriSP.Model.Mashup.prototype.addSegment = function(_annotation) {
+    this.segments.push(new IriSP.Model.MashedAnnotation(_annotation));
+    this.medias.addElement(_annotation.getMedia());
+}
+
+IriSP.Model.Mashup.prototype.getAnnotations = function() {
+    return this.segments;
+}
+
+IriSP.Model.Mashup.prototype.getMedias = function() {
+    return this.medias;
+}
 /* */
 
 IriSP.Model.Source = function(_config) {

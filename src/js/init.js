@@ -8,6 +8,7 @@ if (typeof window.IriSP === "undefined") {
 /* The Metadataplayer Object, single point of entry, replaces IriSP.init_player */
 
 IriSP.Metadataplayer = function(config, video_metadata) {
+    IriSP.log("IriSP.Metadataplayer constructor");
     for (var key in IriSP.guiDefaults) {
         if (IriSP.guiDefaults.hasOwnProperty(key) && !config.gui.hasOwnProperty(key)) {
             config.gui[key] = IriSP.guiDefaults[key]
@@ -26,7 +27,7 @@ IriSP.Metadataplayer.prototype.toString = function() {
 }
 
 IriSP.Metadataplayer.prototype.loadLibs = function() {
-    
+    IriSP.log("IriSP.Metadataplayer.prototype.loadLibs");
     var $L = $LAB
         .script(IriSP.getLib("underscore"))
         .script(IriSP.getLib("Mustache"))
@@ -52,20 +53,23 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
     }
     
     var _this = this;
-    
+    IriSP.log($L);
     $L.wait(function() {
-        IriSP.jQuery = window.jQuery.noConflict();
-        IriSP._ = window._.noConflict();
-        
-        IriSP.loadCss(IriSP.getLib("cssjQueryUI"))
-        IriSP.loadCss(_this.config.gui.css);
-        
         _this.onLibsLoaded();
-        
     });
 }
 
 IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
+    IriSP.log("IriSP.Metadataplayer.prototype.onLibsLoaded");
+    if (typeof IriSP.jQuery === "undefined" && typeof window.jQuery !== "undefined") {
+        IriSP.jQuery = window.jQuery.noConflict();
+    }
+    if (typeof IriSP._ === "undefined" && typeof window._ !== "undefined") {
+        IriSP._ = window._.noConflict();
+    }
+    IriSP.loadCss(IriSP.getLib("cssjQueryUI"));
+    IriSP.loadCss(this.config.gui.css);
+    
     this.videoData = this.loadMetadata(this.video_metadata);
     this.$ = IriSP.jQuery('#' + this.config.gui.container);
     this.$.css({
@@ -145,13 +149,14 @@ IriSP.Metadataplayer.prototype.loadWidget = function(_widgetConfig, _callback) {
 }
 
 IriSP.Metadataplayer.prototype.configurePopcorn = function() {
+    IriSP.log("IriSP.Metadataplayer.prototype.configurePopcorn");
     var pop,
         ret = this.layoutDivs("video"),
         containerDiv = ret[0],
         spacerDiv = ret[1],
         _this = this,
         _types = {
-            "html5" : /\.(ogv|webm|mp4)$/,
+            "html5" : /\.(ogg|ogv|webm|mp4)$/,
             "youtube" : /^(https?:\/\/)?(www\.)?youtube\.com/,
             "dailymotion" : /^(https?:\/\/)?(www\.)?dailymotion\.com/
         };
@@ -171,15 +176,22 @@ IriSP.Metadataplayer.prototype.configurePopcorn = function() {
          will contain the video.
          */
         case "html5":
-            var tmpId = Popcorn.guid("video");
-            IriSP.jQuery("#" + containerDiv).append("<video src='" + this.config.player.video + "' id='" + tmpId + "'></video>");
+            var _tmpId = Popcorn.guid("video"),
+                _videoEl = IriSP.jQuery('<video>');
+            
+            _videoEl.attr({
+                "src" : this.config.player.video,
+                "id" : _tmpId
+            })
 
-            if(options.hasOwnProperty("width"))
-                IriSP.jQuery("#" + containerDiv).css("width", this.config.player.width);
-
-            if(options.hasOwnProperty("height"))
-                IriSP.jQuery("#" + containerDiv).css("height", this.config.player.height);
-            pop = Popcorn("#" + tmpId);
+            if(this.config.player.hasOwnProperty("width")) {
+                _videoEl.attr("width", this.config.player.width);
+            }
+            if(this.config.player.hasOwnProperty("height")) {
+                _videoEl.attr("height", this.config.player.height);
+            }
+            IriSP.jQuery("#" + containerDiv).append(_videoEl);
+            pop = Popcorn("#" + _tmpId);
             break;
 
         case "jwplayer":

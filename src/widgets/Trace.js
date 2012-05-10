@@ -55,7 +55,6 @@ IriSP.Widgets.Trace.prototype.draw = function() {
         requestmode: this.requestmode,
         syncmode: this.syncmode
     });
-    this.tracer.set_default_subject("metadataplayer");
     this.tracer.trace("StartTracing", {});
     
     this.mouseLocation = '';

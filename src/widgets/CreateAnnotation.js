@@ -102,10 +102,14 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + ' <span class="Ldt-CreateAnnotation-Times">{{#single_time_mode}}{{l10n.at_time}}{{/single_time_mode}}'
     + '{{^single_time_mode}}{{l10n.from_time}}{{/single_time_mode}} <span class="Ldt-CreateAnnotation-Begin"></span>'
     + ' {{^single_time_mode}}{{l10n.to_time}} <span class="Ldt-CreateAnnotation-End"></span>{{/single_time_mode}}</span></h3>'
-    + ''
-    
+    + '<textarea class="Ldt-CreateAnnotation-Description" placeholder="{{type_description}}"></textarea>'
+    + '<input type="submit" class="Ldt-CreateAnnotation-Submit" />'
     + '</form>'
-    + '</div></div>'
+    + '</div></div>';
+    
+IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
+    this.renderTemplate();
+}
     
 /*    
     + '        <div class="Ldt-CreateAnnotation-Screen Ldt-createAnnotation-startScreen">'

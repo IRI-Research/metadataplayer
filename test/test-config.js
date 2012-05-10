@@ -1,4 +1,5 @@
 function testConfig(_urlMetadata, _useLocalBuild) {
+    document.getElementById('LdtPlayer').innerHTML = '';
     _useLocalBuild = (typeof _useLocalBuild !== "undefined" && _useLocalBuild)
     IriSP.libFiles.defaultDir = _useLocalBuild ? "libs/" : "../src/js/libs/";
     IriSP.widgetsDir = _useLocalBuild ? "metadataplayer" : "../src/widgets";

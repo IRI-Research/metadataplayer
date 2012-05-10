@@ -16,10 +16,21 @@ IriSP.getLib = function(lib) {
     }
 }
 
+IriSP._cssCache = [];
+
 IriSP.loadCss = function(_cssFile) {
-    IriSP.jQuery("<link>", {
-        rel : "stylesheet",
-        type : "text/css",
-        href : _cssFile
-    }).appendTo('head');
+    if (IriSP._(IriSP._cssCache).indexOf(_cssFile) === -1) {
+        IriSP.jQuery("<link>", {
+            rel : "stylesheet",
+            type : "text/css",
+            href : _cssFile
+        }).appendTo('head');
+        IriSP._cssCache.push(_cssFile);
+    }
+}
+
+IriSP.log = function() {
+    if (typeof console !== "undefined" && typeof IriSP.logging !== "undefined" && IriSP.logging) {
+        console.log.apply(console, arguments);
+    }
 }
