@@ -17,3 +17,5 @@ syntax: regexp
 ^test/libs$
 syntax: regexp
 ^build/LdtPlayer-core\.js$
+syntax: regexp
+^\.settings/org\.eclipse\.core\.runtime\.prefs$
