@@ -34,7 +34,6 @@ IriSP.TraceWidget = function(Popcorn, config, Serializer) {
     }));
     
     this.tracer = IriSP.TraceManager(IriSP.jQuery).init_trace("test", this._config);
-    this.tracer.set_default_subject("default_subject");
     this.tracer.trace("StartTracing", { "hello": "world" });
     
 }
