@@ -101,7 +101,8 @@ IriSP.Widgets.Widget.prototype.bindPopcorn = function(_popcornEvent, _functionNa
 }
 
 IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function() {
-    return typeof this.annotation_type !== "undefined" && this.annotation_type ? this.source.getAnnotationsByTypeTitle(this.annotation_type) : this.source.getAnnotations();
+    var _curmedia = this.source.currentMedia;
+    return typeof this.annotation_type !== "undefined" && this.annotation_type ? _curmedia.getAnnotationsByTypeTitle(this.annotation_type) : _curmedia.getAnnotations();
 }
 
 /**

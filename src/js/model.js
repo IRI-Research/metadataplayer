@@ -66,6 +66,7 @@ IriSP.Model.List = function(_directory) {
     this.directory = _directory;
     this.idIndex = [];
     if (typeof _directory == "undefined") {
+        console.trace();
         throw "Error : new IriSP.Model.List(directory): directory is undefined";
     }
 }
@@ -73,15 +74,7 @@ IriSP.Model.List = function(_directory) {
 IriSP.Model.List.prototype = new Array();
 
 IriSP.Model.List.prototype.getElement = function(_id) {
-    var _index = IriSP._(this.idIndex).indexOf(_id);
-    if (_index !== -1) {
-        return this[_index];
-    } else {
-        var _un = _id.replace(/.*:/);
-        return IriSP._(this.idIndex).find(function(_i) {
-            return _i.replace(/.*:/) === _un;
-        });
-    }
+    return this[_id];
 }
 
 IriSP.Model.List.prototype.hasId = function(_id) {
@@ -107,6 +100,12 @@ if (typeof Array.prototype.map === "undefined") {
             return _callback(_value, _key, _this);
         });
     }
+}
+
+IriSP.Model.List.prototype.pluck = function(_key) {
+    return this.map(function(_value) {
+        return _value[_key];
+    });
 }
 
 /* We override Array's filter function because it doesn't return an IriSP.Model.List
@@ -241,6 +240,12 @@ IriSP.Model.List.prototype.removeElements = function(_list) {
  */
 
 IriSP.Model.Time = function(_milliseconds) {
+    this.milliseconds = 0;
+    this.setMilliseconds(_milliseconds);
+}
+
+IriSP.Model.Time.prototype.setMilliseconds = function(_milliseconds) {
+    var _ante = _milliseconds;
     switch(typeof _milliseconds) {
         case "string":
             this.milliseconds = parseFloat(_milliseconds);
@@ -255,7 +260,7 @@ IriSP.Model.Time = function(_milliseconds) {
             this.milliseconds = 0;
     }
     if (this.milliseconds === NaN) {
-        this.milliseconds = 0;
+        this.milliseconds = _ante;
     }
 }
 
@@ -396,11 +401,22 @@ IriSP.Model.Media = function(_id, _source) {
 IriSP.Model.Media.prototype = new IriSP.Model.Element();
 
 IriSP.Model.Media.prototype.setDuration = function(_durationMs) {
-    this.duration.milliseconds = _durationMs;
+    this.duration.setMilliseconds(_durationMs);
 }
 
 IriSP.Model.Media.prototype.getAnnotations = function() {
     return this.getRelated("annotation");
+}
+
+IriSP.Model.Media.prototype.getAnnotationsByTypeTitle = function(_title) {
+    var _annTypes = this.source.getAnnotationTypes().searchByTitle(_title).pluck("id");
+    if (_annTypes.length) {
+        return this.getAnnotations().filter(function(_annotation) {
+            return IriSP._(_annTypes).indexOf(_annotation.getAnnotationType().id) !== -1;
+        });
+    } else {
+        return new IriSP.Model.List(this.source.directory)
+    }
 }
 
 /* */
@@ -442,11 +458,11 @@ IriSP.Model.Annotation = function(_id, _source) {
 IriSP.Model.Annotation.prototype = new IriSP.Model.Element(null);
 
 IriSP.Model.Annotation.prototype.setBegin = function(_beginMs) {
-    this.begin.milliseconds = _beginMs;
+    this.begin.setMilliseconds(_beginMs);
 }
 
 IriSP.Model.Annotation.prototype.setEnd = function(_beginMs) {
-    this.end.milliseconds = _beginMs;
+    this.end.setMilliseconds(_beginMs);
 }
 
 IriSP.Model.Annotation.prototype.setMedia = function(_idRef) {
@@ -477,6 +493,10 @@ IriSP.Model.Annotation.prototype.getTagTexts = function() {
     return this.getTags().getTitles();
 }
 
+IriSP.Model.Annotation.prototype.getDuration = function() {
+    return new IriSP.Model.Time(this.end.milliseconds - this.begin.milliseconds)
+}
+
 /* */
 
 IriSP.Model.MashedAnnotation = function(_annotation, _offset) {
@@ -484,10 +504,10 @@ IriSP.Model.MashedAnnotation = function(_annotation, _offset) {
     this.elementType = 'mashedAnnotation';
     this.annotation = _annotation;
     this.begin = new IriSP.Model.Time(_offset);
-    var _duration = (this.annotation.end - this.annotation.begin);
-    this.end = new IriSP.Model.Time(_offset + _duration)
+    this.end = new IriSP.Model.Time(_offset + _annotation.getDuration());
     this.title = this.annotation.title;
     this.description = this.annotation.description;
+    this.color = this.annotation.color;
 }
 
 IriSP.Model.MashedAnnotation.prototype = new IriSP.Model.Element(null);
@@ -514,15 +534,24 @@ IriSP.Model.Mashup = function(_id, _source) {
     IriSP.Model.Element.call(this, _id, _source);
     this.elementType = 'mashup';
     this.duration = new IriSP.Model.Time();
-    this.segments = new IriSP.Model.List();
-    this.medias = new IriSP.Model.List();
+    this.segments = new IriSP.Model.List(_source.directory);
+    this.medias = new IriSP.Model.List(_source.directory);
 }
 
 IriSP.Model.Mashup.prototype = new IriSP.Model.Element();
 
 IriSP.Model.Mashup.prototype.addSegment = function(_annotation) {
-    this.segments.push(new IriSP.Model.MashedAnnotation(_annotation));
-    this.medias.addElement(_annotation.getMedia());
+    var _mashedAnnotation = new IriSP.Model.MashedAnnotation(_annotation, this.duration);
+    this.duration.setMilliseconds(_mashedAnnotation.end);
+    this.segments.push(_mashedAnnotation);
+    this.medias.push(_annotation.getMedia());
+}
+
+IriSP.Model.Mashup.prototype.addSegmentById = function(_elId) {
+    var _annotation = this.source.getElement(_elId);
+    if (typeof _annotation !== "undefined") {
+        this.addSegment(_annotation);
+    }
 }
 
 IriSP.Model.Mashup.prototype.getAnnotations = function() {
@@ -532,6 +561,18 @@ IriSP.Model.Mashup.prototype.getAnnotations = function() {
 IriSP.Model.Mashup.prototype.getMedias = function() {
     return this.medias;
 }
+
+IriSP.Model.Mashup.prototype.getAnnotationsByTypeTitle = function(_title) {
+    var _annTypes = this.source.getAnnotationTypes().searchByTitle(_title).pluck("id");
+    if (_annTypes.length) {
+        return this.getAnnotations().filter(function(_annotation) {
+            return IriSP._(_annTypes).indexOf(_annotation.getAnnotationType().id) !== -1;
+        });
+    } else {
+        return new IriSP.Model.List(this.source.directory)
+    }
+}
+
 /* */
 
 IriSP.Model.Source = function(_config) {
@@ -622,7 +663,7 @@ IriSP.Model.Source.prototype.getElement = function(_elId) {
 
 IriSP.Model.Source.prototype.setCurrentMediaId = function(_idRef) {
     if (typeof _idRef !== "undefined") {
-        this.currentMedia = this.getMedias().getElement(this.getNamespaced(_idRef).fullname);
+        this.currentMedia = this.getElement(_idRef);
     }
 }
 
@@ -666,7 +707,6 @@ IriSP.Model.Source.prototype.handleCallbacks = function() {
         this.deferCallback(this.callbackQueue.splice(0,1)[0]);
     }
 }
-
 IriSP.Model.Source.prototype.onLoad = function(_callback) {
     if (this.status === IriSP.Model._SOURCE_STATUS_READY) {
         this.deferCallback(_callback);
@@ -691,6 +731,11 @@ IriSP.Model.Source.prototype.getAnnotations = function(_global) {
 IriSP.Model.Source.prototype.getMedias = function(_global) {
     _global = (typeof _global !== "undefined" && _global);
     return this.getList("media", _global);
+}
+
+IriSP.Model.Source.prototype.getMashups = function(_global) {
+    _global = (typeof _global !== "undefined" && _global);
+    return this.getList("mashup", _global);
 }
 
 IriSP.Model.Source.prototype.getAnnotationTypes = function(_global) {
@@ -759,18 +804,7 @@ IriSP.Model.Directory.prototype.newLocalSource = function(_properties) {
 }
 
 IriSP.Model.Directory.prototype.getElement = function(_id) {
-    var _res = this.elements[_id];
-    if (typeof _res === "undefined") {
-        var _un = _id.replace(/.*:/),
-            _keys = IriSP._(this.elements).keys();
-            _key = IriSP._(_keys).find(function(_i) {
-                return _i.replace(/.*:/) === _un;
-            });
-        if (typeof _key !== "undefined") {
-            _res = this.elements[_key];
-        }
-    }
-    return _res;
+    return this.elements[_id];
 }
 
 IriSP.Model.Directory.prototype.addElement = function(_element) {

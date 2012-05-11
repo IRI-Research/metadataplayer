@@ -156,7 +156,7 @@ IriSP.Metadataplayer.prototype.configurePopcorn = function() {
         spacerDiv = ret[1],
         _this = this,
         _types = {
-            "html5" : /\.(ogg|ogv|webm|mp4)$/,
+            "html5" : /\.(ogg|ogv|webm)$/,
             "youtube" : /^(https?:\/\/)?(www\.)?youtube\.com/,
             "dailymotion" : /^(https?:\/\/)?(www\.)?dailymotion\.com/
         };

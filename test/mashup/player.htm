@@ -50,7 +50,7 @@ IriSP.libFiles.defaultDir = "../libs/";
 IriSP.widgetsDir = "../metadataplayer";
 IriSP.jwplayer_swf_path = "../player.swf";
 var _metadata = {
-    url: '../json/ldt-jwplayer.json',
+    url: 'bab_files/mashup.json',
     format: 'ldt'
 };
 var _config = {            
@@ -64,9 +64,15 @@ var _config = {
         widgets: [
             { type: "Slider" },
             { type: "Controller" },
-            { type: "Segments" },
+            {
+                type: "Segments",
+                annotation_type: false
+            },
             { type: "Arrow" },
-            { type: "Annotation" }
+            {
+                type: "Annotation",
+                annotation_type: false
+            }
         ]
     },
     player:{
@@ -76,7 +82,7 @@ var _config = {
         width: 620, 
         provider: "rtmp",
         mashup_swf : "bab_files/player_bab_ldt.swf",
-        mashup_xml : "bab_files/yeelen_bab.ldt",
+        mashup_xml : "bab_files/mashup.xml",
         autostart: true
     }
 };
