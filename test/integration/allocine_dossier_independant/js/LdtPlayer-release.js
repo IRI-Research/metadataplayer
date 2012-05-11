@@ -1115,7 +1115,7 @@ IriSP.player_template = "{{! template for the radio player }}<div class='Ldt-con
 IriSP.search_template = "{{! template for the search container }}<div class='LdtSearchContainer'	style='margin-left: {{margin_left}}; position: absolute; margin-top: -60px;'>	<div class='LdtSearch'		style='display: none; background-color: #EEE; width: 165px; border-color: #CFCFCF; position: absolute; text-align: center;'>		<input class='LdtSearchInput'			style='margin-top: 1px; margin-bottom: 2px;' />	</div></div><div class='cleaner'></div>";
 IriSP.share_template = "{{! social network sharing template }}<a onclick='__IriSP.MyApiPlayer.share(\'delicious\');' title='{{l10n.share_on}} delicious'><span class='share shareDelicious'>&nbsp;</span></a>		<a onclick='__IriSP.MyApiPlayer.share(\'facebook\');' title='{{l10n.share_on}} facebook'> <span class='share shareFacebook'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'twitter\');' title='{{l10n.share_on}} twitter'>  <span class='share shareTwitter'>&nbsp;</span></a><a onclick='__IriSP.MyApiPlayer.share(\'myspace\');' title='{{l10n.share_on}} Myspace'>  <span class='share shareMySpace'>&nbsp;</span></a>";
 IriSP.sliceWidget_template = "{{! template for the slice widget }}<div class='Ldt-sliceWidget'>  {{! the whole bar }}  <div class='Ldt-sliceBackground'></div>    <div class='Ldt-sliceLeftHandle'></div>  {{! the zone which represents our slice }}  <div class='Ldt-sliceZone'></div>     <div class='Ldt-sliceRightHandle'></div></div>";
-IriSP.slideShareWidget_template = "{{! template for the slideShare widget of the other }}<div class='Ldt-SlideShare'><!--p> class='sync_links'><a class='sync_on'>Synchronise</a> - <a class='sync_off'>Ne synchronise pas</a></p--><div class='SlideShareContainer'></div></div>";
+IriSP.slideShareWidget_template = "{{! template for the slideShare widget of the other }}<div class='Ldt-SlideShare'><!--p> class='sync_links'><a class='sync_on'>Synchronise</a> - <a class='sync_off'>Ne synchronise pas</a></p--><div class='SlideShareContainer'></div>  <div class='SlideShareButtons'><ul><li><div class='ss_sync_on'></div><div class='ss_sync_off'></div></li><li><div class='ss_link'></div></li><li class='left_icon'><div class='ss_tooltip'></div></li></ul></div></div>";
 IriSP.sliderWidget_template = "{{! template for the slider widget - it's composed of two divs we one overlayed on top    of the other }}<div class='Ldt-sliderBackground'></div><div class='Ldt-sliderForeground'></div><div class='Ldt-sliderPositionMarker Ldt-TraceMe'></div>";
 IriSP.tooltip_template = "{{! template used by the jquery ui tooltip }}<div class='Ldt-tooltip'>  <div class='title'>{{title}}</div>  <div class='time'>{{begin}} : {{end}} </div>  <div class='description'>{{description}}</div></div>";
 IriSP.tooltipWidget_template = "{{! template for the tooltip widget }}<div class='tip'>	<div class='tipcolor' style='height:10px;width:10px'></div>	<div class='tiptext'></div>";
@@ -4892,6 +4892,15 @@ IriSP.SliceWidget.prototype.hide = function() {
 /** A widget to display slide show from embed slide share */
 IriSP.SlideShareWidget = function(Popcorn, config, Serializer) {
   IriSP.Widget.call(this, Popcorn, config, Serializer);
+  // Default flash embed size
+  this.embed_width = 425;
+  this.embed_height = 355;
+  if(this._config.embed_width){
+	  this.embed_width = this._config.embed_width;
+  }
+  if(this._config.embed_height){
+	  this.embed_height = this._config.embed_height;
+  }
 };
 
 IriSP.SlideShareWidget.prototype = new IriSP.Widget();
@@ -4905,12 +4914,7 @@ IriSP.SlideShareWidget.prototype.draw = function() {
 	  return;
   }
   var templ = Mustache.to_html(IriSP.slideShareWidget_template);
-  this.selector.html(templ);
-  
-  // Synchro management
-  this._disableUpdate = false;
-  this.selector.find('.sync_on').click(function(event) { self.syncHandler.call(self, event); });
-  this.selector.find('.sync_off').click(function(event) { self.unSyncHandler.call(self, event); });
+  this.selector.append(templ);
   
   // global variables used to keep the position and width of the zone.  
   this.zoneLeft = 0;
@@ -4920,6 +4924,16 @@ IriSP.SlideShareWidget.prototype.draw = function() {
   this.lastSSUrl = "";
   this.lastSSId = "";
   this.containerDiv = this.selector.find('.SlideShareContainer');
+  
+  // Synchro management
+  this._disableUpdate = false;
+  this.buttonsDiv = this.selector.find('.SlideShareButtons');
+  this.buttonsDiv.width(this.embed_width - 2); // -2 because of css borders 328 -> 235px
+  this.buttonsDiv.find('.left_icon').css("margin-left",(this.embed_width-96)+"px");
+  this.buttonsDiv.find('.ss_sync_on').click(function(event) { self.unSyncHandler.call(self, event); });
+  this.buttonsDiv.find('.ss_sync_off').click(function(event) { self.syncHandler.call(self, event); });
+  this.buttonsDiv.find('.ss_sync_off').hide();
+  this.buttonsDiv.hide();
   
   // Update the slide from timeupdate event
   this._Popcorn.listen("timeupdate", IriSP.wrap(this, this.slideShareUpdater));
@@ -4931,7 +4945,8 @@ IriSP.SlideShareWidget.prototype.draw = function() {
   var annotations = this._serializer._data.annotations;
   var view_type = this._serializer.getSlideShareType();
   if(typeof(view_type) === "undefined") {
-	  if(console){ if(console.log){ console.log("No annotation-type for slideshare widget, this widget is canceled."); } }
+	  if(console){ if(console.log){ console.log("No annotation-type for slideshare widget, this widget is canceled and the container is visible hidden."); } }
+	  this.selector.hide();
 	  return;
   }
   var i = 0;
@@ -4959,72 +4974,100 @@ IriSP.SlideShareWidget.prototype.slideShareUpdater = function() {
   // We search if a segments_slides is in the current timecode
   var time = this._Popcorn.currentTime() * 1000;
   var nb_slides = this.segments_slides.length;
-  var found = false;
+  var forceEmpty = false;
   for (i = 0; i < nb_slides; i++) {
     var segment_slide = this.segments_slides[i];
     if(segment_slide.begin<time && time<segment_slide.end){
-    	found = true;
     	if(segment_slide.content.description!=this.lastSSFullUrl){
 			// The url is like http://stuf.com#X and X is the slide number. So we split and save it.
     		this.lastSSFullUrl = segment_slide.content.description;
-    		var description_ar = this.lastSSFullUrl.split("#id=");
-    		var slideNb = 1;
-    		if(description_ar[1]){
-    			slideNb = description_ar[1];
-    		}
-    		if(description_ar[0]!=this.lastSSUrl){
-    			this.lastSSUrl = description_ar[0];
-	    		// We have the slideshare oembed url.
-	    		var url = "http://www.slideshare.net/api/oembed/1?format=jsonp&url=" + this.lastSSUrl;
-	    		
-	    		IriSP.jQuery.ajax({
-					url: url,
-					dataType: "jsonp",
-					success: function(data) {
-						self.lastSSId = data["slideshow_id"];
-						embed_code = data["html"];
-						// If slideNb exist, we hack the embed code to add ?startSlide=X
-						if(slideNb){
-							embed_code = embed_code.replace(new RegExp("ssplayer2.swf\\?","g"), "ssplayer2.swf?startSlide=" + slideNb + "&");
-						}
-						self.containerDiv.html(embed_code);
-					},
-					error: function(jqXHR, textStatus, errorThrown){
-						self.containerDiv.html("Error while downloading the slideshow. jqXHR = " + jqXHR + ", textStatus = " + textStatus + ", errorThrown = " + errorThrown);
-					}
-	    		});
+    		if(this.lastSSFullUrl==""){
+    			// We force unload
+    			forceEmpty = true;
     		}
     		else{
-    			// If the presentation was already loaded, we only use the ss js api to load the wanted slide number
-    			if(this.lastSSId!=""){
-    				// We get the embed flash element
-    				var embed = document.getElementsByName("__sse" + this.lastSSId)[0];
-    				if(embed){
-    					embed.jumpTo(parseInt(slideNb));
-    				}
-    			}
+    			this.buttonsDiv.show();
+	    		var description_ar = this.lastSSFullUrl.split("#id=");
+	    		var slideNb = 1;
+	    		if(description_ar[1]){
+	    			slideNb = description_ar[1];
+	    		}
+	    		if(description_ar[0]!=this.lastSSUrl && description_ar[0].substring(0,7)=="http://"){
+	    			this.lastSSUrl = description_ar[0];
+		    		// We have the slideshare oembed url (version 1 because we want the flash embed).
+		    		var url = "http://www.slideshare.net/api/oembed/1?format=jsonp&url=" + this.lastSSUrl;
+		    		
+		    		IriSP.jQuery.ajax({
+						url: url,
+						dataType: "jsonp",
+						success: function(data) {
+							self.lastSSId = data["slideshow_id"];
+							embed_code = data["html"];
+							// If slideNb exist, we hack the embed code to add ?startSlide=X
+							if(slideNb){
+								embed_code = embed_code.replace(new RegExp("ssplayer2.swf\\?","g"), "ssplayer2.swf?startSlide=" + slideNb + "&");
+							}
+							// The embed always send the default width and height, so we can easily change them.
+							embed_code = embed_code.replace(new RegExp("425","g"), self.embed_width);
+							embed_code = embed_code.replace(new RegExp("355","g"), self.embed_height);
+							// We hide the title upon the slides.
+							embed_code = embed_code.replace(new RegExp("block"), "none");
+							self.containerDiv.html(embed_code);
+						},
+						error: function(jqXHR, textStatus, errorThrown){
+							self.containerDiv.html("Error while downloading the slideshow. jqXHR = " + jqXHR + ", textStatus = " + textStatus + ", errorThrown = " + errorThrown);
+						}
+		    		});
+	    		}
+	    		else if(description_ar[0]!=this.lastSSUrl){
+	    			this.lastSSUrl = description_ar[0];
+	    			this.lastSSId = "";
+		    		// In this case, we only have an id that is meant to build the flash embed
+					embed_code = '<div style="width:425px"><embed src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=' + this.lastSSUrl + '&startSlide=' + slideNb + '" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" wmode="transparent" width="'+this.embed_width+'" height="'+this.embed_height+'"></embed></div>';
+					this.containerDiv.html(embed_code);
+	    		}
+	    		else{
+	    			// If the presentation was already loaded, we only use the ss js api to load the wanted slide number
+	    			var embed = null;
+	    			if(this.lastSSId!=""){
+	    				// If the presentation was loaded from a public url, we get the div from its id.
+						embed = document.getElementsByName("__sse" + this.lastSSId)[0];
+	    			}
+	    			else if(this.lastSSUrl.substring(0,7)!="http://"){
+	    				// If the presentation was loaded from a private id, we get the div from dom tree.
+	    				embed = this.containerDiv.children()[0].children[0];
+	    			}
+					if(embed){
+						embed.jumpTo(parseInt(slideNb));
+					}
+	    		}
+	    		return;
     		}
-    		return;
     	}
     }
   }
-  if(found==false){
+  if(forceEmpty==true){
 	this.lastSSFullUrl = "";
 	this.lastSSUrl = "";
 	this.lastSSId = "";
   	this.containerDiv.html("");
+  	this.buttonsDiv.hide();
   }
 
 };
 
 // Functions to stop or trigger sync between timeupdate event and slides        
-IriSP.SlideShareWidget.prototype.unSyncHandler = function(params) {
+IriSP.SlideShareWidget.prototype.unSyncHandler = function() {
 	//console.log("slideShare NO SYNC !");
 	this._disableUpdate = true;
+	this.buttonsDiv.find('.ss_sync_on').hide();
+	this.buttonsDiv.find('.ss_sync_off').show();
 };
-IriSP.SlideShareWidget.prototype.syncHandler = function(params) {
+IriSP.SlideShareWidget.prototype.syncHandler = function() {
 	//console.log("slideShare SYNC PLEASE !");
 	this._disableUpdate = false;
+	this.buttonsDiv.find('.ss_sync_on').show();
+	this.buttonsDiv.find('.ss_sync_off').hide();
 };
 
 
@@ -5746,7 +5789,6 @@ IriSP.TooltipWidget.prototype.hide = function() {
     }));
     
     this.tracer = IriSP.TraceManager(IriSP.jQuery).init_trace("test", this._config);
-    this.tracer.set_default_subject("default_subject");
     this.tracer.trace("StartTracing", { "hello": "world" });
     
 }

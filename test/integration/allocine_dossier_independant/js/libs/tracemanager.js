@@ -12,8 +12,8 @@ IriSP.TraceManager = function($) {
 
      var BufferedService_prototype = {
          /*
-          *  Buffered service for traces
-          */
+* Buffered service for traces
+*/
          // url: "",
          // buffer: [],
          // isReady: false,
@@ -43,7 +43,7 @@ IriSP.TraceManager = function($) {
                      // Swap " (very frequent, which will be
                      // serialized into %22) and ; (rather rare), this
                      // saves some bytes
-                     data = data.replace(/[;"]/g, function(s){ return s == ';' ? '"' : ';'; }).replace(/#/g, '%23');
+                     data = data.replace(/[;"#]/g, function(s){ return s == ';' ? '"' : ( s == '"' ? ';' : '%23'); });
                      // FIXME: check data length (< 2K is safe)
                      var request=$('<img />').error( function() { this.failureCount += 1; })
                          .load( function() { this.failureCount = 0; })
@@ -72,12 +72,12 @@ IriSP.TraceManager = function($) {
          },
 
          /* Sync mode: delayed, sync (immediate sync), none (no
-          * synchronisation with server, the trace has to be explicitly saved
-          * if needed */
-         set_sync_mode: function(mode) {
+* synchronisation with server, the trace has to be explicitly saved
+* if needed */
+         set_sync_mode: function(mode, default_subject) {
              this.sync_mode = mode;
              if (! this.isReady && mode !== "none")
-                 this.init();
+                 this.init(default_subject);
              if (mode == 'delayed') {
                  this.start_timer();
              } else {
@@ -118,16 +118,18 @@ IriSP.TraceManager = function($) {
          },
 
          /*
-          * Initialize the sync service
-          */
-         init: function() {
+* Initialize the sync service
+*/
+         init: function(default_subject) {
              var self = this;
              if (this.isReady)
                  /* Already initialized */
                  return;
+             if (typeof default_subject === 'undefined')
+                 default_subject = 'anonymous';
              if (this.mode == 'GET')
              {
-                 var request=$('<img/>').attr('src', this.url + 'login?userinfo={"name":"ktbs4js"}');
+                 var request=$('<img/>').attr('src', this.url + 'login?userinfo={"default_subject": "' + default_subject + '"}');
                  // Do not wait for the return, assume it is
                  // initialized. This assumption will not work anymore
                  // if login returns some necessary information
@@ -137,7 +139,7 @@ IriSP.TraceManager = function($) {
              {
                  $.ajax({ url: this.url + 'login',
                           type: 'POST',
-                          data: 'userinfo={"name":"ktbs4js"}',
+                          data: 'userinfo={"default_subject":"' + default_subject + '"}',
                           success: function(data, textStatus, jqXHR) {
                               self.isReady = true;
                               if (self.buffer.length) {
@@ -168,20 +170,20 @@ IriSP.TraceManager = function($) {
 
      var Trace_prototype = {
          /* FIXME: We could/should use a sorted list such as
-          http://closure-library.googlecode.com/svn/docs/class_goog_structs_AvlTree.html
-          to speed up queries based on time */
+http://closure-library.googlecode.com/svn/docs/class_goog_structs_AvlTree.html
+to speed up queries based on time */
          obsels: [],
          /* Trace URI */
          uri: "",
          default_subject: "",
          /* baseuri is used as the base URI to resolve relative
-          * attribute-type names in obsels. Strictly speaking, this
-          * should rather be expressed as a reference to model, or
-          * more generically, as a qname/URI dict */
+* attribute-type names in obsels. Strictly speaking, this
+* should rather be expressed as a reference to model, or
+* more generically, as a qname/URI dict */
          baseuri: "",
          /* Mapping of obsel type or property name to a compact
-          * representation (shorthands).
-          */
+* representation (shorthands).
+*/
          shorthands: null,
          syncservice: null,
 
@@ -191,23 +193,23 @@ IriSP.TraceManager = function($) {
          },
 
          /* Sync mode: delayed, sync (immediate sync), none (no
-          * synchronisation with server, the trace has to be explicitly saved
-          * if needed */
+* synchronisation with server, the trace has to be explicitly saved
+* if needed */
          set_sync_mode: function(mode) {
              if (this.syncservice !== null) {
-                 this.syncservice.set_sync_mode(mode);
+                 this.syncservice.set_sync_mode(mode, this.default_subject);
              }
          },
 
          /*
-          * Return a list of the obsels of this trace matching the parameters
-          */
+* Return a list of the obsels of this trace matching the parameters
+*/
          list_obsels: function(_begin, _end, _reverse) {
              var res;
              if (typeof _begin !== 'undefined' || typeof _end !== 'undefined') {
                  /*
-                  * Not optimized yet.
-                  */
+* Not optimized yet.
+*/
                  res = [];
                  var l = this.obsels.length;
                  for (var i = 0; i < l; i++) {
@@ -235,8 +237,8 @@ IriSP.TraceManager = function($) {
          },
 
          /*
-          * Return the obsel of this trace identified by the URI, or undefined
-          */
+* Return the obsel of this trace identified by the URI, or undefined
+*/
          get_obsel: function(id) {
              for (var i = 0; i < this.obsels.length; i++) {
                  /* FIXME: should check against variations of id/uri, take this.baseuri into account */
@@ -248,6 +250,9 @@ IriSP.TraceManager = function($) {
          },
 
          set_default_subject: function(subject) {
+             // FIXME: if we call this method after the sync_service
+             // init method, then the default_subject will not be
+             // consistent anymore. Maybe we should then call init() again?
              this.default_subject = subject;
          },
 
@@ -291,8 +296,8 @@ IriSP.TraceManager = function($) {
 
      var Trace = function(uri, requestmode) {
          /* FIXME: We could/should use a sorted list such as
-          http://closure-library.googlecode.com/svn/docs/class_goog_structs_AvlTree.html
-          to speed up queries based on time */
+http://closure-library.googlecode.com/svn/docs/class_goog_structs_AvlTree.html
+to speed up queries based on time */
          this.obsels = [];
          /* Trace URI */
          if (uri === undefined)
@@ -316,8 +321,8 @@ IriSP.TraceManager = function($) {
 
      var Obsel_prototype = {
          /* The following attributes are here for documentation
-          * purposes. They MUST be defined in the constructor
-          * function. */
+* purposes. They MUST be defined in the constructor
+* function. */
          trace: undefined,
          type: undefined,
          begin: undefined,
@@ -347,7 +352,7 @@ IriSP.TraceManager = function($) {
          list_attribute_types: function() {
              var result = [];
              for (var prop in this.attributes) {
-                 if (this.hasOwnProperty(prop))
+                 if (this.attributes.hasOwnProperty(prop))
                      result.push(prop);
              }
              /* FIXME: we return URIs here instead of AttributeType elements */
@@ -368,8 +373,8 @@ IriSP.TraceManager = function($) {
              /* FIXME: not implemented yet */
          },
          /*
-          * Return the value of the given attribute type for this obsel
-          */
+* Return the value of the given attribute type for this obsel
+*/
          get_attribute_value: function(at) {
              if (typeof at === "string")
                  /* It is a URI */
@@ -409,8 +414,8 @@ IriSP.TraceManager = function($) {
          },
 
          /*
-          * Return a JSON representation of the obsel
-          */
+* Return a JSON representation of the obsel
+*/
          toJSON: function() {
              var r = {
                  "@id": this.id,
@@ -420,29 +425,35 @@ IriSP.TraceManager = function($) {
                  "subject": this.subject
              };
              for (var prop in this.attributes) {
-                 if (this.hasOwnProperty(prop))
+                 if (this.attributes.hasOwnProperty(prop))
                      r[prop] = this.attributes[prop];
              }
              return r;
          },
 
          /*
-          * Return a compact JSON representation of the obsel.
-          * Use predefined + custom shorthands for types/properties
-          */
+* Return a compact JSON representation of the obsel.
+* Use predefined + custom shorthands for types/properties
+*/
          toCompactJSON: function() {
              var r = {
-                 "@i": this.id,
                  "@t": (this.trace.shorthands.hasOwnProperty(this.type) ? this.trace.shorthands[this.type] : this.type),
                  "@b": this.begin,
-                 "@s": this.subject
              };
+             // Transmit subject only if different from default_subject
+             if (this.subject !== this.trace.default_subject)
+                 r["@s"] = this.subject;
+
              // Store duration (to save some bytes) and only if it is non-null
              if (this.begin !== this.end)
                  r["@d"] = this.end - this.begin;
 
+             // Store id only if != ""
+             if (this.id !== "")
+                 r["@i"] = this.id;
+
              for (var prop in this.attributes) {
-                 if (this.hasOwnProperty(prop))
+                 if (this.attributes.hasOwnProperty(prop))
                  {
                      var v = this.attributes[prop];
                      r[prop] = this.trace.shorthands.hasOwnProperty(v) ? this.trace.shorthands[v] : v;
@@ -474,19 +485,19 @@ IriSP.TraceManager = function($) {
      var TraceManager_prototype = {
          traces: [],
          /*
-          * Return the trace with id name
-          * If it was not registered, return undefined.
-          */
+* Return the trace with id name
+* If it was not registered, return undefined.
+*/
          get_trace: function(name) {
              return this.traces[name];
          },
 
          /*
-          * Explicitly create and initialize a new trace with the given name.
-          * The optional uri parameter allows to initialize the trace URI.
-          *
-          * If another existed with the same name before, then it is replaced by a new one.
-          */
+* Explicitly create and initialize a new trace with the given name.
+* The optional uri parameter allows to initialize the trace URI.
+*
+* If another existed with the same name before, then it is replaced by a new one.
+*/
          init_trace: function(name, params)
          {
              if (window.console) window.console.log("init_trace", params);
@@ -495,8 +506,8 @@ IriSP.TraceManager = function($) {
              syncmode = params.syncmode ? params.syncmode : "none";
              default_subject = params.default_subject ? params.default_subject : "default";
              var t = new Trace(url, requestmode);
-             t.set_sync_mode(syncmode);
              t.set_default_subject(default_subject);
+             t.set_sync_mode(syncmode);
              this.traces[name] = t;
              return t;
          }
@@ -507,6 +518,6 @@ IriSP.TraceManager = function($) {
      };
      TraceManager.prototype = TraceManager_prototype;
 
-     var tracemanager  = new TraceManager();
+     var tracemanager = new TraceManager();
      return tracemanager;
  };
