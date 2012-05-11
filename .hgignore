@@ -11,3 +11,9 @@ doc/jsdoc/*
 
 syntax: regexp
 ^assets/player_bab_ldt/player_bab_ldt/bin$
+syntax: regexp
+^test/metadataplayer$
+syntax: regexp
+^test/libs$
+syntax: regexp
+^build/LdtPlayer-core\.js$
