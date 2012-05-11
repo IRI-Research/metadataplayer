@@ -233,6 +233,10 @@ IriSP.Metadataplayer.prototype.configurePopcorn = function() {
             pop = new IriSP.PopcornReplacement.dailymotion("#" + containerDiv, this.config.player);
             break;
 
+        case "mashup":
+            pop = new IriSP.PopcornReplacement.mashup("#" + containerDiv, this.config.player);
+            break;
+            
         case "allocine":
             /* pass the options as-is to the allocine player and let it handle everything */
             pop = new IriSP.PopcornReplacement.allocine("#" + containerDiv, this.config.player);
