@@ -29,16 +29,23 @@ IriSP.TraceWidget = function(Popcorn, config, Serializer) {
         }
         _this._Popcorn.listen(_listener, _f);
     });
-    this._Popcorn.listen("timeupdate", IriSP.underscore.throttle(function(_arg) {
-        _this.eventHandler(_listener, _arg);
-    }));
     
-    this.tracer = IriSP.TraceManager(IriSP.jQuery).init_trace("test", this._config);
-    this.tracer.trace("StartTracing", { "hello": "world" });
+    if (typeof window.tracemanager === "undefined") {
+        $LAB.script(IriSP.getLib("tracemanager")).wait(function() {
+            _this.onTmLoaded();
+        });
+    } else {
+        this.onTmLoaded();
+    }
     
 }
 
 IriSP.TraceWidget.prototype = new IriSP.Widget();
+
+IriSP.TraceWidget.prototype.onTmLoaded = function() {
+    this.tracer = window.tracemanager.init_trace("test", this._config);
+    this.tracer.trace("StartTracing", { "hello": "world" });
+}
 
 IriSP.TraceWidget.prototype.draw = function() {
     this.mouseLocation = '';

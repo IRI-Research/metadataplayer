@@ -1032,9 +1032,20 @@ IriSP.getLib = function(lib) {
     )
 }
 
+IriSP._cssCache = [];
+
+IriSP.loadCss = function(_cssFile) {
+    if (typeof _cssFile === "string" && _cssFile && IriSP._(IriSP._cssCache).indexOf(_cssFile) === -1) {
+        IriSP.jQuery("<link>", {
+            rel : "stylesheet",
+            type : "text/css",
+            href : _cssFile
+        }).appendTo('head');
+        IriSP._cssCache.push(_cssFile);
+    }
+}
+
 IriSP.loadLibs = function( config, metadata_url, callback ) {
-    // Localize jQuery variable
-		IriSP.jQuery = null;
     var $L = $LAB.script(IriSP.getLib("jQuery")).script(IriSP.getLib("swfObject")).wait()
                 .script(IriSP.getLib("jQueryUI"));
                                    
@@ -1060,9 +1071,6 @@ IriSP.loadLibs = function( config, metadata_url, callback ) {
           config.gui.widgets[idx].type === "SparklineWidget") {        
         $L.script(IriSP.getLib("raphael"));
       }
-      if (config.gui.widgets[idx].type === "TraceWidget") {
-          $L.script(IriSP.getLib("tracemanager"))
-      }
     }
     
     // same for modules
@@ -1072,25 +1080,12 @@ IriSP.loadLibs = function( config, metadata_url, callback ) {
         $L.script(IriSP.getLib("raphaelJs"));
     }
     */
-
     $L.wait(function() {
-      IriSP.jQuery = window.jQuery.noConflict( true );
-      
-      var css_link_jquery = IriSP.jQuery( "<link>", { 
-        rel: "stylesheet", 
-        type: "text/css", 
-        href: IriSP.getLib("cssjQueryUI"),
-        'class': "dynamic_css"
-      } );
-      var css_link_custom = IriSP.jQuery( "<link>", { 
-        rel: "stylesheet", 
-        type: "text/css", 
-        href: config.gui.css,
-        'class': "dynamic_css"
-      } );
-      
-      css_link_jquery.appendTo('head');
-      css_link_custom.appendTo('head');
+        if (typeof IriSP.jQuery === "undefined" && typeof window.jQuery !== "undefined") {
+            IriSP.jQuery = window.jQuery.noConflict();
+        }
+        IriSP.loadCss(IriSP.getLib("cssjQueryUI"));
+        IriSP.loadCss(config.gui.css);
           
       IriSP.setupDataLoader();
       IriSP.__dataloader.get(metadata_url, 
@@ -5784,16 +5779,23 @@ IriSP.TooltipWidget.prototype.hide = function() {
         }
         _this._Popcorn.listen(_listener, _f);
     });
-    this._Popcorn.listen("timeupdate", IriSP.underscore.throttle(function(_arg) {
-        _this.eventHandler(_listener, _arg);
-    }));
     
-    this.tracer = IriSP.TraceManager(IriSP.jQuery).init_trace("test", this._config);
-    this.tracer.trace("StartTracing", { "hello": "world" });
+    if (typeof window.tracemanager === "undefined") {
+        $LAB.script(IriSP.getLib("tracemanager")).wait(function() {
+            _this.onTmLoaded();
+        });
+    } else {
+        this.onTmLoaded();
+    }
     
 }
 
 IriSP.TraceWidget.prototype = new IriSP.Widget();
+
+IriSP.TraceWidget.prototype.onTmLoaded = function() {
+    this.tracer = window.tracemanager.init_trace("test", this._config);
+    this.tracer.trace("StartTracing", { "hello": "world" });
+}
 
 IriSP.TraceWidget.prototype.draw = function() {
     this.mouseLocation = '';

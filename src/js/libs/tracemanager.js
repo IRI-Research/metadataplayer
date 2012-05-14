@@ -1,7 +1,24 @@
 /*
  * Modelled Trace API
+ *
+ * This file is part of ktbs4js.
+ *
+ * ktbs4js is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * ktbs4js is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with ktbs4js.  If not, see <http://www.gnu.org/licenses/>.
+ *
  */
-IriSP.TraceManager = function($) {
+/* FIXME: properly use require.js feature. This will do for debugging in the meantime */
+window.tracemanager = (function($) {
      // If there are more than MAX_FAILURE_COUNT synchronisation
      // failures, then disable synchronisation
      MAX_FAILURE_COUNT = 20;
@@ -12,8 +29,8 @@ IriSP.TraceManager = function($) {
 
      var BufferedService_prototype = {
          /*
-* Buffered service for traces
-*/
+          *  Buffered service for traces
+          */
          // url: "",
          // buffer: [],
          // isReady: false,
@@ -72,8 +89,8 @@ IriSP.TraceManager = function($) {
          },
 
          /* Sync mode: delayed, sync (immediate sync), none (no
-* synchronisation with server, the trace has to be explicitly saved
-* if needed */
+          * synchronisation with server, the trace has to be explicitly saved
+          * if needed */
          set_sync_mode: function(mode, default_subject) {
              this.sync_mode = mode;
              if (! this.isReady && mode !== "none")
@@ -118,8 +135,8 @@ IriSP.TraceManager = function($) {
          },
 
          /*
-* Initialize the sync service
-*/
+          * Initialize the sync service
+          */
          init: function(default_subject) {
              var self = this;
              if (this.isReady)
@@ -170,20 +187,20 @@ IriSP.TraceManager = function($) {
 
      var Trace_prototype = {
          /* FIXME: We could/should use a sorted list such as
-http://closure-library.googlecode.com/svn/docs/class_goog_structs_AvlTree.html
-to speed up queries based on time */
+          http://closure-library.googlecode.com/svn/docs/class_goog_structs_AvlTree.html
+          to speed up queries based on time */
          obsels: [],
          /* Trace URI */
          uri: "",
          default_subject: "",
          /* baseuri is used as the base URI to resolve relative
-* attribute-type names in obsels. Strictly speaking, this
-* should rather be expressed as a reference to model, or
-* more generically, as a qname/URI dict */
+          * attribute-type names in obsels. Strictly speaking, this
+          * should rather be expressed as a reference to model, or
+          * more generically, as a qname/URI dict */
          baseuri: "",
          /* Mapping of obsel type or property name to a compact
-* representation (shorthands).
-*/
+          * representation (shorthands).
+          */
          shorthands: null,
          syncservice: null,
 
@@ -193,8 +210,8 @@ to speed up queries based on time */
          },
 
          /* Sync mode: delayed, sync (immediate sync), none (no
-* synchronisation with server, the trace has to be explicitly saved
-* if needed */
+          * synchronisation with server, the trace has to be explicitly saved
+          * if needed */
          set_sync_mode: function(mode) {
              if (this.syncservice !== null) {
                  this.syncservice.set_sync_mode(mode, this.default_subject);
@@ -202,14 +219,14 @@ to speed up queries based on time */
          },
 
          /*
-* Return a list of the obsels of this trace matching the parameters
-*/
+          * Return a list of the obsels of this trace matching the parameters
+          */
          list_obsels: function(_begin, _end, _reverse) {
              var res;
              if (typeof _begin !== 'undefined' || typeof _end !== 'undefined') {
                  /*
-* Not optimized yet.
-*/
+                  * Not optimized yet.
+                  */
                  res = [];
                  var l = this.obsels.length;
                  for (var i = 0; i < l; i++) {
@@ -237,8 +254,8 @@ to speed up queries based on time */
          },
 
          /*
-* Return the obsel of this trace identified by the URI, or undefined
-*/
+          * Return the obsel of this trace identified by the URI, or undefined
+          */
          get_obsel: function(id) {
              for (var i = 0; i < this.obsels.length; i++) {
                  /* FIXME: should check against variations of id/uri, take this.baseuri into account */
@@ -296,8 +313,8 @@ to speed up queries based on time */
 
      var Trace = function(uri, requestmode) {
          /* FIXME: We could/should use a sorted list such as
-http://closure-library.googlecode.com/svn/docs/class_goog_structs_AvlTree.html
-to speed up queries based on time */
+          http://closure-library.googlecode.com/svn/docs/class_goog_structs_AvlTree.html
+          to speed up queries based on time */
          this.obsels = [];
          /* Trace URI */
          if (uri === undefined)
@@ -321,8 +338,8 @@ to speed up queries based on time */
 
      var Obsel_prototype = {
          /* The following attributes are here for documentation
-* purposes. They MUST be defined in the constructor
-* function. */
+          * purposes. They MUST be defined in the constructor
+          * function. */
          trace: undefined,
          type: undefined,
          begin: undefined,
@@ -373,8 +390,8 @@ to speed up queries based on time */
              /* FIXME: not implemented yet */
          },
          /*
-* Return the value of the given attribute type for this obsel
-*/
+          * Return the value of the given attribute type for this obsel
+          */
          get_attribute_value: function(at) {
              if (typeof at === "string")
                  /* It is a URI */
@@ -414,8 +431,8 @@ to speed up queries based on time */
          },
 
          /*
-* Return a JSON representation of the obsel
-*/
+          * Return a JSON representation of the obsel
+          */
          toJSON: function() {
              var r = {
                  "@id": this.id,
@@ -432,9 +449,9 @@ to speed up queries based on time */
          },
 
          /*
-* Return a compact JSON representation of the obsel.
-* Use predefined + custom shorthands for types/properties
-*/
+          * Return a compact JSON representation of the obsel.
+          * Use predefined + custom shorthands for types/properties
+          */
          toCompactJSON: function() {
              var r = {
                  "@t": (this.trace.shorthands.hasOwnProperty(this.type) ? this.trace.shorthands[this.type] : this.type),
@@ -485,19 +502,19 @@ to speed up queries based on time */
      var TraceManager_prototype = {
          traces: [],
          /*
-* Return the trace with id name
-* If it was not registered, return undefined.
-*/
+          * Return the trace with id name
+          * If it was not registered, return undefined.
+          */
          get_trace: function(name) {
              return this.traces[name];
          },
 
          /*
-* Explicitly create and initialize a new trace with the given name.
-* The optional uri parameter allows to initialize the trace URI.
-*
-* If another existed with the same name before, then it is replaced by a new one.
-*/
+          * Explicitly create and initialize a new trace with the given name.
+          * The optional uri parameter allows to initialize the trace URI.
+          *
+          * If another existed with the same name before, then it is replaced by a new one.
+          */
          init_trace: function(name, params)
          {
              if (window.console) window.console.log("init_trace", params);
@@ -518,6 +535,6 @@ to speed up queries based on time */
      };
      TraceManager.prototype = TraceManager_prototype;
 
-     var tracemanager = new TraceManager();
+     var tracemanager  = new TraceManager();
      return tracemanager;
- };
+ })(jQuery);
