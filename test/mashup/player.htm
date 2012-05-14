@@ -36,8 +36,7 @@
                 <div id="LdtPlayer"></div>
             </div>
             <div class="coldroite">
-                <h2>Média en cours</h2>
-                <hr />
+                <div id="mediaList"></div>
             </div>
             <div class="footer">
                 <hr />
@@ -48,14 +47,14 @@
 
 IriSP.libFiles.defaultDir = "../libs/";
 IriSP.widgetsDir = "../metadataplayer";
-IriSP.jwplayer_swf_path = "../player.swf";
+IriSP.language = 'fr';
 var _metadata = {
     url: 'bab_files/mashup.json',
     format: 'ldt'
 };
 var _config = {            
     gui: {
-        width : 620,
+        width : 630,
         container : 'LdtPlayer',
         default_options: {
             metadata: _metadata
@@ -72,14 +71,19 @@ var _config = {
             {
                 type: "Annotation",
                 annotation_type: false
-            }
+            },
+            {
+                type: "MediaList",
+                container: "mediaList"
+            },
+            { type: "Mediafragment" }
         ]
     },
     player:{
         type:'mashup',
         live: true, 
         height: 350,
-        width: 620, 
+        width: 630, 
         provider: "rtmp",
         mashup_swf : "bab_files/player_bab_ldt.swf",
         mashup_xml : "bab_files/mashup.xml",

@@ -12,7 +12,49 @@
             "contents": ["c4ff2454-9842-11e1-9f9f-00145ea4a2be"]
         }
     ],
-    "tags": null,
+    "tags": [
+        {
+            "meta": {
+                "dc:title": "jeux vidéo"
+            },
+            "id": "jeux_video"
+        }, {
+            "meta": {
+                "dc:title": "intelligence collective"
+            },
+            "id": "intelligence_collective"
+        }, {
+            "meta": {
+                "dc:title": "gamification"
+            },
+            "id": "gamification"
+        }, {
+            "meta": {
+                "dc:title": "nouveaux médias"
+            },
+            "id": "nouveaux_medias"
+        }, {
+            "meta": {
+                "dc:title": "world wide web"
+            },
+            "id": "www"
+        }, {
+            "meta": {
+                "dc:title": "hypertexte"
+            },
+            "id": "hypertexte"
+        }, {
+            "meta": {
+                "dc:title": "données liées"
+            },
+            "id": "donnees_liees"
+        }, {
+            "meta": {
+                "dc:title": "données ouvertes"
+            },
+            "id": "donnees_ouvertes"
+        }
+    ],
     "lists": [
         {
             "items": [
@@ -68,7 +110,7 @@
                 "dc:title": "RSLN -  Jane McGonigal",
                 "dc:creator.contents": "IRI",
                 "dc:modified": "2012-02-13T11:55:33.052583",
-                "dc:description": ""
+                "dc:description": "Regards sur le Numérique, 16 septembre 2011, Jane McGonigal. Comment le jeu vidéo va changer le monde ?"
             },
             "id": "c1a84ff8-e2b0-11e0-8472-00145ea49a02",
             "unit": "ms"
@@ -89,7 +131,7 @@
                 "dc:title": "WWW 2012 - Tim Berners-Lee",
                 "dc:creator.contents": "IRI",
                 "dc:modified": "2012-05-07T17:08:36.018270",
-                "dc:description": ""
+                "dc:description": "World Wide Web Conference 2012, Wednesday 18/04, 11:00-12:30, Keynote by Tim Berners-Lee, graduate of Oxford University, inventor of the World Wide Web, an internet-based hypermedia initiative for global information sharing while at CERN, the European Particle Physics Laboratory, in 1989."
             },
             "id": "c4ff2454-9842-11e1-9f9f-00145ea4a2be",
             "unit": "ms"
@@ -133,18 +175,24 @@
                 "dc:creator": "perso"
             },
             "end": 425000,
-            "tags": null,
+            "tags": [
+                {
+                    "id-ref": "jeux_video"
+                }, {
+                    "id-ref": "gamification"
+                }
+            ],
             "color": "16763904",
             "media": "c1a84ff8-e2b0-11e0-8472-00145ea49a02",
             "id": "s_48D417FA-D34B-C954-05F6-3C4B9392367E"
         }, {
             "content": {
                 "mimetype": "application/x-ldt-structured",
-                "description": "",
+                "description": "Second segment from Jane McGonigal",
                 "img": {
                     "src": ""
                 },
-                "title": "",
+                "title": "McGonigal 2",
                 "color": "16763904",
                 "polemics": [],
                 "audio": {
@@ -162,18 +210,24 @@
                 "dc:creator": "perso"
             },
             "end": 995096,
-            "tags": null,
+            "tags": [
+                {
+                    "id-ref": "nouveaux_medias"
+                }, {
+                    "id-ref": "intelligence_collective"
+                }
+            ],
             "color": "16763904",
             "media": "c1a84ff8-e2b0-11e0-8472-00145ea49a02",
             "id": "s_5D30DD53-BE06-49E0-EB72-3C4B99BA0AA4"
         }, {
             "content": {
                 "mimetype": "application/x-ldt-structured",
-                "description": "Second segment from Jane McGonigal",
+                "description": "Third segment from Jane McGonigal",
                 "img": {
                     "src": ""
                 },
-                "title": "McGonigal 2",
+                "title": "McGonigal 3",
                 "color": "16763904",
                 "polemics": [],
                 "audio": {
@@ -191,18 +245,22 @@
                 "dc:creator": "perso"
             },
             "end": 1860044,
-            "tags": null,
+            "tags": [
+                {
+                    "id-ref": "jeux_video"
+                }
+            ],
             "color": "16763904",
             "media": "c1a84ff8-e2b0-11e0-8472-00145ea49a02",
             "id": "s_2B3C5B17-FB5E-8B99-AEDA-3C4BA2EB4234"
         }, {
             "content": {
                 "mimetype": "application/x-ldt-structured",
-                "description": "Third segment from Jane McGonigal",
+                "description": "Fourth segment from Jane McGonigal",
                 "img": {
                     "src": ""
                 },
-                "title": "McGonigal 3",
+                "title": "McGonigal 4",
                 "color": "16763904",
                 "polemics": [],
                 "audio": {
@@ -220,18 +278,24 @@
                 "dc:creator": "perso"
             },
             "end": 2460096,
-            "tags": null,
+            "tags": [
+                {
+                    "id-ref": "jeux_video"
+                }, {
+                    "id-ref": "www"
+                }
+            ],
             "color": "16763904",
             "media": "c1a84ff8-e2b0-11e0-8472-00145ea49a02",
             "id": "s_2376F9F0-AC9A-229C-9A60-3C4BAEE2D03F"
         }, {
             "content": {
                 "mimetype": "application/x-ldt-structured",
-                "description": "Fourth segment from Jane McGonigal",
+                "description": "Fifth segment from Jane McGonigal",
                 "img": {
                     "src": ""
                 },
-                "title": "McGonigal 4",
+                "title": "McGonigal 5",
                 "color": "16763904",
                 "polemics": [],
                 "audio": {
@@ -249,7 +313,15 @@
                 "dc:creator": "perso"
             },
             "end": 3250000,
-            "tags": null,
+            "tags": [
+                {
+                    "id-ref": "jeux_video"
+                }, {
+                    "id-ref": "nouveaux_medias"
+                }, {
+                    "id-ref": "gamification"
+                }
+            ],
             "color": "16763904",
             "media": "c1a84ff8-e2b0-11e0-8472-00145ea49a02",
             "id": "s_0DB7AABB-3973-9352-95DF-3C4BC3DCFB2D"
@@ -278,7 +350,17 @@
                 "dc:creator": "perso"
             },
             "end": 380000,
-            "tags": null,
+            "tags": [
+                {
+                    "id-ref": "hypertexte"
+                }, {
+                    "id-ref": "www"
+                }, {
+                    "id-ref": "donnees_ouvertes"
+                }, {
+                    "id-ref": "donnees_liees"
+                }
+            ],
             "color": "10027008",
             "media": "c4ff2454-9842-11e1-9f9f-00145ea4a2be",
             "id": "s_471A1070-AAD9-32F6-1E1B-3C4D52B5E4B9"
@@ -336,7 +418,11 @@
                 "dc:creator": "perso"
             },
             "end": 2035000,
-            "tags": null,
+            "tags": [
+                {
+                    "id-ref": "www"
+                }
+            ],
             "color": "10027008",
             "media": "c4ff2454-9842-11e1-9f9f-00145ea4a2be",
             "id": "s_E8C653B6-2B35-B2D6-1040-3C4D75BDF31B"
@@ -365,7 +451,11 @@
                 "dc:creator": "perso"
             },
             "end": 2940000,
-            "tags": null,
+            "tags": [
+                {
+                    "id-ref": "hypertexte"
+                }
+            ],
             "color": "10027008",
             "media": "c4ff2454-9842-11e1-9f9f-00145ea4a2be",
             "id": "s_971168A0-A9B3-064D-46B4-3C4D7FA5DFD5"
@@ -397,17 +487,7 @@
                 "dc:title": "Example mashup",
                 "dc:description": "This is an example mashup"
             },
-            "segments": [
-                "s_48D417FA-D34B-C954-05F6-3C4B9392367E",
-                "s_5D30DD53-BE06-49E0-EB72-3C4B99BA0AA4",
-                "s_471A1070-AAD9-32F6-1E1B-3C4D52B5E4B9",
-                "s_2B3C5B17-FB5E-8B99-AEDA-3C4BA2EB4234",
-                "s_7EB7522B-82D7-4FD6-2C5F-3C4D6945539E",
-                "s_2376F9F0-AC9A-229C-9A60-3C4BAEE2D03F",
-                "s_E8C653B6-2B35-B2D6-1040-3C4D75BDF31B",
-                "s_971168A0-A9B3-064D-46B4-3C4D7FA5DFD5",
-                "s_0DB7AABB-3973-9352-95DF-3C4BC3DCFB2D"
-            ]
+            "segments": ["s_48D417FA-D34B-C954-05F6-3C4B9392367E", "s_5D30DD53-BE06-49E0-EB72-3C4B99BA0AA4", "s_471A1070-AAD9-32F6-1E1B-3C4D52B5E4B9", "s_2B3C5B17-FB5E-8B99-AEDA-3C4BA2EB4234", "s_7EB7522B-82D7-4FD6-2C5F-3C4D6945539E", "s_2376F9F0-AC9A-229C-9A60-3C4BAEE2D03F", "s_E8C653B6-2B35-B2D6-1040-3C4D75BDF31B", "s_971168A0-A9B3-064D-46B4-3C4D7FA5DFD5", "s_0DB7AABB-3973-9352-95DF-3C4BC3DCFB2D"]
         }
     ]
 }

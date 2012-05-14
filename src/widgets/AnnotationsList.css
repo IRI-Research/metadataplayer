@@ -66,14 +66,22 @@ ul.Ldt-AnnotationsList-Tags {
     padding: 0;
     margin: 2px 0 0 82px;
 }
+
 li.Ldt-AnnotationsList-Tag-Li {
-    display: inline-block;
-    margin: 2px;
-    background: #0068c4;
-    color: #fff;
-    padding: 2px;
-    font-size: 12px;
+    display: inline-block; border: none; margin: 0 10px 5px 0; height: 23px; padding: 0 0 0 20px;
+    background: url(img/tag.png) left top no-repeat; font-weight: bold;
+    cursor: pointer;
 }
+
+.Ldt-AnnotationsList-Tag-Li span {
+    display: inline-block; font-size: 12px; height: 19px; padding: 4px 5px 0 0; border: none; margin: 0;
+    background: url(img/tag.png) right top no-repeat;
+}
+
 li.Ldt-AnnotationsList-Tag-Li:hover {
-    background: #F7268E;
+    background-position: left bottom;
+}
+
+.Ldt-AnnotationsList-Tag-Li:hover span {
+    background-position: right bottom;
 }

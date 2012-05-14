@@ -23,7 +23,6 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
      * e.g. http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}
      */
     foreign_url : "",
-    cinecast_version : false,
     annotation_type : false,
     refresh_interval : 0,
     limit_count : 10,
@@ -50,7 +49,7 @@ IriSP.Widgets.AnnotationsList.prototype.template =
     + '{{#tags}}'
     + '{{#.}}'
     + '<li class="Ldt-AnnotationsList-Tag-Li">'
-    + '<div class="Ldt-AnnotationsList-Tag-Div">{{.}}</div>'
+    + '<span>{{.}}</span>'
     + '</li>'
     + '{{/.}}'
     + '{{/tags}}'
@@ -60,12 +59,6 @@ IriSP.Widgets.AnnotationsList.prototype.template =
     + '{{/annotations}}'
     + '</ul>'
     + '</div>';
-
-IriSP.Widgets.AnnotationsList.prototype.clear = function() {
-};
-
-IriSP.Widgets.AnnotationsList.prototype.clearWidget = function() {
-};
 
 IriSP.Widgets.AnnotationsList.prototype.onSearch = function(searchString) {
     this.searchString = typeof searchString !== "undefined" ? searchString : '';

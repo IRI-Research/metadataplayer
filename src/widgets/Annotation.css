@@ -20,9 +20,14 @@
 .Ldt-Annotation-Inner h3 {
     margin: 5px 0;
     font-size: 14px;
+    font-weight: bold;
 }
 
-.Ldt-Annotation-Title {
+.Ldt-Annotation-Inner h3.Ldt-Annotation-MashupOrigin {
+    font-size: 12px;
+}
+
+.Ldt-Annotation-Title, .Ldt-Annotation-MashupMedia {
     color: #0068c4;
 }
 
@@ -74,16 +79,30 @@
     display: none;
 }
 
+span.Ldt-Annotation-TagTitle {
+    display: inline-block; margin: 5px 2px 0 0; font-size: 12px;
+}
+
 ul.Ldt-Annotation-Tags {
-    list-style: none; padding: 0; margin: 5px 0;
+    display: inline-block; list-style: none; padding: 0; margin: 5px 0;
 }
 
-.Ldt-Annotation-Tags li {
-    display: inline-block; margin: 0 3px 0 0; padding: 0;
+li.Ldt-Annotation-TagLabel {
+    display: inline-block; border: none; margin: 0 10px 5px 0; height: 23px; padding: 0 0 0 20px;
+    background: url(img/tag.png) left top no-repeat; font-weight: bold;
 }
 
-.Ldt-Annotation-TagLabel {
-    font-weight: bold;
+.Ldt-Annotation-TagLabel span {
+    display: inline-block; font-size: 12px; height: 19px; padding: 4px 5px 0 0; border: none; margin: 0;
+    background: url(img/tag.png) right top no-repeat;
+}
+
+.Ldt-Annotation-MashupOrigin {
+    display: none;
+}
+
+.Ldt-Annotation-isMashup .Ldt-Annotation-MashupOrigin {
+    display: block;
 }
 
 .Ldt-Annotation-Empty .Ldt-Annotation-HiddenWhenEmpty {

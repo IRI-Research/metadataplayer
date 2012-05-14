@@ -12,13 +12,15 @@ IriSP.Widgets.Annotation.prototype.messages = {
         share_on: "Partager sur",
         watching: "Je regarde ",
         on_site: " sur ",
-        tags: "Mots-clés&nbsp;:"
+        tags: "Mots-clés&nbsp;:",
+        excerpt_from: "Extrait de&nbsp;:"
     },
     "en": {
         share_on: "Share on",
         watching: "I'm watching ",
         on_site: " on ",
-        tags: "Keywords:"
+        tags: "Keywords:",
+        excerpt_from: "Excerpt from:"
     }
 }
 
@@ -30,8 +32,10 @@ IriSP.Widgets.Annotation.prototype.template =
     + '<a href="#" target="_blank" class="Ldt-Annotation-Share Ldt-Annotation-Gplus" title="{{l10n.share_on}} Google+"></a>'
     + '</div><h3 class="Ldt-Annotation-HiddenWhenEmpty"><span class="Ldt-Annotation-Title"></span> <span class="Ldt-Annotation-Time">'
     + '( <span class="Ldt-Annotation-Begin"></span> - <span class="Ldt-Annotation-End"></span> )</span></h3>'
+    + '<h3 class="Ldt-Annotation-MashupOrigin Ldt-Annotation-HiddenWhenEmpty">{{l10n.excerpt_from}} <span class="Ldt-Annotation-MashupMedia"></span> <span class="Ldt-Annotation-Time">'
+    + '( <span class="Ldt-Annotation-MashupBegin"></span> - <span class="Ldt-Annotation-MashupEnd"></span> )</span></h3>'
     + '<p class="Ldt-Annotation-Description Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty"></p>'
-    + '<div class="Ldt-Annotation-Tags-Block Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-NoTags">{{l10n.tags}}<ul class="Ldt-Annotation-Tags"></ul></div></div></div>';
+    + '<div class="Ldt-Annotation-Tags-Block Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-NoTags"><span class="Ldt-Annotation-TagTitle">{{l10n.tags}}</span><ul class="Ldt-Annotation-Tags"></ul></div></div></div>';
 
 IriSP.Widgets.Annotation.prototype.defaults = {
     annotation_type : "chap",
@@ -78,7 +82,7 @@ IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
     var _tags = _annotation.getTagTexts();
     if (_tags.length) {
         var _html = IriSP._(_tags).map(function(_tag) {
-            return '<li class="Ldt-Annotation-TagLabel">' + _tag + '</li>';
+            return '<li class="Ldt-Annotation-TagLabel"><span>' + _tag + '</span></li>';
         }).join("");
         this.$.find(".Ldt-Annotation-Tags").html(_html);
         this.$.find(".Ldt-Annotation-Tags-Block").removeClass("Ldt-Annotation-NoTags");
@@ -89,6 +93,14 @@ IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
     this.$.find(".Ldt-Annotation-Description").html(_annotation.description);
     this.$.find(".Ldt-Annotation-Begin").html(_annotation.begin.toString());
     this.$.find(".Ldt-Annotation-End").html(_annotation.end.toString());
+    if (_annotation.elementType === "mashedAnnotation") {
+        this.$.find('.Ldt-Annotation-Inner').addClass("Ldt-Annotation-isMashup");
+        this.$.find(".Ldt-Annotation-MashupMedia").html(_annotation.getMedia().title);
+        this.$.find(".Ldt-Annotation-MashupBegin").html(_annotation.annotation.begin.toString());
+        this.$.find(".Ldt-Annotation-MashupEnd").html(_annotation.annotation.end.toString());
+    } else {
+        this.$.find('.Ldt-Annotation-Inner').removeClass("Ldt-Annotation-isMashup");
+    }
     this.$.find(".Ldt-Annotation-Fb").attr("href", "http://www.facebook.com/share.php?" + IriSP.jQuery.param({ u: _url, t: _text }));
     this.$.find(".Ldt-Annotation-Twitter").attr("href", "https://twitter.com/intent/tweet?" + IriSP.jQuery.param({ url: _url, text: _text }));
     this.$.find(".Ldt-Annotation-Gplus").attr("href", "https://plusone.google.com/_/+1/confirm?" + IriSP.jQuery.param({ url: _url, title: _text }));

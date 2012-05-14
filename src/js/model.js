@@ -499,12 +499,12 @@ IriSP.Model.Annotation.prototype.getDuration = function() {
 
 /* */
 
-IriSP.Model.MashedAnnotation = function(_annotation, _offset) {
-    IriSP.Model.Element.call(this, IriSP.Model.getUID(), _annotation.source);
+IriSP.Model.MashedAnnotation = function(_mashup, _annotation) {
+    IriSP.Model.Element.call(this, _mashup.namespacedId.name + "_" + _annotation.namespacedId.name, _annotation.source);
     this.elementType = 'mashedAnnotation';
     this.annotation = _annotation;
-    this.begin = new IriSP.Model.Time(_offset);
-    this.end = new IriSP.Model.Time(_offset + _annotation.getDuration());
+    this.begin = new IriSP.Model.Time(_mashup.duration);
+    this.end = new IriSP.Model.Time(_mashup.duration + _annotation.getDuration());
     this.title = this.annotation.title;
     this.description = this.annotation.description;
     this.color = this.annotation.color;
@@ -541,7 +541,7 @@ IriSP.Model.Mashup = function(_id, _source) {
 IriSP.Model.Mashup.prototype = new IriSP.Model.Element();
 
 IriSP.Model.Mashup.prototype.addSegment = function(_annotation) {
-    var _mashedAnnotation = new IriSP.Model.MashedAnnotation(_annotation, this.duration);
+    var _mashedAnnotation = new IriSP.Model.MashedAnnotation(this, _annotation);
     this.duration.setMilliseconds(_mashedAnnotation.end);
     this.segments.push(_mashedAnnotation);
     this.medias.push(_annotation.getMedia());

@@ -46,9 +46,6 @@ IriSP.Widgets.Trace.prototype.draw = function() {
         }
         _this.player.popcorn.listen(_listener, _f);
     });
-    this.player.popcorn.listen("timeupdate", IriSP._.throttle(function(_arg) {
-        _this.eventHandler(_listener, _arg);
-    }));
     
     this.tracer = window.tracemanager.init_trace("test", {
         url: this.url,

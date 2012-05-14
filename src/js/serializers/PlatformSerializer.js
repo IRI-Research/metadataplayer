@@ -128,13 +128,10 @@ IriSP.serializers.ldt = {
             serialized_name : "mashups",
             model_name : "mashup",
             deserializer : function(_data, _source) {
-                console.log("Before");
                 var _res = new IriSP.Model.Mashup(_data.id, _source);
                 _res.title = _data.meta["dc:title"];
                 _res.description = _data.meta["dc:description"];
-                console.log(_data);
                 for (var _i = 0; _i < _data.segments.length; _i++) {
-                    console.log("Adding segment "+_data.segments[_i])
                     _res.addSegmentById(_data.segments[_i]);
                 }
                 return _res;        
