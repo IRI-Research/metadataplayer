@@ -6,6 +6,7 @@ IriSP.Widgets.AnnotationsList = function(player, config) {
     this.throttledRefresh = IriSP._.throttle(function() {
         _this.refresh(false);
     }, 1500);
+    this.mashupMode = (this.source.currentMedia.elementType === "mashup");
 };
 
 IriSP.Widgets.AnnotationsList.prototype = new IriSP.Widgets.Widget();
@@ -92,6 +93,27 @@ IriSP.Widgets.AnnotationsList.prototype.ajaxSource = function() {
     }, this.metadata));
 }
 
+IriSP.Widgets.AnnotationsList.prototype.ajaxMashup = function() {
+    var _currentTime = this.player.popcorn.currentTime();
+    if (typeof _currentTime == "undefined") {
+        _currentTime = 0;
+    }
+    var _currentAnnotation = this.source.currentMedia.getAnnotationAtTime(_currentTime * 1000);
+    if (typeof _currentAnnotation !== "undefined" && _currentAnnotation.namespacedId.name !== this.lastMashupAnnotation) {
+        this.lastMashupAnnotation = _currentAnnotation.namespacedId.name;
+        var _currentMedia = _currentAnnotation.getMedia(),
+            _url = Mustache.to_html(this.ajax_url, {
+                media : _currentMedia.namespacedId.name,
+                begin : Math.max(0, _currentAnnotation.annotation.begin.milliseconds - this.ajax_granularity),
+                end : Math.min(_currentMedia.duration.milliseconds, _currentAnnotation.annotation.end.milliseconds + this.ajax_granularity)
+            });
+        console.log("Getting", _url);
+        this.currentSource = this.player.loadMetadata(IriSP._.defaults({
+            "url" : _url
+        }, this.metadata));
+    }
+}
+
 IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
     _forceRedraw = (typeof _forceRedraw !== "undefined" && _forceRedraw);
     if (this.currentSource.status !== IriSP.Model._SOURCE_STATUS_READY) {
@@ -102,7 +124,17 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
     if (typeof _currentTime == "undefined") {
         _currentTime = 0;
     }
-    var _list = this.annotation_type ? this.currentSource.getAnnotationsByTypeTitle(this.annotation_type, true) : this.currentSource.getAnnotations();
+    var _list = this.annotation_type ? this.currentSource.getAnnotationsByTypeTitle(this.annotation_type) : this.currentSource.getAnnotations();
+    if (this.mashupMode) {
+        var _currentAnnotation = this.source.currentMedia.getAnnotationAtTime(_currentTime * 1000);
+        if (typeof _currentAnnotation !== "undefined") {
+            _currentTime = _currentTime - _currentAnnotation.begin.getSeconds() + _currentAnnotation.annotation.begin.getSeconds();
+            var _mediaId = _currentAnnotation.getMedia().namespacedId.name;
+            _list = _list.filter(function(_annotation) {
+                return _annotation.getMedia().namespacedId.name === _mediaId;
+            });
+        }
+    }
     if (this.searchString) {
         _list = _list.searchByTextFields(this.searchString);
     }
@@ -163,6 +195,14 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 });
     
         this.$.html(_html);
+        
+        /* Correct the empty tag bug */
+        this.$.find('.Ldt-AnnotationsList-Tag-Li').each(function() {
+            var _el = IriSP.jQuery(this);
+            if (!_el.text().replace(/(^\s+|\s+$)/g,'')) {
+                _el.detach();
+            }
+        });
     
         this.$.find('.Ldt-AnnotationsList-Tag-Li').click(function() {
             _this.player.popcorn.trigger("IriSP.search.triggeredSearch", IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
@@ -177,9 +217,13 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         }
     }
     
-    if (this.ajax_url && this.ajax_granularity) {
-        if (Math.abs(_currentTime - this.lastAjaxQuery) > (this.ajax_granularity / 2000)) {
-            this.ajaxSource();
+    if (this.ajax_url) {
+        if (this.mashupMode) {
+            this.ajaxMashup();
+        } else {
+            if (Math.abs(_currentTime - this.lastAjaxQuery) > (this.ajax_granularity / 2000)) {
+                this.ajaxSource();
+            }
         }
     }
     return _list.length;
@@ -193,8 +237,12 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     
     var _this = this;
     
-    if (this.ajax_url && this.ajax_granularity) {
-        this.ajaxSource();
+    if (this.ajax_url) {
+        if (this.mashupMode) {
+            this.ajaxMashup();
+        } else {
+            this.ajaxSource();
+        }
     } else {
         this.currentSource = this.source;
     }

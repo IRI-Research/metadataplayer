@@ -37,6 +37,9 @@
             </div>
             <div class="coldroite">
                 <div id="mediaList"></div>
+                <h2>Annotations</h2>
+                <hr />
+                <div id="annotationList"></div>
             </div>
             <div class="footer">
                 <hr />
@@ -75,6 +78,13 @@ var _config = {
             {
                 type: "MediaList",
                 container: "mediaList"
+            },
+            {
+                type: "AnnotationsList",
+                container: "annotationList",
+                ajax_url: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?",
+                ajax_granularity: 30000,
+                limit_count: 3
             },
             { type: "Mediafragment" }
         ]

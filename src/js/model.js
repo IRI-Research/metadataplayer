@@ -573,6 +573,26 @@ IriSP.Model.Mashup.prototype.getAnnotationsByTypeTitle = function(_title) {
     }
 }
 
+IriSP.Model.Mashup.prototype.getAnnotationAtTime = function(_time) {
+    var _list = this.segments.filter(function(_annotation) {
+        return _annotation.begin <= _time && _annotation.end > _time;
+    });
+    if (_list.length) {
+        return _list[0];
+    } else {
+        return undefined;
+    }
+}
+
+IriSP.Model.Mashup.prototype.getMediaAtTime = function(_time) {
+    var _annotation = this.getAnnotationAtTime(_time);
+    if (typeof _annotation !== "undefined") {
+        return _annotation.getMedia();
+    } else {
+        return undefined;
+    }
+}
+
 /* */
 
 IriSP.Model.Source = function(_config) {

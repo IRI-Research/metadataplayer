@@ -1,3 +1,17 @@
+@font-face {
+    font-family: DIN;
+    font-weight: normal;
+    font-style: normal;
+    src: url(fonts/DINRg.ttf);
+}
+
+@font-face {
+    font-family: DIN;
+    font-weight: bold;
+    font-style: normal;
+    src: url(fonts/DINBd.ttf);
+}
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -25,7 +39,7 @@ img a {
 
 body {
     background: url(img/background.png) repeat-x top #f8f6f7;
-    font-family: 'DIN-Regular', Helvetica, Arial, sans-serif;
+    font-family: DIN;
 }
 
 .main-container {

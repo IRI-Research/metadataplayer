@@ -30,8 +30,8 @@ IriSP.Widgets.MediaList.prototype.template =
     + '<div class="Ldt-MediaList-Now-ThumbContainer"><a href="" target="_blank">'
     + '<img class="Ldt-MediaList-Now-Thumbnail" src="" /></a></div>'
     + '<h3 class="Ldt-MediaList-Now-Title"><a href="" target="_blank"></a></h3>'
-    + '<p class="Ldt-MediaList-Now-Description"></p></div>'
-    + '<div class="Ldt-MediaList-Other"><h2></h2><hr /><ul class="Ldt-MediaList-OtherList"></ul></div></div>';
+    + '<p class="Ldt-MediaList-Now-Description"></p></div></div>'
+    + '<div class="Ldt-MediaList-Other"><h2></h2><hr /><ul class="Ldt-MediaList-OtherList"></ul></div>';
 
 IriSP.Widgets.MediaList.prototype.mediaTemplate =
     '<li class="Ldt-MediaList-OtherList-li"><div class="Ldt-MediaList-Other-ThumbContainer"><a href="{{url}}" target="_blank">'
@@ -58,8 +58,7 @@ IriSP.Widgets.MediaList.prototype.draw = function() {
     this.redraw();
 };
 
-IriSP.Widgets.MediaList.prototype.redraw = function() {
-    var _media = this.lastMedia ? this.source.getElement(this.lastMedia) : undefined;
+IriSP.Widgets.MediaList.prototype.redraw = function(_media) {
     if (typeof _media !== "undefined") {
         this.$.find('.Ldt-MediaList-Other h2').html(this.l10n.other_media);
         this.$.find('.Ldt-MediaList-NowPlaying').show();
@@ -76,8 +75,8 @@ IriSP.Widgets.MediaList.prototype.redraw = function() {
         this.$.find('.Ldt-MediaList-NowPlaying').hide();
     }
     var _this = this,
-        _otherlist = this.source.getMedias().filter(function(_media) {
-            return (_media.id !== _this.lastMedia)
+        _otherlist = this.source.getMedias().filter(function(_m) {
+            return (_m.id !== _this.lastMedia)
         });
     if (_otherlist.length) {
         this.$.find('.Ldt-MediaList-Other').show();
@@ -99,15 +98,12 @@ IriSP.Widgets.MediaList.prototype.redraw = function() {
 };
 
 IriSP.Widgets.MediaList.prototype.onTimeupdate = function() {
-    var _time = Math.floor(this.player.popcorn.currentTime() * 1000),
-        _list = this.getWidgetAnnotations().filter(function(_annotation) {
-            return _annotation.begin <= _time && _annotation.end > _time;
-        });
-    if (_list.length) {
-        var _media = _list[0].getMedia();
-        if (_media.id !== this.lastMedia) {
-            this.lastMedia = _media.id;
-            this.redraw();
-        }
+    var _media = this.source.currentMedia;
+    if (_media.elementType === "mashup") {
+        _media = _media.getMediaAtTime(this.player.popcorn.currentTime() * 1000);
+    }
+    if (typeof _media !== "undefined" && _media.id !== this.lastMedia) {
+        this.lastMedia = _media.id;
+        this.redraw(_media);
     }
 }

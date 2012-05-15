@@ -1,7 +1,7 @@
 /* AnnotationsListWidget */
 
 .Ldt-AnnotationsListWidget {
-    border: 1px solid #b6b8b8;
+    border: none; margin: 0; padding: 0;
     overflow: auto;
     max-height: 480px;
 }
