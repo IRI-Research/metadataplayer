@@ -26,7 +26,7 @@ IriSP.PopcornReplacement.player = function(container, options) {
     "muted": false
   };
     
-  this.container = container.slice(1); //eschew the '#'
+  this.container = container.replace(/^#/,''); //eschew the '#'
   
   this.msgPump = {}; /* dictionnary used to receive and send messages */
   this.__codes = []; /* used to schedule the execution of a piece of code in 

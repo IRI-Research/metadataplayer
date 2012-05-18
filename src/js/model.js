@@ -753,6 +753,11 @@ IriSP.Model.Source.prototype.getMedias = function(_global) {
     return this.getList("media", _global);
 }
 
+IriSP.Model.Source.prototype.getTags = function(_global) {
+    _global = (typeof _global !== "undefined" && _global);
+    return this.getList("tag", _global);
+}
+
 IriSP.Model.Source.prototype.getMashups = function(_global) {
     _global = (typeof _global !== "undefined" && _global);
     return this.getList("mashup", _global);

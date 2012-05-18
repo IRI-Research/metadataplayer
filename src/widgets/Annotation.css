@@ -79,22 +79,31 @@
     display: none;
 }
 
-span.Ldt-Annotation-TagTitle {
-    display: inline-block; margin: 5px 2px 0 0; font-size: 12px;
+.Ldt-Annotation-TagTitle {
+    margin: 5px 0 2px; font-size: 12px;
 }
 
 ul.Ldt-Annotation-Tags {
-    display: inline-block; list-style: none; padding: 0; margin: 5px 0;
+    display: inline; list-style: none; padding: 0; margin: 5px 0;
 }
 
 li.Ldt-Annotation-TagLabel {
     display: inline-block; border: none; margin: 0 10px 5px 0; height: 23px; padding: 0 0 0 20px;
-    background: url(img/tag.png) left top no-repeat; font-weight: bold;
+    background: url(img/tag.png) left top no-repeat;
+    cursor: pointer;
 }
 
 .Ldt-Annotation-TagLabel span {
     display: inline-block; font-size: 12px; height: 19px; padding: 4px 5px 0 0; border: none; margin: 0;
     background: url(img/tag.png) right top no-repeat;
+}
+
+li.Ldt-Annotation-TagLabel:hover {
+    background-position: left -23px;
+}
+
+.Ldt-Annotation-TagLabel:hover span {
+    background-position: right -23px;
 }
 
 .Ldt-Annotation-MashupOrigin {

@@ -17,3 +17,5 @@ syntax: regexp
 ^test/libs$
 syntax: regexp
 ^test/metadataplayer$
+syntax: regexp
+\.mp4$

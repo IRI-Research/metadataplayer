@@ -8,7 +8,6 @@ IriSP.serializers.ldt = {
     types :  {
         media : {
             serialized_name : "medias",
-            model_name : "media",
             deserializer : function(_data, _source) {
                 var _res = new IriSP.Model.Media(_data.id, _source);
                 _res.video = (
@@ -105,6 +104,8 @@ IriSP.serializers.ldt = {
             serializer : function(_data, _source) {
                 return {
                     id : _source.unNamespace(_data.id),
+                    begin : _data.begin.milliseconds,
+                    end : _data.end.milliseconds,
                     content : {
                         title : _data.title,
                         description : _data.description
@@ -116,7 +117,7 @@ IriSP.serializers.ldt = {
                         "dc:creator" : _data.creator,
                         project : _source.projectId
                     },
-                    tags : IriSP._(_data.tag.id).map(function(_d) {
+                    tags : IriSP._(_data.tag.id).map(function(_id) {
                        return {
                            "id-ref" : _source.unNamespace(_id)
                        } 
@@ -126,7 +127,6 @@ IriSP.serializers.ldt = {
         },
         mashup : {
             serialized_name : "mashups",
-            model_name : "mashup",
             deserializer : function(_data, _source) {
                 var _res = new IriSP.Model.Mashup(_data.id, _source);
                 _res.title = _data.meta["dc:title"];
@@ -157,7 +157,7 @@ IriSP.serializers.ldt = {
                 });
             }
         });
-        return _res;
+        return JSON.stringify(_res);
     },
     loadData : function(_url, _callback) {
         IriSP.jQuery.getJSON(_url, _callback)

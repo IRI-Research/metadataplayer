@@ -20,7 +20,7 @@ IriSP.Widgets.Slice.prototype.draw = function() {
     this.$.append(this.$slider);
     
     this.min = 0;
-    this.max = this.source.getDuration().getSeconds();
+    this.max = this.source.getDuration().valueOf();
     
     var _this = this;
     
@@ -32,9 +32,9 @@ IriSP.Widgets.Slice.prototype.draw = function() {
         change: function(event, ui) {
             _this.player.popcorn.trigger("IriSP.Arrow.updatePosition",{
                 widget:_this.type,
-                time:Math.floor((ui.values[0]+ui.values[1])*500)
+                time:Math.floor((ui.values[0]+ui.values[1])/2)
             });
-            _this.player.popcorn.trigger("IriSP.Slice.valuesChanged",[ui.values[0]*1000, ui.values[1]*1000]);
+            _this.player.popcorn.trigger("IriSP.Slice.boundsChanged",[ui.values[0], ui.values[1]]);
         }
     });
     this.$slider.find(".ui-slider-handle:first").addClass("Ldt-Slice-left-handle");
@@ -46,7 +46,7 @@ IriSP.Widgets.Slice.prototype.draw = function() {
     }
     this.bindPopcorn("IriSP.Slice.show","show");
     this.bindPopcorn("IriSP.Slice.hide","hide");
-    this.bindPopcorn("IriSP.Annotation.boundsChanged","storeBounds")
+    this.bindPopcorn("IriSP.Annotation.boundsChanged","storeBounds");
 };
 
 IriSP.Widgets.Slice.prototype.show = function() {
@@ -61,6 +61,6 @@ IriSP.Widgets.Slice.prototype.hide = function() {
 }
 
 IriSP.Widgets.Slice.prototype.storeBounds = function(_values) {
-    this.min = Math.floor(_values[0]/1000);
-    this.max = Math.floor(_values[1]/1000);
+    this.min = _values[0];
+    this.max = _values[1];
 }

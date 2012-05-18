@@ -21,8 +21,10 @@ function testConfig(_urlMetadata, _useLocalBuild) {
                 { type: "Controller" },
                 { type: "Polemic" },
                 { type: "Segments" },
+                { type: "Slice" },
                 { type: "Arrow" },
                 { type: "Annotation" },
+                { type: "CreateAnnotation" },
                 { type: "Tweet" },
                 { type: "Tagcloud" },
                 {

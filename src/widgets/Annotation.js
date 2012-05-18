@@ -35,7 +35,7 @@ IriSP.Widgets.Annotation.prototype.template =
     + '<h3 class="Ldt-Annotation-MashupOrigin Ldt-Annotation-HiddenWhenEmpty">{{l10n.excerpt_from}} <span class="Ldt-Annotation-MashupMedia"></span> <span class="Ldt-Annotation-Time">'
     + '( <span class="Ldt-Annotation-MashupBegin"></span> - <span class="Ldt-Annotation-MashupEnd"></span> )</span></h3>'
     + '<p class="Ldt-Annotation-Description Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty"></p>'
-    + '<div class="Ldt-Annotation-Tags-Block Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-NoTags"><span class="Ldt-Annotation-TagTitle">{{l10n.tags}}</span><ul class="Ldt-Annotation-Tags"></ul></div></div></div>';
+    + '<div class="Ldt-Annotation-Tags-Block Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-NoTags"><div class="Ldt-Annotation-TagTitle">{{l10n.tags}}</div><ul class="Ldt-Annotation-Tags"></ul></div></div></div>';
 
 IriSP.Widgets.Annotation.prototype.defaults = {
     annotation_type : "chap",
@@ -86,6 +86,18 @@ IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
         }).join("");
         this.$.find(".Ldt-Annotation-Tags").html(_html);
         this.$.find(".Ldt-Annotation-Tags-Block").removeClass("Ldt-Annotation-NoTags");
+        
+        /* Correct the empty tag bug */
+        this.$.find('.Ldt-Annotation-TagLabel').each(function() {
+            var _el = IriSP.jQuery(this);
+            if (!_el.text().replace(/(^\s+|\s+$)/g,'')) {
+                _el.detach();
+            }
+        });
+    
+        this.$.find('.Ldt-Annotation-TagLabel').click(function() {
+            _this.player.popcorn.trigger("IriSP.search.triggeredSearch", IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
+        });
     } else {
         this.$.find(".Ldt-Annotation-Tags-Block").addClass("Ldt-Annotation-NoTags");
     }

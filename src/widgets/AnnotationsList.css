@@ -69,7 +69,7 @@ ul.Ldt-AnnotationsList-Tags {
 
 li.Ldt-AnnotationsList-Tag-Li {
     display: inline-block; border: none; margin: 0 10px 5px 0; height: 23px; padding: 0 0 0 20px;
-    background: url(img/tag.png) left top no-repeat; font-weight: bold;
+    background: url(img/tag.png) left top no-repeat;
     cursor: pointer;
 }
 
@@ -79,9 +79,9 @@ li.Ldt-AnnotationsList-Tag-Li {
 }
 
 li.Ldt-AnnotationsList-Tag-Li:hover {
-    background-position: left bottom;
+    background-position: left -23px;
 }
 
 .Ldt-AnnotationsList-Tag-Li:hover span {
-    background-position: right bottom;
+    background-position: right -23px;
 }

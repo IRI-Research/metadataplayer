@@ -100,7 +100,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     this.$playButton.click(this.functionWrapper("playHandler"));
     
     this.$.find(".Ldt-Ctrl-Annotate").click(function() {
-        _this.player.popcorn.trigger("IriSP.Player.AnnotateButton.clicked");
+        _this.player.popcorn.trigger("IriSP.CreateAnnotation.toggle");
     });
     this.$.find(".Ldt-Ctrl-SearchBtn").click(this.functionWrapper("searchButtonHandler"));
     
