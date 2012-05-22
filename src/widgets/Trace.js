@@ -20,7 +20,6 @@ IriSP.Widgets.Trace.prototype.draw = function() {
   }
   var _this = this,
     _listeners = {
-        "IriSP.createAnnotationWidget.addedAnnotation" : 0,
         "IriSP.search.open" : 0,
         "IriSP.search.closed" : 0,
         "IriSP.search" : 0,
@@ -55,59 +54,60 @@ IriSP.Widgets.Trace.prototype.draw = function() {
     this.tracer.trace("StartTracing", {});
     
     this.mouseLocation = '';
-    IriSP.jQuery(".Ldt-Widget").bind("click mouseover mouseout dragstart dragstop", function(_e) {
-        var _widget = IriSP.jQuery(this).attr("widget-type"),
-            _class = _e.target.className;
-        var _data = {
-            "type": _e.type,
-            "x": _e.clientX,
-            "y": _e.clientY,
-            "widget": _widget
+    IriSP.jQuery(".Ldt-Widget").bind("click mouseover mouseout", function(_e) {
+        var _target = IriSP.jQuery(_e.target);
+
+        while (!_target.hasClass("Ldt-TraceMe") && !_target.hasClass("Ldt-Widget") && _target.length) {
+            _target = _target.parent();
         }
-        if (typeof _class == "string" && _class.indexOf('Ldt-TraceMe') != -1) {
-            var _name = _e.target.localName,
-                _id = _e.target.id,
-                _text = _e.target.textContent.trim(),
-                _title = _e.target.title,
-                _value = _e.target.value;
-            _data.target = _name + (_id.length ? '#' + IriSP.jqEscape(_id) : '') + (_class.length ? ('.' + IriSP.jqEscape(_class).replace(/\s/g,'.')).replace(/\.Ldt-(Widget|TraceMe)/g,'') : '');
-            if (typeof _title == "string" && _title.length && _title.length < 140) {
-                _data.title = _title;
-            }
-            if (typeof _text == "string" && _text.length && _text.length < 140) {
-                _data.text = _text;
-            }
-            if (typeof _value == "string" && _value.length) {
-                _data.value = _value;
-            }
-            this.player.popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
-        } else {
-            //console.log(_e.type+','+_this.mouseLocation+','+_widget);
-            if (_e.type == "mouseover") {
-                if (_this.mouseLocation != _widget) {
+        
+        var _widget = IriSP.jQuery(this).attr("widget-type"),
+            _data = {
+                "type": _e.type,
+                "x": _e.clientX,
+                "y": _e.clientY,
+                "widget": _widget
+            },
+            _targetEl = _target[0],
+            _class = _targetEl.className,
+            _name = _targetEl.localName,
+            _id = _targetEl.id,
+            _value = _targetEl.value,
+            _traceInfo = _target.attr("trace-info"),
+            _lastTarget = _name + (_id && _id.length ? '#' + IriSP.jqEscape(_id) : '') + (_class && _class.length ? ('.' + IriSP.jqEscape(_class).replace(/\s/g,'.')).replace(/\.Ldt-(Widget|TraceMe)/g,'') : '');
+        _data.target = _lastTarget
+        if (typeof _traceInfo == "string" && _traceInfo.length && _traceInfo.length < 140) {
+            _data.traceInfo = _traceInfo;
+            _lastTarget += ( ";" + _traceInfo );
+        }
+        if (typeof _value == "string" && _value.length) {
+            _data.value = _value;
+        }
+        switch(_e.type) {
+            case "mouseover":
+                if (_this.lastTarget != _lastTarget) {
                     _this.player.popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
                 } else {
                     if (typeof _this.moTimeout != "undefined") {
                         clearTimeout(_this.moTimeout);
-                        delete _this.moTimeout;
+                        _this.moTimeout = undefined;
                     }
                 }
-            }
-            if (_e.type == "click") {
-                _this.player.popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
-            }
-            if (_e.type == "mouseout") {
+            break;
+            case "mouseout":
                 if (typeof _this.moTimeout != "undefined") {
                     clearTimeout(_this.moTimeout);
                 }
                 _this.moTimeout = setTimeout(function() {
-                   if (_data.widget != _this.mouseLocation) {
+                   if (_lastTarget != _this.lastTarget) {
                        _this.player.popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
                    }
                 },100);
-            }
+            break;
+            default:
+                _this.player.popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
         }
-        _this.mouseLocation = _widget;
+        _this.lastTarget = _lastTarget;
     });
 }
 

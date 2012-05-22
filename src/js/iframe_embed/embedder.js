@@ -3,17 +3,30 @@
    to the iframe url in the page url.   
 */
 
-(function(_frameId) {
-    var _frame = document.getElementById(_frameId);
-    
-    window.onhashchange = function() {
-        frame.contentWindow.postMessage({type: "hashchange", hash: hashvalue}, "*");
-    };
+if (typeof IriSP === "undefined") {
+    IriSP = {};
+}
 
+IriSP.iFrameUpdater = function(_frameId) {
+    
+    var _frame = document.getElementById(_frameId),
+        _blocked = false,
+        _updater = function() {
+            _blocked = true;
+            window.setTimeout(function() {
+                _blocked = false;
+            }, 1000);
+            _frame.contentWindow.postMessage(document.location.hash, "*");
+        };
+    
+    window.onhashchange = _updater;
+    
     window.addEventListener('message', function(_e) {
-        if (e.data.type === "hashchange") {
-            document.location.hash = e.data.hash;
+        if (/^#/.test(_e.data) && !_blocked) {
+            document.location.hash = _e.data;
         }
     });
     
-})("metadataplayer_embed");
+    window.setTimeout(_updater, 2000);
+    
+};

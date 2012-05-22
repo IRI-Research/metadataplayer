@@ -7,7 +7,7 @@ IriSP.Widgets.Tagcloud.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Tagcloud.prototype.template =
     '<div class="Ldt-Tagcloud-Container"><ul class="Ldt-Tagcloud-List">'
-    + '{{#words}}<li class="Ldt-Tagcloud-item" content="{{word}}" style="font-size: {{size}}px">{{word}}</li>{{/words}}'
+    + '{{#words}}<li class="Ldt-Tagcloud-item Ldt-TraceMe" trace-info="tag:{{word}}" content="{{word}}" style="font-size: {{size}}px">{{word}}</li>{{/words}}'
     + '</ul></div>';
 
 IriSP.Widgets.Tagcloud.prototype.defaults = {

@@ -54,8 +54,8 @@ IriSP.Widgets.Tweet.prototype.messages = {
 
 IriSP.Widgets.Tweet.prototype.template =
     '<div class="Ldt-Tweet-Widget"><div class="Ldt-Tweet-Inner"><div class="Ldt-Tweet-PinClose-Buttons">'
-    + '<a href="#" class="Ldt-Tweet-Pin" title="{{l10n.keep_visible}}"></a>'
-    + '<a href="#" class="Ldt-Tweet-Close" title="{{l10n.close_widget}}"></a>'
+    + '<a href="#" class="Ldt-Tweet-Pin Ldt-TraceMe" title="{{l10n.keep_visible}}"></a>'
+    + '<a href="#" class="Ldt-Tweet-Close Ldt-TraceMe" title="{{l10n.close_widget}}"></a>'
     + '</div><div class="Ldt-Tweet-AvatarContainer"><a href="#" class="Ldt-Tweet-ProfileLink" target="_blank">'
     + '<img src="" class="Ldt-Tweet-Avatar"/></a></div><h3><a href="#" class="Ldt-Tweet-ProfileLink Ldt-Tweet-ScreenName" target="_blank">'
     + '</a> (<span class="Ldt-Tweet-FullName"></span>)</h3><p class="Ldt-Tweet-Contents"></p><div class="Ldt-Tweet-Bottom">'

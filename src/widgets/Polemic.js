@@ -155,7 +155,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             
             function displayElement(_x, _y, _color, _id, _title) {
                 _html += Mustache.to_html(
-                    '<div class="Ldt-Polemic-TweetDiv" annotation-id="{{id}}" tweet-title="{{title}}" pos-x="{{posx}}" pos-y="{{top}}" polemic-color="{{color}}"'
+                    '<div class="Ldt-Polemic-TweetDiv Ldt-TraceMe" trace-info="annotation-id:{{id}}" annotation-id="{{id}}" tweet-title="{{title}}" pos-x="{{posx}}" pos-y="{{top}}" polemic-color="{{color}}"'
                     + ' style="width: {{width}}px; height: {{height}}px; top: {{top}}px; left: {{left}}px; background: {{color}}"></div>',
                 {
                     id: _id,
@@ -173,13 +173,13 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 var _y = _this.height;
                 _slice.annotations.forEach(function(_annotation) {
                     _y -= _this.element_height;
-                    displayElement(_x, _y, _this.defaultcolor, _annotation.id, _annotation.title);
+                    displayElement(_x, _y, _this.defaultcolor, _annotation.namespacedId.name, _annotation.title);
                 });
                 IriSP._(_slice.polemicStacks).forEach(function(_annotations, _j) {
                     var _color = _this.polemics[_j].color;
                     _annotations.forEach(function(_annotation) {
                         _y -= _this.element_height;
-                        displayElement(_x, _y, _color, _annotation.id, _annotation.title);
+                        displayElement(_x, _y, _color, _annotation.namespacedId.name, _annotation.title);
                     });
                 });
                 _x += _this.element_width;
@@ -226,7 +226,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             
         function displayStackElement(_x, _y, _h, _color, _nums, _begin, _end) {
             _html += Mustache.to_html(
-                '<div class="Ldt-Polemic-TweetDiv" pos-x="{{posx}}" pos-y="{{top}}" annotation-counts="{{nums}}" begin-time="{{begin}}" end-time="{{end}}"'
+                '<div class="Ldt-Polemic-TweetDiv Ldt-TraceMe" trace-info="annotation-block,time:{{begin}}" pos-x="{{posx}}" pos-y="{{top}}" annotation-counts="{{nums}}" begin-time="{{begin}}" end-time="{{end}}"'
                 + ' style="width: {{width}}px; height: {{height}}px; top: {{top}}px; left: {{left}}px; background: {{color}}"></div>',
             {
                 nums: _nums,

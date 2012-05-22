@@ -1,7 +1,7 @@
 /* utils.js - various utils that don't belong anywhere else */
 
 IriSP.jqEscape = function(_text) {
-    return text.replace(/(:|\.)/g,'\\$1');
+    return _text.replace(/(:|\.)/g,'\\$1');
 }
 
 IriSP.getLib = function(lib) {

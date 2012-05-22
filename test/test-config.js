@@ -31,7 +31,12 @@ function testConfig(_urlMetadata, _useLocalBuild) {
                     type: "AnnotationsList",
                     container: "AnnotationsListContainer"
                 },
-                { type: "Mediafragment"}
+                { type: "Mediafragment"},
+                {
+                    type: "Trace",
+                    default_subject: "tests-iri",
+                    js_console: true
+                }
             ]
         },
         player:{

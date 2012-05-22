@@ -19,7 +19,7 @@ IriSP.Widgets.Segments.prototype.defaults = {
 
 IriSP.Widgets.Segments.prototype.template =
     '<div class="Ldt-Segments-List">{{#segments}}'
-    + '<div class="Ldt-Segments-Segment" segment-id="{{id}}" segment-text="{{text}}" segment-color="{{color}}" center-pos="{{center}}" begin-seconds="{{beginseconds}}"'
+    + '<div class="Ldt-Segments-Segment Ldt-TraceMe" trace-info="segment-id:{{id}}" segment-id="{{id}}" segment-text="{{text}}" segment-color="{{color}}" center-pos="{{center}}" begin-seconds="{{beginseconds}}"'
     + 'style="left:{{left}}px; width:{{width}}px; background:{{color}}"></div>'
     + '{{/segments}}</div>'
     + '<div class="Ldt-Segments-Position"></div>';

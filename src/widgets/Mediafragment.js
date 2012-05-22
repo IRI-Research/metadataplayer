@@ -5,8 +5,8 @@ IriSP.Widgets.Mediafragment = function(player, config) {
     window.onhashchange = this.functionWrapper("goToHash");
     if (typeof window.addEventListener !== "undefined") {
         window.addEventListener('message', function(_msg) {
-            if (_msg.data.type === "hashchange") {
-                document.location.hash = _msg.data.hash;
+            if (/^#/.test(_msg.data)) {
+                document.location.hash = _msg.data;
             }
         })
     };
@@ -73,10 +73,7 @@ IriSP.Widgets.Mediafragment.prototype.setHash = function(_key, _value) {
         var _hash = this.getLastHash();
         document.location.hash = _hash;
         if (window.parent !== window) {
-            window.parent.postMessage({
-                type: "hashchange",
-                hash: _hash
-            })
+            window.parent.postMessage(_hash,"*")
         }
         this.block();
     }
