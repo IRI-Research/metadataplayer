@@ -14,8 +14,59 @@
         <div id="LdtPlayer"></div>
         <div id="AnnotationsListContainer"></div>
         <script type="text/javascript">
-            IriSP.jwplayer_swf_path = "player.swf";
-            _myPlayer = testConfig('json/ldt-jwplayer.json', true);
+    IriSP.jwplayer_swf_path = "player.swf";
+    IriSP.libFiles.defaultDir = "libs/";
+    IriSP.widgetsDir = "metadataplayer";
+    var _metadata = {
+        url: 'json/ldt-jwplayer.json',
+        format: 'ldt'
+    };
+    var _config = {            
+        gui: {
+            width : 620,
+            container : 'LdtPlayer',
+            default_options: {
+                metadata: _metadata
+            },
+            css : 'metadataplayer/LdtPlayer-core.css',
+            widgets: [
+                { type: "Sparkline" },
+                { type: "Slider" },
+                { type: "Controller" },
+                { type: "Polemic" },
+                { type: "Segments" },
+                { type: "Slice" },
+                { type: "Arrow" },
+                { type: "Annotation" },
+/*                {
+                    type: "CreateAnnotation",
+                    api_endpoint_template: "http://192.168.56.101/pf/ldtplatform/api/ldt/annotations/{{id}}}.json",
+                    creator_name: "Metadataplayer"
+            }, */
+                { type: "Tweet" },
+                {
+                    type: "Tagcloud",
+                    segment_annotation_type: "chap"
+                },
+                {
+                    type: "AnnotationsList",
+                    container: "AnnotationsListContainer"
+                },
+                { type: "Mediafragment"}
+            ]
+        },
+        player:{
+            type:'auto',
+            live: true, 
+            height: 350, 
+            width: 620, 
+            provider: "rtmp",
+            autostart: true
+        }
+    };
+    
+    _myPlayer = new IriSP.Metadataplayer(_config, _metadata);
+    
         </script>
     </body>
 </html>

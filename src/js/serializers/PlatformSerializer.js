@@ -89,7 +89,7 @@ IriSP.serializers.ldt = {
                     }
                     _res.color = '#' + _c;
                 }
-                _res.setMedia(_data.media, _source);
+                _res.setMedia(_data.media);
                 _res.setAnnotationType(_data.meta["id-ref"]);
                 _res.setTags(IriSP._(_data.tags).pluck("id-ref"));
                 _res.setBegin(_data.begin);

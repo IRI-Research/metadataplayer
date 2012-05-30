@@ -210,26 +210,33 @@ IriSP.Model.List.prototype.addElements = function(_array) {
     });
 }
 
-IriSP.Model.List.prototype.removeId = function(_id) {
-    var _index = (IriSP._(this.idIndex).indexOf(_id));
+IriSP.Model.List.prototype.removeId = function(_id, _deleteFromDirectory) {
+    var _deleteFromDirectory = _deleteFromDirectory || false,
+        _index = (IriSP._(this.idIndex).indexOf(_id));
     if (_index !== -1) {
         this.splice(_index,1);
     }
+    if (_deleteFromDirectory) {
+        delete this.directory.elements[_id];
+    }
 }
 
-IriSP.Model.List.prototype.removeElement = function(_el) {
+IriSP.Model.List.prototype.removeElement = function(_el, _deleteFromDirectory) {
+    var _deleteFromDirectory = _deleteFromDirectory || false;
     this.removeId(_el.id);
 }
 
-IriSP.Model.List.prototype.removeIds = function(_list) {
-    var _this = this;
+IriSP.Model.List.prototype.removeIds = function(_list, _deleteFromDirectory) {
+    var _deleteFromDirectory = _deleteFromDirectory || false,
+        _this = this;
     IriSP._(_list).forEach(function(_id) {
         _this.removeId(_id);
     });
 }
 
-IriSP.Model.List.prototype.removeElements = function(_list) {
-    var _this = this;
+IriSP.Model.List.prototype.removeElements = function(_list, _deleteFromDirectory) {
+    var _deleteFromDirectory = _deleteFromDirectory || false,
+        _this = this;
     IriSP._(_list).forEach(function(_el) {
         _this.removeElement(_el);
     });
@@ -783,6 +790,13 @@ IriSP.Model.Source.prototype.getDuration = function() {
     if (typeof _m !== "undefined") {
         return this.currentMedia.duration;
     }
+}
+
+IriSP.Model.Source.prototype.merge = function(_source) {
+    var _this = this;
+    _source.forEach(function(_value, _key) {
+        _this.getList(_key).addElements(_value);
+    });
 }
 
 /* */

@@ -39,5 +39,47 @@ IriSP.serializers.ldt_annotate = {
             created: _source.created
         }
         return JSON.stringify(_res);
+    },
+    deSerialize : function(_data, _source) {
+        if (typeof _data == "string") {
+            _data = JSON.parse(_data);
+        }
+        _source.addList('tag', new IriSP.Model.List(_source.directory));
+        _source.addList('annotationType', new IriSP.Model.List(_source.directory));
+        _source.addList('annotation', new IriSP.Model.List(_source.directory));
+        if (typeof _data.annotations == "object" && _data.annotations && _data.annotations.length) {
+            var _anndata = _data.annotations[0],
+                _ann = new IriSP.Model.Annotation(_anndata.id, _source);
+            _ann.title = _anndata.content.title || "";
+            _ann.description = _anndata.content.data || "";
+            _ann.created = new Date(_data.meta.created);
+            _ann.setMedia(_anndata.media, _source);
+            var _anntypes = _source.getAnnotationTypes(true).searchByTitle(_anndata.type_title);
+            if (_anntypes.length) {
+                var _anntype = _anntypes[0];
+            } else {
+                var _anntype = new IriSP.Model.AnnotationType(_anndata.type, _source);
+                _anntype.title = _anndata.type_title;
+                _source.getAnnotationTypes().push(_anntype);
+            }
+            _ann.setAnnotationType(_anntype.id);
+            var _tagIds = IriSP._(_anndata.tags).map(function(_title) {
+                var _tags = _source.getTags(true).searchByTitle(_title);
+                if (_tags.length) {
+                    var _tag = _tags[0];
+                }
+                else {
+                    _tag = new IriSP.Model.Tag(_title.replace(/\W/g,'_'),_source);
+                    _tag.title = _title;
+                    _source.getTags().push(_tag);
+                }
+                return _tag.id;
+            });
+            _ann.setTags(_tagIds);
+            _ann.setBegin(_anndata.begin);
+            _ann.setEnd(_anndata.end);
+            _ann.creator = _data.meta.creator;
+            _source.getAnnotations().push(_ann);
+        }
     }
 }

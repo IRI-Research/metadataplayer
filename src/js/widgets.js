@@ -111,9 +111,3 @@ IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function() {
 IriSP.Widgets.Widget.prototype.draw = function() {
     /* implemented by "sub-classes" */
 };
-/**
- * Optional method if you want your widget to support redraws.
- */
-IriSP.Widgets.Widget.prototype.redraw = function() {
-    /* implemented by "sub-classes" */
-};

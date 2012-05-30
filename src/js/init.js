@@ -19,11 +19,35 @@ IriSP.Metadataplayer = function(config, video_metadata) {
     this.video_metadata = video_metadata;
     this.sourceManager = new IriSP.Model.Directory();
     this.config = config;
+    this.callbackQueue = [];
+    this.isLoaded = false;
     this.loadLibs();
 }
 
 IriSP.Metadataplayer.prototype.toString = function() {
-    return 'A Metadataplayer in DIV #' + this.config.gui.container;
+    return 'Metadataplayer in #' + this.config.gui.container;
+}
+
+IriSP.Metadataplayer.prototype.deferCallback = function(_callback) {
+    var _this = this;
+    IriSP._.defer(function() {
+        _callback.call(_this);
+    });
+}
+
+IriSP.Metadataplayer.prototype.handleCallbacks = function() {
+    this.isLoaded = true;
+    while (this.callbackQueue.length) {
+        this.deferCallback(this.callbackQueue.splice(0,1)[0]);
+    }
+}
+
+IriSP.Metadataplayer.prototype.onLoad = function(_callback) {
+    if (this.isLoaded) {
+        this.deferCallback(_callback);
+    } else {
+        this.callbackQueue.push(_callback);
+    }
 }
 
 IriSP.Metadataplayer.prototype.loadLibs = function() {
@@ -121,6 +145,7 @@ IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
         });
     };
     this.$.find('.Ldt-Loader').detach();
+    this.handleCallbacks();
 }
 
 IriSP.Metadataplayer.prototype.loadWidget = function(_widgetConfig, _callback) {

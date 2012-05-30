@@ -14,13 +14,16 @@
     background: url(img/pinstripe.png);
     padding: 5px;
     margin: 0;
-    min-height: 150px;
 }
 
 .Ldt-CreateAnnotation-Inner h3 {
     margin: 5px 0;
     font-size: 14px;
     font-weight: bold;
+}
+
+.Ldt-CreateAnnotation-Main {
+    min-height: 150px;
 }
 
 .Ldt-CreateAnnotation-Title {
@@ -133,4 +136,23 @@ li.Ldt-CreateAnnotation-PolemicLi:hover {
 
 li.Ldt-CreateAnnotation-PolemicLi.selected {
     background-position: 0 -46px;
+}
+
+.Ldt-CreateAnnotation-InnerBox {
+    margin: 20px 50px;
+    border: 1px solid #CCCCCC;
+    padding: 20px;
+    background: #FFFFFF;
+    color: #FF3B77; text-align: center;
+    font-size: 13px; font-weight: bold;
+}
+
+a.Ldt-CreateAnnotation-Close {
+    position: absolute; top: 2px; right: 2px;
+    display: inline-block; width: 17px; height: 17px; margin: 2px;
+    background: url(img/widget-control.png);
+}
+
+a.Ldt-CreateAnnotation-Close:hover {
+    background-position: -17px 0;
 }

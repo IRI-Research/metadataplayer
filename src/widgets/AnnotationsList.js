@@ -234,6 +234,7 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     this.bindPopcorn("IriSP.search", "onSearch");
     this.bindPopcorn("IriSP.search.closed", "onSearch");
     this.bindPopcorn("IriSP.search.cleared", "onSearch");
+    this.bindPopcorn("IriSP.AnnotationsList.refresh","refresh");
     
     var _this = this;
     
