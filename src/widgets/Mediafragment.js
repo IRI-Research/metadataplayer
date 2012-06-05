@@ -6,7 +6,7 @@ IriSP.Widgets.Mediafragment = function(player, config) {
     if (typeof window.addEventListener !== "undefined") {
         window.addEventListener('message', function(_msg) {
             if (/^#/.test(_msg.data)) {
-                document.location.hash = _msg.data;
+                this.setWindowHash(_msg.data);
             }
         })
     };
@@ -20,6 +20,14 @@ IriSP.Widgets.Mediafragment.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Mediafragment.prototype.draw = function() {
     this.goToHash();
+}
+
+IriSP.Widgets.Mediafragment.prototype.setWindowHash = function(_hash) {
+    if (typeof window.history !== "undefined" && typeof window.history.replaceState !== "undefined") {
+        window.history.replaceState({}, "", _hash);
+    } else {
+        document.location.hash = _hash;
+    }
 }
 
 IriSP.Widgets.Mediafragment.prototype.getLastHash = function() {
@@ -71,7 +79,7 @@ IriSP.Widgets.Mediafragment.prototype.setHash = function(_key, _value) {
         this.last_hash_key = _key;
         this.last_hash_value = _value;
         var _hash = this.getLastHash();
-        document.location.hash = _hash;
+        this.setWindowHash(_hash);
         if (window.parent !== window) {
             window.parent.postMessage(_hash,"*")
         }

@@ -1,4 +1,4 @@
-# Architecture générale du Metadataplayer #
+# Architecture du Metadataplayer #
 
 ATTENTION !
 Cette documentation se réfère à la v.3 du Metadataplayer, actuellement disponible dans la branche **new-model** du repository
@@ -126,8 +126,8 @@ Les Sérialiseurs servent d’interface entre les formats de données utilisés 
 
 Deux sérialiseurs existent à l’heure actuelle:
 
-1. **PlatformSerializer**, pour lire les flux JSON fournis par la plateforme *Lignes de Temps*.
-2. **PlatformAnnotateSerializer**, pour communiquer avec l’API d’ajout d’annotations de la plateforme, dont le format est légèrement différent.
+1. **ldt**, pour lire les flux JSON fournis par la plateforme *Lignes de Temps*.
+2. **ldt\_annotate**, pour communiquer avec l’API d’ajout d’annotations de la plateforme, dont le format est légèrement différent.
 
 ## Widgets ##
 
@@ -137,11 +137,13 @@ Situés dans le répertoire *src/widgets*, ils contiennent nécessairement un fi
 
 #### Options courantes ####
 
-- Les widgets affichant des annotations possèdent l’option *annotation\_type*, qui peut prendre les valeurs suivantes:
+- **metadata**, source de métadonnées, sous la forme { url: *URL de la source de données*, type: *Type de sérialiseur utilisé* }
+- **container**, à utiliser seulement si le widget ne doit pas être aligné en dessous des autres widgets, pour spécifier l’ID de l’élément HTML dans lequel il doit être affiché.
+- **annotation\_type**, dans les widgets affichant des annotations. Cette option peut prendre les valeurs suivantes:
     - Chaîne de caractères: prend en compte les types d’annotations dont le titre contient la chaîne. Exemple: "chap" permet notamment d’afficher les annotations dans le type d’annotation "Chapitrage"
     - Tableau de chaînes: pour prendre en compte plusieurs types d’annotations
     - false: pour prendre en compte toutes les annotations du projet
-- *requires*, qui permet d’encapsuler un widget dans un autre.
+- **requires**, qui permet d’encapsuler un widget dans un autre.
 
 Voici la liste des widgets actuellement disponibles, avec leurs options:
 

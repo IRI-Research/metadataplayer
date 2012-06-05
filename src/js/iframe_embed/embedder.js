@@ -23,7 +23,11 @@ IriSP.iFrameUpdater = function(_frameId) {
     
     window.addEventListener('message', function(_e) {
         if (/^#/.test(_e.data) && !_blocked) {
-            document.location.hash = _e.data;
+            if (typeof window.history !== "undefined" && typeof window.history.replaceState !== "undefined") {
+                window.history.replaceState({}, "", _e.data);
+            } else {
+                document.location.hash = _e.data;
+            }
         }
     });
     

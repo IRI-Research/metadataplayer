@@ -97,11 +97,12 @@ var _config = {
         provider: "rtmp",
         mashup_swf : "bab_files/player_bab_ldt.swf",
         mashup_xml : "bab_files/mashup.xml",
-        autostart: true
+        autostart: true,
+        metadata: _metadata
     }
 };
 
-_myPlayer = new IriSP.Metadataplayer(_config, _metadata);
+_myPlayer = new IriSP.Metadataplayer(_config);
 
     </script>
     </body>

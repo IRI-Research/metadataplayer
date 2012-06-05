@@ -15,7 +15,7 @@
         <div id="LdtPlayer"></div>
         <div id="AnnotationsListContainer"></div>
         <script type="text/javascript">
-    IriSP.jwplayer_swf_path = "player.swf";
+    IriSP.libFiles.locations.jwPlayerSWF = "player.swf";
     IriSP.libFiles.defaultDir = "libs/";
     IriSP.widgetsDir = "metadataplayer";
     var _metadata = {
@@ -62,11 +62,12 @@
             height: 350, 
             width: 620, 
             provider: "rtmp",
-            autostart: true
+            autostart: true,
+            metadata: _metadata
         }
     };
     
-    _myPlayer = new IriSP.Metadataplayer(_config, _metadata);
+    _myPlayer = new IriSP.Metadataplayer(_config);
     
         </script>
     </body>

@@ -12,7 +12,8 @@ IriSP.libFiles = {
         popcorn : "popcorn-complete.min.js",
         jwplayer : "jwplayer.js",
         raphael : "raphael-min.js",
-        tracemanager : "tracemanager.js"
+        tracemanager : "tracemanager.js",
+        jwPlayerSWF : "player.swf"
     },
     locations : {
         // use to define locations outside defautl_dir

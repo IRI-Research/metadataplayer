@@ -45,9 +45,10 @@ function testConfig(_urlMetadata, _useLocalBuild) {
             height: 350, 
             width: 620, 
             provider: "rtmp",
-            autostart: true
+            autostart: true,
+            metadata: _metadata
         }
     };
     
-    return new IriSP.Metadataplayer(_config, _metadata);
+    return new IriSP.Metadataplayer(_config);
 }

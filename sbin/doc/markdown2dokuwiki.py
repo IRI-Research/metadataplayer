@@ -1,7 +1,7 @@
 import re, sys
 
 inputname = sys.argv[1]
-outputname = sys.argv[2]
+outputname = re.sub("\.\w+$",".dokuwiki",inputname)
 
 inputfile = open(inputname,'r')
 

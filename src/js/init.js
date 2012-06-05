@@ -7,7 +7,7 @@ if (typeof window.IriSP === "undefined") {
 
 /* The Metadataplayer Object, single point of entry, replaces IriSP.init_player */
 
-IriSP.Metadataplayer = function(config, video_metadata) {
+IriSP.Metadataplayer = function(config) {
     IriSP.log("IriSP.Metadataplayer constructor");
     for (var key in IriSP.guiDefaults) {
         if (IriSP.guiDefaults.hasOwnProperty(key) && !config.gui.hasOwnProperty(key)) {
@@ -16,7 +16,6 @@ IriSP.Metadataplayer = function(config, video_metadata) {
     }
     var _container = document.getElementById(config.gui.container);
     _container.innerHTML = '<h3 class="Ldt-Loader">Loading... Chargement...</h3>';
-    this.video_metadata = video_metadata;
     this.sourceManager = new IriSP.Model.Directory();
     this.config = config;
     this.callbackQueue = [];
@@ -94,7 +93,7 @@ IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
     IriSP.loadCss(IriSP.getLib("cssjQueryUI"));
     IriSP.loadCss(this.config.gui.css);
     
-    this.videoData = this.loadMetadata(this.video_metadata);
+    this.videoData = this.loadMetadata(this.config.player.metadata);
     this.$ = IriSP.jQuery('#' + this.config.gui.container);
     this.$.css({
         "width": this.config.gui.width,
@@ -246,7 +245,7 @@ IriSP.Metadataplayer.prototype.configurePopcorn = function() {
             delete opts.video;
 
             if(!opts.hasOwnProperty("flashplayer")) {
-                opts.flashplayer = IriSP.jwplayer_swf_path;
+                opts.flashplayer = IriSP.getLib("jwPlayerSWF");
             }
 
             if(!opts.hasOwnProperty("controlbar.position")) {
