@@ -4,9 +4,6 @@
 
 IriSP.Widgets.Slider = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
-    this.bindPopcorn("timeupdate","onTimeupdate");
-    this.bindPopcorn("IriSP.PlayerWidget.MouseOver","onMouseover");
-    this.bindPopcorn("IriSP.PlayerWidget.MouseOut","onMouseout");
 };
 
 IriSP.Widgets.Slider.prototype = new IriSP.Widgets.Widget();
@@ -14,14 +11,14 @@ IriSP.Widgets.Slider.prototype = new IriSP.Widgets.Widget();
 IriSP.Widgets.Slider.prototype.defaults = {
     minimized_height : 4,
     maximized_height : 10,
-    minimize_timeout : 1500 // time before minimizing slider after mouseout
+    minimize_timeout : 1500 /*  time before minimizing slider after mouseout,
+                                set to zero for fixed slider */
 };
 
 IriSP.Widgets.Slider.prototype.draw = function() {
     
     this.$slider = IriSP.jQuery('<div>')
-        .addClass("Ldt-Slider")
-        .css(this.calculateSliderCss(this.minimized_height));
+        .addClass("Ldt-Slider");
     
     this.$.append(this.$slider);
     
@@ -40,14 +37,21 @@ IriSP.Widgets.Slider.prototype.draw = function() {
     
     this.$handle = this.$slider.find('.ui-slider-handle');
     
-    this.$handle.css(this.calculateHandleCss(this.minimized_height));
+    this.bindPopcorn("timeupdate","onTimeupdate");
+    this.bindPopcorn("IriSP.PlayerWidget.MouseOver","onMouseover");
+    this.bindPopcorn("IriSP.PlayerWidget.MouseOut","onMouseout");
     
-    this.$
-        .mouseover(this.functionWrapper("onMouseover"))
-        .mouseout(this.functionWrapper("onMouseout"));
-    
-    this.maximized = false;
-    this.timeoutId = false;
+    if (this.minimize_timeout) {
+        this.$slider.css(this.calculateSliderCss(this.minimized_height));
+        this.$handle.css(this.calculateHandleCss(this.minimized_height));
+        
+        this.$
+            .mouseover(this.functionWrapper("onMouseover"))
+            .mouseout(this.functionWrapper("onMouseout"));
+        
+        this.maximized = false;
+        this.timeoutId = false;
+    }
 };
 
 IriSP.Widgets.Slider.prototype.onTimeupdate = function() {
@@ -57,30 +61,33 @@ IriSP.Widgets.Slider.prototype.onTimeupdate = function() {
 }
 
 IriSP.Widgets.Slider.prototype.onMouseover = function() {
-    if (this.timeoutId) {
-        window.clearTimeout(this.timeoutId);
-        this.timeoutId = false;
-    }
-    if (!this.maximized) {
-       this.animateToHeight(this.maximized_height);
-       this.maximized = true;
+    if (this.minimize_timeout) {
+        if (this.timeoutId) {
+            window.clearTimeout(this.timeoutId);
+            this.timeoutId = false;
+        }
+        if (!this.maximized) {
+           this.animateToHeight(this.maximized_height);
+           this.maximized = true;
+        }
     }
 }
 
 IriSP.Widgets.Slider.prototype.onMouseout = function() {
-    if (this.timeoutId) {
-        window.clearTimeout(this.timeoutId);
-        this.timeoutId = false;
-    }
-    var _this = this;
-    this.timeoutId = window.setTimeout(function() {
-        if (_this.maximized) {
-            _this.animateToHeight(_this.minimized_height);
-            _this.maximized = false;
+    if (this.minimize_timeout) {
+        if (this.timeoutId) {
+            window.clearTimeout(this.timeoutId);
+            this.timeoutId = false;
         }
-        _this.timeoutId = false;
-    }, this.minimize_timeout);
-    
+        var _this = this;
+        this.timeoutId = window.setTimeout(function() {
+            if (_this.maximized) {
+                _this.animateToHeight(_this.minimized_height);
+                _this.maximized = false;
+            }
+            _this.timeoutId = false;
+        }, this.minimize_timeout);
+    }
 }
 
 IriSP.Widgets.Slider.prototype.animateToHeight = function(_height) {

@@ -19,7 +19,6 @@ IriSP.Widgets.MediaList.prototype.messages = {
 }
 
 IriSP.Widgets.MediaList.prototype.defaults = {
-    annotation_type: false,
     default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png",
     media_url_template : "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/"
 };

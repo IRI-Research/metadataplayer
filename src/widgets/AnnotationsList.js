@@ -16,7 +16,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
      * e.g. http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?
      */
     ajax_url : false,
-    /* how much ms should we look before and after the current timecode in the segment API
+    /* number of milliseconds before/after the current timecode when calling the segment API
      */
     ajax_granularity : 300000, 
     default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png",

@@ -19,3 +19,7 @@ syntax: regexp
 ^test/metadataplayer$
 syntax: regexp
 \.mp4$
+syntax: regexp
+\.dokuwiki$
+syntax: regexp
+^\.pydevproject$

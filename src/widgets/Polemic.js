@@ -26,22 +26,18 @@ IriSP.Widgets.Polemic.prototype.defaults = {
     polemics : [
         {
             "keywords" : [ "++" ],
-            "description" : "positif",
             "color" : "#1D973D"
         },
         {
             "keywords" : [ "--" ],
-            "description" : "negatif",
             "color" : "#CE0A15"
         },
         {
-            "keywords" : [ "==" ],
-            "description" : "reference",
+            "keywords" : [ "==", "http://" ],
             "color" : "#C5A62D"  
         },
         {
-            "keywords" : [ "??" ],
-            "description" : "question",
+            "keywords" : [ "?" ],
             "color" : "#036AAE"
         }
     ],

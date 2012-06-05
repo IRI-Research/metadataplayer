@@ -10,22 +10,18 @@ IriSP.Widgets.Tweet.prototype.defaults = {
     polemics : [
         {
             "keywords" : [ "++" ],
-            "description" : "positif",
             "color" : "#30d765"
         },
         {
             "keywords" : [ "--" ],
-            "description" : "negatif",
             "color" : "#f51123"
         },
         {
             "keywords" : [ "==" ],
-            "description" : "reference",
             "color" : "#f1e24a"  
         },
         {
             "keywords" : [ "??" ],
-            "description" : "question",
             "color" : "#05aae6"
         }
     ]

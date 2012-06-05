@@ -219,6 +219,25 @@ IriSP.Metadataplayer.prototype.configurePopcorn = function() {
             pop = Popcorn("#" + _tmpId);
             break;
 
+        case "html5-audio":
+            var _tmpId = Popcorn.guid("audio"),
+                _videoEl = IriSP.jQuery('<audio>');
+            
+            _videoEl.attr({
+                "src" : this.config.player.video,
+                "id" : _tmpId
+            })
+
+            if(this.config.player.hasOwnProperty("width")) {
+                _videoEl.attr("width", this.config.player.width);
+            }
+            if(this.config.player.hasOwnProperty("height")) {
+                _videoEl.attr("height", this.config.player.height);
+            }
+            IriSP.jQuery("#" + containerDiv).append(_videoEl);
+            pop = Popcorn("#" + _tmpId);
+            break;
+
         case "jwplayer":
             var opts = IriSP.jQuery.extend({}, this.config.player);
             delete opts.container;

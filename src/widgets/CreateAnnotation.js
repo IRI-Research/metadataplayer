@@ -8,7 +8,7 @@ IriSP.Widgets.CreateAnnotation = function(player, config) {
 IriSP.Widgets.CreateAnnotation.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.CreateAnnotation.prototype.defaults = {
-    show_title_field : false,
+    show_title_field : true,
     creator_name : "",
     creator_avatar : "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
     tags : false,
