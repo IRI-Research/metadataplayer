@@ -19,11 +19,15 @@ Le fichier *LdtPlayer-core.js* doit être référencé dans l'entête du fichier
     <body>
         <div id="Metadataplayer"></div>
 
-## Configuration et instanciation du Metadataplayer ##
-
-Le script doit se faire après le chargement de l’élément, soit en rajoutant un élément *<script>* en bas de page, soit en utilisant un événement de type *body.onload* ou, avec jQuery, *$(document).ready()*
+Le script doit se faire après le chargement de l’élément, soit en rajoutant un élément <*script*> en bas de page, soit en utilisant un événement de type *body.onload* ou, avec jQuery, *$(document).ready()*
 
     <script type="text/javascript">
+
+## Configuration de la langue de l’interface ##
+
+La langue est définie par un code ISO 639-1 (par exemple, "es" pour l’Espagnol, "ja" pour le Japonais, "eu" pour le Basque, "ee" pour l’Ewe). Pour l’instant, seuls l’Anglais ("en") et le Français ("fr") sont disponibles.
+
+    IriSP.language = "fr";
 
 ## Configuration des emplacements des bibliothèques ##
 
@@ -95,7 +99,7 @@ L’interface se configure par un objet GUI, contenant les propriétés suivante
 Exemple:
 
     var guiConfig = {
-        container : "LdtPlayer",
+        container : "Metadataplayer",
         default_options: {
             metadata: metadataSource
         },
@@ -116,9 +120,9 @@ Exemple:
         ]
     };
 
-## Instantiation du player ##
+## Instanciation du player ##
 
-Le player s’instancie en créant un objet de type IriSP.Metadataplayer.
+Le player s’instancie en créant un objet de type **IriSP.Metadataplayer**.
 
 Exemple:
 
@@ -126,7 +130,4 @@ Exemple:
         player: playerConfig,
         gui: guiConfig
     };
-    var myPlayer = new IriSP.Metadataplayer(config);
-
- 
-
+    var monPlayer = new IriSP.Metadataplayer(config);
