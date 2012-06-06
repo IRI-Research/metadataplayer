@@ -99,6 +99,9 @@ IriSP.serializers.ldt = {
                 if (typeof _data.meta["dc:source"] !== "undefined" && typeof _data.meta["dc:source"].content !== "undefined") {
                     _res.source = JSON.parse(_data.meta["dc:source"].content);
                 }
+                if (typeof _data.audio !== "undefined" && _data.audio.href) {
+                    _res.audio = _data.audio;
+                }
                 return _res;
             },
             serializer : function(_data, _source) {
@@ -121,7 +124,8 @@ IriSP.serializers.ldt = {
                        return {
                            "id-ref" : _source.unNamespace(_id)
                        } 
-                    })
+                    }),
+                    audio : _data.audio
                 }
             }
         },
