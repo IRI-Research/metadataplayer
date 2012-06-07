@@ -99,8 +99,8 @@ IriSP.serializers.ldt = {
                 if (typeof _data.meta["dc:source"] !== "undefined" && typeof _data.meta["dc:source"].content !== "undefined") {
                     _res.source = JSON.parse(_data.meta["dc:source"].content);
                 }
-                if (typeof _data.audio !== "undefined" && _data.audio.href) {
-                    _res.audio = _data.audio;
+                if (typeof _data.content.audio !== "undefined" && _data.content.audio.href) {
+                    _res.audio = _data.content.audio;
                 }
                 return _res;
             },
@@ -111,7 +111,8 @@ IriSP.serializers.ldt = {
                     end : _data.end.milliseconds,
                     content : {
                         title : _data.title,
-                        description : _data.description
+                        description : _data.description,
+                        audio : _data.audio
                     },
                     media : _source.unNamespace(_data.media.id),
                     meta : {
@@ -124,8 +125,7 @@ IriSP.serializers.ldt = {
                        return {
                            "id-ref" : _source.unNamespace(_id)
                        } 
-                    }),
-                    audio : _data.audio
+                    })
                 }
             }
         },
