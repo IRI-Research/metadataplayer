@@ -5,8 +5,26 @@ IriSP.Model = {
     _SOURCE_STATUS_WAITING : 1,
     _SOURCE_STATUS_READY : 2,
     _ID_AUTO_INCREMENT : 0,
+    _ID_BASE : (function(_d) {
+        function pad(n){return n<10 ? '0'+n : n}
+        function fillrand(n) {
+            var _res = ''
+            for (var i=0; i<n; i++) {
+                _res += Math.floor(16*Math.random()).toString(16);
+            }
+            return _res;
+        }
+        return _d.getUTCFullYear() + '-'  
+            + pad(_d.getUTCMonth()+1) + '-'  
+            + pad(_d.getUTCDate()) + '-'
+            + fillrand(16);
+    })(new Date()),
     getUID : function() {
-        return "autoid-" + (++this._ID_AUTO_INCREMENT);
+        var _n = (++this._ID_AUTO_INCREMENT).toString();
+        while (_n.length < 4) {
+            _n = '0' + _n
+        }
+        return "autoid-" + this._ID_BASE + '-' + _n;
     },
     regexpFromTextOrArray : function(_textOrArray) {
         function escapeText(_text) {
@@ -47,7 +65,7 @@ IriSP.Model = {
         _res.setTime(Number(time));
         return _res;
     },
-    dateToIso : function(d) {  
+    dateToIso : function(d) {
         function pad(n){return n<10 ? '0'+n : n}  
         return d.getUTCFullYear()+'-'  
             + pad(d.getUTCMonth()+1)+'-'  

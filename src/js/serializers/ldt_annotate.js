@@ -13,13 +13,14 @@ IriSP.serializers.ldt_annotate = {
                     begin: _data.begin.milliseconds,
                     end: _data.end.milliseconds,
                     content: {
-                        data: _data.description
+                        data: _data.description,
+                        audio: _data.audio
                     },
                     tags: _data.getTagTexts(),
                     media: _source.unNamespace(_data.getMedia().id),
                     title: _data.title,
                     type_title: _data.getAnnotationType().title,
-                    type: _source.unNamespace(_data.getAnnotationType().id)
+                    type: ( typeof _data.getAnnotationType().dont_send_id !== "undefined" && _data.getAnnotationType().dont_send_id ? "" : _source.unNamespace(_data.getAnnotationType().id) )
                 }
             }
         }
@@ -79,6 +80,9 @@ IriSP.serializers.ldt_annotate = {
             _ann.setBegin(_anndata.begin);
             _ann.setEnd(_anndata.end);
             _ann.creator = _data.meta.creator;
+            if (typeof _anndata.content.audio !== "undefined" && _anndata.content.audio.href) {
+                _ann.audio = _anndata.content.audio;
+            }
             _source.getAnnotations().push(_ann);
         }
     }

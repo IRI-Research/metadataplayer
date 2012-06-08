@@ -216,9 +216,14 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
     var _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager);
         _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}),
         _annotation = new IriSP.Model.Annotation(false, _export),
-        _annotationType = new IriSP.Model.AnnotationType(false, _export),
+        _annotationTypes = this.source.getAnnotationTypes().searchByTitle(this.annotation_type),
+        _annotationType = (_annotationTypes.length ? _annotationTypes[0] : new IriSP.Model.AnnotationType(false, _export)),
         _url = Mustache.to_html(this.api_endpoint_template, {id: this.source.projectId});
 
+    if (!_annotationTypes.length) {
+        _annotationType.dont_send_id = true;
+    }
+    
     _annotationType.title = this.annotation_type;
     _annotation.setBegin(this.begin);
     _annotation.setEnd(this.end);
