@@ -29,7 +29,7 @@ IriSP.serializers.ldt = {
             },
             serializer : function(_data, _source) {
                 return {
-                    id : _source.unNamespace(_data.id),
+                    id : _data.id,
                     url : _data.video,
                     meta : {
                         "dc:title" : _data.title,
@@ -49,7 +49,7 @@ IriSP.serializers.ldt = {
             },
             serializer : function(_data, _source) {
                 return {
-                    id : _source.unNamespace(_data.id),
+                    id : _data.id,
                     meta : {
                         "dc:title" : _data.title
                     }
@@ -66,7 +66,7 @@ IriSP.serializers.ldt = {
             },
             serializer : function(_data, _source) {
                 return {
-                    id : _source.unNamespace(_data.id),
+                    id : _data.id,
                     "dc:title" : _data.title,
                     "dc:description" : _data.description
                 }
@@ -106,7 +106,7 @@ IriSP.serializers.ldt = {
             },
             serializer : function(_data, _source) {
                 return {
-                    id : _source.unNamespace(_data.id),
+                    id : _data.id,
                     begin : _data.begin.milliseconds,
                     end : _data.end.milliseconds,
                     content : {
@@ -114,16 +114,16 @@ IriSP.serializers.ldt = {
                         description : _data.description,
                         audio : _data.audio
                     },
-                    media : _source.unNamespace(_data.media.id),
+                    media : _data.media.id,
                     meta : {
-                        "id-ref" : _source.unNamespace(_data.annotationType.id),
+                        "id-ref" : _data.annotationType.id,
                         "dc:created" : IriSP.Model.dateToIso(_data.created),
                         "dc:creator" : _data.creator,
                         project : _source.projectId
                     },
                     tags : IriSP._(_data.tag.id).map(function(_id) {
                        return {
-                           "id-ref" : _source.unNamespace(_id)
+                           "id-ref" : _id
                        } 
                     })
                 }
@@ -145,7 +145,7 @@ IriSP.serializers.ldt = {
                     "dc:title": _data.title,
                     "dc:description": _data.description,
                     segments: _data.segments.map(function(_annotation) {
-                        return _source.unNamespace(_id);
+                        return _id;
                     })
                 }
             }
@@ -171,9 +171,9 @@ IriSP.serializers.ldt = {
             return;
         }
         IriSP._(this.types).forEach(function(_type, _typename) {
-            var _listdata = _data[_type.serialized_name];
+            var _listdata = _data[_type.serialized_name],
+                _list = new IriSP.Model.List(_source.directory);
             if (typeof _listdata !== "undefined" && _listdata !== null) {
-                var _list = new IriSP.Model.List(_source.directory);
                 if (_listdata.hasOwnProperty("length")) {
                     var _l = _listdata.length;
                     for (var _i = 0; _i < _l; _i++) {
@@ -182,8 +182,8 @@ IriSP.serializers.ldt = {
                 } else {
                     _list.push(_type.deserializer(_listdata, _source));
                 }
-                _source.addList(_typename, _list);
             }
+            _source.addList(_typename, _list);
         });
         
         if (typeof _data.meta !== "undefined") {

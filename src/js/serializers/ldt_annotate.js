@@ -9,6 +9,7 @@ IriSP.serializers.ldt_annotate = {
         annotation : {
             serialized_name : "annotations",
             serializer : function(_data, _source) {
+                var _annType = _data.getAnnotationType();
                 return {
                     begin: _data.begin.milliseconds,
                     end: _data.end.milliseconds,
@@ -17,10 +18,10 @@ IriSP.serializers.ldt_annotate = {
                         audio: _data.audio
                     },
                     tags: _data.getTagTexts(),
-                    media: _source.unNamespace(_data.getMedia().id),
+                    media: _data.getMedia().id,
                     title: _data.title,
-                    type_title: _data.getAnnotationType().title,
-                    type: ( typeof _data.getAnnotationType().dont_send_id !== "undefined" && _data.getAnnotationType().dont_send_id ? "" : _source.unNamespace(_data.getAnnotationType().id) )
+                    type_title: _annType.title,
+                    type: ( typeof _annType.dont_send_id !== "undefined" && _annType.dont_send_id ? "" : _annType.id )
                 }
             }
         }

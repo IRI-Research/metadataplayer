@@ -169,13 +169,13 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 var _y = _this.height;
                 _slice.annotations.forEach(function(_annotation) {
                     _y -= _this.element_height;
-                    displayElement(_x, _y, _this.defaultcolor, _annotation.namespacedId.name, _annotation.title);
+                    displayElement(_x, _y, _this.defaultcolor, _annotation.id, _annotation.title);
                 });
                 IriSP._(_slice.polemicStacks).forEach(function(_annotations, _j) {
                     var _color = _this.polemics[_j].color;
                     _annotations.forEach(function(_annotation) {
                         _y -= _this.element_height;
-                        displayElement(_x, _y, _color, _annotation.namespacedId.name, _annotation.title);
+                        displayElement(_x, _y, _color, _annotation.id, _annotation.title);
                     });
                 });
                 _x += _this.element_width;

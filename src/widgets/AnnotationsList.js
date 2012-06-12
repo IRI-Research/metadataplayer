@@ -84,7 +84,7 @@ IriSP.Widgets.AnnotationsList.prototype.ajaxSource = function() {
     this.lastAjaxQuery = _currentTime;
     _currentTime = Math.floor(1000 * _currentTime);
     var _url = Mustache.to_html(this.ajax_url, {
-        media : this.source.currentMedia.namespacedId.name,
+        media : this.source.currentMedia.id,
         begin : Math.max(0, _currentTime - this.ajax_granularity),
         end : Math.min(_duration.milliseconds, _currentTime + this.ajax_granularity)
     });
@@ -99,11 +99,11 @@ IriSP.Widgets.AnnotationsList.prototype.ajaxMashup = function() {
         _currentTime = 0;
     }
     var _currentAnnotation = this.source.currentMedia.getAnnotationAtTime(_currentTime * 1000);
-    if (typeof _currentAnnotation !== "undefined" && _currentAnnotation.namespacedId.name !== this.lastMashupAnnotation) {
-        this.lastMashupAnnotation = _currentAnnotation.namespacedId.name;
+    if (typeof _currentAnnotation !== "undefined" && _currentAnnotation.id !== this.lastMashupAnnotation) {
+        this.lastMashupAnnotation = _currentAnnotation.id;
         var _currentMedia = _currentAnnotation.getMedia(),
             _url = Mustache.to_html(this.ajax_url, {
-                media : _currentMedia.namespacedId.name,
+                media : _currentMedia.id,
                 begin : Math.max(0, _currentAnnotation.annotation.begin.milliseconds - this.ajax_granularity),
                 end : Math.min(_currentMedia.duration.milliseconds, _currentAnnotation.annotation.end.milliseconds + this.ajax_granularity)
             });
@@ -129,9 +129,9 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         var _currentAnnotation = this.source.currentMedia.getAnnotationAtTime(_currentTime * 1000);
         if (typeof _currentAnnotation !== "undefined") {
             _currentTime = _currentTime - _currentAnnotation.begin.getSeconds() + _currentAnnotation.annotation.begin.getSeconds();
-            var _mediaId = _currentAnnotation.getMedia().namespacedId.name;
+            var _mediaId = _currentAnnotation.getMedia().id;
             _list = _list.filter(function(_annotation) {
-                return _annotation.getMedia().namespacedId.name === _mediaId;
+                return _annotation.getMedia().id === _mediaId;
             });
         }
     }
@@ -169,15 +169,15 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                                 {
                                     project : _annotation.project,
                                     media : _annotation.media.id.replace(/^.*:/,''),
-                                    annotation : _annotation.namespacedId.name,
+                                    annotation : _annotation.id,
                                     annotationType : _annotation.annotationType.id.replace(/^.*:/,'')
                                 }
                             )
-                            : '#id=' + _annotation.namespacedId.name
+                            : '#id=' + _annotation.id
                             )
                     );
                     var _res = {
-                        id : _annotation.namespacedId.name,
+                        id : _annotation.id,
                         title : _annotation.title.replace(_annotation.description,''),
                         description : _annotation.description,
                         begin : _annotation.begin.toString(),

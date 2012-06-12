@@ -66,7 +66,15 @@ IriSP.Widgets.Widget = function(player, config) {
         }
     }
     
-    this.l10n = (typeof this.messages[IriSP.language] !== "undefined" ? this.messages[IriSP.language] : this.messages["en"]);
+    this.l10n = (
+        typeof this.messages[IriSP.language] !== "undefined"
+        ? this.messages[IriSP.language]
+        : (
+            IriSP.language.length > 2 && typeof this.messages[IriSP.language.substr(0,2)] !== "undefined"
+            ? this.messages[IriSP.language.substr(0,2)]
+            : this.messages["en"]
+        )
+    );
     
 };
 

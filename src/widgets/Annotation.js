@@ -77,7 +77,7 @@ IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
     this.lastAnnotation = _annotation.id;
     var _url = (typeof _annotation.url !== "undefined" 
             ? _annotation.url
-            : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.namespacedId.name));
+            : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id));
     var _text = this.l10n.watching + _annotation.title + (this.site_name ? this.l10n.on_site + this.site_name : '');
     var _tags = _annotation.getTagTexts();
     if (_tags.length) {

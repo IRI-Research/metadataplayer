@@ -66,7 +66,7 @@ IriSP.Widgets.MediaList.prototype.redraw = function(_media) {
         this.$.find('.Ldt-MediaList-Now-Description').html(_media.description);
         var _url = _media.url || Mustache.to_html(
                 this.media_url_template, {
-                    media: _media.namespacedId.name
+                    media: _media.id
                 });
         this.$.find('.Ldt-MediaList-NowContainer a').attr("href", _url);
     } else {
@@ -84,7 +84,7 @@ IriSP.Widgets.MediaList.prototype.redraw = function(_media) {
                 thumbnail: _media.thumbnail || _this.default_thumbnail,
                 url: _media.url || Mustache.to_html(
                     _this.media_url_template, {
-                        media: _media.namespacedId.name
+                        media: _media.id
                     }),
                 title: _media.title,
                 description: _media.description

@@ -336,11 +336,14 @@ IriSP.Model.Time.prototype.toString = function() {
 
 IriSP.Model.Reference = function(_source, _idRef) {
     this.source = _source;
-    this.id = _idRef;
     if (typeof _idRef === "object") {
         this.isList = true;
+        this.id = IriSP._(_idRef).map(function(_id) {
+            return _source.getNamespaced(_id).fullname;
+        });
     } else {
         this.isList = false;
+        this.id = _source.getNamespaced(_idRef).fullname;
     }
     this.refresh();
 }
@@ -381,7 +384,8 @@ IriSP.Model.Element = function(_id, _source) {
         _id = IriSP.Model.getUID();
     }
     this.source = _source;
-    this.id = _id;
+    this.namespacedId = _source.getNamespaced(_id)
+    this.id = this.namespacedId.fullname;
     this.title = "";
     this.description = "";
     this.source.directory.addElement(this);
@@ -521,7 +525,7 @@ IriSP.Model.Annotation.prototype.getDuration = function() {
 /* */
 
 IriSP.Model.MashedAnnotation = function(_mashup, _annotation) {
-    IriSP.Model.Element.call(this, _mashup.id + "_" + _annotation.id, _annotation.source);
+    IriSP.Model.Element.call(this, _mashup.namespacedId.name + "_" + _annotation.namespacedId.name, _annotation.source);
     this.elementType = 'mashedAnnotation';
     this.annotation = _annotation;
     this.begin = new IriSP.Model.Time(_mashup.duration);
@@ -625,7 +629,51 @@ IriSP.Model.Source = function(_config) {
         })
         this.callbackQueue = [];
         this.contents = {};
+        if (typeof this.namespace === "undefined") {
+            this.namespace = "metadataplayer";
+        } else {
+            if (typeof this.namespaceUrl === "undefined" && typeof this.url !== "undefined") {
+                var _matches = this.url.match(/(^[^?&]+|[^?&][a-zA-Z0-9_%=?]+)/g),
+                    _url = _matches[0];
+                if (_matches.length > 1) {
+                    _matches = IriSP._(_matches.slice(1)).reject(function(_txt) {
+                        return /\?$/.test(_txt);
+                    });
+                }
+                if (_matches.length > 0) {
+                    _url += '?' + _matches.join('&');
+                }
+                this.namespaceUrl = _url;
+            }
+        }
+        if (typeof this.namespaceUrl === "undefined") {
+            this.namespaceUrl = "http://ldt.iri.centrepompidou.fr/";
+        }
+        this.directory.addNamespace(this.namespace, this.namespaceUrl);
         this.get();
+    }
+}
+
+IriSP.Model.Source.prototype.getNamespaced = function(_id) {
+    var _tab = _id.split(':');
+    if (_tab.length > 1) {
+        return {
+            namespace : _tab[0],
+            name : _tab[1],
+            fullname : _id
+        }
+    } else {
+        return {
+            namespace : this.namespace,
+            name : _id,
+            fullname : this.namespace + ':' + _id
+        }
+    }
+}
+    
+IriSP.Model.Source.prototype.unNamespace = function(_id) {
+    if (typeof _id !== "undefined") {
+        return _id.replace(this.namespace + ':', '');
     }
 }
 
@@ -655,7 +703,7 @@ IriSP.Model.Source.prototype.forEach = function(_callback) {
 }
 
 IriSP.Model.Source.prototype.getElement = function(_elId) {
-    return this.directory.getElement(_elId);
+    return this.directory.getElement(this.getNamespaced(_elId).fullname);
 }
 
 IriSP.Model.Source.prototype.setCurrentMediaId = function(_idRef) {
@@ -668,6 +716,21 @@ IriSP.Model.Source.prototype.setDefaultCurrentMedia = function() {
     if (typeof this.currentMedia === "undefined" && this.getMedias().length) {
         this.currentMedia = this.getMedias()[0];
     }
+}
+
+IriSP.Model.Source.prototype.listNamespaces = function(_excludeSelf) {
+    var _this = this,
+        _nsls = [],
+        _excludeSelf = (typeof _excludeSelf !== "undefined" && _excludeSelf);
+    this.forEach(function(_list) {
+        IriSP._(_list).forEach(function(_el) {
+            var _ns = _el.id.replace(/:.*$/,'');
+            if (IriSP._(_nsls).indexOf(_ns) === -1 && (!_excludeSelf || _ns !== _this.namespace)) {
+                _nsls.push(_ns);
+            }
+        })
+    });
+    return _nsls;
 }
 
 IriSP.Model.Source.prototype.get = function() {
@@ -776,6 +839,11 @@ IriSP.Model.RemoteSource.prototype.get = function() {
 IriSP.Model.Directory = function() {
     this.remoteSources = {};
     this.elements = {};
+    this.namespaces = {};
+}
+
+IriSP.Model.Directory.prototype.addNamespace = function(_namespace, _url) {
+    this.namespaces[_namespace] = _url;
 }
 
 IriSP.Model.Directory.prototype.remoteSource = function(_properties) {

@@ -51,7 +51,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
                 left : Math.floor( _left ),
                 width : Math.floor( _width ),
                 center : Math.floor( _center ),
-                id : _annotation.namespacedId.name
+                id : _annotation.id
             }
         })
     }));

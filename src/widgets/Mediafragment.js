@@ -65,7 +65,7 @@ IriSP.Widgets.Mediafragment.prototype.goToHash = function() {
 }
 
 IriSP.Widgets.Mediafragment.prototype.setHashToAnnotation = function(_annotationId) {
-    this.setHash( 'id', this.source.unNamespace(_annotationId) );
+    this.setHash( 'id', _annotationId );
 }
 
 IriSP.Widgets.Mediafragment.prototype.setHashToTime = function(_time) {

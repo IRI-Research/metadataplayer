@@ -259,6 +259,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         },
         error: function(_xhr, _error, _thrown) {
             IriSP.log("Error when sending annotation", _thrown);
+            _export.getAnnotations().removeElement(_annotation, true);
             _this.showScreen('Error');
             window.setTimeout(function(){
                 _this.showScreen("Main")
