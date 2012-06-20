@@ -196,7 +196,7 @@ IriSP.Widgets.Controller.prototype.playHandler = function() {
 };
 
 IriSP.Widgets.Controller.prototype.muteHandler = function() {
-    this.player.popcorn.mute(!this.player.popcorn.muted());
+    this.player.popcorn.muted(!this.player.popcorn.muted());
 };
 
 IriSP.Widgets.Controller.prototype.volumeUpdater = function() {

@@ -1,3 +1,5 @@
+/* TODO: Separate Project-specific data from Source */
+
 /* model.js is where data is stored in a standard form, whatever the serializer */
 
 IriSP.Model = {
@@ -294,11 +296,11 @@ IriSP.Model.Time.prototype.setSeconds = function(_seconds) {
 }
 
 IriSP.Model.Time.prototype.getSeconds = function() {
-    return Math.floor(this.milliseconds / 1000);
+    return this.milliseconds / 1000;
 }
 
 IriSP.Model.Time.prototype.getHMS = function() {
-    var _totalSeconds = Math.abs(this.getSeconds());
+    var _totalSeconds = Math.abs(Math.floor(this.getSeconds()));
     return {
         hours : Math.floor(_totalSeconds / 3600),
         minutes : (Math.floor(_totalSeconds / 60) % 60),
@@ -779,6 +781,9 @@ IriSP.Model.Directory = function() {
 }
 
 IriSP.Model.Directory.prototype.remoteSource = function(_properties) {
+    if (typeof _properties !== "object" || typeof _properties.url === "undefined") {
+        throw "Error : IriSP.Model.Directory.remoteSource(configuration): configuration.url is undefined";
+    }
     var _config = IriSP._({ directory: this }).extend(_properties);
     if (typeof this.remoteSources[_properties.url] === "undefined") {
         this.remoteSources[_properties.url] = new IriSP.Model.RemoteSource(_config);

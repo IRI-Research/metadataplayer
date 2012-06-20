@@ -1,4 +1,4 @@
-function testConfig(_urlMetadata, _useLocalBuild) {
+function testConfig(_urlMetadata, _useLocalBuild, _video, _playerType) {
     document.getElementById('LdtPlayer').innerHTML = '';
     _useLocalBuild = (typeof _useLocalBuild !== "undefined" && _useLocalBuild)
     IriSP.libFiles.defaultDir = _useLocalBuild ? "libs/" : "../src/js/libs/";
@@ -31,12 +31,12 @@ function testConfig(_urlMetadata, _useLocalBuild) {
                     type: "AnnotationsList",
                     container: "AnnotationsListContainer"
                 },
-                { type: "Mediafragment"},
-                {
+                { type: "Mediafragment"}
+/*                {
                     type: "Trace",
                     default_subject: "tests-iri",
                     js_console: true
-                }
+            } */
             ]
         },
         player:{
@@ -49,6 +49,12 @@ function testConfig(_urlMetadata, _useLocalBuild) {
             metadata: _metadata
         }
     };
+    if (typeof _playerType != "undefined") {
+        _config.player.type = _playerType;
+    }
+    if (typeof _video != "undefined") {
+        _config.player.video = _video;
+    }
     
     return new IriSP.Metadataplayer(_config);
 }

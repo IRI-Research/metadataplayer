@@ -33,7 +33,7 @@ IriSP.PopcornReplacement.player = function(container, options) {
                         a segment (similar to the popcorn.code plugin). */
   
   this._options = options;
-                          
+
 };
 
 IriSP.PopcornReplacement.player.prototype.listen = function(msg, callback) {
@@ -42,6 +42,8 @@ IriSP.PopcornReplacement.player.prototype.listen = function(msg, callback) {
 
   this.msgPump[msg].push(callback);
 };
+
+IriSP.PopcornReplacement.player.prototype.on = IriSP.PopcornReplacement.player.prototype.listen;
 
 IriSP.PopcornReplacement.player.prototype.trigger = function(msg, params) {
   if (!this.msgPump.hasOwnProperty(msg))
@@ -54,6 +56,8 @@ IriSP.PopcornReplacement.player.prototype.trigger = function(msg, params) {
   }
 
 };
+
+IriSP.PopcornReplacement.player.prototype.emit = IriSP.PopcornReplacement.player.prototype.trigger;
 
 IriSP.PopcornReplacement.player.prototype.guid = function(prefix) {
   var str = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -98,16 +102,13 @@ IriSP.PopcornReplacement.player.prototype.currentTime = function(time) {
 IriSP.PopcornReplacement.player.prototype.play = function() {
   this.media.paused = false;
   this.trigger("play");
-  //IriSP.PopcornReplacement.trigger("playing");
   this.playerFns.play();
 };
     
 IriSP.PopcornReplacement.player.prototype.pause = function() {
-//  if ( !this.media.paused ) {
     this.media.paused = true;
     this.trigger( "pause" );
     this.playerFns.pause();
-//  }
 };
 
 IriSP.PopcornReplacement.player.prototype.muted = function(val) {
@@ -147,7 +148,13 @@ IriSP.PopcornReplacement.player.prototype.volume = function(val) {
     return _vol;
 };
 
-IriSP.PopcornReplacement.player.prototype.mute = IriSP.PopcornReplacement.player.prototype.muted;
+IriSP.PopcornReplacement.player.prototype.mute = function() {
+    this.muted(true);
+}
+
+IriSP.PopcornReplacement.player.prototype.unmute = function() {
+    this.muted(false);
+}
 
 IriSP.PopcornReplacement.player.prototype.code = function(options) {
   this.__codes.push(options);

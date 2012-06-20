@@ -13,7 +13,8 @@ IriSP.libFiles = {
         jwplayer : "jwplayer.js",
         raphael : "raphael-min.js",
         tracemanager : "tracemanager.js",
-        jwPlayerSWF : "player.swf"
+        jwPlayerSWF : "player.swf",
+        json : "json2.js"
     },
     locations : {
         // use to define locations outside defautl_dir

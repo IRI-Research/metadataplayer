@@ -55,8 +55,13 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
         .script(IriSP.getLib("underscore"))
         .script(IriSP.getLib("Mustache"))
         .script(IriSP.getLib("jQuery"))
-        .script(IriSP.getLib("swfObject"))
-        .wait()
+        .script(IriSP.getLib("swfObject"));
+    
+    if (typeof JSON == "undefined") {
+        $L.script(IriSP.getLib("json"));
+    }
+    
+    $L.wait()
         .script(IriSP.getLib("jQueryUI"));
 
     if (this.config.player.type === "jwplayer" || this.config.player.type === "auto") {
@@ -175,7 +180,7 @@ IriSP.Metadataplayer.prototype.loadWidget = function(_widgetConfig, _callback) {
 IriSP.Metadataplayer.prototype.configurePopcorn = function() {
     IriSP.log("IriSP.Metadataplayer.prototype.configurePopcorn");
     var pop,
-        ret = this.layoutDivs("video"),
+        ret = this.layoutDivs("video",this.config.player.height || undefined),
         containerDiv = ret[0],
         spacerDiv = ret[1],
         _this = this,
@@ -285,6 +290,10 @@ IriSP.Metadataplayer.prototype.configurePopcorn = function() {
             pop = new IriSP.PopcornReplacement.allocine("#" + containerDiv, this.config.player);
             break;
         
+        case "mashup-html":
+            pop = new IriSP.PopcornReplacement.htmlMashup("#" + containerDiv, this.config.player, this.videoData);
+            break;
+        
         default:
             pop = undefined;
     };
@@ -296,7 +305,7 @@ IriSP.Metadataplayer.prototype.configurePopcorn = function() {
     @param widgetName the name of the widget.
     @return an array of the form [createdivId, spacerdivId].
 */
-IriSP.Metadataplayer.prototype.layoutDivs = function(_name) {
+IriSP.Metadataplayer.prototype.layoutDivs = function(_name, _height) {
     if (typeof(_name) === "undefined") {
        _name = "";
     }
@@ -317,6 +326,9 @@ IriSP.Metadataplayer.prototype.layoutDivs = function(_name) {
                 position: "relative",
                 clear: "both"
             });
+    if (typeof _height !== "undefined") {
+        divHtml.css("height", _height);
+    }
             
     this.$.append(divHtml);
     this.$.append(spacerHtml);

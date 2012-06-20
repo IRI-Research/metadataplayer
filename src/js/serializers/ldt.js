@@ -25,6 +25,10 @@ IriSP.serializers.ldt = {
                 _res.title = _data.meta["dc:title"];
                 _res.description = _data.meta["dc:description"];
                 _res.setDuration(_data.meta["dc:duration"]);
+                _res.url = _data.meta.url;
+                if (typeof _data.meta.img !== "undefined" && _data.meta.img.src !== "undefined") {
+                    _res.thumbnail = _data.meta.img.src;
+                }
                 return _res;        
             },
             serializer : function(_data, _source) {
