@@ -24,7 +24,8 @@ IriSP.Widgets.Tweet.prototype.defaults = {
             "keywords" : [ "??" ],
             "color" : "#05aae6"
         }
-    ]
+    ],
+    pin_at_start: false
 }
 
 IriSP.Widgets.Tweet.prototype.messages = {
@@ -34,8 +35,9 @@ IriSP.Widgets.Tweet.prototype.messages = {
         keep_visible: "Garder visible",
         dont_keep_visible: "Permettre la fermeture automatique",
         close_widget: "Fermer l'affichage du tweet",
-        original_time: "Heure d'envoi&nbsp; ",
-        video_time: "Temps de la vidéo&nbsp;: "
+        original_time: "Heure d'envoi&nbsp;: ",
+        video_time: "Temps de la vidéo&nbsp;: ",
+        show_original: "Voir l'original"
     },
     "en": {
         retweet: "Retweet",
@@ -44,25 +46,28 @@ IriSP.Widgets.Tweet.prototype.messages = {
         dont_keep_visible: "Don't keep visible",
         close_widget: "Close tweet display",
         original_time: "Tweet sent at: ",
-        video_time: "Video time: "
+        video_time: "Video time: ",
+        show_original: "Show original"
     }
 }
 
 IriSP.Widgets.Tweet.prototype.template =
     '<div class="Ldt-Tweet-Widget"><div class="Ldt-Tweet-Inner"><div class="Ldt-Tweet-PinClose-Buttons">'
-    + '<a href="#" class="Ldt-Tweet-Pin Ldt-TraceMe" title="{{l10n.keep_visible}}"></a>'
+    + '<a href="#" class="Ldt-Tweet-Pin Ldt-TraceMe{{#pin_at_start}} active" title="{{l10n.dont_keep_visible}}{{/pin_at_start}}{{^pin_at_start}}" title="{{l10n.keep_visible}}{{/pin_at_start}}"></a>'
     + '<a href="#" class="Ldt-Tweet-Close Ldt-TraceMe" title="{{l10n.close_widget}}"></a>'
     + '</div><div class="Ldt-Tweet-AvatarContainer"><a href="#" class="Ldt-Tweet-ProfileLink" target="_blank">'
     + '<img src="" class="Ldt-Tweet-Avatar"/></a></div><h3><a href="#" class="Ldt-Tweet-ProfileLink Ldt-Tweet-ScreenName" target="_blank">'
     + '</a> (<span class="Ldt-Tweet-FullName"></span>)</h3><p class="Ldt-Tweet-Contents"></p><div class="Ldt-Tweet-Bottom">'
-    + '<span class="Ldt-Tweet-Time"></span><a href="" target="_blank" class="Ldt-Tweet-Retweet"><div class="Ldt-Tweet-Icon"></div>{{l10n.retweet}}</a>'
+    + '<span class="Ldt-Tweet-Time"></span>'
+    + '<a class="Ldt-Tweet-Original" href="" target="_blank">{{l10n.show_original}}</a>'
+    + '<a href="" target="_blank" class="Ldt-Tweet-Retweet"><div class="Ldt-Tweet-Icon"></div>{{l10n.retweet}}</a>'
     + '<a href="" target="_blank" class="Ldt-Tweet-Reply"><div class="Ldt-Tweet-Icon"></div>{{l10n.reply}}</a></div></div></div>';
     
 
 IriSP.Widgets.Tweet.prototype.draw = function() {
     this.renderTemplate();
     this.bindPopcorn("IriSP.Tweet.show","show");
-    this.pinned = false;
+    this.pinned = this.pin_at_start;
     var _this = this;
     this.$.find(".Ldt-Tweet-Pin").click(function() {
         _this.pinned = !_this.pinned;
@@ -158,10 +163,13 @@ IriSP.Widgets.Tweet.prototype.show = function(_id) {
         _txt += _tweet.source.text.substring(_currentPos);
         this.$.find(".Ldt-Tweet-Avatar").attr("src",_tweet.source.user.profile_image_url);
         this.$.find(".Ldt-Tweet-ScreenName").html('@'+_tweet.source.user.screen_name);
-        this.$.find(".Ldt-Tweet-ProfileLink").attr("href", "http://twitter.com/" + _tweet.source.user.screen_name);
+        this.$.find(".Ldt-Tweet-ProfileLink").attr("href", "https://twitter.com/" + _tweet.source.user.screen_name);
         this.$.find(".Ldt-Tweet-FullName").html(_tweet.source.user.name);
         this.$.find(".Ldt-Tweet-Contents").html(_txt);
         this.$.find(".Ldt-Tweet-Time").html(this.l10n.original_time + new Date(_tweet.source.created_at).toLocaleTimeString() + " / " + this.l10n.video_time + _tweet.begin.toString());
+        this.$.find(".Ldt-Tweet-Retweet").attr("href", "https://twitter.com/intent/retweet?tweet_id=" + _tweet.source.id_str);
+        this.$.find(".Ldt-Tweet-Reply").attr("href", "https://twitter.com/intent/tweet?in_reply_to=" + _tweet.source.id_str);
+        this.$.find(".Ldt-Tweet-Original").attr("href", "https://twitter.com/" + _tweet.source.user.screen_name + "/status/" + _tweet.source.id_str);
         this.player.popcorn.trigger("IriSP.Annotation.minimize");
         this.$.slideDown();
         this.cancelTimeout();

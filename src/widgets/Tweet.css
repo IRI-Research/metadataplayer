@@ -4,6 +4,14 @@
     margin: 0;
 }
 
+.Ldt-Tweet-Widget a {
+    color: #0068C4;
+}
+
+.Ldt-Tweet-Widget a:hover {
+    color: #003366;
+}
+
 .Ldt-Tweet-Inner {
     background: url(img/pinstripe.png);
     padding: 5px;
@@ -50,12 +58,10 @@ a.Ldt-Tweet-Close:hover {
 }
 
 a.Ldt-Tweet-ScreenName {
-    color: #0068c4;
     text-decoration: none;
 }
 
 a.Ldt-Tweet-ScreenName:hover {
-    color: #000000;
     text-decoration: underline;
 }
 
@@ -77,7 +83,6 @@ p.Ldt-Tweet-Contents {
 .Ldt-Tweet-Bottom a {
     display: inline-block;
     margin-left: 12px;
-    color: #000000;
     text-decoration: none;
 }
 
