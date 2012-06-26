@@ -109,31 +109,26 @@ IriSP.PopcornReplacement.dailymotion.prototype.onReady = function() {
     this.player.addEventListener("onVideoProgress", "onDailymotionVideoProgress");
     this.player.cueVideoByUrl(this._options.video);
     
-    this.callbacks.onReady();
+    this.trigger("loadedmetadata");
 };
 
 IriSP.PopcornReplacement.dailymotion.prototype.onProgress = function(progressInfo) {
-    
-    this.callbacks.onTime({
-        position: progressInfo.mediaTime
-    });
+    this.trigger("timeupdate");
 }
 
 IriSP.PopcornReplacement.dailymotion.prototype.onStateChange = function(state) {
     
     switch(state) {
         case 1:
-            this.callbacks.onPlay();
+            this.trigger("play");
             break;
 
         case 2:
-            this.callbacks.onPause();
+            this.trigger("pause");
             break;
 
         case 3:
-            this.callbacks.onSeek({
-                position: this.player.getCurrentTime()
-            });
+            this.trigger("seeked");
             break;
     }
     

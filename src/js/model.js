@@ -660,18 +660,6 @@ IriSP.Model.Source.prototype.getElement = function(_elId) {
     return this.directory.getElement(_elId);
 }
 
-IriSP.Model.Source.prototype.setCurrentMediaId = function(_idRef) {
-    if (typeof _idRef !== "undefined") {
-        this.currentMedia = this.getElement(_idRef);
-    }
-}
-
-IriSP.Model.Source.prototype.setDefaultCurrentMedia = function() {
-    if (typeof this.currentMedia === "undefined" && this.getMedias().length) {
-        this.currentMedia = this.getMedias()[0];
-    }
-}
-
 IriSP.Model.Source.prototype.get = function() {
     this.status = IriSP.Model._SOURCE_STATUS_WAITING;
     this.handleCallbacks();

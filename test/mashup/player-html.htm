@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="colgauche">
-                <h2>Mon HashCut</h2>
+                <h2>Mon HashCut (ne fonctionne pas avec Firefox)</h2>
                 <hr />
                 <div id="LdtPlayer"></div>
             </div>
@@ -54,9 +54,11 @@ IriSP.language = 'fr';
 var _metadata = {
     url: 'bab_files/mashup.json',
 //    url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/b2754186-a0c9-11e0-b8bd-00145ea49a02?callback=?',
+//    url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/5afd8bbe-9b75-11e1-9e5d-00145ea4a2be?callback=?',
     format: 'ldt'
 };
-var _config = {            
+var _canPlayMp4 = document.createElement('video').canPlayType('video/mp4');
+var _config = {
     gui: {
         width : 630,
         container : 'LdtPlayer',
@@ -91,14 +93,19 @@ var _config = {
         ]
     },
     player:{
-        type:'mashup',
-        live: true, 
+        type:'mashup-html',
+        url_transform: function(_url) {
+            var _transformed = _url.replace(/^rtmp:\/\/media.iri.centrepompidou.fr\/ddc_player\/(mp4:)?video\//i,"http://media.iri.centrepompidou.fr/video/");
+            if (!/\.mp4$/.test(_transformed)) {
+                _transformed += '.mp4';
+            }
+            if (_canPlayMp4 == "") {
+                _transformed = _transformed.replace(/\.mp4$/i,'.ogv');
+            }
+            return _transformed;
+        },
         height: 350,
-        width: 630, 
-        provider: "rtmp",
-        mashup_swf : "bab_files/player_bab_ldt.swf",
-        mashup_xml : "bab_files/mashup.xml",
-        autostart: true,
+        width: 630,
         metadata: _metadata
     }
 };

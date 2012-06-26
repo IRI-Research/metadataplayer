@@ -107,7 +107,6 @@ IriSP.Widgets.AnnotationsList.prototype.ajaxMashup = function() {
                 begin : Math.max(0, _currentAnnotation.annotation.begin.milliseconds - this.ajax_granularity),
                 end : Math.min(_currentMedia.duration.milliseconds, _currentAnnotation.annotation.end.milliseconds + this.ajax_granularity)
             });
-        console.log("Getting", _url);
         this.currentSource = this.player.loadMetadata(IriSP._.defaults({
             "url" : _url
         }, this.metadata));

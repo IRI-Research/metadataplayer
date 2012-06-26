@@ -134,23 +134,30 @@ IriSP.serializers.ldt = {
             }
         },
         mashup : {
-            serialized_name : "mashups",
+            serialized_name : "lists",
             deserializer : function(_data, _source) {
+                if (typeof _data.meta !== "object" || typeof _data.meta.listtype !== "string" || _data.meta.listtype !== "mashup") {
+                    return undefined;
+                }
                 var _res = new IriSP.Model.Mashup(_data.id, _source);
                 _res.title = _data.meta["dc:title"];
                 _res.description = _data.meta["dc:description"];
-                for (var _i = 0; _i < _data.segments.length; _i++) {
-                    _res.addSegmentById(_data.segments[_i]);
+                for (var _i = 0; _i < _data.items.length; _i++) {
+                    _res.addSegmentById(_data.items[_i]);
                 }
                 return _res;        
             },
             serializer : function(_data, _source) {
                 return {
-                    "dc:title": _data.title,
-                    "dc:description": _data.description,
-                    segments: _data.segments.map(function(_annotation) {
+                    meta : {
+                        "dc:title": _data.title,
+                        "dc:description": _data.description,
+                        listtype: "mashup"
+                    },
+                    items: _data.segments.map(function(_annotation) {
                         return _id;
-                    })
+                    }),
+                    id: _data.id
                 }
             }
         }
@@ -181,10 +188,16 @@ IriSP.serializers.ldt = {
                 if (_listdata.hasOwnProperty("length")) {
                     var _l = _listdata.length;
                     for (var _i = 0; _i < _l; _i++) {
-                        _list.push(_type.deserializer(_listdata[_i], _source));
+                        var _element = _type.deserializer(_listdata[_i], _source);
+                        if (typeof _element !== "undefined" && _element) {
+                            _list.push(_element);
+                        }
                     }
                 } else {
-                    _list.push(_type.deserializer(_listdata, _source));
+                    var _element = _type.deserializer(_listdata, _source);
+                    if (typeof _element !== "undefined" && _element) {
+                        _list.push(_element);
+                    }
                 }
             }
             _source.addList(_typename, _list);
@@ -195,9 +208,8 @@ IriSP.serializers.ldt = {
         }
         
         if (typeof _data.meta !== "undefined" && typeof _data.meta.main_media !== "undefined" && typeof _data.meta.main_media["id-ref"] !== "undefined") {
-            _source.setCurrentMediaId(_data.meta.main_media["id-ref"]);
+            _source.mainMedia = _data.meta.main_media["id-ref"];
         }
-        _source.setDefaultCurrentMedia();
     }
 }
 

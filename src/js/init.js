@@ -130,8 +130,32 @@ IriSP.Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {
 
 IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
     if (typeof this.videoData !== "undefined" && typeof this.config.player.video === "undefined") {
-        var _media = this.videoData.currentMedia;
-        if (typeof _media !== "undefined") {
+        
+        var _media;
+        
+        if (typeof this.videoData.mainMedia !== "undefined") {
+            _media = this.videoData.getElement(this.videoData.mainMedia);
+        }
+        
+        if (this.config.player.type === "mashup" || this.config.player.type === "mashup-html") {
+            if (typeof _media === "undefined" || _media.elementType !== "mashup") {
+                var _mashups = this.videoData.getMashups();
+                if (_mashups.length) {
+                    _media = _mashups[0];
+                }
+            }
+        } else {
+            if (typeof _media === "undefined" || _media.elementType !== "media") {
+                var _medias = this.videoData.getMedias();
+                if (_medias.length) {
+                    _media = _medias[0];
+                }
+            }
+        }
+        
+        this.videoData.currentMedia = _media;
+        
+        if (typeof _media !== "undefined" && typeof _media.video !== "undefined") {
             this.config.player.video = _media.video;
             if (typeof _media.streamer !== "undefined") {
                 this.config.player.streamer = _media.streamer;

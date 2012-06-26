@@ -92,6 +92,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     this.bindPopcorn("volumechange","volumeUpdater");
     this.bindPopcorn("timeupdate","timeDisplayUpdater");
     this.bindPopcorn("loadedmetadata","timeDisplayUpdater");
+    this.bindPopcorn("loadedmetadata","volumeUpdater");
     this.bindPopcorn("IriSP.search.matchFound","searchMatch");
     this.bindPopcorn("IriSP.search.noMatchFound","searchNoMatch");
     this.bindPopcorn("IriSP.search.triggeredSearch","triggeredSearch");
@@ -139,8 +140,10 @@ IriSP.Widgets.Controller.prototype.draw = function() {
         function() {
             _this.player.popcorn.trigger("IriSP.Player.MouseOut");
         });
-    setTimeout(this.functionWrapper("volumeUpdater"), 1000);
     /* some players - including jwplayer - save the state of the mute button between sessions */
+
+    window.setTimeout(this.functionWrapper("volumeUpdater"), 1000);
+   
 };
 
 /* Update the elasped time div */

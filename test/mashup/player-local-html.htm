@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="colgauche">
-                <h2>Mon HashCut</h2>
+                <h2>Mon HashCut (ne fonctionne pas avec Firefox)</h2>
                 <hr />
                 <div id="LdtPlayer"></div>
             </div>
@@ -52,8 +52,7 @@ IriSP.libFiles.defaultDir = "../libs/";
 IriSP.widgetsDir = "../metadataplayer";
 IriSP.language = 'fr';
 var _metadata = {
-    url: 'bab_files/mashup.json',
-//    url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/b2754186-a0c9-11e0-b8bd-00145ea49a02?callback=?',
+    url: 'bab_files/mashup-local-html.json',
     format: 'ldt'
 };
 var _config = {            
@@ -91,14 +90,9 @@ var _config = {
         ]
     },
     player:{
-        type:'mashup',
-        live: true, 
+        type:'mashup-html',
         height: 350,
-        width: 630, 
-        provider: "rtmp",
-        mashup_swf : "bab_files/player_bab_ldt.swf",
-        mashup_xml : "bab_files/mashup.xml",
-        autostart: true,
+        width: 630,
         metadata: _metadata
     }
 };

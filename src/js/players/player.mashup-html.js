@@ -15,11 +15,15 @@ IriSP.PopcornReplacement.htmlMashup = function(container, options, metadata) {
     
     IriSP._(metadata.currentMedia.medias).each(function(_media) {
         var _tmpId = Popcorn.guid("video"),
-            _videoEl = IriSP.jQuery('<video>');
-            
+            _videoEl = IriSP.jQuery('<video>'),
+            _videoUrl = _media.video;
+        if (typeof options.url_transform === "function") {
+            _videoUrl = options.url_transform(_videoUrl);
+        }
+        
         _videoEl
             .attr({
-                src : _media.video,
+                src : _videoUrl,
                 id : _tmpId,
                 width : _w,
                 height : _h
@@ -33,27 +37,39 @@ IriSP.PopcornReplacement.htmlMashup = function(container, options, metadata) {
         _this.$.append(_videoEl);
         _media.videoEl = _videoEl;
         _media.popcorn = Popcorn("#" + _tmpId);
+        _media.loadedMetadata = false;
+        _media.popcorn.on("loadedmetadata", function() {
+            _media.loadedMetadata = true;
+            var _allLoaded = true;
+            for (var _i = 0; _i < metadata.currentMedia.medias.length; _i++) {
+                _allLoaded = _allLoaded && metadata.currentMedia.medias[_i].loadedMetadata;
+            }
+            if (_allLoaded) {
+                _this.changeCurrentAnnotation();
+                _this.trigger("loadedmetadata");
+            }
+        });
         _media.popcorn.on("timeupdate", function() {
             if (!_this.media.paused && _media === _this.currentMedia) {
-                var _time = _media.popcorn.currentTime();
-             //   var _status = "Timeupdate from " + _media.id + " at time " + _time;
+                var _time = Math.round( 1000 * _media.popcorn.currentTime() );
+//                var _status = "Timeupdate from " + _media.id + " at time " + _time;
                 if ( _time < _this.segmentEnd ) {
                     if ( _time >= _this.segmentBegin ) {
                         _this.timecode = _time - _this.timedelta;
-                  //      _status += " within segment";
+//                        _status += " within segment";
                     } else {
                         _this.timecode = _this.segmentBegin - _this.timedelta;
-                        _media.popcorn.currentTime(_this.segmentBegin);
-                   //     _status += " before segment begin";
+                        _media.popcorn.currentTime(_this.segmentBegin / 1000);
+//                        _status += " before segment";
                     }
                 } else {
                     _this.timecode = _this.segmentEnd - _this.timedelta;
                     _media.popcorn.pause();
                     _this.changeCurrentAnnotation();
-                 //   _status += " after segment end";
+//                    _status += " after segment";
                 }
-            /*    _status += ", translated to " + _this.timecode;
-                console.log(_status); */
+//                _status += " (" + _this.segmentBegin + " to " + _this.segmentEnd + ")" + ", translated to " + _this.timecode;
+//                console.log(_status);
                 _this.trigger("timeupdate");
             }
         });
@@ -70,17 +86,19 @@ IriSP.PopcornReplacement.htmlMashup = function(container, options, metadata) {
             _this.currentMedia.popcorn.pause();
         },
         getPosition: function() {
-            return _this.timecode;
+            return _this.timecode / 1000;
         },
         seek: function(pos) {
-            _this.timecode = pos;
+            _this.timecode = Math.round(pos * 1000);
             _this.changeCurrentAnnotation();
         },
         getMute: function() {
-            return
+            var _res = (
                 typeof _this.currentMedia !== "undefined"
                 ? _this.currentMedia.popcorn.muted()
-                : false;
+                : false
+            );
+            return _res;
         },
         setMute: function(p) {
             var _mute = !!p;
@@ -89,10 +107,12 @@ IriSP.PopcornReplacement.htmlMashup = function(container, options, metadata) {
             }
         },
         getVolume: function() {
-            return
+            var _res = (
                 typeof _this.currentMedia !== "undefined"
                 ? _this.currentMedia.popcorn.volume()
-                : .5;
+                : .5
+            );
+            return _res;
         },
         setVolume: function(_vol) {
             for (var _i = 0; _i < _this.mashup.medias.length; _i++) {
@@ -100,29 +120,28 @@ IriSP.PopcornReplacement.htmlMashup = function(container, options, metadata) {
             }
         }
     }
-/*
-    options.events = this.callbacks;
-
-    _player.setup(options);
-    */
+    
 };
 
 IriSP.PopcornReplacement.htmlMashup.prototype = new IriSP.PopcornReplacement.player("", {});
 
 IriSP.PopcornReplacement.htmlMashup.prototype.changeCurrentAnnotation = function() {
-    var _annotation = this.mashup.getAnnotationAtTime( 1000 * this.timecode );
+    var _annotation = this.mashup.getAnnotationAtTime( this.timecode );
     if (typeof _annotation == "undefined") {
         if (typeof this.currentMedia !== "undefined") {
             this.currentMedia.popcorn.pause();
-            this.media.paused = true;
+            if (!this.media.paused) {
+                this.media.paused = true;
+                this.trigger("pause");
+            }
         }
         return;
     }
     if (_annotation !== this.currentAnnotation) {
         this.currentAnnotation = _annotation;
-        this.segmentBegin = this.currentAnnotation.annotation.begin.getSeconds();
-        this.segmentEnd = this.currentAnnotation.annotation.end.getSeconds();
-        this.timedelta = this.segmentBegin - this.currentAnnotation.begin.getSeconds();
+        this.segmentBegin = this.currentAnnotation.annotation.begin.milliseconds;
+        this.segmentEnd = this.currentAnnotation.annotation.end.milliseconds;
+        this.timedelta = this.segmentBegin - this.currentAnnotation.begin.milliseconds;
         this.currentMedia = this.currentAnnotation.getMedia();
         
         for (var _i = 0; _i < this.mashup.medias.length; _i++) {
@@ -133,9 +152,28 @@ IriSP.PopcornReplacement.htmlMashup.prototype.changeCurrentAnnotation = function
                 this.mashup.medias[_i].videoEl.show();
             }
         }
+/* PRELOADING */
+        var _this = this,
+            _preloadedMedias = [],
+            _toPreload = this.mashup.getAnnotations().filter(function(_a) {
+            return (_a.begin >= _this.currentAnnotation.end && _a.getMedia().id !== _this.currentMedia.id);
+        });
+        IriSP._(_toPreload).each(function(_a) {
+            var _media = _a.getMedia();
+            if (IriSP._(_preloadedMedias).indexOf(_media.id) === -1) {
+                _preloadedMedias.push(_media.id);
+                _media.popcorn.currentTime(_a.annotation.begin.getSeconds());
+                //console.log("Preloading ", _media.id, " at t=", _a.annotation.begin.getSeconds());
+            }
+        });
+        
+//        console.log("Changed segment: media="+ this.currentMedia.id + ", from=" + this.segmentBegin + " to=" + this.segmentEnd +", timedelta = ", this.timedelta)
+//    } else {
+//        console.log("changeCurrentAnnotation called, but segment hasn't changed");
     }
     if (this.currentMedia.popcorn.readyState()) {
-        this.currentMedia.popcorn.currentTime(this.timecode + this.timedelta);
+        this.currentMedia.popcorn.currentTime( (this.timecode + this.timedelta) / 1000);
+        this.trigger("timeupdate");
     }
     if (!this.media.paused) {
         this.currentMedia.popcorn.play();

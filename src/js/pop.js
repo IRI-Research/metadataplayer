@@ -1,64 +1,47 @@
 /* wrapper that simulates popcorn.js because
    popcorn is a bit unstable at the time */
 
+/* Popcorn.code replacement has been disabled. It didn't work properly and was not even used  */
+
 IriSP.PopcornReplacement = {  
 };
 
 /** base class for our popcorn-compatible players.
  */
 IriSP.PopcornReplacement.player = function(container, options) {
-  /* the jwplayer calls the callbacks in the global space so we need to 
-     preserve them this way */
-  if (typeof IriSP._ === "undefined") {
-      return;
-  }
+  
+    this.media = { 
+        "paused": true,
+        "muted": false
+    };
     
-  this.callbacks = {
-      onReady:  IriSP._.bind(this.__initApi, this),
-      onTime:   IriSP._.bind(this.__timeHandler, this),
-      onPlay:   IriSP._.bind(this.__playHandler, this),
-      onPause:  IriSP._.bind(this.__pauseHandler, this),
-      onSeek:   IriSP._.bind(this.__seekHandler, this) 
-  };
-  
-  this.media = { 
-    "paused": true,
-    "muted": false
-  };
-    
-  this.container = container.replace(/^#/,''); //eschew the '#'
-  
-  this.msgPump = {}; /* dictionnary used to receive and send messages */
-  this.__codes = []; /* used to schedule the execution of a piece of code in 
-                        a segment (similar to the popcorn.code plugin). */
-  
-  this._options = options;
+    this.container = container.replace(/^#/,''); //remove '#' at beginning
+    this.msgPump = {}; /* dictionnary used to receive and send messages */
+    this._options = options;
 
 };
 
 IriSP.PopcornReplacement.player.prototype.listen = function(msg, callback) {
-  if (!this.msgPump.hasOwnProperty(msg))
-    this.msgPump[msg] = [];
-
-  this.msgPump[msg].push(callback);
+    if (!this.msgPump.hasOwnProperty(msg)) {
+        this.msgPump[msg] = [];
+    }
+    this.msgPump[msg].push(callback);
 };
 
 IriSP.PopcornReplacement.player.prototype.on = IriSP.PopcornReplacement.player.prototype.listen;
 
 IriSP.PopcornReplacement.player.prototype.trigger = function(msg, params) {
-  if (!this.msgPump.hasOwnProperty(msg))
-    return;
-
-  var d = this.msgPump[msg];
-
-  for(var i = 0; i < d.length; i++) {
-    d[i].call(window, params);
-  }
-
+    if (!this.msgPump.hasOwnProperty(msg)) {
+        return;
+    }
+    var d = this.msgPump[msg];
+    for(var i = 0; i < d.length; i++) {
+        d[i].call(window, params);
+    }
 };
 
 IriSP.PopcornReplacement.player.prototype.emit = IriSP.PopcornReplacement.player.prototype.trigger;
-
+/*
 IriSP.PopcornReplacement.player.prototype.guid = function(prefix) {
   var str = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
@@ -70,12 +53,12 @@ IriSP.PopcornReplacement.player.prototype.guid = function(prefix) {
 
 /** init the api after that flash player has been setup - called by the callback
     defined by the embedded flash player 
-*/
+
 IriSP.PopcornReplacement.player.prototype.__initApi = function() {
   this.trigger("loadedmetadata"); // we've done more than loading metadata of course,
                                                       // but popcorn doesn't need to know more.
   this.media.muted = this.playerFns.getMute();
-  /* some programmed segments are supposed to be run at the beginning */
+  /* some programmed segments are supposed to be run at the beginning 
   var i = 0;
   for(i = 0; i < this.__codes.length; i++) {
     var c = this.__codes[i];
@@ -87,7 +70,9 @@ IriSP.PopcornReplacement.player.prototype.__initApi = function() {
       c.onEnd();
     }
   }
+  
 };
+*/
 
 IriSP.PopcornReplacement.player.prototype.currentTime = function(time) {
   if (typeof(time) === "undefined") {        
@@ -107,7 +92,7 @@ IriSP.PopcornReplacement.player.prototype.play = function() {
     
 IriSP.PopcornReplacement.player.prototype.pause = function() {
     this.media.paused = true;
-    this.trigger( "pause" );
+    this.trigger("pause");
     this.playerFns.pause();
 };
 
@@ -156,74 +141,6 @@ IriSP.PopcornReplacement.player.prototype.unmute = function() {
     this.muted(false);
 }
 
-IriSP.PopcornReplacement.player.prototype.code = function(options) {
-  this.__codes.push(options);
-  return this;
-};
-
-/* called everytime the player updates itself 
-   (onTime event)
- */
-
-IriSP.PopcornReplacement.player.prototype.__timeHandler = function(event) {
-  var pos = event.position;
-
-  var i = 0;
-  for(i = 0; i < this.__codes.length; i++) {
-     var c = this.__codes[i];
-
-     if (pos >= c.start && pos < c.end && 
-         pos - 1 <= c.start) {       
-        c.onStart();
-     }
- 
-     if (pos > c.start && pos > c.end && 
-         pos - 1 <= c.end) {
-         c.onEnd();
-     }
-   
-  }
- 
-  this.trigger("timeupdate");
-};
-
-IriSP.PopcornReplacement.player.prototype.__seekHandler = function(event) {
-  var i = 0;
-  
-  for(i = 0; i < this.__codes.length; i++) {
-     var c = this.__codes[i];
-    
-     if (event.position >= c.start && event.position < c.end) {        
-        c.onEnd();
-     }         
-   }
-  
-   for(i = 0; i < this.__codes.length; i++) {
-     var c = this.__codes[i];
-
-     if (typeof(event.offset) === "undefined")
-       event.offset = 0;
-           
-     if (event.offset >= c.start && event.offset < c.end) { 
-       c.onStart();
-     }
-     
-   }
-  
-  /* this signal sends as an extra argument the position in the video.
-     As far as I know, this argument is not provided by popcorn */
-  this.trigger("seeked", event.offset);  
-};
-
-IriSP.PopcornReplacement.player.prototype.__playHandler = function(event) {
-  this.media.paused = false;
-  this.trigger("play");
-};
-
-IriSP.PopcornReplacement.player.prototype.__pauseHandler = function(event) {
-  this.media.paused = true;
-  this.trigger("pause");
-};
 
 IriSP.PopcornReplacement.player.prototype.roundTime = function() {
   var currentTime = this.currentTime();

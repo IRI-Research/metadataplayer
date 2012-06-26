@@ -77,13 +77,11 @@ IriSP.PopcornReplacement.allocine.prototype.ready = function() {
     this.player = document.getElementById(this.container);
     this.player.addEventListener("onStateChange", "onAllocineStateChange");
     this.player.cueVideoByUrl(this._options.video);
-    this.callbacks.onReady();
+    this.trigger("loadedmetadata");
 };
 
 IriSP.PopcornReplacement.allocine.prototype.progressHandler = function(progressInfo) {
-    this.callbacks.onTime({
-        position: progressInfo.mediaTime
-    });
+    this.trigger("timeupdate");
 }
 
 
@@ -105,27 +103,18 @@ IriSP.PopcornReplacement.allocine.prototype.apiCall = function(_method, _arg) {
 }
 
 IriSP.PopcornReplacement.allocine.prototype.stateHandler = function(state) {
-    console.log("stateHandler");
     switch(state) {
         case 1:
-            this.callbacks.onPlay();
+            this.trigger("play");
             break;
 
         case 2:
-            this.callbacks.onPause();
+            this.trigger("pause");
             break;
 
         case 3:
-            this.callbacks.onSeek({
-                position: this.player.getCurrentTime()
-            });
+            this.trigger("seeked");
             break;
-
-        /*
-        case 5:
-            this.callbacks.onReady();
-            break;
-        */
     }
     
 };

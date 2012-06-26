@@ -108,7 +108,7 @@
     "medias": [
         {
             "origin": "0",
-            "url": "rtmp://media.iri.centrepompidou.fr/ddc_player/video/ldtplatform/rsln_jane_mcgonigal.mp4",
+            "url": "bab_files/rsln_jane_mcgonigal.mp4",
             "http://advene.liris.cnrs.fr/ns/frame_of_reference/ms": "o=0",
             "meta": {
                 "dc:contributor": "IRI",
@@ -129,7 +129,7 @@
             "unit": "ms"
         }, {
             "origin": "0",
-            "url": "rtmp://media.iri.centrepompidou.fr/ddc_player/video/ldtplatform/www2012_timbernerslee.mp4",
+            "url": "bab_files/www2012_timbernerslee.mp4",
             "http://advene.liris.cnrs.fr/ns/frame_of_reference/ms": "o=0",
             "meta": {
                 "dc:contributor": "IRI",

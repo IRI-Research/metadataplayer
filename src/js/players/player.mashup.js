@@ -5,7 +5,7 @@ the IriSP.PopcornReplacement.player and defining the correct functions */
 IriSP.PopcornReplacement.mashup = function(container, options) {
     /* Appel du constructeur de la classe parente */
     IriSP.PopcornReplacement.player.call(this, container, options);   
-    
+
     var _this = this;
 
     /* Définition des fonctions de commande :
@@ -108,35 +108,28 @@ IriSP.PopcornReplacement.mashup = function(container, options) {
 IriSP.PopcornReplacement.mashup.prototype = new IriSP.PopcornReplacement.player("", {});
 
 IriSP.PopcornReplacement.mashup.prototype.onReady = function() {
-    
     this.player = document.getElementById(this.container);
-    
-    this.callbacks.onReady();
+    this.trigger("loadedmetadata");
 };
 
 IriSP.PopcornReplacement.mashup.prototype.onProgress = function(progressInfo) {
-    
-    this.callbacks.onTime({
-        position: progressInfo.mediaTime
-    });
+    this.trigger("timeupdate");
 }
 
 IriSP.PopcornReplacement.mashup.prototype.onStateChange = function(state) {
-    
+
     switch(state) {
         case 1:
-            this.callbacks.onPlay();
+            this.trigger("play");
             break;
 
         case 2:
-            this.callbacks.onPause();
+            this.trigger("pause");
             break;
 
         case 3:
-            this.callbacks.onSeek({
-                position: this.player.getCurrentTime()
-            });
+            this.trigger("seeked");
             break;
     }
-    
+
 };

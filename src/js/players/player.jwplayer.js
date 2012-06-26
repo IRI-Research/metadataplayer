@@ -8,12 +8,13 @@ IriSP.PopcornReplacement.jwplayer = function(container, options) {
   
     this.media.duration = options.duration; /* optional */
  
-    var _player = jwplayer(this.container);
+    var _player = jwplayer(this.container),
+        _this = this;
   
   /* Définition des fonctions de l'API -  */
     this.playerFns = {
-        play: function() { return _player.play(); },
-        pause: function() { return _player.pause(); },
+        play: function() { return _player.play(true); },
+        pause: function() { return _player.pause(true); },
         getPosition: function() { return _player.getPosition(); },
         seek: function(pos) { return _player.seek(pos); },
         getMute: function() { return _player.getMute() },
@@ -22,7 +23,23 @@ IriSP.PopcornReplacement.jwplayer = function(container, options) {
         setVolume: function(p) { return _player.setVolume(Math.floor(100*p)); }
     }
 
-    options.events = this.callbacks;
+    options.events = {
+        onReady:  function() {
+            _this.trigger("loadedmetadata");
+        },
+        onTime:   function() {
+            _this.trigger("timeupdate");
+        },
+        onPlay:   function() {
+            _this.trigger("play");
+        },
+        onPause:  function() {
+            _this.trigger("pause");
+        },
+        onSeek:   function() {
+            _this.trigger("seeked");
+        }
+    };
 
     _player.setup(options);
 };

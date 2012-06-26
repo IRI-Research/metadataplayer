@@ -52,6 +52,7 @@ var _metadata = {
     url: 'moon/moon.json',
     format: 'ldt'
 };
+var _canPlayMp4 = document.createElement('video').canPlayType('video/mp4');
 var _config = {            
     gui: {
         width : 630,
@@ -80,13 +81,17 @@ var _config = {
         ]
     },
     player:{
-        type:'mashup-html',
-        live: true, 
+        type: 'mashup-html',
+        url_transform: function(_url) {
+            if (_canPlayMp4 == "maybe" || _canPlayMp4 == "probably") {
+                return _url.replace(/\.webm$/i,'.mp4');
+            } else {
+                return _url.replace(/\.mp4$/i,'.webm');
+            }
+            
+        },
         height: 350,
-        width: 630, 
-        provider: "rtmp",
-        mashup_swf : "bab_files/player_bab_ldt.swf",
-        mashup_xml : "moon/moon.xml",
+        width: 630,
         autostart: true,
         metadata: _metadata
     }
