@@ -1,0 +1,85 @@
+﻿<!doctype html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <title>Metadataplayer test with JwPlayer</title>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='test.css' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="metadataplayer/LdtPlayer-core.js" type="text/javascript"></script>
+        <script type="text/javascript" src="test-config.js" type="text/javascript"></script>
+        <style type="text/css">
+        #SlideShareContainer {
+            float: left;
+            width: 400px;
+            margin: 10px 0;
+        }
+    </style>
+    </head>
+
+    <body>
+        <h1>Metadataplayer test with JwPlayer</h1>
+        <div id="LdtPlayer"></div>
+        <div id="SlideShareContainer"></div>
+        <div id="AnnotationsListContainer"></div>
+        <script type="text/javascript">
+    IriSP.libFiles.locations.jwPlayerSWF = "player.swf";
+    IriSP.libFiles.defaultDir = "libs/";
+    IriSP.language = 'fr';
+    IriSP.widgetsDir = "metadataplayer";
+    var _metadata = {
+        url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/8a1a344a-7f34-11e1-9ee2-00145ea4a2be?callback=?',
+        format: 'ldt'
+    };
+    var _config = {            
+        gui: {
+            width : 620,
+            container : 'LdtPlayer',
+            default_options: {
+                metadata: _metadata
+            },
+            css : 'metadataplayer/LdtPlayer-core.css',
+            widgets: [
+                { type: "Slider" },
+                { type: "Controller" },
+                { type: "Polemic" },
+                { type: "Segments" },
+                { type: "Slice" },
+                { type: "Arrow" },
+                { type: "Annotation" },
+                {
+                    type: "CreateAnnotation",
+                    api_endpoint_template: "http://192.168.56.101/pf/ldtplatform/api/ldt/annotations/{{id}}.json",
+                    creator_name: "Metadataplayer"
+                },
+                { type: "Tweet" },
+                {
+                    type: "Tagcloud"
+                },
+                {
+                    type: "AnnotationsList",
+                    container: "AnnotationsListContainer"
+                },
+                {
+                    type: "Slideshare",
+                    container: "SlideShareContainer"
+                },
+                { type: "Mediafragment"}
+            ]
+        },
+        player:{
+            type:'auto',
+            live: true, 
+            height: 350, 
+            width: 620, 
+            provider: "rtmp",
+            autostart: true,
+            metadata: _metadata
+        }
+    };
+    
+    _myPlayer = new IriSP.Metadataplayer(_config);
+    
+        </script>
+    </body>
+</html>

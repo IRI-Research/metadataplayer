@@ -55,9 +55,7 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
 
 IriSP.Widgets.Annotation.prototype.onTimeupdate = function() {
     var _time = Math.floor(this.player.popcorn.currentTime() * 1000),
-        _list = this.getWidgetAnnotations().filter(function(_annotation) {
-            return _annotation.begin <= _time && _annotation.end > _time;
-        });
+        _list = this.getWidgetAnnotationsAtTime();
     if (_list.length) {
         if (_list[0].id !== this.lastAnnotation) {
             this.drawAnnotation(_list[0]);

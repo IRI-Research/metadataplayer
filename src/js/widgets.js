@@ -113,6 +113,13 @@ IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function() {
     return typeof this.annotation_type !== "undefined" && this.annotation_type ? _curmedia.getAnnotationsByTypeTitle(this.annotation_type) : _curmedia.getAnnotations();
 }
 
+IriSP.Widgets.Widget.prototype.getWidgetAnnotationsAtTime = function() {
+    var _time = Math.floor(this.player.popcorn.currentTime() * 1000);
+    return this.getWidgetAnnotations().filter(function(_annotation) {
+        return _annotation.begin <= _time && _annotation.end > _time;
+    });
+}
+
 /**
  * This method responsible of drawing a widget on screen.
  */

@@ -5,7 +5,7 @@ IriSP.Widgets.Tooltip = function(Popcorn, config, Serializer) {
 
 IriSP.Widgets.Tooltip.prototype = new IriSP.Widgets.Widget();
 
-IriSP.Widgets.Tooltip.prototype.template = '<div class="Ldt-Tooltip"><div class="Ldt-Tooltip-Color"></div><div class="Ldt-Tooltip-Text"></div></div>';
+IriSP.Widgets.Tooltip.prototype.template = '<div class="Ldt-Tooltip"><div class="Ldt-Tooltip-Inner"><div class="Ldt-Tooltip-Color"></div><div class="Ldt-Tooltip-Text"></div></div></div>';
 
 IriSP.Widgets.Tooltip.prototype.draw = function() {
     _this = this;

@@ -129,6 +129,9 @@ IriSP.Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {
 }
 
 IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
+    
+    /* Getting video URL from metadata if it's not in the player config options */
+   
     if (typeof this.videoData !== "undefined" && typeof this.config.player.video === "undefined") {
         
         var _media;
@@ -164,7 +167,129 @@ IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
         }
         
     }
-    this.configurePopcorn();
+    
+    if (typeof this.config.player.video === "string" && this.config.player.url_transform === "function") {
+        this.config.player.video = this.config.player.url_transform(this.config.player.video);
+    }
+    
+    var _pop,
+        _divs = this.layoutDivs("video",this.config.player.height || undefined),
+        containerDiv = _divs[0],
+        spacerDiv = _divs[1],
+        _this = this,
+        _types = {
+            "html5" : /\.(ogg|ogv|webm)$/,
+            "youtube" : /^(https?:\/\/)?(www\.)?youtube\.com/,
+            "dailymotion" : /^(https?:\/\/)?(www\.)?dailymotion\.com/
+        };
+    
+    if (this.config.player.type === "auto") {
+        this.config.player.type = "jwplayer";
+        IriSP._(_types).each(function(_v, _k) {
+            if (_v.test(_this.config.player.video)) {
+                _this.config.player.type = _k
+            }
+        });
+    }
+
+    switch(this.config.player.type) {
+        case "html5":
+            var _tmpId = Popcorn.guid("video"),
+                _videoEl = IriSP.jQuery('<video>');
+            
+            _videoEl.attr({
+                "src" : this.config.player.video,
+                "id" : _tmpId
+            })
+
+            if(this.config.player.hasOwnProperty("width")) {
+                _videoEl.attr("width", this.config.player.width);
+            }
+            if(this.config.player.hasOwnProperty("height")) {
+                _videoEl.attr("height", this.config.player.height);
+            }
+            IriSP.jQuery("#" + containerDiv).append(_videoEl);
+            _pop = Popcorn("#" + _tmpId);
+            break;
+
+        case "html5-audio":
+            var _tmpId = Popcorn.guid("audio"),
+                _videoEl = IriSP.jQuery('<audio>');
+            
+            _videoEl.attr({
+                "src" : this.config.player.video,
+                "id" : _tmpId
+            })
+
+            if(this.config.player.hasOwnProperty("width")) {
+                _videoEl.attr("width", this.config.player.width);
+            }
+            if(this.config.player.hasOwnProperty("height")) {
+                _videoEl.attr("height", this.config.player.height);
+            }
+            IriSP.jQuery("#" + containerDiv).append(_videoEl);
+            _pop = Popcorn("#" + _tmpId);
+            break;
+
+        case "jwplayer":
+            var opts = IriSP.jQuery.extend({}, this.config.player);
+            delete opts.container;
+            delete opts.type;
+            opts.file = opts.video;
+            delete opts.video;
+
+            if(!opts.hasOwnProperty("flashplayer")) {
+                opts.flashplayer = IriSP.getLib("jwPlayerSWF");
+            }
+
+            if(!opts.hasOwnProperty("controlbar.position")) {
+                opts["controlbar.position"] = "none";
+            }
+            _pop = new IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
+            break;
+
+        case "youtube":
+            // Popcorn.youtube wants us to specify the size of the player in the style attribute of its container div.
+            IriSP.jQuery("#" + containerDiv).css({
+                width : this.config.player.width + "px",
+                height : this.config.player.height + "px"
+            });
+            var _urlparts = this.config.player.video.split(/[?&]/),
+                _params = {};
+            for (var _j = 1; _j < _urlparts.length; _j++) {
+                var _ppart = _urlparts[_j].split('=');
+                _params[_ppart[0]] = decodeURIComponent(_ppart[1]);
+            }
+            _params.controls = 0;
+            _params.modestbranding = 1;
+            _url = _urlparts[0] + '?' + IriSP.jQuery.param(_params);
+            _pop = Popcorn.youtube("#" + containerDiv, _url);
+            break;
+
+        case "dailymotion":
+            _pop = new IriSP.PopcornReplacement.dailymotion("#" + containerDiv, this.config.player);
+            break;
+
+        case "mashup":
+            _pop = new IriSP.PopcornReplacement.mashup("#" + containerDiv, this.config.player);
+            break;
+            
+        case "allocine":
+            _pop = new IriSP.PopcornReplacement.allocine("#" + containerDiv, this.config.player);
+            break;
+        
+        case "mashup-html":
+            _pop = new IriSP.PopcornReplacement.htmlMashup("#" + containerDiv, this.config.player, this.videoData);
+            break;
+        
+        default:
+            _pop = undefined;
+    };
+
+    this.popcorn = _pop;
+    
+    /* Now Loading Widgets */
+    
     this.widgets = [];
     var _this = this;
     for(var i = 0; i < this.config.gui.widgets.length; i++) {
@@ -199,130 +324,6 @@ IriSP.Metadataplayer.prototype.loadWidget = function(_widgetConfig, _callback) {
             _callback(new IriSP.Widgets[_widgetConfig.type](_this, _widgetConfig));
         });
     }
-}
-
-IriSP.Metadataplayer.prototype.configurePopcorn = function() {
-    IriSP.log("IriSP.Metadataplayer.prototype.configurePopcorn");
-    var pop,
-        ret = this.layoutDivs("video",this.config.player.height || undefined),
-        containerDiv = ret[0],
-        spacerDiv = ret[1],
-        _this = this,
-        _types = {
-            "html5" : /\.(ogg|ogv|webm)$/,
-            "youtube" : /^(https?:\/\/)?(www\.)?youtube\.com/,
-            "dailymotion" : /^(https?:\/\/)?(www\.)?dailymotion\.com/
-        };
-    
-    if (this.config.player.type === "auto") {
-        this.config.player.type = "jwplayer";
-        IriSP._(_types).each(function(_v, _k) {
-            if (_v.test(_this.config.player.video)) {
-                _this.config.player.type = _k
-            }
-        });
-    }
-
-    switch(this.config.player.type) {
-        /*
-         todo : dynamically create the div/video tag which
-         will contain the video.
-         */
-        case "html5":
-            var _tmpId = Popcorn.guid("video"),
-                _videoEl = IriSP.jQuery('<video>');
-            
-            _videoEl.attr({
-                "src" : this.config.player.video,
-                "id" : _tmpId
-            })
-
-            if(this.config.player.hasOwnProperty("width")) {
-                _videoEl.attr("width", this.config.player.width);
-            }
-            if(this.config.player.hasOwnProperty("height")) {
-                _videoEl.attr("height", this.config.player.height);
-            }
-            IriSP.jQuery("#" + containerDiv).append(_videoEl);
-            pop = Popcorn("#" + _tmpId);
-            break;
-
-        case "html5-audio":
-            var _tmpId = Popcorn.guid("audio"),
-                _videoEl = IriSP.jQuery('<audio>');
-            
-            _videoEl.attr({
-                "src" : this.config.player.video,
-                "id" : _tmpId
-            })
-
-            if(this.config.player.hasOwnProperty("width")) {
-                _videoEl.attr("width", this.config.player.width);
-            }
-            if(this.config.player.hasOwnProperty("height")) {
-                _videoEl.attr("height", this.config.player.height);
-            }
-            IriSP.jQuery("#" + containerDiv).append(_videoEl);
-            pop = Popcorn("#" + _tmpId);
-            break;
-
-        case "jwplayer":
-            var opts = IriSP.jQuery.extend({}, this.config.player);
-            delete opts.container;
-            delete opts.type;
-            opts.file = opts.video;
-            delete opts.video;
-
-            if(!opts.hasOwnProperty("flashplayer")) {
-                opts.flashplayer = IriSP.getLib("jwPlayerSWF");
-            }
-
-            if(!opts.hasOwnProperty("controlbar.position")) {
-                opts["controlbar.position"] = "none";
-            }
-            pop = new IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
-            break;
-
-        case "youtube":
-            // Popcorn.youtube wants us to specify the size of the player in the style attribute of its container div.
-            IriSP.jQuery("#" + containerDiv).css({
-                width : this.config.player.width + "px",
-                height : this.config.player.height + "px"
-            });
-            var _urlparts = this.config.player.video.split(/[?&]/),
-                _params = {};
-            for (var _j = 1; _j < _urlparts.length; _j++) {
-                var _ppart = _urlparts[_j].split('=');
-                _params[_ppart[0]] = decodeURIComponent(_ppart[1]);
-            }
-            _params.controls = 0;
-            _params.modestbranding = 1;
-            _url = _urlparts[0] + '?' + IriSP.jQuery.param(_params);
-            pop = Popcorn.youtube("#" + containerDiv, _url);
-            break;
-
-        case "dailymotion":
-            pop = new IriSP.PopcornReplacement.dailymotion("#" + containerDiv, this.config.player);
-            break;
-
-        case "mashup":
-            pop = new IriSP.PopcornReplacement.mashup("#" + containerDiv, this.config.player);
-            break;
-            
-        case "allocine":
-            /* pass the options as-is to the allocine player and let it handle everything */
-            pop = new IriSP.PopcornReplacement.allocine("#" + containerDiv, this.config.player);
-            break;
-        
-        case "mashup-html":
-            pop = new IriSP.PopcornReplacement.htmlMashup("#" + containerDiv, this.config.player, this.videoData);
-            break;
-        
-        default:
-            pop = undefined;
-    };
-
-    this.popcorn = pop;
 }
 
 /** create a subdiv with an unique id, and a spacer div as well.
