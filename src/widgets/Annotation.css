@@ -23,6 +23,26 @@
     font-weight: bold;
 }
 
+.Ldt-Annotation-Cleared {
+    clear: both;
+}
+
+.Ldt-Annotation-MaxMinButton {
+    float: right; margin: 5px 5px 0; width: 17px; height: 17px; background: url(img/widget-control.png); background-position: 0 -51px; cursor: hand;
+}
+
+.Ldt-Annotation-MaxMinButton:hover {
+    background-position: -17px -51px;
+}
+
+.Ldt-Annotation-Minimized div.Ldt-Annotation-MaxMinButton {
+    background-position: 0 -34px;
+}
+
+.Ldt-Annotation-Minimized div.Ldt-Annotation-MaxMinButton:hover {
+    background-position: -17px -34px;
+}
+
 .Ldt-Annotation-Inner h3.Ldt-Annotation-MashupOrigin {
     font-size: 12px;
 }
@@ -36,11 +56,15 @@
 }
 
 .Ldt-Annotation-Inner p {
-    margin: 5px 0; font-size: 12px;
+    font-size: 12px;
 }
 
-.Ldt-Annotation-ShareIcons {
-    float: right;
+.Ldt-Annotation-Label {
+    font-size: 12px; font-weight: bold; max-width: 90px; float: left; clear: left;
+}
+
+.Ldt-Annotation-Labelled {
+    margin: 5px 0 0 90px; clear: right;
 }
 
 .Ldt-Annotation-Share {
@@ -75,16 +99,8 @@
     font-size: 12px;
 }
 
-.Ldt-Annotation-NoTags {
-    display: none;
-}
-
-.Ldt-Annotation-TagTitle {
-    margin: 5px 0 2px; font-size: 12px;
-}
-
 ul.Ldt-Annotation-Tags {
-    display: inline; list-style: none; padding: 0; margin: 5px 0;
+    list-style: none; padding: 0;
 }
 
 li.Ldt-Annotation-TagLabel {

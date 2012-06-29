@@ -1,17 +1,23 @@
-/* TODO: Add Social Network Sharing and from field */
+/* TODO: Add Social Network Sharing, Finish Current Timecode Sync & Arrow Takeover */
 
 IriSP.Widgets.CreateAnnotation = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
-    this.lastAnnotation = false;
 };
 
 IriSP.Widgets.CreateAnnotation.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.CreateAnnotation.prototype.defaults = {
-    show_title_field : true,
+    show_title_field : false, /* For the moment, titles can't be sent to ldtplatform */
+    show_creator_field : true,
+    start_visible : true,
+    always_visible : true,
+    sync_on_slice_widget : true, /* If false, syncs on current timecode */
+    takeover_arrow : false,
+    minimize_annotation_widget : false,
     creator_name : "",
     creator_avatar : "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
     tags : false,
+    pause_on_write : true,
     max_tags : 8,
     polemics : [{
         keyword: "++",
@@ -41,10 +47,11 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
     en: {
         from_time: "from",
         to_time: "to",
+        at_time: "at",
         submit: "Submit",
         add_keywords_: "Add keywords:",
         add_polemic_keywords_: "Add polemic keywords:",
-        your_name: "Your name",
+        your_name_: "Your name:",
         no_title: "Annotate this video",
         type_title: "Annotation title",
         type_description: "Type the full description of your annotation here.",
@@ -61,10 +68,11 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
     fr: {
         from_time: "de",
         to_time: "à",
+        at_time: "à",
         submit: "Envoyer",
         add_keywords_: "Ajouter des mots-clés&nbsp;:",
         add_polemic_keywords_: "Ajouter des mots-clés polémiques&nbsp;:",
-        your_name: "Votre nom",
+        your_name_: "Votre nom&nbsp;:",
         no_title: "Annoter cette vidéo",
         type_title: "Titre de l'annotation",
         type_description: "Rédigez le contenu de votre annotation ici.",
@@ -85,8 +93,9 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '<form class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Main">'
     + '<h3>{{#show_title_field}}<input class="Ldt-CreateAnnotation-Title" placeholder="{{l10n.type_title}}" />{{/show_title_field}}'
     + '{{^show_title_field}}<span class="Ldt-CreateAnnotation-NoTitle">{{l10n.no_title}} </span>{{/show_title_field}}'
-    + ' <span class="Ldt-CreateAnnotation-Times">{{l10n.from_time}} <span class="Ldt-CreateAnnotation-Begin"></span>'
-    + ' {{l10n.to_time}} <span class="Ldt-CreateAnnotation-End"></span></span></h3>'
+    + ' <span class="Ldt-CreateAnnotation-Times">{{#sync_on_slice_widget}}{{l10n.from_time}} {{/sync_on_slice_widget}}{{^sync_on_slice_widget}}{{l10n.at_time}} {{/sync_on_slice_widget}} <span class="Ldt-CreateAnnotation-Begin">00:00</span>'
+    + '{{#sync_on_slice_widget}} {{l10n.to_time}} <span class="Ldt-CreateAnnotation-End">00:00</span>{{/sync_on_slice_widget}}</span></h3>'
+    + '{{#show_creator_field}}<h3>{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator" value="{{creator_name}}" /></h3>{{/show_creator_field}}'
     + '<textarea class="Ldt-CreateAnnotation-Description" placeholder="{{l10n.type_description}}"></textarea>'
     + '<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>'
     + '<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{l10n.submit}}" />'
@@ -96,8 +105,8 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '{{#polemics}}<li class="Ldt-CreateAnnotation-PolemicLi" style="background-color: {{background_color}}; color: {{text_color}}">{{keyword}}</li>{{/polemics}}</ul></div>{{/polemics.length}}'
     + '<div style="clear: both;"></div></form>'
     + '<div class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Wait"><div class="Ldt-CreateAnnotation-InnerBox">{{l10n.wait_while_processing}}</div></div>'
-    + '<div class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Error"><a title="{{l10n.close_widget}}" class="Ldt-CreateAnnotation-Close" href="#"></a><div class="Ldt-CreateAnnotation-InnerBox">{{l10n.error_while_contacting}}</div></div>'
-    + '<div class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Saved"><a title="{{l10n.close_widget}}" class="Ldt-CreateAnnotation-Close" href="#"></a><div class="Ldt-CreateAnnotation-InnerBox">{{l10n.annotation_saved}}</div></div>'
+    + '<div class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Error">{{^always_visible}}<a title="{{l10n.close_widget}}" class="Ldt-CreateAnnotation-Close" href="#"></a>{{/always_visible}}<div class="Ldt-CreateAnnotation-InnerBox">{{l10n.error_while_contacting}}</div></div>'
+    + '<div class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Saved">{{^always_visible}}<a title="{{l10n.close_widget}}" class="Ldt-CreateAnnotation-Close" href="#"></a>{{/always_visible}}<div class="Ldt-CreateAnnotation-InnerBox">{{l10n.annotation_saved}}</div></div>'
     + '</div></div>';
     
 IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
@@ -126,9 +135,17 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
     if (this.show_title_field) {
         this.$.find(".Ldt-CreateAnnotation-Title").bind("change keyup input paste", this.functionWrapper("onTitleChange"));
     }
+    if (this.show_creator_field) {
+        this.$.find(".Ldt-CreateAnnotation-Creator").bind("change keyup input paste", this.functionWrapper("onCreatorChange"));
+    }
     
-    this.$.hide();
-    this.hide();
+    if (this.start_visible) {
+        this.show();
+    } else {
+        this.$.hide();
+        this.hide();
+    }
+    
     this.bindPopcorn("IriSP.CreateAnnotation.toggle","toggle");
     this.bindPopcorn("IriSP.Slice.boundsChanged","onBoundsChanged");
     this.begin = new IriSP.Model.Time();
@@ -145,25 +162,38 @@ IriSP.Widgets.CreateAnnotation.prototype.show = function() {
     this.visible = true;
     this.showScreen('Main');
     this.$.find(".Ldt-CreateAnnotation-Description").val("").css("border-color", "#666666");
-    this.$.find(".Ldt-CreateAnnotation-Title").val("").css("border-color", "#666666");
+    if (this.show_title_field) {
+        this.$.find(".Ldt-CreateAnnotation-Title").val("").css("border-color", "#666666");
+    }
+    if (this.show_creator_field) {
+        this.$.find(".Ldt-CreateAnnotation-Creator").val(this.creator_name).css("border-color", "#666666");
+    }
     this.$.find(".Ldt-CreateAnnotation-TagLi, .Ldt-CreateAnnotation-PolemicLi").removeClass("selected");
     this.$.slideDown();
-    this.player.popcorn.trigger("IriSP.Annotation.minimize");
+    if (this.minimize_annotation_widget) {
+        this.player.popcorn.trigger("IriSP.Annotation.minimize");
+    }
     this.player.popcorn.trigger("IriSP.Slice.show");
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.hide = function() {
-    this.visible = false;
-    this.$.slideUp();
-    this.player.popcorn.trigger("IriSP.Annotation.maximize");
-    this.player.popcorn.trigger("IriSP.Slice.hide");
+    if (!this.always_visible) {
+        this.visible = false;
+        this.$.slideUp();
+        if (this.minimize_annotation_widget) {
+            this.player.popcorn.trigger("IriSP.Annotation.maximize");
+        }
+        this.player.popcorn.trigger("IriSP.Slice.hide");
+    }
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.toggle = function() {
-    if (this.visible) {
-        this.hide();
-    } else {
-        this.show();
+    if (!this.always_visible) {
+        if (this.visible) {
+            this.hide();
+        } else {
+            this.show();
+        }
     }
 }
 
@@ -186,6 +216,12 @@ IriSP.Widgets.CreateAnnotation.prototype.addKeyword = function(_keyword) {
     this.onDescriptionChange();
 }
 
+IriSP.Widgets.CreateAnnotation.prototype.pauseOnWrite = function() {
+    if (this.pause_on_write && !this.player.popcorn.media.paused) {
+        this.player.popcorn.pause();
+    }
+}
+
 IriSP.Widgets.CreateAnnotation.prototype.onDescriptionChange = function() {
     var _field = this.$.find(".Ldt-CreateAnnotation-Description"),
         _contents = _field.val();
@@ -198,6 +234,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onDescriptionChange = function() {
             IriSP.jQuery(this).removeClass("selected");
         }
     });
+    this.pauseOnWrite();
     return !!_contents;
 }
 
@@ -205,11 +242,21 @@ IriSP.Widgets.CreateAnnotation.prototype.onTitleChange = function() {
     var _field = this.$.find(".Ldt-CreateAnnotation-Title"),
         _contents = _field.val();
     _field.css("border-color", !!_contents ? "#666666" : "#ff0000");
+    this.pauseOnWrite();
+    return !!_contents;
+}
+
+
+IriSP.Widgets.CreateAnnotation.prototype.onCreatorChange = function() {
+    var _field = this.$.find(".Ldt-CreateAnnotation-Creator"),
+        _contents = _field.val();
+    _field.css("border-color", !!_contents ? "#666666" : "#ff0000");
+    this.pauseOnWrite();
     return !!_contents;
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
-    if (!this.onDescriptionChange() || (!this.onTitleChange() && this.show_title_field)) {
+    if (!this.onDescriptionChange() || (this.show_title_field && !this.onTitleChange()) || (this.show_creator_field && !this.onCreatorChange())) {
         return;
     }
     
@@ -230,13 +277,17 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
     _annotation.setMedia(this.source.currentMedia.id);
     _annotation.setAnnotationType(_annotationType.id);
     if (this.show_title_field) {
-        _annotation.title = this.$.find(".Ldt-CreateAnnotation-Title").val()
+        _annotation.title = this.$.find(".Ldt-CreateAnnotation-Title").val();
     }
     _annotation.created = new Date();
     _annotation.description = this.$.find(".Ldt-CreateAnnotation-Description").val();
     _annotation.setTags(this.$.find(".Ldt-CreateAnnotation-TagLi.selected").map(function() { return IriSP.jQuery(this).attr("tag-id")}));
     
-    _export.creator = this.creator_name;
+    if (this.show_creator_field) {
+        _export.creator = this.$.find(".Ldt-CreateAnnotation-Creator").val();
+    } else {
+        _export.creator = this.creator_name;
+    }
     _export.created = new Date();
     _exportedAnnotations.push(_annotation);
     _export.addList("annotation",_exportedAnnotations);
@@ -255,6 +306,9 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
             _export.getAnnotations().removeElement(_annotation, true);
             _export.deSerialize(_data);
             _this.source.merge(_export);
+            if (this.pause_on_write && this.player.popcorn.media.paused) {
+                this.player.popcorn.play();
+            }
             _this.player.popcorn.trigger("IriSP.AnnotationsList.refresh");
         },
         error: function(_xhr, _error, _thrown) {

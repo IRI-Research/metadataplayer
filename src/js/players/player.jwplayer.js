@@ -28,12 +28,18 @@ IriSP.PopcornReplacement.jwplayer = function(container, options) {
             _this.trigger("loadedmetadata");
         },
         onTime:   function() {
+            if (_this.media.paused && _player.getState() === "PLAYING") {
+                _this.media.paused = false;
+                _this.trigger("play");
+            }
             _this.trigger("timeupdate");
         },
         onPlay:   function() {
+            _this.media.paused = false;
             _this.trigger("play");
         },
         onPause:  function() {
+            _this.media.paused = true;
             _this.trigger("pause");
         },
         onSeek:   function() {

@@ -167,18 +167,27 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                                 _this.foreign_url,
                                 {
                                     project : _annotation.project,
-                                    media : _annotation.media.id.replace(/^.*:/,''),
+                                    media : _annotation.media.id,
                                     annotation : _annotation.id,
-                                    annotationType : _annotation.annotationType.id.replace(/^.*:/,'')
+                                    annotationType : _annotation.annotationType.id
                                 }
                             )
                             : '#id=' + _annotation.id
                             )
                     );
+                    var _title = _annotation.title.replace(_annotation.description,''),
+                        _description = _annotation.description;
+                    if (!_annotation.title) {
+                        _title = _annotation.creator;
+                    }
+                    if (!_annotation.description && _annotation.creator) {
+                        _description = _annotation.title;
+                        _title = _annotation.creator;
+                    }
                     var _res = {
                         id : _annotation.id,
-                        title : _annotation.title.replace(_annotation.description,''),
-                        description : _annotation.description,
+                        title : _title,
+                        description : _description,
                         begin : _annotation.begin.toString(),
                         end : _annotation.end.toString(),
                         thumbnail : typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail,

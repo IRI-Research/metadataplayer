@@ -9,7 +9,14 @@ IriSP.Widgets.Slice = function(player, config) {
 IriSP.Widgets.Slice.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Slice.prototype.defaults = {
-    start_visible : false
+    start_visible : false,
+    pause_on_change : true,
+    live_update : true
+        /* Shall the bounds change each time
+        the Annotation Widget sends an update (true)
+        or only when "show" is triggered (false) ?
+        - true is to be recommended when the widget is permanently displayed.
+        */
 };
 
 IriSP.Widgets.Slice.prototype.draw = function() {
@@ -35,6 +42,11 @@ IriSP.Widgets.Slice.prototype.draw = function() {
                 time:Math.floor((ui.values[0]+ui.values[1])/2)
             });
             _this.player.popcorn.trigger("IriSP.Slice.boundsChanged",[ui.values[0], ui.values[1]]);
+        },
+        start: function() {
+            if (_this.pause_on_change && !_this.player.popcorn.media.paused) {
+                _this.player.popcorn.pause();
+            }
         }
     });
     this.$slider.find(".ui-slider-handle:first").addClass("Ldt-Slice-left-handle");
@@ -47,6 +59,7 @@ IriSP.Widgets.Slice.prototype.draw = function() {
     this.bindPopcorn("IriSP.Slice.show","show");
     this.bindPopcorn("IriSP.Slice.hide","hide");
     this.bindPopcorn("IriSP.Annotation.boundsChanged","storeBounds");
+    this.trigger("IriSP.Annotation.getBounds");
 };
 
 IriSP.Widgets.Slice.prototype.show = function() {
@@ -63,4 +76,7 @@ IriSP.Widgets.Slice.prototype.hide = function() {
 IriSP.Widgets.Slice.prototype.storeBounds = function(_values) {
     this.min = _values[0];
     this.max = _values[1];
+    if (this.live_update) {
+        this.$slider.slider("values", [this.min, this.max]);
+    }
 }

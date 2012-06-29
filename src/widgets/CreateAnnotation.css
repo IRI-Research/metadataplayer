@@ -26,7 +26,7 @@
     min-height: 150px;
 }
 
-.Ldt-CreateAnnotation-Title {
+.Ldt-CreateAnnotation-Title, .Ldt-CreateAnnotation-Creator {
     margin-right: 2px;
     font-size: 14px;
     font-weight: bold;
