@@ -27,14 +27,27 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     annotation_type : false,
     refresh_interval : 0,
     limit_count : 10,
-    newest_first : false
+    newest_first : false,
+    polemics : [{
+        keyword: "++",
+        background_color: "#c9ecc6"
+    },{
+        keyword: "--",
+        background_color: "#f9c5c6"
+    },{
+        keyword: "??",
+        background_color: "#cec5f9"
+    },{
+        keyword: "==",
+        background_color: "#f9f4c6"
+    }]
 };
 
 IriSP.Widgets.AnnotationsList.prototype.template =
     '<div class="Ldt-AnnotationsListWidget">'
     + '<ul class="Ldt-AnnotationsList-ul">'
     + '{{#annotations}}'
-    + '<li class="Ldt-AnnotationsList-li Ldt-TraceMe" trace-info="annotation-id:{{id}}">'
+    + '<li class="Ldt-AnnotationsList-li Ldt-TraceMe" trace-info="annotation-id:{{id}}" style="{{specific_style}}">'
     + '<div class="Ldt-AnnotationsList-ThumbContainer">'
     + '<a href="{{url}}">'
     + '<img class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
@@ -175,7 +188,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                             : '#id=' + _annotation.id
                             )
                     );
-                    var _title = _annotation.title.replace(_annotation.description,''),
+                    var _title = (_annotation.title || "").replace(_annotation.description,''),
                         _description = _annotation.description;
                     if (!_annotation.title) {
                         _title = _annotation.creator;
@@ -184,6 +197,13 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         _description = _annotation.title;
                         _title = _annotation.creator;
                     }
+                    var _bgcolor;
+                    IriSP._(_this.polemics).each(function(_polemic) {
+                        var _rgxp = IriSP.Model.regexpFromTextOrArray(_polemic.keyword);
+                        if (_rgxp.test(_title + " " + _description)) {
+                            _bgcolor = _polemic.background_color;
+                        }
+                    });
                     var _res = {
                         id : _annotation.id,
                         title : _title,
@@ -192,7 +212,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         end : _annotation.end.toString(),
                         thumbnail : typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail,
                         url : _url,
-                        tags : _annotation.getTagTexts()
+                        tags : _annotation.getTagTexts(),
+                        specific_style : (typeof _bgcolor !== "undefined" ? "background: " + _bgcolor : "")
                     }
                     return _res;
             }),

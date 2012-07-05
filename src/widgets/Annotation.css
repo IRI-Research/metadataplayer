@@ -28,7 +28,12 @@
 }
 
 .Ldt-Annotation-MaxMinButton {
-    float: right; margin: 5px 5px 0; width: 17px; height: 17px; background: url(img/widget-control.png); background-position: 0 -51px; cursor: hand;
+    float: right; margin: 5px 5px 0; width: 17px; height: 17px;
+    background: url(img/widget-control.png); background-position: 0 -51px; cursor: pointer;
+}
+
+.Ldt-Annotation-Social {
+    float: right;
 }
 
 .Ldt-Annotation-MaxMinButton:hover {
@@ -65,34 +70,6 @@
 
 .Ldt-Annotation-Labelled {
     margin: 5px 0 0 90px; clear: right;
-}
-
-.Ldt-Annotation-Share {
-    display: inline-block; width: 24px; height: 24px; margin: 2px 0 0 2px; background: url(img/socialbuttons.png);
-}
-
-.Ldt-Annotation-Twitter {
-    background-position: 0 0;
-}
-
-.Ldt-Annotation-Twitter:hover {
-    background-position: 0 -24px;
-}
-
-.Ldt-Annotation-Fb {
-    background-position: -24px 0;
-}
-
-.Ldt-Annotation-Fb:hover {
-    background-position: -24px -24px;
-}
-
-.Ldt-Annotation-Gplus {
-    background-position: -48px 0;
-}
-
-.Ldt-Annotation-Gplus:hover {
-    background-position: -48px -24px;
 }
 
 .Ldt-Annotation-Tags-Block {
@@ -135,6 +112,10 @@ li.Ldt-Annotation-TagLabel:hover {
 }
 
 .Ldt-Annotation-Minimized .Ldt-Annotation-HiddenWhenMinimized {
+    display: none;
+}
+
+.Ldt-Annotation-EmptyBlock {
     display: none;
 }
 

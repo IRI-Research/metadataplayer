@@ -1,0 +1,35 @@
+.Ldt-Social a {
+    display: inline-block; width: 24px; height: 24px; margin: 2px 0 0 2px; background: url(img/socialbuttons.png);
+}
+
+a.Ldt-Social-Twitter {
+    background-position: 0 0;
+}
+
+a.Ldt-Social-Twitter:hover {
+    background-position: 0 -24px;
+}
+
+a.Ldt-Social-Fb {
+    background-position: -24px 0;
+}
+
+a.Ldt-Social-Fb:hover {
+    background-position: -24px -24px;
+}
+
+a.Ldt-Social-Gplus {
+    background-position: -48px 0;
+}
+
+a.Ldt-Social-Gplus:hover {
+    background-position: -48px -24px;
+}
+
+a.Ldt-Social-Mail {
+    background-position: -72px 0;
+}
+
+a.Ldt-Social-Mail:hover {
+    background-position: -72px -24px;
+}

@@ -1,4 +1,4 @@
-// TODO: Open share links in a small window - Migrate Timeupdate functions to Extract
+// TODO: Migrate Timeupdate functions to Extract
 
 IriSP.Widgets.Annotation = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
@@ -11,8 +11,6 @@ IriSP.Widgets.Annotation.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Annotation.prototype.messages = {
     fr: {
-        share_: "Partager&nbsp;:",
-        share_on: "Partager sur",
         watching: "Je regarde ",
         on_site: " sur ",
         tags_: "Mots-clés&nbsp;:",
@@ -20,8 +18,6 @@ IriSP.Widgets.Annotation.prototype.messages = {
         excerpt_from: "Extrait de&nbsp;:"
     },
     en: {
-        share_: "Share:",
-        share_on: "Share on",
         watching: "I'm watching ",
         on_site: " on ",
         tags_: "Keywords:",
@@ -34,6 +30,7 @@ IriSP.Widgets.Annotation.prototype.template =
     '<div class="Ldt-Annotation-Widget {{#show_top_border}}Ldt-Annotation-ShowTop{{/show_top_border}}">'
     + '<div class="Ldt-Annotation-Inner Ldt-Annotation-Empty{{#start_minimized}} Ldt-Annotation-Minimized{{/start_minimized}}">'
     + '<div class="Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-MaxMinButton"></div>'
+    + '<div class="Ldt-Annotation-Social Ldt-Annotation-HiddenWhenMinimized"></div>'
     + '<h3 class="Ldt-Annotation-HiddenWhenEmpty"><span class="Ldt-Annotation-Title"></span> <span class="Ldt-Annotation-Time">'
     + '( <span class="Ldt-Annotation-Begin"></span> - <span class="Ldt-Annotation-End"></span> )</span></h3>'
     + '<h3 class="Ldt-Annotation-MashupOrigin Ldt-Annotation-HiddenWhenEmpty">{{l10n.excerpt_from}} <span class="Ldt-Annotation-MashupMedia"></span> <span class="Ldt-Annotation-Time">'
@@ -42,21 +39,18 @@ IriSP.Widgets.Annotation.prototype.template =
     + '<p class="Ldt-Annotation-Labelled Ldt-Annotation-Description"></p></div>'
     + '<div class="Ldt-Annotation-Tags-Block Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-Cleared">'
     + '<div class="Ldt-Annotation-Label">{{l10n.tags_}}</div><ul class="Ldt-Annotation-Labelled Ldt-Annotation-Tags"></ul>'
-    + '</div><div class="Ldt-Annotation-Cleared Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty"><div class="Ldt-Annotation-Label">{{l10n.share_}}</div><p class="Ldt-Annotation-Labelled">'
-    + '<a href="#" target="_blank" class="Ldt-Annotation-Share Ldt-Annotation-Fb Ldt-TraceMe" title="{{l10n.share_on}} Facebook"></a>'
-    + '<a href="#" target="_blank" class="Ldt-Annotation-Share Ldt-Annotation-Twitter Ldt-TraceMe" title="{{l10n.share_on}} Twitter"></a>'
-    + '<a href="#" target="_blank" class="Ldt-Annotation-Share Ldt-Annotation-Gplus Ldt-TraceMe" title="{{l10n.share_on}} Google+"></a>'
-    + '</p></div></div></div></div>';
+    + '</div></div></div></div>';
 
 IriSP.Widgets.Annotation.prototype.defaults = {
     annotation_type : "chap",
-    start_minimized: false,
+    start_minimized: true,
     show_top_border : false,
     site_name : "Lignes de Temps"
 }
 
 IriSP.Widgets.Annotation.prototype.draw = function() {
     this.renderTemplate();
+    this.insertSubwidget(this.$.find(".Ldt-Annotation-Social"), "socialWidget", { type: "Social" });
     this.bindPopcorn("timeupdate","onTimeupdate");
     this.bindPopcorn("IriSP.Annotation.hide","hide");
     this.bindPopcorn("IriSP.Annotation.show","show");
@@ -102,7 +96,7 @@ IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
             return '<li class="Ldt-Annotation-TagLabel"><span>' + _tag + '</span></li>';
         }).join("");
         this.$.find(".Ldt-Annotation-Tags").html(_html);
-        this.$.find(".Ldt-Annotation-Tags-Block").removeClass("Ldt-Annotation-NoTags");
+        this.$.find(".Ldt-Annotation-Tags-Block").removeClass("Ldt-Annotation-EmptyBlock");
         
         /* Correct the empty tag bug */
         this.$.find('.Ldt-Annotation-TagLabel').each(function() {
@@ -116,15 +110,15 @@ IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
             _this.player.popcorn.trigger("IriSP.search.triggeredSearch", IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
         });
     } else {
-        this.$.find(".Ldt-Annotation-Tags-Block").hide();
+        this.$.find(".Ldt-Annotation-Tags-Block").addClass("Ldt-Annotation-EmptyBlock");
     }
     this.$.find(".Ldt-Annotation-Title").html(_annotation.title);
     var _desc = _annotation.description.replace(/(^\s+|\s+$)/g,'');
     if (_desc) {
-        this.$.find(".Ldt-Annotation-Description-Block").show();
+        this.$.find(".Ldt-Annotation-Description-Block").removeClass("Ldt-Annotation-EmptyBlock");
         this.$.find(".Ldt-Annotation-Description").html(_desc);
     } else {
-        this.$.find(".Ldt-Annotation-Description-Block").hide();
+        this.$.find(".Ldt-Annotation-Description-Block").addClass("Ldt-Annotation-EmptyBlock");
     }
     this.$.find(".Ldt-Annotation-Begin").html(_annotation.begin.toString());
     this.$.find(".Ldt-Annotation-End").html(_annotation.end.toString());
@@ -136,9 +130,9 @@ IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
     } else {
         this.$.find('.Ldt-Annotation-Inner').removeClass("Ldt-Annotation-isMashup");
     }
-    this.$.find(".Ldt-Annotation-Fb").attr("href", "http://www.facebook.com/share.php?" + IriSP.jQuery.param({ u: _url, t: _text }));
-    this.$.find(".Ldt-Annotation-Twitter").attr("href", "https://twitter.com/intent/tweet?" + IriSP.jQuery.param({ url: _url, text: _text }));
-    this.$.find(".Ldt-Annotation-Gplus").attr("href", "https://plusone.google.com/_/+1/confirm?" + IriSP.jQuery.param({ url: _url, title: _text }));
+    if (typeof this.socialWidget !== "undefined") {
+        this.socialWidget.updateUrls(_url, _text);
+    }
     this.$.find(".Ldt-Annotation-Inner").removeClass("Ldt-Annotation-Empty");
 }
 

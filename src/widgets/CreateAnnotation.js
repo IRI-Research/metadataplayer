@@ -10,13 +10,14 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     show_title_field : false, /* For the moment, titles can't be sent to ldtplatform */
     show_creator_field : true,
     start_visible : true,
-    always_visible : true,
+    always_visible : false,
     sync_on_slice_widget : true, /* If false, syncs on current timecode */
     takeover_arrow : false,
-    minimize_annotation_widget : false,
+    minimize_annotation_widget : true,
     creator_name : "",
-    creator_avatar : "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+    creator_avatar : "",
     tags : false,
+    tag_titles : false,
     pause_on_write : true,
     max_tags : 8,
     polemics : [{
@@ -91,11 +92,11 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
 IriSP.Widgets.CreateAnnotation.prototype.template =
     '<div class="Ldt-CreateAnnotation"><div class="Ldt-CreateAnnotation-Inner">'
     + '<form class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Main">'
-    + '<h3>{{#show_title_field}}<input class="Ldt-CreateAnnotation-Title" placeholder="{{l10n.type_title}}" />{{/show_title_field}}'
+    + '<h3><span class="Ldt-CreateAnnotation-h3Left">{{#show_title_field}}<input class="Ldt-CreateAnnotation-Title" placeholder="{{l10n.type_title}}" />{{/show_title_field}}'
     + '{{^show_title_field}}<span class="Ldt-CreateAnnotation-NoTitle">{{l10n.no_title}} </span>{{/show_title_field}}'
     + ' <span class="Ldt-CreateAnnotation-Times">{{#sync_on_slice_widget}}{{l10n.from_time}} {{/sync_on_slice_widget}}{{^sync_on_slice_widget}}{{l10n.at_time}} {{/sync_on_slice_widget}} <span class="Ldt-CreateAnnotation-Begin">00:00</span>'
-    + '{{#sync_on_slice_widget}} {{l10n.to_time}} <span class="Ldt-CreateAnnotation-End">00:00</span>{{/sync_on_slice_widget}}</span></h3>'
-    + '{{#show_creator_field}}<h3>{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator" value="{{creator_name}}" /></h3>{{/show_creator_field}}'
+    + '{{#sync_on_slice_widget}} {{l10n.to_time}} <span class="Ldt-CreateAnnotation-End">00:00</span>{{/sync_on_slice_widget}}</span></span>'
+    + '{{#show_creator_field}}{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator" value="{{creator_name}}" /></h3>{{/show_creator_field}}'
     + '<textarea class="Ldt-CreateAnnotation-Description" placeholder="{{l10n.type_description}}"></textarea>'
     + '<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>'
     + '<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{l10n.submit}}" />'
@@ -110,6 +111,20 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '</div></div>';
     
 IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
+    var _this = this;
+    if (this.tag_titles && !this.tags) {
+        this.tags = IriSP._(this.tag_titles).map(function(_tag_title) {
+            var _tag,
+                _tags = _this.source.getTags().searchByTitle(_tag_title);
+            if (_tags.length) {
+                _tag = _tags[0];
+            } else {
+                _tag = new IriSP.Model.Tag(false, _this.source);
+                _tag.title = _tag_title;
+            }
+            return _tag;
+        });
+    }
     if (!this.tags) {
         this.tags = this.source.getTags()
             .sortBy(function (_tag) {
@@ -121,7 +136,6 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
             });
         // We have to use the map function because Mustache doesn't like our tags object
     }
-    var _this = this;
     this.renderTemplate();
     this.$.find(".Ldt-CreateAnnotation-Close").click(function() {
         _this.hide();

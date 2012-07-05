@@ -21,7 +21,7 @@ li.Ldt-AnnotationsList-li {
     min-height: 60px;
 }
 .Ldt-AnnotationsList-li:hover {
-    background: url(img/pinstripe-grey.png);
+    background: url(img/pinstripe-grey.png) !important;
 }
 .Ldt-AnnotationsList-highlight {
     background: #F7268E;
@@ -59,7 +59,7 @@ h3.Ldt-AnnotationsList-Title a {
 p.Ldt-AnnotationsList-Description {
     margin: 2px 0 2px 82px;
     font-size: 12px;
-    color: #666666;
+    color: #333333;
 }
 ul.Ldt-AnnotationsList-Tags {
     list-style: none;

@@ -9,7 +9,8 @@ IriSP.Widgets.Trace.prototype.defaults = {
     js_console : false,
     url: "http://traces.advene.org:5000/",
     requestmode: 'GET',
-    syncmode: "sync"
+    syncmode: "sync",
+    default_subject: "IRI"
 }
 
 IriSP.Widgets.Trace.prototype.draw = function() {
@@ -49,7 +50,8 @@ IriSP.Widgets.Trace.prototype.draw = function() {
     this.tracer = window.tracemanager.init_trace("test", {
         url: this.url,
         requestmode: this.requestmode,
-        syncmode: this.syncmode
+        syncmode: this.syncmode,
+        default_subject: this.default_subject
     });
     this.tracer.trace("StartTracing", {});
     

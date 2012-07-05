@@ -40,11 +40,6 @@ IriSP.Widgets.Polemic.prototype.defaults = {
             "keywords" : [ "?" ],
             "color" : "#036AAE"
         }
-    ],
-    requires : [
-        {
-            type: "Tooltip"
-        }
     ]
 };
 
@@ -287,6 +282,10 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
         var _x = _e.pageX - _this.$zone.offset().left;
         _this.player.popcorn.currentTime(_this.source.getDuration().getSeconds() * _x / _this.width);
     });
+    
+    this.$.append('<div class="Ldt-Polemic-Tooltip"></div>');
+    
+    this.insertSubwidget(this.$.find(".Ldt-Polemic-Tooltip"), "tooltip", { type: "Tooltip" });
 }
 
 IriSP.Widgets.Polemic.prototype.onTimeupdate = function() {

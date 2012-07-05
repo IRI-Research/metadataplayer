@@ -17,9 +17,11 @@
 }
 
 .Ldt-CreateAnnotation-Inner h3 {
-    margin: 5px 0;
-    font-size: 14px;
-    font-weight: bold;
+    margin: 5px 0; font-size: 14px; font-weight: bold; text-align: right;
+}
+
+.Ldt-CreateAnnotation-h3Left {
+    float: left;
 }
 
 .Ldt-CreateAnnotation-Main {
@@ -27,7 +29,6 @@
 }
 
 .Ldt-CreateAnnotation-Title, .Ldt-CreateAnnotation-Creator {
-    margin-right: 2px;
     font-size: 14px;
     font-weight: bold;
     color: #0068c4;
@@ -63,7 +64,7 @@
     height: 56px;
     padding: 2px;
     resize: none;
-    width: 520px;
+    width: 460px;
     border: 1px solid #666666;
     border-radius: 2px;
 }

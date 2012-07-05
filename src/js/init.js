@@ -130,9 +130,9 @@ IriSP.Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {
 
 IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
     
-    /* Getting video URL from metadata if it's not in the player config options */
+    /* Setting default media from metadata */
    
-    if (typeof this.videoData !== "undefined" && typeof this.config.player.video === "undefined") {
+    if (typeof this.videoData !== "undefined") {
         
         var _media;
         
@@ -158,11 +158,12 @@ IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
         
         this.videoData.currentMedia = _media;
         
-        if (typeof _media !== "undefined" && typeof _media.video !== "undefined") {
+        /* Getting video URL from metadata if it's not in the player config options */
+        
+        if (typeof _media !== "undefined" && typeof _media.video !== "undefined" && typeof this.config.player.video === "undefined") {
             this.config.player.video = _media.video;
-            if (typeof _media.streamer !== "undefined") {
+            if (typeof this.config.player.streamer == "undefined" && typeof _media.streamer !== "undefined") {
                 this.config.player.streamer = _media.streamer;
-                this.config.player.video = _media.video.replace(_media.streamer,'');
             }
         }
         
@@ -235,8 +236,12 @@ IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
             var opts = IriSP.jQuery.extend({}, this.config.player);
             delete opts.container;
             delete opts.type;
+            if (typeof opts.streamer !== "undefined") {
+                opts.video = opts.video.replace(opts.streamer,"");
+            }
             opts.file = opts.video;
             delete opts.video;
+            delete opts.metadata;
 
             if(!opts.hasOwnProperty("flashplayer")) {
                 opts.flashplayer = IriSP.getLib("jwPlayerSWF");

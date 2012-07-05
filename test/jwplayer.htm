@@ -25,7 +25,7 @@
     };
     var _config = {            
         gui: {
-            width : 620,
+            width : 550,
             container : 'LdtPlayer',
             default_options: {
                 metadata: _metadata
@@ -37,12 +37,17 @@
                 { type: "Polemic" },
                 { type: "Segments" },
                 { type: "Slice" },
-                { type: "Arrow" },
+                {
+                    type: "Arrow",
+                    base_height: 4
+                },
                 { type: "Annotation" },
                 {
                     type: "CreateAnnotation",
                     api_endpoint_template: "http://192.168.56.101/pf/ldtplatform/api/ldt/annotations/{{id}}.json",
-                    creator_name: "Metadataplayer"
+                    creator_name: "Metadataplayer",
+                    creator_avatar: "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+                    tag_titles: ["#amateur", "#digital-humanities"]
                 },
                 { type: "Tweet" },
                 {
@@ -59,7 +64,7 @@
             type:'auto',
             live: true, 
             height: 350, 
-            width: 620, 
+            width: 550, 
             provider: "rtmp",
             autostart: true,
             metadata: _metadata

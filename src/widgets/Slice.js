@@ -4,13 +4,13 @@
 
 IriSP.Widgets.Slice = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
+    this.sliding = false;
 };
 
 IriSP.Widgets.Slice.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Slice.prototype.defaults = {
     start_visible : false,
-    pause_on_change : true,
     live_update : true
         /* Shall the bounds change each time
         the Annotation Widget sends an update (true)
@@ -29,7 +29,8 @@ IriSP.Widgets.Slice.prototype.draw = function() {
     this.min = 0;
     this.max = this.source.getDuration().valueOf();
     
-    var _this = this;
+    var _this = this,
+        _currentTime;
     
     this.$slider.slider({
         range: true,
@@ -44,9 +45,18 @@ IriSP.Widgets.Slice.prototype.draw = function() {
             _this.player.popcorn.trigger("IriSP.Slice.boundsChanged",[ui.values[0], ui.values[1]]);
         },
         start: function() {
-            if (_this.pause_on_change && !_this.player.popcorn.media.paused) {
+            _this.sliding = true;
+            if (!_this.player.popcorn.media.paused) {
                 _this.player.popcorn.pause();
             }
+            _currentTime = _this.player.popcorn.currentTime();
+        },
+        slide: function(event, ui) {
+            _this.player.popcorn.currentTime(ui.value / 1000);
+        },
+        stop: function() {
+            _this.sliding = false;
+            _this.player.popcorn.currentTime(_currentTime);
         }
     });
     this.$slider.find(".ui-slider-handle:first").addClass("Ldt-Slice-left-handle");
@@ -74,9 +84,11 @@ IriSP.Widgets.Slice.prototype.hide = function() {
 }
 
 IriSP.Widgets.Slice.prototype.storeBounds = function(_values) {
-    this.min = _values[0];
-    this.max = _values[1];
-    if (this.live_update) {
-        this.$slider.slider("values", [this.min, this.max]);
+    if (!this.sliding && !this.player.popcorn.media.paused && (this.min != _values[0] || this.max != _values[1])) {
+        this.min = _values[0];
+        this.max = _values[1];
+        if (this.live_update) {
+            this.$slider.slider("values", [this.min, this.max]);
+        }
     }
 }

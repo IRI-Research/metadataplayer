@@ -52,7 +52,7 @@ IriSP.serializers.ldt_annotate = {
             var _anndata = _data.annotations[0],
                 _ann = new IriSP.Model.Annotation(_anndata.id, _source);
             _ann.description = _anndata.content.data || "";
-            _ann.title = _data.creator;
+            _ann.title = _data.creator || "";
             _ann.created = new Date(_data.meta.created);
             _ann.setMedia(_anndata.media, _source);
             var _anntypes = _source.getAnnotationTypes(true).searchByTitle(_anndata.type_title);

@@ -9,11 +9,6 @@ IriSP.Widgets.Segments.prototype = new IriSP.Widgets.Widget();
 IriSP.Widgets.Segments.prototype.defaults = {
     annotation_type : "chap",
     colors: ["#1f77b4","#aec7e8","#ff7f0e","#ffbb78","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5","#8c564b","#c49c94","#e377c2","#f7b6d2","#7f7f7f","#c7c7c7","#bcbd22","#dbdb8d","#17becf","#9edae5"],
-    requires : [
-        {
-            type: "Tooltip"
-        }
-    ],
     height: 10
 };
 
@@ -22,7 +17,8 @@ IriSP.Widgets.Segments.prototype.template =
     + '<div class="Ldt-Segments-Segment Ldt-TraceMe" trace-info="segment-id:{{id}}" segment-id="{{id}}" segment-text="{{text}}" segment-color="{{color}}" center-pos="{{center}}" begin-seconds="{{beginseconds}}"'
     + 'style="left:{{left}}px; width:{{width}}px; background:{{color}}"></div>'
     + '{{/segments}}</div>'
-    + '<div class="Ldt-Segments-Position"></div>';
+    + '<div class="Ldt-Segments-Position"></div>'
+    + '<div class="Ldt-Segments-Tooltip"></div>';
 
 IriSP.Widgets.Segments.prototype.draw = function() {
     this.bindPopcorn("IriSP.search", "onSearch");
@@ -55,6 +51,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             }
         })
     }));
+    this.insertSubwidget(this.$.find(".Ldt-Segments-Tooltip"), "tooltip", { type: "Tooltip" });
     this.$segments = this.$.find('.Ldt-Segments-Segment');
     
     this.$segments.mouseover(function() {

@@ -54,18 +54,6 @@ IriSP.Widgets.Widget = function(player, config) {
     this.$ = IriSP.jQuery('#' + this.container);
     this.$.addClass("Ldt-TraceMe Ldt-Widget").attr("widget-type", _type);
     
-    /* Does the widget require other widgets ? */
-    if (typeof this.requires !== "undefined") {
-        for (var _i = 0; _i < this.requires.length; _i++) {
-            var _subconfig = this.requires[_i];
-            _subconfig.container = IriSP._.uniqueId(this.container + '_' + _subconfig.type + '_');
-            this.$.append(IriSP.jQuery('<div>').attr("id",_subconfig.container));
-            this.player.loadWidget(_subconfig, function(_widget) {
-                _this[_subconfig.type.replace(/^./,function(_s){return _s.toLowerCase();})] = _widget
-            });
-        }
-    }
-    
     this.l10n = (
         typeof this.messages[IriSP.language] !== "undefined"
         ? this.messages[IriSP.language]
@@ -117,6 +105,19 @@ IriSP.Widgets.Widget.prototype.getWidgetAnnotationsAtTime = function() {
     var _time = Math.floor(this.player.popcorn.currentTime() * 1000);
     return this.getWidgetAnnotations().filter(function(_annotation) {
         return _annotation.begin <= _time && _annotation.end > _time;
+    });
+}
+
+IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _propname, _widgetoptions) {
+    var _id = _selector.attr("id"),
+        _this = this;
+    if (typeof _id == "undefined") {
+        _id = IriSP._.uniqueId(this.container + '_sub_widget_' + _widgetoptions.type);
+        _selector.attr("id", _id);
+    }
+    _widgetoptions.container = _id;
+    _this.player.loadWidget(_widgetoptions, function(_widget) {
+        _this[_propname] = _widget;
     });
 }
 
