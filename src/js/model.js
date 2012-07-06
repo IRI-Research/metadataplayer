@@ -28,19 +28,20 @@ IriSP.Model = {
         }
         return "autoid-" + this._ID_BASE + '-' + _n;
     },
-    regexpFromTextOrArray : function(_textOrArray) {
+    regexpFromTextOrArray : function(_textOrArray, _testOnly) {
+        var _testOnly = _testOnly || false;
         function escapeText(_text) {
             return _text.replace(/([\\\*\+\?\|\{\[\}\]\(\)\^\$\.\#\/])/gm, '\\$1');
         }
-        return new RegExp( '('
-            + (
-                typeof _textOrArray === "string"
-                ? escapeText(_textOrArray)
-                : IriSP._(_textOrArray).map(escapeText).join("|")
-            )
-            + ')',
-            'gim'
-        );
+        var _source = 
+            typeof _textOrArray === "string"
+            ? escapeText(_textOrArray)
+            : IriSP._(_textOrArray).map(escapeText).join("|");
+        if (_testOnly) {
+            return new RegExp( _source, 'im');
+        } else {
+            return new RegExp( '(' + _source + ')', 'gim');
+        }
     },
     isoToDate : function(_str) {
         // http://delete.me.uk/2005/03/iso8601.html
@@ -168,21 +169,21 @@ IriSP.Model.List.prototype.sortBy = function(_callback) {
  * here we can search by these criteria
  */
 IriSP.Model.List.prototype.searchByTitle = function(_text) {
-    var _rgxp = IriSP.Model.regexpFromTextOrArray(_text);
+    var _rgxp = IriSP.Model.regexpFromTextOrArray(_text, true);
     return this.filter(function(_element) {
         return _rgxp.test(_element.title);
     });
 }
 
 IriSP.Model.List.prototype.searchByDescription = function(_text) {
-    var _rgxp = IriSP.Model.regexpFromTextOrArray(_text);
+    var _rgxp = IriSP.Model.regexpFromTextOrArray(_text, true);
     return this.filter(function(_element) {
         return _rgxp.test(_element.description);
     });
 }
 
 IriSP.Model.List.prototype.searchByTextFields = function(_text) {
-    var _rgxp =  IriSP.Model.regexpFromTextOrArray(_text);
+    var _rgxp =  IriSP.Model.regexpFromTextOrArray(_text, true);
     return this.filter(function(_element) {
         return _rgxp.test(_element.description) || _rgxp.test(_element.title);
     });

@@ -46,7 +46,7 @@ IriSP.Widgets.Polemic.prototype.defaults = {
 IriSP.Widgets.Polemic.prototype.onSearch = function(searchString) {
     this.searchString = typeof searchString !== "undefined" ? searchString : '';
     var _found = 0,
-        _re = IriSP.Model.regexpFromTextOrArray(searchString),
+        _re = IriSP.Model.regexpFromTextOrArray(searchString, true),
         _this = this;
     this.$tweets.each(function() {
         var _el = IriSP.jQuery(this);

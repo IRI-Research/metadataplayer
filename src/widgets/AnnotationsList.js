@@ -19,7 +19,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     /* number of milliseconds before/after the current timecode when calling the segment API
      */
     ajax_granularity : 300000, 
-    default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png",
+    default_thumbnail : "",
     /* URL when the annotation is not in the current project,
      * e.g. http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}
      */
@@ -199,7 +199,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     }
                     var _bgcolor;
                     IriSP._(_this.polemics).each(function(_polemic) {
-                        var _rgxp = IriSP.Model.regexpFromTextOrArray(_polemic.keyword);
+                        var _rgxp = IriSP.Model.regexpFromTextOrArray(_polemic.keyword, true);
                         if (_rgxp.test(_title + " " + _description)) {
                             _bgcolor = _polemic.background_color;
                         }
@@ -238,7 +238,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         })
         
         if(this.searchString) {
-            var _searchRe = new RegExp('(' + this.searchString.replace(/(\W)/gm,'\\$1') + ')','gim');
+            var _searchRe = IriSP.Model.regexpFromTextOrArray(this.searchString);
             this.$.find(".Ldt-AnnotationsList-Title a, .Ldt-AnnotationsList-Description").each(function() {
                 var _$ = IriSP.jQuery(this);
                 _$.html(_$.text().replace(/(^\s+|\s+$)/g,'').replace(_searchRe, '<span class="Ldt-AnnotationsList-highlight">$1</span>'))

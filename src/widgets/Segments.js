@@ -74,7 +74,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
 IriSP.Widgets.Segments.prototype.onSearch = function(searchString) {
     this.searchString = typeof searchString !== "undefined" ? searchString : '';
     var _found = 0,
-        _re = IriSP.Model.regexpFromTextOrArray(searchString);
+        _re = IriSP.Model.regexpFromTextOrArray(searchString, true);
     if (this.searchString) {
         this.$segments.each(function() {
             var _el = IriSP.jQuery(this);

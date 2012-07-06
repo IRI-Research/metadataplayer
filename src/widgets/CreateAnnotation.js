@@ -41,7 +41,8 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     api_serializer: "ldt_annotate",
     api_endpoint_template: "",
     api_method: "PUT",
-    close_widget_timeout: 0
+    after_send_timeout: 0,
+    close_after_send: false,
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.messages = {
@@ -138,7 +139,9 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
     }
     this.renderTemplate();
     this.$.find(".Ldt-CreateAnnotation-Close").click(function() {
-        _this.hide();
+        _this.close_after_send
+        ? _this.hide()
+        : _this.showScreen("Main");
         return false;
     });
     this.$.find(".Ldt-CreateAnnotation-TagLi, .Ldt-CreateAnnotation-PolemicLi").click(function() {
@@ -222,7 +225,7 @@ IriSP.Widgets.CreateAnnotation.prototype.addKeyword = function(_keyword) {
     var _field = this.$.find(".Ldt-CreateAnnotation-Description"),
         _rx = IriSP.Model.regexpFromTextOrArray(_keyword),
         _contents = _field.val();
-    _contents = ( _rx.test(_contents)
+    _contents = ( !!_contents.match(_rx)
         ? _contents.replace(_rx,"")
         : _contents + " " + _keyword
     );
@@ -242,7 +245,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onDescriptionChange = function() {
     _field.css("border-color", !!_contents ? "#666666" : "#ff0000");
     this.$.find(".Ldt-CreateAnnotation-TagLi, .Ldt-CreateAnnotation-PolemicLi").each(function() {
         var _rx = IriSP.Model.regexpFromTextOrArray(IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
-        if (_rx.test(_contents)) {
+        if (_contents.match(_rx)) {
             IriSP.jQuery(this).addClass("selected");
         } else {
             IriSP.jQuery(this).removeClass("selected");
@@ -314,8 +317,15 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         data: _export.serialize(),
         success: function(_data) {
             _this.showScreen('Saved');
-            if (_this.close_widget_timeout) {
-                window.setTimeout(_this.functionWrapper("hide"),_this.close_widget_timeout);
+            if (_this.after_send_timeout) {
+                window.setTimeout(
+                    function() {
+                        _this.close_after_send
+                        ? _this.hide()
+                        : _this.showScreen("Main");
+                    },
+                    _this.after_send_timeout
+                );
             }
             _export.getAnnotations().removeElement(_annotation, true);
             _export.deSerialize(_data);
@@ -332,7 +342,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
             window.setTimeout(function(){
                 _this.showScreen("Main")
             },
-            (_this.close_widget_timeout || 5000));
+            (_this.after_send_timeout || 5000));
         }
     });
     this.showScreen('Wait');
