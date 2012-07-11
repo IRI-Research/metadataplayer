@@ -41,7 +41,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
                 _center = _left + _width / 2,
                 _fulltext = _annotation.title + ( _annotation.description ? ( '<br/>' + _annotation.description ) : '' );
             return {
-                text : _fulltext.replace(/(^.{120,140})[\s].+$/,'$1&hellip;'),
+                text : _fulltext.replace(/(^.{120,140})[\s].+$/m,'$1&hellip;'),
                 color : ( typeof _annotation.color !== "undefined" && _annotation.color ? _annotation.color : _this.colors[_k % _this.colors.length] ),
                 beginseconds : _annotation.begin.getSeconds() ,
                 left : Math.floor( _left ),

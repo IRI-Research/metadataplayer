@@ -20,7 +20,8 @@
     IriSP.language = 'fr';
     IriSP.widgetsDir = "metadataplayer";
     var _metadata = {
-        url: 'json/ldt-jwplayer.json',
+//        url: 'json/ldt-jwplayer.json',
+        url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/5a893570-ca73-11e1-9443-00145ea4a2be?callback=?',
         format: 'ldt'
     };
     var _config = {            
@@ -67,6 +68,14 @@
             height: 350, 
             width: 550, 
             provider: "rtmp",
+            streamer: function(_url) {
+                var _matches = _url.match(/^[^\/]+\/\/[^\/]+\/[^\/]+\//);
+                if (_matches) {
+                    return _matches[0];
+                } else {
+                    return _url;
+                }
+            },
             autostart: true,
             metadata: _metadata
         }

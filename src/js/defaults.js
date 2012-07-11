@@ -44,7 +44,10 @@ IriSP.widgetsRequirements = {
     Trace : {
         noCss: true,
         requires: "tracemanager"
-    }
+    },
+    SlideShare: {
+        requires: "swfObject"
+    } 
 }
 
 IriSP.guiDefaults = {

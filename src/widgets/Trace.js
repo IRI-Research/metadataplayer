@@ -10,7 +10,8 @@ IriSP.Widgets.Trace.prototype.defaults = {
     url: "http://traces.advene.org:5000/",
     requestmode: 'GET',
     syncmode: "sync",
-    default_subject: "IRI"
+    default_subject: "IRI",
+    tracer: null
 }
 
 IriSP.Widgets.Trace.prototype.draw = function() {
@@ -47,13 +48,18 @@ IriSP.Widgets.Trace.prototype.draw = function() {
         _this.player.popcorn.listen(_listener, _f);
     });
     
-    this.tracer = window.tracemanager.init_trace("test", {
-        url: this.url,
-        requestmode: this.requestmode,
-        syncmode: this.syncmode,
-        default_subject: this.default_subject
-    });
-    this.tracer.trace("StartTracing", {});
+    if (!this.tracer) {
+    
+        this.tracer = window.tracemanager.init_trace("test", {
+            url: this.url,
+            requestmode: this.requestmode,
+            syncmode: this.syncmode,
+            default_subject: this.default_subject
+        });
+    
+    }
+    
+    this.tracer.trace("TraceWidgetInit", {});
     
     this.mouseLocation = '';
     IriSP.jQuery(".Ldt-Widget").bind("click mouseover mouseout", function(_e) {

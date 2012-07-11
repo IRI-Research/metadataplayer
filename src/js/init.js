@@ -236,7 +236,10 @@ IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
             var opts = IriSP.jQuery.extend({}, this.config.player);
             delete opts.container;
             delete opts.type;
-            if (typeof opts.streamer !== "undefined") {
+            if (typeof opts.streamer === "function") {
+                opts.streamer = opts.streamer(opts.video);
+            }
+            if (typeof opts.streamer === "string") {
                 opts.video = opts.video.replace(opts.streamer,"");
             }
             opts.file = opts.video;
