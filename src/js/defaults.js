@@ -14,7 +14,9 @@ IriSP.libFiles = {
         raphael : "raphael-min.js",
         tracemanager : "tracemanager.js",
         jwPlayerSWF : "player.swf",
-        json : "json2.js"
+        json : "json2.js",
+        zeroClipboardJs: "ZeroClipboard.js",
+        zeroClipboardSwf: "ZeroClipboard.swf"
     },
     locations : {
         // use to define locations outside defautl_dir
@@ -32,22 +34,25 @@ IriSP.widgetsDir = 'widgets';
 IriSP.widgetsRequirements = {
     Sparkline: {
         noCss: true,
-        requires: "raphael"
+        requires: [ "raphael" ]
     },
     Arrow: {
         noCss: true,
-        requires: "raphael"
+        requires: [ "raphael" ]
     },
     Mediafragment: {
         noCss: true
     },
     Trace : {
         noCss: true,
-        requires: "tracemanager"
+        requires: [ "tracemanager" ]
     },
     SlideShare: {
-        requires: "swfObject"
-    } 
+        requires: [ "swfObject" ]
+    },
+    Social: {
+        requires: [ "zeroClipboardJs" ]
+    }
 }
 
 IriSP.guiDefaults = {

@@ -132,6 +132,13 @@ IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
     }
     if (typeof this.socialWidget !== "undefined") {
         this.socialWidget.updateUrls(_url, _text);
+    } else {
+        var _this = this;
+        setTimeout(function() {
+            if (typeof _this.socialWidget !== "undefined") {
+                _this.socialWidget.updateUrls(_url, _text);
+            }
+        },800);
     }
     this.$.find(".Ldt-Annotation-Inner").removeClass("Ldt-Annotation-Empty");
 }

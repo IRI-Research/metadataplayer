@@ -75,13 +75,15 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
     /* widget specific requirements */
     for(var _i = 0; _i < this.config.gui.widgets.length; _i++) {
         var _t = this.config.gui.widgets[_i].type;
-        if (typeof IriSP.widgetsRequirements[_t] !== "undefined" && typeof IriSP.widgetsRequirements[_t].requires !== "undefined") {
-            $L.script(IriSP.getLib(IriSP.widgetsRequirements[_t].requires));
+        if (typeof IriSP.widgetsRequirements[_t] !== "undefined" && typeof IriSP.widgetsRequirements[_t].requires !== "undefined" ) {
+            for (var _j = 0; _j < IriSP.widgetsRequirements[_t].requires.length; _j++) {
+                $L.script(IriSP.getLib(IriSP.widgetsRequirements[_t].requires[_j]));
+            }
         }
     }
     
     var _this = this;
-    IriSP.log($L);
+    
     $L.wait(function() {
         _this.onLibsLoaded();
     });

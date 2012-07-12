@@ -110,14 +110,23 @@ IriSP.Widgets.Widget.prototype.getWidgetAnnotationsAtTime = function() {
 
 IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _propname, _widgetoptions) {
     var _id = _selector.attr("id"),
-        _this = this;
+        _this = this,
+        _type = _widgetoptions.type,
+        $L = $LAB;
     if (typeof _id == "undefined") {
         _id = IriSP._.uniqueId(this.container + '_sub_widget_' + _widgetoptions.type);
         _selector.attr("id", _id);
     }
     _widgetoptions.container = _id;
-    _this.player.loadWidget(_widgetoptions, function(_widget) {
-        _this[_propname] = _widget;
+    if (typeof IriSP.widgetsRequirements[_type] !== "undefined" && typeof IriSP.widgetsRequirements[_type].requires !== "undefined" ) {
+        for (var _j = 0; _j < IriSP.widgetsRequirements[_type].requires.length; _j++) {
+            $L.script(IriSP.getLib(IriSP.widgetsRequirements[_type].requires[_j]));
+        }
+    }
+    $L.wait(function() {
+        _this.player.loadWidget(_widgetoptions, function(_widget) {
+            _this[_propname] = _widget;
+        });
     });
 }
 
