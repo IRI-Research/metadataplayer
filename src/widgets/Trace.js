@@ -11,7 +11,8 @@ IriSP.Widgets.Trace.prototype.defaults = {
     requestmode: 'GET',
     syncmode: "sync",
     default_subject: "IRI",
-    tracer: null
+    tracer: null,
+    extend: false
 }
 
 IriSP.Widgets.Trace.prototype.draw = function() {
@@ -145,6 +146,9 @@ IriSP.Widgets.Trace.prototype.eventHandler = function(_listener, _arg) {
             _traceName += _listener.replace('IriSP.','').replace('.','_');
     }
     this.lastEvent = _traceName;
+    if (typeof this.extend === "object" && this.extend) {
+        IriSP._(_arg).extend(this.extend);
+    }
     this.tracer.trace(_traceName, _arg);
     if (this.js_console) {
         console.log("tracer.trace('" + _traceName + "', " + JSON.stringify(_arg) + ");");

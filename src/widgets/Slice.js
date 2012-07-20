@@ -11,12 +11,14 @@ IriSP.Widgets.Slice.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Slice.prototype.defaults = {
     start_visible : false,
-    live_update : true
+    live_update : true,
         /* Shall the bounds change each time
         the Annotation Widget sends an update (true)
         or only when "show" is triggered (false) ?
         - true is to be recommended when the widget is permanently displayed.
         */
+    override_bounds : true
+        /* Can the Annotation Widget bounds be overriden ? */
 };
 
 IriSP.Widgets.Slice.prototype.draw = function() {
@@ -52,6 +54,9 @@ IriSP.Widgets.Slice.prototype.draw = function() {
             _currentTime = _this.player.popcorn.currentTime();
         },
         slide: function(event, ui) {
+            if (!_this.override_bounds && (ui.value < _this.min || ui.value > _this.max)) {
+                return false;
+            }
             _this.player.popcorn.currentTime(ui.value / 1000);
         },
         stop: function() {
@@ -69,7 +74,7 @@ IriSP.Widgets.Slice.prototype.draw = function() {
     this.bindPopcorn("IriSP.Slice.show","show");
     this.bindPopcorn("IriSP.Slice.hide","hide");
     this.bindPopcorn("IriSP.Annotation.boundsChanged","storeBounds");
-    this.trigger("IriSP.Annotation.getBounds");
+    this.player.popcorn.trigger("IriSP.Annotation.getBounds");
 };
 
 IriSP.Widgets.Slice.prototype.show = function() {
@@ -84,10 +89,10 @@ IriSP.Widgets.Slice.prototype.hide = function() {
 }
 
 IriSP.Widgets.Slice.prototype.storeBounds = function(_values) {
-    if (!this.sliding && !this.player.popcorn.media.paused && (this.min != _values[0] || this.max != _values[1])) {
+    if (!this.player.popcorn.media.paused && (this.min != _values[0] || this.max != _values[1])) {
         this.min = _values[0];
         this.max = _values[1];
-        if (this.live_update) {
+        if (this.live_update && !this.sliding) {
             this.$slider.slider("values", [this.min, this.max]);
         }
     }
