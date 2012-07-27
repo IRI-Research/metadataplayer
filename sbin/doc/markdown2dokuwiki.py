@@ -3,6 +3,8 @@ import re, sys
 inputname = sys.argv[1]
 outputname = re.sub("\.\w+$",".dokuwiki",inputname)
 
+print "Converting %s to %s"%(inputname,outputname)
+
 inputfile = open(inputname,'r')
 
 markdowntext = inputfile.read()

@@ -119,6 +119,7 @@ Existent actuellement:
 2. **player.dailymotion**, pour lire des vidéos du *Youtube à la française*
 3. **player.allocine**, pour le player de allocine.net
 4. **player.mashup**, pour le player de bout à bout Flash créé par Thibaut Cavalié.
+5. **player.htmlMashup**, pour le lecteur de bout à bout de vidéos HTML5 basé sur Popcorn.
 
 ### serializers ###
 
@@ -306,11 +307,25 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
     - **requestmode**: (défaut: "GET"), méthode HTTP utilisée pour l’envoi des traces (seul *"GET"* permet le *cross-domain*).
     - **syncmode**: (défaut: "sync"), envois groupés (mode *"delayed"*) ou non (*"sync"*) des traces
 - Utilise la bibliothèque: ktbs4js tracemanager
-- Utilise un fichier CSS: non
+- Utilise un fichier CSS: non.
 
 ### Mediafragment ###
 
 - **Rôle**: Gère les URLs à la norme *Mediafragment*: change la position de la tête de lecture en fonction de l’URL et inversement.
 - Une URL finissant par #id=*id de l’annotation* pointe sur une annotation, par #t=*temps en secondes* vers un timecode de la vidéo.
 - Pas d’options
-- Utilise un fichier CSS: non
+- Utilise un fichier CSS: non.
+
+### Social ###
+
+- **Role**: Affiche des boutons pour partager une URL sur les réseaux sociaux
+- **Options**:
+    - **text**: un texte à afficher (dans le tweet, etc.)
+    - **url**: l’URL à partager
+    - **show_url**: Affiche un bouton pour copier-coller une URL.
+    - **show_twitter**: Affiche un bouton pour partager sur Twitter.
+    - **show_fb**: Affiche un bouton pour partager sur Facebook.
+    - **show_gplus**: Affiche un bouton pour partager sur Google+.
+    - **show_mail**: Affiche un bouton pour partager par e-mail.
+- Utilise un fichier CSS: oui.
+- Utilise la bibliothèque: ZeroClipboard
