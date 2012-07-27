@@ -85,7 +85,7 @@ IriSP.Widgets.Trace.prototype.draw = function() {
             _traceInfo = _target.attr("trace-info"),
             _lastTarget = _name + (_id && _id.length ? '#' + IriSP.jqEscape(_id) : '') + (_class && _class.length ? ('.' + IriSP.jqEscape(_class).replace(/\s/g,'.')).replace(/\.Ldt-(Widget|TraceMe)/g,'') : '');
         _data.target = _lastTarget
-        if (typeof _traceInfo == "string" && _traceInfo.length && _traceInfo.length < 140) {
+        if (typeof _traceInfo == "string" && _traceInfo.length) {
             _data.traceInfo = _traceInfo;
             _lastTarget += ( ";" + _traceInfo );
         }
@@ -150,7 +150,7 @@ IriSP.Widgets.Trace.prototype.eventHandler = function(_listener, _arg) {
         IriSP._(_arg).extend(this.extend);
     }
     this.tracer.trace(_traceName, _arg);
-    if (this.js_console) {
+    if (this.js_console && typeof window.console !== "undefined" && typeof console.log !== "undefined") {
         console.log("tracer.trace('" + _traceName + "', " + JSON.stringify(_arg) + ");");
     }
 }

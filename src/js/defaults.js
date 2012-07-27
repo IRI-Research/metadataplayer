@@ -19,12 +19,17 @@ IriSP.libFiles = {
         zeroClipboardSwf: "ZeroClipboard.swf"
     },
     locations : {
-        // use to define locations outside defautl_dir
+        // use to define locations outside default_dir
     },
     cdn : {
-        jQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.js",
+        jQuery : "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js",
+        jQueryUI : "http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.22/jquery-ui.min.js",
         swfObject : "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
-        cssjQueryUI : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css"
+        cssjQueryUI : "http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.22/themes/ui-lightness/jquery-ui.css",
+        underscore : "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js",
+        Mustache : "http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.5.0-dev/mustache.min.js",
+        raphael : "http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js",
+        json : "http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"
     },
     useCdn : false
 }

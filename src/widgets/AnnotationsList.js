@@ -47,7 +47,7 @@ IriSP.Widgets.AnnotationsList.prototype.template =
     '<div class="Ldt-AnnotationsListWidget">'
     + '<ul class="Ldt-AnnotationsList-ul">'
     + '{{#annotations}}'
-    + '<li class="Ldt-AnnotationsList-li Ldt-TraceMe" trace-info="annotation-id:{{id}}" style="{{specific_style}}">'
+    + '<li class="Ldt-AnnotationsList-li Ldt-TraceMe" trace-info="annotation-id:{{id}}, media-id:{{media_id}}" style="{{specific_style}}">'
     + '<div class="Ldt-AnnotationsList-ThumbContainer">'
     + '<a href="{{url}}">'
     + '<img class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
@@ -206,6 +206,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     });
                     var _res = {
                         id : _annotation.id,
+                        media_id : _annotation.getMedia().id,
                         title : _title,
                         description : _description,
                         begin : _annotation.begin.toString(),

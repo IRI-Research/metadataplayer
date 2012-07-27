@@ -25,18 +25,22 @@ IriSP.Widgets.Polemic.prototype.defaults = {
     foundcolor : "#fc00ff",
     polemics : [
         {
+            "name" : "OK",
             "keywords" : [ "++" ],
             "color" : "#1D973D"
         },
         {
+            "name" : "KO",
             "keywords" : [ "--" ],
             "color" : "#CE0A15"
         },
         {
+            "name" : "REF",
             "keywords" : [ "==", "http://" ],
             "color" : "#C5A62D"  
         },
         {
+            "name" : "Q",
             "keywords" : [ "?" ],
             "color" : "#036AAE"
         }
@@ -144,12 +148,14 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             var _x = 0,
                 _html = '';
             
-            function displayElement(_x, _y, _color, _id, _title) {
+            function displayElement(_x, _y, _color, _id, _title, _polemic) {
                 _html += Mustache.to_html(
-                    '<div class="Ldt-Polemic-TweetDiv Ldt-TraceMe" trace-info="annotation-id:{{id}}" annotation-id="{{id}}" tweet-title="{{title}}" pos-x="{{posx}}" pos-y="{{top}}" polemic-color="{{color}}"'
+                    '<div class="Ldt-Polemic-TweetDiv Ldt-TraceMe" trace-info="annotation-id:{{id}}, media-id={{media_id}}, polemic={{polemic}}" annotation-id="{{id}}" tweet-title="{{title}}" pos-x="{{posx}}" pos-y="{{top}}" polemic-color="{{color}}"'
                     + ' style="width: {{width}}px; height: {{height}}px; top: {{top}}px; left: {{left}}px; background: {{color}}"></div>',
                 {
                     id: _id,
+                    media_id: _this.source.currentMedia.id,
+                    polemic: _polemic,
                     title: _title,
                     posx: Math.floor(_x + (_this.element_width - 1) / 2),
                     left: _x,
@@ -164,13 +170,14 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 var _y = _this.height;
                 _slice.annotations.forEach(function(_annotation) {
                     _y -= _this.element_height;
-                    displayElement(_x, _y, _this.defaultcolor, _annotation.id, _annotation.title);
+                    displayElement(_x, _y, _this.defaultcolor, _annotation.id, _annotation.title, "none");
                 });
                 IriSP._(_slice.polemicStacks).forEach(function(_annotations, _j) {
-                    var _color = _this.polemics[_j].color;
+                    var _color = _this.polemics[_j].color,
+                        _polemic = _this.polemics[_j].name;
                     _annotations.forEach(function(_annotation) {
                         _y -= _this.element_height;
-                        displayElement(_x, _y, _color, _annotation.id, _annotation.title);
+                        displayElement(_x, _y, _color, _annotation.id, _annotation.title, _polemic);
                     });
                 });
                 _x += _this.element_width;
@@ -215,13 +222,15 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             _html = '',
             _scale = this.max_elements * this.element_height / _max;
             
-        function displayStackElement(_x, _y, _h, _color, _nums, _begin, _end) {
+        function displayStackElement(_x, _y, _h, _color, _nums, _begin, _end, _polemic) {
             _html += Mustache.to_html(
-                '<div class="Ldt-Polemic-TweetDiv Ldt-TraceMe" trace-info="annotation-block,time:{{begin}}" pos-x="{{posx}}" pos-y="{{top}}" annotation-counts="{{nums}}" begin-time="{{begin}}" end-time="{{end}}"'
+                '<div class="Ldt-Polemic-TweetDiv Ldt-TraceMe" trace-info="annotation-block, media-id={{media_id}}, polemic={{polemic}}, time:{{begin}}" pos-x="{{posx}}" pos-y="{{top}}" annotation-counts="{{nums}}" begin-time="{{begin}}" end-time="{{end}}"'
                 + ' style="width: {{width}}px; height: {{height}}px; top: {{top}}px; left: {{left}}px; background: {{color}}"></div>',
             {
                 nums: _nums,
                 posx: Math.floor(_x + (_this.element_width - 1) / 2),
+                media_id: _this.source.currentMedia.id,
+                polemic: _polemic,
                 left: _x,
                 top: _y,
                 color: _color,
@@ -240,14 +249,15 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             if (_slice.annotations.length) {
                 var _h = Math.ceil(_scale * _slice.annotations.length);
                 _y -= _h;
-                displayStackElement(_x, _y, _h, _this.defaultcolor, _nums, _slice.begin, _slice.end);
+                displayStackElement(_x, _y, _h, _this.defaultcolor, _nums, _slice.begin, _slice.end, "none");
             }
             IriSP._(_slice.polemicStacks).forEach(function(_annotations, _j) {
                 if (_annotations.length) {
                     var _color = _this.polemics[_j].color,
+                        _polemic = _this.polemics[_j].name,
                         _h = Math.ceil(_scale * _annotations.length);
                     _y -= _h;
-                    displayStackElement(_x, _y, _h, _color, _nums, _slice.begin, _slice.end);
+                    displayStackElement(_x, _y, _h, _color, _nums, _slice.begin, _slice.end, _polemic);
                 }
             });
             _x += _this.element_width;

@@ -94,12 +94,8 @@ IriSP.Model.List = function(_directory) {
 
 IriSP.Model.List.prototype = new Array();
 
-IriSP.Model.List.prototype.getElement = function(_id) {
-    return this[_id];
-}
-
 IriSP.Model.List.prototype.hasId = function(_id) {
-    return (IriSP._(this.idIndex).indexOf(_id) !== -1);
+    return IriSP._(this.idIndex).include(_id);
 }
 
 /* On recent browsers, forEach and map are defined and do what we want.

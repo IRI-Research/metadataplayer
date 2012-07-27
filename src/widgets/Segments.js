@@ -14,7 +14,7 @@ IriSP.Widgets.Segments.prototype.defaults = {
 
 IriSP.Widgets.Segments.prototype.template =
     '<div class="Ldt-Segments-List">{{#segments}}'
-    + '<div class="Ldt-Segments-Segment Ldt-TraceMe" trace-info="segment-id:{{id}}" segment-id="{{id}}" segment-text="{{text}}" segment-color="{{color}}" center-pos="{{center}}" begin-seconds="{{beginseconds}}"'
+    + '<div class="Ldt-Segments-Segment Ldt-TraceMe" trace-info="segment-id:{{id}}, media-id:{{media_id}}" segment-id="{{id}}" segment-text="{{text}}" segment-color="{{color}}" center-pos="{{center}}" begin-seconds="{{beginseconds}}"'
     + 'style="left:{{left}}px; width:{{width}}px; background:{{color}}"></div>'
     + '{{/segments}}</div>'
     + '<div class="Ldt-Segments-Position"></div>'
@@ -47,7 +47,8 @@ IriSP.Widgets.Segments.prototype.draw = function() {
                 left : Math.floor( _left ),
                 width : Math.floor( _width ),
                 center : Math.floor( _center ),
-                id : _annotation.id
+                id : _annotation.id,
+                media_id : _annotation.getMedia().id
             }
         })
     }));
