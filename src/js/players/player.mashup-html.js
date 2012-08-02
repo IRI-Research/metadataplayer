@@ -20,10 +20,10 @@ IriSP.PopcornReplacement.htmlMashup = function(container, options, metadata) {
         if (typeof options.url_transform === "function") {
             _videoUrl = options.url_transform(_videoUrl);
         }
-        
+		
         _videoEl
             .attr({
-                src : _videoUrl,
+                //src : _videoUrl,
                 id : _tmpId,
                 width : _w,
                 height : _h
@@ -33,7 +33,19 @@ IriSP.PopcornReplacement.htmlMashup = function(container, options, metadata) {
                 top: 0,
                 left: 0
             });
-
+        
+        if(typeof _videoUrl === "string"){
+        	_videoEl.attr({src : _videoUrl});
+	    }
+        else{
+        	// _videoUrl is an array of {src:"u",type:"m"}
+        	l = _videoUrl.length;
+        	for (var _i = 0; _i < l; _i++) {
+        		srcNode = IriSP.jQuery('<source>');
+        		srcNode.attr({src:_videoUrl[_i]["src"], type:_videoUrl[_i]["type"]});
+        		_videoEl.append(srcNode);
+            }
+	    }
         _this.$.append(_videoEl);
         _media.videoEl = _videoEl;
         _media.popcorn = Popcorn("#" + _tmpId);
