@@ -52,9 +52,9 @@ IriSP.libFiles.defaultDir = "../libs/";
 IriSP.widgetsDir = "../metadataplayer";
 IriSP.language = 'fr';
 var _metadata = {
-    url: 'bab_files/mashup.json',
+//    url: 'bab_files/mashup.json',
 //    url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/b2754186-a0c9-11e0-b8bd-00145ea49a02?callback=?',
-//    url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/5afd8bbe-9b75-11e1-9e5d-00145ea4a2be?callback=?',
+    url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/5afd8bbe-9b75-11e1-9e5d-00145ea4a2be?callback=?',
     format: 'ldt'
 };
 var _canPlayMp4 = document.createElement('video').canPlayType('video/mp4');
@@ -79,15 +79,18 @@ var _config = {
                 annotation_type: false
             },
             {
+                type: "Tagger"
+            },
+            {
                 type: "MediaList",
                 container: "mediaList"
             },
             {
                 type: "AnnotationsList",
                 container: "annotationList",
-                ajax_url: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?",
-                ajax_granularity: 30000,
-                limit_count: 3
+                //ajax_url: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?",
+                //ajax_granularity: 30000,
+                //limit_count: 3
             },
             { type: "Mediafragment" }
         ]

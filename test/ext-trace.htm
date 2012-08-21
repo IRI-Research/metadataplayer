@@ -7,6 +7,8 @@
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
         <link href='test.css' rel='stylesheet' type='text/css'>
         <script type="text/javascript" src="metadataplayer/LdtPlayer-core.js" type="text/javascript"></script>
+        <script type="text/javascript" src="libs/jquery.min.js"></script>
+        <script type="text/javascript" src="libs/tracemanager.js" type="text/javascript"></script>
         <script type="text/javascript" src="test-config.js" type="text/javascript"></script>
     </head>
 
@@ -19,9 +21,15 @@
     IriSP.libFiles.defaultDir = "libs/";
     IriSP.language = 'fr';
     IriSP.widgetsDir = "metadataplayer";
+    var _tracer = tracemanager.init_trace("test", {
+            url: "http://traces.advene.org:5000/",
+            requestmode: "GET",
+            syncmode: "sync",
+            default_subject: "tests-Metadataplayer"
+        });
+    _tracer.trace("CallFromOutside");
     var _metadata = {
         url: 'json/ldt-jwplayer.json',
-//        url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/5a893570-ca73-11e1-9443-00145ea4a2be?callback=?',
         format: 'ldt'
     };
     var _config = {            
@@ -45,15 +53,12 @@
                 { type: "Annotation" },
                 {
                     type: "CreateAnnotation",
-                    api_endpoint_template: "post-test.php",
+                    api_endpoint_template: "http://192.168.56.101/pf/ldtplatform/api/ldt/annotations/{{id}}.json",
                     creator_name: "Metadataplayer",
                     creator_avatar: "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
                     tag_titles: ["#amateur", "#digital-humanities"]
                 },
                 { type: "Tweet" },
-                {
-                    type: "Tagger"
-                },
                 {
                     type: "Tagcloud"
                 },
@@ -62,7 +67,14 @@
                     container: "AnnotationsListContainer",
                     default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png"
                 },
-                { type: "Mediafragment"}
+                {
+                    type: "Trace",
+                    tracer: _tracer,
+                    js_console: true,
+                    extend: {
+                        test: 42
+                    }
+                }
             ]
         },
         player:{
@@ -71,15 +83,7 @@
             height: 350, 
             width: 550, 
             provider: "rtmp",
-            streamer: function(_url) {
-                var _matches = _url.match(/^[^\/]+\/\/[^\/]+\/[^\/]+\//);
-                if (_matches) {
-                    return _matches[0];
-                } else {
-                    return _url;
-                }
-            },
-            //autostart: true,
+            autostart: true,
             metadata: _metadata
         }
     };

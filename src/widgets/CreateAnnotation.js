@@ -344,8 +344,8 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
             _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
             _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
             _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
-            if (this.pause_on_write && this.player.popcorn.media.paused) {
-                this.player.popcorn.play();
+            if (_this.pause_on_write && _this.player.popcorn.media.paused) {
+                _this.player.popcorn.play();
             }
             _this.player.popcorn.trigger("IriSP.AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
         },
