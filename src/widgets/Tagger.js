@@ -7,10 +7,11 @@ IriSP.Widgets.Tagger.prototype = new IriSP.Widgets.Widget();
 IriSP.Widgets.Tagger.prototype.defaults = {
     created_annotation_type: "Contributions",
     creator_name: 'anonymous',
-    api_endpoint: "/metadataplayer/test/post-test.php",
+    api_endpoint: "",
     api_method: "PUT",
     pause_on_write : true,
     api_serializer: "ldt_annotate",
+    tags: false
 }
 
 IriSP.Widgets.Tagger.prototype.messages = {
@@ -30,7 +31,7 @@ IriSP.Widgets.Tagger.prototype.template =
 
 IriSP.Widgets.Tagger.prototype.draw = function() {
     this.renderTemplate();
-    var _tags = this.source.getTags().getTitles(),
+    var _tags = this.tags || this.source.getTags().getTitles(),
         _this = this,
         _input = this.$.find(".Ldt-Tagger-Input");
     _input.autocomplete({
@@ -84,7 +85,6 @@ IriSP.Widgets.Tagger.prototype.draw = function() {
                 }
             }
             if (_pilotAnnotation) {
-                console.log(_pilotAnnotation);
                 _annotation.setBegin(_pilotAnnotation.begin);
                 _annotation.setEnd(_pilotAnnotation.end);
                 /* Id du média annoté */
