@@ -25,3 +25,7 @@ syntax: regexp
 ^\.pydevproject$
 syntax: regexp
 ^doc/.+\.html$
+syntax: regexp
+^assets/player_bab_ldt/player_bab_ldt/bin$
+syntax: regexp
+^\.settings/org\.eclipse\.core\.runtime\.prefs$
