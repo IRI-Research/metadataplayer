@@ -102,15 +102,20 @@ var _config = {
                 annotation_type: false
             },
             {
+                type: "Tagger",
+                api_endpoint: "../post-test.php",
+                tags: ["actif","amour","bonheur","captif","charité","désir","dieu","doute","famille","idéal","internationale","passif","patrie","peur","politique","président","spleen","travail"]
+            },
+            {
                 type: "MediaList",
                 container: "mediaList"
             },
             {
                 type: "AnnotationsList",
                 container: "annotationList",
-                ajax_url: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?",
-                ajax_granularity: 30000,
-                limit_count: 3
+                //ajax_url: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?",
+                //ajax_granularity: 30000,
+                //limit_count: 3
             },
             { type: "Mediafragment" }
         ]
