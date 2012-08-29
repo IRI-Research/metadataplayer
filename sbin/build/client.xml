@@ -14,7 +14,7 @@
     <delete dir="${basedir}/../../build" />
     <mkdir  dir="${basedir}/../../build" />
     
-    <target name="makeall" depends="concatenate" />
+    <target name="makeall" depends="concatenate,copytotest" />
     
     <target name="concatenate" description="Build the developer release file">
         <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-core.js">
@@ -35,7 +35,22 @@
                 <deletecharacters chars="&#xFEFF;" />
             </filterchain>
         </concat>
-        <delete file="../../build/compiled_templates.js" />
+    </target>
+    
+    <target name="copytotest" description="Copy files to test directory">
+        <delete dir="../../test/metadataplayer" />
+        <delete dir="../../test/libs" />
+        <copy todir="../../test/libs">
+            <fileset dir="../../src/js/libs"/>
+        </copy>
+        <copy todir="../../test/metadataplayer">
+            <fileset dir="../../src/widgets"/>
+        </copy>
+        <copy file="../../build/LdtPlayer-core.js" todir="../../test/metadataplayer/" />
+        <copy file="../../src/css/LdtPlayer-core.css" todir="../../test/metadataplayer/" />
+        <copy todir="../../test/metadataplayer/img">
+            <fileset dir="../../src/css/img"/>
+        </copy>
     </target>
     
     <target name="minify" depends="concatenate">
