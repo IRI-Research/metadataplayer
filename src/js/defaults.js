@@ -16,7 +16,12 @@ IriSP.libFiles = {
         jwPlayerSWF : "player.swf",
         json : "json2.js",
         zeroClipboardJs: "ZeroClipboard.js",
-        zeroClipboardSwf: "ZeroClipboard.swf"
+        zeroClipboardSwf: "ZeroClipboard.swf",
+        backbone: "backbone.js",
+        backboneRelational: "backbone-relational.js",
+        paper: "paper.js",
+        jqueryMousewheel: "jquery.mousewheel.min.js",
+        renkanPublish: "renkan-publish.js"
     },
     locations : {
         // use to define locations outside default_dir
@@ -57,6 +62,9 @@ IriSP.widgetsRequirements = {
     },
     Social: {
         requires: [ "zeroClipboardJs" ]
+    },
+    Renkan: {
+        requires: [ "backbone", "backboneRelational", "paper", "jqueryMousewheel", "renkanPublish" ]
     }
 }
 
