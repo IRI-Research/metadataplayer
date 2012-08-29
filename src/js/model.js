@@ -578,6 +578,10 @@ IriSP.Model.MashedAnnotation.prototype.getTagTexts = function() {
     return this.annotation.getTags().getTitles();
 }
 
+IriSP.Model.MashedAnnotation.prototype.getDuration = function() {
+    return this.annotation.getDuration();
+}
+
 /* */
 
 IriSP.Model.Mashup = function(_id, _source) {
