@@ -20,8 +20,8 @@ li.Ldt-AnnotationsList-li {
     padding: 2px 0;
     min-height: 60px;
 }
-.Ldt-AnnotationsList-li:hover {
-    background: url(img/pinstripe-grey.png) !important;
+.Ldt-AnnotationsList-li.selected {
+    background-image: url(img/pinstripe-grey.png);
 }
 .Ldt-AnnotationsList-highlight {
     background: #F7268E;

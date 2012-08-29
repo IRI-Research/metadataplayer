@@ -95,7 +95,7 @@ IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
         IriSP.jQuery = window.jQuery.noConflict();
     }
     if (typeof IriSP._ === "undefined" && typeof window._ !== "undefined") {
-        IriSP._ = window._.noConflict();
+        IriSP._ = window._;
     }
     IriSP.loadCss(IriSP.getLib("cssjQueryUI"));
     IriSP.loadCss(this.config.gui.css);

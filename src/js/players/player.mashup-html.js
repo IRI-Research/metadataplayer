@@ -41,7 +41,7 @@ IriSP.PopcornReplacement.htmlMashup = function(container, options, metadata) {
         	// _videoUrl is an array of {src:"u",type:"m"}
         	l = _videoUrl.length;
         	for (var _i = 0; _i < l; _i++) {
-        		srcNode = IriSP.jQuery('<source>');
+        		var srcNode = IriSP.jQuery('<source>');
         		srcNode.attr({src:_videoUrl[_i]["src"], type:_videoUrl[_i]["type"]});
         		_videoEl.append(srcNode);
             }

@@ -46,8 +46,11 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
 IriSP.Widgets.AnnotationsList.prototype.template =
     '<div class="Ldt-AnnotationsListWidget">'
     + '<ul class="Ldt-AnnotationsList-ul">'
-    + '{{#annotations}}'
-    + '<li class="Ldt-AnnotationsList-li Ldt-TraceMe" trace-info="annotation-id:{{id}}, media-id:{{media_id}}" style="{{specific_style}}">'
+    + '</ul>'
+    + '</div>';
+
+IriSP.Widgets.AnnotationsList.prototype.annotationTemplate = 
+    '<li class="Ldt-AnnotationsList-li Ldt-TraceMe" trace-info="annotation-id:{{id}}, media-id:{{media_id}}" style="{{specific_style}}">'
     + '<div class="Ldt-AnnotationsList-ThumbContainer">'
     + '<a href="{{url}}">'
     + '<img class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
@@ -69,10 +72,7 @@ IriSP.Widgets.AnnotationsList.prototype.template =
     + '{{/tags}}'
     + '</ul>'
     + '{{/tags.length}}'
-    + '</li>'
-    + '{{/annotations}}'
-    + '</ul>'
-    + '</div>';
+    + '</li>';
 
 IriSP.Widgets.AnnotationsList.prototype.onSearch = function(searchString) {
     this.searchString = typeof searchString !== "undefined" ? searchString : '';
@@ -170,61 +170,72 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
     if (_forceRedraw || !IriSP._.isEqual(_ids, this.lastIds)) {
         /* This part only gets executed if the list needs updating */
         this.lastIds = _ids;
-        var _data = _list.map(function(_annotation) {
-                    var _url = (
-                        ( typeof _annotation.url !== "undefined" && _annotation.url)
-                        ? _annotation.url
-                        : (
-                            ( typeof _this.source.projectId !== "undefined" && typeof _annotation.project !== "undefined" && _annotation.project && _this.source.projectId !== _annotation.project )
-                            ? Mustache.to_html(
-                                _this.foreign_url,
-                                {
-                                    project : _annotation.project,
-                                    media : _annotation.media.id,
-                                    annotation : _annotation.id,
-                                    annotationType : _annotation.annotationType.id
-                                }
-                            )
-                            : '#id=' + _annotation.id
-                            )
-                    );
-                    var _title = (_annotation.title || "").replace(_annotation.description,''),
-                        _description = _annotation.description;
-                    if (!_annotation.title) {
-                        _title = _annotation.creator;
-                    }
-                    if (!_annotation.description && _annotation.creator) {
-                        _description = _annotation.title;
-                        _title = _annotation.creator;
-                    }
-                    var _bgcolor;
-                    IriSP._(_this.polemics).each(function(_polemic) {
-                        var _rgxp = IriSP.Model.regexpFromTextOrArray(_polemic.keyword, true);
-                        if (_rgxp.test(_title + " " + _description)) {
-                            _bgcolor = _polemic.background_color;
+        this.list_$.html("");
+        _list.forEach(function(_annotation) {
+            var _url = (
+                ( typeof _annotation.url !== "undefined" && _annotation.url)
+                ? _annotation.url
+                : (
+                    ( typeof _this.source.projectId !== "undefined" && typeof _annotation.project !== "undefined" && _annotation.project && _this.source.projectId !== _annotation.project )
+                    ? Mustache.to_html(
+                        _this.foreign_url,
+                        {
+                            project : _annotation.project,
+                            media : _annotation.media.id,
+                            annotation : _annotation.id,
+                            annotationType : _annotation.annotationType.id
                         }
-                    });
-                    var _res = {
-                        id : _annotation.id,
-                        media_id : _annotation.getMedia().id,
-                        title : _title,
-                        description : _description,
-                        begin : _annotation.begin.toString(),
-                        end : _annotation.end.toString(),
-                        thumbnail : typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail,
-                        url : _url,
-                        tags : _annotation.getTagTexts(),
-                        specific_style : (typeof _bgcolor !== "undefined" ? "background: " + _bgcolor : "")
-                    }
-                    return _res;
-            }),
-            _html = Mustache.to_html(
-                this.template,
-                {
-                    annotations : _data
-                });
-    
-        this.$.html(_html);
+                    )
+                    : '#id=' + _annotation.id
+                    )
+            );
+            var _title = (_annotation.title || "").replace(_annotation.description,''),
+                _description = _annotation.description;
+            if (!_annotation.title) {
+                _title = _annotation.creator;
+            }
+            if (!_annotation.description && _annotation.creator) {
+                _description = _annotation.title;
+                _title = _annotation.creator;
+            }
+            var _bgcolor;
+            IriSP._(_this.polemics).each(function(_polemic) {
+                var _rgxp = IriSP.Model.regexpFromTextOrArray(_polemic.keyword, true);
+                if (_rgxp.test(_title + " " + _description)) {
+                    _bgcolor = _polemic.background_color;
+                }
+            });
+            var _data = {
+                id : _annotation.id,
+                media_id : _annotation.getMedia().id,
+                title : _title,
+                description : _description,
+                begin : _annotation.begin.toString(),
+                end : _annotation.end.toString(),
+                thumbnail : typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail,
+                url : _url,
+                tags : _annotation.getTagTexts(),
+                specific_style : (typeof _bgcolor !== "undefined" ? "background-color: " + _bgcolor : "")
+            };
+            var _html = Mustache.to_html(_this.annotationTemplate, _data);
+            var _el = IriSP.jQuery(_html);
+            _el.mouseover(function() {
+                    _annotation.trigger("select");
+                })
+                .mouseout(function() {
+                    _annotation.trigger("unselect");
+                })
+                .appendTo(_this.list_$);
+            _annotation.on("select", function() {
+                _this.annotations_$.removeClass("selected");
+                _el.addClass("selected");
+            });
+            _annotation.on("unselect", function() {
+                _this.annotations_$.removeClass("selected");
+            });;
+        });
+        
+        this.annotations_$ = this.$.find('.Ldt-AnnotationsList-li');
         
         /* Correct the empty tag bug */
         this.$.find('.Ldt-AnnotationsList-Tag-Li').each(function() {
@@ -260,6 +271,10 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
 }
 
 IriSP.Widgets.AnnotationsList.prototype.draw = function() {
+    
+    this.renderTemplate();
+    
+    this.list_$ = this.$.find(".Ldt-AnnotationsList-ul");
     
     this.bindPopcorn("IriSP.search", "onSearch");
     this.bindPopcorn("IriSP.search.closed", "onSearch");

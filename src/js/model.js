@@ -86,6 +86,7 @@ IriSP.Model.List = function(_directory) {
     Array.call(this);
     this.directory = _directory;
     this.idIndex = [];
+    this.__events = {};
     if (typeof _directory == "undefined") {
         console.trace();
         throw "Error : new IriSP.Model.List(directory): directory is undefined";
@@ -259,6 +260,20 @@ IriSP.Model.List.prototype.removeElements = function(_list, _deleteFromDirectory
     });
 }
 
+IriSP.Model.List.prototype.on = function(_event, _callback) {
+    if (typeof this.__events[_event] === "undefined") {
+        this.__events[_event] = [];
+    }
+    this.__events[_event].push(_callback);
+}
+
+IriSP.Model.List.prototype.trigger = function(_event, _data) {
+    var _list = this;
+    IriSP._(this.__events[_event]).each(function(_callback) {
+        _callback.call(_list, _data);
+    });
+}
+
 /* A simple time management object, that helps converting millisecs to seconds and strings,
  * without the clumsiness of the original Date object.
  */
@@ -383,6 +398,7 @@ IriSP.Model.Element = function(_id, _source) {
     this.id = _id;
     this.title = "";
     this.description = "";
+    this.__events = {}
     this.source.directory.addElement(this);
 }
 
@@ -406,6 +422,20 @@ IriSP.Model.Element.prototype.getRelated = function(_elementType, _global) {
     return this.source.getList(_elementType, _global).filter(function(_el) {
         var _ref = _el[_this.elementType];
         return _ref.isOrHasId(_this.id);
+    });
+}
+
+IriSP.Model.Element.prototype.on = function(_event, _callback) {
+    if (typeof this.__events[_event] === "undefined") {
+        this.__events[_event] = [];
+    }
+    this.__events[_event].push(_callback);
+}
+
+IriSP.Model.Element.prototype.trigger = function(_event, _data) {
+    var _element = this;
+    IriSP._(this.__events[_event]).each(function(_callback) {
+        _callback.call(_element, _data);
     });
 }
 
