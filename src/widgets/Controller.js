@@ -96,6 +96,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     this.bindPopcorn("IriSP.search.matchFound","searchMatch");
     this.bindPopcorn("IriSP.search.noMatchFound","searchNoMatch");
     this.bindPopcorn("IriSP.search.triggeredSearch","triggeredSearch");
+    this.bindPopcorn("IriSP.search.cleared","hideSearchBlock");
     
     // handle clicks
     this.$playButton.click(this.functionWrapper("playHandler"));
@@ -192,7 +193,7 @@ IriSP.Widgets.Controller.prototype.playHandler = function() {
     var status = this.player.popcorn.media.paused;
   
     if (status) {        
-        this.player.popcorn.play();   
+        this.player.popcorn.play();
     } else {
         this.player.popcorn.pause();
     }  
@@ -221,7 +222,7 @@ IriSP.Widgets.Controller.prototype.volumeUpdater = function() {
 };
 
 IriSP.Widgets.Controller.prototype.showSearchBlock = function() {
-    this.$searchBlock.show("blind", { direction: "horizontal"}, 100);
+    this.$searchBlock.animate({ width:"160px" }, 200);
     this.$searchInput.css('background-color','#fff');
    
     this.$searchInput.focus();
@@ -239,7 +240,7 @@ IriSP.Widgets.Controller.prototype.showSearchBlock = function() {
 IriSP.Widgets.Controller.prototype.hideSearchBlock = function() {
     this._searchLastValue = this.$searchInput.val();
     this.$searchInput.val('');
-    this.$searchBlock.hide("blind", { direction: "horizontal"}, 75);
+    this.$searchBlock.animate( { width: 0 }, 200);
 
     this._positiveMatch = false;
     
@@ -248,7 +249,7 @@ IriSP.Widgets.Controller.prototype.hideSearchBlock = function() {
 
 /** react to clicks on the search button */
 IriSP.Widgets.Controller.prototype.searchButtonHandler = function() {
-    if ( this.$searchBlock.is(":hidden") ) {
+    if ( !this.$searchBlock.width() ) {
         this.showSearchBlock();
         this.$searchInput.val(this._searchLastValue);      
         this.player.popcorn.trigger("IriSP.search", this._searchLastValue); // trigger the search to make it more natural.
@@ -260,6 +261,10 @@ IriSP.Widgets.Controller.prototype.searchButtonHandler = function() {
 /** this handler is called whenever the content of the search
    field changes */
 IriSP.Widgets.Controller.prototype.searchHandler = function() {
+    if ( !this.$searchBlock.width() ) {
+        this.$searchBlock.css({ width:"160px" });
+        this.$searchInput.css('background-color','#fff');
+    }
     this._searchLastValue = this.$searchInput.val();
     this._positiveMatch = false;
   

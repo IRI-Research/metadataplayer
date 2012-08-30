@@ -9,7 +9,7 @@
 }
 
 .Ldt-Ctrl-Left {
-  float:left;
+  float:left; width: 300px;
 }
 
 .Ldt-Ctrl-Right {
@@ -82,13 +82,12 @@
 }
 
 .Ldt-Ctrl-Search {
-  display: none;
-  width: 165px;
-  height: 25px;
-  border: 1px;
-  border-color: #CFCFCF;
-  float: left;
-  text-align: center;
+  width: 0; float: left; overflow: hidden;
+}
+
+input.Ldt-Ctrl-SearchInput {
+    width: 145px; height: 13px; margin: 2px; padding: 3px;
+    border: 1px solid #8080a0; border-radius: 3px; font-size: 13px;
 }
 
 .Ldt-Ctrl-Time {
