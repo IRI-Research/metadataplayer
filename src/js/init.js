@@ -2,7 +2,7 @@
 */
 
 if (typeof window.IriSP === "undefined") {
-    IriSP = {};
+    window.IriSP = {};
 }
 
 /* The Metadataplayer Object, single point of entry, replaces IriSP.init_player */
