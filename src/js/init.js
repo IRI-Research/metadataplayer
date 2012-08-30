@@ -183,6 +183,7 @@ IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
         _types = {
             "html5" : /\.(ogg|ogv|webm)$/,
             "youtube" : /^(https?:\/\/)?(www\.)?youtube\.com/,
+            "vimeo" : /^(https?:\/\/)?(www\.)?vimeo\.com/,
             "dailymotion" : /^(https?:\/\/)?(www\.)?dailymotion\.com/
         };
     
@@ -276,6 +277,15 @@ IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
             _pop = Popcorn.youtube("#" + containerDiv, _url);
             break;
 
+        case "vimeo":
+            // Popcorn.vimeo wants us to specify the size of the player in the style attribute of its container div.
+            IriSP.jQuery("#" + containerDiv).css({
+                width : this.config.player.width + "px",
+                height : this.config.player.height + "px"
+            });
+            _pop = Popcorn.vimeo("#" + containerDiv, this.config.player.video);
+            break;
+            
         case "dailymotion":
             _pop = new IriSP.PopcornReplacement.dailymotion("#" + containerDiv, this.config.player);
             break;

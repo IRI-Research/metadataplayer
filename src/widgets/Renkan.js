@@ -38,6 +38,15 @@ IriSP.Widgets.Renkan.prototype.draw = function() {
                 return _ann.getMedia().id == _annmatch[1] && _ann.id == _annmatch[2];
             });
             _annotations.forEach(function(_ann) {
+                var _duration = _ann.getDuration(),
+                    _preroll = + ( _duration < _this.min_duration ) * ( _this.min_duration / 2);
+                var _nt = {
+                    selected: false,
+                    node: _node,
+                    begin: _ann.begin - _preroll,
+                    end: _ann.end + _preroll
+                }
+                _this.node_times.push(_nt);
                 _ann.on("select", function(_stop) {
                     if (!_stop) {
                         _node.trigger("select",true);
@@ -54,6 +63,7 @@ IriSP.Widgets.Renkan.prototype.draw = function() {
                     }
                 });
                 _node.on("unselect", function(_stop) {
+                    _nt.selected = false;
                     if (!_stop) {
                         _ann.trigger("unselect",true);
                     }
@@ -61,14 +71,6 @@ IriSP.Widgets.Renkan.prototype.draw = function() {
                 _node.on("click", function() {
                     _this.player.popcorn.currentTime(_ann.begin.getSeconds());
                     _this.player.popcorn.trigger("IriSP.Mediafragment.setHashToAnnotation", _ann.id);
-                });
-                var _duration = _ann.getDuration(),
-                    _preroll = + ( _duration < _this.min_duration ) * ( _this.min_duration / 2);
-                _this.node_times.push({
-                    selected: false,
-                    node: _node,
-                    begin: _ann.begin - _preroll,
-                    end: _ann.end + _preroll
                 });
             });
         }
@@ -98,7 +100,6 @@ IriSP.Widgets.Renkan.prototype.onTimeupdate = function() {
             }
         } else {
             if (_nt.selected) {
-                _nt.selected = false;
                 _nt.node.trigger("unselect", true);
             }
         }
