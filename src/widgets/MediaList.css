@@ -1,0 +1,102 @@
+.Ldt-MediaListWidget a {
+    text-decoration: none;
+}
+
+.Ldt-MediaListWidget h2 {
+    clear: both;
+}
+
+.Ldt-MediaList-NowContainer {
+    min-height: 60px;
+    margin: 2px 0;
+}
+
+h3.Ldt-MediaList-Now-Title {
+    font-size: 13px;
+    margin: 2px 2px 0 82px;
+    font-weight: bold;
+}
+
+.Ldt-MediaListWidget h3 a {
+    color: #0068c4;
+}
+
+p.Ldt-MediaList-Now-Description {
+    margin: 2px 0 2px 82px;
+    font-size: 12px;
+    color: #666666;
+}
+
+ul.Ldt-MediaList-OtherList {
+    list-style: none;
+    padding: 2px;
+    margin: 0;
+}
+
+li.Ldt-MediaList-OtherList-li {
+    width: 100%;
+    clear: both;
+    margin: 2px 0;
+    padding: 2px 0;
+    min-height: 48px;
+}
+
+.Ldt-MediaList-OtherList-li:hover, .Ldt-MediaList-NowContainer:hover {
+    background: url(img/pinstripe-grey.png);
+}
+
+.Ldt-MediaList-Now-ThumbContainer, .Ldt-MediaList-Other-ThumbContainer {
+    float: left;
+    width: 80px;
+    height: 50px;
+    text-align: center;
+    margin: 2px 0;
+}
+
+.Ldt-MediaList-Now-ThumbContainer {
+    float: left;
+    width: 80px;
+    height: 50px;
+    text-align: center;
+    margin: 2px 0;
+}
+
+.Ldt-MediaList-Other-ThumbContainer {
+    width: 60px;
+    height: 38px;
+}
+
+.Ldt-MediaList-Now-Thumbnail, .Ldt-MediaList-Other-Thumbnail {
+    border: none;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+}
+
+h3.Ldt-MediaList-Other-Title {
+    font-size: 12px;
+    margin: 2px 2px 0 62px;
+    font-weight: bold;
+}
+
+p.Ldt-MediaList-Other-Description {
+    margin: 2px 0 2px 62px;
+    font-size: 10px;
+    color: #666666;
+}
+
+.Ldt-MediaList-Now-MediaView {
+    clear: both; width: 100%; height: 12px; margin: 5px 0 0; overflow: hidden; position: relative;
+}
+
+.Ldt-MediaList-Other-MediaView {
+    clear: both; width: 100%; height: 6px; margin: 5px 0 0; overflow: hidden; position: relative;
+}
+
+.Ldt-MediaList-MediaView-Background {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; filter: alpha(opacity=50); opacity: 0.5; background: #999999;
+}
+
+.Ldt-MediaList-Segment {
+    position: absolute; top: 0; height: 100%; border-style: none solid; margin-left: -1px; border-color: #ffffff; border-width: 1px;
+}

@@ -1,0 +1,506 @@
+{
+    "views": [
+        {
+            "id": "v_33227665-49F3-7111-2BC6-3C4B6E90411C",
+            "contents": ["c1a84ff8-e2b0-11e0-8472-00145ea49a02", "c4ff2454-9842-11e1-9f9f-00145ea4a2be"],
+            "annotation_types": ["c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67", "c_3D9A9B5D-E144-4920-A9CA-3C4D26B48425"]
+        }, {
+            "meta": {
+                "stat": "1,1,1,1,2,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+            },
+            "id": "stat",
+            "contents": ["c4ff2454-9842-11e1-9f9f-00145ea4a2be"]
+        }
+    ],
+    "tags": [
+        {
+            "meta": {
+                "dc:title": "jeux vidéo"
+            },
+            "id": "jeux_video"
+        }, {
+            "meta": {
+                "dc:title": "intelligence collective"
+            },
+            "id": "intelligence_collective"
+        }, {
+            "meta": {
+                "dc:title": "gamification"
+            },
+            "id": "gamification"
+        }, {
+            "meta": {
+                "dc:title": "nouveaux médias"
+            },
+            "id": "nouveaux_medias"
+        }, {
+            "meta": {
+                "dc:title": "world wide web"
+            },
+            "id": "www"
+        }, {
+            "meta": {
+                "dc:title": "hypertexte"
+            },
+            "id": "hypertexte"
+        }, {
+            "meta": {
+                "dc:title": "données liées"
+            },
+            "id": "donnees_liees"
+        }, {
+            "meta": {
+                "dc:title": "données ouvertes"
+            },
+            "id": "donnees_ouvertes"
+        }
+    ],
+    "lists": [
+        {
+            "items": [
+                {
+                    "id-ref": "c_3D9A9B5D-E144-4920-A9CA-3C4D26B48425"
+                }
+            ],
+            "meta": {
+                "dc:contributor": "undefined",
+                "dc:created": "2012-05-11T15:08:00.342662",
+                "dc:creator": "undefined",
+                "id-ref": "c4ff2454-9842-11e1-9f9f-00145ea4a2be",
+                "dc:title": "Découpages personnels",
+                "editable": "false",
+                "dc:modified": "2012-05-11T15:08:00.342662",
+                "dc:description": ""
+            },
+            "id": "g_5665330A-7789-1E08-13C2-3C4D26B44EAF"
+        }, {
+            "items": [
+                {
+                    "id-ref": "c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67"
+                }
+            ],
+            "meta": {
+                "dc:contributor": "undefined",
+                "dc:created": "2012-05-11T15:08:00.348445",
+                "dc:creator": "undefined",
+                "id-ref": "c1a84ff8-e2b0-11e0-8472-00145ea49a02",
+                "dc:title": "Découpages personnels",
+                "editable": "false",
+                "dc:modified": "2012-05-11T15:08:00.348445",
+                "dc:description": ""
+            },
+            "id": "g_F84E6DE7-FB3E-4672-3E87-3C4B87BA959E"
+        }, {
+
+            "items": ["s_48D417FA-D34B-C954-05F6-3C4B9392367E", "s_5D30DD53-BE06-49E0-EB72-3C4B99BA0AA4", "s_471A1070-AAD9-32F6-1E1B-3C4D52B5E4B9", "s_2B3C5B17-FB5E-8B99-AEDA-3C4BA2EB4234", "s_7EB7522B-82D7-4FD6-2C5F-3C4D6945539E", "s_2376F9F0-AC9A-229C-9A60-3C4BAEE2D03F", "s_E8C653B6-2B35-B2D6-1040-3C4D75BDF31B", "s_971168A0-A9B3-064D-46B4-3C4D7FA5DFD5", "s_0DB7AABB-3973-9352-95DF-3C4BC3DCFB2D"],
+            "meta": {
+                "dc:contributor": "IRI",
+                "dc:creator": "IRI",
+                "dc:title": "Bout à bout 2",
+                "dc:modified": "2012-06-22T17:21:32.514507",
+                "dc:created": "2012-06-22T17:21:32.514507",
+                "listtype": "mashup",
+                "dc:description": ""
+            },
+            "id": "0"
+        }
+    ],
+    "medias": [
+        {
+            "origin": "0",
+            "url": "rtmp://media.iri.centrepompidou.fr/ddc_player/video/ldtplatform/rsln_jane_mcgonigal.mp4",
+            "http://advene.liris.cnrs.fr/ns/frame_of_reference/ms": "o=0",
+            "meta": {
+                "dc:contributor": "IRI",
+                "item": {
+                    "name": "streamer",
+                    "value": "rtmp://media.iri.centrepompidou.fr/ddc_player/"
+                },
+                "dc:created": "2011-09-19T13:17:56.656743",
+                "dc:duration": 4127000,
+                "dc:creator": "IRI",
+                "dc:created.contents": "2012-02-13",
+                "dc:title": "RSLN -  Jane McGonigal",
+                "dc:creator.contents": "IRI",
+                "dc:modified": "2012-02-13T11:55:33.052583",
+                "dc:description": "Regards sur le Numérique, 16 septembre 2011, Jane McGonigal. Comment le jeu vidéo va changer le monde ?"
+            },
+            "id": "c1a84ff8-e2b0-11e0-8472-00145ea49a02",
+            "unit": "ms"
+        }, {
+            "origin": "0",
+            "url": "rtmp://media.iri.centrepompidou.fr/ddc_player/video/ldtplatform/www2012_timbernerslee.mp4",
+            "http://advene.liris.cnrs.fr/ns/frame_of_reference/ms": "o=0",
+            "meta": {
+                "dc:contributor": "IRI",
+                "item": {
+                    "name": "streamer",
+                    "value": "rtmp://media.iri.centrepompidou.fr/ddc_player/"
+                },
+                "dc:created": "2012-05-07T14:48:22.137437",
+                "dc:duration": 5245000,
+                "dc:creator": "IRI",
+                "dc:created.contents": "2012-05-07",
+                "dc:title": "WWW 2012 - Tim Berners-Lee",
+                "dc:creator.contents": "IRI",
+                "dc:modified": "2012-05-07T17:08:36.018270",
+                "dc:description": "World Wide Web Conference 2012, Wednesday 18/04, 11:00-12:30, Keynote by Tim Berners-Lee, graduate of Oxford University, inventor of the World Wide Web, an internet-based hypermedia initiative for global information sharing while at CERN, the European Particle Physics Laboratory, in 1989."
+            },
+            "id": "c4ff2454-9842-11e1-9f9f-00145ea4a2be",
+            "unit": "ms"
+        }
+    ],
+    "meta": {
+        "dc:contributor": "admin",
+        "dc:created": "2012-05-11T16:26:53.787298",
+        "dc:creator": "admin",
+        "main_media": {
+            "id-ref": "mashup-001"
+        },
+        "dc:description": "",
+        "dc:title": "test bout à bout",
+        "id": "5afd8bbe-9b75-11e1-9e5d-00145ea4a2be",
+        "dc:modified": "2012-05-11T16:37:30.246796"
+    },
+    "annotations": [
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "First Segment from Jane McGonigal",
+                "img": {
+                    "src": ""
+                },
+                "title": "McGonigal 1",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 420000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "end": 425000,
+            "tags": [
+                {
+                    "id-ref": "jeux_video"
+                }, {
+                    "id-ref": "gamification"
+                }
+            ],
+            "color": "16763904",
+            "media": "c1a84ff8-e2b0-11e0-8472-00145ea49a02",
+            "id": "s_48D417FA-D34B-C954-05F6-3C4B9392367E"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Second segment from Jane McGonigal",
+                "img": {
+                    "src": ""
+                },
+                "title": "McGonigal 2",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 980096,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "end": 995096,
+            "tags": [
+                {
+                    "id-ref": "nouveaux_medias"
+                }, {
+                    "id-ref": "intelligence_collective"
+                }
+            ],
+            "color": "16763904",
+            "media": "c1a84ff8-e2b0-11e0-8472-00145ea49a02",
+            "id": "s_5D30DD53-BE06-49E0-EB72-3C4B99BA0AA4"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Third segment from Jane McGonigal",
+                "img": {
+                    "src": ""
+                },
+                "title": "McGonigal 3",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 1833044,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "end": 1860044,
+            "tags": [
+                {
+                    "id-ref": "jeux_video"
+                }
+            ],
+            "color": "16763904",
+            "media": "c1a84ff8-e2b0-11e0-8472-00145ea49a02",
+            "id": "s_2B3C5B17-FB5E-8B99-AEDA-3C4BA2EB4234"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Fourth segment from Jane McGonigal",
+                "img": {
+                    "src": ""
+                },
+                "title": "McGonigal 4",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 2436996,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "end": 2460096,
+            "tags": [
+                {
+                    "id-ref": "jeux_video"
+                }, {
+                    "id-ref": "www"
+                }
+            ],
+            "color": "16763904",
+            "media": "c1a84ff8-e2b0-11e0-8472-00145ea49a02",
+            "id": "s_2376F9F0-AC9A-229C-9A60-3C4BAEE2D03F"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Fifth segment from Jane McGonigal",
+                "img": {
+                    "src": ""
+                },
+                "title": "McGonigal 5",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 3240000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "end": 3250000,
+            "tags": [
+                {
+                    "id-ref": "jeux_video"
+                }, {
+                    "id-ref": "nouveaux_medias"
+                }, {
+                    "id-ref": "gamification"
+                }
+            ],
+            "color": "16763904",
+            "media": "c1a84ff8-e2b0-11e0-8472-00145ea49a02",
+            "id": "s_0DB7AABB-3973-9352-95DF-3C4BC3DCFB2D"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "First Segment from Tim Berners-Lee",
+                "img": {
+                    "src": ""
+                },
+                "title": "WWW 1",
+                "color": "10027008",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 370000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_3D9A9B5D-E144-4920-A9CA-3C4D26B48425",
+                "dc:created": "2012-05-11T15:08:00.342701",
+                "dc:modified": "2012-05-11T15:08:00.342701",
+                "dc:creator": "perso"
+            },
+            "end": 380000,
+            "tags": [
+                {
+                    "id-ref": "hypertexte"
+                }, {
+                    "id-ref": "www"
+                }, {
+                    "id-ref": "donnees_ouvertes"
+                }, {
+                    "id-ref": "donnees_liees"
+                }
+            ],
+            "color": "10027008",
+            "media": "c4ff2454-9842-11e1-9f9f-00145ea4a2be",
+            "id": "s_471A1070-AAD9-32F6-1E1B-3C4D52B5E4B9"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Second Segment from Tim Berners-Lee",
+                "img": {
+                    "src": ""
+                },
+                "title": "WWW 2",
+                "color": "13369344",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 1090000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_3D9A9B5D-E144-4920-A9CA-3C4D26B48425",
+                "dc:created": "2012-05-11T15:08:00.342701",
+                "dc:modified": "2012-05-11T15:08:00.342701",
+                "dc:creator": "perso"
+            },
+            "end": 1105000,
+            "tags": null,
+            "color": "13369344",
+            "media": "c4ff2454-9842-11e1-9f9f-00145ea4a2be",
+            "id": "s_7EB7522B-82D7-4FD6-2C5F-3C4D6945539E"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Third segment from Tim Berners-Lee",
+                "img": {
+                    "src": ""
+                },
+                "title": "WWW 3",
+                "color": "10027008",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 2030000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_3D9A9B5D-E144-4920-A9CA-3C4D26B48425",
+                "dc:created": "2012-05-11T15:08:00.342701",
+                "dc:modified": "2012-05-11T15:08:00.342701",
+                "dc:creator": "perso"
+            },
+            "end": 2035000,
+            "tags": [
+                {
+                    "id-ref": "www"
+                }
+            ],
+            "color": "10027008",
+            "media": "c4ff2454-9842-11e1-9f9f-00145ea4a2be",
+            "id": "s_E8C653B6-2B35-B2D6-1040-3C4D75BDF31B"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Fourth Segment from Tim Berners-Lee",
+                "img": {
+                    "src": "WWW 4"
+                },
+                "title": "",
+                "color": "10027008",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 2922000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_3D9A9B5D-E144-4920-A9CA-3C4D26B48425",
+                "dc:created": "2012-05-11T15:08:00.342701",
+                "dc:modified": "2012-05-11T15:08:00.342701",
+                "dc:creator": "perso"
+            },
+            "end": 2940000,
+            "tags": [
+                {
+                    "id-ref": "hypertexte"
+                }
+            ],
+            "color": "10027008",
+            "media": "c4ff2454-9842-11e1-9f9f-00145ea4a2be",
+            "id": "s_971168A0-A9B3-064D-46B4-3C4D7FA5DFD5"
+        }
+    ],
+    "annotation-types": [
+        {
+            "dc:contributor": "perso",
+            "dc:creator": "perso",
+            "dc:title": "Mon découpage",
+            "id": "c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67",
+            "dc:created": "2012-05-11T15:08:00.348480",
+            "dc:description": "",
+            "dc:modified": "2012-05-11T15:08:00.348480"
+        }, {
+            "dc:contributor": "perso",
+            "dc:creator": "perso",
+            "dc:title": "Mon découpage",
+            "id": "c_3D9A9B5D-E144-4920-A9CA-3C4D26B48425",
+            "dc:created": "2012-05-11T15:08:00.342701",
+            "dc:description": "",
+            "dc:modified": "2012-05-11T15:08:00.342701"
+        }
+    ],
+    "mashups": [
+        {
+            "id": "mashup-001",
+            "meta": {
+                "dc:title": "Example mashup",
+                "dc:description": "This is an example mashup"
+            },
+            "segments": ["s_48D417FA-D34B-C954-05F6-3C4B9392367E", "s_5D30DD53-BE06-49E0-EB72-3C4B99BA0AA4", "s_471A1070-AAD9-32F6-1E1B-3C4D52B5E4B9", "s_2B3C5B17-FB5E-8B99-AEDA-3C4BA2EB4234", "s_7EB7522B-82D7-4FD6-2C5F-3C4D6945539E", "s_2376F9F0-AC9A-229C-9A60-3C4BAEE2D03F", "s_E8C653B6-2B35-B2D6-1040-3C4D75BDF31B", "s_971168A0-A9B3-064D-46B4-3C4D7FA5DFD5", "s_0DB7AABB-3973-9352-95DF-3C4BC3DCFB2D"]
+        }
+    ]
+}

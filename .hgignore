@@ -10,12 +10,26 @@ src/js/site.js
 doc/jsdoc/*
 
 syntax: regexp
-^assets/player_bab_ldt/player_bab_ldt/bin$
+^src/css/LdtPlayer-release\.css$
 syntax: regexp
-^test/metadataplayer$
+^build$
 syntax: regexp
 ^test/libs$
 syntax: regexp
-^build/LdtPlayer-core\.js$
+^test/metadataplayer$
+syntax: regexp
+\.mp4$
+syntax: regexp
+\.dokuwiki$
+syntax: regexp
+^\.pydevproject$
+syntax: regexp
+^doc/.+\.html$
+syntax: regexp
+^assets/player_bab_ldt/player_bab_ldt/bin$
 syntax: regexp
 ^\.settings/org\.eclipse\.core\.runtime\.prefs$
+syntax: regexp
+^sbin/build/compil-to-platform\.sh$
+syntax: regexp
+\.webm$

@@ -1,0 +1,119 @@
+@font-face {
+    font-family: DIN;
+    font-weight: normal;
+    font-style: normal;
+    src: url(fonts/DINRg.ttf);
+}
+
+@font-face {
+    font-family: DIN;
+    font-weight: bold;
+    font-style: normal;
+    src: url(fonts/DINBd.ttf);
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+img a {
+    border: none;
+}
+
+body {
+    background: url(img/background.png) repeat-x top #f8f6f7;
+    font-family: DIN;
+}
+
+.main-container {
+    width: 960px; margin: 0 auto;
+}
+
+h1 {
+    width: 141px; height: 83px; text-indent: -999px; background: url(img/title.png);
+}
+
+h2 {
+    color: #30036d; margin: 5px 0 2px; font-size: 18px; font-weight: bold;
+}
+
+hr {
+    width: 100%; border: none; margin: 2px 0; background: #666666; height: 1px;
+}
+
+.steps-frame {
+    width: 960px; height: 70px; border-style: solid none; border-width: 1px; border-color: #666666; clear: both; background: url(img/barbg.png) #ffffff;
+}
+
+.step {
+    width: 256px; height: 70px; float: left; cursor: pointer;
+}
+
+.step-separator {
+    width: 96px; height: 70px; float: left; background: url(img/mashupbar.png);
+}
+
+.step-icon {
+    margin: 0 5px; height: 70px; float: left; background: url(img/mashupbar.png);
+}
+
+.step-1 {
+    background-position: -100px -70px; width: 58px;
+}
+
+.active .step-1, .step:hover .step-1 {
+    background-position: -100px 0; width: 58px;
+}
+
+.step-2 {
+    background-position: -159px -70px; width: 96px;
+}
+
+.active .step-2, .step:hover .step-2 {
+    background-position: -159px 0; width: 96px;
+}
+
+.step-3 {
+    background-position: -255px -70px; width: 115px;
+}
+
+.active .step-3, .step:hover .step-3 {
+    background-position: -255px 0; width: 115px;
+}
+
+.step-title {
+    margin: 5px 0; font-size: 18px; font-weight: bold; color: #808080;
+}
+
+.active .step-title, .step:hover .step-title {
+    color: #30036d;
+}
+
+.colgauche {
+    float: left; width: 630px; margin: 5px 10px 5px 0; min-height: 650px;
+}
+
+.coldroite {
+    float: left; width: 310px; margin: 5px 0 5px 10px;
+}
+
+.footer {
+    width: 100%; clear: both;
+}

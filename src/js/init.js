@@ -1,260 +1,382 @@
 /* init.js - initialization and configuration of Popcorn and the widgets
-exemple json configuration:
- 
- */
-
-/**
-    set up the IriSP.__dataloader instance - 
-    we need it because we have to get the metadata
-    about the video before that the widget have even
-    loaded.
 */
-IriSP.setupDataLoader = function() {
-  /* we set it up separately because we need to
-     get data at the very beginning, for instance when
-     setting up the video */
-  IriSP.__dataloader = new IriSP.DataLoader();
-};
 
-/** do some magic to configure popcorn according to the options object passed.
-    Works for html5, jwplayer and youtube videos 
-*/
-IriSP.configurePopcorn = function (layoutManager, options) {
-    var pop;
-    var ret = layoutManager.createDiv(); 
-    var containerDiv = ret[0];
-    var spacerDiv = ret[1];
+if (typeof window.IriSP === "undefined") {
+    IriSP = {};
+}
+
+/* The Metadataplayer Object, single point of entry, replaces IriSP.init_player */
+
+IriSP.Metadataplayer = function(config) {
+    IriSP.log("IriSP.Metadataplayer constructor");
+    for (var key in IriSP.guiDefaults) {
+        if (IriSP.guiDefaults.hasOwnProperty(key) && !config.gui.hasOwnProperty(key)) {
+            config.gui[key] = IriSP.guiDefaults[key]
+        }
+    }
+    var _container = document.getElementById(config.gui.container);
+    _container.innerHTML = '<h3 class="Ldt-Loader">Loading... Chargement...</h3>';
+    this.sourceManager = new IriSP.Model.Directory();
+    this.config = config;
+    this.callbackQueue = [];
+    this.isLoaded = false;
+    this.loadLibs();
+}
+
+IriSP.Metadataplayer.prototype.toString = function() {
+    return 'Metadataplayer in #' + this.config.gui.container;
+}
+
+IriSP.Metadataplayer.prototype.deferCallback = function(_callback) {
+    var _this = this;
+    IriSP._.defer(function() {
+        _callback.call(_this);
+    });
+}
+
+IriSP.Metadataplayer.prototype.handleCallbacks = function() {
+    this.isLoaded = true;
+    while (this.callbackQueue.length) {
+        this.deferCallback(this.callbackQueue.splice(0,1)[0]);
+    }
+}
+
+IriSP.Metadataplayer.prototype.onLoad = function(_callback) {
+    if (this.isLoaded) {
+        this.deferCallback(_callback);
+    } else {
+        this.callbackQueue.push(_callback);
+    }
+}
+
+IriSP.Metadataplayer.prototype.loadLibs = function() {
+    IriSP.log("IriSP.Metadataplayer.prototype.loadLibs");
+    var $L = $LAB
+        .script(IriSP.getLib("underscore"))
+        .script(IriSP.getLib("Mustache"))
+        .script(IriSP.getLib("jQuery"))
+        .script(IriSP.getLib("swfObject"));
     
-    /* insert one pixel of margin between the video and the first widget, using the 
-       spacer.
-    */
-    IriSP.jQuery("#" + spacerDiv).css("height", "1px");
+    if (typeof JSON == "undefined") {
+        $L.script(IriSP.getLib("json"));
+    }
     
-    switch(options.type) {
-      /*
-        todo : dynamically create the div/video tag which
-        will contain the video.
-      */
-      case "html5":
-           var tmpId = Popcorn.guid("video"); 
-           IriSP.jQuery("#" + containerDiv).append("<video src='" + options.file + "' id='" + tmpId + "'></video>");
+    $L.wait()
+        .script(IriSP.getLib("jQueryUI"));
 
-           if (options.hasOwnProperty("width"))
-             IriSP.jQuery("#" + containerDiv).css("width", options.width);
-           
-           if (options.hasOwnProperty("height"))
-             IriSP.jQuery("#" + containerDiv).css("height", options.height);
+    if (this.config.player.type === "jwplayer" || this.config.player.type === "auto") {
+        $L.script(IriSP.getLib("jwplayer"));
+    }
+    
+    if (this.config.player.type !== "jwplayer" && this.config.player.type !== "allocine" && this.config.player.type !== "dailymotion") {
+        $L.script(IriSP.getLib("popcorn"));
+    }
 
-           pop = Popcorn("#" + tmpId);
-        break;
-        
-      case "jwplayer":
-          var opts = IriSP.jQuery.extend({}, options);
-          delete opts.container;
-          delete opts.type;
-
-          
-          /* Try to guess options.file and options.streamer only if file and streamer
-             are not already defined in the configuration */
-          if (options.provider === "rtmp" && !opts.hasOwnProperty("file") && !opts.hasOwnProperty("streamer")) {
-            /* exit if we can't access the metadata */
-            if (typeof(IriSP.__jsonMetadata) === "undefined") {
-                break;
-            };
-
-            // the json format is totally illogical
-            //opts.streamer = IriSP.__jsonMetadata["medias"][0]["meta"]["item"]["value"];
-            //var source = IriSP.__jsonMetadata["medias"][0]["href"];
-
-            // the source if a full url but jwplayer wants an url relative to the
-            // streamer url, so we've got to remove the common part.
-            //opts.file = source.slice(opts.streamer.length);
-            
-            /* sometimes we get served a file with a wrong path and streamer.
-               as a streamer is of the form rtmp://domain/path/ and the media is
-               the rest, we uglily do this :
-            */
-            opts.file = "";
-            opts.streamer = "";
-            var fullPath = IriSP.get_aliased(IriSP.__jsonMetadata["medias"][0], ["href","url"]);
-            
-            if (fullPath === null) {
-              console.log("no url or href field defined in the metadata.");
+    /* widget specific requirements */
+    for(var _i = 0; _i < this.config.gui.widgets.length; _i++) {
+        var _t = this.config.gui.widgets[_i].type;
+        if (typeof IriSP.widgetsRequirements[_t] !== "undefined" && typeof IriSP.widgetsRequirements[_t].requires !== "undefined" ) {
+            for (var _j = 0; _j < IriSP.widgetsRequirements[_t].requires.length; _j++) {
+                $L.script(IriSP.getLib(IriSP.widgetsRequirements[_t].requires[_j]));
             }
-            
-            var pathSplit = fullPath.split('/');
-            
-            for (var i = 0; i < pathSplit.length; i++) {
-              if (i < 4) {
-                 opts.streamer += pathSplit[i] + "/";
-              } else {
-                 opts.file += pathSplit[i];
-                 /* omit the last slash if we're on the last element */
-                 if (i < pathSplit.length - 1)
-                  opts.file += "/";
-              }
-            }            
-          } else {
-            /* other providers type, video for instance -
-               pass everything as is */
-          }
-
-          if (!options.hasOwnProperty("flashplayer")) {
-            opts.flashplayer = IriSP.jwplayer_swf_path;
-          }
-
-          if (!options.hasOwnProperty("controlbar.position")) {
-            opts["controlbar.position"] = "none";
-          }
-
-          pop = new IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
-        break;
-      
-      case "youtube":
-          var opts = IriSP.jQuery.extend({}, options);
-          delete opts.container;
-          opts.controls = 0;
-          opts.autostart = false;
-          templ = "width: {{width}}px; height: {{height}}px;";
-          var str = Mustache.to_html(templ, {width: opts.width, height: opts.height});    
-          // Popcorn.youtube wants us to specify the size of the player in the style attribute of its container div.
-          IriSP.jQuery("#" + containerDiv).attr("style", str);
-          
-          pop = Popcorn.youtube("#" + containerDiv, opts.video, opts);
-        break;
-      
-    case "dailymotion":
-        pop = new IriSP.PopcornReplacement.dailymotion("#" + containerDiv, options);
-        break;
-             
-      case "allocine":
-          /* pass the options as-is to the allocine player and let it handle everything */
-          pop = new IriSP.PopcornReplacement.allocine("#" + containerDiv, options);
-          break;
-          
-      default:
-        pop = undefined;
-    };
+        }
+    }
     
-    return pop;
-};
+    var _this = this;
+    
+    $L.wait(function() {
+        _this.onLibsLoaded();
+    });
+}
 
-/** Configure the gui and instantiate the widgets passed as parameters
-    @param guiOptions the gui object as seen in the examples.
- */
-IriSP.configureWidgets = function (popcornInstance, layoutManager, guiOptions) {
- 
-  var serialFactory = new IriSP.SerializerFactory(IriSP.__dataloader);
-  var params = {width: guiOptions.width, height: guiOptions.height};
+IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
+    IriSP.log("IriSP.Metadataplayer.prototype.onLibsLoaded");
+    if (typeof IriSP.jQuery === "undefined" && typeof window.jQuery !== "undefined") {
+        IriSP.jQuery = window.jQuery.noConflict();
+    }
+    if (typeof IriSP._ === "undefined" && typeof window._ !== "undefined") {
+        IriSP._ = window._;
+    }
+    IriSP.loadCss(IriSP.getLib("cssjQueryUI"));
+    IriSP.loadCss(this.config.gui.css);
+    
+    this.videoData = this.loadMetadata(this.config.player.metadata);
+    this.$ = IriSP.jQuery('#' + this.config.gui.container);
+    this.$.css({
+        "width": this.config.gui.width,
+        "clear": "both"
+    });
+    if (typeof this.config.gui.height !== "undefined") {
+        this.$.css("height", this.config.gui.height);
+    }
+      
+    var _this = this;
+    this.videoData.onLoad(function() {
+        _this.onVideoDataLoaded();
+    });
+}
 
-  var default_options = guiOptions.default_options;
-  if (IriSP.null_or_undefined(default_options))
-    default_options = {};
-  
-  var ret_widgets = [];
-  var index;
-  for (index = 0; index < guiOptions.widgets.length; index++) {
-    var widget = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, guiOptions.widgets[index], default_options);
+IriSP.Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {
+    if (typeof _metadataInfo.serializer === "undefined" && typeof _metadataInfo.format !== "undefined") {
+        _metadataInfo.serializer = IriSP.serializers[_metadataInfo.format];
+    }
+    if (typeof _metadataInfo.url === "undefined" && typeof _metadataInfo.src !== "undefined") {
+        _metadataInfo.url = _metadataInfo.src;
+    }
+    if (typeof _metadataInfo.url !== "undefined" && typeof _metadataInfo.serializer !== "undefined") {
+        return this.sourceManager.remoteSource(_metadataInfo);
+    } else {
+        return this.sourceManager.newLocalSource(_metadataInfo);
+    }
+}
+
+IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
+    
+    /* Setting default media from metadata */
    
-    ret_widgets.push(widget);
-  };
-
-  return ret_widgets;
-};
-
-/** configure modules. @see configureWidgets */
-IriSP.configureModules = function (popcornInstance, modulesList) {
-  if (IriSP.null_or_undefined(modulesList))
-    return;
-  
-  var serialFactory = new IriSP.SerializerFactory(IriSP.__dataloader);
-  var ret_modules = [];
-  var index;
-  
-  for (index = 0; index < modulesList.length; index++) {    
-    var moduleConfig = modulesList[index];
-    
-    var serializer = serialFactory.getSerializer(moduleConfig.metadata);
-    var module = new IriSP[moduleConfig.type](popcornInstance, moduleConfig, serializer);    
-    ret_modules.push(module);
-  };
-
-  return ret_modules;
-};
-
-/** instantiate a widget - only called by configureWidgets, never by the user. Handles widget 
-    dependencies.
-    @param popcornInstance popcorn instance the widget will user
-    @param serialFactory serializer factory to instantiate the widget with
-    @param layoutManager layout manager
-    @param widgetConfig configuration options for the widget
-    @param defaultOptions a dictionnary with some options defined for every widget.
- */
-IriSP.instantiateWidget = function(popcornInstance, serialFactory, layoutManager, widgetConfig, defaultOptions) {
-
-    if (IriSP.null_or_undefined(defaultOptions)) {
-      defaultOptions = {};
-    }
-    if (IriSP.null_or_undefined(widgetConfig)) {
-      return;
+    if (typeof this.videoData !== "undefined") {
+        
+        var _media;
+        
+        if (typeof this.videoData.mainMedia !== "undefined") {
+            _media = this.videoData.getElement(this.videoData.mainMedia);
+        }
+        
+        if (this.config.player.type === "mashup" || this.config.player.type === "mashup-html") {
+            if (typeof _media === "undefined" || _media.elementType !== "mashup") {
+                var _mashups = this.videoData.getMashups();
+                if (_mashups.length) {
+                    _media = _mashups[0];
+                }
+            }
+        } else {
+            if (typeof _media === "undefined" || _media.elementType !== "media") {
+                var _medias = this.videoData.getMedias();
+                if (_medias.length) {
+                    _media = _medias[0];
+                }
+            }
+        }
+        
+        this.videoData.currentMedia = _media;
+        
+        /* Getting video URL from metadata if it's not in the player config options */
+        
+        if (typeof _media !== "undefined" && typeof _media.video !== "undefined" && typeof this.config.player.video === "undefined") {
+            this.config.player.video = _media.video;
+            if (typeof this.config.player.streamer == "undefined" && typeof _media.streamer !== "undefined") {
+                this.config.player.streamer = _media.streamer;
+            }
+        }
+        
     }
     
-    widgetConfig = IriSP.underscore.defaults(widgetConfig, defaultOptions);
-
-    var arr = IriSP.jQuery.extend({}, widgetConfig);
-    
-    /* create a div for those widgets who didn't already specify a container; */
-    if (!arr.hasOwnProperty("container")) {
-      /* create div returns us a container for the widget and a spacer */    
-      var ret = layoutManager.createDiv(widgetConfig.type);        
-      var container = ret[0];
-      var spacer = ret[1];           
-      arr.container = container;
-      arr.spacer = spacer;
-      arr.layoutManager = layoutManager;
+    if (typeof this.config.player.video === "string" && this.config.player.url_transform === "function") {
+        this.config.player.video = this.config.player.url_transform(this.config.player.video);
     }
-    var serializer = serialFactory.getSerializer(widgetConfig.metadata);    
     
-    if (typeof serializer == "undefined")   
-      debugger;
+    var _pop,
+        _divs = this.layoutDivs("video",this.config.player.height || undefined),
+        containerDiv = _divs[0],
+        spacerDiv = _divs[1],
+        _this = this,
+        _types = {
+            "html5" : /\.(ogg|ogv|webm)$/,
+            "youtube" : /^(https?:\/\/)?(www\.)?youtube\.com/,
+            "vimeo" : /^(https?:\/\/)?(www\.)?vimeo\.com/,
+            "dailymotion" : /^(https?:\/\/)?(www\.)?dailymotion\.com/
+        };
     
-    // instantiate the object passed as a string
-    var widget = new IriSP[widgetConfig.type](popcornInstance, arr, serializer);    
-    
-    if (widgetConfig.hasOwnProperty("requires")) {
-      // also create the widgets this one depends on.
-      // the dependency widget is available in the parent widget context as
-      // this.WidgetName (for instance, this.TipWidget);
-      
-      var i = 0;
-      for(i = 0; i < widgetConfig.requires.length; i++) {
-        var widgetName = widgetConfig.requires[i]["type"],
-            _configobj = IriSP.jQuery.extend({}, widgetConfig.requires[i]),
-            _div = document.createElement('div'),
-            _container = IriSP.guid(arr.container + '_' + widgetName + '_');
-        _configobj.container = _container;
-        _div.id = _container;
-        widget.selector.append(_div);
-        widget[widgetName] = IriSP.instantiateWidget(popcornInstance, serialFactory, layoutManager, _configobj, defaultOptions);
-      }
-    }       
-     
-    serializer.sync(IriSP.wrap(widget, function() { this.draw(); }));
-    return widget;
-};
+    if (this.config.player.type === "auto") {
+        this.config.player.type = "jwplayer";
+        IriSP._(_types).each(function(_v, _k) {
+            if (_v.test(_this.config.player.video)) {
+                _this.config.player.type = _k
+            }
+        });
+    }
 
-/** single point of entry for the metadataplayer */
-IriSP.initPlayer = function(config, metadata_url) {
-    document.getElementById(config.gui.container).innerHTML = IriSP.templToHTML(IriSP.loading_template, config.gui);
-    IriSP.loadLibs(config, metadata_url,
-      function() {   
-              
-              var layoutManager = new IriSP.LayoutManager(config.gui);
+    switch(this.config.player.type) {
+        case "html5":
+            var _tmpId = Popcorn.guid("video"),
+                _videoEl = IriSP.jQuery('<video>');
+            
+            _videoEl.attr({
+                "src" : this.config.player.video,
+                "id" : _tmpId
+            })
 
-              var pop = IriSP.configurePopcorn(layoutManager, config.player);
-              
-              IriSP._widgets = IriSP.configureWidgets(pop, layoutManager, config.gui); 
-              IriSP._modules = IriSP.configureModules(pop, config.modules); 
-              IriSP.jQuery('#Ldt-loader').detach();
-      });
+            if(this.config.player.hasOwnProperty("width")) {
+                _videoEl.attr("width", this.config.player.width);
+            }
+            if(this.config.player.hasOwnProperty("height")) {
+                _videoEl.attr("height", this.config.player.height);
+            }
+            IriSP.jQuery("#" + containerDiv).append(_videoEl);
+            _pop = Popcorn("#" + _tmpId);
+            break;
+
+        case "html5-audio":
+            var _tmpId = Popcorn.guid("audio"),
+                _videoEl = IriSP.jQuery('<audio>');
+            
+            _videoEl.attr({
+                "src" : this.config.player.video,
+                "id" : _tmpId
+            })
+
+            if(this.config.player.hasOwnProperty("width")) {
+                _videoEl.attr("width", this.config.player.width);
+            }
+            if(this.config.player.hasOwnProperty("height")) {
+                _videoEl.attr("height", this.config.player.height);
+            }
+            IriSP.jQuery("#" + containerDiv).append(_videoEl);
+            _pop = Popcorn("#" + _tmpId);
+            break;
+
+        case "jwplayer":
+            var opts = IriSP.jQuery.extend({}, this.config.player);
+            delete opts.container;
+            delete opts.type;
+            if (typeof opts.streamer === "function") {
+                opts.streamer = opts.streamer(opts.video);
+            }
+            if (typeof opts.streamer === "string") {
+                opts.video = opts.video.replace(opts.streamer,"");
+            }
+            opts.file = opts.video;
+            delete opts.video;
+            delete opts.metadata;
+
+            if(!opts.hasOwnProperty("flashplayer")) {
+                opts.flashplayer = IriSP.getLib("jwPlayerSWF");
+            }
+
+            if(!opts.hasOwnProperty("controlbar.position")) {
+                opts["controlbar.position"] = "none";
+            }
+            _pop = new IriSP.PopcornReplacement.jwplayer("#" + containerDiv, opts);
+            break;
+
+        case "youtube":
+            // Popcorn.youtube wants us to specify the size of the player in the style attribute of its container div.
+            IriSP.jQuery("#" + containerDiv).css({
+                width : this.config.player.width + "px",
+                height : this.config.player.height + "px"
+            });
+            var _urlparts = this.config.player.video.split(/[?&]/),
+                _params = {};
+            for (var _j = 1; _j < _urlparts.length; _j++) {
+                var _ppart = _urlparts[_j].split('=');
+                _params[_ppart[0]] = decodeURIComponent(_ppart[1]);
+            }
+            _params.controls = 0;
+            _params.modestbranding = 1;
+            _url = _urlparts[0] + '?' + IriSP.jQuery.param(_params);
+            _pop = Popcorn.youtube("#" + containerDiv, _url);
+            break;
+
+        case "vimeo":
+            // Popcorn.vimeo wants us to specify the size of the player in the style attribute of its container div.
+            IriSP.jQuery("#" + containerDiv).css({
+                width : this.config.player.width + "px",
+                height : this.config.player.height + "px"
+            });
+            _pop = Popcorn.vimeo("#" + containerDiv, this.config.player.video);
+            break;
+            
+        case "dailymotion":
+            _pop = new IriSP.PopcornReplacement.dailymotion("#" + containerDiv, this.config.player);
+            break;
+
+        case "mashup":
+            _pop = new IriSP.PopcornReplacement.mashup("#" + containerDiv, this.config.player);
+            break;
+            
+        case "allocine":
+            _pop = new IriSP.PopcornReplacement.allocine("#" + containerDiv, this.config.player);
+            break;
+        
+        case "mashup-html":
+            _pop = new IriSP.PopcornReplacement.htmlMashup("#" + containerDiv, this.config.player, this.videoData);
+            break;
+        
+        default:
+            _pop = undefined;
+    };
+
+    this.popcorn = _pop;
+    
+    /* Now Loading Widgets */
+    
+    this.widgets = [];
+    var _this = this;
+    for(var i = 0; i < this.config.gui.widgets.length; i++) {
+        this.loadWidget(this.config.gui.widgets[i], function(_widget) {
+            _this.widgets.push(_widget)
+        });
+    };
+    this.$.find('.Ldt-Loader').detach();
+    this.handleCallbacks();
+}
+
+IriSP.Metadataplayer.prototype.loadWidget = function(_widgetConfig, _callback) {
+    /* Creating containers if needed */
+    if (typeof _widgetConfig.container === "undefined") {
+        var _divs = this.layoutDivs(_widgetConfig.type);
+        _widgetConfig.container = _divs[0];
+    }
+    
+    var _this = this;
+    
+    if (typeof IriSP.Widgets[_widgetConfig.type] !== "undefined") {
+        IriSP._.defer(function() {
+            _callback(new IriSP.Widgets[_widgetConfig.type](_this, _widgetConfig));
+        });
+    } else {
+        /* Loading Widget CSS */
+        if (typeof IriSP.widgetsRequirements[_widgetConfig.type] === "undefined" || typeof IriSP.widgetsRequirements[_widgetConfig.type].noCss === "undefined" || !IriSP.widgetsRequirements[_widgetConfig.type].noCss) {
+            IriSP.loadCss(IriSP.widgetsDir + '/' + _widgetConfig.type + '.css');
+        }
+        /* Loading Widget JS    */
+        $LAB.script(IriSP.widgetsDir + '/' + _widgetConfig.type + '.js').wait(function() {
+            _callback(new IriSP.Widgets[_widgetConfig.type](_this, _widgetConfig));
+        });
+    }
+}
+
+/** create a subdiv with an unique id, and a spacer div as well.
+    @param widgetName the name of the widget.
+    @return an array of the form [createdivId, spacerdivId].
+*/
+IriSP.Metadataplayer.prototype.layoutDivs = function(_name, _height) {
+    if (typeof(_name) === "undefined") {
+       _name = "";
+    }
+    var newDiv = IriSP._.uniqueId(this.config.gui.container + "_widget_" + _name + "_"),
+        spacerDiv = IriSP._.uniqueId("LdtPlayer_spacer_"),
+        divHtml = IriSP.jQuery('<div>')
+            .attr("id",newDiv)
+            .css({
+                width: this.config.gui.width + "px",
+                position: "relative",
+                clear: "both"
+            }),
+        spacerHtml = IriSP.jQuery('<div>')
+            .attr("id",spacerDiv)
+            .css({
+                width: this.config.gui.width + "px",
+                height: this.config.gui.spacer_div_height + "px",
+                position: "relative",
+                clear: "both"
+            });
+    if (typeof _height !== "undefined") {
+        divHtml.css("height", _height);
+    }
+            
+    this.$.append(divHtml);
+    this.$.append(spacerHtml);
+
+    return [newDiv, spacerDiv];
 };

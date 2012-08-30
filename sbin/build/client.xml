@@ -1,127 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." default="makeall">
-	
-	<taskdef name="jscomp" classname="com.google.javascript.jscomp.ant.CompileTask">
-		<classpath>
-			<pathelement location="../res/compiler.jar" />
-		</classpath>
-	</taskdef>
-	
-	<taskdef resource="net/sf/antcontrib/antlib.xml">
-	  <classpath>
-	    <pathelement location="../res/ant-contrib.jar"/>
-	  </classpath>
-	</taskdef>
-	
-	<delete dir="${basedir}/../../build" />
-	<mkdir  dir="${basedir}/../../build" />
-		
-	<target name="makeall" depends="concatenate" />
-	
-	<target name="make_templates" description="Concatenate the html templates together">
-	    <for param="file">
-			<path>
-	    		<fileset dir="../../src/templates" includes="*.html" />
-			</path>
-	    	<sequential>
-	    		
-	    		<basename property="filename" file="@{file}"/>
-	    		<basename property="filehead" file="@{file}" suffix=".html"/>
-	    		
-	    		<echo file="../../build/compiled_templates.js" append="yes" 
-	    				message="${line.separator}IriSP.${filehead}_template = &quot;" />
-	    		
-	    		<concat append="yes" destfile="../../build/compiled_templates.js">
-	    			<filelist dir="../../src/templates" files="${filename}"></filelist>
-	    			<filterchain>
-	    				<striplinebreaks/>
-	    			</filterchain>
-	    		</concat>	    			    	
-	    		<echo file="../../build/compiled_templates.js" append="yes" message="&quot;;" />
-	    		
-	    		<var name="filename" unset="true" />
-	    		<var name="filehead" unset="true" />
-	    	</sequential>
-		</for>
-	</target>
-		    	
-	<target name="concatenate" description="Build the developer release file" depends="make_templates">
-	    <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-release.js">
-			<filelist dir="../../src/js/" files="header.js" />
-			
-      <filelist dir="../../src/js/libs" 
-                files="lab.js mustache.js underscore.js"/> 
-     
-      <!-- required file before everything else -->
-	    <filelist dir="../../src/js" files="main.js" />
 
-      <!-- templates -->
-    	<filelist dir="../../build" files="compiled_templates.js" />
-      
-      <!-- core files -->
-    	<filelist dir="../../src/js" files="utils.js pop.js data.js defaults.js widgets.js modules.js layout.js init.js i18n.js" />
-
-      <!-- players -->
-			<fileset dir="../../src/js/players" casesensitive="yes">
-					<include name="**/*.js"/>					
-			</fileset>
-
-      <!-- modules -->
-			<fileset dir="../../src/js/modules" casesensitive="yes">
-					<include name="**/*.js"/>					
-			</fileset>
-
-
-      <!-- widgets -->
-			<fileset dir="../../src/js/widgets" casesensitive="yes">
-					<include name="**/*.js"/>					
-			</fileset>
-
-      <!-- serializers -->
-			<fileset dir="../../src/js/serializers" casesensitive="yes">
-					<include name="**/*.js"/>					
-			</fileset>
-	    	<filterchain>
-	    	    <deletecharacters chars="&#xFEFF;" />
-	    	</filterchain>
-	    </concat>
-      <delete file="../../build/compiled_templates.js" />
-	</target>
-	
-  <target name="minify" depends="concatenate">
-		<jscomp compilationLevel="simple" warning="quiet" debug="false"
-			output="../../build/LdtPlayer.min.raw.js">
-			<externs dir="${basedir}/../../res/">
-				<file name="js/jquery.min.js" />
-				<file name="js/jquery.tools.min.js" />
-				<file name="js/jquery-ui.min.js" />
-				<file name="js/swfobject.js" />
-			</externs>
-			<sources dir="${basedir}/../../build">
-				<file name="LdtPlayer-release.js" />
-			</sources>
-		</jscomp>
-		<concat destfile="../../build/LdtPlayer.min.js"
-			append="false">
-			<filelist dir="../../src/js/" files="header.js" />
-	        <filelist dir="../../build/" files="LdtPlayer.min.raw.js" />
-		</concat>
-		<delete file="../../build/LdtPlayer.min.raw.js" />
-	</target>
-  
-	<property name="rhino.jar" value="${basedir}/../res/rhino.jar"/>  
-	<property name="jslint-wrapper.js" value="${basedir}/../res/jslint-wrapper.js"/>
-	<property name="jslint.js" value="${basedir}/../res/jslint.js"/>
-	
-	<target name="jslint" description="Run jslint on the files" depends="concatenate">
-		<apply executable="java" parallel="false">  
-			<filelist dir="../../build">  
-				<file name="LdtPlayer-release.js"/>  
-			</filelist>  
-			<arg line="-jar"/>  
-			<arg path="${rhino.jar}"/>  
-			<arg path="${jslint-wrapper.js}"/>  
-			<arg path="${jslint.js}"/>  
-		</apply>
-	</target>
+    <taskdef name="jscomp" classname="com.google.javascript.jscomp.ant.CompileTask">
+        <classpath>
+            <pathelement location="../res/compiler.jar" />
+        </classpath>
+    </taskdef>
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+        <classpath>
+            <pathelement location="../res/ant-contrib.jar"/>
+        </classpath>
+    </taskdef>
+    <delete dir="${basedir}/../../build" />
+    <mkdir  dir="${basedir}/../../build" />
+    
+    <target name="makeall" depends="concatenate,copytotest" />
+    
+    <target name="concatenate" description="Build the developer release file">
+        <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-core.js">
+            <filelist dir="../../src/js/" files="header.js" />
+            <!-- required file before everything else -->
+            <filelist dir="../../src/js/libs" files="LAB.min.js" />
+            <!-- core files -->
+            <filelist dir="../../src/js" files="init.js utils.js pop.js model.js defaults.js widgets.js" />
+            <!-- players -->
+            <fileset dir="../../src/js/players" casesensitive="yes">
+                <include name="**/*.js"/>
+            </fileset>
+            <!-- serializers -->
+            <fileset dir="../../src/js/serializers" casesensitive="yes">
+                <include name="**/*.js"/>
+            </fileset>
+            <filterchain>
+                <deletecharacters chars="&#xFEFF;" />
+            </filterchain>
+        </concat>
+    </target>
+    
+    <target name="copytotest" description="Copy files to test directory">
+        <delete dir="../../test/metadataplayer" />
+        <delete dir="../../test/libs" />
+        <copy todir="../../test/libs">
+            <fileset dir="../../src/js/libs"/>
+        </copy>
+        <copy todir="../../test/metadataplayer">
+            <fileset dir="../../src/widgets"/>
+        </copy>
+        <copy file="../../build/LdtPlayer-core.js" todir="../../test/metadataplayer/" />
+        <copy file="../../src/css/LdtPlayer-core.css" todir="../../test/metadataplayer/" />
+        <copy todir="../../test/metadataplayer/img">
+            <fileset dir="../../src/css/img"/>
+        </copy>
+    </target>
+    
+    <target name="minify" depends="concatenate">
+        <jscomp compilationLevel="simple" warning="quiet" debug="false"
+        output="../../build/LdtPlayer.min.raw.js">
+            <externs dir="${basedir}/../../res/">
+                <file name="js/jquery.min.js" />
+                <file name="js/jquery-ui.min.js" />
+                <file name="js/swfobject.js" />
+            </externs>
+            <sources dir="${basedir}/../../build">
+                <file name="LdtPlayer-core.js" />
+            </sources>
+        </jscomp>
+        <concat destfile="../../build/LdtPlayer.min.js"
+        append="false">
+            <filelist dir="../../src/js/" files="header.js" />
+            <filelist dir="../../build/" files="LdtPlayer.min.raw.js" />
+        </concat>
+        <delete file="../../build/LdtPlayer.min.raw.js" />
+    </target>
+    <property name="rhino.jar" value="${basedir}/../res/rhino.jar"/>
+    <property name="jslint-wrapper.js" value="${basedir}/../res/jslint-wrapper.js"/>
+    <property name="jslint.js" value="${basedir}/../res/jslint.js"/>
+    <target name="jslint" description="Run jslint on the files" depends="concatenate">
+        <apply executable="java" parallel="false">
+            <filelist dir="../../build">
+                <file name="LdtPlayer-core.js"/>
+            </filelist>
+            <arg line="-jar"/>
+            <arg path="${rhino.jar}"/>
+            <arg path="${jslint-wrapper.js}"/>
+            <arg path="${jslint.js}"/>
+        </apply>
+    </target>
 </project>

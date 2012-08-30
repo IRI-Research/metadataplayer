@@ -32,15 +32,16 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
         }
     }
 
-    window.onReady = IriSP.wrap(this, this.ready);
-    window.onAllocineStateChange = IriSP.wrap(this, this.stateHandler);
-    window.onTime = IriSP.wrap(this, this.progressHandler);
+    window.onReady = function() {
+        _this.ready();
+    };
+    window.onAllocineStateChange = function(_state) {
+        _this.stateHandler(_state)
+    }
+    window.onTime = function(_progress) {
+        _this.progressHandler(_progress)
+    };
     
-    var _videoUrl = (
-        typeof options.directVideoPath == "string"
-        ? options.directVideoPath
-        : IriSP.get_aliased(IriSP.__jsonMetadata["medias"][0], ["href","url"])
-    );
     var _flashVars = {
         "streamFMS" : true,
         "adVast" : false,
@@ -48,7 +49,7 @@ IriSP.PopcornReplacement.allocine = function(container, options) {
         "autoPlay" : options.autoPlay,
         "directVideoTitle" : "",
         "urlAcData" : options.urlAcData,
-        "directVideoPath" : _videoUrl,
+        "directVideoPath" : options.video,
         "host" : "http://allocine.fr"
     }
     
@@ -76,13 +77,11 @@ IriSP.PopcornReplacement.allocine.prototype.ready = function() {
     this.player = document.getElementById(this.container);
     this.player.addEventListener("onStateChange", "onAllocineStateChange");
     this.player.cueVideoByUrl(this._options.video);
-    this.callbacks.onReady();
+    this.trigger("loadedmetadata");
 };
 
 IriSP.PopcornReplacement.allocine.prototype.progressHandler = function(progressInfo) {
-    this.callbacks.onTime({
-        position: progressInfo.mediaTime
-    });
+    this.trigger("timeupdate");
 }
 
 
@@ -104,27 +103,18 @@ IriSP.PopcornReplacement.allocine.prototype.apiCall = function(_method, _arg) {
 }
 
 IriSP.PopcornReplacement.allocine.prototype.stateHandler = function(state) {
-    console.log("stateHandler");
     switch(state) {
         case 1:
-            this.callbacks.onPlay();
+            this.trigger("play");
             break;
 
         case 2:
-            this.callbacks.onPause();
+            this.trigger("pause");
             break;
 
         case 3:
-            this.callbacks.onSeek({
-                position: this.player.getCurrentTime()
-            });
+            this.trigger("seeked");
             break;
-
-        /*
-        case 5:
-            this.callbacks.onReady();
-            break;
-        */
     }
     
 };

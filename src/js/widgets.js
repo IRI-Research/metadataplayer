@@ -1,96 +1,138 @@
-/* the widget classes and definitions */
+/* Definition of an ancestor for the Widget classes */
 
-/**
-  * @class Widget is an "abstract" class. It's mostly used to define some properties common to every widget.
-  *
-  *  Note that widget constructors are never called directly by the user. Instead, the widgets are instantiated by functions
-  *  defined in init.js
-  *  
-  * @constructor
-  * @param Popcorn a reference to the popcorn Object
-  * @param config configuration options for the widget
-  * @param Serializer a serializer instance from which the widget reads data fromCharCode  
-*/
-IriSP.Widget = function(Popcorn, config, Serializer) {
-
-  if (config === undefined || config === null) {
-    config = {}
-  }
-  
-  this._Popcorn = Popcorn;
-  this._config = config;  
-  this._serializer = Serializer;
-  
-  if (config.hasOwnProperty("container")) {
-     this._id = config.container;
-     this.selector = IriSP.jQuery("#" + this._id);
-  }
-
-  if (config.hasOwnProperty("spacer")) {
-     this._spacerId = config.spacer;
-     this.spacer = IriSP.jQuery("#" + this._spacerId);
-  }
-
-
-  if (config.hasOwnProperty("width")) {
-     // this.width and not this._width because we consider it public.
-     this.width = config.width;     
-  }
-  
-  if (config.hasOwnProperty("height")) {    
-     this.height = config.height;     
-  }
-  
-  if (config.hasOwnProperty("heightmax")) {
-     this.heightmax = config.heightmax;     
-  }
-
-  if (config.hasOwnProperty("widthmax")) {
-     this.widthmax = config.widthmax;     
-  } 
-
-  if (config.hasOwnProperty("layoutManager")) {
-     this.layoutManager = config.layoutManager;
-  }
-  if (typeof this.selector != "undefined") {
-      this.selector.addClass("Ldt-TraceMe").addClass("Ldt-Widget");
-      this.selector.attr("widget-type", this._config.type);
-  }
-  
-  // Parsing Widget Defaults
-  var _this = this;
-  
-  if (typeof config.type == "string" && typeof IriSP.widgetsDefaults[config.type] == "object") {
-      IriSP._(IriSP.widgetsDefaults[config.type]).each(function(_v, _k) {
-          if (typeof config[_k] != "undefined") {
-              _this[_k] = config[_k];
-          } else {
-              _this[_k] = _v;
-          }
-      });
-  }
-  
-};
-
-
-IriSP.Widget.prototype.currentMedia = function() {
-    return this._serializer.currentMedia();
-}
-
-IriSP.Widget.prototype.getDuration = function() {
-    return this._serializer.getDuration();
+if (typeof IriSP.Widgets === "undefined") {
+    IriSP.Widgets = {}
 }
 
 /**
-  * This method responsible of drawing a widget on screen.
-  */
-IriSP.Widget.prototype.draw = function() {
-  /* implemented by "sub-classes" */  
+ * @class IriSP.Widget is an "abstract" class. It's mostly used to define some properties common to every widget.
+ *
+ *  Note that widget constructors are never called directly by the user. Instead, the widgets are instantiated by functions
+ *  defined in init.js
+ *
+ * @constructor
+ * @param player - a reference to the player widget
+ * @param config - configuration options for the widget
+ */
+
+
+IriSP.Widgets.Widget = function(player, config) {
+
+    if( typeof player === "undefined") {
+        /* Probably an abstract call of the class when
+         * individual widgets set their prototype */
+        return;
+    }
+    
+    /* Setting all the configuration options */
+    var _type = config.type,
+        _config = IriSP._.defaults({}, config, player.config.gui.default_options, this.defaults),
+        _this = this;
+    
+    IriSP._(_config).forEach(function(_value, _key) {
+       _this[_key] = _value;
+    });
+    
+    if (typeof this.width === "undefined") {
+        this.width = player.config.gui.width;
+    }
+    
+    /* Setting this.player at the end in case it's been overriden
+     * by a configuration option of the same name :-(
+     */
+    this.player = player;
+    
+    /* Getting metadata */
+    this.source = player.loadMetadata(this.metadata);
+    
+    /* Call draw when loaded */
+    this.source.onLoad(function() {
+        _this.draw();
+    });
+   
+    /* Adding classes and html attributes */
+    this.$ = IriSP.jQuery('#' + this.container);
+    this.$.addClass("Ldt-TraceMe Ldt-Widget").attr("widget-type", _type);
+    
+    this.l10n = (
+        typeof this.messages[IriSP.language] !== "undefined"
+        ? this.messages[IriSP.language]
+        : (
+            IriSP.language.length > 2 && typeof this.messages[IriSP.language.substr(0,2)] !== "undefined"
+            ? this.messages[IriSP.language.substr(0,2)]
+            : this.messages["en"]
+        )
+    );
+    
 };
 
+IriSP.Widgets.Widget.prototype.defaults = {}
+
+IriSP.Widgets.Widget.prototype.template = '';
+
+IriSP.Widgets.Widget.prototype.messages = {"en":{}};
+
+IriSP.Widgets.Widget.prototype.templateToHtml = function(_template) {
+    return Mustache.to_html(_template, this);
+}
+
+IriSP.Widgets.Widget.prototype.renderTemplate = function() {
+    this.$.append(this.templateToHtml(this.template));
+}
+
+IriSP.Widgets.Widget.prototype.functionWrapper = function(_name) {
+    var _this = this,
+        _function = this[_name];
+    if (typeof _function !== "undefined") {
+        return function() {
+            return _function.apply(_this, Array.prototype.slice.call(arguments, 0));
+        }
+    } else {
+        console.log("Error, Unknown function IriSP." + this.type + "." + _name)
+    }
+}
+
+IriSP.Widgets.Widget.prototype.bindPopcorn = function(_popcornEvent, _functionName) {
+    this.player.popcorn.listen(_popcornEvent, this.functionWrapper(_functionName))
+}
+
+IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function() {
+    var _curmedia = this.source.currentMedia;
+    return typeof this.annotation_type !== "undefined" && this.annotation_type ? _curmedia.getAnnotationsByTypeTitle(this.annotation_type) : _curmedia.getAnnotations();
+}
+
+IriSP.Widgets.Widget.prototype.getWidgetAnnotationsAtTime = function() {
+    var _time = Math.floor(this.player.popcorn.currentTime() * 1000);
+    return this.getWidgetAnnotations().filter(function(_annotation) {
+        return _annotation.begin <= _time && _annotation.end > _time;
+    });
+}
+
+IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _propname, _widgetoptions) {
+    var _id = _selector.attr("id"),
+        _this = this,
+        _type = _widgetoptions.type,
+        $L = $LAB;
+    if (typeof _id == "undefined") {
+        _id = IriSP._.uniqueId(this.container + '_sub_widget_' + _widgetoptions.type);
+        _selector.attr("id", _id);
+    }
+    _widgetoptions.container = _id;
+    if (typeof IriSP.widgetsRequirements[_type] !== "undefined" && typeof IriSP.widgetsRequirements[_type].requires !== "undefined" ) {
+        for (var _j = 0; _j < IriSP.widgetsRequirements[_type].requires.length; _j++) {
+            $L.script(IriSP.getLib(IriSP.widgetsRequirements[_type].requires[_j]));
+        }
+    }
+    $L.wait(function() {
+        _this.player.loadWidget(_widgetoptions, function(_widget) {
+            _this[_propname] = _widget;
+        });
+    });
+}
+
 /**
-  * Optional method if you want your widget to support redraws.
-  */
-IriSP.Widget.prototype.redraw = function() {
-  /* implemented by "sub-classes" */  
+ * This method responsible of drawing a widget on screen.
+ */
+IriSP.Widgets.Widget.prototype.draw = function() {
+    /* implemented by "sub-classes" */
 };

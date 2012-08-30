@@ -1,0 +1,41 @@
+
+.Ldt-Renkan {
+    position: relative;
+}
+
+.Rk-Render-Full, .Rk-Canvas {
+    position: absolute; left: 0; top: 0; width: 600px; height: 500px;
+    overflow: hidden;
+}
+
+.Rk-Editor {
+    position: absolute; left: 0; top: 0;
+}
+
+.Rk-CloseX {
+    float: right; cursor: pointer;
+}
+
+.Rk-Editor h2 {
+    font-size: 16px; font-weight: bold;
+}
+
+.Rk-Editor p {
+    margin: 5px 0; font-size: 12px;
+}
+
+.Rk-ZoomIn, .Rk-ZoomOut {
+    width: 21px; height: 20px; background: url(img/zoombuttons.png); margin: 5px;
+}
+
+.Rk-ZoomIn:hover {
+    background-position: 0 -20px;
+}
+
+.Rk-ZoomOut {
+    background-position: -21px 0;
+}
+
+.Rk-ZoomOut:hover {
+    background-position: -21px -20px;
+}

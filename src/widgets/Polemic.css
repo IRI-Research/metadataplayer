@@ -1,0 +1,22 @@
+/*
+ * Polemic Widget CSS
+ */
+
+.Ldt-Polemic {
+    border-style: solid none; border-color: #cccccc; border-width: 1px;
+}
+
+.Ldt-Polemic-Position {
+    background: #fc00ff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: -1px;
+    width: 2px;
+    height: 100%;
+}
+
+.Ldt-Polemic-TweetDiv {
+    position: absolute;
+}
+

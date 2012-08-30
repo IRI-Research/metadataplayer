@@ -1,0 +1,78 @@
+.Ldt-Social a {
+    display: inline-block; width: 24px; height: 24px; margin: 2px 0 0 2px; background: url(img/socialbuttons.png);
+}
+
+.Ldt-Social-Url-Container {
+    display: inline-block; width: 24px; height: 24px; margin: 2px 0 0 2px; position: relative;
+}
+
+a.Ldt-Social-Url {
+    margin: 0; background-position: -96px 0;
+}
+
+a.Ldt-Social-Url:hover {
+    background-position: -96px -24px;
+}
+
+.Ldt-Social-UrlPop {
+    position: absolute; left: 20px; top: -2px; background: url(img/socialcopy.png);
+    padding: 3px 0 0 12px; width: 218px; height: 27px;
+    display: none;
+}
+
+.Ldt-Social-Input, .Ldt-Social-CopyBtn {
+    font-size: 11px; margin: 1px; border: 1px solid #ccc; height: 16px;
+    padding: 1px; border-radius: 2px; display: inline-block;
+}
+
+.Ldt-Social-Input:hover, .Ldt-Social-CopyBtn.hover {
+    border-color: #8080ff;
+}
+
+.Ldt-Social-Input {
+    width: 150px;
+}
+
+.Ldt-Social-CopyBtn {
+    font-weight: bold; width: 50px; text-align: center; background: #f0f0ff;
+}
+
+.Ldt-Social-CopyBtn.hover {
+    background: #ffe0a0;
+}
+
+.Ldt-Social-CopyBtn.active {
+    background: #ff8000;
+}
+
+a.Ldt-Social-Twitter {
+    background-position: 0 0;
+}
+
+a.Ldt-Social-Twitter:hover {
+    background-position: 0 -24px;
+}
+
+a.Ldt-Social-Fb {
+    background-position: -24px 0;
+}
+
+a.Ldt-Social-Fb:hover {
+    background-position: -24px -24px;
+}
+
+a.Ldt-Social-Gplus {
+    background-position: -48px 0;
+}
+
+a.Ldt-Social-Gplus:hover {
+    background-position: -48px -24px;
+}
+
+a.Ldt-Social-Mail {
+    background-position: -72px 0;
+}
+
+a.Ldt-Social-Mail:hover {
+    background-position: -72px -24px;
+}

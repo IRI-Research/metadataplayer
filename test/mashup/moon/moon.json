@@ -1,0 +1,388 @@
+{
+    "views": null,
+    "tags": null,
+    "lists": [
+        {
+            "items": ["segment-melies-001", "segment-atlas-001", "segment-melies-002", "segment-apollo-001", "segment-atlas-002", "segment-melies-003", "segment-atlas-003", "segment-melies-004", "segment-apollo-002"],
+            "meta": {
+                "dc:contributor": "IRI",
+                "dc:creator": "IRI",
+                "dc:title": "Bout à bout Lunaire",
+                "dc:modified": "2012-06-22T15:04:17.752880",
+                "dc:created": "2012-06-22T15:04:17.752880",
+                "listtype": "mashup",
+                "dc:description": ""
+            },
+            "id": "mashup-001"
+        }
+    ],
+    "medias": [
+        {
+            "origin": "0",
+            "url": "moon/melies.webm",
+            "http://advene.liris.cnrs.fr/ns/frame_of_reference/ms": "o=0",
+            "meta": {
+                "dc:contributor": "IRI",
+                "dc:created": "2011-09-19T13:17:56.656743",
+                "dc:duration": 674000,
+                "dc:creator": "IRI",
+                "dc:created.contents": "2012-02-13",
+                "dc:title": "Le Voyage dans la Lune de Méliès",
+                "dc:creator.contents": "IRI",
+                "dc:modified": "2012-02-13T11:55:33.052583",
+                "dc:description": "Georges Méliès, 1902. Domaine public.",
+                "url": "http://en.wikipedia.org/wiki/File:Le_Voyage_dans_la_Lune_%28Georges_M%C3%A9li%C3%A8s,_1902%29.ogv",
+                "img": {
+                    "src": "moon/melies.jpg"
+                }
+            },
+            "id": "media-melies",
+            "unit": "ms"
+        }, {
+            "origin": "0",
+            "url": "moon/juno.webm",
+            "http://advene.liris.cnrs.fr/ns/frame_of_reference/ms": "o=0",
+            "meta": {
+                "dc:contributor": "IRI",
+                "dc:created": "2011-09-19T13:17:56.656743",
+                "dc:duration": 130000,
+                "dc:creator": "IRI",
+                "dc:created.contents": "2012-02-13",
+                "dc:title": "Launch of Juno!, NASA",
+                "dc:creator.contents": "IRI",
+                "dc:modified": "2012-02-13T11:55:33.052583",
+                "dc:description": "An Atlas V rocket lofted the Juno spacecraft toward Jupiter from Space Launch Complex-41. The 4-ton Juno spacecraft will take five years to reach Jupiter on a mission to study its structure and decipher its history. NASA, 2011. Domaine public.",
+                "url": "http://www.nasa.gov/multimedia/videogallery/index.html?media_id=105049051",
+                "img": {
+                    "src": "moon/atlas.jpg"
+                }
+            },
+            "id": "media-atlas",
+            "unit": "ms"
+        }, {
+            "origin": "0",
+            "url": "moon/apollo.webm",
+            "http://advene.liris.cnrs.fr/ns/frame_of_reference/ms": "o=0",
+            "meta": {
+                "dc:contributor": "IRI",
+                "dc:created": "2011-09-19T13:17:56.656743",
+                "dc:duration": 137000,
+                "dc:creator": "IRI",
+                "dc:created.contents": "2012-02-13",
+                "dc:title": "Apollo 11 Overview, NASA",
+                "dc:creator.contents": "IRI",
+                "dc:modified": "2012-02-13T11:55:33.052583",
+                "dc:description": "Video highlights from the historic first manned landing on the moon, during the Apollo 11 mission in July 1969. NASA, 2011. Domaine public.",
+                "url": "http://www.nasa.gov/multimedia/videogallery/index.html?media_id=11463015",
+                "img": {
+                    "src": "moon/apollo.jpg"
+                }
+            },
+            "id": "media-apollo",
+            "unit": "ms"
+        }
+    ],
+    "meta": {
+        "dc:contributor": "admin",
+        "dc:created": "2012-05-11T16:26:53.787298",
+        "dc:creator": "admin",
+        "main_media": {
+            "id-ref": "mashup-001"
+        },
+        "dc:description": "",
+        "dc:title": "To the Moon, feat. Méliès + NASA",
+        "id": "5afd8bbe-9b75-11e1-9e5d-00145ea4a2be",
+        "dc:modified": "2012-05-11T16:37:30.246796"
+    },
+    "annotations": [
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Le Voyage dans la Lune, Segment 1",
+                "img": {
+                    "src": ""
+                },
+                "title": "La capsule lunaire est chargée dans le canon permettant son lancement",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 301000,
+            "end": 306000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "decoupage-melies",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "tags": [],
+            "color": "10485760",
+            "media": "media-melies",
+            "id": "segment-melies-001"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Le Voyage dans la Lune, Segment 2",
+                "img": {
+                    "src": ""
+                },
+                "title": "Ordre de mise à feu du canon propulseur",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 314500,
+            "end": 316000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "decoupage-melies",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "tags": [],
+            "color": "10485760",
+            "media": "media-melies",
+            "id": "segment-melies-002"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Le Voyage dans la Lune, Segment 3",
+                "img": {
+                    "src": ""
+                },
+                "title": "La Lune se rapproche et dévoile son visage",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 344000,
+            "end": 347000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "decoupage-melies",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "tags": [],
+            "color": "10485760",
+            "media": "media-melies",
+            "id": "segment-melies-003"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Le Voyage dans la Lune, Segment 4",
+                "img": {
+                    "src": ""
+                },
+                "title": "Alunissage et sortie de l'équipage",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 348500,
+            "end": 358000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "decoupage-melies",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "tags": [],
+            "color": "10485760",
+            "media": "media-melies",
+            "id": "segment-melies-004"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Lancement de la sonde Juno, Segment 1",
+                "img": {
+                    "src": ""
+                },
+                "title": "Décompte du décollage de la fusée Atlas V",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 7000,
+            "end": 11000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "decoupage-atlas",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "tags": [],
+            "color": "32768",
+            "media": "media-atlas",
+            "id": "segment-atlas-001"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Lancement de la sonde Juno, Segment 2",
+                "img": {
+                    "src": ""
+                },
+                "title": "La fusée Atlas V décolle",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 16000,
+            "end": 19000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "decoupage-atlas",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "tags": [],
+            "color": "32768",
+            "media": "media-atlas",
+            "id": "segment-atlas-002"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Lancement de la sonde Juno, Segment 3",
+                "img": {
+                    "src": ""
+                },
+                "title": "La fusée Atlas V en vol",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 35000,
+            "end": 38000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "decoupage-atlas",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "tags": [],
+            "color": "32768",
+            "media": "media-atlas",
+            "id": "segment-atlas-003"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Mission Apollo 11, Segment 1",
+                "img": {
+                    "src": ""
+                },
+                "title": "Décollage du lanceur Saturn V",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 20000,
+            "end": 23000,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "decoupage-apollo",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "tags": [],
+            "color": "16763904",
+            "media": "media-apollo",
+            "id": "segment-apollo-001"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Mission Apollo 11, Segment 2",
+                "img": {
+                    "src": ""
+                },
+                "title": "'One small step for man, one giant leap for mankind'",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 62500,
+            "end": 75500,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "decoupage-apollo",
+                "dc:created": "2012-05-11T15:08:00.348480",
+                "dc:modified": "2012-05-11T15:08:00.348480",
+                "dc:creator": "perso"
+            },
+            "tags": [],
+            "color": "16763904",
+            "media": "media-apollo",
+            "id": "segment-apollo-002"
+        }
+    ],
+    "annotation-types": [
+        {
+            "dc:contributor": "perso",
+            "dc:creator": "perso",
+            "dc:title": "Segments du Voyage sur la Lune",
+            "id": "decoupage-melies",
+            "dc:created": "2012-05-11T15:08:00.348480",
+            "dc:description": "",
+            "dc:modified": "2012-05-11T15:08:00.348480"
+        }, {
+            "dc:contributor": "perso",
+            "dc:creator": "perso",
+            "dc:title": "Segments du Lancement de Juno",
+            "id": "decoupage-atlas",
+            "dc:created": "2012-05-11T15:08:00.348480",
+            "dc:description": "",
+            "dc:modified": "2012-05-11T15:08:00.348480"
+        }, {
+            "dc:contributor": "perso",
+            "dc:creator": "perso",
+            "dc:title": "Segments d'Apollo 11",
+            "id": "decoupage-apollo",
+            "dc:created": "2012-05-11T15:08:00.348480",
+            "dc:description": "",
+            "dc:modified": "2012-05-11T15:08:00.348480"
+        }
+    ]
+}

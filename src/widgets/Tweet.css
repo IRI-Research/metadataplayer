@@ -1,0 +1,109 @@
+.Ldt-Tweet-Widget {
+    border: 1px solid #b7b7b7;
+    padding: 1px;
+    margin: 0;
+}
+
+.Ldt-Tweet-Widget a {
+    color: #0068C4;
+}
+
+.Ldt-Tweet-Widget a:hover {
+    color: #003366;
+}
+
+.Ldt-Tweet-Inner {
+    background: url(img/pinstripe.png);
+    padding: 5px;
+    margin: 0;
+    min-height: 50px;
+}
+
+.Ldt-Tweet-PinClose-Buttons {
+    float: right;
+}
+
+.Ldt-Tweet-PinClose-Buttons a {
+    display: inline-block; width: 17px; height: 17px; margin: 2px;
+    background: url(img/widget-control.png);
+}
+
+a.Ldt-Tweet-Pin {
+    background-position: 0 -17px;
+}
+
+a.Ldt-Tweet-Pin:hover, a.Ldt-Tweet-Pin.active {
+    background-position: -17px -17px;
+}
+
+a.Ldt-Tweet-Pin.active:hover {
+    background-position: 0 -17px;
+}
+
+a.Ldt-Tweet-Close:hover {
+    background-position: -17px 0;
+}
+
+.Ldt-Tweet-AvatarContainer {
+    float: left; width: 48px; height: 48px; margin: 2px 4px 2px 0;
+}
+
+.Ldt-Tweet-Avatar {
+    border: none; width: 48px; height: 48px;
+}
+
+.Ldt-Tweet-Inner h3 {
+    margin: 2px 0 5px 52px;
+    font-size: 14px;
+}
+
+a.Ldt-Tweet-ScreenName {
+    text-decoration: none;
+}
+
+a.Ldt-Tweet-ScreenName:hover {
+    text-decoration: underline;
+}
+
+p.Ldt-Tweet-Contents {
+    margin: 5px 0 5px 52px;
+    font-size: 12px;
+}
+
+.Ldt-Tweet-Bottom {
+    margin: 5px 0 0;
+    font-size: 12px;
+    text-align: right;
+}
+
+.Ldt-Tweet-Time {
+    display: inline-block;
+}
+
+.Ldt-Tweet-Bottom a {
+    display: inline-block;
+    margin-left: 12px;
+    text-decoration: none;
+}
+
+.Ldt-Tweet-Bottom a:hover {
+    text-decoration: underline;
+}
+
+.Ldt-Tweet-Icon {
+    display: inline-block; width: 16px; height: 16px;
+    margin: 0 2px -2px;
+    background: url(img/twitter_sprites.png);
+}
+
+.Ldt-Tweet-Retweet .Ldt-Tweet-Icon {
+    background-position: -80px 0;
+}
+
+.Ldt-Tweet-Retweet:hover .Ldt-Tweet-Icon {
+    background-position: -96px 0;
+}
+
+.Ldt-Tweet-Reply:hover .Ldt-Tweet-Icon {
+    background-position: -16px 0;
+}

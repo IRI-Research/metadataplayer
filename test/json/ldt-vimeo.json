@@ -1,0 +1,183 @@
+{
+    "views": [
+        {
+            "id": "v_0A5EA02B-90DA-EB8E-FCFE-7709E74314BB",
+            "contents": ["fcc5301c-f289-11e1-a3d6-08002791f1b7"],
+            "annotation_types": ["c_0e9fb3c0-f28a-11e1-955e-08002791f1b7", "c_0ea02ada-f28a-11e1-955e-08002791f1b7"]
+        }, {
+            "meta": {
+                "stat": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
+            },
+            "id": "stat",
+            "contents": ["fcc5301c-f289-11e1-a3d6-08002791f1b7"]
+        }
+    ],
+    "tags": null,
+    "lists": [
+        {
+            "items": [
+                {
+                    "id-ref": "c_0e9fb3c0-f28a-11e1-955e-08002791f1b7"
+                }, {
+                    "id-ref": "c_0ea02ada-f28a-11e1-955e-08002791f1b7"
+                }
+            ],
+            "meta": {
+                "dc:contributor": "undefined",
+                "dc:created": "2012-08-30T10:22:50.136571",
+                "dc:creator": "undefined",
+                "id-ref": "fcc5301c-f289-11e1-a3d6-08002791f1b7",
+                "dc:title": "Découpages personnels",
+                "editable": "false",
+                "dc:modified": "2012-08-30T10:22:50.136571",
+                "dc:description": ""
+            },
+            "id": "g_0e9f2cac-f28a-11e1-955e-08002791f1b7"
+        }
+    ],
+    "medias": [
+        {
+            "origin": "0",
+            "url": "http://vimeo.com/40855651",
+            "http://advene.liris.cnrs.fr/ns/frame_of_reference/ms": "o=0",
+            "meta": {
+                "dc:contributor": "IRI",
+                "item": {
+                    "name": "streamer",
+                    "value": ""
+                },
+                "dc:created": "2012-08-30T10:04:16.143040",
+                "dc:duration": 1042000,
+                "dc:creator": "IRI",
+                "dc:created.contents": "2012-08-30",
+                "dc:title": "Ars Industrialis - Travail et Emploi",
+                "dc:creator.contents": "IRI",
+                "dc:modified": "2012-08-30T10:04:16.422413",
+                "dc:description": "Montage Simon Lincelles"
+            },
+            "id": "fcc5301c-f289-11e1-a3d6-08002791f1b7",
+            "unit": "ms"
+        }
+    ],
+    "meta": {
+        "dc:contributor": "admin",
+        "dc:created": "2012-08-30T10:04:16.159226",
+        "dc:creator": "admin",
+        "main_media": {
+            "id-ref": "fcc5301c-f289-11e1-a3d6-08002791f1b7"
+        },
+        "dc:description": "",
+        "dc:title": "front project : Ars Industrialis - Travail et Emploi",
+        "id": "0e907b30-f28a-11e1-955e-08002791f1b7",
+        "dc:modified": "2012-08-30T10:19:37.473399"
+    },
+    "annotations": [
+        {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Première partie",
+                "img": {
+                    "src": ""
+                },
+                "title": "A 1",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 0,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_0e9fb3c0-f28a-11e1-955e-08002791f1b7",
+                "dc:created": "2012-08-30T10:22:50.136634",
+                "dc:modified": "2012-08-30T10:22:50.136634",
+                "dc:creator": "perso"
+            },
+            "end": 351792,
+            "tags": null,
+            "color": "16763904",
+            "media": "fcc5301c-f289-11e1-a3d6-08002791f1b7",
+            "id": "s_520832CB-C992-A189-0086-770A103763EC"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Deuxième partie",
+                "img": {
+                    "src": ""
+                },
+                "title": "B 2",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 353130,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_0e9fb3c0-f28a-11e1-955e-08002791f1b7",
+                "dc:created": "2012-08-30T10:22:50.136634",
+                "dc:modified": "2012-08-30T10:22:50.136634",
+                "dc:creator": "perso"
+            },
+            "end": 687533,
+            "tags": null,
+            "color": "16763904",
+            "media": "fcc5301c-f289-11e1-a3d6-08002791f1b7",
+            "id": "s_30F09F49-23C6-37CC-D21F-770A1FEE49D9"
+        }, {
+            "content": {
+                "mimetype": "application/x-ldt-structured",
+                "description": "Troisième partie",
+                "img": {
+                    "src": ""
+                },
+                "title": "C 3",
+                "color": "16763904",
+                "polemics": [],
+                "audio": {
+                    "mimetype": "audio/mp3",
+                    "src": "",
+                    "href": null
+                }
+            },
+            "begin": 688870,
+            "meta": {
+                "dc:contributor": "perso",
+                "id-ref": "c_0e9fb3c0-f28a-11e1-955e-08002791f1b7",
+                "dc:created": "2012-08-30T10:22:50.136634",
+                "dc:modified": "2012-08-30T10:22:50.136634",
+                "dc:creator": "perso"
+            },
+            "end": 1042000,
+            "tags": null,
+            "color": "16763904",
+            "media": "fcc5301c-f289-11e1-a3d6-08002791f1b7",
+            "id": "s_7D9EBBC1-7E97-E3D0-7BA9-770A308283B7"
+        }
+    ],
+    "annotation-types": [
+        {
+            "dc:contributor": "perso",
+            "dc:creator": "perso",
+            "dc:title": "chapitrage",
+            "id": "c_0e9fb3c0-f28a-11e1-955e-08002791f1b7",
+            "dc:created": "2012-08-30T10:22:50.136634",
+            "dc:description": "",
+            "dc:modified": "2012-08-30T10:22:50.136634"
+        }, {
+            "dc:contributor": "perso",
+            "dc:creator": "perso",
+            "dc:title": "contributions",
+            "id": "c_0ea02ada-f28a-11e1-955e-08002791f1b7",
+            "dc:created": "2012-08-30T10:22:50.138056",
+            "dc:description": "",
+            "dc:modified": "2012-08-30T10:22:50.138056"
+        }
+    ]
+}
