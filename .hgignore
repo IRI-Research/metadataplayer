@@ -29,3 +29,5 @@ syntax: regexp
 ^assets/player_bab_ldt/player_bab_ldt/bin$
 syntax: regexp
 ^\.settings/org\.eclipse\.core\.runtime\.prefs$
+syntax: regexp
+^sbin/build/compil-to-platform\.sh$

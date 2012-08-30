@@ -1,0 +1,30 @@
+#!/bin/bash
+
+echo "Compiling Metadataplayer"
+
+sh ../res/ant/bin/ant -f client.xml
+
+echo "Copying to Platform :"
+
+echo "  Copying core files and widgets"
+
+cp -R ../../test/metadataplayer/* ~/shared/platform/src/ldt/ldt/static/ldt/metadataplayer
+
+echo "  Copying JS libs"
+
+cp -R ../../src/js/libs/*.js ~/shared/platform/src/ldt/ldt/static/ldt/js
+
+echo "  Copying SWF libs"
+
+cp -R ../../src/js/libs/*.swf ~/shared/platform/src/ldt/ldt/static/ldt/swf
+
+echo "Activating virtual environment"
+
+source ~/venv_pf/activate.sh
+
+cd ~/shared/platform/web
+
+echo "Collecting static files"
+
+python manage.py collectstatic --noinput
+
