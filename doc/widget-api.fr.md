@@ -1,7 +1,7 @@
 # API de programmation de widgets #
 
 ATTENTION !
-Cette documentation se réfère à la v.3 du Metadataplayer, actuellement disponible dans la branche **new-model** du repository
+Cette documentation se réfère à la dernière version du Metadataplayer, disponible dans la branche **default** du repository
 http://www.iri.centrepompidou.fr/dev/hg/metadataplayer
 
 ## Types et fichiers ##

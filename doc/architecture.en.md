@@ -1,7 +1,7 @@
 # Architecture of Metadataplayer #
 
 WARNING !
-This documentation refers to version 0.3 of Metadataplayer, now available under the **new-model** branch in our repository
+This documentation refers to the latest version of Metadataplayer, available in the **default** branch in our repository
 http://www.iri.centrepompidou.fr/dev/hg/metadataplayer
 
 ## External Libraries ##
