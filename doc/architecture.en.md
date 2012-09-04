@@ -14,7 +14,7 @@ External libraries are bundled in the *src/libs* directory
 - **License**: MIT.
 - **Role**: Loads other librairies and widgets.
 - **Used in**: Metadataplayer core.
-- As LAB.js is used to load other libraries, it's the only library called before loading the Metadataplayer core.
+- As LAB.js is used to load other libraries, it’s the only library called before loading the Metadataplayer core.
 - **Library homepage**: http://labjs.com/
 
 ### jQuery ###
@@ -65,6 +65,14 @@ External libraries are bundled in the *src/libs* directory
 - **Used in**: Arrow and Sparkline widgets
 - **Library homepage**: http://raphaeljs.com/
 
+### ZeroClipboard ###
+
+- **Files**: ZeroClipboard.js and ZeroClipboard.swf
+- **License**: MIT.
+- **Role**: Manages access to the Clipboard (using Flash)
+- **Used in**: Social widget
+- **Library homepage**: http://code.google.com/p/zeroclipboard/
+
 ### ktbs4js Tracemanager ###
 
 - **File**: tracemanager.js
@@ -81,7 +89,7 @@ In the release (compiled) version, the JS part of the core is a single file, *Ld
 
 ### header.js ###
 
-Contains credits and licence information (The license is CEA, CNRS and Inria's *CeCILL-C*)
+Contains credits and licence information (The license is CEA, CNRS and Inria’s *CeCILL-C*)
 
 ### LAB.js ###
 
@@ -95,7 +103,7 @@ Contains the declaration and methods of the *IriSP.Metadataplayer* class, whose 
 ### pop.js ###
 
 Defines the *IriSP.PopcornReplacement* class, i.e. a simplified version of the Popcorn API used to interface with video players (jwplayer, dailymotion) not supported by Popcorn.
-When this part of the Metadataplayer was written, Popcorn and jwplayer didn't interface well, but it should be replaced by a real Popcorn.js plugin.
+When this part of the Metadataplayer was written, Popcorn and jwplayer didn’t interface well, but it should be replaced by a real Popcorn.js plugin.
 
 ### utils.js ###
 
@@ -134,7 +142,7 @@ Two serializers are available:
 
 Widgets are modules, visible or not, adding functionalities to the Metadataplayer.
 
-Located in the *src/widgets* directory, they're composed of a mandatory JavaScript file, *WidgetName.js* and an optional stylesheet, *WidgetName.css*
+Located in the *src/widgets* directory, they’re composed of a mandatory JavaScript file, *WidgetName.js* and an optional stylesheet, *WidgetName.css*
 
 #### Common Widget Options ####
 
@@ -145,32 +153,29 @@ Located in the *src/widgets* directory, they're composed of a mandatory JavaScri
     - *Array of string*: to display several annotation types. Example: "Segments"
     - *false*: to display all annotations related to the media.
 
-Here's a list of available widgets:
+Here’s a list of available widgets:
 
-### HelloWorld ###
+### Annotation ###
 
-- **Role**: Example widget demonstration the API capabilities
+- **Role**: Displays information relative to a single segment/annotation while it is being played
 - **Options**:
-    - **text**: (default: "world"), text to display after "Hello, "
+    - **annotation\_type**: (default: "chapitrage"), see *Common widget options*.
+    - **show\_top\_border**: (default: false), show top widget border (useful depending on whether it is used in combination with the *Arrow* widget)
+    - **site\_name**: "Lignes de Temps", site name to display when users click on "Share on social networks".
 - Uses a CSS stylesheet: yes
 
-### Slider ###
+### AnnotationsList ###
 
-- **Role**: A combination of a Progress bar and a Slider displaying and allowing repositioning of the current video playback position.
+- **Role**: Show a list of annotations.
 - **Options**:
-   - **minimized\_height**: (default: 4), height in pixels of the *Slider* in minimized mode
-   - **maximized\_height**: (default: 10), height in pixels du *Slider* in maximized mode (on mouseover)
-   - **minimize\_timeout**: (default: 1500), duration in milliseconds before the *Slider* is automatically minimized. If set to 0, *Slider* stays maximized.
-- Uses external library: jQuery UI
-- Uses a CSS stylesheet: yes
-
-### Controller ###
-
-- **Role**: Play, Pause, Search, Annotate buttons and volume control
-- **Options**:
-    - **disable\_annotate\_btn**: (default: false), disables Annotate button if set to *true*
-    - **disable\_search\_btn**: (default: true), disables Search button
-- Uses external library: jQuery UI
+    - **ajax\_url**: (default: false), specifies an API template when annotations have to be loaded from an external source. In the URL, {{media}} will be replaced by the media ID, {{begin}} by the start *timecode* in milliseconds, {{end}} by the end *timecode* in milliseconds. If set to *false*, displayed annotations will be the ones loaded from the default metadata source. On the *Lignes de Temps*, the URL of the segments API is http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?
+    - **ajax\_granularity**: (default: 300000 ms = 5 minutes), specifies the timespan to be loaded from the segment API, around the current timecode. 
+    - **default\_thumbnail**: thumbnail to display when an annotation doesn’t have one.
+    - **foreign\_url**: Specifies an URL template for when an annotation doesn’t have an URL and is not in the current project. In that template, {{media}} will be replaced by the media ID, {{project}} by the project ID, {{annotationType}} by the annotation type ID and {{annotation}} by the annotation ID. For the *Lignes de temps* platform, this URL is http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}
+    - **annotation\_type**: (default: false), see *Common widget options*, above
+    - **refresh\_interval**: (default: 0), Ajax refresh interval, to get annotations added while watching (works with either the default source or the external segment API)
+    - **limit\_count**: (default: 10), Maximum number of annotations to display at once.
+    - **newest\_first**: (default: false), When *true*, annotations are sorted by decreasing creation date. When *false*, annotations are sorted by increasing timecode.
 - Uses a CSS stylesheet: yes
 
 ### Arrow ###
@@ -190,13 +195,13 @@ Here's a list of available widgets:
 - Uses external library: Raphael
 - Uses a CSS stylesheet: no
 
-### Annotation ###
+### Controller ###
 
-- **Role**: Displays information relative to a single segment/annotation while it is being played
+- **Role**: Play, Pause, Search, Annotate buttons and volume control
 - **Options**:
-    - **annotation\_type**: (default: "chapitrage"), see *Common widget options*.
-    - **show\_top\_border**: (default: false), show top widget border (useful depending on whether it is used in combination with the *Arrow* widget)
-    - **site\_name**: "Lignes de Temps", site name to display when users click on "Share on social networks".
+    - **disable\_annotate\_btn**: (default: false), disables Annotate button if set to *true*
+    - **disable\_search\_btn**: (default: true), disables Search button
+- Uses external library: jQuery UI
 - Uses a CSS stylesheet: yes
 
 ### CreateAnnotation ###
@@ -217,6 +222,28 @@ Here's a list of available widgets:
     - **close\_widget\_timeout**: (default: 0), duration in milliseconds before widget is closed after send. If value is set to 0, the widget stays open.
 - Uses a CSS stylesheet: yes
 
+### HelloWorld ###
+
+- **Role**: Example widget demonstration the API capabilities
+- **Options**:
+    - **text**: (default: "world"), text to display after "Hello, "
+- Uses a CSS stylesheet: yes
+
+### Media ###
+
+- **Role**: Shows current media, as well as other medias in the project. Mostly used for mashups
+- **Options**:
+    - **default\_thumbnail**: thumbnail to display when a media doesn’t have one
+    - **media\_url\_template**: Specifies an URL template for when a media doesn’t include URL information, e.g.: "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/"
+- Uses a CSS stylesheet: yes
+
+### Mediafragment ###
+
+- **Role**: Handles *Media fragments*-compliant URIs (W3C Recommandation): Changing the playing position changes the URL and vice-versa.
+- An URL ending with #id=*annotation ID* points to an annotation, one with #t=*time in seconds* to a precise position.
+- No options
+- Uses a CSS stylesheet: no
+
 ### Polemic ###
 
 - **Role**: Shows the *polemical timeline*, i.e. tweets colored according to the polemical syntax. Depending on the number of tweets, two visualization modes exist:
@@ -232,30 +259,61 @@ Here's a list of available widgets:
     - **polemics**: polemical colors to display, as an array of objects, e.g. [ { name: "OK", keywords: [ "++" ], color: "#1D973D" } ]
 - Uses a CSS stylesheet: yes
 
-### Tweet ###
+### Renkan ###
 
-- **Role**: Show the contents on a tweet when clicj
+- **Role**: Interface with the *Renkan* project.
+- Uses external libraries: jQuery Mousewheel, Backbone, Backbone Relational, Renkan-Publish
+- Uses a CSS stylesheet: oui
+
+### Segments ###
+
+- **Role**: Displays segments of a media as rectangles on an horizontal line.
 - **Options**:
-    - **hide_timeout**: (default: 5000), durée en milliseconds, avant que l’affichage du Tweet ne se referme
-    - **polemics**: identique au paramètre *polemics* du widget *Polemic*
+    - **colors**: colors to use when annotations don’t have colour metadata.
+    - **height**: height of the widget, in pixels
+- Uses a CSS stylesheet: yes
+
+### Slider ###
+
+- **Role**: A combination of a Progress bar and a Slider displaying and allowing repositioning of the current video playback position.
+- **Options**:
+   - **minimized\_height**: (default: 4), height in pixels of the *Slider* in minimized mode
+   - **maximized\_height**: (default: 10), height in pixels du *Slider* in maximized mode (on mouseover)
+   - **minimize\_timeout**: (default: 1500), duration in milliseconds before the *Slider* is automatically minimized. If set to 0, *Slider* stays maximized.
+- Uses external library: jQuery UI
+- Uses a CSS stylesheet: yes
+
+### Social ###
+
+- **Role**: Adds buttons to share an URL on social networks
+- **Options**:
+    - **text**: displays a text
+    - **url**: the URL to share
+    - **show_url**: Shows a button to copy/paste an URL
+    - **show_twitter**: Shows a button to share on Twitter
+    - **show_fb**: Shows a button to share on Facebook
+    - **show_gplus**: Shows a button to share on Google+
+    - **show_mail**: Shows a button to share by e-mail
+- Uses a CSS stylesheet: yes
+- Uses external library: ZeroClipboard
 
 ### Sparkline ###
 
-- **Role**: Affiche une courbe indiquant l’évolution du volume d’annotations au cours du temps.
+- **Role**: Displays a curve showing the volume of tweets across time.
 - **Options**:
     - **annotation\_type**: see *Common widget options*, above
-    - **lineColor**: (default: "#7492b4" = gris-bleu), couleur de la courbe
-    - **fillColor**: (default: "#aeaeb8" = gris), couleur de la surface sous la courbe
-    - **lineWidth**: (default: 2), épaisseur en pixels de la courbe
-    - **slice\_count**: (default: 20), nombre des tranches horaires dans lesquelles les annotations sont réparties pour calculer la courbe
-    - **height**: (default: 50), hauteur en pixels de la courbe
-    - **margin**: (default: 5), marge en pixels au-dessus de la courbe
+    - **lineColor**: (default: "#7492b4" = blue-grey), line color
+    - **fillColor**: (default: "#aeaeb8" = grey), color of the surface below the curve
+    - **lineWidth**: (default: 2), line width in pixels
+    - **slice\_count**: (default: 20), number of slices used to sample volumes
+    - **height**: (default: 50), curve height
+    - **margin**: (default: 5), margin above the curve
 - Uses external library: Raphael
 - Uses a CSS stylesheet: no
 
 ### Tagcloud ###
 
-- **Role**: Shows a tag cloud - WARNING: Doesn't work well with Japanese language because of word splitting issues
+- **Role**: Shows a tag cloud - WARNING: Doesn’t work well with Japanese language because of word splitting issues
 - **Options**:
     - **include\_titles**: (default: true), includes annotation titles when computing tag cloud.
     - **include\_descriptions**: (default: true), includes annotation descriptions when computing tag cloud.
@@ -265,31 +323,9 @@ Here's a list of available widgets:
     - **custom\_stopwords**: (default: []), custom stopwords to filter out.
     - **exclude\_pattern**: (default: false), regexp to filter out.
     - **annotation\_type**: (default: false), see *Common widget options*, above. The annotation type of the annotations whose text is extracted to compute the cloud.
-    - **segment\_annotation\_type**: (default: false), permet de définir la segmentation du nuage de mots-clés et de calculer un nuage pour chaque segment du type d’annotation choisi. Lorsque ce paramètre est à *false*, un seul nuage est calculé pour toute la durée de la vidéo.
-    - **min\_font\_size**: (default: 10), taille de caractères (en pixels) pour le mot le moins fréquent.
-    - **max\_font\_size**: (default: 26), taille de caractères (en pixels) pour le mot le plus fréquent.
-- Uses a CSS stylesheet: yes
-
-### AnnotationsList ###
-
-- **Role**: Show a list of annotations.
-- **Options**:
-    - **ajax\_url**: (default: false), specifies an API template when annotations have to be loaded from an external source. In the URL, {{media}} will be replaced by the media ID, {{begin}} by the start *timecode* in milliseconds, {{end}} by the end *timecode* in milliseconds. If set to *false*, displayed annotations will be the ones loaded from the default metadata source. On the *Lignes de Temps*, the URL of the segments API is http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?
-    - **ajax\_granularity**: (default: 300000 ms = 5 minutes), specifies the timespan to be loaded from the segment API, around the current timecode. 
-    - **default\_thumbnail**: thumbnail to display when an annotation doesn't have one.
-    - **foreign\_url**: Specifies an URL template for when an annotation doesn't have an URL and is not in the current project. In that template, {{media}} will be replaced by the media ID, {{project}} by the project ID, {{annotationType}} by the annotation type ID and {{annotation}} by the annotation ID. For the *Lignes de temps* platform, this URL is http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}
-    - **annotation\_type**: (default: false), see *Common widget options*, above
-    - **refresh\_interval**: (default: 0), Ajax refresh interval, to get annotations added while watching (works with either the default source or the external segment API)
-    - **limit\_count**: (default: 10), Maximum number of annotations to display at once.
-    - **newest\_first**: (default: false), When *true*, annotations are sorted by decreasing creation date. When *false*, annotations are sorted by increasing timecode.
-- Uses a CSS stylesheet: yes
-
-### Media ###
-
-- **Role**: Shows current media, as well as other medias in the project. Mostly used for mashups
-- **Options**:
-    - **default\_thumbnail**: thumbnail to display when a media doesn't have one
-    - **media\_url\_template**: Specifies an URL template for when a media doesn't include URL information, e.g.: "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/"
+    - **segment\_annotation\_type**: (default: false), defines a segmentation of the tag-cloud, so as to display a distinct tag cloud for each segment of this annotation type. When set to *false*, a single tag cloud is created for the whole media.
+    - **min\_font\_size**: (default: 10), font size for the most frequent word.
+    - **max\_font\_size**: (default: 26), font size for the least frequent word.
 - Uses a CSS stylesheet: yes
 
 ### Tooltip ###
@@ -309,23 +345,9 @@ Here's a list of available widgets:
 - Uses external library: ktbs4js tracemanager
 - Uses a CSS stylesheet: no
 
-### Mediafragment ###
+### Tweet ###
 
-- **Role**: Handles *Media fragments*-compliant URIs (W3C Recommandation): Changing the playing position changes the URL and vice-versa.
-- An URL ending with #id=*annotation ID* points to an annotation, one with #t=*time in seconds* to a precise position.
-- No options
-- Uses a CSS stylesheet: no
-
-### Social ###
-
-- **Role**: Adds buttons to share an URL on social networks
+- **Role**: Show the contents on a tweet when clicked (in Polemic Widget)
 - **Options**:
-    - **text**: displays a text
-    - **url**: the URL to share
-    - **show_url**: Shows a button to copy/paste an URL
-    - **show_twitter**: Shows a button to share on Twitter
-    - **show_fb**: Shows a button to share on Facebook
-    - **show_gplus**: Shows a button to share on Google+
-    - **show_mail**: Shows a button to share by e-mail
-- Uses a CSS stylesheet: yes
-- Uses external library: ZeroClipboard
+    - **hide_timeout**: (default: 5000), time (in milliseconds) before hiding the Tweet.
+    - **polemics**: See *Polemic* widget

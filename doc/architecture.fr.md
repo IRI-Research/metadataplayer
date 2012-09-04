@@ -62,8 +62,16 @@ Les bibliothèques utilisées par le Metadataplayer sont regroupées dans *src/l
 - **Fichier**: raphael-min.js
 - **Licence**: MIT.
 - **Rôle**: Fournit une interface de dessin vectoriel (utilise SVG ou VML selon les navigateurs)
-- **Utilisé par**: Widgets et Sparkline
+- **Utilisé par**: Widgets Arrow et Sparkline
 - **Site**: http://raphaeljs.com/
+
+### ZeroClipboard ###
+
+- **Fichiers**: ZeroClipboard.js et ZeroClipboard.swf
+- **Licence**: MIT.
+- **Rôle**: Permet l’accès au presse-papiers (using Flash)
+- **Utilisé par**: Widget Social
+- **Site**: http://code.google.com/p/zeroclipboard/
 
 ### ktbs4js Tracemanager ###
 
@@ -148,30 +156,27 @@ Situés dans le répertoire *src/widgets*, ils contiennent nécessairement un fi
 
 Voici la liste des widgets actuellement disponibles, avec leurs options:
 
-### HelloWorld ###
+### Annotation ###
 
-- **Rôle**: Widget d’exemple démontrant l’API de création de widgets
+- **Rôle**: Affiche les informations relatives à une annotation au moment où celle-ci est jouée
 - **Options**:
-    - **text**: (défaut: "world"), texte à afficher après "Hello, "
+    - **annotation\_type**: (défaut: "chapitrage"), cf. *Options courantes*, plus haut.
+    - **show\_top\_border**: (défaut: false), afficher ou non la bordure en haut du widget (au cas où il est utilisé sans/avec le widget *Arrow*)
+    - **site\_name**: "Lignes de Temps", nom du site à afficher lorsque l’on clique sur les boutons de partage pour réseaux sociaux.
 - Utilise un fichier CSS: oui
 
-### Slider ###
+### AnnotationsList ###
 
-- **Rôle**: Barre de progression et *Slider* indiquant la position de la tête de lecture vidéo et permettant de la déplacer.
+- **Rôle**: Affiche une liste d’annotations
 - **Options**:
-   - **minimized\_height**: (défaut: 4), hauteur en pixels du *Slider* en mode minimisé
-   - **maximized\_height**: (défaut: 10), hauteur en pixels du *Slider* en mode maximisé (lorsque la souris passe dessus)
-   - **minimize\_timeout**: (défaut: 1500), durée en millisecondes avant que le *Slider* ne se minimise. À une valeur de 0, le *Slider* ne se minimise plus.
-- Utilise la bibliothèque: jQuery UI
-- Utilise un fichier CSS: oui
-
-### Controller ###
-
-- **Rôle**: Boutons Lecture/Pause, Rechercher, Ouvrir l’annotateur et contrôle du volume
-- **Options**:
-    - **disable\_annotate\_btn**: (défaut: false), permet de désactiver le bouton d’ouverture de l’annotateur s’il est à *true*
-    - **disable\_search\_btn**: (défaut: true), permet de désactiver le bouton de recherche d’annotations
-- Utilise la bibliothèque: jQuery UI
+    - **ajax\_url**: (défaut: false), spécifie un gabarit d’URL lorsque les annotations doivent être chargées par une API spécifique (API de segment). Dans l’URL, {{media}} sera remplacé par l’ID du média, {{begin}} par le *timecode* de début en millisecondes, {{end}} par le *timecode* de fin en millisecondes. Si le réglage est à *false*, les annotations affichées seront celles chargées à l’initialisation du Widget. Sur la plateforme *Lignes de Temps*, cette URL est http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?
+    - **ajax\_granularity**: (défaut: 300000 ms = 5 minutes), spécifie la durée qui doit être chargée par l’API de segment, de part et d’autre du timecode courant (cf. ci-dessus) 
+    - **default\_thumbnail**: imagette à afficher par défaut à côté d’une annotation lorsque l’annotation n’a pas d’imagette.
+    - **foreign\_url**: spécifie un gabarit d’URL lorsque l’annotation n’a pas d’information d’URL et que l’annotation est dans un autre projet. Dans l’URL, {{media}} sera remplacé par l’ID du média, {{project}} par l’ID du projet, {{annotationType}} par l’ID du type d’annotation, {{annotation}} par l’ID de l’annotation. Sur la plateforme *Lignes de temps*, cette URL est http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}
+    - **annotation\_type**: (défaut: false), cf. *Options courantes*, plus haut.
+    - **refresh\_interval**: (défaut: 0), intervalle auquel le widget recharge en Ajax la liste des annotations (que l’on utilise l’API de segment ou non)
+    - **limit\_count**: (défaut: 10), nombre maximum d’annotations à afficher simultanément.
+    - **newest\_first**: (défaut: false), *true*: classe les annotations par ordre antéchronologique de création, *false*: classe les annotations par ordre chronologique de leur timecode vidéo.
 - Utilise un fichier CSS: oui
 
 ### Arrow ###
@@ -191,13 +196,13 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
 - Utilise la bibliothèque: Raphael
 - Utilise un fichier CSS: non
 
-### Annotation ###
+### Controller ###
 
-- **Rôle**: Affiche les informations relatives à une annotation au moment où celle-ci est jouée
+- **Rôle**: Boutons Lecture/Pause, Rechercher, Ouvrir l’annotateur et contrôle du volume
 - **Options**:
-    - **annotation\_type**: (défaut: "chapitrage"), cf. *Options courantes*, plus haut.
-    - **show\_top\_border**: (défaut: false), afficher ou non la bordure en haut du widget (au cas où il est utilisé sans/avec le widget *Arrow*)
-    - **site\_name**: "Lignes de Temps", nom du site à afficher lorsque l’on clique sur les boutons de partage pour réseaux sociaux.
+    - **disable\_annotate\_btn**: (défaut: false), permet de désactiver le bouton d’ouverture de l’annotateur s’il est à *true*
+    - **disable\_search\_btn**: (défaut: true), permet de désactiver le bouton de recherche d’annotations
+- Utilise la bibliothèque: jQuery UI
 - Utilise un fichier CSS: oui
 
 ### CreateAnnotation ###
@@ -217,6 +222,28 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
     - **close\_widget\_timeout**: (défaut: 0), durée en millisecondes avant que le widget ne soit refermé après l’envoi d’une annotation. Si la valeur est 0, le widget ne se referme pas.
 - Utilise un fichier CSS: oui
 
+### HelloWorld ###
+
+- **Rôle**: Widget d’exemple démontrant l’API de création de widgets
+- **Options**:
+    - **text**: (défaut: "world"), texte à afficher après "Hello, "
+- Utilise un fichier CSS: oui
+
+### Media ###
+
+- **Rôle**: Affiche le média en cours, ainsi que la liste des autres médias du projet. Utilisé principalement pour les mashups
+- **Options**:
+    - **default\_thumbnail**: imagette à afficher par défaut à côté d’un média lorsque le média n’a pas d’imagette.
+    - **media\_url\_template**: spécifie un gabarit d’URL lorsque le média n’a pas d’information d’URL, par exemple: "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/"
+- Utilise un fichier CSS: oui
+
+### Mediafragment ###
+
+- **Rôle**: Gère les URLs à la norme *Mediafragment*: change la position de la tête de lecture en fonction de l’URL et inversement.
+- Une URL finissant par #id=*id de l’annotation* pointe sur une annotation, par #t=*temps en secondes* vers un timecode de la vidéo.
+- Pas d’options
+- Utilise un fichier CSS: non.
+
 ### Polemic ###
 
 - **Rôle**: Affiche la *timeline polémique*, c’est à dire les tweets colorés en fonction de la syntaxe polémique. Selon le volume de tweets, deux modes de représentation existent:
@@ -232,12 +259,43 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
     - **polemics**: couleurs polémiques à afficher, en fonction d’une recherche de termes, type [ { keywords: [ "++" ], color: "#1D973D" } ]
 - Utilise un fichier CSS: oui
 
-### Tweet ###
+### Renkan ###
 
-- **Rôle**: Affiche furtivement le contenu d’un tweet
+- **Rôle**: Interface avec le projet *Renkan*
+- Utilise les bibliothèques: jQuery Mousewheel, Backbone, Backbone Relational, Renkan-Publish
+- Utilise un fichier CSS: oui
+
+### Segments ###
+
+- **Rôle**: Affiche le *chapitrage* du média, en horizontal.
 - **Options**:
-    - **hide_timeout**: (défaut: 5000), durée en millisecondes, avant que l’affichage du Tweet ne se referme
-    - **polemics**: identique au paramètre *polemics* du widget *Polemic*
+    - **colors**: liste de couleurs à utiliser lorsque les annotations ne contiennent pas d’information de couleur.
+    - **height**: hauteur du widget
+- Utilise un fichier CSS: oui
+
+### Slider ###
+
+- **Rôle**: Barre de progression et *Slider* indiquant la position de la tête de lecture vidéo et permettant de la déplacer.
+- **Options**:
+   - **minimized\_height**: (défaut: 4), hauteur en pixels du *Slider* en mode minimisé
+   - **maximized\_height**: (défaut: 10), hauteur en pixels du *Slider* en mode maximisé (lorsque la souris passe dessus)
+   - **minimize\_timeout**: (défaut: 1500), durée en millisecondes avant que le *Slider* ne se minimise. À une valeur de 0, le *Slider* ne se minimise plus.
+- Utilise la bibliothèque: jQuery UI
+- Utilise un fichier CSS: oui
+
+### Social ###
+
+- **Role**: Affiche des boutons pour partager une URL sur les réseaux sociaux
+- **Options**:
+    - **text**: un texte à afficher (dans le tweet, etc.)
+    - **url**: l’URL à partager
+    - **show_url**: Affiche un bouton pour copier-coller une URL.
+    - **show_twitter**: Affiche un bouton pour partager sur Twitter.
+    - **show_fb**: Affiche un bouton pour partager sur Facebook.
+    - **show_gplus**: Affiche un bouton pour partager sur Google+.
+    - **show_mail**: Affiche un bouton pour partager par e-mail.
+- Utilise un fichier CSS: oui.
+- Utilise la bibliothèque: ZeroClipboard
 
 ### Sparkline ###
 
@@ -270,28 +328,6 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
     - **max\_font\_size**: (défaut: 26), taille de caractères (en pixels) pour le mot le plus fréquent.
 - Utilise un fichier CSS: oui
 
-### AnnotationsList ###
-
-- **Rôle**: Affiche une liste d’annotations
-- **Options**:
-    - **ajax\_url**: (défaut: false), spécifie un gabarit d’URL lorsque les annotations doivent être chargées par une API spécifique (API de segment). Dans l’URL, {{media}} sera remplacé par l’ID du média, {{begin}} par le *timecode* de début en millisecondes, {{end}} par le *timecode* de fin en millisecondes. Si le réglage est à *false*, les annotations affichées seront celles chargées à l’initialisation du Widget. Sur la plateforme *Lignes de Temps*, cette URL est http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?
-    - **ajax\_granularity**: (défaut: 300000 ms = 5 minutes), spécifie la durée qui doit être chargée par l’API de segment, de part et d’autre du timecode courant (cf. ci-dessus) 
-    - **default\_thumbnail**: imagette à afficher par défaut à côté d’une annotation lorsque l’annotation n’a pas d’imagette.
-    - **foreign\_url**: spécifie un gabarit d’URL lorsque l’annotation n’a pas d’information d’URL et que l’annotation est dans un autre projet. Dans l’URL, {{media}} sera remplacé par l’ID du média, {{project}} par l’ID du projet, {{annotationType}} par l’ID du type d’annotation, {{annotation}} par l’ID de l’annotation. Sur la plateforme *Lignes de temps*, cette URL est http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}
-    - **annotation\_type**: (défaut: false), cf. *Options courantes*, plus haut.
-    - **refresh\_interval**: (défaut: 0), intervalle auquel le widget recharge en Ajax la liste des annotations (que l’on utilise l’API de segment ou non)
-    - **limit\_count**: (défaut: 10), nombre maximum d’annotations à afficher simultanément.
-    - **newest\_first**: (défaut: false), *true*: classe les annotations par ordre antéchronologique de création, *false*: classe les annotations par ordre chronologique de leur timecode vidéo.
-- Utilise un fichier CSS: oui
-
-### Media ###
-
-- **Rôle**: Affiche le média en cours, ainsi que la liste des autres médias du projet. Utilisé principalement pour les mashups
-- **Options**:
-    - **default\_thumbnail**: imagette à afficher par défaut à côté d’un média lorsque le média n’a pas d’imagette.
-    - **media\_url\_template**: spécifie un gabarit d’URL lorsque le média n’a pas d’information d’URL, par exemple: "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/"
-- Utilise un fichier CSS: oui
-
 ### Tooltip ###
 
 - **Rôle**: Affiche une infobulle, utilisé uniquement comme *widget inclus* dans d’autres widgets.
@@ -309,23 +345,9 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
 - Utilise la bibliothèque: ktbs4js tracemanager
 - Utilise un fichier CSS: non.
 
-### Mediafragment ###
+### Tweet ###
 
-- **Rôle**: Gère les URLs à la norme *Mediafragment*: change la position de la tête de lecture en fonction de l’URL et inversement.
-- Une URL finissant par #id=*id de l’annotation* pointe sur une annotation, par #t=*temps en secondes* vers un timecode de la vidéo.
-- Pas d’options
-- Utilise un fichier CSS: non.
-
-### Social ###
-
-- **Role**: Affiche des boutons pour partager une URL sur les réseaux sociaux
+- **Rôle**: Affiche furtivement le contenu d’un tweet
 - **Options**:
-    - **text**: un texte à afficher (dans le tweet, etc.)
-    - **url**: l’URL à partager
-    - **show_url**: Affiche un bouton pour copier-coller une URL.
-    - **show_twitter**: Affiche un bouton pour partager sur Twitter.
-    - **show_fb**: Affiche un bouton pour partager sur Facebook.
-    - **show_gplus**: Affiche un bouton pour partager sur Google+.
-    - **show_mail**: Affiche un bouton pour partager par e-mail.
-- Utilise un fichier CSS: oui.
-- Utilise la bibliothèque: ZeroClipboard
+    - **hide_timeout**: (défaut: 5000), durée en millisecondes, avant que l’affichage du Tweet ne se referme
+    - **polemics**: identique au paramètre *polemics* du widget *Polemic*
