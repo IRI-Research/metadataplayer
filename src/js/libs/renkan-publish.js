@@ -452,8 +452,9 @@ Rkns.Renderer.Edge.prototype._init = function() {
     this.type = "Edge";
     this.from_representation = this.renderer.getRepresentationByModel(this.model.get("from"));
     this.to_representation = this.renderer.getRepresentationByModel(this.model.get("to"));
+    this.bundle = this.renderer.addToBundles(this);
     this.line = new paper.Path();
-    this.line.add([0,0],[0,0]);
+    this.line.add([0,0],[0,0],[0,0]);
     this.line.__representation = this;
     this.arrow = new paper.Path();
     this.arrow.add([0,0],[Rkns.Renderer._ARROW_LENGTH,Rkns.Renderer._ARROW_WIDTH / 2],[0,Rkns.Renderer._ARROW_WIDTH]);
@@ -470,20 +471,25 @@ Rkns.Renderer.Edge.prototype._init = function() {
 }
 
 Rkns.Renderer.Edge.prototype.redraw = function() {
-    var _p0o = this.from_representation.paper_coords,
-        _p1o = this.to_representation.paper_coords,
-        _v = _p1o.subtract(_p0o),
+    var _p0a = this.from_representation.paper_coords,
+        _p1a = this.to_representation.paper_coords,
+        _v = _p1a.subtract(_p0a),
         _r = _v.length,
         _u = _v.divide(_r),
-        _delta = new paper.Point([- _u.y, _u.x]).multiply( 4 ),
-        _p0 = _p0o.add(_delta), /* Adding a 4 px difference */
-        _p1 = _p1o.add(_delta), /* to differentiate inbound and outbound links */
+        _group_pos = this.bundle.getPosition(this),
+        _delta = new paper.Point([- _u.y, _u.x]).multiply( 12 * _group_pos ),
+        _p0b = _p0a.add(_delta), /* Adding a 4 px difference */
+        _p1b = _p1a.add(_delta), /* to differentiate inbound and outbound links */
         _a = _v.angle,
+        _handle = _v.divide(3),
         _color = this.model.get("created_by").get("color");
-    this.paper_coords = _p0.add(_p1).divide(2);
+    this.paper_coords = _p0b.add(_p1b).divide(2);
     this.line.strokeColor = _color;
-    this.line.segments[0].point = _p0;
-    this.line.segments[1].point = _p1;
+    this.line.segments[0].point = _p0a;
+    this.line.segments[1].point = this.paper_coords;
+    this.line.segments[1].handleIn = _handle.multiply(-1);
+    this.line.segments[1].handleOut = _handle;
+    this.line.segments[2].point = _p1a;
     this.arrow.rotate(_a - this.arrow_angle);
     this.arrow.fillColor = _color;
     this.arrow.position = this.paper_coords.subtract(_u.multiply(4));
@@ -531,6 +537,10 @@ Rkns.Renderer.Edge.prototype.destroy = function() {
     this.line.remove();
     this.arrow.remove();
     this.text.remove();
+    var _this = this;
+    this.bundle.edges = Rkns._(this.bundle.edges).reject(function(_edge) {
+        return _edge === _this;
+    });
 }
 
 /* */
@@ -664,6 +674,7 @@ Rkns.Renderer.Scene = function(_renkan) {
     this.edge_layer = new paper.Layer();
     this.node_layer = new paper.Layer();
     this.overlay_layer = new paper.Layer();
+    this.bundles = [];
     var _tool = new paper.Tool(),
         _this = this;
     _tool.minDistance = Rkns.Renderer._MIN_DRAG_DISTANCE;
@@ -727,6 +738,30 @@ Rkns.Renderer.Scene.prototype.template = Rkns._.template(
     + '<div class="Rk-ZoomButtons"><div class="Rk-ZoomIn" title="<%=l10n.zoom_in%>"></div><div class="Rk-ZoomOut" title="<%=l10n.zoom_out%>"></div></div>'
     + '</div>'
 );
+
+Rkns.Renderer.Scene.prototype.addToBundles = function(_edgeRepr) {
+    var _bundle = Rkns._(this.bundles).find(function(_bundle) {
+        return ( 
+            ( _bundle.from === _edgeRepr.from_representation && _bundle.to === _edgeRepr.to_representation )
+            || ( _bundle.from === _edgeRepr.to_representation && _bundle.to === _edgeRepr.from_representation )
+        );
+    });
+    if (typeof _bundle !== "undefined") {
+        _bundle.edges.push(_edgeRepr)
+    } else {
+        _bundle = {
+            from: _edgeRepr.from_representation,
+            to: _edgeRepr.to_representation,
+            edges: [ _edgeRepr ],
+            getPosition: function(_er) {
+                var _dir = (_er.from_representation === this.from) ? 1 : -1;
+                return _dir * ( Rkns._(this.edges).indexOf(_er) - (this.edges.length - 1) / 2 );
+            }
+        }
+        this.bundles.push(_bundle);
+    }
+    return _bundle;
+}
 
 Rkns.Renderer.Scene.prototype.autoScale = function() {
     if (this.renkan.project.get("nodes").length) {

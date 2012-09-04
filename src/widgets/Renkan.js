@@ -80,7 +80,7 @@ IriSP.Widgets.Renkan.prototype.draw = function() {
                 _this.player.popcorn.trigger("IriSP.search.triggeredSearch",_tagmatch[1]);
             })
             _node.on("unselect", function() {
-                _this.player.popcorn.trigger("IriSP.search.triggeredSearch","");
+                _this.player.popcorn.trigger("IriSP.search.cleared");
             })
         }
     });
