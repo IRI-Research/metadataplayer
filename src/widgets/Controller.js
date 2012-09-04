@@ -1,16 +1,16 @@
 /* Displays Play and Pause buttons, Search Button and Form, Volume Control */
 
 IriSP.Widgets.Controller = function(player, config) {
-  IriSP.Widgets.Widget.call(this, player, config);
-  
-  this._searchLastValue = "";
+    IriSP.Widgets.Widget.call(this, player, config);
+    this.lastSearchValue = "";
 };
 
 IriSP.Widgets.Controller.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Controller.prototype.defaults = {
     disable_annotate_btn: false,
-    disable_search_btn: false
+    disable_search_btn: false,
+    disable_ctrl_f: false
 }
 
 IriSP.Widgets.Controller.prototype.template =
@@ -106,7 +106,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     });
     this.$.find(".Ldt-Ctrl-SearchBtn").click(this.functionWrapper("searchButtonHandler"));
     
-    this.$searchInput.keyup(this.functionWrapper("searchHandler") );
+    this.$searchInput.keyup(this.functionWrapper("searchHandler"));
   
 	var _volctrl = this.$.find(".Ldt-Ctrl-Volume-Control");
     this.$.find('.Ldt-Ctrl-Sound')
@@ -122,7 +122,22 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     }).mouseout(function() {
         _volctrl.hide();
     });
-  
+    
+    // Handle CTRL-F
+    if (!this.disable_ctrl_f) {
+        var _fKey = "F".charCodeAt(0),
+            _lastCtrlFTime = 0;
+        IriSP.jQuery(document).keydown(function(_event) {
+            if (_event.keyCode === _fKey && (_event.ctrlKey || _event.metaKey)) {
+                var _time = IriSP.jQuery.now();
+                if (_time - _lastCtrlFTime > 2000) {
+                    _this.searchButtonHandler();
+                }
+                _lastCtrlFTime = _time;
+                return false;
+            }
+        });
+    }
     
     // Allow Volume Cursor Dragging
     this.$volumeBar.slider({
@@ -238,12 +253,8 @@ IriSP.Widgets.Controller.prototype.showSearchBlock = function() {
 };
 
 IriSP.Widgets.Controller.prototype.hideSearchBlock = function() {
-    this._searchLastValue = this.$searchInput.val();
-    this.$searchInput.val('');
     this.$searchBlock.animate( { width: 0 }, 200);
-
     this._positiveMatch = false;
-    
     this.player.popcorn.trigger("IriSP.search.closed");
 };
 
@@ -251,8 +262,10 @@ IriSP.Widgets.Controller.prototype.hideSearchBlock = function() {
 IriSP.Widgets.Controller.prototype.searchButtonHandler = function() {
     if ( !this.$searchBlock.width() ) {
         this.showSearchBlock();
-        this.$searchInput.val(this._searchLastValue);      
-        this.player.popcorn.trigger("IriSP.search", this._searchLastValue); // trigger the search to make it more natural.
+        var _val = this.$searchInput.val();
+        if (_val) {
+            this.player.popcorn.trigger("IriSP.search", _val); // trigger the search to make it more natural.
+        }
 	} else {
         this.hideSearchBlock();
     }
@@ -265,16 +278,19 @@ IriSP.Widgets.Controller.prototype.searchHandler = function() {
         this.$searchBlock.css({ width:"160px" });
         this.$searchInput.css('background-color','#fff');
     }
-    this._searchLastValue = this.$searchInput.val();
+    var _val = this.$searchInput.val();
     this._positiveMatch = false;
-  
+    
     // do nothing if the search field is empty, instead of highlighting everything.
-    if (this._searchLastValue == "") {
-        this.player.popcorn.trigger("IriSP.search.cleared");
-        this.$searchInput.css('background-color','');
-    } else {
-        this.player.popcorn.trigger("IriSP.search", this._searchLastValue);
+    if (_val !== this.lastSearchValue) {
+        if (_val) {
+            this.player.popcorn.trigger("IriSP.search", _val);
+        } else {
+            this.player.popcorn.trigger("IriSP.search.cleared");
+            this.$searchInput.css('background-color','');
+        }
     }
+    this.lastSearchValue = _val;
 };
 
 /**
