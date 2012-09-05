@@ -33,3 +33,5 @@ syntax: regexp
 ^sbin/build/compil-to-platform\.sh$
 syntax: regexp
 \.webm$
+syntax: regexp
+^downloads/.+\.zip$
