@@ -1,0 +1,328 @@
+{
+    "title": "Discussion Stiegler-Renucci",
+    "users": [
+        {
+            "_id": "u-anonymous",
+            "title": "anonymous",
+            "uri": "",
+            "description": "",
+            "color": "#dd00dd"
+        }, {
+            "_id": "u-cybunk",
+            "title": "Samuel",
+            "uri": "http://twitter.com/cybunk",
+            "description": "",
+            "color": "#e00000"
+        }, {
+            "_id": "u-raphv",
+            "title": "Raphael",
+            "uri": "http://twitter.com/raphv",
+            "description": "",
+            "color": "#00a000"
+        }
+    ],
+    "nodes": [
+        {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-0001",
+            "title": "Robin Renucci : Conversation avec Bernard Stiegler",
+            "uri": "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/e328e188-ff2f-11e0-b9e1-00145ea49a02/#id=s_569B4FC3-C84E-4527-8999-4102A11BFA0A",
+            "description": "ロバン・ルヌッチによるプレゼンテーション（ベルナール・スティグレールとの対談）\n (langue française フランス語)",
+            "position": {
+                "x": -65,
+                "y": -123.5
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/ldt-segment.png",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-0002",
+            "title": "Wikipedia: Robin Renucci",
+            "uri": "http://fr.wikipedia.org/wiki/Robin_Renucci",
+            "description": "Daniel Robin-Renucci, connu sous le nom de scène de Robin Renucci, est un acteur  et un réalisateur  français , né le 11 juillet  1956  au  ... ",
+            "position": {
+                "x": -280,
+                "y": -251.5
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/wikipedia.png",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-0004",
+            "title": "Wikipedia: Bernard Stiegler",
+            "uri": "http://fr.wikipedia.org/wiki/Bernard_Stiegler",
+            "description": "Bernard Stiegler, né le 1 | avril | 1952, est un philosophe  français  qui axe sa réflexion sur les enjeux des mutations actuelles —  ... ",
+            "position": {
+                "x": -343,
+                "y": 78.5
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/wikipedia.png",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-0006",
+            "title": "Tweet",
+            "uri": "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/e328e188-ff2f-11e0-b9e1-00145ea49a02/#id=8ec66540-cb76-4c82-a6a5-d6d8c92962f2-127762445681967104",
+            "description": "Vincent Puig: #tfcem Robin Renucci, membre Ars Idustrialis, prône la reconnaissance de la valeur de l'individu au coté de l'artiste (Education populaire)",
+            "position": {
+                "x": -155,
+                "y": 140
+            },
+            "image": "http://a1.twimg.com/profile_images/379424006/PortaitVP120Ko_normal.jpg",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-0007",
+            "title": "Tweet",
+            "uri": "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/e328e188-ff2f-11e0-b9e1-00145ea49a02/#id=5cabe2c8-fbbc-4e14-b1a9-3e8954a3c3c2-127765207803101185",
+            "description": "Vincent Puig: #tfcem Stiegler relance la polémique sur la démocratisation cuturelle, Culture pour tous ou Culture pour chacun. Un enjeu électroral 2012==",
+            "position": {
+                "x": 176,
+                "y": 59
+            },
+            "image": "http://a1.twimg.com/profile_images/379424006/PortaitVP120Ko_normal.jpg",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-0008",
+            "title": "Tweet",
+            "uri": "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/e328e188-ff2f-11e0-b9e1-00145ea49a02/#id=db404779-04ca-4c9e-9329-9d6dddbdaf7c-127773107187499009",
+            "description": "Vincent Puig: #tfcem L'origine de la démocratie ? L'écriture qui est dans le numérique dans un processus de profonde mutation??",
+            "position": {
+                "x": 1,
+                "y": 102
+            },
+            "image": "http://a1.twimg.com/profile_images/379424006/PortaitVP120Ko_normal.jpg",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-0009",
+            "title": "Introduction de Renucci par Stiegler",
+            "uri": "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/e328e188-ff2f-11e0-b9e1-00145ea49a02/#id=s_D19F89A3-21CE-C53A-79E4-40F3839CBF17",
+            "description": "ベルナール・スティグレールによるロバン・ルヌッチの紹介(langue française フランス語)",
+            "position": {
+                "x": -304,
+                "y": -89
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/ldt-segment.png",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-000b",
+            "title": "Stiegler : Chocs technologiques ...",
+            "uri": "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/e328e188-ff2f-11e0-b9e1-00145ea49a02/#id=s_6C326EED-B91A-AEDF-032D-40D9A60AAD7E",
+            "description": "ベルナール・スティグレールによるプレゼンテーション『テクノロジーの衝撃と大学の諸課題――デジタル・スタディーズの時代』 (langue française フランス語)",
+            "position": {
+                "x": -505,
+                "y": -123
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/ldt-segment.png",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-0010",
+            "title": "Introduction de Fujihata par Ishida",
+            "uri": "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/e328e188-ff2f-11e0-b9e1-00145ea49a02/#id=s_048BB538-83E9-58D6-18B2-411A24D12FEA",
+            "description": "石田英敬による藤幡正樹の紹介(langue française フランス語)",
+            "position": {
+                "x": 128,
+                "y": -198
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/ldt-segment.png",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-0015",
+            "title": "Wikipedia: Culture",
+            "uri": "http://fr.wikipedia.org/wiki/Culture",
+            "description": "En philosophie , le mot culture désigne ce qui est différent de la nature , c'est-à-dire ce qui est de l'ordre de l'acquis et non de l'inné ... ",
+            "position": {
+                "x": 329,
+                "y": -78
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/wikipedia.png",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-0017",
+            "title": "Wikipedia: Démocratie",
+            "uri": "http://fr.wikipedia.org/wiki/D%C3%A9mocratie",
+            "description": "La démocratie (du grec ancien. δημοκρατία / grc-Latn | dēmokratía souveraineté du peuple », de grec ancien | δῆμος / Lang | grc-Latn |  ... ",
+            "position": {
+                "x": 72,
+                "y": 268
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/wikipedia.png",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-001a",
+            "title": "Wikipedia: Démocratisation",
+            "uri": "http://fr.wikipedia.org/wiki/D%C3%A9mocratisation",
+            "description": "Le terme démocratisation est équivoque.  Il peut désigner le:  Renforcement du caractère démocratique  d’un régime politique (par exemple en ... ",
+            "position": {
+                "x": 250,
+                "y": 234
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/wikipedia.png",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-001d",
+            "title": "Wikipedia: Politique culturelle française",
+            "uri": "http://fr.wikipedia.org/wiki/Politique_culturelle_fran%C3%A7aise",
+            "description": "De la démocratisation à la démocratie culturelle: Image:Bibliotheque nationale de France-fr. jpg | La Très grande bibliothèque, décidée par  ... ",
+            "position": {
+                "x": 358,
+                "y": 69
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/wikipedia.png",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "node-2012-09-07-7e8a09d3a0309d08-0020",
+            "title": "Wikipedia: Éducation populaire",
+            "uri": "http://fr.wikipedia.org/wiki/%C3%89ducation_populaire",
+            "description": "L éducation populaire est un vaste courant de pensée qui cherche principalement à promouvoir en dehors des structures traditionnelles  ... ",
+            "position": {
+                "x": -264,
+                "y": 256
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/wikipedia.png",
+            "created_by": "u-anonymous"
+        }
+    ],
+    "edges": [
+        {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-0003",
+            "title": "participant",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0002",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0001",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-0005",
+            "title": "participant",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0004",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0001",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-000a",
+            "title": "introduction à",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0009",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0001",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-000c",
+            "title": "précède",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-000b",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0009",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-000d",
+            "title": "(untitled edge)",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0002",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0009",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-000e",
+            "title": "participant",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0009",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0004",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-000f",
+            "title": "participant",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0004",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-000b",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-0011",
+            "title": "suit",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0010",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0001",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-0012",
+            "title": "(untitled edge)",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0008",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0001",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-0013",
+            "title": "(untitled edge)",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0006",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0001",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-0014",
+            "title": "(untitled edge)",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0007",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0001",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-0016",
+            "title": "(untitled edge)",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0015",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0007",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-0018",
+            "title": "(untitled edge)",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0017",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0008",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-001b",
+            "title": "(untitled edge)",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-001a",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0007",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-001c",
+            "title": "(untitled edge)",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0017",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-001a",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-001e",
+            "title": "(untitled edge)",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0015",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-001d",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-001f",
+            "title": "(untitled edge)",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-001a",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-001d",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-07-7e8a09d3a0309d08-0021",
+            "title": "(untitled edge)",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-09-07-7e8a09d3a0309d08-0020",
+            "to": "node-2012-09-07-7e8a09d3a0309d08-0006",
+            "created_by": "u-anonymous"
+        }
+    ]
+}

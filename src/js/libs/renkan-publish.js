@@ -27,7 +27,8 @@ Rkns._ = _;
 Rkns.i18n = {
     en: {
         zoom_in: "Zoom In",
-        zoom_out: "Zoom Out"
+        zoom_out: "Zoom Out",
+        see_in_project: 'See also <b>"{node}"</b> in <b>"{project}"</b>'
     }
 }
 
@@ -57,13 +58,13 @@ Rkns.Models.getUID = function(obj) {
 Rkns.Models.RenkanModel = Backbone.RelationalModel.extend({
     idAttribute : "_id",
     constructor: function(options) {
-        
+
         if (typeof options !== "undefined") {
             options._id = options._id || options.id || Rkns.Models.getUID(this);
             options.title = options.title || "(untitled " + this.type + ")";
             options.description = options.description || "";
             options.uri = options.uri || "";
-            
+
             if(typeof this.prepare === "function") {
                 options = this.prepare(options);
             }
@@ -125,6 +126,7 @@ Rkns.Models.Node = Rkns.Models.RenkanModel.extend({
             uri: this.get("uri"),
             description: this.get("description"),
             position: this.get("position"),
+            image: this.get("image"),
             created_by: this.get("created_by").get("_id")
         }
     },
@@ -263,25 +265,74 @@ Rkns.Renkan = function(_opts) {
     if (typeof _opts.search !== "object" || !_opts.search) {
         _opts.search = [];
     }
-    this.project = new Rkns.Models.Project();
+    this.projects = [];
     this.l10n = Rkns.i18n[_opts.language];
     this.$ = Rkns.$("#" + _opts.container);
     this.$.html(this.template());
-    this.renderer = new Rkns.Renderer.Scene(this);
+    this.uris = {};
+    this.active_project = null;
+    this.renderer = null;
 }
+
 Rkns.Renkan.prototype.template = Rkns._.template(
-    '<div class="Rk-Render Rk-Render-Full"></div>'
+    '<div class="Rk-Render"></div><ul class="Rk-Project-List"></ul>'
 );
 
-Rkns.jsonImport = function(_renkan, _opts) {
-    var _proj = _renkan.project;
+Rkns.Renkan.prototype.addProject = function(_opts) {
+    var _proj = new Rkns.Models.Project(),
+        _li = Rkns.$("<li>").addClass("Rk-Project").text("Untitled #" + (1+this.projects.length));
+    this.$.find(".Rk-Project-List").append(_li);
+    Rkns.loadJson(_proj, _opts);
+    var _this = this;
+    _li.click(function() {
+        _this.renderProject(_proj);
+    });
+    _proj.on("change:title", function() {
+        _li.html(_proj.get("title"));
+    });
+    _proj.on("select", function() {
+        _this.$.find(".Rk-Project").removeClass("active");
+        _li.addClass("active");
+    });
+    _proj.on("add:nodes", function(_node) {
+        var _uri = _node.get("uri");
+        if (_uri) {
+            if (typeof _this.uris[_uri] === "undefined") {
+                _this.uris[_uri] = [];
+            }
+            _this.uris[_uri].push(_node);
+        }
+    });
+    this.projects.push(_proj);
+    return _proj;
+}
+
+Rkns.Renkan.prototype.renderProject = function(_project) {
+    if (_project) {
+        if (this.renderer) {
+            this.renderer.destroy();
+        }
+        this.active_project = _project;
+        this.renderer = new Rkns.Renderer.Scene(this, _project);
+        this.renderer.autoScale();
+        _project.trigger("select");
+    }
+}
+
+Rkns.Renkan.prototype.renderProjectAt = function(_index) {
+    this.renderProject(this.projects[_index]);
+}
+
+Rkns.loadJson = function(_proj, _opts) {
     if (typeof _opts.http_method == "undefined") {
         _opts.http_method = 'PUT';
     }
     var _load = function() {
         Rkns.$.getJSON(_opts.url, function(_data) {
             _proj.set(_data);
-            _renkan.renderer.autoScale();
+            if (typeof _opts.callback === "function") {
+                _opts.callback(_proj);
+            }
         });
     }
     _load();
@@ -291,7 +342,7 @@ Rkns.Renderer = {
     _MARGIN_X: 80,
     _MARGIN_Y: 50,
     _MIN_DRAG_DISTANCE: 2,
-    _NODE_RADIUS: 15,
+    _NODE_RADIUS: 20,
     _NODE_FONT_SIZE: 10,
     _EDGE_FONT_SIZE: 9,
     _NODE_MAX_CHAR: 30,
@@ -358,31 +409,49 @@ Rkns.Renderer.Utils = {
 Rkns.Renderer._BaseRepresentation = function(_renderer, _model) {
     if (typeof _renderer !== "undefined") {
         this.renderer = _renderer;
-        this.project = _renderer.renkan.project;
+        this.project = _renderer.project;
         this.model = _model;
-        if (_model) {
+        if (this.model) {
             var _this = this;
-            _model.on("select", function() {
+            this._selectBinding = function() {
                 _this.select();
-            });
-            _model.on("unselect", function() {
+            };
+            this._unselectBinding = function() {
                 _this.unselect();
-            });
+            }
+            this._changeBinding = function() {
+                _this.redraw();
+            }
+            this._removeBinding = function() {
+                _renderer.removeRepresentation(_this);
+                _renderer.redraw();
+            }
+            this.model.on("change", this._changeBinding );
+            this.model.on("remove", this._removeBinding );
+            this.model.on("select", this._selectBinding );
+            this.model.on("unselect", this._unselectBinding );
         }
     }
+}
+
+Rkns.Renderer._BaseRepresentation.prototype.super = function(_func) {
+    Rkns.Renderer._BaseRepresentation.prototype[_func].apply(this, Array.prototype.slice.call(arguments, 1));
 }
 
 Rkns.Renderer._BaseRepresentation.prototype.select = function() {}
 
 Rkns.Renderer._BaseRepresentation.prototype.unselect = function() {}
 
-Rkns.Renderer._BaseRepresentation.prototype.highlight = function() {}
-
-Rkns.Renderer._BaseRepresentation.prototype.unhighlight = function() {}
-
 Rkns.Renderer._BaseRepresentation.prototype.mouseup = function() {}
 
-Rkns.Renderer._BaseRepresentation.prototype.destroy = function() {}
+Rkns.Renderer._BaseRepresentation.prototype.destroy = function() {
+    if (this.model) {
+        this.model.off("change", this._changeBinding );
+        this.model.off("remove", this._removeBinding );
+        this.model.off("select", this._selectBinding);
+        this.model.off("unselect", this._unselectBinding);
+    }
+}
 
 Rkns.Renderer.Node = Rkns.Utils.inherit(Rkns.Renderer._BaseRepresentation);
 
@@ -408,6 +477,38 @@ Rkns.Renderer.Node.prototype.redraw = function() {
     this.title.content = Rkns.Renderer.Utils.shortenText(this.model.get("title"), Rkns.Renderer._NODE_MAX_CHAR);
     this.title.position = this.paper_coords.add([0, 2 * Rkns.Renderer._NODE_RADIUS]);
     this.circle.strokeColor = this.model.get("created_by").get("color");
+    var _img = this.model.get("image");
+    if (_img && _img !== this.img) {
+        var _image = new Image(),
+            _this = this;
+        _image.onload = function() {
+            if (_this.node_image) {
+                _this.node_image.remove();
+            }
+            _this.renderer.node_layer.activate();
+            var _ratio = Math.min(1, 2 * Rkns.Renderer._NODE_RADIUS / _image.width, 2 * Rkns.Renderer._NODE_RADIUS / _image.height );
+            var _raster = new paper.Raster(_image);
+            var _clip = new paper.Path.Circle([0, 0], Rkns.Renderer._NODE_RADIUS);
+            _raster.scale(_ratio);
+            _this.node_image = new paper.Group(_clip, _raster);
+            _this.node_image.opacity = _this.selected ? .5 : .9;
+            /* This is a workaround to allow clipping at group level */
+            _this.node_image.clipped = true;
+            _this.node_image.position = _this.paper_coords;
+            _this.node_image.__representation = _this;
+            paper.view.draw();
+        }
+        _image.src = _img;
+    }
+    this.img = _img;
+    if (this.node_image) {
+        if (!this.img) {
+            this.node_image.remove();
+            delete this.node_image;
+        } else {
+            this.node_image.position = this.paper_coords;
+        }
+    }
 }
 
 Rkns.Renderer.Node.prototype.paperShift = function(_delta) {
@@ -420,18 +521,27 @@ Rkns.Renderer.Node.prototype.openTooltip = function() {
     this.renderer.removeRepresentationsOfType("tooltip");
     var _tooltip = this.renderer.addRepresentation("NodeTooltip",null);
     _tooltip.node_representation = this;
-    _tooltip.redraw();
+    _tooltip.draw();
 }
 
 Rkns.Renderer.Node.prototype.select = function() {
+    this.selected = true;
     this.circle.strokeWidth = 3;
-    this.circle.fillColor = "#ffffc0";
+    this.openTooltip();
+    this.circle.fillColor = "#ffff80";
+    if (this.node_image) {
+        this.node_image.opacity = .5;
+    }
     paper.view.draw();
 }
 
 Rkns.Renderer.Node.prototype.unselect = function() {
+    this.selected = false;
     this.circle.strokeWidth = 1;
     this.circle.fillColor = "#ffffff";
+    if (this.node_image) {
+        this.node_image.opacity = .9;
+    }
     paper.view.draw();
 }
 
@@ -439,8 +549,12 @@ Rkns.Renderer.Node.prototype.mouseup = function(_event) {
 }
 
 Rkns.Renderer.Node.prototype.destroy = function(_event) {
+    this.super("destroy");
     this.circle.remove();
     this.title.remove();
+    if (this.node_image) {
+        this.node_image.remove();
+    }
 }
 
 /* */
@@ -510,7 +624,7 @@ Rkns.Renderer.Edge.prototype.openTooltip = function() {
     this.renderer.removeRepresentationsOfType("tooltip");
     var _tooltip = this.renderer.addRepresentation("EdgeTooltip",null);
     _tooltip.edge_representation = this;
-    _tooltip.redraw();
+    _tooltip.draw();
 }
 
 Rkns.Renderer.Edge.prototype.select = function() {
@@ -534,6 +648,7 @@ Rkns.Renderer.Edge.prototype.paperShift = function(_delta) {
 }
 
 Rkns.Renderer.Edge.prototype.destroy = function() {
+    this.super("destroy");
     this.line.remove();
     this.arrow.remove();
     this.text.remove();
@@ -568,12 +683,12 @@ Rkns.Renderer.NodeTooltip.prototype._init = function() {
 
 Rkns.Renderer.NodeTooltip.prototype.template = Rkns._.template(
     '<h2><span class="Rk-CloseX">&times;</span><%=a%></h2>'
-    + '<p><%=description%></p>'
+    + '<p><%-description%></p>'
+    + '<ul class="Rk-Related-List"></ul>'
 );
 
-Rkns.Renderer.NodeTooltip.prototype.redraw = function() {
-    var _coords = this.node_representation.paper_coords,
-        _model = this.node_representation.model,
+Rkns.Renderer.NodeTooltip.prototype.draw = function() {
+    var _model = this.node_representation.model,
         _title = _model.get("title"),
         _uri = _model.get("uri");
     this.tooltip_$
@@ -581,17 +696,36 @@ Rkns.Renderer.NodeTooltip.prototype.redraw = function() {
             a: (_uri ? '<a href="' + _uri + '" target="_blank">' : '' ) + _title + (_uri ? '</a>' : '' ),
             description: _model.get("description").replace(/(\n|\r|\r\n)/mg,' ').substr(0,180).replace(/(^.{150,179})[\s].+$/m,'$1&hellip;')
         }))
-        .show();
-    Rkns.Renderer.Utils.drawTooltip(_coords, this.tooltip_block, 250, 15, this.tooltip_$);
-    var _this = this;
+    var _this = this,
+        _renkan = this.renderer.renkan,
+        _uris = _renkan.uris[_uri];
+    Rkns._(_uris).each(function(_othernode) {
+        if (_othernode !== _model && _othernode.get("project") !== _this.project) {
+            var _otherproj = _othernode.get("project"),
+                _nodetitle = _othernode.get("title") || "Untitled node"
+                _projtitle = _otherproj.get("title") || "Untitled node",
+                _html = _renkan.l10n.see_in_project.replace('{node}',Rkns._.escape(_nodetitle)).replace('{project}',Rkns._.escape(_projtitle)),
+                _li = Rkns.$("<li>").addClass("Rk-Related").html(_html);
+            _li.click(function() {
+                _renkan.renderProject(_otherproj);
+                Rkns._.defer(function() {
+                    _othernode.trigger("select");
+                });
+            });
+            _this.tooltip_$.append(_li);
+        }
+    });
     this.tooltip_$.find(".Rk-CloseX").click(function() {
         _this.renderer.removeRepresentation(_this);
         paper.view.draw();
     });
-    this.tooltip_$.find("input, textarea").bind("keyup change", function() {
-        _this.tooltip_$.find(".Rk-Edit-Goto").attr("href",_this.tooltip_$.find(".Rk-Edit-URI").val());
-    });
-    paper.view.draw();
+    this.redraw();
+}
+
+Rkns.Renderer.NodeTooltip.prototype.redraw = function() {
+    var _coords = this.node_representation.paper_coords;
+    Rkns.Renderer.Utils.drawTooltip(_coords, this.tooltip_block, 250, 15, this.tooltip_$);
+    this.tooltip_$.show();
 }
 
 Rkns.Renderer.NodeTooltip.prototype.destroy = function() {
@@ -624,26 +758,30 @@ Rkns.Renderer.EdgeTooltip.prototype._init = function() {
 
 Rkns.Renderer.EdgeTooltip.prototype.template = Rkns._.template(
     '<h2><span class="Rk-CloseX">&times;</span><%=a%></h2>'
-    + '<p><%=description%></p>'
+    + '<p><%-description%></p>'
 );
 
-Rkns.Renderer.EdgeTooltip.prototype.redraw = function() {
-    var _coords = this.edge_representation.paper_coords,
-        _model = this.edge_representation.model,
+Rkns.Renderer.EdgeTooltip.prototype.draw = function() {
+    var _model = this.edge_representation.model,
         _title = _model.get("title"),
         _uri = _model.get("uri");
     this.tooltip_$
         .html(this.template({
             a: (_uri ? '<a href="' + _uri + '" target="_blank">' : '' ) + _title + (_uri ? '</a>' : '' ),
             description: _model.get("description").replace(/(\n|\r|\r\n)/mg,' ').substr(0,180).replace(/(^.{150,179})[\s].+$/m,'$1&hellip;')
-        }))
-        .show();
-    Rkns.Renderer.Utils.drawTooltip(_coords, this.tooltip_block, 250, 5, this.tooltip_$);
+        }));
+    this.redraw();
     var _this = this;
     this.tooltip_$.find(".Rk-CloseX").click(function() {
         _this.renderer.removeRepresentation(_this);
         paper.view.draw();
     });
+}
+
+Rkns.Renderer.EdgeTooltip.prototype.redraw = function() {
+    var _coords = this.edge_representation.paper_coords;
+    Rkns.Renderer.Utils.drawTooltip(_coords, this.tooltip_block, 250, 5, this.tooltip_$);
+    this.tooltip_$.show();
     paper.view.draw();
 }
 
@@ -654,8 +792,9 @@ Rkns.Renderer.EdgeTooltip.prototype.destroy = function() {
 
 /* */
 
-Rkns.Renderer.Scene = function(_renkan) {
+Rkns.Renderer.Scene = function(_renkan, _project) {
     this.renkan = _renkan;
+    this.project = _project;
     this.$ = Rkns.$(".Rk-Render");
     this.representations = [];
     this.$.html(this.template({
@@ -718,24 +857,26 @@ Rkns.Renderer.Scene = function(_renkan) {
         _this.redraw();
     },50);
     
-    this.addRepresentations("Node", this.renkan.project.get("nodes"));
-    this.addRepresentations("Edge", this.renkan.project.get("edges"));
+    this.addRepresentations("Node", this.project.get("nodes"));
+    this.addRepresentations("Edge", this.project.get("edges"));
     
-    this.renkan.project.on("add:nodes", function(_node) {
+    this._addNodesBinding = function(_node) {
         _this.addRepresentation("Node", _node);
         _thRedraw();
-    });
-    this.renkan.project.on("add:edges", function(_edge) {
+    }
+    this._addEdgesBinding = function(_edge) {
         _this.addRepresentation("Edge", _edge);
         _thRedraw();
-    });
+    }
     
+    this.project.on("add:nodes", this._addNodesBinding );
+    this.project.on("add:edges", this._addEdgesBinding );
     this.redraw();
 }
 
 Rkns.Renderer.Scene.prototype.template = Rkns._.template(
-    '<canvas class="Rk-Canvas" width="<%=width%>" height="<%=height%>"></canvas><div class="Rk-Editor">'
-    + '<div class="Rk-ZoomButtons"><div class="Rk-ZoomIn" title="<%=l10n.zoom_in%>"></div><div class="Rk-ZoomOut" title="<%=l10n.zoom_out%>"></div></div>'
+    '<canvas class="Rk-Canvas" width="<%-width%>" height="<%-height%>"></canvas><div class="Rk-Editor">'
+    + '<div class="Rk-ZoomButtons"><div class="Rk-ZoomIn" title="<%-l10n.zoom_in%>"></div><div class="Rk-ZoomOut" title="<%-l10n.zoom_out%>"></div></div>'
     + '</div>'
 );
 
@@ -764,9 +905,9 @@ Rkns.Renderer.Scene.prototype.addToBundles = function(_edgeRepr) {
 }
 
 Rkns.Renderer.Scene.prototype.autoScale = function() {
-    if (this.renkan.project.get("nodes").length) {
-        var _xx = this.renkan.project.get("nodes").map(function(_node) { return _node.get("position").x }),
-            _yy = this.renkan.project.get("nodes").map(function(_node) { return _node.get("position").y }),
+    if (this.project.get("nodes").length) {
+        var _xx = this.project.get("nodes").map(function(_node) { return _node.get("position").x }),
+            _yy = this.project.get("nodes").map(function(_node) { return _node.get("position").y }),
             _minx = Math.min.apply(Math, _xx),
             _miny = Math.min.apply(Math, _yy),
             _maxx = Math.max.apply(Math, _xx),
@@ -789,16 +930,6 @@ Rkns.Renderer.Scene.prototype.toModelCoords = function(_point) {
 Rkns.Renderer.Scene.prototype.addRepresentation = function(_type, _model) {
     var _repr = new Rkns.Renderer[_type](this, _model);
     this.representations.push(_repr);
-    if (_model) {
-        var _this = this;
-        _model.on("change", function() {
-            _repr.redraw();
-        });
-        _model.on("remove", function() {
-            _this.removeRepresentation(_repr);
-            _this.redraw();
-        });
-    }
     return _repr;
 }
 
@@ -863,9 +994,6 @@ Rkns.Renderer.Scene.prototype.findTarget = function(_hitResult) {
                 this.selected_target.model.trigger("unselect");
             }
             _newTarget.model.trigger("select");
-            if (typeof _newTarget.openTooltip === "function") {
-                _newTarget.openTooltip();
-            }
             this.selected_target = _newTarget;
         }
     } else {
@@ -938,3 +1066,14 @@ Rkns.Renderer.Scene.prototype.onScroll = function(_event, _scrolldelta) {
         this.redraw();
     }
 }
+
+Rkns.Renderer.Scene.prototype.destroy = function() {
+    this.project.off("add:nodes", this._addNodesBinding );
+    this.project.off("add:edges", this._addEdgesBinding );
+    Rkns._(this.representations).each(function(_repr) {
+        _repr.destroy();
+    });
+    this.$.html("");
+    paper.remove();
+}
+

@@ -3,9 +3,45 @@
     position: relative;
 }
 
-.Rk-Render-Full, .Rk-Canvas {
+.Ldt-Renkan a {
+    color: #303080;
+}
+
+.Rk-ProjectList {
+    position: absolute; left: 0; top: 0; list-style: none; padding: 0; margin: 0;
+}
+
+.Rk-Project {
+    list-style: none; margin-right: 5px; padding: 5px; height: 15px; font-size: 13px; font-weight: bold;
+    float: left; border-top-left-radius: 8px; border-top-right-radius: 8px;
+    background: #505050; color: #E0E0E0; cursor: pointer;
+    background: -moz-linear-gradient(top, #333333 20%, #666666 80%);
+}
+
+.Rk-Project:hover {
+    background: -moz-linear-gradient(bottom, #333333 20%, #666666 80%);
+}
+
+.Rk-Project.active {
+    background: #505080;
+    color: #ffffc0;
+    background: -moz-linear-gradient(bottom, #333366 20%, #666699 80%);
+}
+.Rk-Render, .Rk-Canvas {
     position: absolute; left: 0; top: 0; width: 600px; height: 500px;
     overflow: hidden;
+}
+
+.Rk-Render {
+    top: 25px;
+    background: -moz-linear-gradient(top, rgba(180,180,180,.2) 0, rgba(255,255,255,.2) 30%, rgba(255,255,255,.2) 70%, rgba(180,180,180,.2) 100%);
+    background: -webkit-linear-gradient(top, rgba(180,180,180,.2) 0, rgba(255,255,255,.2) 30%, rgba(255,255,255,.2) 70%, rgba(180,180,180,.2) 100%);
+}
+
+.Rk-Canvas {
+    top: 0;
+    background: -moz-linear-gradient(left, rgba(180,180,180,.2) 0, rgba(255,255,255,.2) 30%, rgba(255,255,255,.2) 70%, rgba(180,180,180,.2) 100%);
+    background: -webkit-linear-gradient(left, rgba(180,180,180,.2) 0, rgba(255,255,255,.2) 30%, rgba(255,255,255,.2) 70%, rgba(180,180,180,.2) 100%);
 }
 
 .Rk-Editor {
@@ -24,8 +60,24 @@
     margin: 5px 0; font-size: 12px;
 }
 
+.Rk-RelatedList {
+    list-style: none; padding: 0; margin: 0;
+}
+
+.Rk-Related {
+    list-style: none; color: #a000c0; cursor: pointer; margin: 5px 0;
+}
+
+.Rk-Related b {
+    font-weight: bolder;
+}
+
+.Rk-Related:hover {
+    text-decoration: underline;
+}
+
 .Rk-ZoomIn, .Rk-ZoomOut {
-    width: 21px; height: 20px; background: url(img/zoombuttons.png); margin: 5px;
+    width: 21px; height: 20px; background: url(img/zoombuttons.png); margin: 5px; cursor: pointer;
 }
 
 .Rk-ZoomIn:hover {
