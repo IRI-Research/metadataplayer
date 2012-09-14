@@ -63,12 +63,8 @@ IriSP.Widgets.Trace.prototype.draw = function() {
     this.tracer.trace("TraceWidgetInit", {});
     
     this.mouseLocation = '';
-    IriSP.jQuery(".Ldt-Widget").bind("click mouseover mouseout", function(_e) {
-        var _target = IriSP.jQuery(_e.target);
-
-        while (!_target.hasClass("Ldt-TraceMe") && !_target.hasClass("Ldt-Widget") && _target.length) {
-            _target = _target.parent();
-        }
+    IriSP.jQuery(".Ldt-Widget").on("click mouseover mouseout", ".Ldt-TraceMe", function(_e) {
+        var _target = IriSP.jQuery(this);
         
         var _widget = IriSP.jQuery(this).attr("widget-type"),
             _data = {
