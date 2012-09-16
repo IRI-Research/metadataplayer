@@ -39,20 +39,19 @@ IriSP.Widgets.Tagcloud.prototype.stopword_lists = {
 }
 
 IriSP.Widgets.Tagcloud.prototype.draw = function() {
-    this.bindPopcorn("IriSP.search", "onSearch");
-    this.bindPopcorn("IriSP.search.closed", "onSearch");
-    this.bindPopcorn("IriSP.search.cleared", "onSearch");
+    this.onMdpEvent("search", "onSearch");
+    this.onMdpEvent("search.closed", "onSearch");
+    this.onMdpEvent("search.cleared", "onSearch");
     
     if (this.segment_annotation_type) {
-        this.bindPopcorn("timeupdate","onTimeupdate");
+        this.onMediaEvent("timeupdate","onTimeupdate");
     } else {
         this.redraw();
     }
 }
 
-IriSP.Widgets.Tagcloud.prototype.onTimeupdate = function() {
-    var _time = Math.floor(this.player.popcorn.currentTime() * 1000),
-        _list = this.source.getAnnotationsByTypeTitle(this.segment_annotation_type).filter(function(_annotation) {
+IriSP.Widgets.Tagcloud.prototype.onTimeupdate = function(_time) {
+    var _list = this.source.getAnnotationsByTypeTitle(this.segment_annotation_type).filter(function(_annotation) {
             return _annotation.begin <= _time && _annotation.end > _time;
         });
     if (_list.length) {
@@ -117,7 +116,7 @@ IriSP.Widgets.Tagcloud.prototype.redraw = function() {
     this.$.html(Mustache.to_html(this.template,  {words: _words }));
     this.$.find(".Ldt-Tagcloud-item").click(function() {
         var _txt = IriSP.jQuery(this).attr("content");
-        _this.player.popcorn.trigger("IriSP.search.triggeredSearch", _txt);
+        _this.player.trigger("search.triggeredSearch", _txt);
     });
     
 }

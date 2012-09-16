@@ -82,27 +82,26 @@ IriSP.Widgets.Renkan.prototype.draw = function() {
                         }
                     });
                     _node.on("click", function() {
-                        _this.player.popcorn.currentTime(_ann.begin.getSeconds());
-                        _this.player.popcorn.trigger("IriSP.Mediafragment.setHashToAnnotation", _ann.id);
+                        _this.media.setCurrentTime(_ann.begin);
+                        _this.player.trigger("Mediafragment.setHashToAnnotation", _ann.id);
                     });
                 });
             }
             var _tagmatch = _uri.match(_this.tag_regexp);
             if (_tagmatch) {
                 _node.on("select", function() {
-                    _this.player.popcorn.trigger("IriSP.search.triggeredSearch",_tagmatch[1]);
+                    _this.player.trigger("search.triggeredSearch",_tagmatch[1]);
                 })
                 _node.on("unselect", function() {
-                    _this.player.popcorn.trigger("IriSP.search.cleared");
+                    _this.player.trigger("search.cleared");
                 })
             }
         });
     })
-    this.bindPopcorn("timeupdate","onTimeupdate");
+    this.onMediaEvent("timeupdate","onTimeupdate");
 }
 
-IriSP.Widgets.Renkan.prototype.onTimeupdate = function() {
-    var _time = 1000 * this.player.popcorn.currentTime();
+IriSP.Widgets.Renkan.prototype.onTimeupdate = function(_time) {
     IriSP._(this.node_times).each(function(_nt) {
         if (_nt.begin <= _time && _nt.end >= _time) {
             if (!_nt.selected) {

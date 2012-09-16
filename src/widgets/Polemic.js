@@ -76,16 +76,16 @@ IriSP.Widgets.Polemic.prototype.onSearch = function(searchString) {
     });
     if (this.searchString) {
         if (_found) {
-            this.player.popcorn.trigger("IriSP.search.matchFound");
+            this.player.trigger("search.matchFound");
         } else {
-            this.player.popcorn.trigger("IriSP.search.noMatchFound");
+            this.player.trigger("search.noMatchFound");
         }
     }
 }
 
 IriSP.Widgets.Polemic.prototype.draw = function() {
     
-    this.bindPopcorn("timeupdate", "onTimeupdate");
+    this.onMediaEvent("timeupdate", "onTimeupdate");
     this.$zone = IriSP.jQuery('<div>');
     this.$zone.addClass("Ldt-Polemic");
     this.$.append(this.$zone);
@@ -168,8 +168,8 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 }).mouseout(function() {
                     _annotation.trigger("unselect");
                 }).click(function() {
-                    _this.player.popcorn.trigger("IriSP.Mediafragment.setHashToAnnotation", _annotation.id);
-                    _this.player.popcorn.trigger("IriSP.Tweet.show", _annotation.id);
+                    _this.player.trigger("Mediafragment.setHashToAnnotation", _annotation.id);
+                    _this.player.trigger("Tweet.show", _annotation.id);
                 });
                 _annotation.on("select", function() {
                     _this.tooltip.show(
@@ -214,9 +214,9 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             
             this.$tweets = this.$.find(".Ldt-Polemic-TweetDiv");
             
-            this.bindPopcorn("IriSP.search", "onSearch");
-            this.bindPopcorn("IriSP.search.closed", "onSearch");
-            this.bindPopcorn("IriSP.search.cleared", "onSearch");
+            this.onMdpEvent("search", "onSearch");
+            this.onMdpEvent("search.closed", "onSearch");
+            this.onMdpEvent("search.cleared", "onSearch");
             
         } else {
             this.$zone.hide();
@@ -303,7 +303,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
     
     this.$zone.click(function(_e) {
         var _x = _e.pageX - _this.$zone.offset().left;
-        _this.player.popcorn.currentTime(_this.source.getDuration().getSeconds() * _x / _this.width);
+        _this.media.setCurrentTime(_this.media.duration * _x / _this.width);
     });
     
     this.$.append('<div class="Ldt-Polemic-Tooltip"></div>');
@@ -311,8 +311,8 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
     this.insertSubwidget(this.$.find(".Ldt-Polemic-Tooltip"), "tooltip", { type: "Tooltip" });
 }
 
-IriSP.Widgets.Polemic.prototype.onTimeupdate = function() {
-    var _x = Math.floor( this.width * this.player.popcorn.currentTime() / this.source.getDuration().getSeconds());
+IriSP.Widgets.Polemic.prototype.onTimeupdate = function(_time) {
+    var _x = Math.floor( this.width * _time / this.media.duration);
     this.$elapsed.css({
         width:  _x + "px"
     });

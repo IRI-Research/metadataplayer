@@ -1,3 +1,5 @@
+//TODO: Remove Popcorn replacement, replace it by Media Events
+
 /* wrapper that simulates popcorn.js because
    popcorn is a bit unstable at the time */
 

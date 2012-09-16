@@ -364,7 +364,7 @@ IriSP.Model.Reference.prototype.refresh = function() {
         this.contents = new IriSP.Model.List(this.source.directory);
         this.contents.addIds(this.id);
     } else {
-        this.contents = this.source.directory.getElement(this.id);
+        this.contents = this.source.getElement(this.id);
     }
     
 }
@@ -450,6 +450,23 @@ IriSP.Model.Media = function(_id, _source) {
 
 IriSP.Model.Media.prototype = new IriSP.Model.Element();
 
+/* Default functions to be overriden by players */
+
+IriSP.Model.Media.prototype.getCurrentTime = function() { return 0; }
+
+IriSP.Model.Media.prototype.getVolume = function() { return .5; }
+
+IriSP.Model.Media.prototype.getPaused = function() { return true; }
+
+IriSP.Model.Media.prototype.getMuted = function() { return false; }
+
+IriSP.Model.Media.prototype.setCurrentTime
+    = IriSP.Model.Media.prototype.setVolume
+    = IriSP.Model.Media.prototype.setMuted
+    = IriSP.Model.Media.prototype.play
+    = IriSP.Model.Media.prototype.pause
+    = function() {}
+    
 IriSP.Model.Media.prototype.setDuration = function(_durationMs) {
     this.duration.setMilliseconds(_durationMs);
 }
@@ -766,6 +783,26 @@ IriSP.Model.Source.prototype.getDuration = function() {
     if (typeof _m !== "undefined") {
         return this.currentMedia.duration;
     }
+}
+
+IriSP.Model.Source.prototype.getCurrentMedia = function(_opts) {
+    if (typeof _opts === "undefined") {
+        var _opts = {};
+    }
+    if (typeof this.currentMedia === "undefined" || _opts.override) {
+        if (_opts.mashup) {
+            var _mashups = this.getMashups();
+            if (_mashups.length) {
+                this.currentMedia = _mashups[0];
+            }
+        } else {
+            var _medias = this.getMedias();
+            if (_medias.length) {
+                _media = _medias[0];
+            }
+        }
+    }
+    return this.currentMedia;
 }
 
 IriSP.Model.Source.prototype.merge = function(_source) {

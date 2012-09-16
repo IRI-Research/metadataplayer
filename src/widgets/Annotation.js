@@ -51,37 +51,36 @@ IriSP.Widgets.Annotation.prototype.defaults = {
 IriSP.Widgets.Annotation.prototype.draw = function() {
     this.renderTemplate();
     this.insertSubwidget(this.$.find(".Ldt-Annotation-Social"), "socialWidget", { type: "Social" });
-    this.bindPopcorn("timeupdate","onTimeupdate");
-    this.bindPopcorn("IriSP.Annotation.hide","hide");
-    this.bindPopcorn("IriSP.Annotation.show","show");
-    this.bindPopcorn("IriSP.Annotation.minimize","minimize");
-    this.bindPopcorn("IriSP.Annotation.maximize","maximize");
-    this.bindPopcorn("IriSP.Annotation.getBounds","sendBounds");
+    this.onMediaEvent("timeupdate","onTimeupdate");
+    this.onMdpEvent("Annotation.hide","hide");
+    this.onMdpEvent("Annotation.show","show");
+    this.onMdpEvent("Annotation.minimize","minimize");
+    this.onMdpEvent("Annotation.maximize","maximize");
+    this.onMdpEvent("Annotation.getBounds","sendBounds");
     this.$.find(".Ldt-Annotation-MaxMinButton").click(this.functionWrapper("toggleSize"));
     this.onTimeupdate();
 }
 
-IriSP.Widgets.Annotation.prototype.onTimeupdate = function() {
-    var _time = Math.floor(this.player.popcorn.currentTime() * 1000),
-        _list = this.getWidgetAnnotationsAtTime();
+IriSP.Widgets.Annotation.prototype.onTimeupdate = function(_time) {
+    var _list = this.getWidgetAnnotationsAtTime();
     if (_list.length) {
         if (_list[0].id !== this.lastAnnotation) {
             this.drawAnnotation(_list[0]);
             this.bounds = [ _list[0].begin.valueOf(), _list[0].end.valueOf() ];
         }
-        this.player.popcorn.trigger("IriSP.Arrow.updatePosition",{widget: this.type, time: ( _list[0].begin + _list[0].end ) / 2});
+        this.player.trigger("Arrow.updatePosition",{widget: this.type, time: ( _list[0].begin + _list[0].end ) / 2});
     }
     else {
         this.lastAnnotation = false;
         this.$.find(".Ldt-Annotation-Inner").addClass("Ldt-Annotation-Empty");
-        this.player.popcorn.trigger("IriSP.Arrow.updatePosition",{widget: this.type, time: _time});
+        this.player.trigger("Arrow.updatePosition",{widget: this.type, time: _time});
         this.bounds = [ _time, _time ];
     }
     this.sendBounds();
 }
 
 IriSP.Widgets.Annotation.prototype.sendBounds = function() {
-    this.player.popcorn.trigger("IriSP.Annotation.boundsChanged",this.bounds);
+    this.player.trigger("Annotation.boundsChanged",this.bounds);
 }
 
 IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
@@ -107,7 +106,7 @@ IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
         });
     
         this.$.find('.Ldt-Annotation-TagLabel').click(function() {
-            _this.player.popcorn.trigger("IriSP.search.triggeredSearch", IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
+            _this.player.trigger("search.triggeredSearch", IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
         });
     } else {
         this.$.find(".Ldt-Annotation-Tags-Block").addClass("Ldt-Annotation-EmptyBlock");

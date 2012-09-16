@@ -79,9 +79,9 @@ IriSP.Widgets.AnnotationsList.prototype.onSearch = function(searchString) {
     var _n = this.refresh(true);
     if (this.searchString) {
         if (_n) {
-            this.player.popcorn.trigger("IriSP.search.matchFound");
+            this.player.trigger("search.matchFound");
         } else {
-            this.player.popcorn.trigger("IriSP.search.noMatchFound");
+            this.player.trigger("search.noMatchFound");
         }
     }
 }
@@ -89,11 +89,8 @@ IriSP.Widgets.AnnotationsList.prototype.onSearch = function(searchString) {
 //obj.url = this.project_url + "/" + media + "/" + annotations[i].meta.project + "/" + annotations[i].meta["id-ref"] + '#id=' + annotations[i].id;
 
 IriSP.Widgets.AnnotationsList.prototype.ajaxSource = function() {
-    var _currentTime = this.player.popcorn.currentTime(),
-        _duration = this.source.getDuration();
-    if (typeof _currentTime == "undefined") {
-        _currentTime = 0;
-    }
+    var _currentTime = this.media.getCurrentTime(),
+        _duration = this.media.duration;
     this.lastAjaxQuery = _currentTime;
     _currentTime = Math.floor(1000 * _currentTime);
     var _url = Mustache.to_html(this.ajax_url, {
@@ -107,11 +104,8 @@ IriSP.Widgets.AnnotationsList.prototype.ajaxSource = function() {
 }
 
 IriSP.Widgets.AnnotationsList.prototype.ajaxMashup = function() {
-    var _currentTime = this.player.popcorn.currentTime();
-    if (typeof _currentTime == "undefined") {
-        _currentTime = 0;
-    }
-    var _currentAnnotation = this.source.currentMedia.getAnnotationAtTime(_currentTime * 1000);
+    var _currentTime = this.media.getCurrentTime();
+    var _currentAnnotation = this.source.currentMedia.getAnnotationAtTime(_currentTime);
     if (typeof _currentAnnotation !== "undefined" && _currentAnnotation.id !== this.lastMashupAnnotation) {
         this.lastMashupAnnotation = _currentAnnotation.id;
         var _currentMedia = _currentAnnotation.getMedia(),
@@ -132,13 +126,10 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         return 0;
     }
     var _this = this,
-        _currentTime = this.player.popcorn.currentTime();
-    if (typeof _currentTime == "undefined") {
-        _currentTime = 0;
-    }
+        _currentTime = this.media.getCurrentTime();
     var _list = this.annotation_type ? this.currentSource.getAnnotationsByTypeTitle(this.annotation_type) : this.currentSource.getAnnotations();
     if (this.mashupMode) {
-        var _currentAnnotation = this.source.currentMedia.getAnnotationAtTime(_currentTime * 1000);
+        var _currentAnnotation = this.source.currentMedia.getAnnotationAtTime(_currentTime);
         if (typeof _currentAnnotation !== "undefined") {
             _currentTime = _currentTime - _currentAnnotation.begin.getSeconds() + _currentAnnotation.annotation.begin.getSeconds();
             var _mediaId = _currentAnnotation.getMedia().id;
@@ -246,7 +237,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         });
     
         this.$.find('.Ldt-AnnotationsList-Tag-Li').click(function() {
-            _this.player.popcorn.trigger("IriSP.search.triggeredSearch", IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
+            _this.player.trigger("search.triggeredSearch", IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
         })
         
         if(this.searchString) {
@@ -276,10 +267,10 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     
     this.list_$ = this.$.find(".Ldt-AnnotationsList-ul");
     
-    this.bindPopcorn("IriSP.search", "onSearch");
-    this.bindPopcorn("IriSP.search.closed", "onSearch");
-    this.bindPopcorn("IriSP.search.cleared", "onSearch");
-    this.bindPopcorn("IriSP.AnnotationsList.refresh","refresh");
+    this.onMdpEvent("search", "onSearch");
+    this.onMdpEvent("search.closed", "onSearch");
+    this.onMdpEvent("search.cleared", "onSearch");
+    this.onMdpEvent("AnnotationsList.refresh","refresh");
     
     var _this = this;
     
@@ -299,14 +290,14 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
         }, this.refresh_interval);
     }
     
+    this.onMdpEvent("createAnnotationWidget.addedAnnotation");
     var _events = [
-        "IriSP.createAnnotationWidget.addedAnnotation",
         "timeupdate",
         "seeked",
         "loadedmetadata"
     ];
     for (var _i = 0; _i < _events.length; _i++) {
-        this.player.popcorn.listen(_events[_i], this.throttledRefresh);
+        this.onMediaEvent(_events[_i], this.throttledRefresh);
     }
     
     this.throttledRefresh();

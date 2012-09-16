@@ -15,7 +15,51 @@
         <div id="LdtPlayer"></div>
         <div id="AnnotationsListContainer"></div>
         <script type="text/javascript">
-            testConfig('json/ldt-ogv.json', true);
+IriSP.libFiles.defaultDir = "libs/";
+IriSP.widgetsDir = "metadataplayer";
+var _metadata = {
+    url: "json/ldt-ogv.json",
+    format: 'ldt'
+};
+var _config = {            
+    gui: {
+        width : 620,
+        container : 'LdtPlayer',
+        default_options: {
+            metadata: _metadata
+        },
+        css : 'metadataplayer/LdtPlayer-core.css',
+        widgets: [
+            { type: "PopcornPlayer"},
+            { type: "Sparkline" },
+            { type: "Slider" },
+            { type: "Controller" },
+            { type: "Polemic" },
+            { type: "Segments" },
+            { type: "Slice" },
+            { type: "Arrow" },
+            { type: "Annotation" },
+            { type: "CreateAnnotation" },
+            { type: "Tweet" },
+            { type: "Tagcloud" },
+            {
+                type: "AnnotationsList",
+                container: "AnnotationsListContainer"
+            },
+            { type: "Mediafragment"}
+        ]
+    },
+    player:{
+        type:'auto',
+        live: true, 
+        height: 350, 
+        width: 620, 
+        provider: "rtmp",
+        autostart: true,
+        metadata: _metadata
+    }
+};
+_myPlayer = new IriSP.Metadataplayer(_config);
         </script>
     </body>
 </html>

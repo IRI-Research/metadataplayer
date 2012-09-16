@@ -163,8 +163,8 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
         this.hide();
     }
     
-    this.bindPopcorn("IriSP.CreateAnnotation.toggle","toggle");
-    this.bindPopcorn("IriSP.Slice.boundsChanged","onBoundsChanged");
+    this.onMdpEvent("CreateAnnotation.toggle","toggle");
+    this.onMdpEvent("Slice.boundsChanged","onBoundsChanged");
     this.begin = new IriSP.Model.Time();
     this.end = this.source.getDuration();
     this.$.find("form").submit(this.functionWrapper("onSubmit"));
@@ -188,9 +188,9 @@ IriSP.Widgets.CreateAnnotation.prototype.show = function() {
     this.$.find(".Ldt-CreateAnnotation-TagLi, .Ldt-CreateAnnotation-PolemicLi").removeClass("selected");
     this.$.slideDown();
     if (this.minimize_annotation_widget) {
-        this.player.popcorn.trigger("IriSP.Annotation.minimize");
+        this.player.trigger("Annotation.minimize");
     }
-    this.player.popcorn.trigger("IriSP.Slice.show");
+    this.player.trigger("Slice.show");
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.hide = function() {
@@ -198,9 +198,9 @@ IriSP.Widgets.CreateAnnotation.prototype.hide = function() {
         this.visible = false;
         this.$.slideUp();
         if (this.minimize_annotation_widget) {
-            this.player.popcorn.trigger("IriSP.Annotation.maximize");
+            this.player.trigger("Annotation.maximize");
         }
-        this.player.popcorn.trigger("IriSP.Slice.hide");
+        this.player.trigger("Slice.hide");
     }
 }
 
@@ -234,8 +234,8 @@ IriSP.Widgets.CreateAnnotation.prototype.addKeyword = function(_keyword) {
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.pauseOnWrite = function() {
-    if (this.pause_on_write && !this.player.popcorn.media.paused) {
-        this.player.popcorn.pause();
+    if (this.pause_on_write && !this.media.getPaused()) {
+        this.media.pause();
     }
 }
 
@@ -344,10 +344,10 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
             _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
             _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
             _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
-            if (_this.pause_on_write && _this.player.popcorn.media.paused) {
-                _this.player.popcorn.play();
+            if (_this.pause_on_write && _this.media.getPaused()) {
+                _this.media.play();
             }
-            _this.player.popcorn.trigger("IriSP.AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+            _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
         },
         error: function(_xhr, _error, _thrown) {
             IriSP.log("Error when sending annotation", _thrown);

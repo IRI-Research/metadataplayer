@@ -1,3 +1,5 @@
+//TODO: Remove and replace by Player Widget
+
 /* To wrap a player the develop should create a new class derived from 
    the IriSP.PopcornReplacement.player and defining the correct functions */
 

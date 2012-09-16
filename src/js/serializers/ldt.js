@@ -208,7 +208,7 @@ IriSP.serializers.ldt = {
         }
         
         if (typeof _data.meta !== "undefined" && typeof _data.meta.main_media !== "undefined" && typeof _data.meta.main_media["id-ref"] !== "undefined") {
-            _source.mainMedia = _data.meta.main_media["id-ref"];
+            _source.currentMedia = _source.getElement(_data.meta.main_media["id-ref"]);
         }
     }
 }

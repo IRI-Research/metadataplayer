@@ -1,6 +1,5 @@
 IriSP.Widgets.Sparkline = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
-    //this.bindPopcorn("timeupdate", "onTimeupdate");
 };
 
 IriSP.Widgets.Sparkline.prototype = new IriSP.Widgets.Widget();
@@ -68,14 +67,14 @@ IriSP.Widgets.Sparkline.prototype.draw = function() {
    
     this.$.click(function(_e) {
         var _x = _e.pageX - _this.$.offset().left;
-        _this.player.popcorn.currentTime(_this.source.getDuration().getSeconds() * _x / _this.width);
+        _this.media.setCurrentTime(_this.media.duration * _x / _this.width);
     });
     
-    this.bindPopcorn("timeupdate","onTimeupdate");
+    this.onMediaEvent("timeupdate","onTimeupdate");
 }
 
-IriSP.Widgets.Sparkline.prototype.onTimeupdate = function() {
-    var _x = Math.floor( this.width * this.player.popcorn.currentTime() / this.source.getDuration().getSeconds());
+IriSP.Widgets.Sparkline.prototype.onTimeupdate = function(_time) {
+    var _x = Math.floor( this.width * _time / this.media.duration);
     this.rectangleProgress.attr({
         "width" : _x
     });

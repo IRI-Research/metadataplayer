@@ -40,28 +40,28 @@ IriSP.Widgets.Slice.prototype.draw = function() {
         min: 0,
         max: this.max,
         change: function(event, ui) {
-            _this.player.popcorn.trigger("IriSP.Arrow.updatePosition",{
+            _this.player.trigger("Arrow.updatePosition",{
                 widget:_this.type,
                 time:Math.floor((ui.values[0]+ui.values[1])/2)
             });
-            _this.player.popcorn.trigger("IriSP.Slice.boundsChanged",[ui.values[0], ui.values[1]]);
+            _this.player.trigger("Slice.boundsChanged",[ui.values[0], ui.values[1]]);
         },
         start: function() {
             _this.sliding = true;
-            if (!_this.player.popcorn.media.paused) {
-                _this.player.popcorn.pause();
+            if (!_this.media.getPaused) {
+                _this.media.pause();
             }
-            _currentTime = _this.player.popcorn.currentTime();
+            _currentTime = _this.media.getCurrentTime();
         },
         slide: function(event, ui) {
             if (!_this.override_bounds && (ui.value < _this.min || ui.value > _this.max)) {
                 return false;
             }
-            _this.player.popcorn.currentTime(ui.value / 1000);
+            _this.media.setCurrentTime(ui.value);
         },
         stop: function() {
             _this.sliding = false;
-            _this.player.popcorn.currentTime(_currentTime);
+            _this.media.setCurrentTime(_currentTime);
         }
     });
     this.$slider.find(".ui-slider-handle:first").addClass("Ldt-Slice-left-handle");
@@ -71,25 +71,25 @@ IriSP.Widgets.Slice.prototype.draw = function() {
     } else {
         this.hide();
     }
-    this.bindPopcorn("IriSP.Slice.show","show");
-    this.bindPopcorn("IriSP.Slice.hide","hide");
-    this.bindPopcorn("IriSP.Annotation.boundsChanged","storeBounds");
-    this.player.popcorn.trigger("IriSP.Annotation.getBounds");
+    this.onMdpEvent("Slice.show","show");
+    this.onMdpEvent("Slice.hide","hide");
+    this.onMdpEvent("Annotation.boundsChanged","storeBounds");
+    this.player.trigger("Annotation.getBounds");
 };
 
 IriSP.Widgets.Slice.prototype.show = function() {
     this.$slider.show();
-    this.player.popcorn.trigger("IriSP.Arrow.takeover",this.type);
+    this.player.trigger("Arrow.takeover",this.type);
     this.$slider.slider("values", [this.min, this.max]);
 }
 
 IriSP.Widgets.Slice.prototype.hide = function() {
     this.$slider.hide();
-    this.player.popcorn.trigger("IriSP.Arrow.release");
+    this.player.trigger("Arrow.release");
 }
 
 IriSP.Widgets.Slice.prototype.storeBounds = function(_values) {
-    if (!this.player.popcorn.media.paused && (this.min != _values[0] || this.max != _values[1])) {
+    if (!this.media.getPaused() && (this.min != _values[0] || this.max != _values[1])) {
         this.min = _values[0];
         this.max = _values[1];
         if (this.live_update && !this.sliding) {

@@ -49,15 +49,15 @@ IriSP.Widgets.MediaList.prototype.onSearch = function(searchString) {
     var _n = this.refresh(true);
     if (this.searchString) {
         if (_n) {
-            this.player.popcorn.trigger("IriSP.search.matchFound");
+            this.player.trigger("search.matchFound");
         } else {
-            this.player.popcorn.trigger("IriSP.search.noMatchFound");
+            this.player.trigger("search.noMatchFound");
         }
     }
 }
 
 IriSP.Widgets.MediaList.prototype.draw = function() {
-    this.bindPopcorn("timeupdate","onTimeupdate");
+    this.onMediaEvent("timeupdate","onTimeupdate");
     this.$.addClass("Ldt-MediaListWidget")
     this.renderTemplate();
     this.redraw();
@@ -124,10 +124,10 @@ IriSP.Widgets.MediaList.prototype.redraw = function(_media) {
     }
 };
 
-IriSP.Widgets.MediaList.prototype.onTimeupdate = function() {
+IriSP.Widgets.MediaList.prototype.onTimeupdate = function(_time) {
     var _media = this.source.currentMedia;
     if (_media.elementType === "mashup") {
-        _media = _media.getMediaAtTime(this.player.popcorn.currentTime() * 1000);
+        _media = _media.getMediaAtTime(_time);
     }
     if (typeof _media !== "undefined" && _media.id !== this.lastMedia) {
         this.lastMedia = _media.id;

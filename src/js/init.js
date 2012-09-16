@@ -18,8 +18,7 @@ IriSP.Metadataplayer = function(config) {
     _container.innerHTML = '<h3 class="Ldt-Loader">Loading... Chargement...</h3>';
     this.sourceManager = new IriSP.Model.Directory();
     this.config = config;
-    this.callbackQueue = [];
-    this.isLoaded = false;
+    this.__events = {};
     this.loadLibs();
 }
 
@@ -27,26 +26,18 @@ IriSP.Metadataplayer.prototype.toString = function() {
     return 'Metadataplayer in #' + this.config.gui.container;
 }
 
-IriSP.Metadataplayer.prototype.deferCallback = function(_callback) {
-    var _this = this;
-    IriSP._.defer(function() {
-        _callback.call(_this);
+IriSP.Metadataplayer.prototype.on = function(_event, _callback) {
+    if (typeof this.__events[_event] === "undefined") {
+        this.__events[_event] = [];
+    }
+    this.__events[_event].push(_callback);
+}
+
+IriSP.Metadataplayer.prototype.trigger = function(_event, _data) {
+    var _element = this;
+    IriSP._(this.__events[_event]).each(function(_callback) {
+        _callback.call(_element, _data);
     });
-}
-
-IriSP.Metadataplayer.prototype.handleCallbacks = function() {
-    this.isLoaded = true;
-    while (this.callbackQueue.length) {
-        this.deferCallback(this.callbackQueue.splice(0,1)[0]);
-    }
-}
-
-IriSP.Metadataplayer.prototype.onLoad = function(_callback) {
-    if (this.isLoaded) {
-        this.deferCallback(_callback);
-    } else {
-        this.callbackQueue.push(_callback);
-    }
 }
 
 IriSP.Metadataplayer.prototype.loadLibs = function() {
@@ -100,7 +91,7 @@ IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
     IriSP.loadCss(IriSP.getLib("cssjQueryUI"));
     IriSP.loadCss(this.config.gui.css);
     
-    this.videoData = this.loadMetadata(this.config.player.metadata);
+//    this.videoData = this.loadMetadata(this.config.player.metadata);
     this.$ = IriSP.jQuery('#' + this.config.gui.container);
     this.$.css({
         "width": this.config.gui.width,
@@ -110,10 +101,19 @@ IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
         this.$.css("height", this.config.gui.height);
     }
       
+    this.widgets = [];
     var _this = this;
+    for(var i = 0; i < this.config.gui.widgets.length; i++) {
+        this.loadWidget(this.config.gui.widgets[i], function(_widget) {
+            _this.widgets.push(_widget)
+        });
+    };
+    this.$.find('.Ldt-Loader').detach();
+/*
     this.videoData.onLoad(function() {
         _this.onVideoDataLoaded();
     });
+*/
 }
 
 IriSP.Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {
@@ -130,6 +130,7 @@ IriSP.Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {
     }
 }
 
+// TODO: REMOVE !
 IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
     
     /* Setting default media from metadata */
@@ -318,7 +319,6 @@ IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
         });
     };
     this.$.find('.Ldt-Loader').detach();
-    this.handleCallbacks();
 }
 
 IriSP.Metadataplayer.prototype.loadWidget = function(_widgetConfig, _callback) {
@@ -380,3 +380,5 @@ IriSP.Metadataplayer.prototype.layoutDivs = function(_name, _height) {
 
     return [newDiv, spacerDiv];
 };
+
+IriSP.Metadataplayer.prototype.on

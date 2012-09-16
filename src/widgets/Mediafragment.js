@@ -10,15 +10,15 @@ IriSP.Widgets.Mediafragment = function(player, config) {
             }
         })
     };
-    this.bindPopcorn("pause","setHashToTime");
-    this.bindPopcorn("seeked","setHashToTime");
-    this.bindPopcorn("IriSP.Mediafragment.setHashToAnnotation","setHashToAnnotation");
+    this.onMdpEvent("Mediafragment.setHashToAnnotation","setHashToAnnotation");
     this.blocked = false;
 }
 
 IriSP.Widgets.Mediafragment.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Mediafragment.prototype.draw = function() {
+    this.onMediaEvent("pause","setHashToTime");
+    this.onMediaEvent("seeked","setHashToTime");
     this.goToHash();
 }
 
@@ -52,11 +52,11 @@ IriSP.Widgets.Mediafragment.prototype.goToHash = function() {
                 if (this.last_hash_key == "id") {
                     var _annotation = this.source.getElement(this.last_hash_value);
                     if (typeof _annotation !== "undefined") {
-                        this.player.popcorn.currentTime(_annotation.begin.getSeconds());
+                        this.media.setCurrentTime(_annotation.begin);
                     }
                 }
                 if (this.last_hash_key == "t") {
-                    this.player.popcorn.currentTime(this.last_hash_value);
+                    this.media.setCurrentTime(1000*this.last_hash_value);
                 }
                 break;
             }
@@ -68,10 +68,8 @@ IriSP.Widgets.Mediafragment.prototype.setHashToAnnotation = function(_annotation
     this.setHash( 'id', _annotationId );
 }
 
-IriSP.Widgets.Mediafragment.prototype.setHashToTime = function(_time) {
-    if (_time !== NaN) {
-        this.setHash( 't', this.player.popcorn.currentTime() );
-    }
+IriSP.Widgets.Mediafragment.prototype.setHashToTime = function() {
+    this.setHash( 't', this.media.getCurrentTime().getSeconds() );
 }
 
 IriSP.Widgets.Mediafragment.prototype.setHash = function(_key, _value) {
@@ -100,5 +98,5 @@ IriSP.Widgets.Mediafragment.prototype.block = function() {
         window.clearTimeout(this.blockTimeout);
     }
     this.blocked = true;
-    this.blockTimeout = window.setTimeout(this.functionWrapper("unblock"), 1000);
+    this.blockTimeout = window.setTimeout(this.functionWrapper("unblock"), 1500);
 }
