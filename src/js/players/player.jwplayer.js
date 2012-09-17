@@ -13,7 +13,7 @@ IriSP.PopcornReplacement.jwplayer = function(container, options) {
         this.trigger("play");
     }
  
-    var _player = jwplayer(this.container),
+    var _player = jwplayer(this.$[0]),
         _this = this,
         _seekPause = false;
   

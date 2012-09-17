@@ -1,4 +1,4 @@
-/* init.js - initialization and configuration of Popcorn and the widgets
+/* init.js - initialization and configuration of the widgets
 */
 
 if (typeof window.IriSP === "undefined") {
@@ -10,11 +10,11 @@ if (typeof window.IriSP === "undefined") {
 IriSP.Metadataplayer = function(config) {
     IriSP.log("IriSP.Metadataplayer constructor");
     for (var key in IriSP.guiDefaults) {
-        if (IriSP.guiDefaults.hasOwnProperty(key) && !config.gui.hasOwnProperty(key)) {
-            config.gui[key] = IriSP.guiDefaults[key]
+        if (IriSP.guiDefaults.hasOwnProperty(key) && !config.hasOwnProperty(key)) {
+            config[key] = IriSP.guiDefaults[key]
         }
     }
-    var _container = document.getElementById(config.gui.container);
+    var _container = document.getElementById(config.container);
     _container.innerHTML = '<h3 class="Ldt-Loader">Loading... Chargement...</h3>';
     this.sourceManager = new IriSP.Model.Directory();
     this.config = config;
@@ -23,7 +23,7 @@ IriSP.Metadataplayer = function(config) {
 }
 
 IriSP.Metadataplayer.prototype.toString = function() {
-    return 'Metadataplayer in #' + this.config.gui.container;
+    return 'Metadataplayer in #' + this.config.container;
 }
 
 IriSP.Metadataplayer.prototype.on = function(_event, _callback) {
@@ -45,8 +45,7 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
     var $L = $LAB
         .script(IriSP.getLib("underscore"))
         .script(IriSP.getLib("Mustache"))
-        .script(IriSP.getLib("jQuery"))
-        .script(IriSP.getLib("swfObject"));
+        .script(IriSP.getLib("jQuery"));
     
     if (typeof JSON == "undefined") {
         $L.script(IriSP.getLib("json"));
@@ -55,17 +54,9 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
     $L.wait()
         .script(IriSP.getLib("jQueryUI"));
 
-    if (this.config.player.type === "jwplayer" || this.config.player.type === "auto") {
-        $L.script(IriSP.getLib("jwplayer"));
-    }
-    
-    if (this.config.player.type !== "jwplayer" && this.config.player.type !== "allocine" && this.config.player.type !== "dailymotion") {
-        $L.script(IriSP.getLib("popcorn"));
-    }
-
     /* widget specific requirements */
-    for(var _i = 0; _i < this.config.gui.widgets.length; _i++) {
-        var _t = this.config.gui.widgets[_i].type;
+    for(var _i = 0; _i < this.config.widgets.length; _i++) {
+        var _t = this.config.widgets[_i].type;
         if (typeof IriSP.widgetsRequirements[_t] !== "undefined" && typeof IriSP.widgetsRequirements[_t].requires !== "undefined" ) {
             for (var _j = 0; _j < IriSP.widgetsRequirements[_t].requires.length; _j++) {
                 $L.script(IriSP.getLib(IriSP.widgetsRequirements[_t].requires[_j]));
@@ -89,22 +80,22 @@ IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
         IriSP._ = window._;
     }
     IriSP.loadCss(IriSP.getLib("cssjQueryUI"));
-    IriSP.loadCss(this.config.gui.css);
+    IriSP.loadCss(this.config.css);
     
 //    this.videoData = this.loadMetadata(this.config.player.metadata);
-    this.$ = IriSP.jQuery('#' + this.config.gui.container);
+    this.$ = IriSP.jQuery('#' + this.config.container);
     this.$.css({
-        "width": this.config.gui.width,
+        "width": this.config.width,
         "clear": "both"
     });
-    if (typeof this.config.gui.height !== "undefined") {
-        this.$.css("height", this.config.gui.height);
+    if (typeof this.config.height !== "undefined") {
+        this.$.css("height", this.config.height);
     }
       
     this.widgets = [];
     var _this = this;
-    for(var i = 0; i < this.config.gui.widgets.length; i++) {
-        this.loadWidget(this.config.gui.widgets[i], function(_widget) {
+    for(var i = 0; i < this.config.widgets.length; i++) {
+        this.loadWidget(this.config.widgets[i], function(_widget) {
             _this.widgets.push(_widget)
         });
     };
@@ -313,8 +304,8 @@ IriSP.Metadataplayer.prototype.onVideoDataLoaded = function() {
     
     this.widgets = [];
     var _this = this;
-    for(var i = 0; i < this.config.gui.widgets.length; i++) {
-        this.loadWidget(this.config.gui.widgets[i], function(_widget) {
+    for(var i = 0; i < this.config.widgets.length; i++) {
+        this.loadWidget(this.config.widgets[i], function(_widget) {
             _this.widgets.push(_widget)
         });
     };
@@ -354,20 +345,20 @@ IriSP.Metadataplayer.prototype.layoutDivs = function(_name, _height) {
     if (typeof(_name) === "undefined") {
        _name = "";
     }
-    var newDiv = IriSP._.uniqueId(this.config.gui.container + "_widget_" + _name + "_"),
+    var newDiv = IriSP._.uniqueId(this.config.container + "_widget_" + _name + "_"),
         spacerDiv = IriSP._.uniqueId("LdtPlayer_spacer_"),
         divHtml = IriSP.jQuery('<div>')
             .attr("id",newDiv)
             .css({
-                width: this.config.gui.width + "px",
+                width: this.config.width + "px",
                 position: "relative",
                 clear: "both"
             }),
         spacerHtml = IriSP.jQuery('<div>')
             .attr("id",spacerDiv)
             .css({
-                width: this.config.gui.width + "px",
-                height: this.config.gui.spacer_div_height + "px",
+                width: this.config.width + "px",
+                height: this.config.spacer_div_height + "px",
                 position: "relative",
                 clear: "both"
             });

@@ -1,0 +1,8 @@
+Event Name                      Published by                    Subscribed by
+==============================  ==============================  ==============================  
+Annotation.hide                                                 Annotation
+Annotation.show                                                 Annotation
+Annotation.minimize                                             Annotation
+Annotation.maximize                                             Annotation
+Annotation.getBounds                                            Annotation
+Arrow.updatePosition            Annotation

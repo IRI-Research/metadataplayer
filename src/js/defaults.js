@@ -42,6 +42,14 @@ IriSP.libFiles = {
 IriSP.widgetsDir = 'widgets';
 
 IriSP.widgetsRequirements = {
+    PopcornPlayer: {
+        noCss: true,
+        requires: [ "popcorn" ]
+    },
+    JwpPlayer: {
+        noCss: true,
+        requires: [ "swfObject", "jwplayer" ]
+    },
     Sparkline: {
         noCss: true,
         requires: [ "raphael" ]

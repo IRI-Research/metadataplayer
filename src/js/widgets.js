@@ -26,7 +26,7 @@ IriSP.Widgets.Widget = function(player, config) {
     
     /* Setting all the configuration options */
     var _type = config.type,
-        _config = IriSP._.defaults({}, config, player.config.gui.default_options, this.defaults),
+        _config = IriSP._.defaults({}, config, player.config.default_options, this.defaults),
         _this = this;
     
     IriSP._(_config).forEach(function(_value, _key) {
@@ -34,7 +34,7 @@ IriSP.Widgets.Widget = function(player, config) {
     });
     
     if (typeof this.width === "undefined") {
-        this.width = player.config.gui.width;
+        this.width = player.config.width;
     }
     
     /* Setting this.player at the end in case it's been overriden
