@@ -4,12 +4,14 @@ IriSP.Widgets.PopcornPlayer = function(player, config) {
 
 IriSP.Widgets.PopcornPlayer.prototype = new IriSP.Widgets.Widget();
 
+/* A Popcorn-based player for HTML5 Video, Youtube and Vimeo */
+
 IriSP.Widgets.PopcornPlayer.prototype.defaults = {
+    aspect_ratio: 14/9
 }
 
 IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
-    var _tmpId = Popcorn.guid("video"),
-        _videoEl = IriSP.jQuery('<video>');
+
     
     if (typeof this.video === "undefined") {
         this.video = this.media.video;
@@ -19,19 +21,61 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
         this.video = this.url_transform(this.video);
     }
     
-    _videoEl.attr({
-        "src" : this.video,
-        "id" : _tmpId
-    })
-
-    if(this.width) {
-        _videoEl.attr("width", this.width);
+    if (!this.height) {
+        this.height = Math.floor(this.width/this.aspect_ratio);
+        this.$.css({
+                height: this.height
+            });
     }
-    if(this.height) {
-        _videoEl.attr("height", this.height);
+    
+    if (/^(https?:\/\/)?(www\.)?vimeo\.com/.test(this.video)) {
+        
+        /* VIMEO */
+        
+        var _popcorn = Popcorn.vimeo(this.container, this.video);
+        
+    } else if (/^(https?:\/\/)?(www\.)?youtube\.com/.test(this.video)) {
+        
+        /* YOUTUBE */
+       
+        var _urlparts = this.video.split(/[?&]/),
+            _params = {};
+        for (var i = 1; i < _urlparts.length; i++) {
+            var _ppart = _urlparts[i].split('=');
+            _params[_ppart[0]] = decodeURIComponent(_ppart[1]);
+        }
+        _params.controls = 0;
+        _params.modestbranding = 1;
+        _url = _urlparts[0] + '?' + IriSP.jQuery.param(_params);
+        
+        var _popcorn = Popcorn.youtube(this.container, _url);
+        
+    } else {
+        
+        /* DEFAULT HTML5 */
+        
+        var _tmpId = IriSP._.uniqueId("popcorn"),
+            _videoEl = IriSP.jQuery('<video>');
+        _videoEl.attr({
+            id : _tmpId,
+            width : this.width,
+            height : this.height
+        });
+        if(typeof this.video === "string"){
+            _videoEl.attr("src",this.video);
+        } else {
+            for (var i = 0; i < this.video.length; i++) {
+                var _srcNode = IriSP.jQuery('<source>');
+                _srcNode.attr({
+                    src: this.video[i].src,
+                    type: this.video[i].type
+                });
+                _videoEl.append(_srcNode);
+            }
+        }
+        this.$.html(_videoEl);
+        var _popcorn = Popcorn("#" + _tmpId);
     }
-    this.$.append(_videoEl);
-    var _popcorn = Popcorn("#" + _tmpId);
 
     // Binding functions to Popcorn
     

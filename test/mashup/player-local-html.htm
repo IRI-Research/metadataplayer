@@ -55,46 +55,39 @@ var _metadata = {
     url: 'bab_files/mashup-local-html.json',
     format: 'ldt'
 };
-var _config = {            
-    gui: {
-        width : 630,
-        container : 'LdtPlayer',
-        default_options: {
-            metadata: _metadata
-        },
-        css : '../metadataplayer/LdtPlayer-core.css',
-        widgets: [
-            { type: "Slider" },
-            { type: "Controller" },
-            {
-                type: "Segments",
-                annotation_type: false
-            },
-            { type: "Arrow" },
-            {
-                type: "Annotation",
-                annotation_type: false
-            },
-            {
-                type: "MediaList",
-                container: "mediaList"
-            },
-            {
-                type: "AnnotationsList",
-                container: "annotationList",
-                ajax_url: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?",
-                ajax_granularity: 30000,
-                limit_count: 3
-            },
-            { type: "Mediafragment" }
-        ]
-    },
-    player:{
-        type:'mashup-html',
-        height: 350,
-        width: 630,
+var _config = {
+    width : 630,
+    container : 'LdtPlayer',
+    default_options: {
         metadata: _metadata
-    }
+    },
+    css : '../metadataplayer/LdtPlayer-core.css',
+    widgets: [
+        { type: "MashupPlayer" },
+        { type: "Slider" },
+        { type: "Controller" },
+        {
+            type: "Segments",
+            annotation_type: false
+        },
+        { type: "Arrow" },
+        {
+            type: "Annotation",
+            annotation_type: false
+        },
+        {
+            type: "MediaList",
+            container: "mediaList"
+        },
+        {
+            type: "AnnotationsList",
+            container: "annotationList",
+            ajax_url: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?",
+            ajax_granularity: 30000,
+            limit_count: 3
+        },
+        { type: "Mediafragment" }
+    ]
 };
 
 _myPlayer = new IriSP.Metadataplayer(_config);

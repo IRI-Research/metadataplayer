@@ -308,7 +308,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
     
     this.$.append('<div class="Ldt-Polemic-Tooltip"></div>');
     
-    this.insertSubwidget(this.$.find(".Ldt-Polemic-Tooltip"), "tooltip", { type: "Tooltip" });
+    this.insertSubwidget(this.$.find(".Ldt-Polemic-Tooltip"), { type: "Tooltip" }, "tooltip");
 }
 
 IriSP.Widgets.Polemic.prototype.onTimeupdate = function(_time) {

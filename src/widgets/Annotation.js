@@ -50,7 +50,7 @@ IriSP.Widgets.Annotation.prototype.defaults = {
 
 IriSP.Widgets.Annotation.prototype.draw = function() {
     this.renderTemplate();
-    this.insertSubwidget(this.$.find(".Ldt-Annotation-Social"), "socialWidget", { type: "Social" });
+    this.insertSubwidget(this.$.find(".Ldt-Annotation-Social"), { type: "Social" }, "socialWidget");
     this.onMediaEvent("timeupdate","onTimeupdate");
     this.onMdpEvent("Annotation.hide","hide");
     this.onMdpEvent("Annotation.show","show");

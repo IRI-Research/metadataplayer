@@ -6,7 +6,6 @@ IriSP.Widgets.AnnotationsList = function(player, config) {
     this.throttledRefresh = IriSP._.throttle(function() {
         _this.refresh(false);
     }, 1500);
-    this.mashupMode = (this.source.currentMedia.elementType === "mashup");
 };
 
 IriSP.Widgets.AnnotationsList.prototype = new IriSP.Widgets.Widget();
@@ -262,6 +261,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
 }
 
 IriSP.Widgets.AnnotationsList.prototype.draw = function() {
+    
+    this.mashupMode = (this.media.elementType === "mashup");
     
     this.renderTemplate();
     

@@ -23,10 +23,6 @@
             <filelist dir="../../src/js/libs" files="LAB.min.js" />
             <!-- core files -->
             <filelist dir="../../src/js" files="init.js utils.js pop.js model.js defaults.js widgets.js" />
-            <!-- players -->
-            <fileset dir="../../src/js/players" casesensitive="yes">
-                <include name="**/*.js"/>
-            </fileset>
             <!-- serializers -->
             <fileset dir="../../src/js/serializers" casesensitive="yes">
                 <include name="**/*.js"/>

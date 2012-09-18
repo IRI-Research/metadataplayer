@@ -48,7 +48,11 @@ IriSP.widgetsRequirements = {
     },
     JwpPlayer: {
         noCss: true,
-        requires: [ "swfObject", "jwplayer" ]
+        requires: [ "jwplayer" ]
+    },
+    DailymotionPlayer: {
+        noCss: true,
+        requires: [ "swfObject" ]
     },
     Sparkline: {
         noCss: true,

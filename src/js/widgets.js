@@ -47,7 +47,15 @@ IriSP.Widgets.Widget = function(player, config) {
     
     /* Call draw when loaded */
     this.source.onLoad(function() {
-        _this.media = this.getCurrentMedia();
+        if (_this.media_id) {
+            _this.media = this.getElement(_this.media_id);
+        } else {
+            var _mediaopts = {
+                is_mashup: _this.is_mashup || false
+            }
+            _this.media = this.getCurrentMedia(_mediaopts);
+        }
+        
         _this.draw();
     });
    
@@ -109,9 +117,6 @@ IriSP.Widgets.Widget.prototype.onMdpEvent = function(_eventName, _functionOrName
 }
 
 IriSP.Widgets.Widget.prototype.onMediaEvent = function(_eventName, _functionOrName) {
-    if (typeof this.media === "undefined" || typeof this.media.on === "undefined") {
-        console.log("Error on widget "+this.type, this.media);
-    }
     this.media.on(_eventName, this.getFunctionOrName(_functionOrName));
 }
 
@@ -126,7 +131,7 @@ IriSP.Widgets.Widget.prototype.getWidgetAnnotationsAtTime = function() {
     });
 }
 
-IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _propname, _widgetoptions) {
+IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _widgetoptions, _propname) {
     var _id = _selector.attr("id"),
         _this = this,
         _type = _widgetoptions.type,
@@ -143,7 +148,9 @@ IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _propname, 
     }
     $L.wait(function() {
         _this.player.loadWidget(_widgetoptions, function(_widget) {
-            _this[_propname] = _widget;
+            if (_propname) {
+                _this[_propname] = _widget;
+            }
         });
     });
 }

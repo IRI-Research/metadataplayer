@@ -54,53 +54,47 @@ var _metadata = {
     format: 'ldt'
 };
 var _canPlayMp4 = document.createElement('video').canPlayType('video/mp4');
-var _config = {            
-    gui: {
-        width : 630,
-        container : 'LdtPlayer',
-        default_options: {
-            metadata: _metadata
-        },
-        css : '../metadataplayer/LdtPlayer-core.css',
-        widgets: [
-            { type: "Slider" },
-            { type: "Controller" },
-            {
-                type: "Segments",
-                annotation_type: false
-            },
-            { type: "Arrow" },
-            {
-                type: "Annotation",
-                annotation_type: false
-            },
-            {
-                type: "MediaList",
-                container: "mediaList"
-            },
-            {
-                type: "AnnotationsList",
-                container: "AnnotationsListContainer",
-                default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png"
-            },
-            { type: "Mediafragment" }
-        ]
-    },
-    player:{
-        type: 'mashup-html',
-        url_transform: function(_url) {
-            if (_canPlayMp4 == "maybe" || _canPlayMp4 == "probably") {
-                return _url.replace(/\.webm$/i,'.mp4');
-            } else {
-                return _url.replace(/\.mp4$/i,'.webm');
-            }
-            
-        },
-        height: 350,
-        width: 630,
-        autostart: true,
+var _config = {
+    width : 630,
+    container : 'LdtPlayer',
+    default_options: {
         metadata: _metadata
-    }
+    },
+    css : '../metadataplayer/LdtPlayer-core.css',
+    widgets: [
+        {
+            type: "MashupPlayer",
+            url_transform: function(_url) {
+                if (_canPlayMp4 == "maybe" || _canPlayMp4 == "probably") {
+                    return _url.replace(/\.webm$/i,'.mp4');
+                } else {
+                    return _url.replace(/\.mp4$/i,'.webm');
+                }
+                
+            }
+        },
+        { type: "Slider" },
+        { type: "Controller" },
+        {
+            type: "Segments",
+            annotation_type: false
+        },
+        { type: "Arrow" },
+        {
+            type: "Annotation",
+            annotation_type: false
+        },
+        {
+            type: "MediaList",
+            container: "mediaList"
+        },
+        {
+            type: "AnnotationsList",
+            container: "AnnotationsListContainer",
+            default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png"
+        },
+        { type: "Mediafragment" }
+    ]
 };
 
 _myPlayer = new IriSP.Metadataplayer(_config);

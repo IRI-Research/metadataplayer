@@ -76,7 +76,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             _this.$segments.removeClass("inactive active");
         });
     });
-    this.insertSubwidget(this.$.find(".Ldt-Segments-Tooltip"), "tooltip", { type: "Tooltip" });
+    this.insertSubwidget(this.$.find(".Ldt-Segments-Tooltip"), { type: "Tooltip" }, "tooltip");
     this.$segments = this.$.find('.Ldt-Segments-Segment');
 }
 

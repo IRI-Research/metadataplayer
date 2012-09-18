@@ -8,9 +8,9 @@ IriSP.Widgets.JwpPlayer.prototype.defaults = {
 }
 
 IriSP.Widgets.JwpPlayer.prototype.draw = function() {
-
+    
     var _opts = {},
-        _player = jwplayer("#" + this.container),
+        _player = jwplayer(this.$[0]),
         _seekPause = false,
         _pauseState = true,
         _props = [ "live", "provider", "autostart" ];
@@ -31,6 +31,8 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
     _opts.file = this.video;
     _opts.flashplayer = IriSP.getLib("jwPlayerSWF");
     _opts["controlbar.position"] = "none";
+    _opts.width = this.width;
+    _opts.height = this.height || Math.floor(.643*this.width);
     
     for (var i = 0; i < _props.length; i++) {
         if (typeof this[_props[i]] !== "undefined") {
@@ -84,7 +86,7 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
         onReady: function() {
             _media.trigger("loadedmetadata");
         },
-        onTime: function() {
+        onTime: function(_progress) {
             if (_seekPause) {
                 _player.pause(true);
                 _seekPause = false;
@@ -94,7 +96,7 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
                     _media.trigger("play");
                 }
             }
-            _this.trigger("timeupdate", _media.getCurrentTime());
+            _media.trigger("timeupdate", new IriSP.Model.Time(_progress.position * 1000));
         },
         onPlay: function() {
             if (!_seekPause) {
@@ -110,10 +112,7 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
             _media.trigger("seeked");
         }
     }
-    console.log("Before Setup", _opts);
     _player.setup(_opts);
-    
-    console.log("OK");
     
     this.jwplayer = _player;
     

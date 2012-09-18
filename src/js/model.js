@@ -452,7 +452,7 @@ IriSP.Model.Media.prototype = new IriSP.Model.Element();
 
 /* Default functions to be overriden by players */
 
-IriSP.Model.Media.prototype.getCurrentTime = function() { return 0; }
+IriSP.Model.Media.prototype.getCurrentTime = function() {  return new IriSP.Model.Time(0); }
 
 IriSP.Model.Media.prototype.getVolume = function() { return .5; }
 
@@ -664,6 +664,23 @@ IriSP.Model.Mashup.prototype.getMediaAtTime = function(_time) {
     }
 }
 
+/* Default functions to be overriden by players */
+
+IriSP.Model.Mashup.prototype.getCurrentTime = function() { return new IriSP.Model.Time(0); }
+
+IriSP.Model.Mashup.prototype.getVolume = function() { return .5; }
+
+IriSP.Model.Mashup.prototype.getPaused = function() { return true; }
+
+IriSP.Model.Mashup.prototype.getMuted = function() { return false; }
+
+IriSP.Model.Mashup.prototype.setCurrentTime
+    = IriSP.Model.Mashup.prototype.setVolume
+    = IriSP.Model.Mashup.prototype.setMuted
+    = IriSP.Model.Mashup.prototype.play
+    = IriSP.Model.Mashup.prototype.pause
+    = function() {}
+
 /* */
 
 IriSP.Model.Source = function(_config) {
@@ -786,11 +803,8 @@ IriSP.Model.Source.prototype.getDuration = function() {
 }
 
 IriSP.Model.Source.prototype.getCurrentMedia = function(_opts) {
-    if (typeof _opts === "undefined") {
-        var _opts = {};
-    }
-    if (typeof this.currentMedia === "undefined" || _opts.override) {
-        if (_opts.mashup) {
+    if (typeof this.currentMedia === "undefined") {
+        if (_opts.is_mashup) {
             var _mashups = this.getMashups();
             if (_mashups.length) {
                 this.currentMedia = _mashups[0];
