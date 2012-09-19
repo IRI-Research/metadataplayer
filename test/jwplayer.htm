@@ -36,6 +36,7 @@
                 live: true,
                 width: 550, 
                 provider: "rtmp",
+                autostart: true,
                 streamer: function(_url) {
                     var _matches = _url.match(/^[^\/]+\/\/[^\/]+\/[^\/]+\//);
                     if (_matches) {
@@ -43,8 +44,7 @@
                     } else {
                         return _url;
                     }
-                },
-                metadata: _metadata
+                }
             },
             { type: "Slider" },
             { type: "Controller" },

@@ -38,8 +38,8 @@ IriSP.Widgets.Slider.prototype.draw = function() {
     this.$handle = this.$slider.find('.ui-slider-handle');
     
     this.onMediaEvent("timeupdate","onTimeupdate");
-    this.onMdpEvent("PlayerWidget.MouseOver","onMouseover");
-    this.onMdpEvent("PlayerWidget.MouseOut","onMouseout");
+    this.onMdpEvent("Player.MouseOver","onMouseover");
+    this.onMdpEvent("Player.MouseOut","onMouseout");
     
     if (this.minimize_timeout) {
         this.$slider.css(this.calculateSliderCss(this.minimized_height));

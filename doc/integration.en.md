@@ -51,7 +51,7 @@ To change individual locations or to point to files outside the default director
     IriSP.libFiles.locations.jQueryUI = "libs/jquery-ui-1.8.16.custom.min.js";
     IriSP.libFiles.locations.jwPlayerSWF = "libs/jwplayer/player.swf";
 
-## Configuration of metadata source ##
+## Configuration of a metadata source ##
 
 A metadata source is defined by its url and file type (which defines the *serializer* to use).
 
@@ -66,48 +66,30 @@ Metadata sources are then used to configure both the video player and the widget
 
 ## Configuration of the video player ##
 
-The video player is configured through an object having the following properties:
-
-- **metadata**: Metadata source.
-- **type**: Video player type :
-    - **"jwplayer"**: Uses flash-based jwPlayer, compatible with many video and audio formats, including MP3 audio, MP4 video and RTMP streams.
-    - **"html5"**: Uses the Popcorn.js library to play HTML5 videos. Supported formats : OGG and WebM on Firefox and Chrome, H.264 on Internet Explorer, Safari and Chrome.
-    - **"youtube"**: Uses Popcorn's Youtube plugin.
-    - **"dailymotion"**
-    - **"auto"**: Replaced by *Youtube* or *Dailymotion* for a video hosted on one of these platform, or *jwPlayer* in other cases.
-- **width** and **height** of the video player.
-- **video**: Video URL. Optional: If present, it overrides the video URL defined in the metadata source.
-- Player-specific options, such as **provider** or **streamer** for JwPlayer
-
-Example:
-
-    var playerConfig = {
-        metadata: metadataSource,
-        type: "jwplayer",
-        height: 350,
-        width: 620,
-        provider: "rtmp"
-    };
+In this version, the video player is now a widget. This section is therefore obsolete
 
 ## User Interface Configuration ##
 
-L’interface se configure par un objet GUI, contenant les propriétés suivantes:
+The interface is configured with the following properties:
 
-- **container**: l’ID de l’élément HTML dans lequel le player sera instancié.
-- **width** et **height**: largeur et hauteur de l’interface (*height* est optionnel).
-- **default\_options**: des options de configuration communes à tous les widgets, par exemple, comme ci-dessous, une source de métadonnées communes.
-- **css**: l’URL du fichier CSS de base (LdtPlayer-core.css)
-- **widgets**: la liste des widgets, sous la forme [ { type: *Type du widget*, option_1: *Valeur de l’option 1* } ]. Pour les options des widgets, se référer au document *Architecture générale*
+- **container**: ID of the DOM element in which the metadataplayer will be instantiated.
+- **width** et **height**: width and height of the interface (*height* is optional).
+- **default\_options**: Configuration options that will be passed to all widgets. In the example below, all widgets will connect to the same metadata source.
+- **css**: The URL of the base CSS stylesheet (LdtPlayer-core.css)
+- **widgets**: A list of widgets, in the following format: [ { type: *Widget type*, option_1: *Option 1 value* } ]. For widget options, please refer to the *general architecture* document
 
 Exemple:
 
-    var guiConfig = {
+    var config = {
         container : "Metadataplayer",
         default_options: {
             metadata: metadataSource
         },
         css : "metadataplayer/css/LdtPlayer-core.css",
         widgets: [
+            {
+                type: "AutoPlayer"
+            },
             {
                 type: "Slider"
             },{
@@ -123,14 +105,10 @@ Exemple:
         ]
     };
 
-## Instanciation du player ##
+## Player instanciation ##
 
-Le player s’instancie en créant un objet de type **IriSP.Metadataplayer**.
+The metadataplayer is instantiated by creating an object of class **IriSP.Metadataplayer**.
 
 Exemple:
 
-    var config = {
-        player: playerConfig,
-        gui: guiConfig
-    };
-    var monPlayer = new IriSP.Metadataplayer(config);
+    var myPlayer = new IriSP.Metadataplayer(config);

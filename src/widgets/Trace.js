@@ -141,10 +141,10 @@ IriSP.Widgets.Trace.prototype.eventHandler = function(_listener, _arg) {
             delete _arg.widget;
             delete _arg.type;
         break;
-        case 'timeupdate':
         case 'play':
         case 'pause':
-            _arg.time = this.player.getCurrentTime().milliseconds;
+            _arg.milliseconds = this.media.getCurrentTime().milliseconds;
+        case 'timeupdate':
         case 'seeked':
         case 'volumechange':
             _traceName += 'media_' + _listener;

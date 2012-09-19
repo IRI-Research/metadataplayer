@@ -69,7 +69,7 @@ IriSP.widgetsRequirements = {
         noCss: true,
         requires: [ "tracemanager" ]
     },
-    SlideShare: {
+    Slideshare: {
         requires: [ "swfObject" ]
     },
     Social: {

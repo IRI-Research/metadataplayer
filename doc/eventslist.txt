@@ -1,8 +1,79 @@
-Event Name                      Published by                    Subscribed by
-==============================  ==============================  ==============================  
-Annotation.hide                                                 Annotation
-Annotation.show                                                 Annotation
-Annotation.minimize                                             Annotation
-Annotation.maximize                                             Annotation
-Annotation.getBounds                                            Annotation
-Arrow.updatePosition            Annotation
+Event Name                                  Published by                    Subscribed by
+
+==========================================  ==============================  ==============================
+
+Annotation.boundsChanged                    Annotation                      Slice
+
+Annotation.getBounds                        Segments                        Annotation
+
+Annotation.hide                                                             Annotation
+
+Annotation.maximize                         CreateAnnotation                Annotation
+     =                                      Tweet
+
+Annotation.minimize                         CreateAnnotation                Annotation
+     =                                      Tweet
+
+Annotation.show                                                             Annotation
+
+AnnotationsList.refresh                     CreateAnnotation                AnnotationsList
+     =                                      Tagger
+
+Arrow.release                               Segments                        Arrow
+
+Arrow.takeover                              Segments                        Arrow
+
+Arrow.updatePosition                        Annotation                      Arrow
+     =                                      Segments
+     =                                      Slider
+
+CreateAnnotation.toggle                     Controller                      CreateAnnotation
+
+createAnnotationWidget.addedAnnotation           X                          AnnotationsList
+
+Mediafragment.setHashToAnnotation           Polemic                         Mediafragment
+     =                                      Renkan                               =
+     =                                      Segments                             =
+
+Mediafragment.setHashToTime                 Slider                               X
+
+Player.MouseOver                            Controller                      Slider
+
+Player.MouseOut                             Controller                      Slider
+
+search                                      Controller                      AnnotationsList
+     =                                           =                          Polemic
+     =                                           =                          Segments
+     =                                           =                          Tagcloud
+
+search.closed                               Controller                      AnnotationsList
+     =                                           =                          Polemic
+     =                                           =                          Segments
+     =                                           =                          Tagcloud
+
+search.cleared                              Controller                      AnnotationsList
+     =                                      Renkan                          Polemic
+     =                                           =                          Segments
+     =                                           =                          Tagcloud
+
+search.matchFound                           AnnotationsList                 Controller
+     =                                      Polemic                              =
+     =                                      Segments                             =
+
+search.noMatchFound                         AnnotationsList                 Controller
+     =                                      Polemic                              =
+     =                                      Segments                             =
+
+search.open                                 Controller
+
+search.triggeredSearch                      Annotation                      Controller
+     =                                      Renkan                               =
+     =                                      Tagcloud                             =
+
+Slice.boundsChanged                         Slice                           CreateAnnotation
+
+Slice.hide                                  CreateAnnotation                Slice
+
+Slice.show                                  CreateAnnotation                Slice
+
+Tweet.show                                  Polemic

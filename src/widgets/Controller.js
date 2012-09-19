@@ -156,7 +156,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
             _this.player.trigger("Player.MouseOut");
         });
     
-    this.timeDisplayUpdater(0);
+    this.timeDisplayUpdater(new IriSP.Model.Time(0));
     /* some players - including jwplayer - save the state of the mute button between sessions */
    //TODO: MOVE TO THE PLAYER/
     window.setTimeout(this.functionWrapper("volumeUpdater"), 1000);
@@ -168,7 +168,6 @@ IriSP.Widgets.Controller.prototype.timeDisplayUpdater = function(_time) {
   
     // we get it at each call because it may change.
     var _totalTime = this.media.duration;
-        
     this.$.find(".Ldt-Ctrl-Time-Elapsed").html(_time.toString());
     this.$.find(".Ldt-Ctrl-Time-Total").html(_totalTime.toString());
 };
