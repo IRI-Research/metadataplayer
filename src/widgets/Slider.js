@@ -30,16 +30,16 @@ IriSP.Widgets.Slider.prototype.draw = function() {
         min: 0,
         max: this.source.getDuration().milliseconds,
         slide: function(event, ui) {
-            _this.player.popcorn.currentTime(ui.value / 1000);
-            _this.player.popcorn.trigger("IriSP.Mediafragment.setHashToTime");
+            _this.media.setCurrentTime(ui.value);
+            _this.player.trigger("Mediafragment.setHashToTime");
         }
     });
     
     this.$handle = this.$slider.find('.ui-slider-handle');
     
-    this.bindPopcorn("timeupdate","onTimeupdate");
-    this.bindPopcorn("IriSP.PlayerWidget.MouseOver","onMouseover");
-    this.bindPopcorn("IriSP.PlayerWidget.MouseOut","onMouseout");
+    this.onMediaEvent("timeupdate","onTimeupdate");
+    this.onMdpEvent("Player.MouseOver","onMouseover");
+    this.onMdpEvent("Player.MouseOut","onMouseout");
     
     if (this.minimize_timeout) {
         this.$slider.css(this.calculateSliderCss(this.minimized_height));
@@ -54,10 +54,9 @@ IriSP.Widgets.Slider.prototype.draw = function() {
     }
 };
 
-IriSP.Widgets.Slider.prototype.onTimeupdate = function() {
-    var _time = 1000 * this.player.popcorn.currentTime();
+IriSP.Widgets.Slider.prototype.onTimeupdate = function(_time) {
     this.$slider.slider("value",_time);
-    this.player.popcorn.trigger("IriSP.Arrow.updatePosition",{widget: this.type, time: _time});
+    this.player.trigger("Arrow.updatePosition",{widget: this.type, time: _time});
 }
 
 IriSP.Widgets.Slider.prototype.onMouseover = function() {

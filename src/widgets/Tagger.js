@@ -130,7 +130,7 @@ IriSP.Widgets.Tagger.prototype.draw = function() {
                         _this.player.popcorn.play();
                     }
                     /* On force le rafraîchissement du widget AnnotationsList */
-                    _this.player.popcorn.trigger("IriSP.AnnotationsList.refresh");
+                    _this.player.trigger("AnnotationsList.refresh");
                 },
                 error: function(_xhr, _error, _thrown) {
                     console.log("Error when sending annotation", _thrown);

@@ -66,7 +66,7 @@ IriSP.Widgets.Tweet.prototype.template =
 
 IriSP.Widgets.Tweet.prototype.draw = function() {
     this.renderTemplate();
-    this.bindPopcorn("IriSP.Tweet.show","show");
+    this.onMdpEvent("Tweet.show","show");
     this.pinned = this.pin_at_start;
     var _this = this;
     this.$.find(".Ldt-Tweet-Pin").click(function() {
@@ -170,7 +170,7 @@ IriSP.Widgets.Tweet.prototype.show = function(_id) {
         this.$.find(".Ldt-Tweet-Retweet").attr("href", "https://twitter.com/intent/retweet?tweet_id=" + _tweet.source.id_str);
         this.$.find(".Ldt-Tweet-Reply").attr("href", "https://twitter.com/intent/tweet?in_reply_to=" + _tweet.source.id_str);
         this.$.find(".Ldt-Tweet-Original").attr("href", "https://twitter.com/" + _tweet.source.user.screen_name + "/status/" + _tweet.source.id_str);
-        this.player.popcorn.trigger("IriSP.Annotation.minimize");
+        this.player.trigger("Annotation.minimize");
         this.$.slideDown();
         this.cancelTimeout();
         if (!this.pinned) {
@@ -182,7 +182,7 @@ IriSP.Widgets.Tweet.prototype.show = function(_id) {
 }
 
 IriSP.Widgets.Tweet.prototype.hide = function() {
-    this.player.popcorn.trigger("IriSP.Annotation.maximize");
+    this.player.trigger("Annotation.maximize");
     this.$.slideUp();
     this.cancelTimeout();
 }

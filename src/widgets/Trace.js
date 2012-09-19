@@ -22,15 +22,17 @@ IriSP.Widgets.Trace.prototype.draw = function() {
       return;
   }
   var _this = this,
-    _listeners = {
-        "IriSP.search.open" : 0,
-        "IriSP.search.closed" : 0,
-        "IriSP.search" : 0,
-        "IriSP.search.cleared" : 0,
-        "IriSP.search.matchFound" : 0,
-        "IriSP.search.noMatchFound" : 0,
-        "IriSP.search.triggeredSearch" : 0,
-        "IriSP.TraceWidget.MouseEvents" : 0,
+    _mdplisteners = {
+        "search.open" : 0,
+        "search.closed" : 0,
+        "search" : 0,
+        "search.cleared" : 0,
+        "search.matchFound" : 0,
+        "search.noMatchFound" : 0,
+        "search.triggeredSearch" : 0,
+        "TraceWidget.MouseEvents" : 0
+    }
+    _medialisteners = {
         "play" : 0,
         "pause" : 0,
         "volumechange" : 0,
@@ -39,14 +41,23 @@ IriSP.Widgets.Trace.prototype.draw = function() {
         "pause" : 0,
         "timeupdate" : 2000
     };
-    IriSP._(_listeners).each(function(_ms, _listener) {
+    IriSP._(_mdplisteners).each(function(_ms, _listener) {
         var _f = function(_arg) {
             _this.eventHandler(_listener, _arg);
         }
         if (_ms) {
             _f = IriSP._.throttle(_f, _ms);
         }
-        _this.player.popcorn.listen(_listener, _f);
+        _this.onMdpEvent(_listener, _f);
+    });
+    IriSP._(_medialisteners).each(function(_ms, _listener) {
+        var _f = function(_arg) {
+            _this.eventHandler(_listener, _arg);
+        }
+        if (_ms) {
+            _f = IriSP._.throttle(_f, _ms);
+        }
+        _this.media.on(_listener, _f);
     });
     
     if (!this.tracer) {
@@ -91,7 +102,7 @@ IriSP.Widgets.Trace.prototype.draw = function() {
         switch(_e.type) {
             case "mouseover":
                 if (_this.lastTarget != _lastTarget) {
-                    _this.player.popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
+                    _this.player.trigger('TraceWidget.MouseEvents', _data);
                 } else {
                     if (typeof _this.moTimeout != "undefined") {
                         clearTimeout(_this.moTimeout);
@@ -105,12 +116,12 @@ IriSP.Widgets.Trace.prototype.draw = function() {
                 }
                 _this.moTimeout = setTimeout(function() {
                    if (_lastTarget != _this.lastTarget) {
-                       _this.player.popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
+                       _this.player.trigger('TraceWidget.MouseEvents', _data);
                    }
                 },100);
             break;
             default:
-                _this.player.popcorn.trigger('IriSP.TraceWidget.MouseEvents', _data);
+                _this.player.trigger('TraceWidget.MouseEvents', _data);
         }
         _this.lastTarget = _lastTarget;
     });
@@ -130,16 +141,16 @@ IriSP.Widgets.Trace.prototype.eventHandler = function(_listener, _arg) {
             delete _arg.widget;
             delete _arg.type;
         break;
-        case 'timeupdate':
         case 'play':
         case 'pause':
-            _arg.time = this.player.popcorn.currentTime() * 1000;
+            _arg.milliseconds = this.media.getCurrentTime().milliseconds;
+        case 'timeupdate':
         case 'seeked':
         case 'volumechange':
-            _traceName += 'Popcorn_' + _listener;
+            _traceName += 'media_' + _listener;
         break;
         default:
-            _traceName += _listener.replace('IriSP.','').replace('.','_');
+            _traceName += _listener.replace('.','_');
     }
     this.lastEvent = _traceName;
     if (typeof this.extend === "object" && this.extend) {

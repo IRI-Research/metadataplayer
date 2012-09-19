@@ -42,12 +42,12 @@ IriSP.Widgets.Slideshare.prototype.draw = function() {
     } else {
         this.renderTemplate();
         this.$container = this.$.find(".Ldt-SlideShare-Container");
-        this.bindPopcorn("timeupdate","onTimeupdate");
-        this.onTimeupdate();
+        this.onMediaEvent("timeupdate","onTimeupdate");
+        this.onTimeupdate(0);
     }
 }
 
-IriSP.Widgets.Slideshare.prototype.onTimeupdate = function() {
+IriSP.Widgets.Slideshare.prototype.onTimeupdate = function(_time) {
     var _list = this.getWidgetAnnotationsAtTime();
     if (_list.length) {
         var _description = _list[0].description,

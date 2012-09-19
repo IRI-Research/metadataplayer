@@ -23,65 +23,61 @@
 //        url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/5a893570-ca73-11e1-9443-00145ea4a2be?callback=?',
         format: 'ldt'
     };
-    var _config = {            
-        gui: {
-            width : 550,
-            container : 'LdtPlayer',
-            default_options: {
-                metadata: _metadata
-            },
-            css : 'metadataplayer/LdtPlayer-core.css',
-            widgets: [
-                { type: "Slider" },
-                { type: "Controller" },
-                { type: "Polemic" },
-                { type: "Segments" },
-                { type: "Slice" },
-                {
-                    type: "Arrow",
-                    base_height: 4
-                },
-                { type: "Annotation" },
-                {
-                    type: "CreateAnnotation",
-                    api_endpoint_template: "post-test.php",
-                    creator_name: "Metadataplayer",
-                    creator_avatar: "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
-                    tag_titles: ["#amateur", "#digital-humanities"]
-                },
-                { type: "Tweet" },
-                {
-                    type: "Tagger",
-                    api_endpoint: "post-test.php"
-                },
-                {
-                    type: "Tagcloud"
-                },
-                {
-                    type: "AnnotationsList",
-                    container: "AnnotationsListContainer",
-                    default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png"
-                },
-                { type: "Mediafragment"}
-            ]
+    var _config = {
+        width : 550,
+        container : 'LdtPlayer',
+        default_options: {
+            metadata: _metadata
         },
-        player:{
-            type:'auto',
-            live: true, 
-            height: 350, 
-            width: 550, 
-            provider: "rtmp",
-            streamer: function(_url) {
-                var _matches = _url.match(/^[^\/]+\/\/[^\/]+\/[^\/]+\//);
-                if (_matches) {
-                    return _matches[0];
-                } else {
-                    return _url;
+        css : 'metadataplayer/LdtPlayer-core.css',
+        widgets: [
+            {
+                type: "AutoPlayer",
+                live: true,
+                width: 550, 
+                provider: "rtmp",
+                autostart: true,
+                streamer: function(_url) {
+                    var _matches = _url.match(/^[^\/]+\/\/[^\/]+\/[^\/]+\//);
+                    if (_matches) {
+                        return _matches[0];
+                    } else {
+                        return _url;
+                    }
                 }
             },
-            //autostart: true,
-            metadata: _metadata
-        }
+            { type: "Slider" },
+            { type: "Controller" },
+            { type: "Polemic" },
+            { type: "Segments" },
+            { type: "Slice" },
+            {
+                type: "Arrow",
+                base_height: 4
+            },
+            { type: "Annotation" },
+            {
+                type: "CreateAnnotation",
+                api_endpoint_template: "post-test.php",
+                creator_name: "Metadataplayer",
+                creator_avatar: "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+                tag_titles: ["#amateur", "#digital-humanities"]
+            },
+            { type: "Tweet" },
+            {
+                type: "Tagger",
+                api_endpoint: "post-test.php"
+            },
+            {
+                type: "Tagcloud"
+            },
+            {
+                type: "AnnotationsList",
+                container: "AnnotationsListContainer",
+                default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png"
+            },
+            { type: "Mediafragment"}
+        ]
     };
     
     var _myPlayer = new IriSP.Metadataplayer(_config);

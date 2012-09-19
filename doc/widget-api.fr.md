@@ -68,15 +68,15 @@ Les options de configuration sont recopiées dans les propriétés de l’objet 
 
 ### Propriétés accessibles par le widget ###
 
-#### Popcorn ####
+#### Media ####
 
-Les fonctions de gestion de la lecture vidéo sont accessibles par la propriété **popcorn** du Metadataplayer.
+Les fonctions de gestion de la lecture vidéo sont accessibles via les objets **media**.
 
 Par exemple:
 
-    this.player.popcorn.trigger("Evenement"); => déclenche un événement Popcorn de type "Evenement"
-    this.player.popcorn.play();               => met le player en lecture
-    this.player.popcorn.currentTime()         => obtient le timecode courant, en secondes
+    this.media.trigger("Evenement"); => déclenche un événement Popcorn de type "Evenement"
+    this.media.play();               => met le player en lecture
+    this.media.currentTime()         => obtient le timecode courant, en secondes
 
 #### Source de métadonnées ####
 
@@ -119,13 +119,20 @@ Par exemple:
 
     this.$.click(this.functionWrapper("onClick"));  => Appellera this.onClick() lors d’un click sur le widget
 
-#### bindPopcorn ####
+#### onMediaEvent ####
 
-Attache un événement *Popcorn* à une fonction, sur le même mode que *functionWrapper*
+Attache un événement *Media* ("play", "timeupdate", ...) à une fonction désignée
+- par son nom, quand celle-ci est une méthode du widget, ce qui permet de l’associer directement au widget, sur le même mode que *functionWrapper*
+- comme fonction anonyme
 
 Par exemple:
 
-    this.bindPopcorn("timeupdate","onTimeupdate");  => Appellera this.onTimeupdate() lorsque l’événement Popcorn "timeupdate" est déclenché.
+    this.onMediaEvent("timeupdate","onTimeupdate");                => Appellera this.onTimeupdate() lorsque l’événement media "timeupdate" est déclenché.
+    this.onMediaEvent("play", function() { console.log("play") }); => Affichera "play" dans la console JavaScript
+
+#### onMdpEvent ####
+
+Attache un événement Metadataplayer global ("Annotation.show", "search.found", ...) à une fonction. Utilisé de manière similaire à onMediaEvent.
 
 #### Autres fonctions ####
 

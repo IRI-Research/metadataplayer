@@ -26,7 +26,7 @@ IriSP.Widgets.Widget = function(player, config) {
     
     /* Setting all the configuration options */
     var _type = config.type,
-        _config = IriSP._.defaults({}, config, player.config.gui.default_options, this.defaults),
+        _config = IriSP._.defaults({}, config, player.config.default_options, this.defaults),
         _this = this;
     
     IriSP._(_config).forEach(function(_value, _key) {
@@ -34,7 +34,7 @@ IriSP.Widgets.Widget = function(player, config) {
     });
     
     if (typeof this.width === "undefined") {
-        this.width = player.config.gui.width;
+        this.width = player.config.width;
     }
     
     /* Setting this.player at the end in case it's been overriden
@@ -47,6 +47,15 @@ IriSP.Widgets.Widget = function(player, config) {
     
     /* Call draw when loaded */
     this.source.onLoad(function() {
+        if (_this.media_id) {
+            _this.media = this.getElement(_this.media_id);
+        } else {
+            var _mediaopts = {
+                is_mashup: _this.is_mashup || false
+            }
+            _this.media = this.getCurrentMedia(_mediaopts);
+        }
+        
         _this.draw();
     });
    
@@ -88,27 +97,41 @@ IriSP.Widgets.Widget.prototype.functionWrapper = function(_name) {
             return _function.apply(_this, Array.prototype.slice.call(arguments, 0));
         }
     } else {
-        console.log("Error, Unknown function IriSP." + this.type + "." + _name)
+        console.log("Error, Unknown function IriSP.Widgets" + this.type + "." + _name)
     }
 }
 
-IriSP.Widgets.Widget.prototype.bindPopcorn = function(_popcornEvent, _functionName) {
-    this.player.popcorn.listen(_popcornEvent, this.functionWrapper(_functionName))
+IriSP.Widgets.Widget.prototype.getFunctionOrName = function(_functionOrName) {
+    switch (typeof _functionOrName) {
+        case "function":
+            return _functionOrName;
+        case "string":
+            return this.functionWrapper(_functionOrName);
+        default:
+            return undefined;
+    }
+}
+
+IriSP.Widgets.Widget.prototype.onMdpEvent = function(_eventName, _functionOrName) {
+    this.player.on(_eventName, this.getFunctionOrName(_functionOrName));
+}
+
+IriSP.Widgets.Widget.prototype.onMediaEvent = function(_eventName, _functionOrName) {
+    this.media.on(_eventName, this.getFunctionOrName(_functionOrName));
 }
 
 IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function() {
-    var _curmedia = this.source.currentMedia;
-    return typeof this.annotation_type !== "undefined" && this.annotation_type ? _curmedia.getAnnotationsByTypeTitle(this.annotation_type) : _curmedia.getAnnotations();
+    return typeof this.annotation_type !== "undefined" && this.annotation_type ? this.media.getAnnotationsByTypeTitle(this.annotation_type) : this.media.getAnnotations();
 }
 
 IriSP.Widgets.Widget.prototype.getWidgetAnnotationsAtTime = function() {
-    var _time = Math.floor(this.player.popcorn.currentTime() * 1000);
+    var _time = this.media.getCurrentTime();
     return this.getWidgetAnnotations().filter(function(_annotation) {
         return _annotation.begin <= _time && _annotation.end > _time;
     });
 }
 
-IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _propname, _widgetoptions) {
+IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _widgetoptions, _propname) {
     var _id = _selector.attr("id"),
         _this = this,
         _type = _widgetoptions.type,
@@ -125,7 +148,9 @@ IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _propname, 
     }
     $L.wait(function() {
         _this.player.loadWidget(_widgetoptions, function(_widget) {
-            _this[_propname] = _widget;
+            if (_propname) {
+                _this[_propname] = _widget;
+            }
         });
     });
 }

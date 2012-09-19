@@ -42,6 +42,18 @@ IriSP.libFiles = {
 IriSP.widgetsDir = 'widgets';
 
 IriSP.widgetsRequirements = {
+    PopcornPlayer: {
+        noCss: true,
+        requires: [ "popcorn" ]
+    },
+    JwpPlayer: {
+        noCss: true,
+        requires: [ "jwplayer" ]
+    },
+    DailymotionPlayer: {
+        noCss: true,
+        requires: [ "swfObject" ]
+    },
     Sparkline: {
         noCss: true,
         requires: [ "raphael" ]
@@ -57,7 +69,7 @@ IriSP.widgetsRequirements = {
         noCss: true,
         requires: [ "tracemanager" ]
     },
-    SlideShare: {
+    Slideshare: {
         requires: [ "swfObject" ]
     },
     Social: {

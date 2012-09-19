@@ -23,10 +23,10 @@ IriSP.Widgets.Segments.prototype.annotationTemplate =
 
 
 IriSP.Widgets.Segments.prototype.draw = function() {
-    this.bindPopcorn("IriSP.search", "onSearch");
-    this.bindPopcorn("IriSP.search.closed", "onSearch");
-    this.bindPopcorn("IriSP.search.cleared", "onSearch");
-    this.bindPopcorn("timeupdate", "onTimeupdate");
+    this.onMdpEvent("search", "onSearch");
+    this.onMdpEvent("search.closed", "onSearch");
+    this.onMdpEvent("search.cleared", "onSearch");
+    this.onMediaEvent("timeupdate", "onTimeupdate");
     
     this.renderTemplate();
     
@@ -44,8 +44,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
         var _left = _annotation.begin * _scale,
             _width = ( _annotation.getDuration() ) * _scale,
             _center = Math.floor( _left + _width / 2 ),
-            _fulltext = _annotation.title + ( _annotation.description ? ( '<br/>' + _annotation.description ) : '' ),
-            _beginseconds = _annotation.begin.getSeconds();
+            _fulltext = _annotation.title + ( _annotation.description ? ( '<br/>' + _annotation.description ) : '' );
         var _data = {
             color : ( typeof _annotation.color !== "undefined" && _annotation.color ? _annotation.color : _this.colors[_k % _this.colors.length] ),
             text: _fulltext.replace(/(\n|\r|\r\n)/mg,' ').replace(/(^.{120,140})[\s].+$/m,'$1&hellip;'),
@@ -63,8 +62,8 @@ IriSP.Widgets.Segments.prototype.draw = function() {
                 _annotation.trigger("unselect");
             })
             .click(function() {
-                _this.player.popcorn.currentTime(_beginseconds);
-                _this.player.popcorn.trigger("IriSP.Mediafragment.setHashToAnnotation", _data.id);
+                _this.media.setCurrentTime(_annotation.begin);
+                _this.player.trigger("Mediafragment.setHashToAnnotation", _data.id);
             })
             .appendTo(_this.list_$)
         _annotation.on("select", function() {
@@ -77,7 +76,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             _this.$segments.removeClass("inactive active");
         });
     });
-    this.insertSubwidget(this.$.find(".Ldt-Segments-Tooltip"), "tooltip", { type: "Tooltip" });
+    this.insertSubwidget(this.$.find(".Ldt-Segments-Tooltip"), { type: "Tooltip" }, "tooltip");
     this.$segments = this.$.find('.Ldt-Segments-Segment');
 }
 
@@ -96,17 +95,17 @@ IriSP.Widgets.Segments.prototype.onSearch = function(searchString) {
             }
         });
         if (_found) {
-            this.player.popcorn.trigger("IriSP.search.matchFound");
+            this.player.trigger("search.matchFound");
         } else {
-            this.player.popcorn.trigger("IriSP.search.noMatchFound");
+            this.player.trigger("search.noMatchFound");
         }
     } else {
         this.$segments.removeClass("found unfound");
     }
 }
 
-IriSP.Widgets.Segments.prototype.onTimeupdate = function() {
-    var _x = Math.floor( this.width * this.player.popcorn.currentTime() / this.source.getDuration().getSeconds());
+IriSP.Widgets.Segments.prototype.onTimeupdate = function(_time) {
+    var _x = Math.floor( this.width * _time / this.media.duration);
     this.$.find('.Ldt-Segments-Position').css({
         left: _x + "px"
     })

@@ -63,32 +63,11 @@ Les sources de métadonnées sont utilisées ensuite dans la configuration de la
 
 ## Configuration de la fenêtre vidéo ##
 
-Les options de configuration de la fenêtre vidéo sont:
-
-- **metadata**: La source de métadonnées utilisée, notamment pour obtenir l’URL de la vidéo.
-- **type**: Le type de player vidéo utilisé. Les players disponibles sont :
-    - **"jwplayer"**: Utilise le player flash jwPlayer, compatible avec de nombreux formats vidéo et audio et les flux RTMP.
-    - **"html5"**: Utilise la bibliothèque Popcorn et les vidéos HTML5. Formats supportés: OGG et WebM sur Firefox et Chrome, H.264 sur Internet Explorer et Safari.
-    - **"youtube"**: Utilise le plugin Youtube de Popcorn pour afficher les vidéos Youtube.
-    - **"dailymotion"**
-    - **"auto"**: Remplacé par *Youtube* ou *Dailymotion* pour une vidéo sur l’un de ces sites et par JwPlayer sinon.
-- **width** et **height**: largeur et hauteur de la fenêtre vidéo.
-- **video**: URL de la vidéo. Si ce paramètre est présent, il écrase l’URL chargée dans les métadonnées
-- Paramètres spécifiques à chaque player, qui seront transférés tels quels, par exemple **provider** pour JwPlayer
-
-Exemple:
-
-    var playerConfig = {
-        metadata: metadataSource,
-        type: "jwplayer",
-        height: 350,
-        width: 620,
-        provider: "rtmp"
-    };
+Dans cette version, la fenêtre vidéo est désormais un widget. Cette section est donc obsolète.
 
 ## Configuration de l’interface utilisateur ##
 
-L’interface se configure par un objet GUI, contenant les propriétés suivantes:
+L’interface se configure par un objet contenant les propriétés suivantes:
 
 - **container**: l’ID de l’élément HTML dans lequel le player sera instancié.
 - **width** et **height**: largeur et hauteur de l’interface (*height* est optionnel).
@@ -98,13 +77,16 @@ L’interface se configure par un objet GUI, contenant les propriétés suivante
 
 Exemple:
 
-    var guiConfig = {
+    var config = {
         container : "Metadataplayer",
         default_options: {
             metadata: metadataSource
         },
         css : "metadataplayer/css/LdtPlayer-core.css",
         widgets: [
+            {
+                type: "AutoPlayer"
+            },
             {
                 type: "Slider"
             },{
@@ -122,12 +104,8 @@ Exemple:
 
 ## Instanciation du player ##
 
-Le player s’instancie en créant un objet de type **IriSP.Metadataplayer**.
+Le player s’instancie en créant un objet de classe **IriSP.Metadataplayer**.
 
 Exemple:
 
-    var config = {
-        player: playerConfig,
-        gui: guiConfig
-    };
     var monPlayer = new IriSP.Metadataplayer(config);

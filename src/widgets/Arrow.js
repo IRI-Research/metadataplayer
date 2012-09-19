@@ -33,9 +33,9 @@ IriSP.Widgets.Arrow.prototype.draw = function() {
         fill: this.fill_url ? ( 'url(' + this.fill_url + ')' ) : this.fill_color
     });
     this.moveTo(0);
-    this.bindPopcorn("IriSP.Arrow.updatePosition","onUpdatePosition");
-    this.bindPopcorn("IriSP.Arrow.takeover","onTakeover");
-    this.bindPopcorn("IriSP.Arrow.release","onRelease");
+    this.onMdpEvent("Arrow.updatePosition","onUpdatePosition");
+    this.onMdpEvent("Arrow.takeover","onTakeover");
+    this.onMdpEvent("Arrow.release","onRelease");
 }
 
 IriSP.Widgets.Arrow.prototype.drawAt = function(_x) {

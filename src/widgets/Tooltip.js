@@ -1,6 +1,6 @@
 /* this widget displays a small tooltip */
-IriSP.Widgets.Tooltip = function(Popcorn, config, Serializer) {
-    IriSP.Widgets.Widget.call(this, Popcorn, config, Serializer);
+IriSP.Widgets.Tooltip = function(player, config) {
+    IriSP.Widgets.Widget.call(this, player, config);
 };
 
 IriSP.Widgets.Tooltip.prototype = new IriSP.Widgets.Widget();

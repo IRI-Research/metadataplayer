@@ -87,22 +87,21 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     this.$volumeBar = this.$.find(".Ldt-Ctrl-Volume-Bar");
     
     // handle events
-    this.bindPopcorn("play","playButtonUpdater");
-    this.bindPopcorn("pause","playButtonUpdater");
-    this.bindPopcorn("volumechange","volumeUpdater");
-    this.bindPopcorn("timeupdate","timeDisplayUpdater");
-    this.bindPopcorn("loadedmetadata","timeDisplayUpdater");
-    this.bindPopcorn("loadedmetadata","volumeUpdater");
-    this.bindPopcorn("IriSP.search.matchFound","searchMatch");
-    this.bindPopcorn("IriSP.search.noMatchFound","searchNoMatch");
-    this.bindPopcorn("IriSP.search.triggeredSearch","triggeredSearch");
-    this.bindPopcorn("IriSP.search.cleared","hideSearchBlock");
+    this.onMediaEvent("play","playButtonUpdater");
+    this.onMediaEvent("pause","playButtonUpdater");
+    this.onMediaEvent("volumechange","volumeUpdater");
+    this.onMediaEvent("timeupdate","timeDisplayUpdater");
+    this.onMediaEvent("loadedmetadata","volumeUpdater");
+    this.onMdpEvent("search.matchFound","searchMatch");
+    this.onMdpEvent("search.noMatchFound","searchNoMatch");
+    this.onMdpEvent("search.triggeredSearch","triggeredSearch");
+    this.onMdpEvent("search.cleared","hideSearchBlock");
     
     // handle clicks
     this.$playButton.click(this.functionWrapper("playHandler"));
     
     this.$.find(".Ldt-Ctrl-Annotate").click(function() {
-        _this.player.popcorn.trigger("IriSP.CreateAnnotation.toggle");
+        _this.player.trigger("CreateAnnotation.toggle");
     });
     this.$.find(".Ldt-Ctrl-SearchBtn").click(this.functionWrapper("searchButtonHandler"));
     
@@ -143,7 +142,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     this.$volumeBar.slider({
         slide: function(event, ui) {
             _this.$volumeBar.attr("title",_this.l10n.volume+': ' + ui.value + '%');
-            _this.player.popcorn.volume(ui.value / 100);
+            _this.media.setVolume(ui.value / 100);
         },
         stop: this.functionWrapper("volumeUpdater")
     });
@@ -151,33 +150,26 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     // trigger an IriSP.Player.MouseOver to the widgets that are interested (i.e : sliderWidget)
     this.$.hover(
         function() {
-            _this.player.popcorn.trigger("IriSP.Player.MouseOver");
+            _this.player.trigger("Player.MouseOver");
         }, 
         function() {
-            _this.player.popcorn.trigger("IriSP.Player.MouseOut");
+            _this.player.trigger("Player.MouseOut");
         });
+    
+    this.timeDisplayUpdater(new IriSP.Model.Time(0));
     /* some players - including jwplayer - save the state of the mute button between sessions */
-
+   //TODO: MOVE TO THE PLAYER/
     window.setTimeout(this.functionWrapper("volumeUpdater"), 1000);
    
 };
 
 /* Update the elasped time div */
-IriSP.Widgets.Controller.prototype.timeDisplayUpdater = function() {
-    var _curTime = this.player.popcorn.roundTime();
-    if (typeof this._previousSecond !== "undefined" && _curTime === this._previousSecond) {
-        return;
-    }
+IriSP.Widgets.Controller.prototype.timeDisplayUpdater = function(_time) {
   
     // we get it at each call because it may change.
-    var _totalTime = this.source.getDuration(),
-        _elapsedTime = new IriSP.Model.Time();
-        
-    _elapsedTime.setSeconds(_curTime);
-  
-    this.$.find(".Ldt-Ctrl-Time-Elapsed").html(_elapsedTime.toString());
+    var _totalTime = this.media.duration;
+    this.$.find(".Ldt-Ctrl-Time-Elapsed").html(_time.toString());
     this.$.find(".Ldt-Ctrl-Time-Total").html(_totalTime.toString());
-    this._previousSecond = _curTime;
 };
 
 /* update the icon of the button - separate function from playHandler
@@ -185,10 +177,7 @@ IriSP.Widgets.Controller.prototype.timeDisplayUpdater = function() {
    the jwplayer window) we have to change the icon without playing/pausing
 */
 IriSP.Widgets.Controller.prototype.playButtonUpdater = function() {
-    
-    var status = this.player.popcorn.media.paused;
-  
-    if (status) {
+    if (this.media.getPaused()) {
     /* the background sprite is changed by adding/removing the correct classes */
         this.$playButton
             .attr("title", this.l10n.play)
@@ -204,23 +193,24 @@ IriSP.Widgets.Controller.prototype.playButtonUpdater = function() {
 
 
 IriSP.Widgets.Controller.prototype.playHandler = function() {
-    
-    var status = this.player.popcorn.media.paused;
-  
-    if (status) {        
-        this.player.popcorn.play();
+    if (this.media.getPaused()) {        
+        this.media.play();
     } else {
-        this.player.popcorn.pause();
+        this.media.pause();
     }  
 };
 
 IriSP.Widgets.Controller.prototype.muteHandler = function() {
-    this.player.popcorn.muted(!this.player.popcorn.muted());
+    if (this.media.getMuted()) {
+        this.media.unmute();
+    } else {
+        this.media.mute();
+    }
 };
 
 IriSP.Widgets.Controller.prototype.volumeUpdater = function() {
-    var _muted = this.player.popcorn.muted(),
-        _vol = this.player.popcorn.volume();
+    var _muted = this.media.getMuted(),
+        _vol = this.media.getVolume();
     if (_vol === false) {
         _vol = .5;
     }
@@ -249,13 +239,13 @@ IriSP.Widgets.Controller.prototype.showSearchBlock = function() {
     this._positiveMatch = false;
 
     // tell the world the field is open
-    this.player.popcorn.trigger("IriSP.search.open");
+    this.player.trigger("search.open");
 };
 
 IriSP.Widgets.Controller.prototype.hideSearchBlock = function() {
     this.$searchBlock.animate( { width: 0 }, 200);
     this._positiveMatch = false;
-    this.player.popcorn.trigger("IriSP.search.closed");
+    this.player.trigger("search.closed");
 };
 
 /** react to clicks on the search button */
@@ -264,7 +254,7 @@ IriSP.Widgets.Controller.prototype.searchButtonHandler = function() {
         this.showSearchBlock();
         var _val = this.$searchInput.val();
         if (_val) {
-            this.player.popcorn.trigger("IriSP.search", _val); // trigger the search to make it more natural.
+            this.player.trigger("search", _val); // trigger the search to make it more natural.
         }
 	} else {
         this.hideSearchBlock();
@@ -284,9 +274,9 @@ IriSP.Widgets.Controller.prototype.searchHandler = function() {
     // do nothing if the search field is empty, instead of highlighting everything.
     if (_val !== this.lastSearchValue) {
         if (_val) {
-            this.player.popcorn.trigger("IriSP.search", _val);
+            this.player.trigger("search", _val);
         } else {
-            this.player.popcorn.trigger("IriSP.search.cleared");
+            this.player.trigger("search.cleared");
             this.$searchInput.css('background-color','');
         }
     }
@@ -314,7 +304,7 @@ IriSP.Widgets.Controller.prototype.searchNoMatch = function() {
 IriSP.Widgets.Controller.prototype.triggeredSearch = function(searchString) {
     this.showSearchBlock();
     this.$searchInput.attr('value', searchString);      
-    this.player.popcorn.trigger("IriSP.search", searchString); // trigger the search to make it more natural.
+    this.player.trigger("search", searchString); // trigger the search to make it more natural.
 };
 
 
