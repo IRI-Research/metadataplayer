@@ -47,7 +47,7 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
     // Binding functions to jwplayer
 
     this.media.getCurrentTime = function() {
-        return new IriSP.Model.Time(1000*_player.getPosition());
+        return new IriSP.Model.Time(1000*_player.getPosition() || 0);
     }
     this.media.getVolume = function() {
         return _player.getVolume() / 100;

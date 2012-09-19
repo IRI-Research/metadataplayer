@@ -74,7 +74,10 @@
             {
                 type: "AnnotationsList",
                 container: "AnnotationsListContainer",
-                default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png"
+                default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png",
+                ajax_url: "/pf/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}",
+                ajax_granularity : 300000,
+                default_thumbnail : "http://capsicum//pf/static/site/ldt/css/imgs/video_sequence.png"
             },
             { type: "Mediafragment"}
         ]

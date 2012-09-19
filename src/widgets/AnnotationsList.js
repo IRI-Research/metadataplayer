@@ -91,7 +91,6 @@ IriSP.Widgets.AnnotationsList.prototype.ajaxSource = function() {
     var _currentTime = this.media.getCurrentTime(),
         _duration = this.media.duration;
     this.lastAjaxQuery = _currentTime;
-    _currentTime = Math.floor(1000 * _currentTime);
     var _url = Mustache.to_html(this.ajax_url, {
         media : this.source.currentMedia.id,
         begin : Math.max(0, _currentTime - this.ajax_granularity),
@@ -252,7 +251,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         if (this.mashupMode) {
             this.ajaxMashup();
         } else {
-            if (Math.abs(_currentTime - this.lastAjaxQuery) > (this.ajax_granularity / 2000)) {
+            if (Math.abs(_currentTime - this.lastAjaxQuery) > (this.ajax_granularity)) {
                 this.ajaxSource();
             }
         }
