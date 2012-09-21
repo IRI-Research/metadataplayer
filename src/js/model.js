@@ -520,6 +520,10 @@ IriSP.Model.Annotation = function(_id, _source) {
     this.elementType = 'annotation';
     this.begin = new IriSP.Model.Time();
     this.end = new IriSP.Model.Time();
+    var _this = this;
+    this.on("click", function() {
+        _this.getMedia().setCurrentTime(_this.begin);
+    })
 }
 
 IriSP.Model.Annotation.prototype = new IriSP.Model.Element(null);

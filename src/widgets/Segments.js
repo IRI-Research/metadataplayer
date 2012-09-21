@@ -62,8 +62,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
                 _annotation.trigger("unselect");
             })
             .click(function() {
-                _this.media.setCurrentTime(_annotation.begin);
-                _this.player.trigger("Mediafragment.setHashToAnnotation", _data.id);
+                _annotation.trigger("click");
             })
             .appendTo(_this.list_$)
         _annotation.on("select", function() {

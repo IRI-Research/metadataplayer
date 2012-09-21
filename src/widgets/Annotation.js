@@ -45,7 +45,8 @@ IriSP.Widgets.Annotation.prototype.defaults = {
     annotation_type : "chap",
     start_minimized: true,
     show_top_border : false,
-    site_name : "Lignes de Temps"
+    site_name : "Lignes de Temps",
+    search_on_tag_click: true
 }
 
 IriSP.Widgets.Annotation.prototype.draw = function() {
@@ -87,26 +88,26 @@ IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
     this.lastAnnotation = _annotation.id;
     var _url = (typeof _annotation.url !== "undefined" 
             ? _annotation.url
-            : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id));
-    var _text = this.l10n.watching + _annotation.title + (this.site_name ? this.l10n.on_site + this.site_name : '');
-    var _tags = _annotation.getTagTexts();
+            : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id)),
+        _text = this.l10n.watching + _annotation.title + (this.site_name ? this.l10n.on_site + this.site_name : ''),
+        _tags = _annotation.getTags(),
+        _tagblock = this.$.find(".Ldt-Annotation-Tags"),
+        _this = this;
+    _tagblock.empty();
     if (_tags.length) {
-        var _html = IriSP._(_tags).map(function(_tag) {
-            return '<li class="Ldt-Annotation-TagLabel"><span>' + _tag + '</span></li>';
-        }).join("");
-        this.$.find(".Ldt-Annotation-Tags").html(_html);
         this.$.find(".Ldt-Annotation-Tags-Block").removeClass("Ldt-Annotation-EmptyBlock");
-        
-        /* Correct the empty tag bug */
-        this.$.find('.Ldt-Annotation-TagLabel').each(function() {
-            var _el = IriSP.jQuery(this);
-            if (!_el.text().replace(/(^\s+|\s+$)/g,'')) {
-                _el.detach();
+        _tags.forEach(function(_tag) {
+            var _trimmedTitle =  _tag.title.replace(/(^\s+|\s+$)/g,'');
+            if (_trimmedTitle) {
+                var _el = IriSP.jQuery('<li class="Ldt-Annotation-TagLabel"></li>').append(IriSP.jQuery('<span>').text(_trimmedTitle));
+                _el.click(function() {
+                    if (_this.search_on_tag_click) {
+                        _this.player.trigger("search.triggeredSearch",_trimmedTitle);
+                    }
+                    _tag.trigger("click");
+                });
+                _tagblock.append(_el);
             }
-        });
-    
-        this.$.find('.Ldt-Annotation-TagLabel').click(function() {
-            _this.player.trigger("search.triggeredSearch", IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
         });
     } else {
         this.$.find(".Ldt-Annotation-Tags-Block").addClass("Ldt-Annotation-EmptyBlock");
@@ -132,7 +133,6 @@ IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
     if (typeof this.socialWidget !== "undefined") {
         this.socialWidget.updateUrls(_url, _text);
     } else {
-        var _this = this;
         setTimeout(function() {
             if (typeof _this.socialWidget !== "undefined") {
                 _this.socialWidget.updateUrls(_url, _text);

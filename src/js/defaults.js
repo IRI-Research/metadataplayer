@@ -21,7 +21,8 @@ IriSP.libFiles = {
         backboneRelational: "backbone-relational.js",
         paper: "paper.js",
         jqueryMousewheel: "jquery.mousewheel.min.js",
-        renkanPublish: "renkan-publish.js"
+        renkanPublish: "renkan-publish.js",
+        processing: "processing-1.3.6.min.js"
     },
     locations : {
         // use to define locations outside default_dir
@@ -77,6 +78,9 @@ IriSP.widgetsRequirements = {
     },
     Renkan: {
         requires: [ "backbone", "backboneRelational", "paper", "jqueryMousewheel", "renkanPublish" ]
+    },
+    KnowledgeConcierge: {
+        requires: [ "processing" ]
     }
 }
 

@@ -168,8 +168,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 }).mouseout(function() {
                     _annotation.trigger("unselect");
                 }).click(function() {
-                    _this.player.trigger("Mediafragment.setHashToAnnotation", _annotation.id);
-                    _this.player.trigger("Tweet.show", _annotation.id);
+                    _annotation.trigger("click");
                 });
                 _annotation.on("select", function() {
                     _this.tooltip.show(

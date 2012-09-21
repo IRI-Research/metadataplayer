@@ -23,7 +23,7 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
         this.streamer = this.streamer(this.video);
     }
 
-    if (typeof this.streamer === "string") {
+    if (typeof this.streamer === "string" && (this.provider === "http" || this.provider === "rtmp")) {
         this.video = this.video.replace(this.streamer,"");
         _opts.streamer = this.streamer;
     }

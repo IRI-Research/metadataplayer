@@ -20,6 +20,12 @@ IriSP.Widgets.Mediafragment.prototype.draw = function() {
     this.onMediaEvent("pause","setHashToTime");
     this.onMediaEvent("seeked","setHashToTime");
     this.goToHash();
+    var _this = this;
+    this.getWidgetAnnotations().forEach(function(_annotation) {
+        _annotation.on("click", function() {
+            _this.setHashToAnnotation(_annotation.id);
+        })
+    })
 }
 
 IriSP.Widgets.Mediafragment.prototype.setWindowHash = function(_hash) {

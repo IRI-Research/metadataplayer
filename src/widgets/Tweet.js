@@ -25,6 +25,7 @@ IriSP.Widgets.Tweet.prototype.defaults = {
             "color" : "#05aae6"
         }
     ],
+    annotation_type: "tweet",
     pin_at_start: false
 }
 
@@ -66,7 +67,6 @@ IriSP.Widgets.Tweet.prototype.template =
 
 IriSP.Widgets.Tweet.prototype.draw = function() {
     this.renderTemplate();
-    this.onMdpEvent("Tweet.show","show");
     this.pinned = this.pin_at_start;
     var _this = this;
     this.$.find(".Ldt-Tweet-Pin").click(function() {
@@ -84,10 +84,14 @@ IriSP.Widgets.Tweet.prototype.draw = function() {
         _this.hide();
     });
     this.$.hide();
+    this.getWidgetAnnotations().forEach(function(_annotation) {
+        _annotation.on("click", function() {
+            _this.show(_annotation);
+        });
+    });
 }
 
-IriSP.Widgets.Tweet.prototype.show = function(_id) {
-    var _tweet = this.source.getElement(_id);
+IriSP.Widgets.Tweet.prototype.show = function(_tweet) {
     if (typeof _tweet !== "undefined" && typeof _tweet.source !== "undefined") {
         var _entities = [];
         for (var _i = 0; _i < _tweet.source.entities.hashtags.length; _i++) {
