@@ -15,12 +15,16 @@ IriSP.Widgets.Slider.prototype.defaults = {
                                 set to zero for fixed slider */
 };
 
+IriSP.Widgets.Slider.prototype.template =
+    '<div class="Ldt-Slider"></div><div class="Ldt-Slider-Time">00:00</div>'
+
 IriSP.Widgets.Slider.prototype.draw = function() {
     
-    this.$slider = IriSP.jQuery('<div>')
-        .addClass("Ldt-Slider");
+    this.renderTemplate();
     
-    this.$.append(this.$slider);
+    this.$time = this.$.find(".Ldt-Slider-Time");
+    
+    this.$slider = this.$.find(".Ldt-Slider");
     
     var _this = this;
     
@@ -45,13 +49,21 @@ IriSP.Widgets.Slider.prototype.draw = function() {
         this.$slider.css(this.calculateSliderCss(this.minimized_height));
         this.$handle.css(this.calculateHandleCss(this.minimized_height));
         
-        this.$
-            .mouseover(this.functionWrapper("onMouseover"))
-            .mouseout(this.functionWrapper("onMouseout"));
-        
         this.maximized = false;
         this.timeoutId = false;
     }
+    
+    this.$
+        .mouseover(function() {
+            _this.$time.show();
+            _this.onMouseover();
+        })
+        .mouseout(this.functionWrapper("onMouseout"))
+        .mousemove(function(_e) {
+            var _x = _e.pageX - _this.$.offset().left,
+                _t = new IriSP.Model.Time(_this.media.duration * _x / _this.width);
+            _this.$time.text(_t.toString()).css("left",_x);
+        });
 };
 
 IriSP.Widgets.Slider.prototype.onTimeupdate = function(_time) {
@@ -73,6 +85,7 @@ IriSP.Widgets.Slider.prototype.onMouseover = function() {
 }
 
 IriSP.Widgets.Slider.prototype.onMouseout = function() {
+    this.$time.hide();
     if (this.minimize_timeout) {
         if (this.timeoutId) {
             window.clearTimeout(this.timeoutId);

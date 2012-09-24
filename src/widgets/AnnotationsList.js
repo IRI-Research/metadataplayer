@@ -129,7 +129,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
     if (this.mashupMode) {
         var _currentAnnotation = this.source.currentMedia.getAnnotationAtTime(_currentTime);
         if (typeof _currentAnnotation !== "undefined") {
-            _currentTime = _currentTime - _currentAnnotation.begin.getSeconds() + _currentAnnotation.annotation.begin.getSeconds();
+            _currentTime = _currentTime - _currentAnnotation.begin + _currentAnnotation.annotation.begin;
             var _mediaId = _currentAnnotation.getMedia().id;
             _list = _list.filter(function(_annotation) {
                 return _annotation.getMedia().id === _mediaId;
@@ -140,8 +140,9 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         _list = _list.searchByTextFields(this.searchString);
     }
     if (this.limit_count) {
+        /* Get the n annotations closest to current timecode */
         _list = _list.sortBy(function(_annotation) {
-            return Math.abs(_annotation.begin.getSeconds() - _currentTime);
+            return Math.abs((_annotation.begin + _annotation.end) / 2 - _currentTime);
         }).slice(0, this.limit_count)
     }
     if (this.newest_first) {

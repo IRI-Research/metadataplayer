@@ -44,35 +44,27 @@ IriSP.Widgets.Tagcloud.prototype.draw = function() {
     this.onMdpEvent("search.cleared", "onSearch");
     
     if (this.segment_annotation_type) {
-        this.onMediaEvent("timeupdate","onTimeupdate");
+        var _this = this;
+        this.source.getAnnotationsByTypeTitle(this.segment_annotation_type).forEach(function(_a) {
+            _a.on("enter", function() {
+                _this.redraw(_a.begin, _a.end);
+            })
+        });
     } else {
         this.redraw();
     }
 }
 
-IriSP.Widgets.Tagcloud.prototype.onTimeupdate = function(_time) {
-    var _list = this.source.getAnnotationsByTypeTitle(this.segment_annotation_type).filter(function(_annotation) {
-            return _annotation.begin <= _time && _annotation.end > _time;
-        });
-    if (_list.length) {
-        if (_list[0].begin !== this.begin_time || _list[0].end !== this.end_time) {
-            this.begin_time = _list[0].begin;
-            this.end_time = _list[0].end;
-            this.redraw();
-        }
-    }
-}
-
-IriSP.Widgets.Tagcloud.prototype.redraw = function() {
+IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
     var _urlRegExp = /https?:\/\/[0-9a-zA-Z\.%\/-_]+/g,
         _regexpword = /[^\s\.&;,'"!\?\d\(\)\+\[\]\\\…\-«»:\/]{3,}/g,
         _words = {},
         _this = this,
         _annotations = this.getWidgetAnnotations();
         
-    if (typeof this.begin_time !== "undefined" && typeof this.end_time !== "undefined") {
+    if (typeof _from !== "undefined" && typeof _to !== "undefined") {
         _annotations = _annotations.filter(function(_annotation) {
-            return _annotation.begin >= _this.begin_time && _annotation.end <= _this.end_time;
+            return _annotation.begin >= _from && _annotation.end <= _to;
         })
     }
     

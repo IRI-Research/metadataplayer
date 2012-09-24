@@ -50,11 +50,6 @@
             { type: "Controller" },
             { type: "Polemic" },
             { type: "Segments" },
-            { type: "Slice" },
-            {
-                type: "Arrow",
-                base_height: 4
-            },
             { type: "Annotation" },
             {
                 type: "CreateAnnotation",
@@ -75,9 +70,8 @@
                 type: "AnnotationsList",
                 container: "AnnotationsListContainer",
                 default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png",
-                ajax_url: "/pf/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}",
-                ajax_granularity : 300000,
-                default_thumbnail : "http://capsicum//pf/static/site/ldt/css/imgs/video_sequence.png"
+                //ajax_url: "/pf/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}",
+                //ajax_granularity : 300000
             },
             { type: "Mediafragment"}
         ]

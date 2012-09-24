@@ -64,6 +64,7 @@ var _config = {
     widgets: [
         {
             type: "MashupPlayer",
+//            split_screen: true,
             url_transform: function(_url) {
                 if (_canPlayMp4 == "maybe" || _canPlayMp4 == "probably") {
                     return _url.replace(/\.webm$/i,'.mp4');
@@ -79,7 +80,6 @@ var _config = {
             type: "Segments",
             annotation_type: false
         },
-        { type: "Arrow" },
         {
             type: "Annotation",
             annotation_type: false

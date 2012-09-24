@@ -1,7 +1,7 @@
 /* Slider Widget */
 
 .Ldt-Slice {
-    border-radius: 0; border: none; padding: 0; margin: 2px 0 12px; background: #B6B8B8; height: 8px;
+    border-radius: 0; border: none; padding: 0; margin: 12px 0 12px; background: #B6B8B8; height: 8px;
 }
 
 .Ldt-Slice .ui-slider-handle {

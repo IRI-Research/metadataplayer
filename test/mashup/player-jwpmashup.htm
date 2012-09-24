@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="colgauche">
-                <h2>Mon HashCut (ne fonctionne pas avec Firefox)</h2>
+                <h2>Mon HashCut, avec des instances de Jw Player</h2>
                 <hr />
                 <div id="LdtPlayer"></div>
             </div>
@@ -47,12 +47,14 @@
             </div>
         </div>
     <script type="text/javascript">
-
+    
 IriSP.libFiles.defaultDir = "../libs/";
 IriSP.widgetsDir = "../metadataplayer";
 IriSP.language = 'fr';
 var _metadata = {
-    url: 'bab_files/mashup-local-html.json',
+    url: 'bab_files/mashup.json',
+//    url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/b2754186-a0c9-11e0-b8bd-00145ea49a02?callback=?',
+//    url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/5afd8bbe-9b75-11e1-9e5d-00145ea4a2be?callback=?'
     format: 'ldt'
 };
 var _config = {
@@ -63,7 +65,23 @@ var _config = {
     },
     css : '../metadataplayer/LdtPlayer-core.css',
     widgets: [
-        { type: "MashupPlayer" },
+        {
+            type: "MashupPlayer",
+            player_type: "JwpPlayer",
+            player_options: {
+                live: true,
+                provider: "rtmp",
+                streamer: function(_url) {
+                    var _matches = _url.match(/^[^\/]+\/\/[^\/]+\/[^\/]+\//);
+                    if (_matches) {
+                        return _matches[0];
+                    } else {
+                        return _url;
+                    }
+                }
+            },
+//            split_screen: true
+        },
         { type: "Slider" },
         { type: "Controller" },
         {
@@ -75,15 +93,20 @@ var _config = {
             annotation_type: false
         },
         {
+            type: "Tagger",
+            api_endpoint: "../post-test.php",
+            tags: ["actif","amour","bonheur","captif","charité","désir","dieu","doute","famille","idéal","internationale","passif","patrie","peur","politique","président","spleen","travail"]
+        },
+        {
             type: "MediaList",
             container: "mediaList"
         },
         {
             type: "AnnotationsList",
             container: "annotationList",
-            ajax_url: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?",
-            ajax_granularity: 30000,
-            limit_count: 3
+            //ajax_url: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?",
+            //ajax_granularity: 30000,
+            //limit_count: 3
         },
         { type: "Mediafragment" }
     ]

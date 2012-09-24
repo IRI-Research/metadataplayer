@@ -1,4 +1,4 @@
-/* TODO: Add Social Network Sharing, Finish Current Timecode Sync & Arrow Takeover */
+/* TODO: Add Social Network Sharing */
 
 IriSP.Widgets.CreateAnnotation = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
@@ -11,8 +11,8 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     show_creator_field : true,
     start_visible : true,
     always_visible : false,
-    sync_on_slice_widget : true, /* If false, syncs on current timecode */
-    takeover_arrow : false,
+    show_slice : true,
+    show_arrow : true,
     minimize_annotation_widget : true,
     creator_name : "",
     creator_avatar : "",
@@ -37,6 +37,7 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
         background_color: "#f0e000",
         text_color: "#000000"
     }],
+    slice_annotation_type: "chap",
     annotation_type: "Contributions",
     api_serializer: "ldt_annotate",
     api_endpoint_template: "",
@@ -91,12 +92,14 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.template =
-    '<div class="Ldt-CreateAnnotation"><div class="Ldt-CreateAnnotation-Inner">'
+    '{{#show_slice}}<div class="Ldt-CreateAnnotation-Slice"></div>{{/show_slice}}'
+    + '{{^show_slice}}{{#show_arrow}}<div class="Ldt-CreateAnnotation-Arrow"></div>{{/show_arrow}}{{/show_slice}}'
+    + '<div class="Ldt-CreateAnnotation"><div class="Ldt-CreateAnnotation-Inner">'
     + '<form class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Main">'
     + '<h3><span class="Ldt-CreateAnnotation-h3Left">{{#show_title_field}}<input class="Ldt-CreateAnnotation-Title" placeholder="{{l10n.type_title}}" />{{/show_title_field}}'
     + '{{^show_title_field}}<span class="Ldt-CreateAnnotation-NoTitle">{{l10n.no_title}} </span>{{/show_title_field}}'
-    + ' <span class="Ldt-CreateAnnotation-Times">{{#sync_on_slice_widget}}{{l10n.from_time}} {{/sync_on_slice_widget}}{{^sync_on_slice_widget}}{{l10n.at_time}} {{/sync_on_slice_widget}} <span class="Ldt-CreateAnnotation-Begin">00:00</span>'
-    + '{{#sync_on_slice_widget}} {{l10n.to_time}} <span class="Ldt-CreateAnnotation-End">00:00</span>{{/sync_on_slice_widget}}</span></span>'
+    + ' <span class="Ldt-CreateAnnotation-Times">{{#show_slice}}{{l10n.from_time}} {{/show_slice}}{{^show_slice}}{{l10n.at_time}} {{/show_slice}} <span class="Ldt-CreateAnnotation-Begin">00:00</span>'
+    + '{{#show_slice}} {{l10n.to_time}} <span class="Ldt-CreateAnnotation-End">00:00</span>{{/show_slice}}</span></span>'
     + '{{#show_creator_field}}{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator" value="{{creator_name}}" /></h3>{{/show_creator_field}}'
     + '<textarea class="Ldt-CreateAnnotation-Description" placeholder="{{l10n.type_description}}"></textarea>'
     + '<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>'
@@ -138,6 +141,35 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
         /* We have to use the map function because Mustache doesn't like our tags object */
     }
     this.renderTemplate();
+    if (this.show_slice) {
+        this.insertSubwidget(
+            this.$.find(".Ldt-CreateAnnotation-Slice"),
+            {
+                type: "Slice",
+                show_arrow: this.show_arrow,
+                annotation_type: this.slice_annotation_type,
+                onBoundsChanged: function(_from, _to) {
+                    _this.begin = new IriSP.Model.Time(_from || 0);
+                    _this.end = new IriSP.Model.Time(_to || 0);
+                    _this.$.find(".Ldt-CreateAnnotation-Begin").html(_this.begin.toString());
+                    _this.$.find(".Ldt-CreateAnnotation-End").html(_this.end.toString());
+                }
+            },
+            "slice"
+        );
+    } else {
+        if (this.show_arrow) {
+            this.insertSubwidget(this.$.find(".Ldt-CreateAnnotation-Arrow"), {type: "Arrow"},"arrow");
+        }
+        this.onMediaEvent("timeupdate", function(_time) {
+            _this.begin = new IriSP.Model.Time(_time || 0);
+            _this.end = new IriSP.Model.Time(_time || 0);
+            _this.$.find(".Ldt-CreateAnnotation-Begin").html(_this.begin.toString());
+            if (_this.arrow) {
+                _this.arrow.moveToTime(_time);
+            }
+        });
+    }
     this.$.find(".Ldt-CreateAnnotation-Close").click(function() {
         _this.close_after_send
         ? _this.hide()
@@ -164,7 +196,6 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
     }
     
     this.onMdpEvent("CreateAnnotation.toggle","toggle");
-    this.onMdpEvent("Slice.boundsChanged","onBoundsChanged");
     this.begin = new IriSP.Model.Time();
     this.end = this.source.getDuration();
     this.$.find("form").submit(this.functionWrapper("onSubmit"));
@@ -190,7 +221,6 @@ IriSP.Widgets.CreateAnnotation.prototype.show = function() {
     if (this.minimize_annotation_widget) {
         this.player.trigger("Annotation.minimize");
     }
-    this.player.trigger("Slice.show");
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.hide = function() {
@@ -200,7 +230,6 @@ IriSP.Widgets.CreateAnnotation.prototype.hide = function() {
         if (this.minimize_annotation_widget) {
             this.player.trigger("Annotation.maximize");
         }
-        this.player.trigger("Slice.hide");
     }
 }
 
@@ -212,13 +241,6 @@ IriSP.Widgets.CreateAnnotation.prototype.toggle = function() {
             this.show();
         }
     }
-}
-
-IriSP.Widgets.CreateAnnotation.prototype.onBoundsChanged = function(_values) {
-    this.begin = new IriSP.Model.Time(_values[0] || 0);
-    this.end = new IriSP.Model.Time(_values[1] || 0);
-    this.$.find(".Ldt-CreateAnnotation-Begin").html(this.begin.toString());
-    this.$.find(".Ldt-CreateAnnotation-End").html(this.end.toString());
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.addKeyword = function(_keyword) {

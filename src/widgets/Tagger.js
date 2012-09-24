@@ -26,8 +26,8 @@ IriSP.Widgets.Tagger.prototype.messages = {
 }
 
 IriSP.Widgets.Tagger.prototype.template =
-    '<form class="Ldt-Tagger"><input class="Ldt-Tagger-Input" placeholder="{{l10n.add_a_tag}}" />'
-    + '<input class="Ldt-Tagger-Submit" type="submit" value="{{l10n.submit}}" /></form>';
+    '<div class="Ldt-Tagger"><form class="Ldt-Tagger-Inner"><input class="Ldt-Tagger-Input" placeholder="{{l10n.add_a_tag}}" />'
+    + '<input class="Ldt-Tagger-Submit" type="submit" value="{{l10n.submit}}" /></form></div>';
 
 IriSP.Widgets.Tagger.prototype.draw = function() {
     this.renderTemplate();
@@ -39,7 +39,7 @@ IriSP.Widgets.Tagger.prototype.draw = function() {
     });
     if (this.pause_on_write) {
         _input.keyup(function() {
-            _this.player.popcorn.pause();
+            _this.media.pause();
         });
     }
     this.$.find(".Ldt-Tagger").submit(function() {
@@ -72,7 +72,7 @@ IriSP.Widgets.Tagger.prototype.draw = function() {
              * Nous remplissons les données de l'annotation générée à la volée
              * ATTENTION: Si nous sommes sur un MASHUP, ces éléments doivent se référer AU MEDIA D'ORIGINE
              * */
-            var _now = 1000*_this.player.popcorn.currentTime(),
+            var _now = _this.media.getCurrentTime(),
                 _pilotAnnotation = null;
             if (_this.source.currentMedia.elementType == "mashup") {
                 /* Si c'est un mashup, on récupère l'annotation d'origine pour caler le temps */
@@ -126,8 +126,8 @@ IriSP.Widgets.Tagger.prototype.draw = function() {
                     _export.deSerialize(_data);
                     /* On récupère les données réimportées dans l'espace global des données */
                     _this.source.merge(_export);
-                    if (_this.pause_on_write && _this.player.popcorn.media.paused) {
-                        _this.player.popcorn.play();
+                    if (_this.pause_on_write && _this.media.getPaused()) {
+                        _this.media.play();
                     }
                     /* On force le rafraîchissement du widget AnnotationsList */
                     _this.player.trigger("AnnotationsList.refresh");

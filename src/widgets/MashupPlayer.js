@@ -9,6 +9,7 @@ IriSP.Widgets.MashupPlayer.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.MashupPlayer.prototype.defaults = {
     aspect_ratio: 14/9,
+    split_screen: false,
     player_type: "PopcornPlayer"
 }
 
@@ -44,7 +45,9 @@ IriSP.Widgets.MashupPlayer.prototype.draw = function() {
             
             for (var _i = 0; _i < _mashup.medias.length; _i++) {
                 if (_mashup.medias[_i].id !== _currentMedia.id) {
-                    _mashup.medias[_i].hide();
+                    if (!_this.split_screen) {
+                        _mashup.medias[_i].hide();
+                    }
                     _mashup.medias[_i].pause();
                 } else {
                     _mashup.medias[_i].show();
@@ -70,12 +73,12 @@ IriSP.Widgets.MashupPlayer.prototype.draw = function() {
     //        console.log("changeCurrentAnnotation called, but segment hasn't changed");
         }
 
-        _currentMedia.setCurrentTime( _timecode + _timedelta);
-        _mashup.trigger("timeupdate", new IriSP.Model.Time(_timecode));
-
         if (!_pauseState) {
             _currentMedia.play();
         }
+        _currentMedia.setCurrentTime( _timecode + _timedelta);
+        _mashup.trigger("timeupdate", new IriSP.Model.Time(_timecode));
+
     }
     
     if (!this.height) {
@@ -84,27 +87,32 @@ IriSP.Widgets.MashupPlayer.prototype.draw = function() {
             height: this.height
         });
     }
+    
+    var _grid = Math.ceil(Math.sqrt(_mashup.medias.length)),
+        _width = (this.split_screen ? this.width / _grid : this.width),
+        _height = (this.split_screen ? this.height / _grid : this.height)
 
-    IriSP._(_mashup.medias).each(function(_media) {
-        var _el = IriSP.jQuery('<div>');
+    IriSP._(_mashup.medias).each(function(_media, _key) {
+        var _el = IriSP.jQuery('<div class="Ldt-MashupPlayer-Media"><div class="Ldt-MashupPlayer-Subwidget"></div></div>');
         _el.css({
             position: "absolute",
-            top: 0,
-            left: 0,
-            height: _this.height,
-            width: _this.width
+            top: (_this.split_screen ? _height * Math.floor(_key / _grid) : 0),
+            left: (_this.split_screen ? _width * (_key % _grid) : 0),
+            height: _height,
+            width: _width,
+            display: (_this.split_screen ? "block" : "none")
         });
         _this.$.append(_el);
         
         _this.insertSubwidget(
-            _el,
-            {
+            _el.find(".Ldt-MashupPlayer-Subwidget"),
+            IriSP._({
                 type: _this.player_type,
                 media_id: _media.id,
-                height: _this.height,
-                width: _this.width,
+                height: _height,
+                width: _width,
                 url_transform: _this.url_transform
-            }
+            }).extend(_this.player_options)
         );
         
         _media.loadedMetadata = false;

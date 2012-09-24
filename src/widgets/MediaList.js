@@ -57,9 +57,16 @@ IriSP.Widgets.MediaList.prototype.onSearch = function(searchString) {
 }
 
 IriSP.Widgets.MediaList.prototype.draw = function() {
-    this.onMediaEvent("timeupdate","onTimeupdate");
     this.$.addClass("Ldt-MediaListWidget")
     this.renderTemplate();
+    var _this = this;
+    if (typeof this.media.getMedias === "function") {
+        this.media.getMedias().forEach(function(_m) {
+            _m.on("enter", function() {
+                _this.redraw(_m);
+            });
+        })
+    }
     this.redraw();
 };
 
@@ -123,14 +130,3 @@ IriSP.Widgets.MediaList.prototype.redraw = function(_media) {
         this.$.find('.Ldt-MediaList-Other').hide();
     }
 };
-
-IriSP.Widgets.MediaList.prototype.onTimeupdate = function(_time) {
-    var _media = this.source.currentMedia;
-    if (_media.elementType === "mashup") {
-        _media = _media.getMediaAtTime(_time);
-    }
-    if (typeof _media !== "undefined" && _media.id !== this.lastMedia) {
-        this.lastMedia = _media.id;
-        this.redraw(_media);
-    }
-}

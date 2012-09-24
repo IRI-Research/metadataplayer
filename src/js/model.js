@@ -446,6 +446,21 @@ IriSP.Model.Media = function(_id, _source) {
     this.elementType = 'media';
     this.duration = new IriSP.Model.Time();
     this.video = '';
+    var _this = this;
+    this.on("timeupdate", function(_time) {
+        _this.getAnnotations().filter(function(_a) {
+            return (_a.end <= _time || _a.begin > _time) && _a.playing
+        }).forEach(function(_a) {
+            _a.playing = false;
+            _a.trigger("leave");
+        });
+        _this.getAnnotations().filter(function(_a) {
+            return _a.begin <= _time && _a.end > _time && !_a.playing
+        }).forEach(function(_a) {
+            _a.playing = true;
+            _a.trigger("enter");
+        });
+    });
 }
 
 IriSP.Model.Media.prototype = new IriSP.Model.Element();
@@ -520,10 +535,11 @@ IriSP.Model.Annotation = function(_id, _source) {
     this.elementType = 'annotation';
     this.begin = new IriSP.Model.Time();
     this.end = new IriSP.Model.Time();
+    this.playing = false;
     var _this = this;
     this.on("click", function() {
         _this.getMedia().setCurrentTime(_this.begin);
-    })
+    });
 }
 
 IriSP.Model.Annotation.prototype = new IriSP.Model.Element(null);
@@ -579,6 +595,10 @@ IriSP.Model.MashedAnnotation = function(_mashup, _annotation) {
     this.title = this.annotation.title;
     this.description = this.annotation.description;
     this.color = this.annotation.color;
+    var _this = this;
+    this.on("click", function() {
+        _mashup.setCurrentTime(_this.begin);
+    });
 }
 
 IriSP.Model.MashedAnnotation.prototype = new IriSP.Model.Element(null);
@@ -611,6 +631,30 @@ IriSP.Model.Mashup = function(_id, _source) {
     this.duration = new IriSP.Model.Time();
     this.segments = new IriSP.Model.List(_source.directory);
     this.medias = new IriSP.Model.List(_source.directory);
+    var _currentMedia = null;
+    var _this = this;
+    this.on("timeupdate", function(_time) {
+        _this.getAnnotations().filter(function(_a) {
+            return (_a.end <= _time || _a.begin > _time) && _a.playing
+        }).forEach(function(_a) {
+            _a.playing = false;
+            _a.trigger("leave");
+        });
+        _this.getAnnotations().filter(function(_a) {
+            return _a.begin <= _time && _a.end > _time && !_a.playing
+        }).forEach(function(_a) {
+            _a.playing = true;
+            _a.trigger("enter");
+            var _m = _a.getMedia();
+            if (_m !== _currentMedia) {
+                if (_currentMedia) {
+                    _currentMedia.trigger("leave");
+                }
+                _m.trigger("enter");
+                _currentMedia = _m;
+            }
+        });
+    });
 }
 
 IriSP.Model.Mashup.prototype = new IriSP.Model.Element();

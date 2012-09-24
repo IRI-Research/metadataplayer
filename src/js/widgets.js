@@ -97,7 +97,7 @@ IriSP.Widgets.Widget.prototype.functionWrapper = function(_name) {
             return _function.apply(_this, Array.prototype.slice.call(arguments, 0));
         }
     } else {
-        console.log("Error, Unknown function IriSP.Widgets" + this.type + "." + _name)
+        console.log("Error, Unknown function IriSP.Widgets." + this.type + "." + _name)
     }
 }
 

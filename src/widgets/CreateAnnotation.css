@@ -11,9 +11,7 @@
 }
 
 .Ldt-CreateAnnotation-Inner {
-    background: url(img/pinstripe.png);
-    padding: 5px;
-    margin: 0;
+    background: url(img/pinstripe.png); padding: 5px; margin: 0; position: relative;
 }
 
 .Ldt-CreateAnnotation-Inner h3 {

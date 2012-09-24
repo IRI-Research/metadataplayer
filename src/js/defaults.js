@@ -55,6 +55,12 @@ IriSP.widgetsRequirements = {
         noCss: true,
         requires: [ "swfObject" ]
     },
+    AutoPlayer: {
+        noCss: true
+    },
+    MashupPlayer: {
+        noCss: true
+    },
     Sparkline: {
         noCss: true,
         requires: [ "raphael" ]

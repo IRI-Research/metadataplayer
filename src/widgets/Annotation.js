@@ -27,7 +27,8 @@ IriSP.Widgets.Annotation.prototype.messages = {
 }
 
 IriSP.Widgets.Annotation.prototype.template =
-    '<div class="Ldt-Annotation-Widget {{#show_top_border}}Ldt-Annotation-ShowTop{{/show_top_border}}">'
+    '{{#show_arrow}}<div class="Ldt-Annotation-Arrow"></div>{{/show_arrow}}'
+    + '<div class="Ldt-Annotation-Widget {{^show_arrow}}Ldt-Annotation-ShowTop{{/show_arrow}}">'
     + '<div class="Ldt-Annotation-Inner Ldt-Annotation-Empty{{#start_minimized}} Ldt-Annotation-Minimized{{/start_minimized}}">'
     + '<div class="Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-MaxMinButton"></div>'
     + '<div class="Ldt-Annotation-Social Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty"></div>'
@@ -43,41 +44,103 @@ IriSP.Widgets.Annotation.prototype.template =
 
 IriSP.Widgets.Annotation.prototype.defaults = {
     annotation_type : "chap",
-    start_minimized: true,
-    show_top_border : false,
+    start_minimized: false,
+    show_arrow : true,
     site_name : "Lignes de Temps",
     search_on_tag_click: true
 }
 
 IriSP.Widgets.Annotation.prototype.draw = function() {
+    
+    var _this = this;
+    
+    function timeupdate(_time) {
+        var _list = _this.getWidgetAnnotationsAtTime();
+        if (!_list.length) {
+            _this.$.find(".Ldt-Annotation-Inner").addClass("Ldt-Annotation-Empty");
+            if (_this.arrow) {
+                _this.arrow.moveToTime(_time);
+            }
+            _this.bounds = [ _time, _time ];
+            _this.sendBounds();
+        }
+    }
+    
+    function drawAnnotation(_annotation) {
+        var _url = (typeof _annotation.url !== "undefined" 
+                ? _annotation.url
+                : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id)),
+            _text = _this.l10n.watching + _annotation.title + (_this.site_name ? _this.l10n.on_site + _this.site_name : ''),
+            _tags = _annotation.getTags(),
+            _tagblock = _this.$.find(".Ldt-Annotation-Tags");
+        if (_tags.length) {
+            _this.$.find(".Ldt-Annotation-Tags-Block").removeClass("Ldt-Annotation-EmptyBlock");
+            _tags.forEach(function(_tag) {
+                var _trimmedTitle =  _tag.title.replace(/(^\s+|\s+$)/g,'');
+                if (_trimmedTitle) {
+                    var _el = IriSP.jQuery('<li class="Ldt-Annotation-TagLabel"></li>').append(IriSP.jQuery('<span>').text(_trimmedTitle));
+                    _el.click(function() {
+                        if (_this.search_on_tag_click) {
+                            _this.player.trigger("search.triggeredSearch",_trimmedTitle);
+                        }
+                        _tag.trigger("click");
+                    });
+                    _tagblock.append(_el);
+                }
+            });
+        } else {
+            _this.$.find(".Ldt-Annotation-Tags-Block").addClass("Ldt-Annotation-EmptyBlock");
+        }
+        _this.$.find(".Ldt-Annotation-Title").html(_annotation.title);
+        var _desc = _annotation.description.replace(/(^\s+|\s+$)/g,'');
+        if (_desc) {
+            _this.$.find(".Ldt-Annotation-Description-Block").removeClass("Ldt-Annotation-EmptyBlock");
+            _this.$.find(".Ldt-Annotation-Description").html(_desc);
+        } else {
+            _this.$.find(".Ldt-Annotation-Description-Block").addClass("Ldt-Annotation-EmptyBlock");
+        }
+        _this.$.find(".Ldt-Annotation-Begin").html(_annotation.begin.toString());
+        _this.$.find(".Ldt-Annotation-End").html(_annotation.end.toString());
+        if (_annotation.elementType === "mashedAnnotation") {
+            _this.$.find('.Ldt-Annotation-Inner').addClass("Ldt-Annotation-isMashup");
+            _this.$.find(".Ldt-Annotation-MashupMedia").html(_annotation.getMedia().title);
+            _this.$.find(".Ldt-Annotation-MashupBegin").html(_annotation.annotation.begin.toString());
+            _this.$.find(".Ldt-Annotation-MashupEnd").html(_annotation.annotation.end.toString());
+        } else {
+            _this.$.find('.Ldt-Annotation-Inner').removeClass("Ldt-Annotation-isMashup");
+        }
+        if (typeof _this.socialWidget !== "undefined") {
+            _this.socialWidget.updateUrls(_url, _text);
+        } else {
+            setTimeout(function() {
+                if (typeof _this.socialWidget !== "undefined") {
+                    _this.socialWidget.updateUrls(_url, _text);
+                }
+            },800);
+        }
+        _this.$.find(".Ldt-Annotation-Inner").removeClass("Ldt-Annotation-Empty");
+        _this.bounds = [ _annotation.begin, _annotation.end ];
+        if (_this.arrow) {
+            _this.arrow.moveToTime((_annotation.begin + _annotation.end)/2);
+        }
+        _this.sendBounds();
+    }
+    
     this.renderTemplate();
     this.insertSubwidget(this.$.find(".Ldt-Annotation-Social"), { type: "Social" }, "socialWidget");
-    this.onMediaEvent("timeupdate","onTimeupdate");
+    this.insertSubwidget(this.$.find(".Ldt-Annotation-Arrow"), { type: "Arrow" }, "arrow");
+    this.onMediaEvent("timeupdate",timeupdate);
     this.onMdpEvent("Annotation.hide","hide");
     this.onMdpEvent("Annotation.show","show");
     this.onMdpEvent("Annotation.minimize","minimize");
     this.onMdpEvent("Annotation.maximize","maximize");
     this.onMdpEvent("Annotation.getBounds","sendBounds");
     this.$.find(".Ldt-Annotation-MaxMinButton").click(this.functionWrapper("toggleSize"));
-    this.onTimeupdate();
-}
-
-IriSP.Widgets.Annotation.prototype.onTimeupdate = function(_time) {
-    var _list = this.getWidgetAnnotationsAtTime();
-    if (_list.length) {
-        if (_list[0].id !== this.lastAnnotation) {
-            this.drawAnnotation(_list[0]);
-            this.bounds = [ _list[0].begin.valueOf(), _list[0].end.valueOf() ];
-        }
-        this.player.trigger("Arrow.updatePosition",{widget: this.type, time: ( _list[0].begin + _list[0].end ) / 2});
-    }
-    else {
-        this.lastAnnotation = false;
-        this.$.find(".Ldt-Annotation-Inner").addClass("Ldt-Annotation-Empty");
-        this.player.trigger("Arrow.updatePosition",{widget: this.type, time: _time});
-        this.bounds = [ _time, _time ];
-    }
-    this.sendBounds();
+    this.getWidgetAnnotations().forEach(function(_a) {
+        _a.on("enter", function() {
+            drawAnnotation(_a)
+        });
+    });
 }
 
 IriSP.Widgets.Annotation.prototype.sendBounds = function() {
@@ -86,60 +149,7 @@ IriSP.Widgets.Annotation.prototype.sendBounds = function() {
 
 IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
     this.lastAnnotation = _annotation.id;
-    var _url = (typeof _annotation.url !== "undefined" 
-            ? _annotation.url
-            : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id)),
-        _text = this.l10n.watching + _annotation.title + (this.site_name ? this.l10n.on_site + this.site_name : ''),
-        _tags = _annotation.getTags(),
-        _tagblock = this.$.find(".Ldt-Annotation-Tags"),
-        _this = this;
-    _tagblock.empty();
-    if (_tags.length) {
-        this.$.find(".Ldt-Annotation-Tags-Block").removeClass("Ldt-Annotation-EmptyBlock");
-        _tags.forEach(function(_tag) {
-            var _trimmedTitle =  _tag.title.replace(/(^\s+|\s+$)/g,'');
-            if (_trimmedTitle) {
-                var _el = IriSP.jQuery('<li class="Ldt-Annotation-TagLabel"></li>').append(IriSP.jQuery('<span>').text(_trimmedTitle));
-                _el.click(function() {
-                    if (_this.search_on_tag_click) {
-                        _this.player.trigger("search.triggeredSearch",_trimmedTitle);
-                    }
-                    _tag.trigger("click");
-                });
-                _tagblock.append(_el);
-            }
-        });
-    } else {
-        this.$.find(".Ldt-Annotation-Tags-Block").addClass("Ldt-Annotation-EmptyBlock");
-    }
-    this.$.find(".Ldt-Annotation-Title").html(_annotation.title);
-    var _desc = _annotation.description.replace(/(^\s+|\s+$)/g,'');
-    if (_desc) {
-        this.$.find(".Ldt-Annotation-Description-Block").removeClass("Ldt-Annotation-EmptyBlock");
-        this.$.find(".Ldt-Annotation-Description").html(_desc);
-    } else {
-        this.$.find(".Ldt-Annotation-Description-Block").addClass("Ldt-Annotation-EmptyBlock");
-    }
-    this.$.find(".Ldt-Annotation-Begin").html(_annotation.begin.toString());
-    this.$.find(".Ldt-Annotation-End").html(_annotation.end.toString());
-    if (_annotation.elementType === "mashedAnnotation") {
-        this.$.find('.Ldt-Annotation-Inner').addClass("Ldt-Annotation-isMashup");
-        this.$.find(".Ldt-Annotation-MashupMedia").html(_annotation.getMedia().title);
-        this.$.find(".Ldt-Annotation-MashupBegin").html(_annotation.annotation.begin.toString());
-        this.$.find(".Ldt-Annotation-MashupEnd").html(_annotation.annotation.end.toString());
-    } else {
-        this.$.find('.Ldt-Annotation-Inner').removeClass("Ldt-Annotation-isMashup");
-    }
-    if (typeof this.socialWidget !== "undefined") {
-        this.socialWidget.updateUrls(_url, _text);
-    } else {
-        setTimeout(function() {
-            if (typeof _this.socialWidget !== "undefined") {
-                _this.socialWidget.updateUrls(_url, _text);
-            }
-        },800);
-    }
-    this.$.find(".Ldt-Annotation-Inner").removeClass("Ldt-Annotation-Empty");
+
 }
 
 IriSP.Widgets.Annotation.prototype.hide = function() {
