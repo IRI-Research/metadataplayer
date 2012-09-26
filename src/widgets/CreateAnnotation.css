@@ -84,11 +84,11 @@
     border: 1px solid #bbbbbb;
 }
 
-.Ldt-CreateAnnotation-Tags, .Ldt-CreateAnnotation-Polemics {
-    width: 520px;
+.Ldt-CreateAnnotation-RecBlock {
+    width: 220px; float: left;
 }
 
-.Ldt-CreateAnnotation-TagTitle, .Ldt-CreateAnnotation-PolemicTitle {
+.Ldt-CreateAnnotation-TagTitle, .Ldt-CreateAnnotation-PolemicTitle, .Ldt-CreateAnnotation-RecLabel {
     display: block; margin: 5px 0 2px; font-size: 12px;
 }
 

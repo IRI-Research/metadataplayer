@@ -25,8 +25,9 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     foreign_url : "",
     annotation_type : false,
     refresh_interval : 0,
-    limit_count : 10,
+    limit_count : 20,
     newest_first : false,
+    show_audio: true,
     polemics : [{
         keyword: "++",
         background_color: "#c9ecc6"
@@ -42,8 +43,20 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     }]
 };
 
+IriSP.Widgets.AnnotationsList.prototype.messages = {
+    en: {
+        voice_annotation: "Voice Annotation",
+        now_playing: "Now playing..."
+    },
+    fr: {
+        voice_annotation: "Annotation Vocale",
+        now_playing: "Lecture en cours..."
+    }
+}
+
 IriSP.Widgets.AnnotationsList.prototype.template =
     '<div class="Ldt-AnnotationsListWidget">'
+    + '{{#show_audio}}<div class="Ldt-AnnotationsList-Audio"></div>{{/show_audio}}'
     + '<ul class="Ldt-AnnotationsList-ul">'
     + '</ul>'
     + '</div>';
@@ -71,6 +84,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '{{/tags}}'
     + '</ul>'
     + '{{/tags.length}}'
+    + '{{#audio}}<div class="Ldt-AnnotationsList-Play" data-audio={{audio}}>{{l10n.voice_annotation}}</div>{{/audio}}'
     + '</li>';
 
 IriSP.Widgets.AnnotationsList.prototype.onSearch = function(searchString) {
@@ -205,7 +219,9 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 thumbnail : typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail,
                 url : _url,
                 tags : _annotation.getTagTexts(),
-                specific_style : (typeof _bgcolor !== "undefined" ? "background-color: " + _bgcolor : "")
+                specific_style : (typeof _bgcolor !== "undefined" ? "background-color: " + _bgcolor : ""),
+                audio : (_this.show_audio && _annotation.audio ? _annotation.audio.href : undefined),
+                l10n: _this.l10n
             };
             var _html = Mustache.to_html(_this.annotationTemplate, _data);
             var _el = IriSP.jQuery(_html);
@@ -237,7 +253,20 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
     
         this.$.find('.Ldt-AnnotationsList-Tag-Li').click(function() {
             _this.player.trigger("search.triggeredSearch", IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
-        })
+        });
+        
+        this.$.find(".Ldt-AnnotationsList-Play").click(function() {
+            var _el = IriSP.jQuery(this),
+                _audiofile = _el.attr("data-audio").replace(_this.rtmp_streamer,"");
+            _el.text(_this.l10n.now_playing);
+            _this.jwplayer.load({
+                file: _audiofile,
+                streamer: _this.rtmp_streamer
+            });
+            _this.jwplayer.play(true);
+            _this.media.pause();
+            _this.jw_paused_media = true;
+        });
         
         if(this.searchString) {
             var _searchRe = IriSP.Model.regexpFromTextOrArray(this.searchString);
@@ -266,14 +295,46 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     
     this.renderTemplate();
     
+    var _this = this;
+    
+    if (this.show_audio) {
+        var _tmpId = "jwplayer-" + IriSP.Model.getUID();
+        this.$.find(".Ldt-AnnotationsList-Audio").attr("id", _tmpId);
+        this.jwplayer = jwplayer(_tmpId);
+        this.jwplayer.setup({
+            flashplayer: IriSP.getLib("jwPlayerSWF"),
+            width: 1,
+            height: 1,
+            provider: "rtmp",
+            events: {
+                onIdle: function() {
+                    if (_this.jw_paused_media) {
+                        _this.jw_paused_media = false;
+                        _this.media.play();
+                    }
+                    _this.$.find(".Ldt-AnnotationsList-Play").text(_this.l10n.voice_annotation)
+                }
+            }
+        });
+        this.jw_paused_media = false;
+    }
+    
     this.list_$ = this.$.find(".Ldt-AnnotationsList-ul");
+    
     
     this.onMdpEvent("search", "onSearch");
     this.onMdpEvent("search.closed", "onSearch");
     this.onMdpEvent("search.cleared", "onSearch");
-    this.onMdpEvent("AnnotationsList.refresh","refresh");
-    
-    var _this = this;
+    this.onMdpEvent("AnnotationsList.refresh", function() {
+        if (_this.ajax_url) {
+            if (_this.mashupMode) {
+                _this.ajaxMashup();
+            } else {
+                _this.ajaxSource();
+            }
+        }
+        _this.throttledRefresh();
+    });
     
     if (this.ajax_url) {
         if (this.mashupMode) {

@@ -13,6 +13,8 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     always_visible : false,
     show_slice : true,
     show_arrow : true,
+    show_mic_record: false,
+    show_mic_play: false,
     minimize_annotation_widget : true,
     creator_name : "",
     creator_avatar : "",
@@ -99,11 +101,35 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '<h3><span class="Ldt-CreateAnnotation-h3Left">{{#show_title_field}}<input class="Ldt-CreateAnnotation-Title" placeholder="{{l10n.type_title}}" />{{/show_title_field}}'
     + '{{^show_title_field}}<span class="Ldt-CreateAnnotation-NoTitle">{{l10n.no_title}} </span>{{/show_title_field}}'
     + ' <span class="Ldt-CreateAnnotation-Times">{{#show_slice}}{{l10n.from_time}} {{/show_slice}}{{^show_slice}}{{l10n.at_time}} {{/show_slice}} <span class="Ldt-CreateAnnotation-Begin">00:00</span>'
-    + '{{#show_slice}} {{l10n.to_time}} <span class="Ldt-CreateAnnotation-End">00:00</span>{{/show_slice}}</span></span>'
+    + '{{#show_slice}} {{l10n.to_time}} <span class="Ldt-CreateAnnotation-End">{{end}}</span>{{/show_slice}}</span></span>'
     + '{{#show_creator_field}}{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator" value="{{creator_name}}" /></h3>{{/show_creator_field}}'
     + '<textarea class="Ldt-CreateAnnotation-Description" placeholder="{{l10n.type_description}}"></textarea>'
     + '<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>'
     + '<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{l10n.submit}}" />'
+    + '{{#show_mic_record}}<div class="Ldt-CreateAnnotation-RecBlock"><div class="Ldt-CreateAnnotation-RecLabel">Add voice annotation</div>'
+    + '    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="220" height="160">'
+    + '        <param name="movie" value="{{record_swf}}" />'
+    + '        <param name="quality" value="high" />'
+    + '        <param name="bgcolor" value="#ffffff" />'
+    + '        <param name="play" value="true" />'
+    + '        <param name="loop" value="true" />'
+    + '        <param name="wmode" value="transparent" />'
+    + '        <param name="scale" value="showall" />'
+    + '        <param name="menu" value="true" />'
+    + '        <param name="devicefont" value="false" />'
+    + '        <param name="salign" value="" />'
+    + '        <param name="allowScriptAccess" value="always" />'
+    + '        <param name="allowFullScreen" value="true" />'
+    + '        <param name="flashvars" value="playVisible={{show_mic_play}}">'
+    + '        <embed src="{{record_swf}}"" quality="high" bgcolor="#ffffff"'
+    + '             width="220" height="160" name="ExternalInterfaceExample" align="middle"'
+    + '             play="true" loop="false" quality="high" allowScriptAccess="always" '
+    + '             type="application/x-shockwave-flash" allowFullScreen="true" wmode="transparent" '
+    + '             flashvars="playVisible={{show_mic_play}}"'
+    + '             pluginspage="http://www.macromedia.com/go/getflashplayer">'
+    + '        </embed>'
+    + '    </object>'
+    + '</div>{{/show_mic_record}}' 
     + '{{#tags.length}}<div class="Ldt-CreateAnnotation-Tags"><div class="Ldt-CreateAnnotation-TagTitle">{{l10n.add_keywords_}}</div><ul class="Ldt-CreateAnnotation-TagList">'
     + '{{#tags}}<li class="Ldt-CreateAnnotation-TagLi" tag-id="{{id}}"><span class="Ldt-CreateAnnotation-TagButton">{{title}}</span></li>{{/tags}}</ul></div>{{/tags.length}}'
     + '{{#polemics.length}}<div class="Ldt-CreateAnnotation-Polemics"><div class="Ldt-CreateAnnotation-PolemicTitle">{{l10n.add_polemic_keywords_}}</div><ul class="Ldt-CreateAnnotation-PolemicList">'
@@ -116,6 +142,10 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     
 IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
     var _this = this;
+    
+    this.begin = new IriSP.Model.Time();
+    this.end = this.source.getDuration();
+    
     if (this.tag_titles && !this.tags) {
         this.tags = IriSP._(this.tag_titles).map(function(_tag_title) {
             var _tag,
@@ -140,7 +170,15 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
             });
         /* We have to use the map function because Mustache doesn't like our tags object */
     }
+    this.record_swf = IriSP.getLib("recordMicSwf");
     this.renderTemplate();
+    if (this.show_mic_record) {
+        this.recorder = this.$.find("embed")[0];
+        
+        window.setAudioUrl = function(_url) {
+            _this.audio_url = _url;
+        }
+    }
     if (this.show_slice) {
         this.insertSubwidget(
             this.$.find(".Ldt-CreateAnnotation-Slice"),
@@ -196,8 +234,6 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
     }
     
     this.onMdpEvent("CreateAnnotation.toggle","toggle");
-    this.begin = new IriSP.Model.Time();
-    this.end = this.source.getDuration();
     this.$.find("form").submit(this.functionWrapper("onSubmit"));
 }
 
@@ -224,6 +260,9 @@ IriSP.Widgets.CreateAnnotation.prototype.show = function() {
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.hide = function() {
+    if (this.recorder) {
+        this.recorder.stopRecord();
+    }
     if (!this.always_visible) {
         this.visible = false;
         this.$.slideUp();
@@ -301,6 +340,10 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         return;
     }
     
+    if (this.recorder) {
+        this.recorder.stopRecord();
+    }
+    
     var _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* Création d'une liste d'annotations contenant une annotation afin de l'envoyer au serveur */
         _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}), /* Création d'un objet source utilisant un sérialiseur spécifique pour l'export */
         _annotation = new IriSP.Model.Annotation(false, _export), /* Création d'une annotation dans cette source avec un ID généré à la volée (param. false) */
@@ -333,6 +376,14 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
     _annotation.description = this.$.find(".Ldt-CreateAnnotation-Description").val(); /* Champ description */
     _annotation.setTags(this.$.find(".Ldt-CreateAnnotation-TagLi.selected")
         .map(function() { return IriSP.jQuery(this).attr("tag-id")})); /*Liste des ids de tags */
+    
+    if (this.audio_url) {
+        _annotation.audio = {
+            src: "mic",
+            mimetype: "audio/mp3",
+            href: this.audio_url
+        };
+    }
     
     /* Les données créateur/date de création sont envoyées non pas dans l'annotation, mais dans le projet */
     if (this.show_creator_field) {

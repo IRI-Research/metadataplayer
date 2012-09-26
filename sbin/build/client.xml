@@ -22,7 +22,7 @@
             <!-- required file before everything else -->
             <filelist dir="../../src/js/libs" files="LAB.min.js" />
             <!-- core files -->
-            <filelist dir="../../src/js" files="init.js utils.js pop.js model.js defaults.js widgets.js" />
+            <filelist dir="../../src/js" files="init.js utils.js model.js defaults.js widgets.js" />
             <!-- serializers -->
             <fileset dir="../../src/js/serializers" casesensitive="yes">
                 <include name="**/*.js"/>

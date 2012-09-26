@@ -22,7 +22,8 @@ IriSP.libFiles = {
         paper: "paper.js",
         jqueryMousewheel: "jquery.mousewheel.min.js",
         renkanPublish: "renkan-publish.js",
-        processing: "processing-1.3.6.min.js"
+        processing: "processing-1.3.6.min.js",
+        recordMicSwf: "record_mic.swf"
     },
     locations : {
         // use to define locations outside default_dir
@@ -60,6 +61,9 @@ IriSP.widgetsRequirements = {
     },
     MashupPlayer: {
         noCss: true
+    },
+    AnnotationsList: {
+        requires: [ "jwplayer" ]
     },
     Sparkline: {
         noCss: true,
