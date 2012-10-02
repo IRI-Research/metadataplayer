@@ -1,16 +1,16 @@
-IriSP.Widgets.H264Player = function(player, config) {
+IriSP.Widgets.AdaptivePlayer = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
 };
 
-IriSP.Widgets.H264Player.prototype = new IriSP.Widgets.Widget();
+IriSP.Widgets.AdaptivePlayer.prototype = new IriSP.Widgets.Widget();
 
-IriSP.Widgets.H264Player.prototype.defaults = {
+IriSP.Widgets.AdaptivePlayer.prototype.defaults = {
     mime_type: "video/mp4",
     normal_player: "PopcornPlayer",
     fallback_player: "JwpPlayer"
 }
 
-IriSP.Widgets.H264Player.prototype.draw = function() {
+IriSP.Widgets.AdaptivePlayer.prototype.draw = function() {
     
     if (typeof this.video === "undefined") {
         this.video = this.media.video;
