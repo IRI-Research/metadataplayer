@@ -19,6 +19,10 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
         this.video = this.media.video;
     }
     
+    if (typeof this.streamer === "undefined") {
+        this.streamer = this.media.streamer;
+    }
+    
     if (typeof this.streamer === "function") {
         this.streamer = this.streamer(this.video);
     }

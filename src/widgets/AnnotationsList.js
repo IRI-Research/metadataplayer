@@ -223,8 +223,15 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 audio : (_this.show_audio && _annotation.audio && _annotation.audio.href && _annotation.audio.href != "null" ? _annotation.audio.href : undefined),
                 l10n: _this.l10n
             };
-            var _html = Mustache.to_html(_this.annotationTemplate, _data);
-            var _el = IriSP.jQuery(_html);
+            var _html = Mustache.to_html(_this.annotationTemplate, _data),
+                _el = IriSP.jQuery(_html),
+                _onselect = function() {
+                    _this.annotations_$.removeClass("selected");
+                    _el.addClass("selected");
+                },
+                _onunselect = function() {
+                    _this.annotations_$.removeClass("selected");
+                };
             _el.mouseover(function() {
                     _annotation.trigger("select");
                 })
@@ -232,13 +239,12 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     _annotation.trigger("unselect");
                 })
                 .appendTo(_this.list_$);
-            _annotation.on("select", function() {
-                _this.annotations_$.removeClass("selected");
-                _el.addClass("selected");
+            _el.on("remove", function() {
+                _annotation.off("select", _onselect);
+                _annotation.off("unselect", _onunselect);
             });
-            _annotation.on("unselect", function() {
-                _this.annotations_$.removeClass("selected");
-            });;
+            _annotation.on("select", _onselect);
+            _annotation.on("unselect", _onunselect);
         });
         
         this.annotations_$ = this.$.find('.Ldt-AnnotationsList-li');
@@ -247,7 +253,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         this.$.find('.Ldt-AnnotationsList-Tag-Li').each(function() {
             var _el = IriSP.jQuery(this);
             if (!_el.text().replace(/(^\s+|\s+$)/g,'')) {
-                _el.detach();
+                _el.remove();
             }
         });
     

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "Compiling Metadataplayer"
+
+sh ../res/ant/bin/ant -f client.xml
+
+echo "Copying to Polemic Tweet :"
+
+echo "  Copying core files and widgets"
+
+cp -R ../../test/metadataplayer/* ~/shared/tweet_live/web/res/metadataplayer
+
+echo "  Copying libs"
+
+cp -R ../../src/js/libs/* ~/shared/tweet_live/web/res/js
+

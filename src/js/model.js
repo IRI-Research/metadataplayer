@@ -267,6 +267,14 @@ IriSP.Model.List.prototype.on = function(_event, _callback) {
     this.__events[_event].push(_callback);
 }
 
+IriSP.Model.List.prototype.off = function(_event, _callback) {
+    if (typeof this.__events[_event] !== "undefined") {
+        this.__events[_event] = IriSP._(this.__events[_event]).reject(function(_fn) {
+            return _fn === _callback;
+        });
+    }
+}
+
 IriSP.Model.List.prototype.trigger = function(_event, _data) {
     var _list = this;
     IriSP._(this.__events[_event]).each(function(_callback) {
@@ -421,7 +429,7 @@ IriSP.Model.Element.prototype.getRelated = function(_elementType, _global) {
     var _this = this;
     return this.source.getList(_elementType, _global).filter(function(_el) {
         var _ref = _el[_this.elementType];
-        return _ref.isOrHasId(_this.id);
+        return _ref && _ref.isOrHasId(_this.id);
     });
 }
 
@@ -430,6 +438,14 @@ IriSP.Model.Element.prototype.on = function(_event, _callback) {
         this.__events[_event] = [];
     }
     this.__events[_event].push(_callback);
+}
+
+IriSP.Model.Element.prototype.off = function(_event, _callback) {
+    if (typeof this.__events[_event] !== "undefined") {
+        this.__events[_event] = IriSP._(this.__events[_event]).reject(function(_fn) {
+            return _fn === _callback;
+        });
+    }
 }
 
 IriSP.Model.Element.prototype.trigger = function(_event, _data) {
@@ -535,6 +551,7 @@ IriSP.Model.Annotation = function(_id, _source) {
     this.elementType = 'annotation';
     this.begin = new IriSP.Model.Time();
     this.end = new IriSP.Model.Time();
+    this.tag = new IriSP.Model.Reference(_source, []);
     this.playing = false;
     var _this = this;
     this.on("click", function() {
@@ -733,6 +750,7 @@ IriSP.Model.Mashup.prototype.setCurrentTime
 
 IriSP.Model.Source = function(_config) {
     this.status = IriSP.Model._SOURCE_STATUS_EMPTY;
+    this.elementType = "source";
     if (typeof _config !== "undefined") {
         var _this = this;
         IriSP._(_config).forEach(function(_v, _k) {
@@ -743,6 +761,8 @@ IriSP.Model.Source = function(_config) {
         this.get();
     }
 }
+
+IriSP.Model.Source.prototype = new IriSP.Model.Element();
 
 IriSP.Model.Source.prototype.addList = function(_listId, _contents) {
     if (typeof this.contents[_listId] === "undefined") {
@@ -860,7 +880,7 @@ IriSP.Model.Source.prototype.getCurrentMedia = function(_opts) {
         } else {
             var _medias = this.getMedias();
             if (_medias.length) {
-                _media = _medias[0];
+                this.currentMedia = _medias[0];
             }
         }
     }

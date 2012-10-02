@@ -35,3 +35,5 @@ syntax: regexp
 \.webm$
 syntax: regexp
 ^downloads/.+\.zip$
+syntax: regexp
+^sbin/build/compil-to-polemic-tweet\.sh$

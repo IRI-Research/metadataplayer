@@ -102,11 +102,11 @@ IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
 }
 
 IriSP.Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {
+    if (_metadataInfo.elementType === "source") {
+        return _metadataInfo;
+    }
     if (typeof _metadataInfo.serializer === "undefined" && typeof _metadataInfo.format !== "undefined") {
         _metadataInfo.serializer = IriSP.serializers[_metadataInfo.format];
-    }
-    if (typeof _metadataInfo.url === "undefined" && typeof _metadataInfo.src !== "undefined") {
-        _metadataInfo.url = _metadataInfo.src;
     }
     if (typeof _metadataInfo.url !== "undefined" && typeof _metadataInfo.serializer !== "undefined") {
         return this.sourceManager.remoteSource(_metadataInfo);
