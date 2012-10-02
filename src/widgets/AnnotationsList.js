@@ -17,7 +17,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     ajax_url : false,
     /* number of milliseconds before/after the current timecode when calling the segment API
      */
-    ajax_granularity : 300000, 
+    ajax_granularity : 600000, 
     default_thumbnail : "",
     /* URL when the annotation is not in the current project,
      * e.g. http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}
@@ -220,7 +220,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 url : _url,
                 tags : _annotation.getTagTexts(),
                 specific_style : (typeof _bgcolor !== "undefined" ? "background-color: " + _bgcolor : ""),
-                audio : (_this.show_audio && _annotation.audio ? _annotation.audio.href : undefined),
+                audio : (_this.show_audio && _annotation.audio && _annotation.audio.href && _annotation.audio.href != "null" ? _annotation.audio.href : undefined),
                 l10n: _this.l10n
             };
             var _html = Mustache.to_html(_this.annotationTemplate, _data);

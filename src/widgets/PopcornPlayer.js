@@ -46,6 +46,9 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
         }
         _params.controls = 0;
         _params.modestbranding = 1;
+        if (this.autostart || this.autoplay) {
+            _params.autoplay = 1;
+        }
         _url = _urlparts[0] + '?' + IriSP.jQuery.param(_params);
         
         var _popcorn = Popcorn.youtube(this.container, _url);
@@ -75,7 +78,11 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
         }
         this.$.html(_videoEl);
         var _popcorn = Popcorn("#" + _tmpId);
+        if (this.autostart || this.autoplay) {
+            _popcorn.autoplay(true);
+        }
     }
+    
 
     // Binding functions to Popcorn
     

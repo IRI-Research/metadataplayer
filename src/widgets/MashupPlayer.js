@@ -10,13 +10,14 @@ IriSP.Widgets.MashupPlayer.prototype = new IriSP.Widgets.Widget();
 IriSP.Widgets.MashupPlayer.prototype.defaults = {
     aspect_ratio: 14/9,
     split_screen: false,
-    player_type: "PopcornPlayer"
+    player_type: "PopcornPlayer",
+    background: "#000000"
 }
 
 IriSP.Widgets.MashupPlayer.prototype.draw = function() {
     var _this = this,
         _mashup = this.media,
-        _pauseState = true,
+        _pauseState = (!this.autostart && !this.autoplay),
         _currentMedia = null,
         _currentAnnotation = null,
         _segmentBegin,
@@ -87,6 +88,10 @@ IriSP.Widgets.MashupPlayer.prototype.draw = function() {
             height: this.height
         });
     }
+    
+    this.$.css({
+        background: this.background
+    });
     
     var _grid = Math.ceil(Math.sqrt(_mashup.medias.length)),
         _width = (this.split_screen ? this.width / _grid : this.width),
@@ -210,6 +215,6 @@ IriSP.Widgets.MashupPlayer.prototype.draw = function() {
         }
     }
     
-    changeCurrentAnnotation();
+    _mashup.on("loadedmetadata", changeCurrentAnnotation);
    
 }
