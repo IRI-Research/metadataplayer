@@ -48,46 +48,47 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
         _pauseState = false;
         this.media.trigger("play");
     }
+
     // Binding functions to jwplayer
 
-    this.media.getCurrentTime = function() {
-        return new IriSP.Model.Time(1000*_player.getPosition() || 0);
-    }
-    this.media.getVolume = function() {
-        return _player.getVolume() / 100;
-    }
-    this.media.getPaused = function() {
-        return _pauseState;
-    }
-    this.media.getMuted = function() {
-        return _player.getMute();
-    }
-    this.media.setCurrentTime = function(_milliseconds) {
+    var _media = this.media;
+    
+    _media.on("setcurrenttime", function(_milliseconds) {
         _seekPause = _pauseState;
-        return _player.seek(_milliseconds / 1000);
-    }
-    this.media.setVolume = function(_vol) {
-        return _player.setVolume(Math.floor(_vol*100));
-    }
-    this.media.mute = function() {
-        return _player.setMute(true);
-    }
-    this.media.unmute = function() {
-        return _player.setMute(false);
-    }
-    this.media.play = function() {
-        return _player.play(true);
-    }
-    this.media.pause = function() {
-        return _player.pause(true);
-    }
+        _player.seek(_milliseconds / 1000);
+    });
+    
+    _media.on("setvolume", function(_vol) {
+        _player.setVolume(Math.floor(_vol*100));
+        _media.volume = _vol;
+    });
+    
+    _media.on("setmuted", function(_muted) {
+        _player.setMute(_muted);
+        _media.muted = _muted;
+    });
+    
+    _media.on("setplay", function() {
+        _player.play(true);
+        _media.paused = false;
+    });
+    
+    _media.on("setpause", function() {
+        _player.pause(true);
+        _media.paused = true;
+    });
     
     // Binding jwplater events to media
     
-    var _media = this.media;
+    function getVolume() {
+        _media.muted = _player.getMute();
+        _media.volume = _player.getVolume() / 100;
+    }
     
     _opts.events = {
         onReady: function() {
+            getVolume();
+            _media.currentTime = new IriSP.Model.Time(1000*_player.getPosition() || 0);
             _media.trigger("loadedmetadata");
         },
         onTime: function(_progress) {
@@ -114,6 +115,14 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
         },
         onSeek: function() {
             _media.trigger("seeked");
+        },
+        onMute: function(_event) {
+            _media.muted = _event.mute;
+            _media.trigger("volumechange");
+        },
+        onVolume: function(_event) {
+            _media.volume = _event.volume / 100;
+            _media.trigger("volumechange");
         }
     }
     _player.setup(_opts);

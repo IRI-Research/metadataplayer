@@ -83,57 +83,64 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
         }
     }
     
-
+    var _media = this.media;
+    
     // Binding functions to Popcorn
     
-    this.media.getCurrentTime = function() {
-        return new IriSP.Model.Time(1000*_popcorn.currentTime());
-    }
-    this.media.getVolume = function() {
-        return _popcorn.volume();
-    }
-    this.media.getPaused = function() {
-        return _popcorn.media.paused;
-    }
-    this.media.getMuted = function() {
-        return _popcorn.muted();
-    }
-    this.media.setCurrentTime = function(_milliseconds) {
-        return _popcorn.currentTime(_milliseconds / 1000);
-    }
-    this.media.setVolume = function(_vol) {
-        return _popcorn.volume(_vol);
-    }
-    this.media.mute = function() {
-        return _popcorn.muted(true);
-    }
-    this.media.unmute = function() {
-        return _popcorn.muted(false);
-    }
-    this.media.play = function() {
-        return _popcorn.play();
-    }
-    this.media.pause = function() {
-        return _popcorn.pause();
-    }
+    _media.on("setcurrenttime", function(_milliseconds) {
+        _popcorn.currentTime(_milliseconds / 1000);
+    });
+    
+    _media.on("setvolume", function(_vol) {
+        _popcorn.volume(_vol);
+        _media.volume = _vol;
+    });
+    
+    _media.on("setmuted", function(_muted) {
+        _popcorn.muted(_muted);
+        _media.muted = _muted;
+    });
+    
+    _media.on("setplay", function() {
+        _popcorn.play();
+    });
+    
+    _media.on("setpause", function() {
+        _popcorn.pause();
+    });
     
     // Binding Popcorn events to media
     
-    var _media = this.media;
-    _popcorn.on("timeupdate", function() {
-        _media.trigger("timeupdate", _media.getCurrentTime());
-    });
-    
-    function simpleEventBind(_eventname) {
-        _popcorn.on(_eventname, function() {
-            _media.trigger(_eventname);
-        });
+    function getVolume() {
+        _media.muted = _popcorn.muted();
+        _media.volume = _popcorn.volume();
     }
     
-    simpleEventBind("play");
-    simpleEventBind("pause");
-    simpleEventBind("seeked");
-    simpleEventBind("loadedmetadata");
-    simpleEventBind("volumechange");
+    _popcorn.on("loadedmetadata", function() {
+        getVolume();
+        _media.trigger("loadedmetadata");
+        _media.trigger("volumechange");
+    })
+    
+    _popcorn.on("timeupdate", function() {
+        _media.trigger("timeupdate", new IriSP.Model.Time(1000*_popcorn.currentTime()));
+    });
+    
+    _popcorn.on("volumechange", function() {
+        getVolume();
+        _media.trigger("volumechange");
+    })
+    
+    _popcorn.on("play", function() {
+        _media.trigger("play");
+    });
+    
+    _popcorn.on("pause", function() {
+        _media.trigger("pause");
+    });
+    
+    _popcorn.on("seeked", function() {
+        _media.trigger("seeked");
+    });
     
 }

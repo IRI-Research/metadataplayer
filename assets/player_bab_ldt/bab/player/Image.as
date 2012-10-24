@@ -1,1 +1,0 @@
-﻿package bab.player{	import flash.display.Sprite;		public class Image extends Sprite	{		public var source:*;				public function Image()		{			super();		}			}}

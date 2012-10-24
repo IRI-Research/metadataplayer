@@ -68,7 +68,11 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
         share_on: "Share on",
         more_tags: "More tags",
         cancel: "Cancel",
-        close_widget: "Cacher la zone de création d'annotations"
+        close_widget: "Cacher la zone de création d'annotations",
+        "polemic++": "Agree",
+        "polemic--": "Disagree",
+        "polemic??": "Question",
+        "polemic==": "Reference"
     },
     fr: {
         from_time: "de",
@@ -89,7 +93,11 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
         share_on: "Partager sur",
         more_tags: "Plus de mots-clés",
         cancel: "Cancel",
-        close_widget: "Hide the annotation creating block"
+        close_widget: "Hide the annotation creating block",
+        "polemic++": "Accord",
+        "polemic--": "Désaccord",
+        "polemic??": "Question",
+        "polemic==": "Référence"
     }
 }
 
@@ -218,6 +226,14 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
         _this.addKeyword(IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
         return false;
     });
+    this.$.find(".Ldt-CreateAnnotation-PolemicLi").each(function() {
+        var _el = IriSP.jQuery(this),
+            _kw = _el.text().replace(/(^\s+|\s+$)/g,''),
+            _msg = _this.l10n["polemic" + _kw];
+        if (_msg) {
+            _el.attr("title",_msg);
+        }
+    });
     this.$.find(".Ldt-CreateAnnotation-Description").bind("change keyup input paste", this.functionWrapper("onDescriptionChange"));
     if (this.show_title_field) {
         this.$.find(".Ldt-CreateAnnotation-Title").bind("change keyup input paste", this.functionWrapper("onTitleChange"));
@@ -337,7 +353,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onCreatorChange = function() {
 IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
     /* Si les champs obligatoires sont vides, on annule l'envoi */
     if (!this.onDescriptionChange() || (this.show_title_field && !this.onTitleChange()) || (this.show_creator_field && !this.onCreatorChange())) {
-        return;
+        return false;
     }
     
     if (this.recorder) {

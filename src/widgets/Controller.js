@@ -157,9 +157,6 @@ IriSP.Widgets.Controller.prototype.draw = function() {
         });
     
     this.timeDisplayUpdater(new IriSP.Model.Time(0));
-    /* some players - including jwplayer - save the state of the mute button between sessions */
-   //TODO: MOVE TO THE PLAYER/
-    window.setTimeout(this.functionWrapper("volumeUpdater"), 1000);
    
 };
 
@@ -201,11 +198,7 @@ IriSP.Widgets.Controller.prototype.playHandler = function() {
 };
 
 IriSP.Widgets.Controller.prototype.muteHandler = function() {
-    if (this.media.getMuted()) {
-        this.media.unmute();
-    } else {
-        this.media.mute();
-    }
+    this.media.setMuted(!this.media.getMuted());
 };
 
 IriSP.Widgets.Controller.prototype.volumeUpdater = function() {

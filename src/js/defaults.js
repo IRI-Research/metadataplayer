@@ -59,9 +59,6 @@ IriSP.widgetsRequirements = {
     AutoPlayer: {
         noCss: true
     },
-    MashupPlayer: {
-        noCss: true
-    },
     AnnotationsList: {
         requires: [ "jwplayer" ]
     },
