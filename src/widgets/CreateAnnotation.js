@@ -7,7 +7,7 @@ IriSP.Widgets.CreateAnnotation = function(player, config) {
 IriSP.Widgets.CreateAnnotation.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.CreateAnnotation.prototype.defaults = {
-    show_title_field : false, /* For the moment, titles can't be sent to ldtplatform */
+    show_title_field : true,
     show_creator_field : true,
     start_visible : true,
     always_visible : false,
@@ -106,12 +106,12 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '{{^show_slice}}{{#show_arrow}}<div class="Ldt-CreateAnnotation-Arrow"></div>{{/show_arrow}}{{/show_slice}}'
     + '<div class="Ldt-CreateAnnotation"><div class="Ldt-CreateAnnotation-Inner">'
     + '<form class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Main">'
-    + '<h3><span class="Ldt-CreateAnnotation-h3Left">{{#show_title_field}}<input class="Ldt-CreateAnnotation-Title" placeholder="{{l10n.type_title}}" />{{/show_title_field}}'
+    + '<h3><span class="Ldt-CreateAnnotation-h3Left">{{#show_title_field}}<input class="Ldt-CreateAnnotation-Title empty" placeholder="{{l10n.type_title}}" />{{/show_title_field}}'
     + '{{^show_title_field}}<span class="Ldt-CreateAnnotation-NoTitle">{{l10n.no_title}} </span>{{/show_title_field}}'
-    + ' <span class="Ldt-CreateAnnotation-Times">{{#show_slice}}{{l10n.from_time}} {{/show_slice}}{{^show_slice}}{{l10n.at_time}} {{/show_slice}} <span class="Ldt-CreateAnnotation-Begin">00:00</span>'
+    + '<span class="Ldt-CreateAnnotation-Times"> {{#show_slice}}{{l10n.from_time}} {{/show_slice}}{{^show_slice}}{{l10n.at_time}} {{/show_slice}} <span class="Ldt-CreateAnnotation-Begin">00:00</span>'
     + '{{#show_slice}} {{l10n.to_time}} <span class="Ldt-CreateAnnotation-End">{{end}}</span>{{/show_slice}}</span></span>'
-    + '{{#show_creator_field}}{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator" value="{{creator_name}}" /></h3>{{/show_creator_field}}'
-    + '<textarea class="Ldt-CreateAnnotation-Description" placeholder="{{l10n.type_description}}"></textarea>'
+    + '{{#show_creator_field}}{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator empty" value="{{creator_name}}" /></h3>{{/show_creator_field}}'
+    + '<textarea class="Ldt-CreateAnnotation-Description empty" placeholder="{{l10n.type_description}}"></textarea>'
     + '<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>'
     + '<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{l10n.submit}}" />'
     + '{{#show_mic_record}}<div class="Ldt-CreateAnnotation-RecBlock"><div class="Ldt-CreateAnnotation-RecLabel">Add voice annotation</div>'
@@ -261,12 +261,15 @@ IriSP.Widgets.CreateAnnotation.prototype.showScreen = function(_screenName) {
 IriSP.Widgets.CreateAnnotation.prototype.show = function() {
     this.visible = true;
     this.showScreen('Main');
-    this.$.find(".Ldt-CreateAnnotation-Description").val("").css("border-color", "#666666");
+    this.$.find(".Ldt-CreateAnnotation-Description").val("").css("border-color", "#666666").addClass("empty");
     if (this.show_title_field) {
-        this.$.find(".Ldt-CreateAnnotation-Title").val("").css("border-color", "#666666");
+        this.$.find(".Ldt-CreateAnnotation-Title").val("").css("border-color", "#666666").addClass("empty");
     }
     if (this.show_creator_field) {
         this.$.find(".Ldt-CreateAnnotation-Creator").val(this.creator_name).css("border-color", "#666666");
+        if (!this.creator_name) {
+            this.$.find(".Ldt-CreateAnnotation-Creator").addClass("empty");
+        }
     }
     this.$.find(".Ldt-CreateAnnotation-TagLi, .Ldt-CreateAnnotation-PolemicLi").removeClass("selected");
     this.$.slideDown();
@@ -320,6 +323,11 @@ IriSP.Widgets.CreateAnnotation.prototype.onDescriptionChange = function() {
     var _field = this.$.find(".Ldt-CreateAnnotation-Description"),
         _contents = _field.val();
     _field.css("border-color", !!_contents ? "#666666" : "#ff0000");
+    if (!!_contents) {
+        _field.removeClass("empty");
+    } else {
+        _field.addClass("empty");
+    }
     this.$.find(".Ldt-CreateAnnotation-TagLi, .Ldt-CreateAnnotation-PolemicLi").each(function() {
         var _rx = IriSP.Model.regexpFromTextOrArray(IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
         if (_contents.match(_rx)) {
@@ -336,6 +344,11 @@ IriSP.Widgets.CreateAnnotation.prototype.onTitleChange = function() {
     var _field = this.$.find(".Ldt-CreateAnnotation-Title"),
         _contents = _field.val();
     _field.css("border-color", !!_contents ? "#666666" : "#ff0000");
+    if (!!_contents) {
+        _field.removeClass("empty");
+    } else {
+        _field.addClass("empty");
+    }
     this.pauseOnWrite();
     return !!_contents;
 }
@@ -345,6 +358,11 @@ IriSP.Widgets.CreateAnnotation.prototype.onCreatorChange = function() {
     var _field = this.$.find(".Ldt-CreateAnnotation-Creator"),
         _contents = _field.val();
     _field.css("border-color", !!_contents ? "#666666" : "#ff0000");
+    if (!!_contents) {
+        _field.removeClass("empty");
+    } else {
+        _field.addClass("empty");
+    }
     this.pauseOnWrite();
     return !!_contents;
 }
@@ -421,7 +439,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
                     function() {
                         _this.close_after_send
                         ? _this.hide()
-                        : _this.showScreen("Main");
+                        : _this.show();
                     },
                     _this.after_send_timeout
                 );

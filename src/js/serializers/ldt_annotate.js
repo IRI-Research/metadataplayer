@@ -11,7 +11,8 @@ IriSP.serializers.ldt_annotate = {
             begin: _data.begin.milliseconds,
             end: _data.end.milliseconds,
             content: {
-                data: _data.description,
+                description: _data.description,
+                title: _data.title,
                 audio: _data.audio
             },
             tags: _data.getTagTexts(),
@@ -43,8 +44,8 @@ IriSP.serializers.ldt_annotate = {
         _source.addList('annotation', new IriSP.Model.List(_source.directory));
         IriSP._(_data.objects).each(function(_anndata) {
             var _ann = new IriSP.Model.Annotation(_anndata.id, _source);
-            _ann.description = _anndata.content.data || "";
-            _ann.title = "";
+            _ann.description = _anndata.content.description || "";
+            _ann.title = _anndata.content.title || "";
             _ann.creator = _anndata.meta.creator || "";
             _ann.created = new Date(_anndata.meta.created);
             _ann.setMedia(_anndata.media, _source);

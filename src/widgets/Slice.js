@@ -48,7 +48,7 @@ IriSP.Widgets.Slice.prototype.draw = function() {
         },
         start: function() {
             _this.sliding = true;
-            if (!_this.media.getPaused) {
+            if (!_this.media.getPaused()) {
                 _this.media.pause();
             }
             _currentTime = _this.media.getCurrentTime();
