@@ -392,7 +392,6 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
     _annotation.description = this.$.find(".Ldt-CreateAnnotation-Description").val(); /* Champ description */
     _annotation.setTags(this.$.find(".Ldt-CreateAnnotation-TagLi.selected")
         .map(function() { return IriSP.jQuery(this).attr("tag-id")})); /*Liste des ids de tags */
-    
     if (this.audio_url) {
         _annotation.audio = {
             src: "mic",
@@ -400,14 +399,11 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
             href: this.audio_url
         };
     }
-    
-    /* Les données créateur/date de création sont envoyées non pas dans l'annotation, mais dans le projet */
     if (this.show_creator_field) {
-        _export.creator = this.$.find(".Ldt-CreateAnnotation-Creator").val();
+        _annotation.creator = this.$.find(".Ldt-CreateAnnotation-Creator").val();
     } else {
-        _export.creator = this.creator_name;
+        _annotation.creator = this.creator_name;
     }
-    _export.created = new Date();
     _exportedAnnotations.push(_annotation); /* Ajout de l'annotation à la liste à exporter */
     _export.addList("annotation",_exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
     
