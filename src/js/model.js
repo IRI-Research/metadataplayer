@@ -2,10 +2,6 @@
 
 /* model.js is where data is stored in a standard form, whatever the serializer */
 
-if (typeof IriSP == "undefined") {
-    IriSP = {};
-}
-
 (function (ns) {
 
 var Model = {
