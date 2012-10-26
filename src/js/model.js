@@ -1,8 +1,7 @@
 /* TODO: Separate Project-specific data from Source */
 
 /* model.js is where data is stored in a standard form, whatever the serializer */
-
-(function (ns) {
+IriSP.Model = (function (ns) {
 
 var Model = {
     _SOURCE_STATUS_EMPTY : 0,
@@ -982,6 +981,6 @@ Model.Directory.prototype.getGlobalList = function() {
     return _res;
 }
 
-ns.Model = Model;
+return Model;
 
 })(IriSP);
