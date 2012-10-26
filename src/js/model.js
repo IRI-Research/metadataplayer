@@ -29,20 +29,25 @@ var Model = {
         }
         return "autoid-" + this._ID_BASE + '-' + _n;
     },
-    regexpFromTextOrArray : function(_textOrArray, _testOnly) {
-        var _testOnly = _testOnly || false;
+    regexpFromTextOrArray : function(_textOrArray, _testOnly, _iexact) {
+        var _testOnly = _testOnly || false,
+            _iexact = _iexact || false;
         function escapeText(_text) {
             return _text.replace(/([\\\*\+\?\|\{\[\}\]\(\)\^\$\.\#\/])/gm, '\\$1');
         }
         var _source = 
             typeof _textOrArray === "string"
             ? escapeText(_textOrArray)
-            : ns._(_textOrArray).map(escapeText).join("|");
-        if (_testOnly) {
-            return new RegExp( _source, 'im');
-        } else {
-            return new RegExp( '(' + _source + ')', 'gim');
+            : ns._(_textOrArray).map(escapeText).join("|"),
+            _flags = 'im';
+        if (!_testOnly) {
+            _source = '(' + _source + ')';
+            _flags += 'g';
         }
+        if (_iexact) {
+            _source = '^' + _source + '$';
+        }
+        return new RegExp( _source, _flags);
     },
     isoToDate : function(_str) {
         // http://delete.me.uk/2005/03/iso8601.html
@@ -166,22 +171,25 @@ Model.List.prototype.sortBy = function(_callback) {
 /* Title and Description are basic information for (almost) all element types,
  * here we can search by these criteria
  */
-Model.List.prototype.searchByTitle = function(_text) {
-    var _rgxp = Model.regexpFromTextOrArray(_text, true);
+Model.List.prototype.searchByTitle = function(_text, _iexact) {
+    var _iexact = _iexact || false,
+        _rgxp = Model.regexpFromTextOrArray(_text, true);
     return this.filter(function(_element) {
         return _rgxp.test(_element.title);
     });
 }
 
-Model.List.prototype.searchByDescription = function(_text) {
-    var _rgxp = Model.regexpFromTextOrArray(_text, true);
+Model.List.prototype.searchByDescription = function(_text, _iexact) {
+    var _iexact = _iexact || false,
+        _rgxp = Model.regexpFromTextOrArray(_text, true);
     return this.filter(function(_element) {
         return _rgxp.test(_element.description);
     });
 }
 
-Model.List.prototype.searchByTextFields = function(_text) {
-    var _rgxp =  Model.regexpFromTextOrArray(_text, true);
+Model.List.prototype.searchByTextFields = function(_text, _iexact) {
+    var _iexact = _iexact || false,
+        _rgxp =  Model.regexpFromTextOrArray(_text, true);
     return this.filter(function(_element) {
         return _rgxp.test(_element.description) || _rgxp.test(_element.title);
     });
