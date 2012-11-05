@@ -356,7 +356,7 @@ Model.Time.prototype.toString = function() {
     var _hms = this.getHMS(),
         _res = '';
     if (_hms.hours) {
-        _res += pad(_hms.hours) + ':'
+        _res += _hms.hours + ':'
     }
     _res += pad(_hms.minutes) + ':' + pad(_hms.seconds);
     return _res;
@@ -619,11 +619,17 @@ Model.Annotation = function(_id, _source) {
 Model.Annotation.prototype = new Model.Element();
 
 Model.Annotation.prototype.setBegin = function(_beginMs) {
-    this.begin.setMilliseconds(_beginMs);
+    this.begin.setMilliseconds(Math.max(0,_beginMs));
+    this.trigger("change-begin");
 }
 
-Model.Annotation.prototype.setEnd = function(_beginMs) {
-    this.end.setMilliseconds(_beginMs);
+Model.Annotation.prototype.setEnd = function(_endMs) {
+    this.end.setMilliseconds(Math.min(_endMs));
+    this.trigger("change-end");
+}
+
+Model.Annotation.prototype.setDuration = function(_durMs) {
+    this.setEnd(_durMs + this.begin.milliseconds);
 }
 
 Model.Annotation.prototype.setMedia = function(_idRef) {

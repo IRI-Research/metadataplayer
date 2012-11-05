@@ -18,6 +18,14 @@ IriSP.Widgets.AutoPlayer.prototype.draw = function() {
         _opts = {},
         _types = [
             {
+                regexp: /^rtmp:\/\//,
+                type: "JwpPlayer"
+            },
+            {
+                regexp: /\.(mp4|m4v)$/,
+                type: "AdaptivePlayer"
+            },
+            {
                 regexp: /\.(ogg|ogv|webm)$/,
                 type: "PopcornPlayer"
             },
@@ -33,7 +41,8 @@ IriSP.Widgets.AutoPlayer.prototype.draw = function() {
                 regexp: /^(https?:\/\/)?(www\.)?dailymotion\.com/,
                 type: "DailymotionPlayer"
             }
-        ];
+        ],
+        _rtmprgx = /^rtmp:\/\//;
     
     for (var i = 0; i < _types.length; i++) {
         if (_types[i].regexp.test(this.video)) {
@@ -45,12 +54,16 @@ IriSP.Widgets.AutoPlayer.prototype.draw = function() {
         _opts.type = this.default_type
     }
     
+    if (_rtmprgx.test(this.video)) {
+        _opts.provider = "rtmp";
+        _opts.live = true;
+    }
+    
     for (var i = 0; i < _props.length; i++) {
         if (typeof this[_props[i]] !== "undefined") {
             _opts[_props[i]] = this[_props[i]];
         }
     }
-    
 
     this.insertSubwidget(this.$, _opts);
     
