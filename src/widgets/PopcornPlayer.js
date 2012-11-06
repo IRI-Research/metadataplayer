@@ -11,6 +11,7 @@ IriSP.Widgets.PopcornPlayer.prototype.defaults = {
 }
 
 IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
+
     
     if (typeof this.video === "undefined") {
         this.video = this.media.video;

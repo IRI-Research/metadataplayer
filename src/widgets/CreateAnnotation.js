@@ -43,7 +43,7 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     annotation_type: "Contributions",
     api_serializer: "ldt_annotate",
     api_endpoint_template: "",
-    api_method: "PUT",
+    api_method: "POST",
     after_send_timeout: 0,
     close_after_send: false,
 }

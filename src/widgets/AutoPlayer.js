@@ -46,7 +46,8 @@ IriSP.Widgets.AutoPlayer.prototype.draw = function() {
     
     for (var i = 0; i < _types.length; i++) {
         if (_types[i].regexp.test(this.video)) {
-            _opts.type =  _types[i].type
+            _opts.type =  _types[i].type;
+            break;
         }
     }
     
