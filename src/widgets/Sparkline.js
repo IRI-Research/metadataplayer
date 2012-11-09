@@ -18,24 +18,22 @@ IriSP.Widgets.Sparkline.prototype.draw = function() {
         _duration = this.source.getDuration(),
         _max = 0,
         _list = this.getWidgetAnnotations();
-    
     for (var _i = 0; _i < this.slice_count; _i++) {
         var _begin = (_i*_duration/this.slice_count),
             _end = ((_i+1)*_duration/this.slice_count),
-            _annotations = _list.reduce(function(_m, _annotation) {
-                if (_annotation.begin < _end && _annotation.begin >= _begin) {
+            _volume = 0;
+            _list.forEach(function(_annotation) {
+                if (_annotation.begin < _end && _annotation.end >= _begin) {
                     var _d = _annotation.getDuration().milliseconds;
                     if (!_d) {
-                        return _m + 1;
+                        _volume += 1;
                     } else {
-                        return _m + (Math.min(_annotation.end, _end) - Math.max(_annotation.begin, _begin)) / _d;
+                        _volume += (Math.min(_annotation.end, _end) - Math.max(_annotation.begin, _begin)) / _d;
                     }
-                } else {
-                    return _m
                 }
-            },0);
-        _max = Math.max(_max, _annotations);
-        _slices.push(_annotations);
+            });
+            _max = Math.max(_max, _volume);
+        _slices.push(_volume);
     }
     if (!_max) {
         return;
