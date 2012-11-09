@@ -55,6 +55,11 @@ IriSP.Widgets.AutoPlayer.prototype.draw = function() {
         _opts.type = this.default_type
     }
     
+    if (_opts.type === "AdaptivePlayer") {
+        var _canPlayType = document.createElement('video').canPlayType("video/mp4");
+        _opts.type = (_canPlayType == "maybe" || _canPlayType == "probably") ? "PopcornPlayer" : "JwpPlayer";
+    }
+    
     if (_rtmprgx.test(this.video)) {
         _opts.provider = "rtmp";
         _opts.live = true;

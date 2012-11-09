@@ -1,33 +1,30 @@
 /* TODO: Separate Project-specific data from Source */
 
 /* model.js is where data is stored in a standard form, whatever the serializer */
+
 IriSP.Model = (function (ns) {
+    
+    function pad(n, x, b) {
+        b = b || 10;
+        var s = (x).toString(b);
+        while (s.length < n) {
+            s = "0" + s;
+        }
+        return s;
+    }
+    
+    function rand16(n) {
+        return pad(n, Math.floor(Math.random()*Math.pow(16,n)), 16);
+    }
+    
+    var uidbase = rand16(8) + "-" + rand16(4) + "-", uidincrement = Math.floor(Math.random()*0x10000);
 
 var Model = {
     _SOURCE_STATUS_EMPTY : 0,
     _SOURCE_STATUS_WAITING : 1,
     _SOURCE_STATUS_READY : 2,
-    _ID_AUTO_INCREMENT : 0,
-    _ID_BASE : (function(_d) {
-        function pad(n){return n<10 ? '0'+n : n}
-        function fillrand(n) {
-            var _res = ''
-            for (var i=0; i<n; i++) {
-                _res += Math.floor(16*Math.random()).toString(16);
-            }
-            return _res;
-        }
-        return _d.getUTCFullYear() + '-'  
-            + pad(_d.getUTCMonth()+1) + '-'  
-            + pad(_d.getUTCDate()) + '-'
-            + fillrand(16);
-    })(new Date()),
     getUID : function() {
-        var _n = (++this._ID_AUTO_INCREMENT).toString();
-        while (_n.length < 4) {
-            _n = '0' + _n
-        }
-        return "autoid-" + this._ID_BASE + '-' + _n;
+        return uidbase + pad(4, (++uidincrement % 0x10000), 16) + "-" + rand16(4) + "-" + rand16(6) + rand16(6);
     },
     regexpFromTextOrArray : function(_textOrArray, _testOnly, _iexact) {
         var _testOnly = _testOnly || false,
@@ -75,13 +72,12 @@ var Model = {
         return _res;
     },
     dateToIso : function(d) {
-        function pad(n){return n<10 ? '0'+n : n}  
         return d.getUTCFullYear()+'-'  
-            + pad(d.getUTCMonth()+1)+'-'  
-            + pad(d.getUTCDate())+'T'  
-            + pad(d.getUTCHours())+':'  
-            + pad(d.getUTCMinutes())+':'  
-            + pad(d.getUTCSeconds())+'Z'  
+            + pad(2, d.getUTCMonth()+1)+'-'  
+            + pad(2, d.getUTCDate())+'T'  
+            + pad(2, d.getUTCHours())+':'  
+            + pad(2, d.getUTCMinutes())+':'  
+            + pad(2, d.getUTCSeconds())+'Z'  
     }
 }
 
@@ -346,19 +342,12 @@ Model.Time.prototype.valueOf = function() {
 }
 
 Model.Time.prototype.toString = function() {
-    function pad(_n) {
-        var _res = _n.toString();
-        while (_res.length < 2) {
-            _res = '0' + _res;
-        }
-        return _res;
-    }
     var _hms = this.getHMS(),
         _res = '';
     if (_hms.hours) {
         _res += _hms.hours + ':'
     }
-    _res += pad(_hms.minutes) + ':' + pad(_hms.seconds);
+    _res += pad(2, _hms.minutes) + ':' + pad(2, _hms.seconds);
     return _res;
 }
 

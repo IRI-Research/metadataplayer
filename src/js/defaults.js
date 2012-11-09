@@ -56,6 +56,9 @@ IriSP.widgetsRequirements = {
         noCss: true,
         requires: [ "swfObject" ]
     },
+    AdaptivePlayer: {
+        noCss: true
+    },
     AutoPlayer: {
         noCss: true
     },
