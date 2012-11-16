@@ -33,7 +33,7 @@ IriSP.Widgets.Tweet.prototype.messages = {
     "fr": {
         retweet: "Retweeter",
         reply: "Répondre",
-        keep_visible: "Garder visible",
+        keep_visible: "Empêcher la fermeture automatique",
         dont_keep_visible: "Permettre la fermeture automatique",
         close_widget: "Fermer l'affichage du tweet",
         original_time: "Heure d'envoi&nbsp;: ",

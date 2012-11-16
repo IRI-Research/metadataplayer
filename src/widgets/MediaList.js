@@ -7,14 +7,14 @@ IriSP.Widgets.MediaList.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.MediaList.prototype.messages = {
     "fr": {
-        now_playing: "Média en cours",
-        all_media: "Tous les medias",
-        other_media: "Autres médias"
+        now_playing: "Vidéo en cours",
+        all_media: "Toutes les vidéos",
+        other_media: "Autres vidéos"
     },
     "en": {
         now_playing: "Now playing",
-        all_media: "All media",
-        other_media: "Other media"
+        all_media: "All videos",
+        other_media: "Other videos"
     }
 }
 

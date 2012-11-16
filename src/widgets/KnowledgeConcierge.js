@@ -9,19 +9,29 @@ IriSP.Widgets.KnowledgeConcierge.prototype.defaults = {
     height: 500,
     sketch_path: "tmgraph",
     sketch_files: [ "tmgraph.pde", "physics.pde", "model.pde", "javascript.pde", "menu.pde", "event.pde", "constants.pde", "initialdata.pde"],
-    api_root: "/kn-concierge/",
-    use_word_boundaries: false
+    kc_api_root: "/kn-concierge/",
+    related_api_endpoint: "",
+    use_word_boundaries: false,
+    related_data_type: 'json', // SET TO "jsonp" FOR CROSS-DOMAIN OPERATION
+    related_count: 8
 }
 
 IriSP.Widgets.KnowledgeConcierge.prototype.messages = {
     "fr": {
+        related_videos: "Vidéos liées",
+        duration_: "Durée&nbsp;:"
     },
     "en": {
+        related_videos: "Related Videos",
+        duration_: "Duration:"
     }
 }
 
 IriSP.Widgets.KnowledgeConcierge.prototype.template =
-    '<div class="Ldt-Kc-Slider"></div><canvas class="Ldt-Kc-Canvas" />';
+    '<div class="Ldt-Kc-Slider"></div><canvas class="Ldt-Kc-Canvas" />'
+    + '<div class="Ldt-Kc-Waiting"></div>'
+    + '<div class="Ldt-Kc-Related"><h2>{{ l10n.related_videos }}</h2>'
+    + '<div class="Ldt-Kc-Related-List"></div></div>';
 
 IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
     this.renderTemplate();
@@ -29,7 +39,8 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
         _canvasWidth = this.width - 2,
         _canvas = this.$.find(".Ldt-Kc-Canvas"),
         _tmpId = IriSP._.uniqueId("Processing-"),
-        _slider = this.$.find(".Ldt-Kc-Slider");
+        _slider = this.$.find(".Ldt-Kc-Slider"),
+        radius = .375 * Math.min(_canvasHeight, _canvasWidth);
     _canvas.attr({
         width: _canvasWidth,
         height: _canvasHeight,
@@ -40,9 +51,40 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
     });
     var _this = this,
         _pjsfiles = IriSP._(this.sketch_files).map(function(_f) { return _this.sketch_path + "/" + _f }),
-        _selectedText = "";
+        _selectedText = "",
+        currentNodesList = "",
+        relatedCache = {},
+        relatedTemplate = '<div class="Ldt-Kc-Related-Item"><a href="{{ widget.video_url_base }}{{ media.iri_id }}"><img src="{{ media.image }}"></a>'
+            + '<h3><a href="{{ widget.video_url_base }}{{ media.iri_id }}">{{ media.title }}</a></h3><p>{{ description }}</p>'
+            + '<p>{{ widget.l10n.duration_ }} <span class="Ldt-Kc-Item-Duration">{{ duration }}</span></p>'
+            + '</a><div class="Ldt-Kc-Clearer"></div></div>';
+            
     Processing.loadSketchFromSources(_canvas[0],_pjsfiles);
     
+    function renderRelated(keywords) {
+        _this.$.find(".Ldt-Kc-Waiting").hide();
+        if (relatedCache[keywords].length) {
+            var _html = '<div class="Ldt-Kc-Row">';
+            IriSP._(relatedCache[keywords]).each(function(media, i) {
+                var _tmpldata = {
+                    widget: _this,
+                    media: media,
+                    description: media.description.replace(/(\n|\r|\r\n)/mg,' ').replace(/(^.{120,140})[\s].+$/m,'$1&hellip;'),
+                    duration: new IriSP.Model.Time(media.duration).toString()
+                }
+                _html += Mustache.to_html(relatedTemplate, _tmpldata);
+                if (i % 2) {
+                    _html += '</div><div class="Ldt-Kc-Row">';
+                }
+            });
+            _html += '</div>';
+            _this.$.find(".Ldt-Kc-Related-List").html(_html);
+            _this.$.find(".Ldt-Kc-Related").show();
+        } else {
+            _this.$.find(".Ldt-Kc-Related").hide();
+        }
+    }    
+
     function triggerSearch(text) {
         if (_selectedText !== text) {
             //console.log("Trigger search for '" + text + "'");
@@ -55,7 +97,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
         var _tlist = (_this.use_word_boundaries ? IriSP._(tags).map(function(t) { return "\\\\y" + t + "\\\\y" }) : tags),
             _q = "(?i)(" + _tlist.join("|") + ")";
         jQuery.getJSON(
-            _this.api_root + "topics.jsp",
+            _this.kc_api_root + "topics.jsp",
             {
                 proj: _this.project_id,
                 q: _q
@@ -74,7 +116,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
                         }
                         _fns.countassoc(node.id, node.proj);
                         if (l > 1) {
-                            node.position(Math.floor(200*Math.sin(2 * Math.PI * i / l)),Math.floor(200*Math.cos(2 * Math.PI * i / l)));
+                            node.position(Math.floor(radius*Math.sin(2 * Math.PI * i / l)),Math.floor(radius*Math.cos(2 * Math.PI * i / l)));
                         }
                     }
                 } else {
@@ -84,9 +126,44 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
         );
     }
     
+    function listNodes() {
+        var nodes = _pjs.getNodes().values().toArray(),
+            nodetexts = IriSP._(nodes).chain().pluck("name").sortBy().value().join(",");
+        if (currentNodesList !== nodetexts) {
+            if (typeof relatedCache[nodetexts] === "undefined") {
+                _this.$.find(".Ldt-Kc-Waiting").show();
+                _this.$.find(".Ldt-Kc-Related").hide();
+                IriSP.jQuery.ajax({
+                    url: _this.related_api_endpoint,
+                    data: {
+                        format: _this.related_data_type,
+                        keywords: nodetexts
+                    },
+                    dataType: _this.related_data_type,
+                    success: function(data) {
+                        relatedCache[nodetexts] = IriSP._(data.objects)
+                            .chain()
+                            .filter(function(o) {
+                                return o.iri_id !== _this.media.id;
+                            })
+                            .sortBy(function(o) {
+                                return - o.score;
+                            })
+                            .first(_this.related_count)
+                            .value();
+                        renderRelated(nodetexts);
+                    }
+                })
+            } else {
+                renderRelated(nodetexts);
+            }
+            currentNodesList = nodetexts;
+        }
+    }
+    
     function rootNode(id, proj) {
         jQuery.getJSON(
-            _this.api_root + "topic.jsp",
+            _this.kc_api_root + "topic.jsp",
             {
                 id: id,
                 proj: proj
@@ -134,7 +211,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
         adjacentnodes: function(id, proj, adj, both) {
             //console.log("Function adjacentnodes called with", arguments);
             jQuery.ajax({
-                url: _this.api_root + "associations-bd.jsp",
+                url: _this.kc_api_root + "associations-bd.jsp",
                 cache: false,
                 data: {
                     id: id,
@@ -159,49 +236,23 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
                                 _pjs.setNodeAssoc(item.to_id, item.to_proj, item.to_assoc);
                             }
                         }
+                        listNodes();
                         return response;
                     } else {
-                        console.debug('No such topic.');
+                        //.debug('No such topic.');
                         return null;
                     }
                 }
             });
         },
-        selectnode: function(id, proj) {
-            //console.log("Function selectnode called with", arguments);
-            /* Originally, open dialog with info from
-             * /kn-concierge/topic.jsp?id={{id}}&proj={{proj}}
-             * /kn-concierge/topicContent.jsp?id={{id}}&proj={{proj}}
-             */
-        },
-        selectedge: function(asc_id) {
-            //console.log("Function selectedge called with", arguments);
-            /* /kn-concierge/association.jsp?asc_id={{asc_id}}&proj={{proj}}" */
-        },
-        topicnode: function(id){
-            //console.log("Function topicnode called with", arguments);
-        },
         setscale: function(scl){
             //console.log("Function setscale called with", arguments);
             _slider.slider("value", 10*Math.log(scl));
         },
-        group_shapes: function(){
-            //console.log("Function group_shapes");
-        },
-        allbackup: function(){
-        },
-        allretrieve: function(){
-        },
-        new_topic: function(){
-        },
-        pedia: function() {
-        },
-        set_mode: function(){
-        },
         countassoc: function(id, proj) {
             //console.log("Fonction countassoc called with", arguments);
             jQuery.ajax({
-                url: _this.api_root + "count-assoc.jsp",
+                url: _this.kc_api_root + "count-assoc.jsp",
                 data: {
                     id: id,
                     proj: proj
@@ -220,23 +271,24 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
                 }
             });
         },
-        new_relation: function() {
-        },
         new_select: function(id, proj) {
             var node = _pjs.findNode(id, proj);
             triggerSearch(node.name);
             //console.log("Mouse over node named '" + node.name + "'");
         },
-        startexpand: function() {
-            //console.log("Function startexpand()");
-        },
-        endexpand: function() {
-            //console.log("Function endexpand()");
-        },
-        username: function() {
-            //console.log("Function username()");
-        }
+        username: listNodes
     }
+    var uselessfuncts = [
+        "selectnode", "selectedge", "topicnode","group_shapes",
+        "allbackup", "allretrieve", "new_topic", "pedia", "set_mode",
+        "new_relation", "startexpand", "endexpand" //, "username"
+    ];
+    
+    IriSP._(uselessfuncts).each(function(funcname) {
+        _fns[funcname] = function() {
+//            console.log("Function", funcname, "called with arguments", arguments);
+        }
+    });
     
     this.getWidgetAnnotations().forEach(function(annotation) {
         annotation.on("click", function() {

@@ -20,9 +20,9 @@ IriSP.Widgets.Social.prototype.defaults = {
 IriSP.Widgets.Social.prototype.template =
     '<span class="Ldt-Social">{{#show_url}}<div class="Ldt-Social-Url-Container"><a href="#" target="_blank" class="Ldt-Social-Square Ldt-Social-Url Ldt-TraceMe" title="{{l10n.share_link}}">'
     + '</a><div class="Ldt-Social-UrlPop"><input class="Ldt-Social-Input"/><div class="Ldt-Social-CopyBtn">{{l10n.copy}}</div></div></div>{{/show_url}}'
-    + '{{#show_fb}}<a href="#" target="_blank" class="Ldt-Social-Fb Ldt-TraceMe" title="{{l10n.share_on}} Facebook"></a>{{/show_fb}}'
-    + '{{#show_twitter}}<a href="#" target="_blank" class="Ldt-Social-Twitter Ldt-TraceMe" title="{{l10n.share_on}} Twitter"></a>{{/show_twitter}}'
-    + '{{#show_gplus}}<a href="#" target="_blank" class="Ldt-Social-Gplus Ldt-TraceMe" title="{{l10n.share_on}} Google+"></a>{{/show_gplus}}'
+    + '{{#show_fb}}<a href="#" target="_blank" class="Ldt-Social-Fb Ldt-Social-Ext Ldt-TraceMe" title="{{l10n.share_on}} Facebook"></a>{{/show_fb}}'
+    + '{{#show_twitter}}<a href="#" target="_blank" class="Ldt-Social-Twitter Ldt-Social-Ext Ldt-TraceMe" title="{{l10n.share_on}} Twitter"></a>{{/show_twitter}}'
+    + '{{#show_gplus}}<a href="#" target="_blank" class="Ldt-Social-Gplus Ldt-Social-Ext Ldt-TraceMe" title="{{l10n.share_on}} Google+"></a>{{/show_gplus}}'
     + '{{#show_mail}}<a href="#" target="_blank" class="Ldt-Social-Mail Ldt-TraceMe" title="{{l10n.share_mail}}"></a>{{/show_mail}}</span>';
 
 IriSP.Widgets.Social.prototype.messages = {
@@ -51,6 +51,13 @@ IriSP.Widgets.Social.prototype.draw = function() {
     });
     this.$.find(".Ldt-Social-Input").focus(function() {
         this.select();
+    });
+    this.$.find(".Ldt-Social-Ext").click(function() {
+        window.open(
+            IriSP.jQuery(this).attr("href"),
+            "_blank",
+            "height=300,width=450,left=100,top=100,toolbar=0,menubar=0,status=0,location=0");
+        return false;
     });
     this.updateUrls(this.url, this.text);
 }
@@ -82,6 +89,6 @@ IriSP.Widgets.Social.prototype.updateUrls = function(_url, _text) {
     this.text = _text;
     this.$.find(".Ldt-Social-Fb").attr("href", "http://www.facebook.com/share.php?" + IriSP.jQuery.param({ u: _url, t: _text }));
     this.$.find(".Ldt-Social-Twitter").attr("href", "https://twitter.com/intent/tweet?" + IriSP.jQuery.param({ url: _url, text: _text }));
-    this.$.find(".Ldt-Social-Gplus").attr("href", "https://plusone.google.com/_/+1/confirm?" + IriSP.jQuery.param({ url: _url, title: _text }));
+    this.$.find(".Ldt-Social-Gplus").attr("href", "https://plus.google.com/share?" + IriSP.jQuery.param({ url: _url, title: _text }));
     this.$.find(".Ldt-Social-Mail").attr("href", "mailto:?" + IriSP.jQuery.param({ subject: _text, body: _text + ": " + _url }));
 }

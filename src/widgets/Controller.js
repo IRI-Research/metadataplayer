@@ -56,7 +56,7 @@ IriSP.Widgets.Controller.prototype.messages = {
         annotate: "Annotate",
         search: "Search",
         elapsed_time: "Elapsed time",
-        total_time: "Total time",
+        total_time: "Total duration",
         volume: "Volume",
         volume_control: "Volume control"
     },
@@ -69,7 +69,7 @@ IriSP.Widgets.Controller.prototype.messages = {
         unmute: "Activer le son",
         annotate: "Annoter",
         search: "Rechercher",
-        elapsed_time: "Durée écoulée",
+        elapsed_time: "Temps écoulé",
         total_time: "Durée totale",
         volume: "Niveau sonore",
         volume_control: "Réglage du niveau sonore"

@@ -15,7 +15,7 @@
 }
 
 .Ldt-CreateAnnotation-Inner h3 {
-    margin: 5px 0; font-size: 14px; font-weight: bold; text-align: right;
+    margin: 5px 0; font-size: 14px; font-weight: bold; text-align: right; clear:both; color: #0068c4;
 }
 
 .Ldt-CreateAnnotation-h3Left {

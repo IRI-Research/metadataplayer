@@ -91,6 +91,9 @@ IriSP.widgetsRequirements = {
     },
     KnowledgeConcierge: {
         requires: [ "processing" ]
+    },
+    MultiSegments: {
+        noCss: true
     }
 }
 

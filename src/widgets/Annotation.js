@@ -15,14 +15,16 @@ IriSP.Widgets.Annotation.prototype.messages = {
         on_site: " sur ",
         tags_: "Mots-clés&nbsp;:",
         description_: "Description&nbsp;:",
-        excerpt_from: "Extrait de&nbsp;:"
+        excerpt_from: "Extrait de&nbsp;:",
+        untitled: "Segment sans titre"
     },
     en: {
         watching: "I'm watching ",
         on_site: " on ",
         tags_: "Keywords:",
         description_: "Description:",
-        excerpt_from: "Excerpt from:"
+        excerpt_from: "Excerpt from:",
+        untitled: "Untitled segment"
     }
 }
 
@@ -31,11 +33,11 @@ IriSP.Widgets.Annotation.prototype.template =
     + '<div class="Ldt-Annotation-Widget {{^show_arrow}}Ldt-Annotation-ShowTop{{/show_arrow}}">'
     + '<div class="Ldt-Annotation-Inner Ldt-Annotation-Empty{{#start_minimized}} Ldt-Annotation-Minimized{{/start_minimized}}">'
     + '<div class="Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-MaxMinButton"></div>'
-    + '<div class="Ldt-Annotation-Social Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty"></div>'
-    + '<h3 class="Ldt-Annotation-HiddenWhenEmpty"><span class="Ldt-Annotation-Title"></span> <span class="Ldt-Annotation-Time">'
-    + '( <span class="Ldt-Annotation-Begin"></span> - <span class="Ldt-Annotation-End"></span> )</span></h3>'
-    + '<h3 class="Ldt-Annotation-MashupOrigin Ldt-Annotation-HiddenWhenEmpty">{{l10n.excerpt_from}} <span class="Ldt-Annotation-MashupMedia"></span> <span class="Ldt-Annotation-Time">'
-    + '( <span class="Ldt-Annotation-MashupBegin"></span> - <span class="Ldt-Annotation-MashupEnd"></span> )</span></h3>'
+    + '{{#show_social}}<div class="Ldt-Annotation-Social Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty"></div>{{/show_social}}'
+    + '<h3 class="Ldt-Annotation-HiddenWhenEmpty">{{#show_annotation_type}}<span class="Ldt-Annotation-Type"></span> » {{/show_annotation_type}}<span class="Ldt-Annotation-Title"></span> <span class="Ldt-Annotation-Time Ldt-Annotation-HiddenWhenMinimized">'
+    + '(<span class="Ldt-Annotation-Begin"></span> - <span class="Ldt-Annotation-End"></span>)</span></h3>'
+    + '<h3 class="Ldt-Annotation-MashupOrigin Ldt-Annotation-HiddenWhenEmpty">{{l10n.excerpt_from}} <span class="Ldt-Annotation-MashupMedia"></span> <span class="Ldt-Annotation-Time Ldt-Annotation-HiddenWhenMinimized">'
+    + '(<span class="Ldt-Annotation-MashupBegin"></span> - <span class="Ldt-Annotation-MashupEnd"></span>)</span></h3>'
     + '<div class="Ldt-Annotation-Cleared Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-Description-Block"><div class="Ldt-Annotation-Label">{{l10n.description_}}</div>'
     + '<p class="Ldt-Annotation-Labelled Ldt-Annotation-Description"></p></div>'
     + '<div class="Ldt-Annotation-Tags-Block Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-Cleared">'
@@ -47,7 +49,9 @@ IriSP.Widgets.Annotation.prototype.defaults = {
     start_minimized: false,
     show_arrow : true,
     site_name : "Lignes de Temps",
-    search_on_tag_click: true
+    search_on_tag_click: true,
+    show_social: true,
+    show_annotation_type: false
 }
 
 IriSP.Widgets.Annotation.prototype.draw = function() {
@@ -91,7 +95,7 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
         } else {
             _this.$.find(".Ldt-Annotation-Tags-Block").addClass("Ldt-Annotation-EmptyBlock");
         }
-        _this.$.find(".Ldt-Annotation-Title").html(_annotation.title);
+        _this.$.find(".Ldt-Annotation-Title").text(_annotation.title || "(" + _this.l10n.untitled + ")");
         var _desc = _annotation.description.replace(/(^\s+|\s+$)/g,'');
         if (_desc) {
             _this.$.find(".Ldt-Annotation-Description-Block").removeClass("Ldt-Annotation-EmptyBlock");
@@ -99,13 +103,16 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
         } else {
             _this.$.find(".Ldt-Annotation-Description-Block").addClass("Ldt-Annotation-EmptyBlock");
         }
-        _this.$.find(".Ldt-Annotation-Begin").html(_annotation.begin.toString());
-        _this.$.find(".Ldt-Annotation-End").html(_annotation.end.toString());
+        if (_this.show_annotation_type) {
+            _this.$.find(".Ldt-Annotation-Type").text(_annotation.getAnnotationType().title)
+        }
+        _this.$.find(".Ldt-Annotation-Begin").text(_annotation.begin.toString());
+        _this.$.find(".Ldt-Annotation-End").text(_annotation.end.toString());
         if (_annotation.elementType === "mashedAnnotation") {
             _this.$.find('.Ldt-Annotation-Inner').addClass("Ldt-Annotation-isMashup");
-            _this.$.find(".Ldt-Annotation-MashupMedia").html(_annotation.getMedia().title);
-            _this.$.find(".Ldt-Annotation-MashupBegin").html(_annotation.annotation.begin.toString());
-            _this.$.find(".Ldt-Annotation-MashupEnd").html(_annotation.annotation.end.toString());
+            _this.$.find(".Ldt-Annotation-MashupMedia").text(_annotation.getMedia().title);
+            _this.$.find(".Ldt-Annotation-MashupBegin").text(_annotation.annotation.begin.toString());
+            _this.$.find(".Ldt-Annotation-MashupEnd").text(_annotation.annotation.end.toString());
         } else {
             _this.$.find('.Ldt-Annotation-Inner').removeClass("Ldt-Annotation-isMashup");
         }
@@ -127,7 +134,11 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
     }
     
     this.renderTemplate();
-    this.insertSubwidget(this.$.find(".Ldt-Annotation-Social"), { type: "Social" }, "socialWidget");
+    
+    if (_this.show_social) {
+        this.insertSubwidget(this.$.find(".Ldt-Annotation-Social"), { type: "Social" }, "socialWidget");
+    }
+    
     this.insertSubwidget(this.$.find(".Ldt-Annotation-Arrow"), { type: "Arrow" }, "arrow");
     this.onMediaEvent("timeupdate",timeupdate);
     this.onMdpEvent("Annotation.hide","hide");

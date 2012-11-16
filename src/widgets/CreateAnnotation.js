@@ -57,18 +57,14 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
         add_keywords_: "Add keywords:",
         add_polemic_keywords_: "Add polemic keywords:",
         your_name_: "Your name:",
-        no_title: "Annotate this video",
+        annotate_video: "Annotate this video",
         type_title: "Annotation title",
-        type_description: "Type the full description of your annotation here.",
-        wait_while_processing: "Please wait while your request is being processed...",
+        type_description: "Type the full contents of your annotation here.",
+        wait_while_processing: "Please wait while your annotation is being processed...",
         error_while_contacting: "An error happened while contacting the server. Your annotation has not been saved.",
-        empty_annotation: "Your annotation is empty. Please write something before submitting.",
         annotation_saved: "Thank you, your annotation has been saved.",
         share_annotation: "Would you like to share it on social networks ?",
-        share_on: "Share on",
-        more_tags: "More tags",
-        cancel: "Cancel",
-        close_widget: "Cacher la zone de création d'annotations",
+        close_widget: "Hide the annotation form",
         "polemic++": "Agree",
         "polemic--": "Disagree",
         "polemic??": "Question",
@@ -82,18 +78,14 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
         add_keywords_: "Ajouter des mots-clés&nbsp;:",
         add_polemic_keywords_: "Ajouter des mots-clés polémiques&nbsp;:",
         your_name_: "Votre nom&nbsp;:",
-        no_title: "Annoter cette vidéo",
+        annotate_video: "Annoter cette vidéo",
         type_title: "Titre de l'annotation",
-        type_description: "Rédigez le contenu de votre annotation ici.",
-        wait_while_processing: "Veuillez patienter pendant le traitement de votre requête...",
-        error_while_contacting: "Une erreur s'est produite en contactant le serveur. Votre annotation n'a pas été enregistrée",
-        empty_annotation: "Votre annotation est vide. Merci de rédiger un texte avant de l'envoyer.",
+        type_description: "Rédigez ici le contenu de votre annotation.",
+        wait_while_processing: "Veuillez patienter pendant le traitement de votre annotation...",
+        error_while_contacting: "Une erreur s'est produite en contactant le serveur. Votre annotation n'a pas été enregistrée.",
         annotation_saved: "Merci, votre annotation a été enregistrée.",
         share_annotation: "Souhaitez-vous la partager sur les réseaux sociaux ?",
-        share_on: "Partager sur",
-        more_tags: "Plus de mots-clés",
-        cancel: "Cancel",
-        close_widget: "Hide the annotation creating block",
+        close_widget: "Cacher le formulaire de création d'annotations",
         "polemic++": "Accord",
         "polemic--": "Désaccord",
         "polemic??": "Question",
@@ -106,11 +98,11 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '{{^show_slice}}{{#show_arrow}}<div class="Ldt-CreateAnnotation-Arrow"></div>{{/show_arrow}}{{/show_slice}}'
     + '<div class="Ldt-CreateAnnotation"><div class="Ldt-CreateAnnotation-Inner">'
     + '<form class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Main">'
-    + '<h3><span class="Ldt-CreateAnnotation-h3Left">{{#show_title_field}}<input class="Ldt-CreateAnnotation-Title empty" placeholder="{{l10n.type_title}}" />{{/show_title_field}}'
-    + '{{^show_title_field}}<span class="Ldt-CreateAnnotation-NoTitle">{{l10n.no_title}} </span>{{/show_title_field}}'
+    + '<h3><span class="Ldt-CreateAnnotation-h3Left">{{l10n.annotate_video}}{{#show_title_field}}</span></h3>'
+    + '<h3><span class="Ldt-CreateAnnotation-h3Left"><input class="Ldt-CreateAnnotation-Title empty" placeholder="{{l10n.type_title}}" />{{/show_title_field}}'
     + '<span class="Ldt-CreateAnnotation-Times"> {{#show_slice}}{{l10n.from_time}} {{/show_slice}}{{^show_slice}}{{l10n.at_time}} {{/show_slice}} <span class="Ldt-CreateAnnotation-Begin">00:00</span>'
     + '{{#show_slice}} {{l10n.to_time}} <span class="Ldt-CreateAnnotation-End">{{end}}</span>{{/show_slice}}</span></span>'
-    + '{{#show_creator_field}}{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator empty" value="{{creator_name}}" /></h3>{{/show_creator_field}}'
+    + '{{#show_creator_field}}{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator empty" value="{{creator_name}}" />{{/show_creator_field}}</h3>'
     + '<textarea class="Ldt-CreateAnnotation-Description empty" placeholder="{{l10n.type_description}}"></textarea>'
     + '<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>'
     + '<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{l10n.submit}}" />'

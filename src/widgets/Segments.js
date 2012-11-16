@@ -9,7 +9,9 @@ IriSP.Widgets.Segments.prototype = new IriSP.Widgets.Widget();
 IriSP.Widgets.Segments.prototype.defaults = {
     annotation_type : "chap",
     colors: ["#1f77b4","#aec7e8","#ff7f0e","#ffbb78","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5","#8c564b","#c49c94","#e377c2","#f7b6d2","#7f7f7f","#c7c7c7","#bcbd22","#dbdb8d","#17becf","#9edae5"],
-    height: 10
+    line_height: 8,
+    background: "#e0e0e0",
+    overlap: .25
 };
 
 IriSP.Widgets.Segments.prototype.template =
@@ -19,7 +21,7 @@ IriSP.Widgets.Segments.prototype.template =
 
 IriSP.Widgets.Segments.prototype.annotationTemplate =
     '<div class="Ldt-Segments-Segment Ldt-TraceMe" trace-info="segment-id:{{id}}, media-id:{{media_id}}" segment-text="{{text}}"'
-    + 'style="left:{{left}}px; width:{{width}}px; background:{{color}}"></div>'
+    + 'style="top:{{top}}px; height:{{height}}px; left:{{left}}px; width:{{width}}px; background:{{medcolor}}" data-base-color="{{color}}" data-low-color="{{lowcolor}}" data-medium-color="{{medcolor}}"></div>'
 
 
 IriSP.Widgets.Segments.prototype.draw = function() {
@@ -30,26 +32,65 @@ IriSP.Widgets.Segments.prototype.draw = function() {
     
     this.renderTemplate();
     
-    var _list = this.getWidgetAnnotations(),
+    var _list = this.getWidgetAnnotations().filter(function(_ann) {
+            return _ann.getDuration() > 0;
+        }),
         _this = this,
         _scale = this.width / this.source.getDuration();
-    this.$.css({
-        width : this.width + "px",
-        height : (this.height - 2) + "px",
-        margin : "1px 0"
-    });
-    this.list_$ = this.$.find('.Ldt-Segments-List');
+    var list_$ = this.$.find('.Ldt-Segments-List'),
+        lines = [],
+        zindex = 1;
+    
+    function saturate(r, g, b, s) {
+        function satcomp(c) {
+            return Math.floor(240 * (1 - s) + c * s);
+        }
+        var res = ( 0x10000 * satcomp(r) + 0x100 * satcomp(g) + satcomp(b)).toString(16);
+        while (res.length < 6) {
+            res = "0" + res;
+        }
+        return "#" + res;
+    }
+    
+    function unselect() {
+        _this.tooltip.hide();
+        _this.$segments.each(function() {
+            var _segment = IriSP.jQuery(this);
+            _segment.css("background", _segment.attr("data-medium-color"));
+        });
+    }
     
     _list.forEach(function(_annotation, _k) {
         var _left = _annotation.begin * _scale,
             _width = ( _annotation.getDuration() ) * _scale,
             _center = Math.floor( _left + _width / 2 ),
-            _fulltext = _annotation.title + ( _annotation.description ? ( '<br/>' + _annotation.description ) : '' );
+            _fulltext = _annotation.title + ( _annotation.description ? ( '<br/>' + _annotation.description ) : '' ),
+            line = IriSP._(lines).find(function(line) {
+                return !IriSP._(line.annotations).find(function(a) {
+                    return a.begin < _annotation.end && a.end > _annotation.begin
+                });
+            });
+        if (!line) {
+            line = { index: lines.length, annotations: []};
+            lines.push(line); 
+        }
+        line.annotations.push(_annotation);
+        var _top = ((1 - _this.overlap) * line.index) * _this.line_height,
+            color = ( typeof _annotation.color !== "undefined" && _annotation.color ? _annotation.color : _this.colors[_k % _this.colors.length] ),
+            r = parseInt(color.substr(1,2),16),
+            g = parseInt(color.substr(3,2),16),
+            b = parseInt(color.substr(5,2),16),
+            medcolor = saturate(r, g, b, .5),
+            lowcolor = saturate(r, g, b, .2);
         var _data = {
-            color : ( typeof _annotation.color !== "undefined" && _annotation.color ? _annotation.color : _this.colors[_k % _this.colors.length] ),
+            color : color,
+            medcolor: medcolor,
+            lowcolor: lowcolor,
             text: _fulltext.replace(/(\n|\r|\r\n)/mg,' ').replace(/(^.{120,140})[\s].+$/m,'$1&hellip;'),
-            left : Math.floor( _left ),
-            width : Math.floor( _width ),
+            left : _left,
+            width : _width,
+            top: _top,
+            height: _this.line_height - 1,
             id : _annotation.id,
             media_id : _annotation.getMedia().id
         };
@@ -64,16 +105,28 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             .click(function() {
                 _annotation.trigger("click");
             })
-            .appendTo(_this.list_$)
+            .appendTo(list_$)
         _annotation.on("select", function() {
-            _this.$segments.removeClass("active").addClass("inactive");
-            _this.tooltip.show( _center, 0, _data.text, _data.color );
-            _el.removeClass("inactive").addClass("active");
+            _this.$segments.each(function() {
+                var _segment = IriSP.jQuery(this);
+                _segment.css({
+                    background: _segment.attr("data-low-color")
+                });
+            });
+            _this.tooltip.show( _center, _top, _data.text, _data.color );
+            _el.css({
+                background: color,
+                "z-index": ++zindex
+            });
         });
-        _annotation.on("unselect", function() {
-            _this.tooltip.hide();
-            _this.$segments.removeClass("inactive active");
-        });
+        _annotation.on("unselect", unselect);
+    });
+    
+    this.$.css({
+        width : this.width + "px",
+        height : (((1 - this.overlap) * lines.length + this.overlap) * this.line_height) + "px",
+        background : this.background,
+        margin: "1px 0"
     });
     this.insertSubwidget(this.$.find(".Ldt-Segments-Tooltip"), { type: "Tooltip" }, "tooltip");
     this.$segments = this.$.find('.Ldt-Segments-Segment');
@@ -87,10 +140,10 @@ IriSP.Widgets.Segments.prototype.onSearch = function(searchString) {
         this.$segments.each(function() {
             var _el = IriSP.jQuery(this);
             if (_re.test(_el.attr("segment-text"))) {
-                _el.removeClass("unfound").addClass("found");
+                _el.css("background", _el.attr("data-base-color"));
                 _found++;
             } else {
-                _el.removeClass("found").addClass("unfound");
+                _el.css("background", _el.attr("data-low-color"));
             }
         });
         if (_found) {
@@ -99,7 +152,10 @@ IriSP.Widgets.Segments.prototype.onSearch = function(searchString) {
             this.player.trigger("search.noMatchFound");
         }
     } else {
-        this.$segments.removeClass("found unfound");
+        _this.$segments.each(function() {
+            var _segment = IriSP.jQuery(this);
+            _segment.css("background", _segment.attr("data-medium-color"));
+        });
     }
 }
 

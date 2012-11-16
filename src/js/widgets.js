@@ -121,7 +121,13 @@ IriSP.Widgets.Widget.prototype.onMediaEvent = function(_eventName, _functionOrNa
 }
 
 IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function() {
-    return typeof this.annotation_type !== "undefined" && this.annotation_type ? this.media.getAnnotationsByTypeTitle(this.annotation_type) : this.media.getAnnotations();
+    if (typeof this.annotation_type === "undefined") {
+        return this.media.getAnnotations();
+    }
+    if (this.annotation_type.elementType === "annotationType") {
+        return this.annotation_type.getAnnotations();
+    }
+    return this.media.getAnnotationsByTypeTitle(this.annotation_type);
 }
 
 IriSP.Widgets.Widget.prototype.getWidgetAnnotationsAtTime = function() {
