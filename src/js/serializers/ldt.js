@@ -31,16 +31,42 @@ IriSP.serializers.ldt = {
                 }
                 return _res;        
             },
-            serializer : function(_data, _source) {
-                return {
+            serializer : function(_data, _source, _dest) {
+                var _res = {
                     id : _data.id,
                     url : _data.video,
                     meta : {
-                        "dc:title" : _data.title,
-                        "dc:description" : _data.description,
+                        "dc:title": _data.title || "",
+                        "dc:description": _data.description || "",
+                        "dc:created" : IriSP.Model.dateToIso(_data.created || _source.created),
+                        "dc:modified" : IriSP.Model.dateToIso(_data.modified || _source.modified),
+                        "dc:creator" : _data.creator || _source.creator,
+                        "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator,
                         "dc:duration" : _data.duration.milliseconds
                     }
                 }
+                _dest.medias.push(_res);
+                var _list = {
+                    id: IriSP.Model.getUID(),
+                    meta : {
+                        "dc:title": _data.title || "",
+                        "dc:description": _data.description || "",
+                        "dc:created" : IriSP.Model.dateToIso(_data.created || _source.created),
+                        "dc:modified" : IriSP.Model.dateToIso(_data.modified || _source.modified),
+                        "dc:creator" : _data.creator || _source.creator,
+                        "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator,
+                        "id-ref": _data.id
+                    },
+                    items: _source.getAnnotationTypes().filter(function(_at) {
+                        return _at.media === _data;
+                    }).map(function(_at) {
+                        return {
+                            "id-ref": _at.id
+                        }
+                    })
+                }
+                _dest.lists.push(_list);
+                _dest.views[0].contents.push(_data.id);
             }
         },
         tag : {
@@ -51,13 +77,19 @@ IriSP.serializers.ldt = {
                 _res.title = _data.meta["dc:title"];
                 return _res;        
             },
-            serializer : function(_data, _source) {
-                return {
+            serializer : function(_data, _source, _dest) {
+                var _res = {
                     id : _data.id,
                     meta : {
-                        "dc:title" : _data.title
+                        "dc:title": _data.title || "",
+                        "dc:description": _data.description || "",
+                        "dc:created" : IriSP.Model.dateToIso(_data.created || _source.created),
+                        "dc:modified" : IriSP.Model.dateToIso(_data.modified || _source.modified),
+                        "dc:creator" : _data.creator || _source.creator,
+                        "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator,
                     }
                 }
+                _dest.tags.push(_res);
             }
         },
         annotationType : {
@@ -68,12 +100,18 @@ IriSP.serializers.ldt = {
                 _res.description = _data["dc:description"];
                 return _res;        
             },
-            serializer : function(_data, _source) {
-                return {
+            serializer : function(_data, _source, _dest) {
+                var _res = {
                     id : _data.id,
-                    "dc:title" : _data.title,
-                    "dc:description" : _data.description
+                    "dc:title": _data.title || "",
+                    "dc:description": _data.description || "",
+                    "dc:created" : IriSP.Model.dateToIso(_data.created || _source.created),
+                    "dc:modified" : IriSP.Model.dateToIso(_data.modified || _source.modified),
+                    "dc:creator" : _data.creator || _source.creator,
+                    "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator,
                 }
+                _dest["annotation-types"].push(_res);
+                _dest.views[0].annotation_types.push(_data.id);
             }
         },
         annotation : {
@@ -96,6 +134,7 @@ IriSP.serializers.ldt = {
                 _res.setMedia(_data.media);
                 _res.setAnnotationType(_data.meta["id-ref"]);
                 _res.setTags(IriSP._(_data.tags).pluck("id-ref"));
+                _res.keywords = _res.getTagTexts();
                 _res.setBegin(_data.begin);
                 _res.setEnd(_data.end);
                 _res.creator = _data.meta["dc:creator"] || "";
@@ -108,22 +147,29 @@ IriSP.serializers.ldt = {
                 }
                 return _res;
             },
-            serializer : function(_data, _source) {
-                return {
+            serializer : function(_data, _source, _dest) {
+                var _color = parseInt(_data.color.replace(/^#/,''),16).toString();
+                var _res = {
                     id : _data.id,
                     begin : _data.begin.milliseconds,
                     end : _data.end.milliseconds,
                     content : {
-                        title : _data.title,
-                        description : _data.description,
-                        audio : _data.audio
+                        title : _data.title || "",
+                        description : _data.description || "",
+                        audio : _data.audio,
+                        img: {
+                            src: _data.thumbnail
+                        }
                     },
+                    color: _color,
                     media : _data.media.id,
                     meta : {
-                        "id-ref" : _data.annotationType.id,
-                        "dc:created" : IriSP.Model.dateToIso(_data.created),
-                        "dc:creator" : _data.creator,
-                        project : _source.projectId
+                        "id-ref" : _data.getAnnotationType().id,
+                        "dc:created" : IriSP.Model.dateToIso(_data.created || _source.created),
+                        "dc:modified" : IriSP.Model.dateToIso(_data.modified || _source.modified),
+                        "dc:creator" : _data.creator || _source.creator,
+                        "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator,
+//                        project : _source.projectId
                     },
                     tags : IriSP._(_data.tag.id).map(function(_id) {
                        return {
@@ -131,6 +177,7 @@ IriSP.serializers.ldt = {
                        } 
                     })
                 }
+                _dest.annotations.push(_res);
             }
         },
         mashup : {
@@ -142,40 +189,63 @@ IriSP.serializers.ldt = {
                 var _res = new IriSP.Model.Mashup(_data.id, _source);
                 _res.title = _data.meta["dc:title"];
                 _res.description = _data.meta["dc:description"];
-                for (var _i = 0; _i < _data.items.length; _i++) {
-                    _res.addSegmentById(_data.items[_i]);
-                }
+                _res.creator = _data.meta["dc:creator"];
+                _res.setAnnotationsById(_data.items);
                 return _res;        
             },
-            serializer : function(_data, _source) {
-                return {
+            serializer : function(_data, _source, _dest) {
+                var _res = {
                     meta : {
-                        "dc:title": _data.title,
-                        "dc:description": _data.description,
+                        "dc:title": _data.title || "",
+                        "dc:description": _data.description || "",
+                        "dc:created" : IriSP.Model.dateToIso(_data.created || _source.created),
+                        "dc:modified" : IriSP.Model.dateToIso(_data.modified || _source.modified),
+                        "dc:creator" : _data.creator || _source.creator,
+                        "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator,
                         listtype: "mashup"
                     },
                     items: _data.segments.map(function(_annotation) {
-                        return _id;
+                        return _annotation.annotation.id;
                     }),
                     id: _data.id
                 }
+                _dest.lists.push(_res);
             }
         }
     },
     serialize : function(_source) {
-        var _res = {},
+        var _res = {
+                meta: {
+                    "dc:creator": _source.creator,
+                    "dc:contributor" : _source.contributor || _source.creator,
+                    "dc:created": IriSP.Model.dateToIso(_source.created),
+                    "dc:modified" : IriSP.Model.dateToIso(_source.modified),
+                    "dc:title": _source.title || "",
+                    "dc:description": _source.description || "",
+                    id: _source.projectId || _source.id
+                },
+                views: [
+                    {
+                        id: IriSP.Model.getUID(),
+                        contents: [],
+                        annotation_types: []
+                    }
+                ],
+                lists: [],
+                "annotation-types": [],
+                medias: [],
+                tags: [],
+                annotations: []
+            },
             _this = this;
         _source.forEach(function(_list, _typename) {
             if (typeof _this.types[_typename] !== "undefined") {
-                _res[_this.types[_typename].serialized_name] = _list.map(function(_el) {
-                    return _this.types[_typename].serializer(_el, _source);
+                _list.forEach(function(_el) {
+                    _this.types[_typename].serializer(_el, _source, _res);
                 });
             }
         });
         return JSON.stringify(_res);
-    },
-    loadData : function(_url, _callback) {
-        IriSP.jQuery.getJSON(_url, _callback)
     },
     deSerialize : function(_data, _source) {
         if (typeof _data !== "object" || _data === null) {

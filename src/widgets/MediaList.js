@@ -61,10 +61,8 @@ IriSP.Widgets.MediaList.prototype.draw = function() {
     this.renderTemplate();
     var _this = this;
     if (typeof this.media.getMedias === "function") {
-        this.media.getMedias().forEach(function(_m) {
-            _m.on("enter", function() {
-                _this.redraw(_m);
-            });
+        this.media.on("enter-annotation", function(_a) {
+            _this.redraw(_a.getMedia());
         })
     }
     this.redraw();

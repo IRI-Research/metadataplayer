@@ -92,10 +92,6 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     this.onMediaEvent("volumechange","volumeUpdater");
     this.onMediaEvent("timeupdate","timeDisplayUpdater");
     this.onMediaEvent("loadedmetadata","volumeUpdater");
-    this.onMdpEvent("search.matchFound","searchMatch");
-    this.onMdpEvent("search.noMatchFound","searchNoMatch");
-    this.onMdpEvent("search.triggeredSearch","triggeredSearch");
-    this.onMdpEvent("search.cleared","hideSearchBlock");
     
     // handle clicks
     this.$playButton.click(this.functionWrapper("playHandler"));
@@ -157,6 +153,21 @@ IriSP.Widgets.Controller.prototype.draw = function() {
         });
     
     this.timeDisplayUpdater(new IriSP.Model.Time(0));
+    
+    var annotations = this.source.getAnnotations();
+    annotations.on("search", function(_text) {
+        _this.$searchInput.val(_text);
+        _this.showSearchBlock();
+    });
+    annotations.on("found", function(_text) {
+        _this.$searchInput.css('background-color','#e1ffe1');
+    });
+    annotations.on("not-found", function(_text) {
+        _this.$searchInput.css('background-color', "#d62e3a");
+    });
+    annotations.on("search-cleared", function() {
+        _this.hideSearchBlock();
+    });
    
 };
 
@@ -222,23 +233,11 @@ IriSP.Widgets.Controller.prototype.volumeUpdater = function() {
 IriSP.Widgets.Controller.prototype.showSearchBlock = function() {
     this.$searchBlock.animate({ width:"160px" }, 200);
     this.$searchInput.css('background-color','#fff');
-   
     this.$searchInput.focus();
-    
-    // we need this variable because some widgets can find a match in
-    // their data while at the same time others don't. As we want the
-    // search field to become green when there's a match, we need a 
-    // variable to remember that we had one.
-    this._positiveMatch = false;
-
-    // tell the world the field is open
-    this.player.trigger("search.open");
 };
 
 IriSP.Widgets.Controller.prototype.hideSearchBlock = function() {
     this.$searchBlock.animate( { width: 0 }, 200);
-    this._positiveMatch = false;
-    this.player.trigger("search.closed");
 };
 
 /** react to clicks on the search button */
@@ -247,7 +246,7 @@ IriSP.Widgets.Controller.prototype.searchButtonHandler = function() {
         this.showSearchBlock();
         var _val = this.$searchInput.val();
         if (_val) {
-            this.player.trigger("search", _val); // trigger the search to make it more natural.
+            this.source.getAnnotations().search(_val);
         }
 	} else {
         this.hideSearchBlock();
@@ -267,37 +266,12 @@ IriSP.Widgets.Controller.prototype.searchHandler = function() {
     // do nothing if the search field is empty, instead of highlighting everything.
     if (_val !== this.lastSearchValue) {
         if (_val) {
-            this.player.trigger("search", _val);
+            this.source.getAnnotations().search(_val);
         } else {
-            this.player.trigger("search.cleared");
+            this.source.getAnnotations().trigger("clear-search");
             this.$searchInput.css('background-color','');
         }
     }
     this.lastSearchValue = _val;
 };
-
-/**
-  handler for the IriSP.search.found message, which is sent by some views when they
-  highlight a match.
-*/
-IriSP.Widgets.Controller.prototype.searchMatch = function() {
-    this._positiveMatch = true;
-    this.$searchInput.css('background-color','#e1ffe1');
-};
-
-/** the same, except that no value could be found */
-IriSP.Widgets.Controller.prototype.searchNoMatch = function() {
-    if (this._positiveMatch !== true) {
-        this.$searchInput.css('background-color', "#d62e3a");
-    }
-};
-
-/** react to an IriSP.Player.triggeredSearch - that is, when
-    a widget ask the.Player to do a search on his behalf */
-IriSP.Widgets.Controller.prototype.triggeredSearch = function(searchString) {
-    this.showSearchBlock();
-    this.$searchInput.attr('value', searchString);      
-    this.player.trigger("search", searchString); // trigger the search to make it more natural.
-};
-
 

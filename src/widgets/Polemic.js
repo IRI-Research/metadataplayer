@@ -47,42 +47,6 @@ IriSP.Widgets.Polemic.prototype.defaults = {
     ]
 };
 
-IriSP.Widgets.Polemic.prototype.onSearch = function(searchString) {
-    this.searchString = typeof searchString !== "undefined" ? searchString : '';
-    var _found = 0,
-        _re = IriSP.Model.regexpFromTextOrArray(searchString, true),
-        _this = this;
-    this.$tweets.each(function() {
-        var _el = IriSP.jQuery(this);
-        if (_this.searchString) {
-            if (_re.test(_el.attr("tweet-title"))) {
-                _el.css({
-                    "background" : _this.foundcolor,
-                    "opacity" : 1
-                });
-                _found++;
-            } else {
-                _el.css({
-                    "background" : _el.attr("polemic-color"),
-                    "opacity" : .3
-                });
-            }
-        } else {
-            _el.css({
-                "background" : _el.attr("polemic-color"),
-                "opacity" : 1
-            });
-        }
-    });
-    if (this.searchString) {
-        if (_found) {
-            this.player.trigger("search.matchFound");
-        } else {
-            this.player.trigger("search.noMatchFound");
-        }
-    }
-}
-
 IriSP.Widgets.Polemic.prototype.draw = function() {
     
     this.onMediaEvent("timeupdate", "onTimeupdate");
@@ -189,6 +153,18 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     _this.tooltip.hide();
                     _this.$tweets.css("opacity",1);
                 });
+                _annotation.on("found", function() {
+                    _el.css({
+                        "background" : _this.foundcolor,
+                        "opacity" : 1
+                    });
+                });
+                _annotation.on("not-found", function() {
+                    _el.css({
+                        "background" : _col,
+                        "opacity" : .3
+                    });
+                });
                 _this.$zone.append(_el);
             }
             
@@ -213,9 +189,15 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             
             this.$tweets = this.$.find(".Ldt-Polemic-TweetDiv");
             
-            this.onMdpEvent("search", "onSearch");
-            this.onMdpEvent("search.closed", "onSearch");
-            this.onMdpEvent("search.cleared", "onSearch");
+            this.source.getAnnotations().on("search-cleared", function() {
+                _this.$tweets.each(function() {
+                    var _el = IriSP.jQuery(this);
+                    _el.css({
+                        "background" : _el.attr("polemic-color"),
+                        "opacity" : 1
+                    });
+                });
+            });
             
         } else {
             this.$zone.hide();

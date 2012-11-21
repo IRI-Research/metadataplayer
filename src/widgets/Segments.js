@@ -11,7 +11,9 @@ IriSP.Widgets.Segments.prototype.defaults = {
     colors: ["#1f77b4","#aec7e8","#ff7f0e","#ffbb78","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5","#8c564b","#c49c94","#e377c2","#f7b6d2","#7f7f7f","#c7c7c7","#bcbd22","#dbdb8d","#17becf","#9edae5"],
     line_height: 8,
     background: "#e0e0e0",
-    overlap: .25
+    overlap: .25,
+    found_color: "#FF00FC",
+    faded_found_color: "#ff80fc"
 };
 
 IriSP.Widgets.Segments.prototype.template =
@@ -25,21 +27,18 @@ IriSP.Widgets.Segments.prototype.annotationTemplate =
 
 
 IriSP.Widgets.Segments.prototype.draw = function() {
-    this.onMdpEvent("search", "onSearch");
-    this.onMdpEvent("search.closed", "onSearch");
-    this.onMdpEvent("search.cleared", "onSearch");
     this.onMediaEvent("timeupdate", "onTimeupdate");
-    
     this.renderTemplate();
     
     var _list = this.getWidgetAnnotations().filter(function(_ann) {
             return _ann.getDuration() > 0;
         }),
         _this = this,
-        _scale = this.width / this.source.getDuration();
-    var list_$ = this.$.find('.Ldt-Segments-List'),
+        _scale = this.width / this.source.getDuration(),
+        list_$ = this.$.find('.Ldt-Segments-List'),
         lines = [],
-        zindex = 1;
+        zindex = 1,
+        searching = false;
     
     function saturate(r, g, b, s) {
         function satcomp(c) {
@@ -50,14 +49,6 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             res = "0" + res;
         }
         return "#" + res;
-    }
-    
-    function unselect() {
-        _this.tooltip.hide();
-        _this.$segments.each(function() {
-            var _segment = IriSP.jQuery(this);
-            _segment.css("background", _segment.attr("data-medium-color"));
-        });
     }
     
     _list.forEach(function(_annotation, _k) {
@@ -110,16 +101,28 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             _this.$segments.each(function() {
                 var _segment = IriSP.jQuery(this);
                 _segment.css({
-                    background: _segment.attr("data-low-color")
+                    background: _segment.hasClass("found") ? _this.faded_found_color : _segment.attr("data-low-color")
                 });
             });
-            _this.tooltip.show( _center, _top, _data.text, _data.color );
             _el.css({
-                background: color,
+                background: _el.hasClass("found") ? _this.found_color: color,
                 "z-index": ++zindex
             });
+            _this.tooltip.show( _center, _top, _data.text, _data.color );
         });
-        _annotation.on("unselect", unselect);
+        _annotation.on("unselect", function() {
+            _this.tooltip.hide();
+            _this.$segments.each(function() {
+                var _segment = IriSP.jQuery(this);
+                _segment.css("background", _segment.hasClass("found") ? _this.found_color : _segment.attr(searching ? "data-low-color" : "data-medium-color"));
+            });
+        });
+        _annotation.on("found", function() {
+            _el.css("background", _this.found_color).addClass("found");
+        });
+        _annotation.on("not-found", function() {
+            _el.css("background", lowcolor).removeClass("found");
+        });
     });
     
     this.$.css({
@@ -130,33 +133,16 @@ IriSP.Widgets.Segments.prototype.draw = function() {
     });
     this.insertSubwidget(this.$.find(".Ldt-Segments-Tooltip"), { type: "Tooltip" }, "tooltip");
     this.$segments = this.$.find('.Ldt-Segments-Segment');
-}
-
-IriSP.Widgets.Segments.prototype.onSearch = function(searchString) {
-    this.searchString = typeof searchString !== "undefined" ? searchString : '';
-    var _found = 0,
-        _re = IriSP.Model.regexpFromTextOrArray(searchString, true);
-    if (this.searchString) {
-        this.$segments.each(function() {
-            var _el = IriSP.jQuery(this);
-            if (_re.test(_el.attr("segment-text"))) {
-                _el.css("background", _el.attr("data-base-color"));
-                _found++;
-            } else {
-                _el.css("background", _el.attr("data-low-color"));
-            }
-        });
-        if (_found) {
-            this.player.trigger("search.matchFound");
-        } else {
-            this.player.trigger("search.noMatchFound");
-        }
-    } else {
+    this.source.getAnnotations().on("search", function() {
+        searching = true;
+    });
+    this.source.getAnnotations().on("search-cleared", function() {
+        searching = false;
         _this.$segments.each(function() {
             var _segment = IriSP.jQuery(this);
-            _segment.css("background", _segment.attr("data-medium-color"));
+            _segment.css("background", _segment.attr("data-medium-color")).removeClass("found");
         });
-    }
+    });
 }
 
 IriSP.Widgets.Segments.prototype.onTimeupdate = function(_time) {

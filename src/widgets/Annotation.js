@@ -56,7 +56,8 @@ IriSP.Widgets.Annotation.prototype.defaults = {
 
 IriSP.Widgets.Annotation.prototype.draw = function() {
     
-    var _this = this;
+    var _this = this,
+        currentAnnotation;
     
     function timeupdate(_time) {
         var _list = _this.getWidgetAnnotationsAtTime();
@@ -70,7 +71,29 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
         }
     }
     
+    function highlightTitleAndDescription() {
+        if (!currentAnnotation) {
+            return;
+        }
+        var title = currentAnnotation.title,
+            description = currentAnnotation.description.replace(/(^\s+|\s+$)/g,'');
+        if (currentAnnotation.found) {
+            var rgxp = _this.source.getAnnotations().regexp || /^$/,
+                repl = '<span class="Ldt-Annotation-Highlight">$1</span>';
+            title = title.replace(rgxp,repl);
+            description = description.replace(rgxp,repl);
+        }
+        _this.$.find(".Ldt-Annotation-Title").html(title || "(" + _this.l10n.untitled + ")");
+        if (description) {
+            _this.$.find(".Ldt-Annotation-Description-Block").removeClass("Ldt-Annotation-EmptyBlock");
+            _this.$.find(".Ldt-Annotation-Description").html(description);
+        } else {
+            _this.$.find(".Ldt-Annotation-Description-Block").addClass("Ldt-Annotation-EmptyBlock");
+        }
+    }
+    
     function drawAnnotation(_annotation) {
+        currentAnnotation = _annotation;
         var _url = (typeof _annotation.url !== "undefined" 
                 ? _annotation.url
                 : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id)),
@@ -85,7 +108,7 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
                     var _el = IriSP.jQuery('<li class="Ldt-Annotation-TagLabel"></li>').append(IriSP.jQuery('<span>').text(_trimmedTitle));
                     _el.click(function() {
                         if (_this.search_on_tag_click) {
-                            _this.player.trigger("search.triggeredSearch",_trimmedTitle);
+                            _this.source.getAnnotations().search(_trimmedTitle);
                         }
                         _tag.trigger("click");
                     });
@@ -95,14 +118,7 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
         } else {
             _this.$.find(".Ldt-Annotation-Tags-Block").addClass("Ldt-Annotation-EmptyBlock");
         }
-        _this.$.find(".Ldt-Annotation-Title").text(_annotation.title || "(" + _this.l10n.untitled + ")");
-        var _desc = _annotation.description.replace(/(^\s+|\s+$)/g,'');
-        if (_desc) {
-            _this.$.find(".Ldt-Annotation-Description-Block").removeClass("Ldt-Annotation-EmptyBlock");
-            _this.$.find(".Ldt-Annotation-Description").html(_desc);
-        } else {
-            _this.$.find(".Ldt-Annotation-Description-Block").addClass("Ldt-Annotation-EmptyBlock");
-        }
+        highlightTitleAndDescription();
         if (_this.show_annotation_type) {
             _this.$.find(".Ldt-Annotation-Type").text(_annotation.getAnnotationType().title)
         }
@@ -135,7 +151,7 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
     
     this.renderTemplate();
     
-    if (_this.show_social) {
+    if (this.show_social) {
         this.insertSubwidget(this.$.find(".Ldt-Annotation-Social"), { type: "Social" }, "socialWidget");
     }
     
@@ -152,6 +168,9 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
             drawAnnotation(_a)
         });
     });
+    this.source.getAnnotations().on("found", highlightTitleAndDescription);
+    this.source.getAnnotations().on("not-found", highlightTitleAndDescription);
+    this.source.getAnnotations().on("search-cleared", highlightTitleAndDescription);
 }
 
 IriSP.Widgets.Annotation.prototype.sendBounds = function() {

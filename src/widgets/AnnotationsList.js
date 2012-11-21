@@ -1,11 +1,12 @@
 IriSP.Widgets.AnnotationsList = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
-    this.searchString = false;
     this.lastIds = [];
     var _this = this;
     this.throttledRefresh = IriSP._.throttle(function() {
         _this.refresh(false);
-    }, 1500);
+    }, 800);
+    this.searchString = false;
+    this.lastSearch = false;
 };
 
 IriSP.Widgets.AnnotationsList.prototype = new IriSP.Widgets.Widget();
@@ -87,18 +88,6 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '{{#audio}}<div class="Ldt-AnnotationsList-Play" data-audio={{audio}}>{{l10n.voice_annotation}}</div>{{/audio}}'
     + '</li>';
 
-IriSP.Widgets.AnnotationsList.prototype.onSearch = function(searchString) {
-    this.searchString = typeof searchString !== "undefined" ? searchString : '';
-    var _n = this.refresh(true);
-    if (this.searchString) {
-        if (_n) {
-            this.player.trigger("search.matchFound");
-        } else {
-            this.player.trigger("search.noMatchFound");
-        }
-    }
-}
-
 //obj.url = this.project_url + "/" + media + "/" + annotations[i].meta.project + "/" + annotations[i].meta["id-ref"] + '#id=' + annotations[i].id;
 
 IriSP.Widgets.AnnotationsList.prototype.ajaxSource = function() {
@@ -150,9 +139,9 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             });
         }
     }
-    if (this.searchString) {
-        _list = _list.searchByTextFields(this.searchString);
-    }
+    _list = _list.filter(function(_annotation) {
+        return _annotation.found !== false;
+    });
     if (this.limit_count) {
         /* Get the n annotations closest to current timecode */
         _list = _list.sortBy(function(_annotation) {
@@ -171,8 +160,9 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
     
     var _ids = _list.idIndex;
     
-    if (_forceRedraw || !IriSP._.isEqual(_ids, this.lastIds)) {
+    if (_forceRedraw || !IriSP._.isEqual(_ids, this.lastIds) || this.searchString !== this.lastSearch) {
         /* This part only gets executed if the list needs updating */
+        this.lastSearch = this.searchString;
         this.lastIds = _ids;
         this.list_$.html("");
         _list.forEach(function(_annotation) {
@@ -258,7 +248,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         });
     
         this.$.find('.Ldt-AnnotationsList-Tag-Li').click(function() {
-            _this.player.trigger("search.triggeredSearch", IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
+            _this.source.getAnnotations().search(IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
         });
         
         this.$.find(".Ldt-AnnotationsList-Play").click(function() {
@@ -274,11 +264,10 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             _this.jw_paused_media = true;
         });
         
-        if(this.searchString) {
-            var _searchRe = IriSP.Model.regexpFromTextOrArray(this.searchString);
+        if (this.source.getAnnotations().searching) {
             this.$.find(".Ldt-AnnotationsList-Title a, .Ldt-AnnotationsList-Description").each(function() {
                 var _$ = IriSP.jQuery(this);
-                _$.html(_$.text().replace(/(^\s+|\s+$)/g,'').replace(_searchRe, '<span class="Ldt-AnnotationsList-highlight">$1</span>'))
+                _$.html(_$.text().replace(/(^\s+|\s+$)/g,'').replace(_this.source.getAnnotations().regexp, '<span class="Ldt-AnnotationsList-highlight">$1</span>'))
             })
         }
     }
@@ -328,9 +317,29 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     this.list_$ = this.$.find(".Ldt-AnnotationsList-ul");
     
     
-    this.onMdpEvent("search", "onSearch");
-    this.onMdpEvent("search.closed", "onSearch");
-    this.onMdpEvent("search.cleared", "onSearch");
+    this.source.getAnnotations().on("search", function(_text) {
+        _this.searchString = _text;
+        if (_this.source !== _this.currentSource) {
+            _this.currentSource.getAnnotations().search(_text);
+            _this.throttledRefresh();
+        }
+    });
+    this.source.getAnnotations().on("found", function() {
+        _this.throttledRefresh();
+    });
+    this.source.getAnnotations().on("not-found", function() {
+        _this.throttledRefresh();
+    });
+    this.source.getAnnotations().on("clear-search", function() {
+        _this.searchString = false;
+        if (_this.source !== _this.currentSource) {
+            _this.currentSource.getAnnotations().trigger("clear-search");
+        }
+    });
+    this.source.getAnnotations().on("search-cleared", function() {
+        _this.throttledRefresh();
+    });
+    
     this.onMdpEvent("AnnotationsList.refresh", function() {
         if (_this.ajax_url) {
             if (_this.mashupMode) {

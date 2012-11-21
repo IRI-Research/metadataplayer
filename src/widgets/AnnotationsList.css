@@ -29,8 +29,7 @@ li.Ldt-AnnotationsList-li {
     background-image: url(img/pinstripe-grey.png);
 }
 .Ldt-AnnotationsList-highlight {
-    background: #F7268E;
-    color: #ffffff;
+    background: #FFA0FC;
 }
 .Ldt-AnnotationsList-ThumbContainer {
     float: left;

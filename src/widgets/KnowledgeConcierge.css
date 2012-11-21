@@ -10,6 +10,27 @@
     display: none;
 }
 
+.Ldt-Kc-Related h2 {
+    border: none;
+    color: #330099;
+    font-size: 18px;
+    margin: 8px 0 2px;
+    padding: 0 5px;
+}
+
+h3.Ldt-Kc-For-Keywords {
+    border-bottom: 1px solid #666666;
+    color: #000000;
+    font-size: 12px;
+    margin: 2px 0 5px;
+    padding: 0 5px 5px;
+    text-align: right;
+}
+
+.Ldt-Kc-Keywords {
+    color: #d000c0; font-weight: bold;
+}
+
 .Ldt-Kc-Related-Item {
     width: 235px; float: left; margin: 4px 0; padding: 4px 0;
 }

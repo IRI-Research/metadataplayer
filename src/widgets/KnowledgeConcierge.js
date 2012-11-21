@@ -13,17 +13,19 @@ IriSP.Widgets.KnowledgeConcierge.prototype.defaults = {
     related_api_endpoint: "",
     use_word_boundaries: false,
     related_data_type: 'json', // SET TO "jsonp" FOR CROSS-DOMAIN OPERATION
-    related_count: 8
+    related_count: 8,
 }
 
 IriSP.Widgets.KnowledgeConcierge.prototype.messages = {
     "fr": {
         related_videos: "Vidéos liées",
-        duration_: "Durée&nbsp;:"
+        duration_: "Durée&nbsp;:",
+        for_keywords_: "pour le(s) mots-clé(s)&nbsp;:"
     },
     "en": {
         related_videos: "Related Videos",
-        duration_: "Duration:"
+        duration_: "Duration:",
+        for_keywords_: "for keyword(s):"
     }
 }
 
@@ -31,6 +33,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.template =
     '<div class="Ldt-Kc-Slider"></div><canvas class="Ldt-Kc-Canvas" />'
     + '<div class="Ldt-Kc-Waiting"></div>'
     + '<div class="Ldt-Kc-Related"><h2>{{ l10n.related_videos }}</h2>'
+    + '<h3 class="Ldt-Kc-For-Keywords">{{l10n.for_keywords_}} <span class="Ldt-Kc-Keywords"></span></h3>'
     + '<div class="Ldt-Kc-Related-List"></div></div>';
 
 IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
@@ -54,6 +57,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
         _selectedText = "",
         currentNodesList = "",
         relatedCache = {},
+        relatedRequests = {},
         relatedTemplate = '<div class="Ldt-Kc-Related-Item"><a href="{{ widget.video_url_base }}{{ media.iri_id }}"><img src="{{ media.image }}"></a>'
             + '<h3><a href="{{ widget.video_url_base }}{{ media.iri_id }}">{{ media.title }}</a></h3><p>{{ description }}</p>'
             + '<p>{{ widget.l10n.duration_ }} <span class="Ldt-Kc-Item-Duration">{{ duration }}</span></p>'
@@ -61,9 +65,14 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
             
     Processing.loadSketchFromSources(_canvas[0],_pjsfiles);
     
-    function renderRelated(keywords) {
+    function renderRelated() {
+        var keywords = currentNodesList;
+        if (typeof relatedCache[keywords] === "undefined") {
+            return;
+        }
         _this.$.find(".Ldt-Kc-Waiting").hide();
         if (relatedCache[keywords].length) {
+            _this.$.find(".Ldt-Kc-Keywords").html(keywords.replace(/\,/g,", "));
             var _html = '<div class="Ldt-Kc-Row">';
             IriSP._(relatedCache[keywords]).each(function(media, i) {
                 var _tmpldata = {
@@ -87,9 +96,8 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
 
     function triggerSearch(text) {
         if (_selectedText !== text) {
-            //console.log("Trigger search for '" + text + "'");
             _selectedText = text;
-            _this.player.trigger("search.triggeredSearch", text);
+            _this.source.getAnnotations().search(text);
         }
     }
     
@@ -119,45 +127,43 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
                             node.position(Math.floor(radius*Math.sin(2 * Math.PI * i / l)),Math.floor(radius*Math.cos(2 * Math.PI * i / l)));
                         }
                     }
-                } else {
-                    console.log("No match found");
                 }
             }
         );
     }
     
-    function listNodes() {
-        var nodes = _pjs.getNodes().values().toArray(),
-            nodetexts = IriSP._(nodes).chain().pluck("name").sortBy().value().join(",");
-        if (currentNodesList !== nodetexts) {
-            if (typeof relatedCache[nodetexts] === "undefined") {
-                _this.$.find(".Ldt-Kc-Waiting").show();
-                _this.$.find(".Ldt-Kc-Related").hide();
-                IriSP.jQuery.ajax({
-                    url: _this.related_api_endpoint,
-                    data: {
-                        format: _this.related_data_type,
-                        keywords: nodetexts
-                    },
-                    dataType: _this.related_data_type,
-                    success: function(data) {
-                        relatedCache[nodetexts] = IriSP._(data.objects)
-                            .chain()
-                            .filter(function(o) {
-                                return o.iri_id !== _this.media.id;
-                            })
-                            .sortBy(function(o) {
-                                return - o.score;
-                            })
-                            .first(_this.related_count)
-                            .value();
-                        renderRelated(nodetexts);
-                    }
-                })
-            } else {
-                renderRelated(nodetexts);
+    function showRelated(nodetexts) {
+        currentNodesList = nodetexts;
+        if (typeof relatedCache[nodetexts] === "undefined") {
+            _this.$.find(".Ldt-Kc-Waiting").show();
+            _this.$.find(".Ldt-Kc-Related").hide();
+            if (relatedRequests[nodetexts]) {
+                return;
             }
-            currentNodesList = nodetexts;
+            relatedRequests[nodetexts] = true;
+            IriSP.jQuery.ajax({
+                url: _this.related_api_endpoint,
+                data: {
+                    format: _this.related_data_type,
+                    keywords: nodetexts
+                },
+                dataType: _this.related_data_type,
+                success: function(data) {
+                    relatedCache[nodetexts] = IriSP._(data.objects)
+                        .chain()
+                        .filter(function(o) {
+                            return o.iri_id !== _this.media.id;
+                        })
+                        .sortBy(function(o) {
+                            return - o.score;
+                        })
+                        .first(_this.related_count)
+                        .value();
+                    renderRelated();
+                }
+            })
+        } else {
+            renderRelated();
         }
     }
     
@@ -173,10 +179,9 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
                     item = response.items[0];
                     _pjs.initNode(item.id, item.name, item.grp, item.uid, item.proj);
                     _fns.countassoc(item.id, item.proj);
-                } else {
-                    console.debug('No such topic.');
                 }
-        });
+            }
+        );
     }
     
     function bindJavascript() {
@@ -189,9 +194,6 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
                     _teamMode = true;
                 _pjs.saveMode("en",false,_teamMode,false,"both",_edit);
                 rootNode(_this.topic_id, _this.project_id);
-                _canvas.click(function() {
-                    triggerSearch("")
-                });
                 _slider.slider({
                     min: -20,
                     max: 20,
@@ -206,10 +208,9 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
             setTimeout(bindJavascript, 1000); 
         }
     }
-    
+    var currentSelection = null, lockMode = false;
     var _fns = {
         adjacentnodes: function(id, proj, adj, both) {
-            //console.log("Function adjacentnodes called with", arguments);
             jQuery.ajax({
                 url: _this.kc_api_root + "associations-bd.jsp",
                 cache: false,
@@ -236,7 +237,6 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
                                 _pjs.setNodeAssoc(item.to_id, item.to_proj, item.to_assoc);
                             }
                         }
-                        listNodes();
                         return response;
                     } else {
                         //.debug('No such topic.');
@@ -246,11 +246,9 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
             });
         },
         setscale: function(scl){
-            //console.log("Function setscale called with", arguments);
             _slider.slider("value", 10*Math.log(scl));
         },
         countassoc: function(id, proj) {
-            //console.log("Fonction countassoc called with", arguments);
             jQuery.ajax({
                 url: _this.kc_api_root + "count-assoc.jsp",
                 data: {
@@ -265,23 +263,38 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
                             if (item.assoc!=null) _pjs.setNodeAssoc(item.id, item.proj, item.assoc);
                             if (item.mass!=null) _pjs.setNodeMass( item.id, item.proj, item.mass);
                         }
-                    } else {
-                        console.debug('No such topic.');
                     }
                 }
             });
         },
-        new_select: function(id, proj) {
-            var node = _pjs.findNode(id, proj);
-            triggerSearch(node.name);
-            //console.log("Mouse over node named '" + node.name + "'");
+        username: function() {
+            var nodes = _pjs.getNodes().values().toArray(),
+                nodetexts = IriSP._(nodes).chain().pluck("name").sortBy().value().join(",");
+            showRelated(nodetexts);
         },
-        username: listNodes
+        mousemove: function(selection) {
+            if (selection !== currentSelection) {
+                if (selection && !lockMode) {
+                    triggerSearch(selection.name);
+                }
+                currentSelection = selection;
+            }
+        },
+        click: function(selection) {
+            if (selection) {
+                lockMode = true;
+                triggerSearch(selection.name);
+                showRelated(selection.name);
+            } else {
+                lockMode = false;
+                triggerSearch()
+            }
+        }
     }
     var uselessfuncts = [
         "selectnode", "selectedge", "topicnode","group_shapes",
         "allbackup", "allretrieve", "new_topic", "pedia", "set_mode",
-        "new_relation", "startexpand", "endexpand" //, "username"
+        "new_relation", "startexpand", "endexpand", "new_select" //, "mouseover" //, "username"
     ];
     
     IriSP._(uselessfuncts).each(function(funcname) {

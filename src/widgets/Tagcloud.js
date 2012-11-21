@@ -39,9 +39,6 @@ IriSP.Widgets.Tagcloud.prototype.stopword_lists = {
 }
 
 IriSP.Widgets.Tagcloud.prototype.draw = function() {
-    this.onMdpEvent("search", "onSearch");
-    this.onMdpEvent("search.closed", "onSearch");
-    this.onMdpEvent("search.cleared", "onSearch");
     
     if (this.segment_annotation_type) {
         var _this = this;
@@ -108,9 +105,10 @@ IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
     this.$.html(Mustache.to_html(this.template,  {words: _words }));
     this.$.find(".Ldt-Tagcloud-item").click(function() {
         var _txt = IriSP.jQuery(this).attr("content");
-        _this.player.trigger("search.triggeredSearch", _txt);
+        _this.source.getAnnotations().search(_txt);
     });
-    
+    this.source.getAnnotations().on("search", this.functionWrapper("onSearch"));
+    this.source.getAnnotations().on("search-cleared", this.functionWrapper("onSearch"));
 }
 
 IriSP.Widgets.Tagcloud.prototype.onSearch = function(searchString) {

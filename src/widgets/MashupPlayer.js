@@ -24,7 +24,8 @@ IriSP.Widgets.MashupPlayer.prototype.draw = function() {
         _timecode = 0,
         _seeking = false,
         _seekdiv,
-        _timedelta;
+        _timedelta,
+        medialist = _mashup.getMedias();
     
     _mashup.paused = (!this.autostart && !this.autoplay)
     
@@ -54,14 +55,14 @@ IriSP.Widgets.MashupPlayer.prototype.draw = function() {
             _timedelta = _segmentBegin - _currentAnnotation.begin.milliseconds;
             _currentMedia = _currentAnnotation.getMedia();
             
-            for (var _i = 0; _i < _mashup.medias.length; _i++) {
-                if (_mashup.medias[_i].id !== _currentMedia.id) {
+            for (var _i = 0; _i < medialist.length; _i++) {
+                if (medialist[_i].id !== _currentMedia.id) {
                     if (!_this.split_screen) {
-                        _mashup.medias[_i].hide();
+                        medialist[_i].hide();
                     }
-                    _mashup.medias[_i].pause();
+                    medialist[_i].pause();
                 } else {
-                    _mashup.medias[_i].show();
+                    medialist[_i].show();
                 }
             }
             
@@ -113,11 +114,11 @@ IriSP.Widgets.MashupPlayer.prototype.draw = function() {
         background: this.background
     });
     
-    var _grid = Math.ceil(Math.sqrt(_mashup.medias.length)),
+    var _grid = Math.ceil(Math.sqrt(medialist.length)),
         _width = (this.split_screen ? this.width / _grid : this.width),
-        _height = (this.split_screen ? this.height / _grid : this.height)
+        _height = (this.split_screen ? this.height / _grid : this.height);
 
-    IriSP._(_mashup.medias).each(function(_media, _key) {
+    IriSP._(medialist).each(function(_media, _key) {
         var _el = IriSP.jQuery('<div class="Ldt-MashupPlayer-Media"><div class="Ldt-MashupPlayer-Subwidget"></div></div>');
         _el.css({
             top: (_this.split_screen ? _height * Math.floor(_key / _grid) : 0),
@@ -149,8 +150,8 @@ IriSP.Widgets.MashupPlayer.prototype.draw = function() {
         _media.on("loadedmetadata", function() {
             _media.loadedMetadata = true;
             var _allLoaded = true;
-            for (var _i = 0; _i < _mashup.medias.length; _i++) {
-                _allLoaded = _allLoaded && _mashup.medias[_i].loadedMetadata;
+            for (var _i = 0; _i < medialist.length; _i++) {
+                _allLoaded = _allLoaded && medialist[_i].loadedMetadata;
             }
             if (_allLoaded) {
                 _seekdiv.fadeOut();
@@ -227,15 +228,15 @@ IriSP.Widgets.MashupPlayer.prototype.draw = function() {
     });
     
     _mashup.on("setvolume", function(_vol) {
-        for (var _i = 0; _i < _mashup.medias.length; _i++) {
-            _mashup.medias[_i].setVolume(_vol);
+        for (var _i = 0; _i < medialist.length; _i++) {
+            medialist[_i].setVolume(_vol);
         }
         _mashup.volume = _vol;
     });
     
     _mashup.on("setmuted", function(_muted) {
-        for (var _i = 0; _i < _mashup.medias.length; _i++) {
-            _mashup.medias[_i].setMuted(_muted);
+        for (var _i = 0; _i < medialist.length; _i++) {
+            medialist[_i].setMuted(_muted);
         }
         _mashup.muted = _muted;
     });

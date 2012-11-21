@@ -90,10 +90,10 @@ IriSP.Widgets.Renkan.prototype.draw = function() {
             var _tagmatch = _uri.match(_this.tag_regexp);
             if (_tagmatch) {
                 _node.on("select", function() {
-                    _this.player.trigger("search.triggeredSearch",_tagmatch[1]);
+                    _this.source.getAnnotations().search(_tagmatch[1]);
                 })
                 _node.on("unselect", function() {
-                    _this.player.trigger("search.cleared");
+                    _this.source.getAnnotations().search("");
                 })
             }
         });
