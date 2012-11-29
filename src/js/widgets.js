@@ -17,12 +17,14 @@ if (typeof IriSP.Widgets === "undefined") {
 
 
 IriSP.Widgets.Widget = function(player, config) {
-
+    
     if( typeof player === "undefined") {
         /* Probably an abstract call of the class when
          * individual widgets set their prototype */
         return;
     }
+    
+    this.__subwidgets = [];
     
     /* Setting all the configuration options */
     var _type = config.type,
@@ -57,6 +59,7 @@ IriSP.Widgets.Widget = function(player, config) {
         }
         
         _this.draw();
+        player.trigger("widget-loaded");
     });
    
     /* Adding classes and html attributes */
@@ -137,11 +140,20 @@ IriSP.Widgets.Widget.prototype.getWidgetAnnotationsAtTime = function() {
     });
 }
 
+IriSP.Widgets.Widget.prototype.isLoaded = function() {
+    var isloaded = !IriSP._(this.__subwidgets).any(function(w) {
+        return !(w && w.isLoaded());
+    });
+    return isloaded;
+}
+
 IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _widgetoptions, _propname) {
     var _id = _selector.attr("id"),
         _this = this,
         _type = _widgetoptions.type,
-        $L = $LAB;
+        $L = $LAB,
+        key = this.__subwidgets.length;
+    this.__subwidgets.push(null);
     if (typeof _id == "undefined") {
         _id = IriSP._.uniqueId(this.container + '_sub_widget_' + _widgetoptions.type);
         _selector.attr("id", _id);
@@ -157,6 +169,7 @@ IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _widgetopti
             if (_propname) {
                 _this[_propname] = _widget;
             }
+            _this.__subwidgets[key] = _widget;
         });
     });
 }

@@ -19,14 +19,17 @@
     background: url(img/pinstripe.png);
     padding: 5px;
     margin: 0;
-    max-height: 300px;
-    overflow: auto;
 }
 
 .Ldt-Annotation-Inner h3 {
     margin: 5px 0;
     font-size: 14px;
     font-weight: bold;
+}
+
+.Ldt-Annotation-Description {
+    max-height: 150px;
+    overflow: auto;
 }
 
 .Ldt-Annotation-Cleared {

@@ -74,7 +74,7 @@ IriSP.Metadataplayer.prototype.loadLibs = function() {
 IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
     IriSP.log("IriSP.Metadataplayer.prototype.onLibsLoaded");
     if (typeof IriSP.jQuery === "undefined" && typeof window.jQuery !== "undefined") {
-        IriSP.jQuery = window.jQuery.noConflict();
+        IriSP.jQuery = window.jQuery;
     }
     if (typeof IriSP._ === "undefined" && typeof window._ !== "undefined") {
         IriSP._ = window._;
@@ -93,12 +93,28 @@ IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
       
     this.widgets = [];
     var _this = this;
-    for(var i = 0; i < this.config.widgets.length; i++) {
-        this.loadWidget(this.config.widgets[i], function(_widget) {
-            _this.widgets.push(_widget)
+    IriSP._(this.config.widgets).each(function(widgetconf, key) {
+        _this.widgets.push(null);
+        _this.loadWidget(widgetconf, function(widget) {
+            _this.widgets[key] = widget;
         });
-    };
+    });
     this.$.find('.Ldt-Loader').detach();
+    
+    var endload = false;
+    
+    this.on("widget-loaded", function() {
+        if (endload) {
+            return;
+        }
+        var isloaded = !IriSP._(_this.widgets).any(function(w) {
+            return !(w && w.isLoaded())
+        });
+        if (isloaded) {
+            endload = true;
+            _this.trigger("widgets-loaded");
+        }
+    });   
 }
 
 IriSP.Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {

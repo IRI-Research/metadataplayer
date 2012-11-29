@@ -20,20 +20,22 @@ IriSP.Widgets.KnowledgeConcierge.prototype.messages = {
     "fr": {
         related_videos: "Vidéos liées",
         duration_: "Durée&nbsp;:",
-        for_keywords_: "pour le(s) mots-clé(s)&nbsp;:"
+        for_keywords_: "pour le(s) mots-clé(s)&nbsp;:",
+        no_matching_videos: "Pas de vidéos correspondantes"
     },
     "en": {
         related_videos: "Related Videos",
         duration_: "Duration:",
-        for_keywords_: "for keyword(s):"
+        for_keywords_: "for keyword(s):",
+        no_matching_videos: "No matching videos"
     }
 }
 
 IriSP.Widgets.KnowledgeConcierge.prototype.template =
     '<div class="Ldt-Kc-Slider"></div><canvas class="Ldt-Kc-Canvas" />'
-    + '<div class="Ldt-Kc-Waiting"></div>'
     + '<div class="Ldt-Kc-Related"><h2>{{ l10n.related_videos }}</h2>'
     + '<h3 class="Ldt-Kc-For-Keywords">{{l10n.for_keywords_}} <span class="Ldt-Kc-Keywords"></span></h3>'
+    + '<div class="Ldt-Kc-Waiting"></div>'
     + '<div class="Ldt-Kc-Related-List"></div></div>';
 
 IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
@@ -58,8 +60,8 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
         currentNodesList = "",
         relatedCache = {},
         relatedRequests = {},
-        relatedTemplate = '<div class="Ldt-Kc-Related-Item"><a href="{{ widget.video_url_base }}{{ media.iri_id }}"><img src="{{ media.image }}"></a>'
-            + '<h3><a href="{{ widget.video_url_base }}{{ media.iri_id }}">{{ media.title }}</a></h3><p>{{ description }}</p>'
+        relatedTemplate = '<div class="Ldt-Kc-Related-Item"><a href="{{ widget.video_url_base }}{{ media.iri_id }}#keyword={{ escaped_keyword }}"><img src="{{ media.image }}"></a>'
+            + '<h3><a href="{{ widget.video_url_base }}{{ media.iri_id }}#keyword={{ escaped_keyword }}">{{ media.title }}</a></h3><p>{{ description }}</p>'
             + '<p>{{ widget.l10n.duration_ }} <span class="Ldt-Kc-Item-Duration">{{ duration }}</span></p>'
             + '</a><div class="Ldt-Kc-Clearer"></div></div>';
             
@@ -67,19 +69,20 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
     
     function renderRelated() {
         var keywords = currentNodesList;
+        _this.$.find(".Ldt-Kc-Related").show();
         if (typeof relatedCache[keywords] === "undefined") {
             return;
         }
         _this.$.find(".Ldt-Kc-Waiting").hide();
         if (relatedCache[keywords].length) {
-            _this.$.find(".Ldt-Kc-Keywords").html(keywords.replace(/\,/g,", "));
             var _html = '<div class="Ldt-Kc-Row">';
             IriSP._(relatedCache[keywords]).each(function(media, i) {
                 var _tmpldata = {
                     widget: _this,
                     media: media,
                     description: media.description.replace(/(\n|\r|\r\n)/mg,' ').replace(/(^.{120,140})[\s].+$/m,'$1&hellip;'),
-                    duration: new IriSP.Model.Time(media.duration).toString()
+                    duration: new IriSP.Model.Time(media.duration).toString(),
+                    escaped_keyword: encodeURIComponent(keywords.split(",")[0])
                 }
                 _html += Mustache.to_html(relatedTemplate, _tmpldata);
                 if (i % 2) {
@@ -88,9 +91,8 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
             });
             _html += '</div>';
             _this.$.find(".Ldt-Kc-Related-List").html(_html);
-            _this.$.find(".Ldt-Kc-Related").show();
         } else {
-            _this.$.find(".Ldt-Kc-Related").hide();
+            _this.$.find(".Ldt-Kc-Related-List").html("<p class='Ldt-Kc-Related-Empty'>" + _this.l10n.no_matching_videos + "</p>");
         }
     }    
 
@@ -134,9 +136,10 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
     
     function showRelated(nodetexts) {
         currentNodesList = nodetexts;
+        _this.$.find(".Ldt-Kc-Related-List").html("");
+        _this.$.find(".Ldt-Kc-Keywords").html(nodetexts.replace(/\,/g,", "));
         if (typeof relatedCache[nodetexts] === "undefined") {
             _this.$.find(".Ldt-Kc-Waiting").show();
-            _this.$.find(".Ldt-Kc-Related").hide();
             if (relatedRequests[nodetexts]) {
                 return;
             }
@@ -208,7 +211,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
             setTimeout(bindJavascript, 1000); 
         }
     }
-    var currentSelection = null, lockMode = false;
+    var currentSelection = null;
     var _fns = {
         adjacentnodes: function(id, proj, adj, both) {
             jQuery.ajax({
@@ -274,7 +277,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
         },
         mousemove: function(selection) {
             if (selection !== currentSelection) {
-                if (selection && !lockMode) {
+                if (selection) {
                     triggerSearch(selection.name);
                 }
                 currentSelection = selection;
@@ -282,12 +285,10 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
         },
         click: function(selection) {
             if (selection) {
-                lockMode = true;
                 triggerSearch(selection.name);
                 showRelated(selection.name);
             } else {
-                lockMode = false;
-                triggerSearch()
+                triggerSearch();
             }
         }
     }
@@ -319,6 +320,13 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
             }
         });
     });
+    
+    var keywmatch = document.location.hash.match(/keyword=([^#?&]+)/);
+    if (keywmatch) {
+        this.player.on("widgets-loaded", function() {
+            triggerSearch(keywmatch[1]);
+        })
+    }
     
     bindJavascript();
     
