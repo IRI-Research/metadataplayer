@@ -81,7 +81,7 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
             var rgxp = _this.source.getAnnotations().regexp || /^$/,
                 repl = '<span class="Ldt-Annotation-Highlight">$1</span>';
             title = title.replace(rgxp,repl);
-            description = description.replace(rgxp,repl);
+            description = description.replace(rgxp,repl).replace(/[\n\r]+/gm,'<br />');
         }
         _this.$.find(".Ldt-Annotation-Title").html(title || "(" + _this.l10n.untitled + ")");
         if (description) {
@@ -100,6 +100,7 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
             _text = _this.l10n.watching + _annotation.title + (_this.site_name ? _this.l10n.on_site + _this.site_name : ''),
             _tags = _annotation.getTags(),
             _tagblock = _this.$.find(".Ldt-Annotation-Tags");
+        _tagblock.empty();
         if (_tags.length) {
             _this.$.find(".Ldt-Annotation-Tags-Block").removeClass("Ldt-Annotation-EmptyBlock");
             _tags.forEach(function(_tag) {
