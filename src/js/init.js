@@ -97,6 +97,9 @@ IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
         _this.widgets.push(null);
         _this.loadWidget(widgetconf, function(widget) {
             _this.widgets[key] = widget;
+            if (widget.isLoaded()) {
+                _this.trigger("widget-loaded");
+            }
         });
     });
     this.$.find('.Ldt-Loader').detach();

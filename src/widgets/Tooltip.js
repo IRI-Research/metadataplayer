@@ -5,17 +5,35 @@ IriSP.Widgets.Tooltip = function(player, config) {
 
 IriSP.Widgets.Tooltip.prototype = new IriSP.Widgets.Widget();
 
-IriSP.Widgets.Tooltip.prototype.template = '<div class="Ldt-Tooltip"><div class="Ldt-Tooltip-Inner"><div class="Ldt-Tooltip-Color"></div><div class="Ldt-Tooltip-Text"></div></div></div>';
+IriSP.Widgets.Tooltip.prototype.defaults = {
+    
+};
+
+IriSP.Widgets.Tooltip.prototype.template =
+    '<div class="Ldt-Tooltip"><div class="Ldt-Tooltip-Main"><div class="Ldt-Tooltip-Corner-NW"></div>'
+    + '<div class="Ldt-Tooltip-Border-Top"></div><div class="Ldt-Tooltip-Corner-NE"></div>'
+    + '<div class="Ldt-Tooltip-Border-Left"></div><div class="Ldt-Tooltip-Border-Right"></div>'
+    + '<div class="Ldt-Tooltip-Corner-SW"></div><div class="Ldt-Tooltip-Border-SW"></div>'
+    + '<div class="Ldt-Tooltip-Tip"></div><div class="Ldt-Tooltip-Border-SE"></div>'
+    + '<div class="Ldt-Tooltip-Corner-SE"></div><div class="Ldt-Tooltip-Inner">'
+    + '<div class="Ldt-Tooltip-Color"></div><p class="Ldt-Tooltip-Text"></p></div></div></div>';
 
 IriSP.Widgets.Tooltip.prototype.draw = function() {
     _this = this;
-    this.$.html(this.template);
+    this.renderTemplate();
     this.$.parent().css({
         "position" : "relative"
     });
-    this.$tip = this.$.find(".Ldt-Tooltip");
+    this.$tooltip = this.$.find(".Ldt-Tooltip");
+    this.$tip = this.$.find(".Ldt-Tooltip-Tip");
+    this.$sw = this.$.find(".Ldt-Tooltip-Border-SW");
+    this.$se = this.$.find(".Ldt-Tooltip-Border-SE");
+    this.__halfWidth = Math.floor(this.$.find(".Ldt-Tooltip-Main").width()/2);
+    this.__borderWidth = this.$.find(".Ldt-Tooltip-Border-Left").width();
+    this.__tipDelta = this.__halfWidth - Math.floor(this.$tip.width()/2);
+    this.__maxShift = this.__tipDelta - this.__borderWidth;
     this.$.mouseover(function() {
-        _this.$tip.hide();
+        _this.$tooltip.hide();
     });
     this.hide();
 };
@@ -30,13 +48,33 @@ IriSP.Widgets.Tooltip.prototype.show = function(x, y, text, color) {
 
     this.$.find(".Ldt-Tooltip-Text").html(text);
 
-    this.$tip.show();
+    this.$tooltip.show();
+    
+    var shift = 0;
+    
+    if (typeof this.min_x !== "undefined" && (x - this.__halfWidth < this.min_x)) {
+        shift = Math.max(x - this.__halfWidth - this.min_x, - this.__maxShift);
+    }
+    
+    if (typeof this.max_x !== "undefined" && (x + this.__halfWidth > this.max_x)) {
+        shift = Math.min(x + this.__halfWidth - this.max_x, this.__maxShift);
+    }
+    
+    this.$tooltip.css({
+        "left" : (x - shift) + "px",
+        "top" : y + "px"
+    });
     this.$tip.css({
-        "left" : Math.floor(x - this.$tip.outerWidth() / 2) + "px",
-        "top" : Math.floor(y - this.$tip.outerHeight()) + "px"
+        "left": (this.__tipDelta + shift) + "px"
+    });
+    this.$sw.css({
+        "width": (this.__tipDelta + shift - this.__borderWidth) + "px"
+    });
+    this.$se.css({
+        "width": (this.__tipDelta - shift - this.__borderWidth) + "px"
     });
 };
 
 IriSP.Widgets.Tooltip.prototype.hide = function() {
-    this.$tip.hide();
+    this.$tooltip.hide();
 };

@@ -135,12 +135,14 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     _annotation.trigger("click");
                 });
                 _annotation.on("select", function() {
-                    _this.tooltip.show(
-                        Math.floor(_elx + (_this.element_width - 1) / 2),
-                        _ely,
-                        _annotation.title,
-                        _col
-                    );
+                    if (_this.tooltip) {
+                        _this.tooltip.show(
+                            Math.floor(_elx + (_this.element_width - 1) / 2),
+                            _ely,
+                            _annotation.title,
+                            _col
+                        );
+                    }
                     _this.$tweets.each(function() {
                         var _e = IriSP.jQuery(this);
                         _e.css(
@@ -150,7 +152,9 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     });
                 });
                 _annotation.on("unselect", function() {
-                    _this.tooltip.hide();
+                    if (_this.tooltip) {
+                        _this.tooltip.hide();
+                    }
                     _this.$tweets.css("opacity",1);
                 });
                 _annotation.on("found", function() {
@@ -270,10 +274,14 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     var _color = _i ? _this.polemics[_i - 1].color : _this.defaultcolor;
                     _html += '<div class="Ldt-Tooltip-Color" style="background: ' + _color + '"></div><p>' + _nums[_i] + _this.l10n._annotations + '</p>'
                 }
-                _this.tooltip.show(_el.attr("pos-x"), _el.attr("pos-y"), _html);
+                if (_this.tooltip) {
+                    _this.tooltip.show(_el.attr("pos-x"), _el.attr("pos-y"), _html);
+                }
             })
             .mouseout(function() {
-                _this.tooltip.hide();
+                if (_this.tooltip) {
+                    _this.tooltip.hide();
+                }
             })
             
     }
@@ -289,7 +297,15 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
     
     this.$.append('<div class="Ldt-Polemic-Tooltip"></div>');
     
-    this.insertSubwidget(this.$.find(".Ldt-Polemic-Tooltip"), { type: "Tooltip" }, "tooltip");
+    this.insertSubwidget(
+        this.$.find(".Ldt-Polemic-Tooltip"),
+        {
+            type: "Tooltip",
+            min_x: 0,
+            max_x: this.width
+        },
+        "tooltip"
+    );
 }
 
 IriSP.Widgets.Polemic.prototype.onTimeupdate = function(_time) {

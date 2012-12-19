@@ -4,9 +4,10 @@ IriSP.Widgets.Mediafragment = function(player, config) {
     this.last_hash_value = "";
     window.onhashchange = this.functionWrapper("goToHash");
     if (typeof window.addEventListener !== "undefined") {
+        var _this = this;
         window.addEventListener('message', function(_msg) {
             if (/^#/.test(_msg.data)) {
-                this.setWindowHash(_msg.data);
+                _this.setWindowHash(_msg.data);
             }
         })
     };
@@ -18,14 +19,15 @@ IriSP.Widgets.Mediafragment.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Mediafragment.prototype.draw = function() {
     this.onMediaEvent("pause","setHashToTime");
-    this.onMediaEvent("seeked","setHashToTime");
-    this.goToHash();
     var _this = this;
     this.getWidgetAnnotations().forEach(function(_annotation) {
         _annotation.on("click", function() {
             _this.setHashToAnnotation(_annotation.id);
         })
-    })
+    });
+    this.player.on("widgets-loaded", function() {
+        _this.goToHash();
+    });
 }
 
 IriSP.Widgets.Mediafragment.prototype.setWindowHash = function(_hash) {

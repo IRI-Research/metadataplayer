@@ -389,9 +389,9 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
      * Nous remplissons les données de l'annotation générée à la volée
      * ATTENTION: Si nous sommes sur un MASHUP, ces éléments doivent se référer AU MEDIA D'ORIGINE
      * */
+    _annotation.setMedia(this.source.currentMedia.id); /* Id du média annoté */
     _annotation.setBegin(this.begin); /*Timecode de début */
     _annotation.setEnd(this.end); /* Timecode de fin */
-    _annotation.setMedia(this.source.currentMedia.id); /* Id du média annoté */
    
     _annotation.setAnnotationType(_annotationType.id); /* Id du type d'annotation */
     if (this.show_title_field) {

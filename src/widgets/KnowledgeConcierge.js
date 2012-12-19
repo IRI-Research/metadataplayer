@@ -324,7 +324,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
     var keywmatch = document.location.hash.match(/keyword=([^#?&]+)/);
     if (keywmatch) {
         this.player.on("widgets-loaded", function() {
-            triggerSearch(keywmatch[1]);
+            triggerSearch(decodeURIComponent(keywmatch[1]));
         })
     }
     

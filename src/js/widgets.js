@@ -44,24 +44,6 @@ IriSP.Widgets.Widget = function(player, config) {
      */
     this.player = player;
     
-    /* Getting metadata */
-    this.source = player.loadMetadata(this.metadata);
-    
-    /* Call draw when loaded */
-    this.source.onLoad(function() {
-        if (_this.media_id) {
-            _this.media = this.getElement(_this.media_id);
-        } else {
-            var _mediaopts = {
-                is_mashup: _this.is_mashup || false
-            }
-            _this.media = this.getCurrentMedia(_mediaopts);
-        }
-        
-        _this.draw();
-        player.trigger("widget-loaded");
-    });
-   
     /* Adding classes and html attributes */
     this.$ = IriSP.jQuery('#' + this.container);
     this.$.addClass("Ldt-TraceMe Ldt-Widget").attr("widget-type", _type);
@@ -75,6 +57,31 @@ IriSP.Widgets.Widget = function(player, config) {
             : this.messages["en"]
         )
     );
+    
+    /* Loading Metadata if required */
+    
+    if (this.metadata) {
+        /* Getting metadata */
+        this.source = player.loadMetadata(this.metadata);
+        
+        /* Call draw when loaded */
+        this.source.onLoad(function() {
+            if (_this.media_id) {
+                _this.media = this.getElement(_this.media_id);
+            } else {
+                var _mediaopts = {
+                    is_mashup: _this.is_mashup || false
+                }
+                _this.media = this.getCurrentMedia(_mediaopts);
+            }
+            
+            _this.draw();
+            player.trigger("widget-loaded");
+        });
+    } else {
+        this.draw();
+    }
+    
     
 };
 

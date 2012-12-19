@@ -108,10 +108,14 @@ IriSP.Widgets.Segments.prototype.draw = function() {
                 background: _el.hasClass("found") ? _this.found_color: color,
                 "z-index": ++zindex
             });
-            _this.tooltip.show( _center, _top, _data.text, _data.color );
+            if (_this.tooltip) {
+                _this.tooltip.show( _center, _top, _data.text, _data.color );
+            }
         });
         _annotation.on("unselect", function() {
-            _this.tooltip.hide();
+            if (_this.tooltip) {
+                _this.tooltip.hide();
+            }
             _this.$segments.each(function() {
                 var _segment = IriSP.jQuery(this);
                 _segment.css("background", _segment.hasClass("found") ? _this.found_color : _segment.attr(searching ? "data-low-color" : "data-medium-color"));
@@ -131,7 +135,15 @@ IriSP.Widgets.Segments.prototype.draw = function() {
         background : this.background,
         margin: "1px 0"
     });
-    this.insertSubwidget(this.$.find(".Ldt-Segments-Tooltip"), { type: "Tooltip" }, "tooltip");
+    this.insertSubwidget(
+        this.$.find(".Ldt-Segments-Tooltip"),
+        {
+            type: "Tooltip",
+            min_x: 0,
+            max_x: this.width
+        },
+        "tooltip"
+    );
     this.$segments = this.$.find('.Ldt-Segments-Segment');
     this.source.getAnnotations().on("search", function() {
         searching = true;

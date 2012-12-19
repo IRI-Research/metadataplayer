@@ -241,7 +241,8 @@ Model.List.prototype.searchByTextFields = function(_text, _iexact) {
     var _iexact = _iexact || false,
         _rgxp =  Model.regexpFromTextOrArray(_text, true);
     return this.filter(function(_element) {
-        return _rgxp.test(_element.description) || _rgxp.test(_element.title);
+        var keywords = (_element.keywords || _element.getTagTexts() || []).join(", ");
+        return _rgxp.test(_element.description) || _rgxp.test(_element.title) || _rgxp.test(keywords);
     });
 }
 
@@ -426,7 +427,7 @@ Model.Time.prototype.toString = function(showCs) {
     }
     _res += pad(2, _hms.minutes) + ':' + pad(2, _hms.seconds);
     if (showCs) {
-        _res += "." + Math.round(_hms.milliseconds / 100)
+        _res += "." + Math.floor(_hms.milliseconds / 100)
     }
     return _res;
 }
@@ -1002,12 +1003,12 @@ Model.Source.prototype.addList = function(_listId, _contents) {
 
 Model.Source.prototype.getList = function(_listId, _global) {
     _global = (typeof _global !== "undefined" && _global);
-    if (_global || typeof this.contents[_listId] === "undefined") {
+    if (_global) {
         return this.directory.getGlobalList().filter(function(_e) {
             return (_e.elementType === _listId);
         });
     } else {
-        return this.contents[_listId];
+        return this.contents[_listId] || new IriSP.Model.List(this.directory);
     }
 }
 
@@ -1141,6 +1142,7 @@ Model.RemoteSource.prototype.get = function() {
         url: this.url,
         dataType: dataType,
         data: urlparams,
+        traditional: true,
         success: function(_result) {
             _this.deSerialize(_result);
             _this.handleCallbacks();

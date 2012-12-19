@@ -36,7 +36,8 @@ IriSP.libFiles = {
         underscore : "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js",
         Mustache : "http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.5.0-dev/mustache.min.js",
         raphael : "http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js",
-        json : "http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"
+        json : "http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js",
+        popcorn: "http://cdn.popcornjs.org/code/dist/popcorn-complete.min.js"
     },
     useCdn : false
 }
@@ -47,6 +48,9 @@ IriSP.widgetsRequirements = {
     PopcornPlayer: {
         noCss: true,
         requires: [ "popcorn" ]
+    },
+    HtmlPlayer: {
+        noCss: true
     },
     JwpPlayer: {
         noCss: true,
