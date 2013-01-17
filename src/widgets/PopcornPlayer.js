@@ -7,7 +7,6 @@ IriSP.Widgets.PopcornPlayer.prototype = new IriSP.Widgets.Widget();
 /* A Popcorn-based player for HTML5 Video, Youtube and Vimeo */
 
 IriSP.Widgets.PopcornPlayer.prototype.defaults = {
-    aspect_ratio: 14/9
 }
 
 IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
@@ -19,13 +18,6 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
     
     if (this.url_transform) {
         this.video = this.url_transform(this.video);
-    }
-    
-    if (!this.height) {
-        this.height = Math.floor(this.width/this.aspect_ratio);
-        this.$.css({
-                height: this.height
-            });
     }
     
     if (/^(https?:\/\/)?(www\.)?vimeo\.com/.test(this.video)) {
@@ -62,7 +54,7 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
         _videoEl.attr({
             id : _tmpId,
             width : this.width,
-            height : this.height
+            height : this.height || undefined
         });
         if(typeof this.video === "string"){
             _videoEl.attr("src",this.video);

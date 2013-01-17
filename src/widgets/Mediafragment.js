@@ -18,16 +18,18 @@ IriSP.Widgets.Mediafragment = function(player, config) {
 IriSP.Widgets.Mediafragment.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Mediafragment.prototype.draw = function() {
-    this.onMediaEvent("pause","setHashToTime");
+    this.onMediaEvent("setpause","setHashToTime");
     var _this = this;
     this.getWidgetAnnotations().forEach(function(_annotation) {
         _annotation.on("click", function() {
             _this.setHashToAnnotation(_annotation.id);
         })
     });
-    this.player.on("widgets-loaded", function() {
-        _this.goToHash();
-    });
+    if (this.media.loadedMetadata) {
+        this.goToHash();
+    } else {
+        this.onMediaEvent("loadedmetadata","goToHash");
+    }
 }
 
 IriSP.Widgets.Mediafragment.prototype.setWindowHash = function(_hash) {

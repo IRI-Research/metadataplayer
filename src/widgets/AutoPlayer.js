@@ -27,7 +27,7 @@ IriSP.Widgets.AutoPlayer.prototype.draw = function() {
             },
             {
                 regexp: /\.(ogg|ogv|webm)$/,
-                type: "PopcornPlayer"
+                type: "HtmlPlayer"
             },
             {
                 regexp: /^(https?:\/\/)?(www\.)?youtube\.com/,
@@ -57,7 +57,7 @@ IriSP.Widgets.AutoPlayer.prototype.draw = function() {
     
     if (_opts.type === "AdaptivePlayer") {
         var _canPlayType = document.createElement('video').canPlayType("video/mp4");
-        _opts.type = (_canPlayType == "maybe" || _canPlayType == "probably") ? "PopcornPlayer" : "JwpPlayer";
+        _opts.type = (_canPlayType == "maybe" || _canPlayType == "probably") ? "HtmlPlayer" : "JwpPlayer";
     }
     
     if (_rtmprgx.test(this.video)) {

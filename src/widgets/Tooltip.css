@@ -108,6 +108,10 @@
     float: left; margin: 8px 2px 2px 8px; width: 10px; height: 10px;
 }
 
+.Ldt-Tooltip-AltColor {
+    float: left; margin: 2px 2px 2px 3px; width: 10px; height: 10px;
+}
+
 .Ldt-Tooltip img {
     max-width: 140px; max-height: 80px; margin: 2px 20px;
 }

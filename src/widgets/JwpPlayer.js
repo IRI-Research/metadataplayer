@@ -36,7 +36,9 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
     _opts.flashplayer = IriSP.getLib("jwPlayerSWF");
     _opts["controlbar.position"] = "none";
     _opts.width = this.width;
-    _opts.height = this.height || Math.floor(.643*this.width);
+    if (this.height) {
+        _opts.height = this.height;
+    }
     
     for (var i = 0; i < _props.length; i++) {
         if (typeof this[_props[i]] !== "undefined") {

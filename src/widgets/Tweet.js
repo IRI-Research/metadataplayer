@@ -6,7 +6,7 @@ IriSP.Widgets.Tweet = function(player, config) {
 IriSP.Widgets.Tweet.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Tweet.prototype.defaults = {
-    hide_timeout: 5000,
+    hide_timeout: 10000,
     polemics : [
         {
             "keywords" : [ "++" ],

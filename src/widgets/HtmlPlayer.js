@@ -6,7 +6,6 @@ IriSP.Widgets.HtmlPlayer.prototype = new IriSP.Widgets.Widget();
 
 
 IriSP.Widgets.HtmlPlayer.prototype.defaults = {
-    aspect_ratio: 14/9
 }
 
 IriSP.Widgets.HtmlPlayer.prototype.draw = function() {
@@ -19,19 +18,11 @@ IriSP.Widgets.HtmlPlayer.prototype.draw = function() {
     if (this.url_transform) {
         this.video = this.url_transform(this.video);
     }
-    
-    if (!this.height) {
-        this.height = Math.floor(this.width/this.aspect_ratio);
-        this.$.css({
-                height: this.height
-            });
-    }
         
     var videoEl = IriSP.jQuery('<video>');
     videoEl.attr({
-        id : _tmpId,
         width : this.width,
-        height : this.height
+        height : this.height || undefined
     });
     if(typeof this.video === "string"){
         videoEl.attr("src",this.video);

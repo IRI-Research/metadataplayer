@@ -6,7 +6,7 @@ IriSP.Widgets.AdaptivePlayer.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.AdaptivePlayer.prototype.defaults = {
     mime_type: "video/mp4",
-    normal_player: "PopcornPlayer",
+    normal_player: "HtmlPlayer",
     fallback_player: "JwpPlayer"
 }
 

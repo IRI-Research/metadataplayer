@@ -548,6 +548,7 @@ Model.Playable = function(_id, _source) {
     this.volume = .5;
     this.paused = true;
     this.muted = false;
+    this.loadedMetadata = false;
     var _this = this;
     this.on("play", function() {
         _this.paused = false;
@@ -572,6 +573,9 @@ Model.Playable = function(_id, _source) {
             _this.trigger("enter-annotation",_a);
         });
     });
+    this.on("loadedmetadata", function() {
+        _this.loadedMetadata = true;
+    })
 }
 
 Model.Playable.prototype = new Model.Element();

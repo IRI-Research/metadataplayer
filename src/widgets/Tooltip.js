@@ -56,8 +56,8 @@ IriSP.Widgets.Tooltip.prototype.show = function(x, y, text, color) {
         shift = Math.max(x - this.__halfWidth - this.min_x, - this.__maxShift);
     }
     
-    if (typeof this.max_x !== "undefined" && (x + this.__halfWidth > this.max_x)) {
-        shift = Math.min(x + this.__halfWidth - this.max_x, this.__maxShift);
+    if (typeof this.max_x !== "undefined" && (+x + this.__halfWidth > this.max_x)) {
+        shift = Math.min(+ x + this.__halfWidth - this.max_x, this.__maxShift);
     }
     
     this.$tooltip.css({

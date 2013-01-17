@@ -104,17 +104,17 @@ IriSP.Metadataplayer.prototype.onLibsLoaded = function() {
     });
     this.$.find('.Ldt-Loader').detach();
     
-    var endload = false;
+    this.widgetsLoaded = false;
     
     this.on("widget-loaded", function() {
-        if (endload) {
+        if (_this.widgetsLoaded) {
             return;
         }
         var isloaded = !IriSP._(_this.widgets).any(function(w) {
             return !(w && w.isLoaded())
         });
         if (isloaded) {
-            endload = true;
+            _this.widgetsLoaded = true;
             _this.trigger("widgets-loaded");
         }
     });   

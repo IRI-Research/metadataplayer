@@ -19,7 +19,7 @@ IriSP.Widgets.Polemic.prototype.messages = {
 IriSP.Widgets.Polemic.prototype.defaults = {
     element_width : 5,
     element_height : 5,
-    max_elements : 15,
+    max_elements: 20,
     annotation_type : "tweet",
     defaultcolor : "#585858",
     foundcolor : "#fc00ff",
@@ -137,8 +137,8 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 _annotation.on("select", function() {
                     if (_this.tooltip) {
                         _this.tooltip.show(
-                            Math.floor(_elx + (_this.element_width - 1) / 2),
-                            _ely,
+                            + Math.floor(_elx + (_this.element_width - 1) / 2),
+                            + _ely,
                             _annotation.title,
                             _col
                         );
@@ -272,10 +272,10 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     _html = '<p>' + _this.l10n.from_ + _el.attr("begin-time") + _this.l10n._to_ + _el.attr("end-time") + '</p>';
                 for (var _i = 0; _i <= _this.polemics.length; _i++) {
                     var _color = _i ? _this.polemics[_i - 1].color : _this.defaultcolor;
-                    _html += '<div class="Ldt-Tooltip-Color" style="background: ' + _color + '"></div><p>' + _nums[_i] + _this.l10n._annotations + '</p>'
+                    _html += '<div class="Ldt-Tooltip-AltColor" style="background: ' + _color + '"></div><p>' + _nums[_i] + _this.l10n._annotations + '</p>'
                 }
                 if (_this.tooltip) {
-                    _this.tooltip.show(_el.attr("pos-x"), _el.attr("pos-y"), _html);
+                    _this.tooltip.show(+ _el.attr("pos-x"), + _el.attr("pos-y"), _html);
                 }
             })
             .mouseout(function() {
