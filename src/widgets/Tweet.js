@@ -125,16 +125,19 @@ IriSP.Widgets.Tweet.prototype.show = function(_tweet) {
                 '</span>'
             ]);
         }
-        var rx = (_tweet.found ? (_this.source.getAnnotations().regexp || false) : false);
-        this.$.find(".Ldt-Tweet-Avatar").attr("src",_tweet.source.user.profile_image_url);
-        this.$.find(".Ldt-Tweet-ScreenName").html('@'+_tweet.source.user.screen_name);
-        this.$.find(".Ldt-Tweet-ProfileLink").attr("href", "https://twitter.com/" + _tweet.source.user.screen_name);
-        this.$.find(".Ldt-Tweet-FullName").html(_tweet.source.user.name);
+        var rx = (_tweet.found ? (_this.source.getAnnotations().regexp || false) : false),
+            profile_url = _tweet.source.user ? _tweet.source.user.profile_image_url : _tweet.source.profile_image_url,
+            screen_name = _tweet.source.user ? _tweet.source.user.screen_name :_tweet.source.from_user,
+            user_name = _tweet.source.user ? _tweet.source.user.name :_tweet.source.from_user_name;
+        this.$.find(".Ldt-Tweet-Avatar").attr("src", profile_url);
+        this.$.find(".Ldt-Tweet-ScreenName").html('@' + screen_name);
+        this.$.find(".Ldt-Tweet-ProfileLink").attr("href", "https://twitter.com/" + screen_name);
+        this.$.find(".Ldt-Tweet-FullName").html(user_name);
         this.$.find(".Ldt-Tweet-Contents").html(IriSP.textFieldHtml(_txt, rx, extend));
         this.$.find(".Ldt-Tweet-Time").html(this.l10n.original_time + new Date(_tweet.source.created_at).toLocaleTimeString() + " / " + this.l10n.video_time + _tweet.begin.toString());
         this.$.find(".Ldt-Tweet-Retweet").attr("href", "https://twitter.com/intent/retweet?tweet_id=" + _tweet.source.id_str);
         this.$.find(".Ldt-Tweet-Reply").attr("href", "https://twitter.com/intent/tweet?in_reply_to=" + _tweet.source.id_str);
-        this.$.find(".Ldt-Tweet-Original").attr("href", "https://twitter.com/" + _tweet.source.user.screen_name + "/status/" + _tweet.source.id_str);
+        this.$.find(".Ldt-Tweet-Original").attr("href", "https://twitter.com/" + screen_name + "/status/" + _tweet.source.id_str);
         this.player.trigger("Annotation.minimize");
         this.$.slideDown();
         this.cancelTimeout();
