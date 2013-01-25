@@ -19,11 +19,12 @@ IriSP.Model = (function (ns) {
     var uidbase = rand16(8) + "-" + rand16(4) + "-", uidincrement = Math.floor(Math.random()*0x10000);
     
     var charsub = [
-        [ 'a', 'á', 'à', 'â', 'ä' ],
-        [ 'c', 'ç' ],
-        [ 'e', 'é', 'è', 'ê', 'ë' ],
-        [ 'i', 'í', 'ì', 'î', 'ï' ],
-        [ 'o', 'ó', 'ò', 'ô', 'ö' ]
+        '[aáàâä]',
+        '[cç]',
+        '[eéèêë]',
+        '[iíìîï]',
+        '[oóòôö]',
+        '[uùûü]'
     ];
     
     var removeChars = [
@@ -71,10 +72,7 @@ var Model = {
             remrx = new RegExp(remsrc,"gm"),
             txt = _text.toLowerCase().replace(remrx,"")
             res = [],
-            charsrc = ns._(charsub).map(function(c) {
-                return "(" + c.join("|") + ")";
-            }),
-            charsrx = ns._(charsrc).map(function(c) {
+            charsrx = ns._(charsub).map(function(c) {
                 return new RegExp(c);
             }),
             src = "";
@@ -83,7 +81,7 @@ var Model = {
                 src += remsrc + "*";
             }
             var l = txt[j];
-            ns._(charsrc).each(function(v, k) {
+            ns._(charsub).each(function(v, k) {
                 l = l.replace(charsrx[k], v);
             });
             src += l;
@@ -223,7 +221,7 @@ Model.List.prototype.sortBy = function(_callback) {
  */
 Model.List.prototype.searchByTitle = function(_text, _iexact) {
     var _iexact = _iexact || false,
-        _rgxp = Model.regexpFromTextOrArray(_text, true);
+        _rgxp = Model.regexpFromTextOrArray(_text, true, _iexact);
     return this.filter(function(_element) {
         return _rgxp.test(_element.title);
     });
@@ -231,7 +229,7 @@ Model.List.prototype.searchByTitle = function(_text, _iexact) {
 
 Model.List.prototype.searchByDescription = function(_text, _iexact) {
     var _iexact = _iexact || false,
-        _rgxp = Model.regexpFromTextOrArray(_text, true);
+        _rgxp = Model.regexpFromTextOrArray(_text, true, _iexact);
     return this.filter(function(_element) {
         return _rgxp.test(_element.description);
     });
@@ -239,7 +237,7 @@ Model.List.prototype.searchByDescription = function(_text, _iexact) {
 
 Model.List.prototype.searchByTextFields = function(_text, _iexact) {
     var _iexact = _iexact || false,
-        _rgxp =  Model.regexpFromTextOrArray(_text, true);
+        _rgxp =  Model.regexpFromTextOrArray(_text, true, _iexact);
     return this.filter(function(_element) {
         var keywords = (_element.keywords || _element.getTagTexts() || []).join(", ");
         return _rgxp.test(_element.description) || _rgxp.test(_element.title) || _rgxp.test(keywords);
@@ -819,17 +817,6 @@ Model.Mashup = function(_id, _source) {
 
 Model.Mashup.prototype = new Model.Playable();
 
-Model.Mashup.prototype.checkLoaded = function() {
-    var loaded = !!this.segments.length;
-    this.getMedias().forEach(function(_m) {
-        loaded = loaded && _m.loaded;
-    });
-    this.loaded = loaded;
-    if (loaded) {
-        this.trigger("loadedmetadata");
-    }
-}
-
 Model.Mashup.prototype.updateTimes = function() {
     var _time = 0;
     this.segments.forEach(function(_segment) {
@@ -1197,3 +1184,6 @@ Model.Directory.prototype.getGlobalList = function() {
 return Model;
 
 })(IriSP);
+
+/* END model.js */
+

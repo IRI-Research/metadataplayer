@@ -28,9 +28,6 @@ li.Ldt-AnnotationsList-li {
 .Ldt-AnnotationsList-li.selected {
     background-image: url(img/pinstripe-grey.png);
 }
-.Ldt-AnnotationsList-highlight {
-    background: #FFA0FC;
-}
 .Ldt-AnnotationsList-ThumbContainer {
     float: left;
     width: 80px;
@@ -57,14 +54,25 @@ h3.Ldt-AnnotationsList-Title {
     margin: 2px 2px 0 82px;
     font-weight: bold;
 }
-h3.Ldt-AnnotationsList-Title a {
+
+.Ldt-AnnotationsList-Title a {
     color: #0068c4;
 }
+
 p.Ldt-AnnotationsList-Description {
     margin: 2px 0 2px 82px;
     font-size: 12px;
     color: #333333;
 }
+
+.Ldt-AnnotationsList-Description a {
+    color: #0068c4;
+}
+
+.Ldt-AnnotationsList-Description a:hover {
+    text-decoration: underline; color: #800000;
+}
+
 ul.Ldt-AnnotationsList-Tags {
     list-style: none;
     padding: 0;

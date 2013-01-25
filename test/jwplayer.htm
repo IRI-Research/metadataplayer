@@ -4,8 +4,8 @@
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
         <title>Metadataplayer test with JwPlayer</title>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-        <link href='test.css' rel='stylesheet' type='text/css'>
+<!--        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+-->        <link href='test.css' rel='stylesheet' type='text/css'>
         <script type="text/javascript" src="metadataplayer/LdtPlayer-core.js" type="text/javascript"></script>
     </head>
 
@@ -13,13 +13,16 @@
         <h1>Metadataplayer test with JwPlayer</h1>
         <div id="LdtPlayer"></div>
         <div id="AnnotationsListContainer"></div>
+        <div id="SlideShareContainer"></div>
         <script type="text/javascript">
     IriSP.libFiles.defaultDir = "libs/";
     IriSP.language = 'fr';
     IriSP.widgetsDir = "metadataplayer";
     var _metadata = {
-        url: 'json/ldt-jwplayer.json',
-//        url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/5a893570-ca73-11e1-9443-00145ea4a2be?callback=?',
+//        url: 'json/ldt-jwplayer.json',
+//          url: 'http://capsicum/pf/ldtplatform/ldt/cljson/id/33e49eac-b3b0-11e1-b44d-00145ea4a2be?callback=?',
+//        url: 'http://capsicum/pf/ldtplatform/ldt/cljson/id/f1a17368-2bc8-11e1-b21a-00145ea49a02',
+        url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/fc0a654e-49ea-11e2-b4ad-00145ea4a2be',
         format: 'ldt'
     };
     var _config = {
@@ -32,26 +35,27 @@
         widgets: [
             {
                 type: "AutoPlayer",
-                width: 550,
                 autostart: true
             },
             { type: "Slider" },
             { type: "Controller" },
-            { type: "Polemic" },
-            { type: "Segments" },
-            { type: "Annotation" },
+            {
+                type: "Polemic",
+                max_elements: 20
+            },
+            { type: "Sparkline" },
+            { type: "MultiSegments" },
             {
                 type: "CreateAnnotation",
                 api_endpoint_template: "post-test.php",
                 creator_name: "Metadataplayer",
                 creator_avatar: "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
-                tag_titles: ["#amateur", "#digital-humanities"]
+                tag_titles: ["amateur", "digital-humanities"],
+                //show_title_field: false,
+                //show_creator_field: false,
+                show_slice: false
             },
             { type: "Tweet" },
-            {
-                type: "Tagger",
-                api_endpoint: "post-test.php"
-            },
             {
                 type: "Tagcloud"
             },
@@ -59,10 +63,16 @@
                 type: "AnnotationsList",
                 container: "AnnotationsListContainer",
                 default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png",
-                //ajax_url: "/pf/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}",
+                //ajax_url: "/pf/ldtplatform/api/ldt/1.0/segments/bytimecode/{{media}}/{{begin}}/{{end}}",
                 //ajax_granularity : 300000
             },
-            { type: "Mediafragment"}
+            {
+                type: "Slideshare",
+                container: "SlideShareContainer"
+            },
+            { type: "Mediafragment"},
+//            { type: "Trace",
+//            js_console: true }
         ]
     };
     

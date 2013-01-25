@@ -71,9 +71,9 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '</div>'
     + '<div class="Ldt-AnnotationsList-Duration">{{begin}} - {{end}}</div>'
     + '<h3 class="Ldt-AnnotationsList-Title">'
-    + '<a href="{{url}}">{{title}}</a>'
+    + '<a href="{{url}}">{{{title}}}</a>'
     + '</h3>'
-    + '<p class="Ldt-AnnotationsList-Description">{{description}}</p>'
+    + '<p class="Ldt-AnnotationsList-Description">{{{description}}}</p>'
     + '{{#tags.length}}'
     + '<ul class="Ldt-AnnotationsList-Tags">'
     + '{{#tags}}'
@@ -202,8 +202,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             var _data = {
                 id : _annotation.id,
                 media_id : _annotation.getMedia().id,
-                title : _title,
-                description : _description,
+                title : IriSP.textFieldHtml(_title),
+                description : IriSP.textFieldHtml(_description),
                 begin : _annotation.begin.toString(),
                 end : _annotation.end.toString(),
                 thumbnail : typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail,
@@ -265,10 +265,11 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         });
         
         if (this.source.getAnnotations().searching) {
+            var rx = _this.source.getAnnotations().regexp || false;
             this.$.find(".Ldt-AnnotationsList-Title a, .Ldt-AnnotationsList-Description").each(function() {
                 var _$ = IriSP.jQuery(this);
-                _$.html(_$.text().replace(/(^\s+|\s+$)/g,'').replace(_this.source.getAnnotations().regexp, '<span class="Ldt-AnnotationsList-highlight">$1</span>'))
-            })
+                _$.html(IriSP.textFieldHtml(_$.text(), rx));
+            });
         }
     }
     

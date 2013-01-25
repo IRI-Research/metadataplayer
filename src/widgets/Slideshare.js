@@ -9,16 +9,14 @@ IriSP.Widgets.Slideshare.prototype = new IriSP.Widgets.Widget();
 IriSP.Widgets.Slideshare.prototype.defaults = {
     annotation_type: "slide",
     sync: true,
-    embed_width: 400,
-    embed_height: 300
 }
 
 IriSP.Widgets.Slideshare.prototype.messages = {
     fr: {
-        slides_ : "Diapositives&nbsp;:"
+        slides_ : "Diapositives"
     },
     en: {
-        slides_ : "Slides:"
+        slides_ : "Slides"
     }
 }
 
@@ -27,14 +25,9 @@ IriSP.Widgets.Slideshare.prototype.template =
 
 IriSP.Widgets.Slideshare.prototype.draw = function() {
     
-    var _embedObject = null,
-        $container,
-        _lastEmbedded = "",
-        _this = this;
-    
     function insertSlideshare(_presentation, _slide) {
         if (_lastEmbedded === _presentation) {
-            if (_.embedObject && typeof _embedObject.jumpTo === "function") {
+            if (_embedObject && typeof _embedObject.jumpTo === "function") {
                 _embedObject.jumpTo(parseInt(_slide));
             }
         } else {
@@ -75,8 +68,13 @@ IriSP.Widgets.Slideshare.prototype.draw = function() {
         var _lastPres = "",
             _embedObject = null,
             _oembedCache = {},
-            _this = this;
-        $container = this.$.find(".Ldt-SlideShare-Container");
+            _lastEmbedded = "",
+            _this = this
+            $container = this.$.find(".Ldt-SlideShare-Container");
+            
+        this.embed_width = this.embed_width || $container.innerWidth();
+        this.embed_height = this.embed_height || Math.floor(this.embed_width * 3/4);
+        
         _annotations.forEach(function(_a) {
             _a.on("leave", function() {
                 $container.hide();

@@ -149,7 +149,7 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
     if (this.tag_titles && !this.tags) {
         this.tags = IriSP._(this.tag_titles).map(function(_tag_title) {
             var _tag,
-                _tags = _this.source.getTags().searchByTitle(_tag_title);
+                _tags = _this.source.getTags().searchByTitle(_tag_title, true);
             if (_tags.length) {
                 _tag = _tags[0];
             } else {
@@ -370,10 +370,11 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         this.recorder.stopRecord();
     }
     
-    var _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* Création d'une liste d'annotations contenant une annotation afin de l'envoyer au serveur */
+    var _this = this,
+        _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* Création d'une liste d'annotations contenant une annotation afin de l'envoyer au serveur */
         _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}), /* Création d'un objet source utilisant un sérialiseur spécifique pour l'export */
         _annotation = new IriSP.Model.Annotation(false, _export), /* Création d'une annotation dans cette source avec un ID généré à la volée (param. false) */
-        _annotationTypes = this.source.getAnnotationTypes().searchByTitle(this.annotation_type), /* Récupération du type d'annotation dans lequel l'annotation doit être ajoutée */
+        _annotationTypes = this.source.getAnnotationTypes().searchByTitle(this.annotation_type, true), /* Récupération du type d'annotation dans lequel l'annotation doit être ajoutée */
         _annotationType = (_annotationTypes.length ? _annotationTypes[0] : new IriSP.Model.AnnotationType(false, _export)), /* Si le Type d'Annotation n'existe pas, il est créé à la volée */
         _url = Mustache.to_html(this.api_endpoint_template, {id: this.source.projectId}); /* Génération de l'URL à laquelle l'annotation doit être envoyée, qui doit inclure l'ID du projet */
     
@@ -400,8 +401,24 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
     }
     _annotation.created = new Date(); /* Date de création de l'annotation */
     _annotation.description = this.$.find(".Ldt-CreateAnnotation-Description").val(); /* Champ description */
-    _annotation.setTags(this.$.find(".Ldt-CreateAnnotation-TagLi.selected")
-        .map(function() { return IriSP.jQuery(this).attr("tag-id")})); /*Liste des ids de tags */
+   
+    var tagIds = this.$.find(".Ldt-CreateAnnotation-TagLi.selected")
+        .map(function() { return IriSP.jQuery(this).attr("tag-id")});
+    
+    IriSP._(_annotation.description.match(/#[\w\d]+/g)).each(function(_tt) {
+        var _tag,
+            _tag_title = _tt.replace(/^#/,'')
+            _tags = _this.source.getTags().searchByTitle(_tag_title, true);
+        if (_tags.length) {
+            _tag = _tags[0];
+        } else {
+            _tag = new IriSP.Model.Tag(false, _this.source);
+            _tag.title = _tag_title;
+        }
+        tagIds.push(_tag.id);
+    })
+   
+    _annotation.setTags(IriSP._(tagIds).uniq()); /*Liste des ids de tags */
     if (this.audio_url) {
         _annotation.audio = {
             src: "mic",

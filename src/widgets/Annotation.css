@@ -6,10 +6,6 @@
     margin: 0;
 }
 
-.Ldt-Annotation-Highlight {
-    background: #ffa0fc;
-}
-
 .Ldt-Annotation-Widget.Ldt-Annotation-ShowTop {
     border-top-style: solid;
     padding-top: 1px;

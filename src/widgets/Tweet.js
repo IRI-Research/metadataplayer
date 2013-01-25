@@ -93,83 +93,44 @@ IriSP.Widgets.Tweet.prototype.draw = function() {
 
 IriSP.Widgets.Tweet.prototype.show = function(_tweet) {
     if (typeof _tweet !== "undefined" && typeof _tweet.source !== "undefined") {
-        var _entities = [];
-        for (var _i = 0; _i < _tweet.source.entities.hashtags.length; _i++) {
-            var _hash = _tweet.source.entities.hashtags[_i];
-            _entities.push({
-                is_link: true,
-                text: '#' + _hash.text,
-                url: 'http://twitter.com/search?q=%23' + encodeURIComponent(_hash.text),
-                indices: _hash.indices
-            });
-        }
-        for (var _i = 0; _i < _tweet.source.entities.urls.length; _i++) {
-            var _url = _tweet.source.entities.urls[_i],
-                _displayurl = (typeof _url.display_url !== "undefined" && _url.display_url !== null ? _url.display_url : _url.url),
-                _linkurl = (typeof _url.expanded_url !== "undefined" && _url.expanded_url !== null ? _url.expanded_url : _url.url);
-            _displayurl = _displayurl.replace(/^\w+:\/\//,'');
-            if (!/^\w+:\/\//.test(_linkurl)) {
-                _linkurl = 'http://' + _linkurl;
-            }
-            _entities.push({
-                is_link: true,
-                text: _displayurl,
-                url: _linkurl,
-                indices: _url.indices
-            });
-        }
-        for (var _i = 0; _i < _tweet.source.entities.user_mentions.length; _i++) {
-            var _user = _tweet.source.entities.user_mentions[_i];
-            _entities.push({
-                is_link: true,
-                text: '@' + _user.screen_name,
-                url: 'http://twitter.com/' + encodeURIComponent(_user.screen_name),
-                indices: _user.indices
-            });
-        }
-        for (var _i = 0; _i < this.polemics.length; _i++) {
-            for (var _j = 0; _j < this.polemics[_i].keywords.length; _j++) {
-                var _p = _tweet.source.text.indexOf(this.polemics[_i].keywords[_j]);
-                while (_p !== -1) {
-                    var _end = (_p + this.polemics[_i].keywords[_j].length);
-                    _entities.push({
-                        is_link: false,
-                        text: this.polemics[_i].keywords[_j],
-                        color: this.polemics[_i].color,
-                        indices: [_p, _end]
-                    });
-                    _p = _tweet.source.text.indexOf(this.polemics[_i].keywords[_j], _end);
-                }
-            }
-        }
-        _entities = IriSP._(_entities).sortBy(function(_entity) {
+        var extend = [
+            [
+                /#(\w+)/gm,
+                function(matches) {
+                    return '<a href="http://twitter.com/search?q=%23' + matches[1] + '" target="_blank">'
+                },
+                '</a>'
+            ]
+        ];
+        var _urls = IriSP._(_tweet.source.entities.urls).sortBy(function(_entity) {
             return _entity.indices[0];
         });
+        
         var _currentPos = 0,
             _txt = '';
-        for (var _i = 0; _i < _entities.length; _i++) {
-            if (_entities[_i].indices[0] >= _currentPos) {
-                _txt += _tweet.source.text.substring(_currentPos, _entities[_i].indices[0]);
-                _currentPos = _entities[_i].indices[1];
-                if (_entities[_i].is_link) {
-                    _txt += '<a href="' + _entities[_i].url + '" target="_blank">';
-                } else {
-                    _txt += '<span style="background:' + _entities[_i].color + '">';
-                }
-                _txt += _entities[_i].text;
-                if (_entities[_i].is_link) {
-                    _txt += '</a>';
-                } else {
-                    _txt += '</span>';
-                }
+        IriSP._(_urls).each(function(_url) {
+            if (_url.indices[0] >= _currentPos) {
+                _txt += _tweet.source.text.substring(_currentPos, _url.indices[0]);
+                _txt += (typeof _url.expanded_url !== "undefined" && _url.expanded_url !== null ? _url.expanded_url : _url.url);
+                _currentPos = _url.indices[1];
             }
-        }
+        });
         _txt += _tweet.source.text.substring(_currentPos);
+        
+        for (var _i = 0; _i < this.polemics.length; _i++) {
+            var rx = IriSP.Model.regexpFromTextOrArray(this.polemics[_i].keywords);
+            extend.push([
+                rx,
+                '<span style="background: ' + this.polemics[_i].color + '">',
+                '</span>'
+            ]);
+        }
+        var rx = (_tweet.found ? (_this.source.getAnnotations().regexp || false) : false);
         this.$.find(".Ldt-Tweet-Avatar").attr("src",_tweet.source.user.profile_image_url);
         this.$.find(".Ldt-Tweet-ScreenName").html('@'+_tweet.source.user.screen_name);
         this.$.find(".Ldt-Tweet-ProfileLink").attr("href", "https://twitter.com/" + _tweet.source.user.screen_name);
         this.$.find(".Ldt-Tweet-FullName").html(_tweet.source.user.name);
-        this.$.find(".Ldt-Tweet-Contents").html(_txt);
+        this.$.find(".Ldt-Tweet-Contents").html(IriSP.textFieldHtml(_txt, rx, extend));
         this.$.find(".Ldt-Tweet-Time").html(this.l10n.original_time + new Date(_tweet.source.created_at).toLocaleTimeString() + " / " + this.l10n.video_time + _tweet.begin.toString());
         this.$.find(".Ldt-Tweet-Retweet").attr("href", "https://twitter.com/intent/retweet?tweet_id=" + _tweet.source.id_str);
         this.$.find(".Ldt-Tweet-Reply").attr("href", "https://twitter.com/intent/tweet?in_reply_to=" + _tweet.source.id_str);

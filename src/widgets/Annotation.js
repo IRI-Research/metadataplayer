@@ -76,17 +76,12 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
             return;
         }
         var title = currentAnnotation.title,
-            description = currentAnnotation.description.replace(/(^\s+|\s+$)/g,'');
-        if (currentAnnotation.found) {
-            var rgxp = _this.source.getAnnotations().regexp || /^$/,
-                repl = '<span class="Ldt-Annotation-Highlight">$1</span>';
-            title = title.replace(rgxp,repl);
-            description = description.replace(rgxp,repl).replace(/[\n\r]+/gm,'<br />');
-        }
-        _this.$.find(".Ldt-Annotation-Title").html(title || "(" + _this.l10n.untitled + ")");
+            description = currentAnnotation.description.replace(/(^\s+|\s+$)/g,''),
+            rx = (currentAnnotation.found ? (_this.source.getAnnotations().regexp || false) : false);
+        _this.$.find(".Ldt-Annotation-Title").html(IriSP.textFieldHtml(title,rx)  || "(" + _this.l10n.untitled + ")");
         if (description) {
             _this.$.find(".Ldt-Annotation-Description-Block").removeClass("Ldt-Annotation-EmptyBlock");
-            _this.$.find(".Ldt-Annotation-Description").html(description);
+            _this.$.find(".Ldt-Annotation-Description").html(IriSP.textFieldHtml(description,rx));
         } else {
             _this.$.find(".Ldt-Annotation-Description-Block").addClass("Ldt-Annotation-EmptyBlock");
         }
@@ -156,7 +151,7 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
         this.insertSubwidget(this.$.find(".Ldt-Annotation-Social"), { type: "Social" }, "socialWidget");
     }
     
-    this.insertSubwidget(this.$.find(".Ldt-Annotation-Arrow"), { type: "Arrow" }, "arrow");
+    this.insertSubwidget(this.$.find(".Ldt-Annotation-Arrow"), { type: "Arrow", width: this.width }, "arrow");
     this.onMediaEvent("timeupdate",timeupdate);
     this.onMdpEvent("Annotation.hide","hide");
     this.onMdpEvent("Annotation.show","show");

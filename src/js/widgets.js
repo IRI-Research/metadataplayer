@@ -35,8 +35,10 @@ IriSP.Widgets.Widget = function(player, config) {
        _this[_key] = _value;
     });
     
+    this.$ = IriSP.jQuery('#' + this.container);
+    
     if (typeof this.width === "undefined") {
-        this.width = player.config.width;
+        this.width = this.$.width();
     }
     
     /* Setting this.player at the end in case it's been overriden
@@ -45,7 +47,6 @@ IriSP.Widgets.Widget = function(player, config) {
     this.player = player;
     
     /* Adding classes and html attributes */
-    this.$ = IriSP.jQuery('#' + this.container);
     this.$.addClass("Ldt-TraceMe Ldt-Widget").attr("widget-type", _type);
     
     this.l10n = (
