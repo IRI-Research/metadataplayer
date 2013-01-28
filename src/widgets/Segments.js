@@ -22,7 +22,7 @@ IriSP.Widgets.Segments.prototype.template =
     + '<div class="Ldt-Segments-Tooltip"></div>';
 
 IriSP.Widgets.Segments.prototype.annotationTemplate =
-    '<div class="Ldt-Segments-Segment Ldt-TraceMe" trace-info="segment-id:{{id}}, media-id:{{media_id}}" segment-text="{{text}}"'
+    '<div class="Ldt-Segments-Segment Ldt-TraceMe" trace-info="segment-id:{{id}}, media-id:{{media_id}}, from:{{from}}, to:{{to}}" segment-text="{{text}}"'
     + 'style="top:{{top}}px; height:{{height}}px; left:{{left}}px; width:{{width}}px; background:{{medcolor}}" data-base-color="{{color}}" data-low-color="{{lowcolor}}" data-medium-color="{{medcolor}}"></div>'
 
 
@@ -83,7 +83,9 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             top: _top,
             height: _this.line_height - 1,
             id : _annotation.id,
-            media_id : _annotation.getMedia().id
+            media_id : _annotation.getMedia().id,
+            from: _annotation.begin.toString(),
+            to: _annotation.end.toString()
         };
         var _html = Mustache.to_html(_this.annotationTemplate, _data),
             _el = IriSP.jQuery(_html);

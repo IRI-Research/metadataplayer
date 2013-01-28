@@ -29,6 +29,10 @@ IriSP.Widgets.Trace.prototype.draw = function() {
         "play" : 0,
         "pause" : 0,
         "timeupdate" : 10000
+    },
+    _annlisteners = {
+        search: 0,
+        "search-cleared": 0
     };
     IriSP._(_medialisteners).each(function(_ms, _listener) {
         var _f = function(_arg) {
@@ -38,6 +42,16 @@ IriSP.Widgets.Trace.prototype.draw = function() {
             _f = IriSP._.throttle(_f, _ms);
         }
         _this.media.on(_listener, _f);
+    });
+    var _annotations = this.source.getAnnotations();
+    IriSP._(_annlisteners).each(function(_ms, _listener) {
+        var _f = function(_arg) {
+            _this.eventHandler(_listener, _arg);
+        }
+        if (_ms) {
+            _f = IriSP._.throttle(_f, _ms);
+        }
+        _annotations.on(_listener, _f);
     });
     
     if (!this.tracer) {
@@ -51,6 +65,8 @@ IriSP.Widgets.Trace.prototype.draw = function() {
     
     }
     
+    
+    
     this.tracer.trace("TraceWidgetInit", {});
     
     this.mouseLocation = '';
@@ -60,8 +76,6 @@ IriSP.Widgets.Trace.prototype.draw = function() {
         var _widget = _target.attr("widget-type") || _target.parents(".Ldt-Widget").attr("widget-type"),
             _data = {
                 "type": _e.type,
-                "x": _e.clientX,
-                "y": _e.clientY,
                 "widget": _widget
             },
             _targetEl = _target[0],

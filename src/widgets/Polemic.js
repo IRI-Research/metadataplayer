@@ -113,7 +113,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             
             function displayAnnotation(_elx, _ely, _pol, _col, _annotation) {
                 var _html = Mustache.to_html(
-                    '<div class="Ldt-Polemic-TweetDiv Ldt-TraceMe" trace-info="annotation-id:{{id}}, media-id={{media_id}}, polemic={{polemic}}" polemic-color="{{color}}"'
+                    '<div class="Ldt-Polemic-TweetDiv Ldt-TraceMe" trace-info="annotation-id:{{id}}, media-id:{{media_id}}, polemic:{{polemic}}, time:{{time}}" polemic-color="{{color}}"'
                     + ' tweet-title="{{title}}" annotation-id="{{id}}" style="width: {{width}}px; height: {{height}}px; top: {{top}}px; left: {{left}}px; background: {{color}}"></div>',
                 {
                     id: _annotation.id,
@@ -124,7 +124,8 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     color: _col,
                     width: (_this.element_width-1),
                     height: _this.element_height,
-                    title: _annotation.title
+                    title: _annotation.title,
+                    time: _annotation.begin.toString()
                 });
                 var _el = IriSP.jQuery(_html);
                 _el.mouseover(function() {
