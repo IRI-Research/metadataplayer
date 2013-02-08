@@ -39,6 +39,12 @@ IriSP.Widgets.Widget = function(player, config) {
     
     if (typeof this.width === "undefined") {
         this.width = this.$.width();
+    } else {
+        this.$.css("width", this.width);
+    }
+    
+    if (typeof this.height !== "undefined") {
+        this.$.css("height", this.height);
     }
     
     /* Setting this.player at the end in case it's been overriden
