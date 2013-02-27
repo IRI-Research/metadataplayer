@@ -22,7 +22,7 @@ IriSP.Widgets.Segments.prototype.template =
     + '<div class="Ldt-Segments-Tooltip"></div>';
 
 IriSP.Widgets.Segments.prototype.annotationTemplate =
-    '<div class="Ldt-Segments-Segment Ldt-TraceMe" trace-info="segment-id:{{id}}, media-id:{{media_id}}, from:{{from}}, to:{{to}}" segment-text="{{text}}"'
+    '<div class="Ldt-Segments-Segment Ldt-TraceMe" draggable="true" trace-info="segment-id:{{id}}, media-id:{{media_id}}, from:{{from}}, to:{{to}}" segment-text="{{text}}"'
     + 'style="top:{{top}}px; height:{{height}}px; left:{{left}}px; width:{{width}}px; background:{{medcolor}}" data-base-color="{{color}}" data-low-color="{{lowcolor}}" data-medium-color="{{medcolor}}"></div>'
 
 
@@ -98,6 +98,14 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             .click(function() {
                 _annotation.trigger("click");
             })
+            .on("dragstart", function(e) {
+	    	var url = (typeof _annotation.url !== "undefined" 
+	                ? _annotation.url
+	                : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id));
+	        	e.originalEvent.dataTransfer.setData("text/x-iri-title",_annotation.title);
+	        	e.originalEvent.dataTransfer.setData("text/x-iri-description",_annotation.description);
+	        	e.originalEvent.dataTransfer.setData("text/x-iri-uri",url);
+	        })
             .appendTo(list_$)
         _annotation.on("select", function() {
             _this.$segments.each(function() {

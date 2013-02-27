@@ -113,7 +113,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             
             function displayAnnotation(_elx, _ely, _pol, _col, _annotation) {
                 var _html = Mustache.to_html(
-                    '<div class="Ldt-Polemic-TweetDiv Ldt-TraceMe" trace-info="annotation-id:{{id}}, media-id:{{media_id}}, polemic:{{polemic}}, time:{{time}}" polemic-color="{{color}}"'
+                    '<div class="Ldt-Polemic-TweetDiv Ldt-TraceMe" draggable="true" trace-info="annotation-id:{{id}}, media-id:{{media_id}}, polemic:{{polemic}}, time:{{time}}" polemic-color="{{color}}"'
                     + ' tweet-title="{{title}}" annotation-id="{{id}}" style="width: {{width}}px; height: {{height}}px; top: {{top}}px; left: {{left}}px; background: {{color}}"></div>',
                 {
                     id: _annotation.id,
@@ -134,7 +134,14 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     _annotation.trigger("unselect");
                 }).click(function() {
                     _annotation.trigger("click");
-                });
+                }).on("dragstart", function(e) {
+			    	var url = (typeof _annotation.url !== "undefined" 
+			                ? _annotation.url
+			                : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id));
+			        	e.originalEvent.dataTransfer.setData("text/x-iri-title",_annotation.title);
+			        	e.originalEvent.dataTransfer.setData("text/x-iri-description",_annotation.description);
+			        	e.originalEvent.dataTransfer.setData("text/x-iri-uri",url);
+			        });
                 _annotation.on("select", function() {
                     if (_this.tooltip) {
                         _this.tooltip.show(

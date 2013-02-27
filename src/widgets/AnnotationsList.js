@@ -65,15 +65,15 @@ IriSP.Widgets.AnnotationsList.prototype.template =
 IriSP.Widgets.AnnotationsList.prototype.annotationTemplate = 
     '<li class="Ldt-AnnotationsList-li Ldt-TraceMe" trace-info="annotation-id:{{id}}, media-id:{{media_id}}" style="{{specific_style}}">'
     + '<div class="Ldt-AnnotationsList-ThumbContainer">'
-    + '<a href="{{url}}">'
+    + '<a href="{{url}}" draggable="true">'
     + '<img class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
     + '</a>'
     + '</div>'
     + '<div class="Ldt-AnnotationsList-Duration">{{begin}} - {{end}}</div>'
-    + '<h3 class="Ldt-AnnotationsList-Title">'
-    + '<a href="{{url}}">{{{title}}}</a>'
+    + '<h3 class="Ldt-AnnotationsList-Title" draggable="true">'
+    + '<a href="{{url}}">{{{htitle}}}</a>'
     + '</h3>'
-    + '<p class="Ldt-AnnotationsList-Description">{{{description}}}</p>'
+    + '<p class="Ldt-AnnotationsList-Description">{{{hdescription}}}</p>'
     + '{{#tags.length}}'
     + '<ul class="Ldt-AnnotationsList-Tags">'
     + '{{#tags}}'
@@ -180,11 +180,12 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                             annotationType : _annotation.annotationType.id
                         }
                     )
-                    : '#id=' + _annotation.id
+                    : document.location.href.replace(/#.*$/,'') + '#id=' + _annotation.id
                     )
             );
             var _title = (_annotation.title || "").replace(_annotation.description,''),
-                _description = _annotation.description;
+                _description = _annotation.description,
+                _thumbnail = (typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail);
             if (!_annotation.title) {
                 _title = _annotation.creator;
             }
@@ -202,11 +203,11 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             var _data = {
                 id : _annotation.id,
                 media_id : _annotation.getMedia().id,
-                title : IriSP.textFieldHtml(_title),
-                description : IriSP.textFieldHtml(_description),
+                htitle : IriSP.textFieldHtml(_title),
+                hdescription : IriSP.textFieldHtml(_description),
                 begin : _annotation.begin.toString(),
                 end : _annotation.end.toString(),
-                thumbnail : typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail,
+                thumbnail : _thumbnail,
                 url : _url,
                 tags : _annotation.getTagTexts(),
                 specific_style : (typeof _bgcolor !== "undefined" ? "background-color: " + _bgcolor : ""),
@@ -229,6 +230,12 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     _annotation.trigger("unselect");
                 })
                 .appendTo(_this.list_$);
+            _el.find("[draggable]").on("dragstart", function(e) {
+	        	e.originalEvent.dataTransfer.setData("text/x-iri-title",_title);
+	        	e.originalEvent.dataTransfer.setData("text/x-iri-description",_description);
+	        	e.originalEvent.dataTransfer.setData("text/x-iri-uri",_url);
+	        	e.originalEvent.dataTransfer.setData("text/x-iri-image",_thumbnail);
+	        });
             _el.on("remove", function() {
                 _annotation.off("select", _onselect);
                 _annotation.off("unselect", _onunselect);

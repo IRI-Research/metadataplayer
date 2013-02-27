@@ -18,7 +18,7 @@ IriSP.Widgets.Social.prototype.defaults = {
 }
 
 IriSP.Widgets.Social.prototype.template =
-    '<span class="Ldt-Social">{{#show_url}}<div class="Ldt-Social-Url-Container"><a href="#" target="_blank" class="Ldt-Social-Square Ldt-Social-Url Ldt-TraceMe" title="{{l10n.share_link}}">'
+    '<span class="Ldt-Social">{{#show_url}}<div class="Ldt-Social-Url-Container"><a href="#" draggable="true" target="_blank" class="Ldt-Social-Square Ldt-Social-Url Ldt-TraceMe" title="{{l10n.share_link}}">'
     + '</a><div class="Ldt-Social-UrlPop"><input class="Ldt-Social-Input"/><div class="Ldt-Social-CopyBtn">{{l10n.copy}}</div></div></div>{{/show_url}}'
     + '{{#show_fb}}<a href="#" target="_blank" class="Ldt-Social-Fb Ldt-Social-Ext Ldt-TraceMe" title="{{l10n.share_on}} Facebook"></a>{{/show_fb}}'
     + '{{#show_twitter}}<a href="#" target="_blank" class="Ldt-Social-Twitter Ldt-Social-Ext Ldt-TraceMe" title="{{l10n.share_on}} Twitter"></a>{{/show_twitter}}'
@@ -48,6 +48,9 @@ IriSP.Widgets.Social.prototype.draw = function() {
     this.$.find(".Ldt-Social-Url").click(function() {
         _this.toggleCopy();
         return false;
+    }).on("dragstart", function(e) {
+    	e.originalEvent.dataTransfer.setData("text/x-iri-title",_this.text);
+    	e.originalEvent.dataTransfer.setData("text/x-iri-uri",_this.url);
     });
     this.$.find(".Ldt-Social-Input").focus(function() {
         this.select();
