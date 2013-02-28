@@ -174,6 +174,9 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
     	e.originalEvent.dataTransfer.setData("text/x-iri-title",currentAnnotation.title);
     	e.originalEvent.dataTransfer.setData("text/x-iri-description",currentAnnotation.description);
     	e.originalEvent.dataTransfer.setData("text/x-iri-uri",url);
+    	if (typeof currentAnnotation.thumbnail !== "undefined" && currentAnnotation.thumbnail) {
+    		e.originalEvent.dataTransfer.setData("text/x-iri-image",currentAnnotation.thumbnail);
+    	}
     });
 }
 

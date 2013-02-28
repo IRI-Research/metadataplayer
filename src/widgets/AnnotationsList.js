@@ -234,7 +234,9 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
 	        	e.originalEvent.dataTransfer.setData("text/x-iri-title",_title);
 	        	e.originalEvent.dataTransfer.setData("text/x-iri-description",_description);
 	        	e.originalEvent.dataTransfer.setData("text/x-iri-uri",_url);
-	        	e.originalEvent.dataTransfer.setData("text/x-iri-image",_thumbnail);
+	        	if (typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail) {
+	        		e.originalEvent.dataTransfer.setData("text/x-iri-image",_annotation.thumbnail);
+	        	}
 	        });
             _el.on("remove", function() {
                 _annotation.off("select", _onselect);

@@ -141,6 +141,9 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
 			        	e.originalEvent.dataTransfer.setData("text/x-iri-title",_annotation.title);
 			        	e.originalEvent.dataTransfer.setData("text/x-iri-description",_annotation.description);
 			        	e.originalEvent.dataTransfer.setData("text/x-iri-uri",url);
+			        	if (typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail) {
+			        		e.originalEvent.dataTransfer.setData("text/x-iri-image",_annotation.thumbnail);
+			        	}
 			        });
                 _annotation.on("select", function() {
                     if (_this.tooltip) {
