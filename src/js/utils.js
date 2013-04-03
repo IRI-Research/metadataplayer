@@ -107,3 +107,18 @@ IriSP.log = function() {
         console.log.apply(console, arguments);
     }
 }
+
+IriSP.attachDndData = function(jqSel, data) {
+	jqSel.attr("draggable", "true").on("dragstart", function(_event) {
+		var d = (typeof data === "function" ? data.call(this) : data);
+		try {
+			IriSP._(d).each(function(v, k) {
+				if (v) {
+					_event.originalEvent.dataTransfer.setData("text/x-iri-" + k, v);
+				}
+			});
+		} catch(err) {
+			_event.originalEvent.dataTransfer.setData("Text", JSON.stringify(d));
+		}
+	});
+}

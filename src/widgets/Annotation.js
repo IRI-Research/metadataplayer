@@ -34,7 +34,7 @@ IriSP.Widgets.Annotation.prototype.template =
     + '<div class="Ldt-Annotation-Inner Ldt-Annotation-Empty{{#start_minimized}} Ldt-Annotation-Minimized{{/start_minimized}}">'
     + '<div class="Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-MaxMinButton"></div>'
     + '{{#show_social}}<div class="Ldt-Annotation-Social Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty"></div>{{/show_social}}'
-    + '<h3 class="Ldt-Annotation-HiddenWhenEmpty" draggable="true">{{#show_annotation_type}}<span class="Ldt-Annotation-Type"></span> » {{/show_annotation_type}}<span class="Ldt-Annotation-Title"></span> <span class="Ldt-Annotation-Time Ldt-Annotation-HiddenWhenMinimized">'
+    + '<h3 class="Ldt-Annotation-HiddenWhenEmpty">{{#show_annotation_type}}<span class="Ldt-Annotation-Type"></span> » {{/show_annotation_type}}<span class="Ldt-Annotation-Title"></span> <span class="Ldt-Annotation-Time Ldt-Annotation-HiddenWhenMinimized">'
     + '(<span class="Ldt-Annotation-Begin"></span> - <span class="Ldt-Annotation-End"></span>)</span></h3>'
     + '<h3 class="Ldt-Annotation-MashupOrigin Ldt-Annotation-HiddenWhenEmpty">{{l10n.excerpt_from}} <span class="Ldt-Annotation-MashupMedia"></span> <span class="Ldt-Annotation-Time Ldt-Annotation-HiddenWhenMinimized">'
     + '(<span class="Ldt-Annotation-MashupBegin"></span> - <span class="Ldt-Annotation-MashupEnd"></span>)</span></h3>'
@@ -167,16 +167,15 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
     this.source.getAnnotations().on("found", highlightTitleAndDescription);
     this.source.getAnnotations().on("not-found", highlightTitleAndDescription);
     this.source.getAnnotations().on("search-cleared", highlightTitleAndDescription);
-    this.$.find("[draggable]").on("dragstart", function(e) {
-    	var url = (typeof currentAnnotation.url !== "undefined" 
-                ? currentAnnotation.url
-                : (document.location.href.replace(/#.*$/,'') + '#id='  + currentAnnotation.id));
-    	e.originalEvent.dataTransfer.setData("text/x-iri-title",currentAnnotation.title);
-    	e.originalEvent.dataTransfer.setData("text/x-iri-description",currentAnnotation.description);
-    	e.originalEvent.dataTransfer.setData("text/x-iri-uri",url);
-    	if (typeof currentAnnotation.thumbnail !== "undefined" && currentAnnotation.thumbnail) {
-    		e.originalEvent.dataTransfer.setData("text/x-iri-image",currentAnnotation.thumbnail);
-    	}
+    IriSP.attachDndData(this.$.find("h3"), function() {
+    	return {
+	    	title: currentAnnotation.title,
+	    	description: currentAnnotation.description,
+	    	image: currentAnnotation.thumbnail,
+	    	uri: (typeof currentAnnotation.url !== "undefined" 
+	            ? currentAnnotation.url
+	            : (document.location.href.replace(/#.*$/,'') + '#id='  + currentAnnotation.id))
+	    }
     });
 }
 

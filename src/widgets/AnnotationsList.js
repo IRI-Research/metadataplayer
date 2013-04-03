@@ -230,14 +230,12 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     _annotation.trigger("unselect");
                 })
                 .appendTo(_this.list_$);
-            _el.find("[draggable]").on("dragstart", function(e) {
-	        	e.originalEvent.dataTransfer.setData("text/x-iri-title",_title);
-	        	e.originalEvent.dataTransfer.setData("text/x-iri-description",_description);
-	        	e.originalEvent.dataTransfer.setData("text/x-iri-uri",_url);
-	        	if (typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail) {
-	        		e.originalEvent.dataTransfer.setData("text/x-iri-image",_annotation.thumbnail);
-	        	}
-	        });
+            IriSP.attachDndData(_el.find("[draggable]"), {
+            	title: _title,
+            	description: _description,
+            	uri: _url,
+            	image: _annotation.thumbnail
+            });
             _el.on("remove", function() {
                 _annotation.off("select", _onselect);
                 _annotation.off("unselect", _onunselect);
