@@ -21,7 +21,7 @@ IriSP.libFiles = {
         backboneRelational: "backbone-relational.js",
         paper: "paper.js",
         jqueryMousewheel: "jquery.mousewheel.min.js",
-        renkanPublish: "renkan-publish.js",
+        renkanPublish: "renkan.js",
         processing: "processing-1.3.6.min.js",
         recordMicSwf: "record_mic.swf"
     },
