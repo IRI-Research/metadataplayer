@@ -2,7 +2,7 @@
 
 IriSP.jqEscape = function(_text) {
     return _text.replace(/(:|\.)/g,'\\$1');
-}
+};
 
 IriSP.getLib = function(lib) {
     if (IriSP.libFiles.useCdn && typeof IriSP.libFiles.cdn[lib] == "string") {
@@ -27,7 +27,7 @@ IriSP.loadCss = function(_cssFile) {
         }).appendTo('head');
         IriSP._cssCache.push(_cssFile);
     }
-}
+};
 
 IriSP.textFieldHtml = function(_text, _regexp, _extend) {
     var list = [],
@@ -100,13 +100,13 @@ IriSP.textFieldHtml = function(_text, _regexp, _extend) {
     
     return res;
     
-}
+};
 
 IriSP.log = function() {
     if (typeof console !== "undefined" && typeof IriSP.logging !== "undefined" && IriSP.logging) {
         console.log.apply(console, arguments);
     }
-}
+};
 
 IriSP.attachDndData = function(jqSel, data) {
 	jqSel.attr("draggable", "true").on("dragstart", function(_event) {
@@ -121,4 +121,4 @@ IriSP.attachDndData = function(jqSel, data) {
 			_event.originalEvent.dataTransfer.setData("Text", JSON.stringify(d));
 		}
 	});
-}
+};

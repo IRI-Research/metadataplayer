@@ -1,7 +1,7 @@
-/* Definition of an ancestor for the Widget classes */
+/* widgetsDefinition of an ancestor for the Widget classes */
 
 if (typeof IriSP.Widgets === "undefined") {
-    IriSP.Widgets = {}
+    IriSP.Widgets = {};
 }
 
 /**
@@ -92,7 +92,7 @@ IriSP.Widgets.Widget = function(player, config) {
     
 };
 
-IriSP.Widgets.Widget.prototype.defaults = {}
+IriSP.Widgets.Widget.prototype.defaults = {};
 
 IriSP.Widgets.Widget.prototype.template = '';
 
@@ -100,11 +100,11 @@ IriSP.Widgets.Widget.prototype.messages = {"en":{}};
 
 IriSP.Widgets.Widget.prototype.templateToHtml = function(_template) {
     return Mustache.to_html(_template, this);
-}
+};
 
 IriSP.Widgets.Widget.prototype.renderTemplate = function() {
     this.$.append(this.templateToHtml(this.template));
-}
+};
 
 IriSP.Widgets.Widget.prototype.functionWrapper = function(_name) {
     var _this = this,
@@ -116,7 +116,7 @@ IriSP.Widgets.Widget.prototype.functionWrapper = function(_name) {
     } else {
         console.log("Error, Unknown function IriSP.Widgets." + this.type + "." + _name)
     }
-}
+};
 
 IriSP.Widgets.Widget.prototype.getFunctionOrName = function(_functionOrName) {
     switch (typeof _functionOrName) {
@@ -127,15 +127,15 @@ IriSP.Widgets.Widget.prototype.getFunctionOrName = function(_functionOrName) {
         default:
             return undefined;
     }
-}
+};
 
 IriSP.Widgets.Widget.prototype.onMdpEvent = function(_eventName, _functionOrName) {
     this.player.on(_eventName, this.getFunctionOrName(_functionOrName));
-}
+};
 
 IriSP.Widgets.Widget.prototype.onMediaEvent = function(_eventName, _functionOrName) {
     this.media.on(_eventName, this.getFunctionOrName(_functionOrName));
-}
+};
 
 IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function() {
     if (typeof this.annotation_type === "undefined") {
@@ -145,21 +145,21 @@ IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function() {
         return this.annotation_type.getAnnotations();
     }
     return this.media.getAnnotationsByTypeTitle(this.annotation_type);
-}
+};
 
 IriSP.Widgets.Widget.prototype.getWidgetAnnotationsAtTime = function() {
     var _time = this.media.getCurrentTime();
     return this.getWidgetAnnotations().filter(function(_annotation) {
         return _annotation.begin <= _time && _annotation.end > _time;
     });
-}
+};
 
 IriSP.Widgets.Widget.prototype.isLoaded = function() {
     var isloaded = !IriSP._(this.__subwidgets).any(function(w) {
         return !(w && w.isLoaded());
     });
     return isloaded;
-}
+};
 
 IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _widgetoptions, _propname) {
     var _id = _selector.attr("id"),
@@ -186,7 +186,7 @@ IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _widgetopti
             _this.__subwidgets[key] = _widget;
         });
     });
-}
+};
 
 /**
  * This method responsible of drawing a widget on screen.

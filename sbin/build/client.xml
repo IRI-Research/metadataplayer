@@ -14,17 +14,29 @@
     <delete dir="${basedir}/../../build" />
     <mkdir  dir="${basedir}/../../build" />
     
-    <target name="makeall" depends="concatenate,copytotest" />
-    
-    <target name="concatenate" description="Build the developer release file">
-        <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-core.js">
+    <target name="makeall" depends="concatenate-player,copytotest" />
+
+    <target name="concatenate-core">
+        <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/metadataplayer-core.js">
             <filelist dir="../../src/js/" files="header.js" />
-            <!-- required file before everything else -->
-            <filelist dir="../../src/js/libs" files="LAB.min.js" />
             <!-- core files -->
-            <filelist dir="../../src/js" files="init.js utils.js model.js defaults.js widgets.js" />
+            <filelist dir="../../src/js" files="init.js utils.js model.js html-player.js" />
             <!-- serializers -->
             <fileset dir="../../src/js/serializers" casesensitive="yes">
+                <include name="**/*.js"/>
+            </fileset>
+            <filterchain>
+                <deletecharacters chars="&#xFEFF;" />
+            </filterchain>
+        </concat>
+    </target>
+	
+    <target name="concatenate-player" description="Build the developer release file" depends="concatenate-core">
+        <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-core.js">
+            <filelist dir="../../src/js/libs" files="LAB.min.js" />
+            <!-- core files -->
+            <filelist dir="../../build" files="metadataplayer-core.js" />
+            <fileset dir="../../src/js/widgets-container" casesensitive="yes">
                 <include name="**/*.js"/>
             </fileset>
             <filterchain>
@@ -49,7 +61,7 @@
         </copy>
     </target>
     
-    <target name="minify" depends="concatenate">
+    <target name="minify" depends="concatenate-player">
         <jscomp compilationLevel="simple" warning="quiet" debug="false"
         output="../../build/LdtPlayer.min.raw.js">
             <externs dir="${basedir}/../../res/">
@@ -71,7 +83,7 @@
     <property name="rhino.jar" value="${basedir}/../res/rhino.jar"/>
     <property name="jslint-wrapper.js" value="${basedir}/../res/jslint-wrapper.js"/>
     <property name="jslint.js" value="${basedir}/../res/jslint.js"/>
-    <target name="jslint" description="Run jslint on the files" depends="concatenate">
+    <target name="jslint" description="Run jslint on the files" depends="concatenate-player">
         <apply executable="java" parallel="false">
             <filelist dir="../../build">
                 <file name="LdtPlayer-core.js"/>

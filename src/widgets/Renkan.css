@@ -103,12 +103,17 @@
     margin: 5px auto; display: block; max-width: 255px !important; max-height: 120px !important;
 }
 
+
 .Rk-ZoomButtons {
     position: absolute; left: 0; top: 35px; cursor: pointer;
 }
 
+.Rk-Editing-Space-Full .Rk-ZoomButtons {
+    top: 0;
+}
+
 .Rk-ZoomIn, .Rk-ZoomOut {
-    width: 21px; height: 20px; background: url(../img/zoombuttons.png); margin: 5px;
+    width: 21px; height: 20px; background: url(img/zoombuttons.png); margin: 5px;
 }
 
 .Rk-ZoomIn:hover {

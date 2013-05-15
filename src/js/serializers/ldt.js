@@ -1,7 +1,7 @@
 /* LDT Platform Serializer */
 
 if (typeof IriSP.serializers === "undefined") {
-    IriSP.serializers = {}
+    IriSP.serializers = {};
 }
 
 IriSP.serializers.ldt = {
@@ -281,5 +281,6 @@ IriSP.serializers.ldt = {
             _source.currentMedia = _source.getElement(_data.meta.main_media["id-ref"]);
         }
     }
-}
+};
 
+/* End of LDT Platform Serializer */

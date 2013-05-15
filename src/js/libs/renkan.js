@@ -1,3 +1,9 @@
+          /* *********************************************************
+                  File generated on Wed Apr 24 10:49:26 CEST 2013
+          ************************************************************
+                          start of      main.js
+          ********************************************************* */
+
 /* 
  *  Copyright 2012-2013 Institut de recherche et d'innovation 
  *  contributor(s) : Yves-Marie Haussonne, Raphael Velt, Samuel Huron
@@ -19,7 +25,7 @@
 /* Declaring the Renkan Namespace Rkns and Default values */
 
 if (typeof Rkns !== "object") {
-    Rkns = {}
+    Rkns = {};
 }
 
 Rkns.$ = jQuery;
@@ -93,7 +99,7 @@ Rkns._BaseBin = function(_renkan, _opts) {
         if (_opts.auto_refresh) {
             window.setInterval(function() {
                 _this.refresh();
-            },_opts.auto_refresh)
+            },_opts.auto_refresh);
         }
     }
 };
@@ -138,7 +144,7 @@ Rkns.Renkan = function(_opts) {
     } else {
         var _tmpl = Rkns._.template('<li class="<%= className %>" data-key="<%= key %>"><%= title %></li>'),
             _select = this.$.find(".Rk-Search-List"),
-            _input = this.$.find(".Rk-Web-Search-Input")
+            _input = this.$.find(".Rk-Web-Search-Input"),
             _form = this.$.find(".Rk-Web-Search-Form");
         Rkns._(this.options.search).each(function(_search, _key) {
             if (Rkns[_search.type] && Rkns[_search.type].Search) {
@@ -251,7 +257,7 @@ Rkns.Renkan = function(_opts) {
        });
     });
     this.$.find(".Rk-Bins-Search-Form").submit(function() {
-        return false
+        return false;
     });
 };
 
@@ -300,9 +306,9 @@ Rkns.Utils = {
     _ID_AUTO_INCREMENT : 0,
     _ID_BASE : (function(_d) {
         
-        function pad(n){return n<10 ? '0'+n : n}
+        function pad(n){return n<10 ? '0'+n : n;}
         function fillrand(n) {
-            var _res = ''
+            var _res = '';
             for (var i=0; i<n; i++) {
                 _res += Math.floor(16*Math.random()).toString(16);
             }
@@ -319,7 +325,7 @@ Rkns.Utils = {
         var _n = (++this._ID_AUTO_INCREMENT).toString(16),
             _base = (typeof _base === "undefined" ? "" : _base + "-" );
         while (_n.length < 4) {
-            _n = '0' + _n
+            _n = '0' + _n;
         }
         return _base + this._ID_BASE + '-' + _n;
         
@@ -350,104 +356,19 @@ Rkns.Utils = {
                 this._init.apply(this, Array.prototype.slice.call(arguments, 0));
                 this._initialized = true;
             }
-        }
+        };
         Rkns._(_class.prototype).extend(_baseClass.prototype);
         return _class;
         
     }
 };
 
-Rkns.defaults = {
-    
-    language: (navigator.language || navigator.userLanguage || "en"),
-        /* GUI Language */
-    container: "renkan",
-        /* GUI Container DOM element ID */
-    search: [],
-        /* List of Search Engines */
-    bins: [],
-           /* List of Bins */
-    static_url: "",
-        /* URL for static resources */
-    show_bins: true,
-        /* Show bins in left column */
-    properties: [],
-        /* Semantic properties for edges */
-    read_only: false,
-        /* Allows editing of renkan without changing the rest of the GUI. Can be switched on/off on the fly to block/enable editing */
-    editor_mode: true,
-        /* Switch for Publish/Edit GUI. If editor_mode is false, read_only will be true.  */
-    snapshot_mode: false,
-        /* In snapshot mode, clicking on the floppy will save a snapshot. Otherwise, it will show the connection status */
-    show_top_bar: true,
-        /* Show the top bar, (title, buttons, users) */
-    default_user_color: "#303030",
-    size_bug_fix: true,
-        /* Resize the canvas after load (fixes a bug on iPad and FF Mac) */
-    force_resize: false,
-    allow_double_click: true,
-        /* Allows Double Click to create a node on an empty background */
-    element_delete_delay: 5000,
-    
-    /* MINI-MAP OPTIONS */
-    
-    show_minimap: true,
-        /* Show a small map at the bottom right */
-    minimap_width: 160,
-    minimap_height: 120,
-    minimap_background_color: "#ffffff",
-    minimap_border_color: "#cccccc",
-    minimap_highlight_color: "#ffff00",
-    minimap_highlight_weight: 5,
-    
-    /* EDGE/NODE COMMON OPTIONS */
-       
-    buttons_background: "#202020",
-    buttons_label_color: "#c000c0",
-    buttons_label_font_size: 9,
-    
-    /* NODE DISPLAY OPTIONS */
-    
-    show_node_circles: true,
-        /* Show circles for nodes */
-    clip_node_images: true,
-        /* Constraint node images to circles */
-    node_size_base: 25,
-    node_stroke_width: 2,
-    selected_node_stroke_width: 4,
-    node_fill_color: "#ffffff",
-    highlighted_node_fill_color: "#ffff00",
-    node_label_distance: 5,
-        /* Vertical distance between node and label */
-    node_label_max_length: 60,
-        /* Maximum displayed text length */
-    label_untitled_nodes: "(untitled)",
-        /* Label to display on untitled nodes */
-    
-    /* EDGE DISPLAY OPTIONS */
-    
-    edge_stroke_width: 2,
-    selected_edge_stroke_width: 4,
-    edge_label_distance: 0,
-    edge_label_max_length: 20,
-    edge_arrow_length: 18,
-    edge_arrow_width: 12,
-    edge_gap_in_bundles: 12,
-    label_untitled_edges: "",
-    
-    /* CONTEXTUAL DISPLAY (TOOLTIP OR EDITOR) OPTIONS */
-   
-    tooltip_width: 275,
-    tooltip_padding: 10,
-    tooltip_margin: 15,
-    tooltip_arrow_length : 20,
-    tooltip_arrow_width : 40,
-    tooltip_top_color: "#f0f0f0",
-    tooltip_bottom_color: "#d0d0d0",
-    tooltip_border_color: "#808080",
-    tooltip_border_width: 1
-    
-};
+          /* *********************************************************
+                          end of        main.js
+          ************************************************************
+          ************************************************************
+                          start of      models.js
+          ********************************************************* */
 
 (function() {
     
@@ -720,6 +641,113 @@ Rkns.defaults = {
 
 }).call(window);
 
+
+          /* *********************************************************
+                          end of        models.js
+          ************************************************************
+          ************************************************************
+                          start of      defaults.js
+          ********************************************************* */
+
+Rkns.defaults = {
+    
+    language: (navigator.language || navigator.userLanguage || "en"),
+        /* GUI Language */
+    container: "renkan",
+        /* GUI Container DOM element ID */
+    search: [],
+        /* List of Search Engines */
+    bins: [],
+           /* List of Bins */
+    static_url: "",
+        /* URL for static resources */
+    show_bins: true,
+        /* Show bins in left column */
+    properties: [],
+        /* Semantic properties for edges */
+    read_only: false,
+        /* Allows editing of renkan without changing the rest of the GUI. Can be switched on/off on the fly to block/enable editing */
+    editor_mode: true,
+        /* Switch for Publish/Edit GUI. If editor_mode is false, read_only will be true.  */
+    snapshot_mode: false,
+        /* In snapshot mode, clicking on the floppy will save a snapshot. Otherwise, it will show the connection status */
+    show_top_bar: true,
+        /* Show the top bar, (title, buttons, users) */
+    default_user_color: "#303030",
+    size_bug_fix: true,
+        /* Resize the canvas after load (fixes a bug on iPad and FF Mac) */
+    force_resize: false,
+    allow_double_click: true,
+        /* Allows Double Click to create a node on an empty background */
+    element_delete_delay: 5000,
+    
+    /* MINI-MAP OPTIONS */
+    
+    show_minimap: true,
+        /* Show a small map at the bottom right */
+    minimap_width: 160,
+    minimap_height: 120,
+    minimap_background_color: "#ffffff",
+    minimap_border_color: "#cccccc",
+    minimap_highlight_color: "#ffff00",
+    minimap_highlight_weight: 5,
+    
+    /* EDGE/NODE COMMON OPTIONS */
+       
+    buttons_background: "#202020",
+    buttons_label_color: "#c000c0",
+    buttons_label_font_size: 9,
+    
+    /* NODE DISPLAY OPTIONS */
+    
+    show_node_circles: true,
+        /* Show circles for nodes */
+    clip_node_images: true,
+        /* Constraint node images to circles */
+    node_size_base: 25,
+    node_stroke_width: 2,
+    selected_node_stroke_width: 4,
+    node_fill_color: "#ffffff",
+    highlighted_node_fill_color: "#ffff00",
+    node_label_distance: 5,
+        /* Vertical distance between node and label */
+    node_label_max_length: 60,
+        /* Maximum displayed text length */
+    label_untitled_nodes: "(untitled)",
+        /* Label to display on untitled nodes */
+    
+    /* EDGE DISPLAY OPTIONS */
+    
+    edge_stroke_width: 2,
+    selected_edge_stroke_width: 4,
+    edge_label_distance: 0,
+    edge_label_max_length: 20,
+    edge_arrow_length: 18,
+    edge_arrow_width: 12,
+    edge_gap_in_bundles: 12,
+    label_untitled_edges: "",
+    
+    /* CONTEXTUAL DISPLAY (TOOLTIP OR EDITOR) OPTIONS */
+   
+    tooltip_width: 275,
+    tooltip_padding: 10,
+    tooltip_margin: 15,
+    tooltip_arrow_length : 20,
+    tooltip_arrow_width : 40,
+    tooltip_top_color: "#f0f0f0",
+    tooltip_bottom_color: "#d0d0d0",
+    tooltip_border_color: "#808080",
+    tooltip_border_width: 1
+    
+};
+
+          /* *********************************************************
+                          end of        defaults.js
+          ************************************************************
+          ************************************************************
+                          start of      i18n.js
+          ********************************************************* */
+
 Rkns.i18n = {
     fr: {
         "Edit Node": "Édition d’un nœud",
@@ -798,22 +826,12 @@ Rkns.i18n = {
     }
 }
 
-/* Loads a JSON File */
-
-Rkns.jsonIO = function(_renkan, _opts) {
-    var _proj = _renkan.project;
-    if (typeof _opts.http_method == "undefined") {
-        _opts.http_method = 'PUT';
-    }
-    var _load = function() {
-        Rkns.$.getJSON(_opts.url, function(_data) {
-            _proj.set(_data, {validate: true});
-            _renkan.renderer.autoScale();
-        });
-    }
-        
-    _load();
-}
+          /* *********************************************************
+                          end of        i18n.js
+          ************************************************************
+          ************************************************************
+                          start of      paper-renderer.js
+          ********************************************************* */
 
 Rkns.Renderer = {
     _MINIMAP_MARGIN: 20,
@@ -839,12 +857,12 @@ Rkns.Renderer = {
             get: function(attr) {
                 return this[attr] || false;
             }
-        }
+        };
     },
     _BOOKMARKLET_CODE: function(_renkan) {
         return "(function(a,b,c,d,e,f,h,i,j,k,l,m,n,o,p,q,r){a=document;b=a.body;c=a.location.href;j='draggable';m='text/x-iri-';d=a.createElement('div');d.innerHTML='<p_style=\"position:fixed;top:0;right:0;font:bold_18px_sans-serif;color:#fff;background:#909;padding:10px;z-index:100000;\">"
         + _renkan.translate("Drag items from this website, drop them in Renkan").replace(/ /g,"_")
-        + "</p>'.replace(/_/g,String.fromCharCode(32));b.appendChild(d);e=[{r:/https?:\\/\\/[^\\/]*twitter\\.com\\//,s:'.tweet',n:'twitter'},{r:/https?:\\/\\/[^\\/]*google\\.[^\\/]+\\//,s:'.g',n:'google'},{r:/https?:\\/\\/[^\\/]*lemonde\\.fr\\//,s:'[data-vr-contentbox]',n:'lemonde'}];f=false;e.forEach(function(g){if(g.r.test(c)){f=g;}});if(f){h=function(){Array.prototype.forEach.call(a.querySelectorAll(f.s),function(i){i[j]=true;k=i.style;k.borderWidth='2px';k.borderColor='#909';k.borderStyle='solid';k.backgroundColor='rgba(200,0,180,.1)';})};window.setInterval(h,500);h();};a.addEventListener('dragstart',function(k){l=k.dataTransfer;l.setData(m+'source-uri',c);l.setData(m+'source-title',a.title);n=k.target;if(f){o=n;while(!o.attributes[j]){o=o.parentNode;if(o==b){break;}}}if(f&&o.attributes[j]){p=o.cloneNode(true);l.setData(m+'specific-site',f.n)}else{q=a.getSelection();if(q.type==='Range'||!q.type){p=q.getRangeAt(0).cloneContents();}else{p=n.cloneNode();}}r=a.createElement('div');r.appendChild(p);l.setData('text/x-iri-selected-text',r.textContent.trim());l.setData('text/x-iri-selected-html',r.innerHTML);},false);})();"
+        + "</p>'.replace(/_/g,String.fromCharCode(32));b.appendChild(d);e=[{r:/https?:\\/\\/[^\\/]*twitter\\.com\\//,s:'.tweet',n:'twitter'},{r:/https?:\\/\\/[^\\/]*google\\.[^\\/]+\\//,s:'.g',n:'google'},{r:/https?:\\/\\/[^\\/]*lemonde\\.fr\\//,s:'[data-vr-contentbox]',n:'lemonde'}];f=false;e.forEach(function(g){if(g.r.test(c)){f=g;}});if(f){h=function(){Array.prototype.forEach.call(a.querySelectorAll(f.s),function(i){i[j]=true;k=i.style;k.borderWidth='2px';k.borderColor='#909';k.borderStyle='solid';k.backgroundColor='rgba(200,0,180,.1)';})};window.setInterval(h,500);h();};a.addEventListener('dragstart',function(k){l=k.dataTransfer;l.setData(m+'source-uri',c);l.setData(m+'source-title',a.title);n=k.target;if(f){o=n;while(!o.attributes[j]){o=o.parentNode;if(o==b){break;}}}if(f&&o.attributes[j]){p=o.cloneNode(true);l.setData(m+'specific-site',f.n)}else{q=a.getSelection();if(q.type==='Range'||!q.type){p=q.getRangeAt(0).cloneContents();}else{p=n.cloneNode();}}r=a.createElement('div');r.appendChild(p);l.setData('text/x-iri-selected-text',r.textContent.trim());l.setData('text/x-iri-selected-html',r.innerHTML);},false);})();";
     },
     shortenText : function(_text, _maxlength) {
         return (_text.length > _maxlength ? (_text.substr(0,_maxlength) + '…') : _text);
@@ -852,7 +870,7 @@ Rkns.Renderer = {
     drawEditBox : function(_options, _coords, _path, _xmargin, _selector) {
         _selector.css({
             width: ( _options.tooltip_width - 2* _options.tooltip_padding ),
-        })
+        });
         var _height = _selector.outerHeight() + 2* _options.tooltip_padding,
             _isLeft = (_coords.x < paper.view.center.x ? 1 : -1),
             _left = _coords.x + _isLeft * ( _xmargin + _options.tooltip_arrow_length ),
@@ -892,7 +910,7 @@ Rkns.Renderer = {
         });
         return _path;
     }
-}
+};
 
 Rkns.Renderer._BaseRepresentation = function(_renderer, _model) {
     if (typeof _renderer !== "undefined") {
@@ -905,62 +923,62 @@ Rkns.Renderer._BaseRepresentation = function(_renderer, _model) {
             var _this = this;
             this._changeBinding = function() {
                 _this.redraw();
-            }
+            };
             this._removeBinding = function() {
                 _renderer.removeRepresentation(_this);
                 _(function() {
-                    _renderer.redraw()
+                    _renderer.redraw();
                 }).defer();
-            }
+            };
             this._selectBinding = function() {
                 _this.select();
-            }
+            };
             this._unselectBinding = function() {
                 _this.unselect();
-            }
+            };
             this.model.on("change", this._changeBinding );
             this.model.on("remove", this._removeBinding );
             this.model.on("select", this._selectBinding );
             this.model.on("unselect", this._unselectBinding );
         }
     }
-}
+};
 
 Rkns.Renderer._BaseRepresentation.prototype.super = function(_func) {
     Rkns.Renderer._BaseRepresentation.prototype[_func].apply(this, Array.prototype.slice.call(arguments, 1));
-}
+};
 
-Rkns.Renderer._BaseRepresentation.prototype.redraw = function() {}
+Rkns.Renderer._BaseRepresentation.prototype.redraw = function() {};
 
-Rkns.Renderer._BaseRepresentation.prototype.moveTo = function() {}
+Rkns.Renderer._BaseRepresentation.prototype.moveTo = function() {};
 
-Rkns.Renderer._BaseRepresentation.prototype.show = function() {}
+Rkns.Renderer._BaseRepresentation.prototype.show = function() {};
 
-Rkns.Renderer._BaseRepresentation.prototype.hide = function() {}
+Rkns.Renderer._BaseRepresentation.prototype.hide = function() {};
 
 Rkns.Renderer._BaseRepresentation.prototype.select = function() {
     if (this.model) {
         this.model.trigger("selected");
     }
-}
+};
 
 Rkns.Renderer._BaseRepresentation.prototype.unselect = function() {
     if (this.model) {
         this.model.trigger("unselected");
     }
-}
+};
 
-Rkns.Renderer._BaseRepresentation.prototype.highlight = function() {}
+Rkns.Renderer._BaseRepresentation.prototype.highlight = function() {};
 
-Rkns.Renderer._BaseRepresentation.prototype.unhighlight = function() {}
+Rkns.Renderer._BaseRepresentation.prototype.unhighlight = function() {};
 
-Rkns.Renderer._BaseRepresentation.prototype.mousedown = function() {}
+Rkns.Renderer._BaseRepresentation.prototype.mousedown = function() {};
 
 Rkns.Renderer._BaseRepresentation.prototype.mouseup = function() {
     if (this.model) {
         this.model.trigger("clicked");
     }
-}
+};
 
 Rkns.Renderer._BaseRepresentation.prototype.destroy = function() {
     if (this.model) {
@@ -969,7 +987,7 @@ Rkns.Renderer._BaseRepresentation.prototype.destroy = function() {
         this.model.off("select", this._selectBinding );
         this.model.off("unselect", this._unselectBinding );
     }
-}
+};
 
 /* */
 
@@ -977,30 +995,30 @@ Rkns.Renderer._BaseButton = Rkns.Utils.inherit(Rkns.Renderer._BaseRepresentation
 
 Rkns.Renderer._BaseButton.prototype.moveTo = function(_pos) {
     this.sector.moveTo(_pos);
-}
+};
 
 Rkns.Renderer._BaseButton.prototype.show = function() {
     this.sector.show();
-}
+};
 
 Rkns.Renderer._BaseButton.prototype.hide = function() {
     this.sector.hide();
-}
+};
 
 Rkns.Renderer._BaseButton.prototype.select = function() {
     this.sector.select();
-}
+};
 
 Rkns.Renderer._BaseButton.prototype.unselect = function(_newTarget) {
     this.sector.unselect();
     if (!_newTarget || (_newTarget !== this.source_representation && _newTarget.source_representation !== this.source_representation)) {
         this.source_representation.unselect();
     }
-}
+};
 
 Rkns.Renderer._BaseButton.prototype.destroy = function() {
     this.sector.destroy();
-}
+};
 
 /* */
 
@@ -1029,7 +1047,7 @@ Rkns.Renderer.Node.prototype._init = function() {
         this.pending_delete_buttons = [
             new Rkns.Renderer.NodeRevertButton(this.renderer, null)
         ];
-        this.all_buttons = this.normal_buttons.concat(this.pending_delete_buttons)
+        this.all_buttons = this.normal_buttons.concat(this.pending_delete_buttons);
         for (var i = 0; i < this.all_buttons.length; i++) {
             this.all_buttons[i].source_representation = this;
         }
@@ -1045,7 +1063,7 @@ Rkns.Renderer.Node.prototype._init = function() {
         this.minimap_circle.__representation = this.renderer.minimap.miniframe.__representation;
         this.renderer.minimap.node_group.addChild(this.minimap_circle);
     }
-}
+};
 
 Rkns.Renderer.Node.prototype.redraw = function(_dontRedrawEdges) {
     var _model_coords = new paper.Point(this.model.get("position")),
@@ -1111,7 +1129,7 @@ Rkns.Renderer.Node.prototype.redraw = function(_dontRedrawEdges) {
         left: this.paper_coords.x,
         top: this.paper_coords.y + this.circle_radius * this.h_ratio + this.options.node_label_distance,
         opacity: opacity
-    })
+    });
     var _color = this.model.get("color") || (this.model.get("created_by") || Rkns.Renderer._USER_PLACEHOLDER(this.renkan)).get("color");
     this.circle.strokeColor = _color;
     var _pc = this.paper_coords;
@@ -1152,7 +1170,7 @@ Rkns.Renderer.Node.prototype.redraw = function(_dontRedrawEdges) {
             _this.node_image.fitBounds(bounds);
             _this.redraw();
             paper.view.draw();
-        }
+        };
         _image.src = _img;
     }
     this.img = _img;
@@ -1178,7 +1196,7 @@ Rkns.Renderer.Node.prototype.redraw = function(_dontRedrawEdges) {
         }, this);
     }
 
-}
+};
 
 Rkns.Renderer.Node.prototype.paperShift = function(_delta) {
     if (this.options.editor_mode) {
@@ -1190,14 +1208,14 @@ Rkns.Renderer.Node.prototype.paperShift = function(_delta) {
     } else {
         this.renderer.paperShift(_delta);
     }
-}
+};
 
 Rkns.Renderer.Node.prototype.openEditor = function() {
     this.renderer.removeRepresentationsOfType("editor");
     var _editor = this.renderer.addRepresentation("NodeEditor",null);
     _editor.source_representation = this;
     _editor.draw();
-}
+};
 
 Rkns.Renderer.Node.prototype.select = function() {
     this.selected = true;
@@ -1225,7 +1243,7 @@ Rkns.Renderer.Node.prototype.select = function() {
         this.minimap_circle.strokeColor = this.options.minimap_highlight_color;
     }
     this.super("select");
-}
+};
 
 Rkns.Renderer.Node.prototype.unselect = function(_newTarget) {
     if (!_newTarget || _newTarget.source_representation !== this) {
@@ -1240,7 +1258,7 @@ Rkns.Renderer.Node.prototype.unselect = function(_newTarget) {
         }
         this.super("unselect");
     }
-}
+};
     
 Rkns.Renderer.Node.prototype.highlight = function() {
     if (this.highlighted) {
@@ -1249,7 +1267,7 @@ Rkns.Renderer.Node.prototype.highlight = function() {
     this.highlighted = true;
     this.redraw();
     this.renderer.throttledPaperDraw();
-}
+};
 
 Rkns.Renderer.Node.prototype.unhighlight = function() {
     if (!this.highlighted) {
@@ -1258,7 +1276,7 @@ Rkns.Renderer.Node.prototype.unhighlight = function() {
     this.highlighted = false;
     this.redraw();
     this.renderer.throttledPaperDraw();
-}
+};
 
 Rkns.Renderer.Node.prototype.saveCoords = function() {
     var _coords = this.renderer.toModelCoords(this.paper_coords),
@@ -1271,14 +1289,14 @@ Rkns.Renderer.Node.prototype.saveCoords = function() {
     if (this.renderer.isEditable()) {
         this.model.set(_data);
     }
-}
+};
 
 Rkns.Renderer.Node.prototype.mousedown = function(_event, _isTouch) {
     if (_isTouch) {
         this.renderer.unselectAll();
         this.select();
     }
-}
+};
 
 Rkns.Renderer.Node.prototype.mouseup = function(_event, _isTouch) {
     if (this.renderer.is_dragging && this.renderer.isEditable()) {
@@ -1292,7 +1310,7 @@ Rkns.Renderer.Node.prototype.mouseup = function(_event, _isTouch) {
     this.renderer.click_target = null;
     this.renderer.is_dragging = false;
     this.is_dragging = false;
-}
+};
 
 Rkns.Renderer.Node.prototype.destroy = function(_event) {
     this.super("destroy");
@@ -1307,7 +1325,7 @@ Rkns.Renderer.Node.prototype.destroy = function(_event) {
     if (this.node_image) {
         this.node_image.remove();
     }
-}
+};
 
 /* */
 
@@ -1340,7 +1358,7 @@ Rkns.Renderer.Edge.prototype._init = function() {
         this.pending_delete_buttons = [
             new Rkns.Renderer.EdgeRevertButton(this.renderer, null)
         ];
-        this.all_buttons = this.normal_buttons.concat(this.pending_delete_buttons)
+        this.all_buttons = this.normal_buttons.concat(this.pending_delete_buttons);
         for (var i = 0; i < this.all_buttons.length; i++) {
             this.all_buttons[i].source_representation = this;
         }
@@ -1356,7 +1374,7 @@ Rkns.Renderer.Edge.prototype._init = function() {
         this.minimap_line.__representation = this.renderer.minimap.miniframe.__representation;
         this.minimap_line.strokeWidth = 1;
     }
-}
+};
 
 Rkns.Renderer.Edge.prototype.redraw = function() {
     this.from_representation = this.renderer.getRepresentationByModel(this.model.get("from"));
@@ -1445,14 +1463,14 @@ Rkns.Renderer.Edge.prototype.redraw = function() {
         this.minimap_line.segments[0].point = this.renderer.toMinimapCoords(new paper.Point(this.from_representation.model.get("position")));
          this.minimap_line.segments[1].point = this.renderer.toMinimapCoords(new paper.Point(this.to_representation.model.get("position")));
     }
-}
+};
 
 Rkns.Renderer.Edge.prototype.openEditor = function() {
     this.renderer.removeRepresentationsOfType("editor");
     var _editor = this.renderer.addRepresentation("EdgeEditor",null);
     _editor.source_representation = this;
     _editor.draw();
-}
+};
 
 Rkns.Renderer.Edge.prototype.select = function() {
     this.selected = true;
@@ -1466,7 +1484,7 @@ Rkns.Renderer.Edge.prototype.select = function() {
         this.openEditor();
     }
     this.super("select");
-}
+};
 
 Rkns.Renderer.Edge.prototype.unselect = function(_newTarget) {
     if (!_newTarget || _newTarget.source_representation !== this) {
@@ -1479,14 +1497,14 @@ Rkns.Renderer.Edge.prototype.unselect = function(_newTarget) {
         this.line.strokeWidth = this.options.edge_stroke_width;
         this.super("unselect");
     }
-}
+};
 
 Rkns.Renderer.Edge.prototype.mousedown = function(_event, _isTouch) {
     if (_isTouch) {
         this.renderer.unselectAll();
         this.select();
     }
-}
+};
 
 Rkns.Renderer.Edge.prototype.mouseup = function(_event, _isTouch) {
     if (!this.renkan.read_only && this.renderer.is_dragging) {
@@ -1502,7 +1520,7 @@ Rkns.Renderer.Edge.prototype.mouseup = function(_event, _isTouch) {
     }
     this.renderer.click_target = null;
     this.renderer.is_dragging = false;
-}
+};
 
 Rkns.Renderer.Edge.prototype.paperShift = function(_delta) {
     if (this.options.editor_mode) {
@@ -1513,7 +1531,7 @@ Rkns.Renderer.Edge.prototype.paperShift = function(_delta) {
     } else {
         this.renderer.paperShift(_delta);
     }
-}
+};
 
 Rkns.Renderer.Edge.prototype.destroy = function() {
     this.super("destroy");
@@ -1530,7 +1548,7 @@ Rkns.Renderer.Edge.prototype.destroy = function() {
     this.bundle.edges = Rkns._(this.bundle.edges).reject(function(_edge) {
         return _edge === _this;
     });
-}
+};
 
 /* */
 
@@ -1556,7 +1574,7 @@ Rkns.Renderer.TempEdge.prototype._init = function() {
     );
     this.arrow.__representation = this;
     this.arrow_angle = 0;
-}
+};
 
 Rkns.Renderer.TempEdge.prototype.redraw = function() {
     var _p0 = this.from_representation.paper_coords,
@@ -1568,7 +1586,7 @@ Rkns.Renderer.TempEdge.prototype.redraw = function() {
     this.arrow.rotate(_a - this.arrow_angle);
     this.arrow.position = _c;
     this.arrow_angle = _a;
-}
+};
 
 Rkns.Renderer.TempEdge.prototype.paperShift = function(_delta) {
     if (!this.renderer.isEditable()) {
@@ -1580,7 +1598,7 @@ Rkns.Renderer.TempEdge.prototype.paperShift = function(_delta) {
     var _hitResult = paper.project.hitTest(this.end_pos);
     this.renderer.findTarget(_hitResult);
     this.redraw();
-}
+};
 
 Rkns.Renderer.TempEdge.prototype.mouseup = function(_event, _isTouch) {
     var _hitResult = paper.project.hitTest(_event.point),
@@ -1614,12 +1632,12 @@ Rkns.Renderer.TempEdge.prototype.mouseup = function(_event, _isTouch) {
         this.renderer.removeRepresentation(this);
         paper.view.draw();
     }
-}
+};
 
 Rkns.Renderer.TempEdge.prototype.destroy = function() {
     this.arrow.remove();
     this.line.remove();
-}
+};
 
 /* */
 
@@ -1629,7 +1647,7 @@ Rkns.Renderer._BaseEditor.prototype._init = function() {
     this.renderer.buttons_layer.activate();
     this.type = "editor";
     this.editor_block = new paper.Path();
-    var _pts = Rkns._(Rkns._.range(8)).map(function() {return [0,0]});
+    var _pts = Rkns._(Rkns._.range(8)).map(function() {return [0,0];});
     this.editor_block.add.apply(this.editor_block, _pts);
     this.editor_block.strokeWidth = this.options.tooltip_border_width;
     this.editor_block.strokeColor = this.options.tooltip_border_color;
@@ -1641,12 +1659,12 @@ Rkns.Renderer._BaseEditor.prototype._init = function() {
             opacity: .8
         })
         .hide();
-}
+};
 
 Rkns.Renderer._BaseEditor.prototype.destroy = function() {
     this.editor_block.remove();
     this.editor_$.remove();
-}
+};
 
 /* */
 
@@ -1703,7 +1721,7 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
         closeEditor = function() {
             _this.renderer.removeRepresentation(_this);
             paper.view.draw();
-        }
+        };
         
     this.editor_$.find(".Rk-CloseX").click(closeEditor);
     
@@ -1721,7 +1739,7 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
                         description: _this.editor_$.find(".Rk-Edit-Description").val(),
                         uri: _uri,
                         image: _image
-                    }
+                    };
                     _model.set(_data);
                     _this.redraw();
                 } else {
@@ -1754,7 +1772,7 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
                 fr.onload = function(e) {
                     _this.editor_$.find(".Rk-Edit-Image").val(e.target.result);
                     onFieldChange();
-                }
+                };
                 fr.readAsDataURL(f);
             }
         });
@@ -1780,7 +1798,7 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
             },
             function(_e) {
                 _e.preventDefault();
-                _this.editor_$.find(".Rk-Edit-Color").css("background", _model.get("color") || (_model.get("created_by") || Rkns.Renderer._USER_PLACEHOLDER(_this.renkan)).get("color"))
+                _this.editor_$.find(".Rk-Edit-Color").css("background", _model.get("color") || (_model.get("created_by") || Rkns.Renderer._USER_PLACEHOLDER(_this.renkan)).get("color"));
             }
         ).click(function(_e) {
             _e.preventDefault();
@@ -1816,14 +1834,14 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
     this.editor_$.find("img").load(function() {
         _this.redraw();
     });
-}
+};
 
 Rkns.Renderer.NodeEditor.prototype.redraw = function() {
     var _coords = this.source_representation.paper_coords;
     Rkns.Renderer.drawEditBox(this.options, _coords, this.editor_block, this.source_representation.circle_radius * .75, this.editor_$);
     this.editor_$.show();
     paper.view.draw();
-}
+};
 
 /* */
 
@@ -1886,7 +1904,7 @@ Rkns.Renderer.EdgeEditor.prototype.draw = function() {
         closeEditor = function() {
             _this.renderer.removeRepresentation(_this);
             paper.view.draw();
-        }
+        };
     this.editor_$.find(".Rk-CloseX").click(closeEditor);
     
     if (this.renderer.isEditable()) {
@@ -1898,7 +1916,7 @@ Rkns.Renderer.EdgeEditor.prototype.draw = function() {
                     var _data = {
                         title: _this.editor_$.find(".Rk-Edit-Title").val(),
                         uri: _this.editor_$.find(".Rk-Edit-URI").val()
-                    }
+                    };
                     _model.set(_data);
                     paper.view.draw();
                 } else {
@@ -1956,7 +1974,7 @@ Rkns.Renderer.EdgeEditor.prototype.draw = function() {
             },
             function(_e) {
                 _e.preventDefault();
-                _this.editor_$.find(".Rk-Edit-Color").css("background", _model.get("color") || (_model.get("created_by") || Rkns.Renderer._USER_PLACEHOLDER(_this.renkan)).get("color"))
+                _this.editor_$.find(".Rk-Edit-Color").css("background", _model.get("color") || (_model.get("created_by") || Rkns.Renderer._USER_PLACEHOLDER(_this.renkan)).get("color"));
             }
         ).click(function(_e) {
             _e.preventDefault();
@@ -1969,14 +1987,14 @@ Rkns.Renderer.EdgeEditor.prototype.draw = function() {
             }
         });
     }
-}
+};
 
 Rkns.Renderer.EdgeEditor.prototype.redraw = function() {
     var _coords = this.source_representation.paper_coords;
     Rkns.Renderer.drawEditBox(this.options, _coords, this.editor_block, 5, this.editor_$);
     this.editor_$.show();
     paper.view.draw();
-}
+};
 
 /* */
 
@@ -1999,7 +2017,7 @@ Rkns.Renderer._NodeButton.prototype.setSectorSize = function() {
         );
         this.lastSectorInner = sectorInner;
     }
-}
+};
 
 /* */
 
@@ -2012,13 +2030,13 @@ Rkns.Renderer.NodeEditButton.prototype._init = function() {
     this.endAngle = -45;
     this.imageName = "edit";
     this.text = "Edit";
-}
+};
 
 Rkns.Renderer.NodeEditButton.prototype.mouseup = function() {
     if (!this.renderer.is_dragging) {
         this.source_representation.openEditor();
     }
-}
+};
 
 /* */
 
@@ -2031,7 +2049,7 @@ Rkns.Renderer.NodeRemoveButton.prototype._init = function() {
     this.endAngle = 90;
     this.imageName = "remove";
     this.text = "Remove";
-}
+};
 
 Rkns.Renderer.NodeRemoveButton.prototype.mouseup = function() {
     this.renderer.click_target = null;
@@ -2045,7 +2063,7 @@ Rkns.Renderer.NodeRemoveButton.prototype.mouseup = function() {
         });
         this.source_representation.model.set("delete_scheduled", delid);
     }
-}
+};
 
 /* */
 
@@ -2058,7 +2076,7 @@ Rkns.Renderer.NodeRevertButton.prototype._init = function() {
     this.endAngle = 135;
     this.imageName = "revert";
     this.text = "Cancel deletion";
-}
+};
 
 Rkns.Renderer.NodeRevertButton.prototype.mouseup = function() {
     this.renderer.click_target = null;
@@ -2066,7 +2084,7 @@ Rkns.Renderer.NodeRevertButton.prototype.mouseup = function() {
     if (this.renderer.isEditable()) {
         this.source_representation.model.unset("delete_scheduled");
     }
-}
+};
 
 /* */
 
@@ -2079,7 +2097,7 @@ Rkns.Renderer.NodeLinkButton.prototype._init = function() {
     this.endAngle = 180;
     this.imageName = "link";
     this.text = "Link to another node";
-}
+};
 
 Rkns.Renderer.NodeLinkButton.prototype.mousedown = function(_event, _isTouch) {
     if (this.renderer.isEditable()) {
@@ -2092,7 +2110,7 @@ Rkns.Renderer.NodeLinkButton.prototype.mousedown = function(_event, _isTouch) {
         this.renderer.removeRepresentationsOfType("editor");
         this.renderer.addTempEdge(this.source_representation, _point);
     }
-}
+};
 
 /* */
 
@@ -2105,7 +2123,7 @@ Rkns.Renderer.NodeEnlargeButton.prototype._init = function() {
     this.endAngle = 0;
     this.imageName = "enlarge";
     this.text = "Enlarge";
-}
+};
 
 Rkns.Renderer.NodeEnlargeButton.prototype.mouseup = function() {
     var _newsize = 1 + (this.source_representation.model.get("size") || 0);
@@ -2113,7 +2131,7 @@ Rkns.Renderer.NodeEnlargeButton.prototype.mouseup = function() {
     this.source_representation.select();
     this.select();
     paper.view.draw();
-}
+};
 
 /* */
 
@@ -2126,7 +2144,7 @@ Rkns.Renderer.NodeShrinkButton.prototype._init = function() {
     this.endAngle = -135;
     this.imageName = "shrink";
     this.text = "Shrink";
-}
+};
 
 Rkns.Renderer.NodeShrinkButton.prototype.mouseup = function() {
     var _newsize = -1 + (this.source_representation.model.get("size") || 0);
@@ -2134,7 +2152,7 @@ Rkns.Renderer.NodeShrinkButton.prototype.mouseup = function() {
     this.source_representation.select();
     this.select();
     paper.view.draw();
-}
+};
 
 /* */
 
@@ -2143,13 +2161,13 @@ Rkns.Renderer.EdgeEditButton = Rkns.Utils.inherit(Rkns.Renderer._BaseButton);
 Rkns.Renderer.EdgeEditButton.prototype._init = function() {
     this.type = "Edge-edit-button";
     this.sector = this.renderer.drawSector(this, Rkns.Renderer._EDGE_BUTTON_INNER, Rkns.Renderer._EDGE_BUTTON_OUTER, -270, -90, 1, "edit", this.renkan.translate("Edit"));
-}
+};
 
 Rkns.Renderer.EdgeEditButton.prototype.mouseup = function() {
     if (!this.renderer.is_dragging) {
         this.source_representation.openEditor();
     }
-}
+};
 
 /* */
 
@@ -2158,7 +2176,7 @@ Rkns.Renderer.EdgeRemoveButton = Rkns.Utils.inherit(Rkns.Renderer._BaseButton);
 Rkns.Renderer.EdgeRemoveButton.prototype._init = function() {
     this.type = "Edge-remove-button";
     this.sector = this.renderer.drawSector(this, Rkns.Renderer._EDGE_BUTTON_INNER, Rkns.Renderer._EDGE_BUTTON_OUTER, -90, 90, 1, "remove", this.renkan.translate("Remove"));
-}
+};
 
 Rkns.Renderer.EdgeRemoveButton.prototype.mouseup = function() {
     this.renderer.click_target = null;
@@ -2172,7 +2190,7 @@ Rkns.Renderer.EdgeRemoveButton.prototype.mouseup = function() {
         });
         this.source_representation.model.set("delete_scheduled", delid);
     }
-}
+};
 
 /* */
 
@@ -2181,7 +2199,7 @@ Rkns.Renderer.EdgeRevertButton = Rkns.Utils.inherit(Rkns.Renderer._BaseButton);
 Rkns.Renderer.EdgeRevertButton.prototype._init = function() {
     this.type = "Edge-revert-button";
     this.sector = this.renderer.drawSector(this, Rkns.Renderer._EDGE_BUTTON_INNER, Rkns.Renderer._EDGE_BUTTON_OUTER, -135, 135, 1, "revert", this.renkan.translate("Cancel deletion"));
-}
+};
 
 Rkns.Renderer.EdgeRevertButton.prototype.mouseup = function() {
     this.renderer.click_target = null;
@@ -2189,7 +2207,7 @@ Rkns.Renderer.EdgeRevertButton.prototype.mouseup = function() {
     if (this.renderer.isEditable()) {
         this.source_representation.model.unset("delete_scheduled");
     }
-}
+};
 
 /* */
 
@@ -2198,12 +2216,12 @@ Rkns.Renderer.MiniFrame = Rkns.Utils.inherit(Rkns.Renderer._BaseRepresentation);
 Rkns.Renderer.MiniFrame.prototype.paperShift = function(_delta) {
     this.renderer.offset = this.renderer.offset.subtract(_delta.divide(this.renderer.minimap.scale).multiply(this.renderer.scale));
     this.renderer.redraw();
-}
+};
 
 Rkns.Renderer.MiniFrame.prototype.mouseup = function(_delta) {
     this.renderer.click_target = null;
     this.renderer.is_dragging = false;
-}
+};
 
 /* */
 
@@ -2236,7 +2254,7 @@ Rkns.Renderer.Scene = function(_renkan) {
             node_layer: new paper.Layer(),
             node_group: new paper.Group(),
             size: new paper.Size( _renkan.options.minimap_width, _renkan.options.minimap_height )
-        }
+        };
         
         this.minimap.background_layer.activate();
         this.minimap.topleft = paper.view.bounds.bottomRight.subtract(this.minimap.size);
@@ -2435,7 +2453,7 @@ Rkns.Renderer.Scene = function(_renkan) {
         _this.setScale( _newScale, _offset );
     });
     this.$.find(".Rk-CurrentUser").mouseenter(
-        function() { _this.$.find(".Rk-UserList").slideDown() }
+        function() { _this.$.find(".Rk-UserList").slideDown(); }
     );
     this.$.find(".Rk-Users").mouseleave(
         function() { _this.$.find(".Rk-UserList").slideUp(); }
@@ -2516,12 +2534,12 @@ Rkns.Renderer.Scene = function(_renkan) {
     paper.view.onResize = function(_event) {
         _this.offset = _this.offset.add(_event.delta.divide(2));
         if (_this.minimap) {
-            _this.minimap.topleft = paper.view.bounds.bottomRight.subtract(_this.minimap.size)
+            _this.minimap.topleft = paper.view.bounds.bottomRight.subtract(_this.minimap.size);
             _this.minimap.rectangle.fitBounds(_this.minimap.topleft.subtract([2,2]), _this.minimap.size.add([4,4]));
             _this.minimap.cliprectangle.fitBounds(_this.minimap.topleft, _this.minimap.size);
         }
         _this.redraw();
-    }
+    };
     
     var _thRedraw = Rkns._.throttle(function() {
         _this.redraw();
@@ -2535,7 +2553,7 @@ Rkns.Renderer.Scene = function(_renkan) {
     
     this.$.find(".Rk-PadTitle").on("keyup input paste", function() {
         _renkan.project.set({"title": $(this).val()});
-    })
+    });
     
     this.renkan.project.get("users").each(function(_user) {
         _this.addUser(_user);
@@ -2600,17 +2618,17 @@ Rkns.Renderer.Scene = function(_renkan) {
             }
         });
         _this.delete_list = _this.delete_list.filter(function(d) {
-            return _renkan.project.get("nodes").findWhere({"delete_scheduled":d.id}) || _renkan.project.get("edges").findWhere({"delete_scheduled":d.id})
+            return _renkan.project.get("nodes").findWhere({"delete_scheduled":d.id}) || _renkan.project.get("edges").findWhere({"delete_scheduled":d.id});
         });
     }, 500);
     
     if (this.minimap) {
         window.setInterval(function() {
-            _this.rescaleMinimap()
+            _this.rescaleMinimap();
         }, 2000);
     }
 
-}
+};
 
 Rkns.Renderer.Scene.prototype.template = Rkns._.template(
     '<% if (options.show_top_bar) { %><div class="Rk-TopBar"><% if (!options.editor_mode) { %><h2 class="Rk-PadTitle"><%- project.get("title") || translate("Untitled project")%></h2>'
@@ -2648,7 +2666,7 @@ Rkns.Renderer.Scene.prototype.fixSize = function(_autoscale) {
     if (_autoscale) {
         this.autoScale();
     }
-}
+};
 
 Rkns.Renderer.Scene.prototype.drawSector = function(_repr, _inR, _outR, _startAngle, _endAngle, _padding, _imgname, _caption) {
     var _options = this.renkan.options,
@@ -2739,7 +2757,7 @@ Rkns.Renderer.Scene.prototype.drawSector = function(_repr, _inR, _outR, _startAn
         destroy: function() {
             _grp.remove();
         }
-    }
+    };
     function showImage() {
         var _raster = new paper.Raster(_img);
         _raster.position = _imgdelta.add(_grp.position).subtract(_delta);
@@ -2751,8 +2769,8 @@ Rkns.Renderer.Scene.prototype.drawSector = function(_repr, _inR, _outR, _startAn
         Rkns.$(_img).on("load",showImage);
     }
     
-    return _res
-}
+    return _res;
+};
 
 Rkns.Renderer.Scene.prototype.addToBundles = function(_edgeRepr) {
     var _bundle = Rkns._(this.bundles).find(function(_bundle) {
@@ -2762,7 +2780,7 @@ Rkns.Renderer.Scene.prototype.addToBundles = function(_edgeRepr) {
         );
     });
     if (typeof _bundle !== "undefined") {
-        _bundle.edges.push(_edgeRepr)
+        _bundle.edges.push(_edgeRepr);
     } else {
         _bundle = {
             from: _edgeRepr.from_representation,
@@ -2772,15 +2790,15 @@ Rkns.Renderer.Scene.prototype.addToBundles = function(_edgeRepr) {
                 var _dir = (_er.from_representation === this.from) ? 1 : -1;
                 return _dir * ( Rkns._(this.edges).indexOf(_er) - (this.edges.length - 1) / 2 );
             }
-        }
+        };
         this.bundles.push(_bundle);
     }
     return _bundle;
-}
+};
 
 Rkns.Renderer.Scene.prototype.isEditable = function() {
-    return (this.renkan.options.editor_mode && !this.renkan.read_only)
-}
+    return (this.renkan.options.editor_mode && !this.renkan.read_only);
+};
 
 Rkns.Renderer.Scene.prototype.onStatusChange = function() {
     var savebtn = this.$.find(".Rk-Save-Button"),
@@ -2797,23 +2815,23 @@ Rkns.Renderer.Scene.prototype.onStatusChange = function() {
             tip.text(this.renkan.translate("Auto-save enabled"));
         }
     }
-}
+};
 
 Rkns.Renderer.Scene.prototype.setScale = function(_newScale, _offset) {
     if (_newScale > Rkns.Renderer._MIN_SCALE && _newScale < Rkns.Renderer._MAX_SCALE) {
         this.scale = _newScale;
         if (_offset) {
-            this.offset = _offset
+            this.offset = _offset;
         }
         this.redraw();
     }
-}
+};
 
 Rkns.Renderer.Scene.prototype.autoScale = function() {
-    var nodes = this.renkan.project.get("nodes")
+    var nodes = this.renkan.project.get("nodes");
     if (nodes.length > 1) {
-        var _xx = nodes.map(function(_node) { return _node.get("position").x }),
-            _yy = nodes.map(function(_node) { return _node.get("position").y }),
+        var _xx = nodes.map(function(_node) { return _node.get("position").x; }),
+            _yy = nodes.map(function(_node) { return _node.get("position").y; }),
             _minx = Math.min.apply(Math, _xx),
             _miny = Math.min.apply(Math, _yy),
             _maxx = Math.max.apply(Math, _xx),
@@ -2824,19 +2842,19 @@ Rkns.Renderer.Scene.prototype.autoScale = function() {
     if (nodes.length === 1) {
         this.setScale(1, paper.view.center.subtract(new paper.Point([nodes.at(0).get("position").x, nodes.at(0).get("position").y])));
     }
-}
+};
 
 Rkns.Renderer.Scene.prototype.redrawMiniframe = function() {
     var topleft = this.toMinimapCoords(this.toModelCoords(new paper.Point([0,0]))),
         bottomright = this.toMinimapCoords(this.toModelCoords(paper.view.bounds.bottomRight));
     this.minimap.miniframe.fitBounds(topleft, bottomright);
-}
+};
 
 Rkns.Renderer.Scene.prototype.rescaleMinimap = function() {
-    var nodes = this.renkan.project.get("nodes")
+    var nodes = this.renkan.project.get("nodes");
     if (nodes.length > 1) {
-        var _xx = nodes.map(function(_node) { return _node.get("position").x }),
-            _yy = nodes.map(function(_node) { return _node.get("position").y }),
+        var _xx = nodes.map(function(_node) { return _node.get("position").x; }),
+            _yy = nodes.map(function(_node) { return _node.get("position").y; }),
             _minx = Math.min.apply(Math, _xx),
             _miny = Math.min.apply(Math, _yy),
             _maxx = Math.max.apply(Math, _xx),
@@ -2855,32 +2873,32 @@ Rkns.Renderer.Scene.prototype.rescaleMinimap = function() {
         this.minimap.offset = this.minimap.size.divide(2).subtract(new paper.Point([nodes.at(0).get("position").x, nodes.at(0).get("position").y]).multiply(this.minimap.scale));
     }
     this.redraw();
-}
+};
 
 Rkns.Renderer.Scene.prototype.toPaperCoords = function(_point) {
     return _point.multiply(this.scale).add(this.offset);
-}
+};
 
 Rkns.Renderer.Scene.prototype.toMinimapCoords = function(_point) {
     return _point.multiply(this.minimap.scale).add(this.minimap.offset).add(this.minimap.topleft);
-}
+};
 
 Rkns.Renderer.Scene.prototype.toModelCoords = function(_point) {
     return _point.subtract(this.offset).divide(this.scale);
-}
+};
 
 Rkns.Renderer.Scene.prototype.addRepresentation = function(_type, _model) {
     var _repr = new Rkns.Renderer[_type](this, _model);
     this.representations.push(_repr);
     return _repr;
-}
+};
 
 Rkns.Renderer.Scene.prototype.addRepresentations = function(_type, _collection) {
     var _this = this;
     _collection.forEach(function(_model) {
         _this.addRepresentation(_type, _model);
     });
-}
+};
 
 Rkns.Renderer.Scene.prototype.userTemplate = Rkns._.template(
     '<li class="Rk-User"><span class="Rk-UserColor" style="background:<%=background%>;"></span><%=name%></li>'
@@ -2900,22 +2918,22 @@ Rkns.Renderer.Scene.prototype.addUser = function(_user) {
             )
         );
     }
-}
+};
 
 Rkns.Renderer.Scene.prototype.removeRepresentation = function(_representation) {
     _representation.destroy();
     this.representations = Rkns._(this.representations).reject(
         function(_repr) {
-            return _repr == _representation
+            return _repr == _representation;
         }
     );
-}
+};
 
 Rkns.Renderer.Scene.prototype.getRepresentationByModel = function(_model) {
     return Rkns._(this.representations).find(function(_repr) {
         return _repr.model === _model;
     });
-}
+};
 
 Rkns.Renderer.Scene.prototype.removeRepresentationsOfType = function(_type) {
     var _representations = Rkns._(this.representations).filter(function(_repr) {
@@ -2925,26 +2943,26 @@ Rkns.Renderer.Scene.prototype.removeRepresentationsOfType = function(_type) {
     Rkns._(_representations).each(function(_repr) {
         _this.removeRepresentation(_repr);
     });
-}
+};
 
 Rkns.Renderer.Scene.prototype.highlightModel = function(_model) {
     var _repr = this.getRepresentationByModel(_model);
     if (_repr) {
         _repr.highlight();
     }
-}
+};
 
 Rkns.Renderer.Scene.prototype.unhighlightAll = function(_model) {
     Rkns._(this.representations).each(function(_repr) {
         _repr.unhighlight();
     });
-}
+};
 
 Rkns.Renderer.Scene.prototype.unselectAll = function(_model) {
     Rkns._(this.representations).each(function(_repr) {
         _repr.unselect();
     });
-}
+};
 
 Rkns.Renderer.Scene.prototype.redraw = function() {
     Rkns._(this.representations).each(function(_representation) {
@@ -2954,7 +2972,7 @@ Rkns.Renderer.Scene.prototype.redraw = function() {
         this.redrawMiniframe();
     }
     paper.view.draw();
-}
+};
 
 Rkns.Renderer.Scene.prototype.addTempEdge = function(_from, _point) {
     var _tmpEdge = this.addRepresentation("TempEdge",null);
@@ -2962,7 +2980,7 @@ Rkns.Renderer.Scene.prototype.addTempEdge = function(_from, _point) {
     _tmpEdge.from_representation = _from;
     _tmpEdge.redraw();
     this.click_target = _tmpEdge;
-}
+};
 
 Rkns.Renderer.Scene.prototype.findTarget = function(_hitResult) {
     if (_hitResult && typeof _hitResult.item.__representation !== "undefined") {
@@ -2980,12 +2998,12 @@ Rkns.Renderer.Scene.prototype.findTarget = function(_hitResult) {
         }
         this.selected_target = null;
     }
-}
+};
 
 Rkns.Renderer.Scene.prototype.paperShift = function(_delta) {
     this.offset = this.offset.add(_delta);
     this.redraw();
-}
+};
 
 Rkns.Renderer.Scene.prototype.onMouseMove = function(_event) {
     var _off = this.canvas_$.offset(),
@@ -3009,7 +3027,7 @@ Rkns.Renderer.Scene.prototype.onMouseMove = function(_event) {
         this.findTarget(_hitResult);
     }
     paper.view.draw();
-}
+};
 
 Rkns.Renderer.Scene.prototype.onMouseDown = function(_event, _isTouch) {
     var _off = this.canvas_$.offset(),
@@ -3057,7 +3075,7 @@ Rkns.Renderer.Scene.prototype.onMouseDown = function(_event, _isTouch) {
         }
     }
     paper.view.draw();
-}
+};
 
 Rkns.Renderer.Scene.prototype.onMouseUp = function(_event, _isTouch) {
     this.mouse_down = false;
@@ -3080,7 +3098,7 @@ Rkns.Renderer.Scene.prototype.onMouseUp = function(_event, _isTouch) {
         }
     }
     paper.view.draw();
-}
+};
 
 Rkns.Renderer.Scene.prototype.onScroll = function(_event, _scrolldelta) {
     this.totalScroll += _scrolldelta;
@@ -3097,7 +3115,7 @@ Rkns.Renderer.Scene.prototype.onScroll = function(_event, _scrolldelta) {
         }
         this.totalScroll = 0;
     }
-}
+};
 
 Rkns.Renderer.Scene.prototype.onDoubleClick = function(_event) {
     if (!this.isEditable()) {
@@ -3123,7 +3141,7 @@ Rkns.Renderer.Scene.prototype.onDoubleClick = function(_event) {
             this.getRepresentationByModel(_node).openEditor();
     }
     paper.view.draw();
-}
+};
 
 Rkns.Renderer.Scene.prototype.dropData = function(_data, _event) {
     if (!this.isEditable()) {
@@ -3140,7 +3158,7 @@ Rkns.Renderer.Scene.prototype.dropData = function(_data, _event) {
     switch(_data["text/x-iri-specific-site"]) {
         case "twitter":
             var snippet = Rkns.$('<div>').html(_data["text/x-iri-selected-html"]),
-                tweetdiv = snippet.find(".tweet")
+                tweetdiv = snippet.find(".tweet");
             newNode.title = _renkan.translate("Tweet by ") + tweetdiv.attr("data-name");
             newNode.uri = "http://twitter.com/" + tweetdiv.attr("data-screen-name") + "/status/" + tweetdiv.attr("data-tweet-id");
             newNode.image = tweetdiv.find(".avatar").attr("src");
@@ -3229,4 +3247,60 @@ Rkns.Renderer.Scene.prototype.dropData = function(_data, _event) {
     if (_event.type === "drop") {
         _repr.openEditor();
     }
-}
+};
+
+          /* *********************************************************
+                          end of        paper-renderer.js
+          ************************************************************
+          ************************************************************
+                          start of      full-json.js
+          ********************************************************* */
+
+/* Saves the Full JSON at each modification */
+
+Rkns.jsonIO = function(_renkan, _opts) {
+    var _proj = _renkan.project;
+    if (typeof _opts.http_method == "undefined") {
+        _opts.http_method = 'PUT';
+    }
+    var _load = function() {
+        Rkns.$.getJSON(_opts.url, function(_data) {
+            _proj.set(_data, {validate: true});
+            _renkan.renderer.autoScale();
+        });
+    };
+    var _save = function() {
+        var _data = _proj.toJSON();
+        if (!_renkan.read_only) {
+            Rkns.$.ajax({
+                type: _opts.http_method,
+                url: _opts.url,
+                contentType: "application/json",
+                data: JSON.stringify(_data),
+                success: function(data, textStatus, jqXHR) {
+                }
+            });
+        }
+        
+    };
+    var _thrSave = Rkns._.throttle(
+        function() {
+            setTimeout(_save, 100);
+        }, 1000);
+    _proj.on("add:nodes add:edges add:users", function(_model) {
+        _model.on("change remove", function(_model) {
+            _thrSave();
+        });
+        _thrSave();
+    });
+    _proj.on("change", function() {
+        _thrSave();
+    });
+        
+    _load();
+};
+
+          /* *********************************************************
+                          end of        full-json.js
+          ************************************************************
+          */

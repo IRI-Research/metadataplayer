@@ -1,7 +1,7 @@
-/* Used when Putting annotations on the platform */
+/* ldt_annotate serializer: Used when Putting annotations on the platform */
 
 if (typeof IriSP.serializers === "undefined") {
-    IriSP.serializers = {}
+    IriSP.serializers = {};
 }
 
 IriSP.serializers.ldt_annotate = {
@@ -72,4 +72,6 @@ IriSP.serializers.ldt_annotate = {
         _source.addList('annotation', new IriSP.Model.List(_source.directory));
         this.deserializeAnnotation(_data, _source);
     }
-}
+};
+
+/* End ldt_annotate serializer */

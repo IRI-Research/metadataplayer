@@ -49,6 +49,7 @@ IriSP.Widgets.Renkan.prototype.draw = function() {
                     uri: _uri,
                     selected: false,
                     node: _node,
+                    annotation: _ann,
                     begin: _ann.begin - _preroll,
                     end: _ann.end + _preroll
                 }
@@ -81,8 +82,7 @@ IriSP.Widgets.Renkan.prototype.draw = function() {
                     }
                 });
                 _node.on("clicked", function() {
-                    _this.media.setCurrentTime(_ann.begin);
-                    _this.player.trigger("Mediafragment.setHashToAnnotation", _ann.id);
+                    _ann.trigger("click");
                 });
             });
         }
@@ -108,7 +108,9 @@ IriSP.Widgets.Renkan.prototype.draw = function() {
                 return t.uri == href;
             });
         if (times.length) {
-            _this.media.setCurrentTime(times[0].begin);
+            IriSP._(times).each(function(t) {
+                t.annotation.trigger("click");
+            });
             return false;
         }
     });
