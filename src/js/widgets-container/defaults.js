@@ -1,3 +1,5 @@
+/* Start of defaults.js */
+
 IriSP.language = 'en';
 
 IriSP.libFiles = {
@@ -40,7 +42,7 @@ IriSP.libFiles = {
         popcorn: "http://cdn.popcornjs.org/code/dist/popcorn-complete.min.js"
     },
     useCdn : false
-}
+};
 
 IriSP.widgetsDir = 'widgets';
 
@@ -99,10 +101,12 @@ IriSP.widgetsRequirements = {
     MultiSegments: {
         noCss: true
     }
-}
+};
 
 IriSP.guiDefaults = {
     width : 640,            
     container : 'LdtPlayer',
     spacer_div_height : 0
-}
+};
+
+/* End of defaults.js */
