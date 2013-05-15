@@ -1,10 +1,17 @@
           /* *********************************************************
-                  File generated on Wed Apr 24 10:49:26 CEST 2013
+                  File generated on Wed May 15 15:42:55 CEST 2013
           ************************************************************
                           start of      main.js
           ********************************************************* */
 
 /* 
+    _____            _               
+   |  __ \          | |              
+   | |__) |___ _ __ | | ____ _ _ __  
+   |  _  // _ \ '_ \| |/ / _` | '_ \ 
+   | | \ \  __/ | | |   < (_| | | | |
+   |_|  \_\___|_| |_|_|\_\__,_|_| |_|
+
  *  Copyright 2012-2013 Institut de recherche et d'innovation 
  *  contributor(s) : Yves-Marie Haussonne, Raphael Velt, Samuel Huron
  *   
@@ -462,7 +469,8 @@ Rkns.Utils = {
                 image: this.get("image"),
                 color: this.get("color"),
                 created_by: this.get("created_by") ? this.get("created_by").get("_id") : null,
-                size: this.get("size")
+                size: this.get("size"),
+                "clip-path": this.get("clip-path")
             };
         },
     });
@@ -679,7 +687,10 @@ Rkns.defaults = {
     force_resize: false,
     allow_double_click: true,
         /* Allows Double Click to create a node on an empty background */
-    element_delete_delay: 5000,
+    element_delete_delay: 0,
+        /* Delay between clicking on the bin on an element and really deleting it
+           Set to 0 for delete confirm */
+    autoscale_padding: 50,
     
     /* MINI-MAP OPTIONS */
     
@@ -687,6 +698,7 @@ Rkns.defaults = {
         /* Show a small map at the bottom right */
     minimap_width: 160,
     minimap_height: 120,
+    minimap_padding: 20,
     minimap_background_color: "#ffffff",
     minimap_border_color: "#cccccc",
     minimap_highlight_color: "#ffff00",
@@ -704,6 +716,9 @@ Rkns.defaults = {
         /* Show circles for nodes */
     clip_node_images: true,
         /* Constraint node images to circles */
+    node_images_fill_mode: false,
+        /* Set to false for "letterboxing" (height/width of node adapted to show full image)
+           Set to true for "crop" (adapted to fill circle) */
     node_size_base: 25,
     node_stroke_width: 2,
     selected_node_stroke_width: 4,
@@ -737,7 +752,41 @@ Rkns.defaults = {
     tooltip_top_color: "#f0f0f0",
     tooltip_bottom_color: "#d0d0d0",
     tooltip_border_color: "#808080",
-    tooltip_border_width: 1
+    tooltip_border_width: 1,
+    
+    /* NODE EDITOR OPTIONS */
+    
+    show_node_editor_uri: true,
+    show_node_editor_description: true,
+    show_node_editor_size: true,
+    show_node_editor_color: true,
+    show_node_editor_image: true,
+    show_node_editor_creator: true,
+    
+    /* NODE TOOLTIP OPTIONS */
+    
+    show_node_tooltip_uri: true,
+    show_node_tooltip_description: true,
+    show_node_tooltip_color: true,
+    show_node_tooltip_image: true,
+    show_node_tooltip_creator: true,
+    
+    /* EDGE EDITOR OPTIONS */
+    
+    show_edge_editor_uri: true,
+    show_edge_editor_color: true,
+    show_edge_editor_direction: true,
+    show_edge_editor_nodes: true,
+    show_edge_editor_creator: true,
+    
+    /* EDGE TOOLTIP OPTIONS */
+    
+    show_edge_tooltip_uri: true,
+    show_edge_tooltip_color: true,
+    show_edge_tooltip_nodes: true,
+    show_edge_tooltip_creator: true
+    
+    /* */
     
 };
 
@@ -834,7 +883,6 @@ Rkns.i18n = {
           ********************************************************* */
 
 Rkns.Renderer = {
-    _MINIMAP_MARGIN: 20,
     _MIN_DRAG_DISTANCE: 2,
     _NODE_BUTTON_WIDTH: 40,
     _EDGE_BUTTON_INNER: 2,
@@ -846,7 +894,6 @@ Rkns.Renderer = {
     _NODE_SIZE_STEP: Math.LN2/4,
     _MIN_SCALE: 1/20,
     _MAX_SCALE: 20,
-    _AUTOSCALE_MARGIN: 50,
     _MOUSEMOVE_RATE: 80,
     _DOUBLETAP_DELAY: 800,
     _DOUBLETAP_DISTANCE: 20*20,
@@ -1079,15 +1126,14 @@ Rkns.Renderer.Node.prototype.redraw = function(_dontRedrawEdges) {
         var square = new paper.Size(this.circle_radius, this.circle_radius),
             topleft = this.paper_coords.subtract(square),
             bounds = new paper.Rectangle(topleft, square.multiply(2));
-        this.circle.fitBounds(bounds);
+        this.circle.scale(this.circle_radius / this.last_circle_radius);
         if (this.node_image) {
-            this.node_image.fitBounds(bounds);
+            this.node_image.scale(this.circle_radius / this.last_circle_radius);
         }
-    } else {
-        this.circle.position = this.paper_coords;
-        if (this.node_image) {
-            this.node_image.position = this.paper_coords;
-        }
+    }
+    this.circle.position = this.paper_coords;
+    if (this.node_image) {
+        this.node_image.position = this.paper_coords.subtract(this.image_delta.multiply(this.circle_radius));
     }
     this.last_circle_radius = this.circle_radius;
     
@@ -1136,44 +1182,11 @@ Rkns.Renderer.Node.prototype.redraw = function(_dontRedrawEdges) {
     this.all_buttons.forEach(function(b) {
         b.moveTo(_pc);
     });
-    var _img = this.model.get("image");
-    if (_img && _img !== this.img) {
-        var _image = new Image(),
-            _this = this;
-        _image.onload = function() {
-            if (_this.node_image) {
-                _this.node_image.remove();
-            }
-            _this.renderer.node_layer.activate();
-            var _ratio = Math.min(2 / _image.width, 2 / _image.height );
-            if (!_this.options.show_node_circles) {
-                _this.h_ratio = Math.min(1, _image.height / _image.width);
-            }
-            var _raster = new paper.Raster(_image);
-            if (_this.options.clip_node_images) {
-                var _clip = new paper.Path.Circle([0, 0], 1);
-                _raster.scale(_ratio);
-                _this.node_image = new paper.Group(_clip, _raster);
-                _this.node_image.opacity = .99;
-                /* This is a workaround to allow clipping at group level
-                 * If opacity was set to 1, paper.js would merge all clipping groups in one (known bug).
-                */
-                _this.node_image.clipped = true;
-                _clip.__representation = _this;
-            } else {
-                _this.node_image = _raster;
-            }
-            _this.node_image.__representation = _this;
-            var square = new paper.Size(_this.circle_radius, _this.circle_radius),
-                topleft = _this.paper_coords.subtract(square),
-                bounds = new paper.Rectangle(topleft, square.multiply(2));
-            _this.node_image.fitBounds(bounds);
-            _this.redraw();
-            paper.view.draw();
-        };
-        _image.src = _img;
+    var lastImage = this.img;
+    this.img = this.model.get("image");
+    if (this.img && this.img !== lastImage) {
+        this.showImage();
     }
-    this.img = _img;
     if (this.node_image && !this.img) {
         this.node_image.remove();
         delete this.node_image;
@@ -1190,13 +1203,138 @@ Rkns.Renderer.Node.prototype.redraw = function(_dontRedrawEdges) {
     if (!_dontRedrawEdges) {
         Rkns._.each(this.project.get("edges").filter(function (ed) { return ((ed.to === this.model) || (ed.from === this.model));}), function(edge, index, list){
             var repr = this.renderer.getRepresentationByModel(edge);
-            if(repr != null && typeof repr.from_representation.paper_coords !== "undefined" && typeof repr.to_representation.paper_coords !== "undefined") {
+            if (repr && typeof repr.from_representation !== "undefined" && typeof repr.from_representation.paper_coords !== "undefined" && typeof repr.to_representation !== "undefined" && typeof repr.to_representation.paper_coords !== "undefined") {
                 repr.redraw();
             }
         }, this);
     }
 
 };
+
+Rkns.Renderer.Node.prototype.showImage = function() {
+    if (typeof this.renderer.image_cache[this.img] === "undefined") {
+        var _image = new Image();
+        this.renderer.image_cache[this.img] = _image;
+        _image.src = this.img;
+    } else {
+        var _image = this.renderer.image_cache[this.img];
+    }
+    if (_image.width) {
+        if (this.node_image) {
+            this.node_image.remove();
+        }
+        this.renderer.node_layer.activate();
+        var width = _image.width,
+            height = _image.height,
+            clipPath = this.model.get("clip-path"),
+            hasClipPath = (typeof clipPath !== "undefined" && clipPath);
+        if (hasClipPath) {
+            var _clip = new paper.Path(),
+                instructions = clipPath.match(/[a-z][^a-z]+/gi) || [],
+                lastCoords = [0,0],
+                minX = Infinity,
+                minY = Infinity,
+                maxX = -Infinity,
+                maxY = -Infinity;
+                
+            function transformCoords(tabc, relative) {
+                var newCoords = tabc.slice(1).map(function(v, k) {
+                    var res = parseFloat(v),
+                        isY = k % 2;
+                    if (isY) {
+                        res = ( res - .5 ) * height;
+                    } else {
+                        res = ( res - .5 ) * width;
+                    }
+                    if (relative) {
+                        res += lastCoords[isY];
+                    }
+                    if (isY) {
+                        minY = Math.min(minY, res);
+                        maxY = Math.max(maxY, res);
+                    } else {
+                        minX = Math.min(minX, res);
+                        maxX = Math.max(maxX, res);
+                    }
+                    return res;
+                });
+                lastCoords = newCoords.slice(-2);
+                return newCoords;
+            }
+            
+            instructions.forEach(function(instr) {
+                var coords = instr.match(/([a-z]|[0-9.-]+)/ig) || [""];
+                switch(coords[0]) {
+                    case "M":
+                        _clip.moveTo(transformCoords(coords));
+                    break;
+                    case "m":
+                        _clip.moveTo(transformCoords(coords, true));
+                    break;
+                    case "L":
+                        _clip.lineTo(transformCoords(coords));
+                    break;
+                    case "l":
+                        _clip.lineTo(transformCoords(coords, true));
+                    break;
+                    case "C":
+                        _clip.cubicCurveTo(transformCoords(coords));
+                    break;
+                    case "c":
+                        _clip.cubicCurveTo(transformCoords(coords, true));
+                    break;
+                    case "Q":
+                        _clip.quadraticCurveTo(transformCoords(coords));
+                    break;
+                    case "q":
+                        _clip.quadraticCurveTo(transformCoords(coords, true));
+                    break;
+                }
+            });
+            
+            var baseRadius = Math[this.options.node_images_fill_mode ? "min" : "max"](maxX - minX, maxY - minY) / 2,
+                centerPoint = new paper.Point((maxX + minX) / 2, (maxY + minY) / 2);
+            if (!this.options.show_node_circles) {
+                this.h_ratio = (maxY - minY) / (2 * baseRadius);
+            }
+        } else {
+            var baseRadius = Math[this.options.node_images_fill_mode ? "min" : "max"](width, height) / 2,
+                centerPoint = new paper.Point(0,0);
+            if (!this.options.show_node_circles) {
+                this.h_ratio = height / (2 * baseRadius);
+            }
+        }
+        var _raster = new paper.Raster(_image);
+        if (hasClipPath) {
+            _raster = new paper.Group(_clip, _raster);
+            _raster.opacity = .99;
+            /* This is a workaround to allow clipping at group level
+             * If opacity was set to 1, paper.js would merge all clipping groups in one (known bug).
+            */
+            _raster.clipped = true;
+            _clip.__representation = this;
+        }
+        if (this.options.clip_node_images) {
+            var _circleClip = new paper.Path.Circle(centerPoint, baseRadius);
+            _raster = new paper.Group(_circleClip, _raster);
+            _raster.opacity = .99;
+            _raster.clipped = true;
+            _circleClip.__representation = this;
+        }
+        this.image_delta = centerPoint.divide(baseRadius);
+        this.node_image = _raster;
+        this.node_image.__representation = _this;
+        this.node_image.scale(this.circle_radius / baseRadius);
+        this.node_image.position = this.paper_coords.subtract(this.image_delta.multiply(this.circle_radius));
+        this.redraw();
+        this.renderer.throttledPaperDraw();
+    } else {
+        var _this = this;
+        Rkns.$(_image).on("load", function() {
+            _this.showImage();
+        });
+    }
+}
 
 Rkns.Renderer.Node.prototype.paperShift = function(_delta) {
     if (this.options.editor_mode) {
@@ -1377,9 +1515,14 @@ Rkns.Renderer.Edge.prototype._init = function() {
 };
 
 Rkns.Renderer.Edge.prototype.redraw = function() {
-    this.from_representation = this.renderer.getRepresentationByModel(this.model.get("from"));
-    this.to_representation = this.renderer.getRepresentationByModel(this.model.get("to"));
-    if (!this.from_representation || !this.to_representation) {
+    var from = this.model.get("from"),
+        to = this.model.get("to");
+    if (!from || !to) {
+        return;
+    }
+    this.from_representation = this.renderer.getRepresentationByModel(from);
+    this.to_representation = this.renderer.getRepresentationByModel(to);
+    if (typeof this.from_representation === "undefined" || typeof this.to_representation === "undefined") {
         return;
     }
     var _p0a = this.from_representation.paper_coords,
@@ -1673,24 +1816,25 @@ Rkns.Renderer.NodeEditor = Rkns.Utils.inherit(Rkns.Renderer._BaseEditor);
 Rkns.Renderer.NodeEditor.prototype.template = Rkns._.template(
     '<h2><span class="Rk-CloseX">&times;</span><%-renkan.translate("Edit Node")%></span></h2>'
     + '<p><label><%-renkan.translate("Title:")%></label><input class="Rk-Edit-Title" type="text" value="<%-node.title%>"/></p>'
-    + '<p><label><%-renkan.translate("URI:")%></label><input class="Rk-Edit-URI" type="text" value="<%-node.uri%>"/><a class="Rk-Edit-Goto" href="<%-node.uri%>" target="_blank"></a></p>'
-    + '<p><label><%-renkan.translate("Description:")%></label><textarea class="Rk-Edit-Description"><%-node.description%></textarea></p>'
-    + '<p><span class="Rk-Editor-Label"><%-renkan.translate("Size:")%></span><a href="#" class="Rk-Edit-Size-Down">-</a><span class="Rk-Edit-Size-Value"><%-node.size%></span><a href="#" class="Rk-Edit-Size-Up">+</a></p>'
-    + '<div class="Rk-Editor-p"><span class="Rk-Editor-Label"><%-renkan.translate("Node color:")%></span><div class="Rk-Edit-ColorPicker-Wrapper"><span class="Rk-Edit-Color" style="background:<%-node.color%>;"><span class="Rk-Edit-ColorTip"></span></span><ul class="Rk-Edit-ColorPicker">'
-    + '<% _(Rkns.pickerColors).each(function(c) { %><li data-color="<%=c%>" style="background: <%=c%>"></li><% }); %></ul><span class="Rk-Edit-ColorPicker-Text"><%- renkan.translate("Choose color") %></span></div></div>'
-    + '<img class="Rk-Edit-ImgPreview" src="<%-node.image || node.image_placeholder%>" />'
-    + '<p><label><%-renkan.translate("Image URL:")%></label><input class="Rk-Edit-Image" type="text" value="<%-node.image%>"/></p>'
-    + '<p><label><%-renkan.translate("Choose Image File:")%></label><input class="Rk-Edit-Image-File" type="file" accept="image/*"/></p>'    
-    + '<% if (node.has_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span> <span class="Rk-UserColor" style="background:<%-node.created_by_color%>;"></span><%- Rkns.Renderer.shortenText(node.created_by_title, 25) %></p><% } %>'
+    + '<% if (options.show_node_editor_uri) { %><p><label><%-renkan.translate("URI:")%></label><input class="Rk-Edit-URI" type="text" value="<%-node.uri%>"/><a class="Rk-Edit-Goto" href="<%-node.uri%>" target="_blank"></a></p><% } %>'
+    + '<% if (options.show_node_editor_description) { %><p><label><%-renkan.translate("Description:")%></label><textarea class="Rk-Edit-Description"><%-node.description%></textarea></p><% } %>'
+    + '<% if (options.show_node_editor_size) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Size:")%></span><a href="#" class="Rk-Edit-Size-Down">-</a><span class="Rk-Edit-Size-Value"><%-node.size%></span><a href="#" class="Rk-Edit-Size-Up">+</a></p><% } %>'
+    + '<% if (options.show_node_editor_color) { %><div class="Rk-Editor-p"><span class="Rk-Editor-Label"><%-renkan.translate("Node color:")%></span><div class="Rk-Edit-ColorPicker-Wrapper"><span class="Rk-Edit-Color" style="background:<%-node.color%>;"><span class="Rk-Edit-ColorTip"></span></span><ul class="Rk-Edit-ColorPicker">'
+    + '<% _(Rkns.pickerColors).each(function(c) { %><li data-color="<%=c%>" style="background: <%=c%>"></li><% }); %></ul><span class="Rk-Edit-ColorPicker-Text"><%- renkan.translate("Choose color") %></span></div></div><% } %>'
+    + '<% if (options.show_node_editor_image) { %><div class="Rk-Edit-ImgWrap"><div class="Rk-Edit-ImgPreview"><img src="<%-node.image || node.image_placeholder%>" />'
+    + '<% if (node.clip_path) { %><svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewbox="0 0 1 1" preserveAspectRatio="none"><path style="stroke-width: .02; stroke:red; fill-opacity:.3; fill:red;" d="<%- node.clip_path %>"/></svg><% }%>'
+    + '</div></div><p><label><%-renkan.translate("Image URL:")%></label><input class="Rk-Edit-Image" type="text" value="<%-node.image%>"/></p>'
+    + '<p><label><%-renkan.translate("Choose Image File:")%></label><input class="Rk-Edit-Image-File" type="file" accept="image/*"/></p><% } %>'    
+    + '<% if (options.show_node_editor_creator && node.has_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span> <span class="Rk-UserColor" style="background:<%-node.created_by_color%>;"></span><%- Rkns.Renderer.shortenText(node.created_by_title, 25) %></p><% } %>'
 );
 
 Rkns.Renderer.NodeEditor.prototype.readOnlyTemplate = Rkns._.template(
-    '<h2><span class="Rk-CloseX">&times;</span><span class="Rk-UserColor" style="background:<%-node.color%>;"></span>'
+    '<h2><span class="Rk-CloseX">&times;</span><% if (options.show_node_tooltip_color) { %><span class="Rk-UserColor" style="background:<%-node.color%>;"></span><% } %>'
     + '<span class="Rk-Display-Title"><% if (node.uri) { %><a href="<%-node.uri%>" target="_blank"><% } %><%-node.title%><% if (node.uri) { %></a><% } %></span></h2>'
-    + '<% if (node.uri) { %><p class="Rk-Display-URI"><a href="<%-node.uri%>" target="_blank"><%-node.short_uri%></a></p><% } %>'
-    + '<p><%-node.description%></p>'
-    + '<% if (node.image) { %><img class="Rk-Display-ImgPreview" src="<%-node.image%>" /><% } %>'
-    + '<% if (node.has_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span><span class="Rk-UserColor" style="background:<%-node.created_by_color%>;"></span><%- Rkns.Renderer.shortenText(node.created_by_title, 25) %></p><% } %>'
+    + '<% if (node.uri && options.show_node_tooltip_uri) { %><p class="Rk-Display-URI"><a href="<%-node.uri%>" target="_blank"><%-node.short_uri%></a></p><% } %>'
+    + '<% if (options.show_node_tooltip_description) { %><p><%-node.description%></p><% } %>'
+    + '<% if (node.image && options.show_node_tooltip_image) { %><img class="Rk-Display-ImgPreview" src="<%-node.image%>" /><% } %>'
+    + '<% if (node.has_creator && options.show_node_tooltip_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span><span class="Rk-UserColor" style="background:<%-node.created_by_color%>;"></span><%- Rkns.Renderer.shortenText(node.created_by_title, 25) %></p><% } %>'
 );
 
 Rkns.Renderer.NodeEditor.prototype.draw = function() {
@@ -1710,11 +1854,13 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
                 image: _model.get("image") || "",
                 image_placeholder: _image_placeholder,
                 color: _model.get("color") || _created_by.get("color"),
+                clip_path: _model.get("clip-path") || false,
                 created_by_color: _created_by.get("color"),
                 created_by_title: _created_by.get("title"),
                 size: (_size > 0 ? "+" : "") + _size
             },
-            renkan: this.renkan
+            renkan: this.renkan,
+            options: this.options
         }));
     this.redraw();
     var _this = this,
@@ -1730,16 +1876,19 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
         var onFieldChange = Rkns._(function() {
             Rkns._(function() {
                 if (_this.renderer.isEditable()) {
-                    var _uri = _this.editor_$.find(".Rk-Edit-URI").val(),
-                        _image = _this.editor_$.find(".Rk-Edit-Image").val();
-                    _this.editor_$.find(".Rk-Edit-ImgPreview").attr("src", _image || _image_placeholder);
-                    _this.editor_$.find(".Rk-Edit-Goto").attr("href",_uri);
                     var _data = {
-                        title: _this.editor_$.find(".Rk-Edit-Title").val(),
-                        description: _this.editor_$.find(".Rk-Edit-Description").val(),
-                        uri: _uri,
-                        image: _image
+                        title: _this.editor_$.find(".Rk-Edit-Title").val()
                     };
+                    if (_this.options.show_node_editor_uri) {
+                        _data.uri = _this.editor_$.find(".Rk-Edit-URI").val();
+                    }
+                    if (_this.options.show_node_editor_image) {
+                        _data.image = _this.editor_$.find(".Rk-Edit-Image").val();
+                        _this.editor_$.find(".Rk-Edit-ImgPreview").attr("src", _data.image || _image_placeholder);
+                    }
+                    if (_this.options.show_node_editor_description) {
+                        _data.description = _this.editor_$.find(".Rk-Edit-Description").val();
+                    }
                     _model.set(_data);
                     _this.redraw();
                 } else {
@@ -1850,28 +1999,28 @@ Rkns.Renderer.EdgeEditor = Rkns.Utils.inherit(Rkns.Renderer._BaseEditor);
 Rkns.Renderer.EdgeEditor.prototype.template = Rkns._.template(
     '<h2><span class="Rk-CloseX">&times;</span><%-renkan.translate("Edit Edge")%></span></h2>'
     + '<p><label><%-renkan.translate("Title:")%></label><input class="Rk-Edit-Title" type="text" value="<%-edge.title%>"/></p>'
-    + '<p><label><%-renkan.translate("URI:")%></label><input class="Rk-Edit-URI" type="text" value="<%-edge.uri%>"/><a class="Rk-Edit-Goto" href="<%-edge.uri%>" target="_blank"></a></p>'
-    + '<% if (properties.length) { %><p><label><%-renkan.translate("Choose from vocabulary:")%></label><select class="Rk-Edit-Vocabulary">'
-    + '<% _(properties).each(function(ontology) { %><option class="Rk-Edit-Vocabulary-Class" value=""><%- renkan.translate(ontology.label) %></option>'
+    + '<% if (options.show_edge_editor_uri) { %><p><label><%-renkan.translate("URI:")%></label><input class="Rk-Edit-URI" type="text" value="<%-edge.uri%>"/><a class="Rk-Edit-Goto" href="<%-edge.uri%>" target="_blank"></a></p>'
+    + '<% if (options.properties.length) { %><p><label><%-renkan.translate("Choose from vocabulary:")%></label><select class="Rk-Edit-Vocabulary">'
+    + '<% _(options.properties).each(function(ontology) { %><option class="Rk-Edit-Vocabulary-Class" value=""><%- renkan.translate(ontology.label) %></option>'
     + '<% _(ontology.properties).each(function(property) { var uri = ontology["base-uri"] + property.uri; %><option class="Rk-Edit-Vocabulary-Property" value="<%- uri %>'
     + '"<% if (uri === edge.uri) { %> selected<% } %>><%- renkan.translate(property.label) %></option>'
-    + '<% }) %><% }) %></select></p><% } %>'
-    + '<div class="Rk-Editor-p"><span class="Rk-Editor-Label"><%-renkan.translate("Edge color:")%></span><div class="Rk-Edit-ColorPicker-Wrapper"><span class="Rk-Edit-Color" style="background:<%-edge.color%>;"><span class="Rk-Edit-ColorTip"></span></span><ul class="Rk-Edit-ColorPicker">'
-    + '<% _(Rkns.pickerColors).each(function(c) { %><li data-color="<%=c%>" style="background: <%=c%>"></li><% }); %></ul><span class="Rk-Edit-ColorPicker-Text"><%- renkan.translate("Choose color") %></span></div></div>'
-    + '<p><span class="Rk-Edit-Direction"><%- renkan.translate("Change edge direction") %></span></p>'
-    + '<p><span class="Rk-Editor-Label"><%-renkan.translate("From:")%></span><span class="Rk-UserColor" style="background:<%-edge.from_color%>;"></span><%- Rkns.Renderer.shortenText(edge.from_title, 25) %></p>'
-    + '<p><span class="Rk-Editor-Label"><%-renkan.translate("To:")%></span><span class="Rk-UserColor" style="background:<%-edge.to_color%>;"></span><%- Rkns.Renderer.shortenText(edge.to_title, 25) %></p>'
-    + '<% if (edge.has_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span><span class="Rk-UserColor" style="background:<%-edge.created_by_color%>;"></span><%- Rkns.Renderer.shortenText(edge.created_by_title, 25) %></p><% } %>'
+    + '<% }) %><% }) %></select></p><% } } %>'
+    + '<% if (options.show_edge_editor_color) { %><div class="Rk-Editor-p"><span class="Rk-Editor-Label"><%-renkan.translate("Edge color:")%></span><div class="Rk-Edit-ColorPicker-Wrapper"><span class="Rk-Edit-Color" style="background:<%-edge.color%>;"><span class="Rk-Edit-ColorTip"></span></span><ul class="Rk-Edit-ColorPicker">'
+    + '<% _(Rkns.pickerColors).each(function(c) { %><li data-color="<%=c%>" style="background: <%=c%>"></li><% }); %></ul><span class="Rk-Edit-ColorPicker-Text"><%- renkan.translate("Choose color") %></span></div></div><% } %>'
+    + '<% if (options.show_edge_editor_direction) { %><p><span class="Rk-Edit-Direction"><%- renkan.translate("Change edge direction") %></span></p><% } %>'
+    + '<% if (options.show_edge_editor_nodes) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("From:")%></span><span class="Rk-UserColor" style="background:<%-edge.from_color%>;"></span><%- Rkns.Renderer.shortenText(edge.from_title, 25) %></p>'
+    + '<p><span class="Rk-Editor-Label"><%-renkan.translate("To:")%></span><span class="Rk-UserColor" style="background:<%-edge.to_color%>;"></span><%- Rkns.Renderer.shortenText(edge.to_title, 25) %></p><% } %>'
+    + '<% if (options.show_edge_editor_creator && edge.has_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span><span class="Rk-UserColor" style="background:<%-edge.created_by_color%>;"></span><%- Rkns.Renderer.shortenText(edge.created_by_title, 25) %></p><% } %>'
 );
 
 Rkns.Renderer.EdgeEditor.prototype.readOnlyTemplate = Rkns._.template(
-    '<h2><span class="Rk-CloseX">&times;</span><span class="Rk-UserColor" style="background:<%-edge.color%>;"></span>'
+    '<h2><span class="Rk-CloseX">&times;</span><% if (options.show_edge_tooltip_color) { %><span class="Rk-UserColor" style="background:<%-edge.color%>;"></span><% } %>'
     + '<span class="Rk-Display-Title"><% if (edge.uri) { %><a href="<%-edge.uri%>" target="_blank"><% } %><%-edge.title%><% if (edge.uri) { %></a><% } %></span></h2>'
-    + '<% if (edge.uri) { %><p class="Rk-Display-URI"><a href="<%-edge.uri%>" target="_blank"><%-edge.short_uri%></a></p><% } %>'
+    + '<% if (options.show_edge_tooltip_uri && edge.uri) { %><p class="Rk-Display-URI"><a href="<%-edge.uri%>" target="_blank"><%-edge.short_uri%></a></p><% } %>'
     + '<p><%-edge.description%></p>'
-    + '<p><span class="Rk-Editor-Label"><%-renkan.translate("From:")%></span><span class="Rk-UserColor" style="background:<%-edge.from_color%>;"></span><%- Rkns.Renderer.shortenText(edge.from_title, 25) %></p>'
-    + '<p><span class="Rk-Editor-Label"><%-renkan.translate("To:")%></span><span class="Rk-UserColor" style="background:<%-edge.to_color%>;"></span><%- Rkns.Renderer.shortenText(edge.to_title, 25) %></p>'
-    + '<% if (edge.has_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span><span class="Rk-UserColor" style="background:<%-edge.created_by_color%>;"></span><%- Rkns.Renderer.shortenText(edge.created_by_title, 25) %></p><% } %>'
+    + '<% if (options.show_edge_tooltip_nodes) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("From:")%></span><span class="Rk-UserColor" style="background:<%-edge.from_color%>;"></span><%- Rkns.Renderer.shortenText(edge.from_title, 25) %></p>'
+    + '<p><span class="Rk-Editor-Label"><%-renkan.translate("To:")%></span><span class="Rk-UserColor" style="background:<%-edge.to_color%>;"></span><%- Rkns.Renderer.shortenText(edge.to_title, 25) %></p><% } %>'
+    + '<% if (options.show_edge_tooltip_creator && edge.has_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span><span class="Rk-UserColor" style="background:<%-edge.created_by_color%>;"></span><%- Rkns.Renderer.shortenText(edge.created_by_title, 25) %></p><% } %>'
 );
 
 Rkns.Renderer.EdgeEditor.prototype.draw = function() {
@@ -1897,7 +2046,7 @@ Rkns.Renderer.EdgeEditor.prototype.draw = function() {
                 created_by_title: _created_by.get("title")
             },
             renkan: this.renkan,
-            properties: this.options.properties
+            options: this.options,
         }));
     this.redraw();
     var _this = this,
@@ -1912,11 +2061,13 @@ Rkns.Renderer.EdgeEditor.prototype.draw = function() {
         var onFieldChange = Rkns._(function() {
             Rkns._(function() {
                 if (_this.renderer.isEditable()) {
-                    _this.editor_$.find(".Rk-Edit-Goto").attr("href",_this.editor_$.find(".Rk-Edit-URI").val());
                     var _data = {
-                        title: _this.editor_$.find(".Rk-Edit-Title").val(),
-                        uri: _this.editor_$.find(".Rk-Edit-URI").val()
+                        title: _this.editor_$.find(".Rk-Edit-Title").val()
                     };
+                    if (_this.options.show_edge_editor_uri) {
+                        _data.uri = _this.editor_$.find(".Rk-Edit-URI").val();
+                    }
+                    _this.editor_$.find(".Rk-Edit-Goto").attr("href",_data.uri);
                     _model.set(_data);
                     paper.view.draw();
                 } else {
@@ -2056,12 +2207,18 @@ Rkns.Renderer.NodeRemoveButton.prototype.mouseup = function() {
     this.renderer.is_dragging = false;
     this.renderer.removeRepresentationsOfType("editor");
     if (this.renderer.isEditable()) {
-        var delid = Rkns.Utils.getUID("delete");
-        this.renderer.delete_list.push({
-            id: delid,
-            time: new Date().valueOf() + this.options.element_delete_delay
-        });
-        this.source_representation.model.set("delete_scheduled", delid);
+        if (this.options.element_delete_delay) {
+            var delid = Rkns.Utils.getUID("delete");
+            this.renderer.delete_list.push({
+                id: delid,
+                time: new Date().valueOf() + this.options.element_delete_delay
+            });
+            this.source_representation.model.set("delete_scheduled", delid);
+        } else {
+            if (confirm(this.renkan.translate('Do you really wish to remove node ') + '"' + this.source_representation.model.get("title") + '"?')) {
+                this.project.removeNode(this.source_representation.model);
+            }
+        }
     }
 };
 
@@ -2183,12 +2340,18 @@ Rkns.Renderer.EdgeRemoveButton.prototype.mouseup = function() {
     this.renderer.is_dragging = false;
     this.renderer.removeRepresentationsOfType("editor");
     if (this.renderer.isEditable()) {
-        var delid = Rkns.Utils.getUID("delete");
-        this.renderer.delete_list.push({
-            id: delid,
-            time: new Date().valueOf() + this.options.element_delete_delay
-        });
-        this.source_representation.model.set("delete_scheduled", delid);
+        if (this.options.element_delete_delay) {
+            var delid = Rkns.Utils.getUID("delete");
+            this.renderer.delete_list.push({
+                id: delid,
+                time: new Date().valueOf() + this.options.element_delete_delay
+            });
+            this.source_representation.model.set("delete_scheduled", delid);
+        } else {
+            if (confirm(this.renkan.translate('Do you really wish to remove edge ') + '"' + this.source_representation.model.get("title") + '"?')) {
+                this.project.removeEdge(this.source_representation.model);
+            }
+        }
     }
 };
 
@@ -2293,12 +2456,13 @@ Rkns.Renderer.Scene = function(_renkan) {
         _lastTapX,
         _lastTapY;
     
-    this.imageCache = {};
+    this.image_cache = {};
+    this.icon_cache = {};
     
     ['edit', 'remove', 'link', 'enlarge', 'shrink', 'revert' ].forEach(function(imgname) {
         var img = new Image();
         img.src = _renkan.options.static_url + 'img/' + imgname + '.png';
-        _this.imageCache[imgname] = img;
+        _this.icon_cache[imgname] = img;
     });
     
     var throttledMouseMove = _.throttle(function(_event, _isTouch) {
@@ -2672,7 +2836,7 @@ Rkns.Renderer.Scene.prototype.drawSector = function(_repr, _inR, _outR, _startAn
     var _options = this.renkan.options,
         _startRads = _startAngle * Math.PI / 180,
         _endRads = _endAngle * Math.PI / 180,
-        _img = this.imageCache[_imgname],
+        _img = this.icon_cache[_imgname],
         _span = _endRads - _startRads,
         _startdx = - Math.sin(_startRads),
         _startdy = Math.cos(_startRads),
@@ -2836,7 +3000,7 @@ Rkns.Renderer.Scene.prototype.autoScale = function() {
             _miny = Math.min.apply(Math, _yy),
             _maxx = Math.max.apply(Math, _xx),
             _maxy = Math.max.apply(Math, _yy);
-        var _scale = Math.max(Rkns.Renderer._MIN_SCALE, Math.min(Rkns.Renderer._MAX_SCALE, (paper.view.size.width - 2 * Rkns.Renderer._AUTOSCALE_MARGIN) / (_maxx - _minx), (paper.view.size.height - 2 * Rkns.Renderer._AUTOSCALE_MARGIN) / (_maxy - _miny)));
+        var _scale = Math.max(Rkns.Renderer._MIN_SCALE, Math.min(Rkns.Renderer._MAX_SCALE, (paper.view.size.width - 2 * this.renkan.options.autoscale_padding) / (_maxx - _minx), (paper.view.size.height - 2 * this.renkan.options.autoscale_padding) / (_maxy - _miny)));
         this.setScale(_scale, paper.view.center.subtract(new paper.Point([(_maxx + _minx) / 2, (_maxy + _miny) / 2]).multiply(_scale)));
     }
     if (nodes.length === 1) {
@@ -2862,8 +3026,8 @@ Rkns.Renderer.Scene.prototype.rescaleMinimap = function() {
         var _scale = Math.min(
             this.scale * .8 * this.renkan.options.minimap_width / paper.view.bounds.width,
             this.scale * .8 * this.renkan.options.minimap_height / paper.view.bounds.height,
-            ( this.renkan.options.minimap_width - 2 * Rkns.Renderer._MINIMAP_MARGIN ) / (_maxx - _minx),
-            ( this.renkan.options.minimap_height - 2 * Rkns.Renderer._MINIMAP_MARGIN ) / (_maxy - _miny)
+            ( this.renkan.options.minimap_width - 2 * this.renkan.options.minimap_padding ) / (_maxx - _minx),
+            ( this.renkan.options.minimap_height - 2 * this.renkan.options.minimap_padding ) / (_maxy - _miny)
         );
         this.minimap.offset = this.minimap.size.divide(2).subtract(new paper.Point([(_maxx + _minx) / 2, (_maxy + _miny) / 2]).multiply(_scale));
         this.minimap.scale = _scale;
@@ -2930,6 +3094,9 @@ Rkns.Renderer.Scene.prototype.removeRepresentation = function(_representation) {
 };
 
 Rkns.Renderer.Scene.prototype.getRepresentationByModel = function(_model) {
+    if (!_model) {
+        return undefined;
+    }
     return Rkns._(this.representations).find(function(_repr) {
         return _repr.model === _model;
     });
@@ -3180,6 +3347,14 @@ Rkns.Renderer.Scene.prototype.dropData = function(_data, _event) {
             }
             if (_data["text/html"] || _data["text/x-iri-selected-html"]) {
                 var snippet = Rkns.$('<div>').html(_data["text/html"] || _data["text/x-iri-selected-html"]);
+                var _svgimgs = snippet.find("image");
+                if (_svgimgs.length) {
+                    newNode.image = _svgimgs.attr("xlink:href");
+                }
+                var _svgpaths = snippet.find("path");
+                if (_svgpaths.length) {
+                    newNode.clipPath = _svgpaths.attr("d");
+                }
                 var _imgs = snippet.find("img");
                 if (_imgs.length) {
                     newNode.image = _imgs[0].src;
@@ -3208,6 +3383,7 @@ Rkns.Renderer.Scene.prototype.dropData = function(_data, _event) {
                 newNode.uri = snippet.find("[data-uri]").attr("data-uri") || newNode.uri;
                 newNode.title = snippet.find("[data-title]").attr("data-title") || newNode.title;
                 newNode.description = snippet.find("[data-description]").attr("data-description") || newNode.description;
+                newNode.description = snippet.find("[data-clip-path]").attr("data-clip-path") || newNode.description;
             }
     }
     if (!newNode.title) {
@@ -3237,6 +3413,7 @@ Rkns.Renderer.Scene.prototype.dropData = function(_data, _event) {
             description: newNode.description || "",
             image: newNode.image || "",
             color: newNode.color || undefined,
+            "clip-path": newNode.clipPath || undefined,
             position: {
                 x: _coords.x,
                 y: _coords.y
