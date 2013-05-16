@@ -27,8 +27,8 @@ IriSP.Widgets.Widget = function(player, config) {
     this.__subwidgets = [];
     
     /* Setting all the configuration options */
-    var _type = config.type,
-        _config = IriSP._.defaults({}, config, player.config.default_options, this.defaults),
+    var _type = config.type || "(unknown)",
+        _config = IriSP._.defaults({}, config, (player && player.config ? player.config.default_options : {}), this.defaults),
         _this = this;
     
     IriSP._(_config).forEach(function(_value, _key) {
@@ -50,7 +50,7 @@ IriSP.Widgets.Widget = function(player, config) {
     /* Setting this.player at the end in case it's been overriden
      * by a configuration option of the same name :-(
      */
-    this.player = player;
+    this.player = player || new IriSP.FakeClass(["on","trigger","off","loadWidget","loadMetadata"]);
     
     /* Adding classes and html attributes */
     this.$.addClass("Ldt-TraceMe Ldt-Widget").attr("widget-type", _type);
@@ -66,27 +66,31 @@ IriSP.Widgets.Widget = function(player, config) {
     );
     
     /* Loading Metadata if required */
+   
+    function onsourceloaded() {
+        if (_this.media_id) {
+                _this.media = this.getElement(_this.media_id);
+            } else {
+                var _mediaopts = {
+                    is_mashup: _this.is_mashup || false
+                }
+                _this.media = _this.source.getCurrentMedia(_mediaopts);
+            }
+            
+        _this.draw();
+        _this.player.trigger("widget-loaded");
+    }
     
     if (this.metadata) {
         /* Getting metadata */
         this.source = player.loadMetadata(this.metadata);
         
         /* Call draw when loaded */
-        this.source.onLoad(function() {
-            if (_this.media_id) {
-                _this.media = this.getElement(_this.media_id);
-            } else {
-                var _mediaopts = {
-                    is_mashup: _this.is_mashup || false
-                }
-                _this.media = this.getCurrentMedia(_mediaopts);
-            }
-            
-            _this.draw();
-            player.trigger("widget-loaded");
-        });
+        this.source.onLoad(onsourceloaded);
     } else {
-        this.draw();
+        if (this.source) {
+            onsourceloaded();
+        }
     }
     
     
@@ -97,6 +101,10 @@ IriSP.Widgets.Widget.prototype.defaults = {};
 IriSP.Widgets.Widget.prototype.template = '';
 
 IriSP.Widgets.Widget.prototype.messages = {"en":{}};
+
+IriSP.Widgets.Widget.prototype.toString = function() {
+    return "Widget " + this.type;
+};
 
 IriSP.Widgets.Widget.prototype.templateToHtml = function(_template) {
     return Mustache.to_html(_template, this);

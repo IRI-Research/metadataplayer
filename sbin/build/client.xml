@@ -21,10 +21,6 @@
             <filelist dir="../../src/js/" files="header.js" />
             <!-- core files -->
             <filelist dir="../../src/js" files="init.js utils.js model.js html-player.js" />
-            <!-- serializers -->
-            <fileset dir="../../src/js/serializers" casesensitive="yes">
-                <include name="**/*.js"/>
-            </fileset>
             <filterchain>
                 <deletecharacters chars="&#xFEFF;" />
             </filterchain>
@@ -36,6 +32,10 @@
             <filelist dir="../../src/js/libs" files="LAB.min.js" />
             <!-- core files -->
             <filelist dir="../../build" files="metadataplayer-core.js" />
+            <!-- serializers -->
+            <fileset dir="../../src/js/serializers" casesensitive="yes">
+                <include name="**/*.js"/>
+            </fileset>
             <fileset dir="../../src/js/widgets-container" casesensitive="yes">
                 <include name="**/*.js"/>
             </fileset>

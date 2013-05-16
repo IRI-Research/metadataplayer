@@ -106,7 +106,8 @@ IriSP.widgetsRequirements = {
 IriSP.guiDefaults = {
     width : 640,            
     container : 'LdtPlayer',
-    spacer_div_height : 0
+    spacer_div_height : 0,
+    widgets: []
 };
 
 /* End of defaults.js */

@@ -122,3 +122,11 @@ IriSP.attachDndData = function(jqSel, data) {
 		}
 	});
 };
+
+IriSP.FakeClass = function(properties) {
+    var _this = this,
+        noop = (function() {});
+    IriSP._(properties).each(function(p) {
+        _this[p] = noop
+    });
+}

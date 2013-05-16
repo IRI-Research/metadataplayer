@@ -13,7 +13,9 @@ IriSP.htmlPlayer = function(media, jqselector, options) {
     
     videoEl.attr({
         width : opts.width || undefined,
-        height : opts.height || undefined
+        height : opts.height || undefined,
+        controls : opts.controls || undefined,
+        autoplay : opts.autostart || opts.autoplay || undefined
     });
     
     if(typeof videoURL === "string"){
@@ -30,10 +32,6 @@ IriSP.htmlPlayer = function(media, jqselector, options) {
     }
     
     jqselector.html(videoEl);
-    
-    if (opts.autostart || opts.autoplay) {
-        videoEl.attr("autoplay", true);
-    }
     
     var mediaEl = videoEl[0];
     
