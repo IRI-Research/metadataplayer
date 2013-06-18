@@ -1,7 +1,9 @@
 /* Initialization of the namespace */
 
 if (typeof window.IriSP === "undefined") {
-    window.IriSP = {};
+    window.IriSP = {
+        VERSION: "0.3.1"
+    };
 }
 
 if (typeof IriSP.jQuery === "undefined" && typeof window.jQuery !== "undefined" && parseFloat(window.jQuery().jquery) >= 1.7) {

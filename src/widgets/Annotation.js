@@ -13,9 +13,9 @@ IriSP.Widgets.Annotation.prototype.messages = {
     fr: {
         watching: "Je regarde ",
         on_site: " sur ",
-        tags_: "Mots-clés&nbsp;:",
-        description_: "Description&nbsp;:",
-        excerpt_from: "Extrait de&nbsp;:",
+        tags_: "Mots-clés\u00a0:",
+        description_: "Description\u00a0:",
+        excerpt_from: "Extrait de\u00a0:",
         untitled: "Segment sans titre"
     },
     en: {

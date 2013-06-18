@@ -19,8 +19,8 @@ IriSP.Widgets.KnowledgeConcierge.prototype.defaults = {
 IriSP.Widgets.KnowledgeConcierge.prototype.messages = {
     "fr": {
         related_videos: "Vidéos liées",
-        duration_: "Durée&nbsp;:",
-        for_keywords_: "pour le(s) mots-clé(s)&nbsp;:",
+        duration_: "Durée\u00a0:",
+        for_keywords_: "pour le(s) mots-clé(s)\u00a0:",
         no_matching_videos: "Pas de vidéos correspondantes"
     },
     "en": {

@@ -36,8 +36,8 @@ IriSP.Widgets.Tweet.prototype.messages = {
         keep_visible: "Empêcher la fermeture automatique",
         dont_keep_visible: "Permettre la fermeture automatique",
         close_widget: "Fermer l'affichage du tweet",
-        original_time: "Heure d'envoi&nbsp;: ",
-        video_time: "Temps de la vidéo&nbsp;: ",
+        original_time: "Heure d'envoi\u00a0: ",
+        video_time: "Temps de la vidéo\u00a0: ",
         show_original: "Voir l'original"
     },
     "en": {

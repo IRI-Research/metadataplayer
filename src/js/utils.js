@@ -57,7 +57,7 @@ IriSP.textFieldHtml = function(_text, _regexp, _extend) {
         addToList(_regexp, '<span class="Ldt-Highlight">', '</span>');
     }
     
-    addToList(/(https?:\/\/)?\w+\.\w+\S+/gm, function(matches) {
+    addToList(/(https?:\/\/)?[\w\d\-]+\.[\w\d\-]+\S+/gm, function(matches) {
         return '<a href="' + (matches[1] ? '' : 'http://') + matches[0] + '" target="_blank">'
     }, '</a>');
     addToList(/@([\d\w]{1,15})/gm, function(matches) {
