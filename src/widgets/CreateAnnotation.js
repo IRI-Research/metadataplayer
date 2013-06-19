@@ -46,6 +46,7 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     api_method: "POST",
     after_send_timeout: 0,
     close_after_send: false,
+    tag_prefix: "#"
 }
 
 IriSP.Widgets.CreateAnnotation.prototype.messages = {
@@ -131,9 +132,9 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '    </object>'
     + '</div>{{/show_mic_record}}' 
     + '{{#tags.length}}<div class="Ldt-CreateAnnotation-Tags"><div class="Ldt-CreateAnnotation-TagTitle">{{l10n.add_keywords_}}</div><ul class="Ldt-CreateAnnotation-TagList">'
-    + '{{#tags}}<li class="Ldt-CreateAnnotation-TagLi" tag-id="{{id}}"><span class="Ldt-CreateAnnotation-TagButton">{{title}}</span></li>{{/tags}}</ul></div>{{/tags.length}}'
+    + '{{#tags}}<li class="Ldt-CreateAnnotation-TagLi" tag-id="{{id}}" data-text="{{tag_prefix}}{{title}}"><span class="Ldt-CreateAnnotation-TagButton">{{title}}</span></li>{{/tags}}</ul></div>{{/tags.length}}'
     + '{{#polemics.length}}<div class="Ldt-CreateAnnotation-Polemics"><div class="Ldt-CreateAnnotation-PolemicTitle">{{l10n.add_polemic_keywords_}}</div><ul class="Ldt-CreateAnnotation-PolemicList">'
-    + '{{#polemics}}<li class="Ldt-CreateAnnotation-PolemicLi" style="background-color: {{background_color}}; color: {{text_color}}">{{keyword}}</li>{{/polemics}}</ul></div>{{/polemics.length}}'
+    + '{{#polemics}}<li class="Ldt-CreateAnnotation-PolemicLi" style="background-color: {{background_color}}; color: {{text_color}}" data-text="{{keyword}}">{{keyword}}</li>{{/polemics}}</ul></div>{{/polemics.length}}'
     + '<div style="clear: both;"></div></form>'
     + '<div class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Wait"><div class="Ldt-CreateAnnotation-InnerBox">{{l10n.wait_while_processing}}</div></div>'
     + '<div class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Error">{{^always_visible}}<a title="{{l10n.close_widget}}" class="Ldt-CreateAnnotation-Close" href="#"></a>{{/always_visible}}<div class="Ldt-CreateAnnotation-InnerBox">{{l10n.error_while_contacting}}</div></div>'
@@ -146,6 +147,8 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
     this.begin = new IriSP.Model.Time();
     this.end = this.source.getDuration();
     
+    this.tag_prefix = this.tag_prefix || "";
+    
     if (this.tag_titles && !this.tags) {
         this.tags = IriSP._(this.tag_titles).map(function(_tag_title) {
             var _tag,
@@ -154,6 +157,7 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
                 _tag = _tags[0];
             } else {
                 _tag = new IriSP.Model.Tag(false, _this.source);
+                _this.source.getTags().push(_tag);
                 _tag.title = _tag_title;
             }
             return _tag;
@@ -215,12 +219,12 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
         return false;
     });
     this.$.find(".Ldt-CreateAnnotation-TagLi, .Ldt-CreateAnnotation-PolemicLi").click(function() {
-        _this.addKeyword(IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
+        _this.addKeyword(IriSP.jQuery(this).attr("data-text"));
         return false;
     });
     this.$.find(".Ldt-CreateAnnotation-PolemicLi").each(function() {
         var _el = IriSP.jQuery(this),
-            _kw = _el.text().replace(/(^\s+|\s+$)/g,''),
+            _kw = _el.attr("data-text"),
             _msg = _this.l10n["polemic" + _kw];
         if (_msg) {
             _el.attr("title",_msg);
@@ -321,7 +325,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onDescriptionChange = function() {
         _field.addClass("empty");
     }
     this.$.find(".Ldt-CreateAnnotation-TagLi, .Ldt-CreateAnnotation-PolemicLi").each(function() {
-        var _rx = IriSP.Model.regexpFromTextOrArray(IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
+        var _rx = IriSP.Model.regexpFromTextOrArray(IriSP.jQuery(this).attr("data-text"));
         if (_contents.match(_rx)) {
             IriSP.jQuery(this).addClass("selected");
         } else {
@@ -402,20 +406,26 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
     _annotation.created = new Date(); /* Date de création de l'annotation */
     _annotation.description = this.$.find(".Ldt-CreateAnnotation-Description").val(); /* Champ description */
    
-    var tagIds = this.$.find(".Ldt-CreateAnnotation-TagLi.selected")
-        .map(function() { return IriSP.jQuery(this).attr("tag-id")});
-    
-    IriSP._(_annotation.description.match(/#[\w\d]+/g)).each(function(_tt) {
+    var tagIds = Array.prototype.map.call(
+        this.$.find(".Ldt-CreateAnnotation-TagLi.selected"),
+        function(el) { return IriSP.jQuery(el).attr("tag-id")}
+    );
+        
+    IriSP._(_annotation.description.match(/#[^\s#.,;]+/g)).each(function(_tt) {
         var _tag,
-            _tag_title = _tt.replace(/^#/,'')
+            _tag_title = _tt.replace(/^#/,''),
             _tags = _this.source.getTags().searchByTitle(_tag_title, true);
         if (_tags.length) {
             _tag = _tags[0];
         } else {
             _tag = new IriSP.Model.Tag(false, _this.source);
+            _this.source.getTags().push(_tag);
             _tag.title = _tag_title;
         }
-        tagIds.push(_tag.id);
+        if (tagIds.indexOf(_tag.id) === -1) {
+            tagIds.push(_tag.id);
+        }
+        
     })
    
     _annotation.setTags(IriSP._(tagIds).uniq()); /*Liste des ids de tags */
