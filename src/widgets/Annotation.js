@@ -48,6 +48,7 @@ IriSP.Widgets.Annotation.prototype.defaults = {
     annotation_type : "chap",
     start_minimized: false,
     show_arrow : true,
+    arrow_position: .5,
     site_name : "Lignes de Temps",
     search_on_tag_click: true,
     show_social: true,
@@ -140,7 +141,7 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
         _this.$.find(".Ldt-Annotation-Inner").removeClass("Ldt-Annotation-Empty");
         _this.bounds = [ _annotation.begin, _annotation.end ];
         if (_this.arrow) {
-            _this.arrow.moveToTime((_annotation.begin + _annotation.end)/2);
+            _this.arrow.moveToTime((1 - _this.arrow_position) * _annotation.begin + _this.arrow_position * _annotation.end);
         }
         _this.sendBounds();
     }
@@ -151,7 +152,9 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
         this.insertSubwidget(this.$.find(".Ldt-Annotation-Social"), { type: "Social" }, "socialWidget");
     }
     
-    this.insertSubwidget(this.$.find(".Ldt-Annotation-Arrow"), { type: "Arrow", width: this.width }, "arrow");
+    if (this.show_arrow) {
+        this.insertSubwidget(this.$.find(".Ldt-Annotation-Arrow"), { type: "Arrow", width: this.width }, "arrow");
+    }
     this.onMediaEvent("timeupdate",timeupdate);
     this.onMdpEvent("Annotation.hide","hide");
     this.onMdpEvent("Annotation.show","show");

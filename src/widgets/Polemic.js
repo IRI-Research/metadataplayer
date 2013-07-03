@@ -81,7 +81,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 begin : _begin.toString(),
                 end : _end.toString(),
                 annotations : _list.filter(function(_annotation) {
-                    return _annotation.begin >= _begin && _annotation.end < _end;
+                    return _annotation.begin >= _begin && _annotation.begin < _end;
                 }),
                 polemicStacks : []
             }
@@ -134,6 +134,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     _annotation.trigger("unselect");
                 }).click(function() {
                     _annotation.trigger("click");
+                    return false;
                 });
                 IriSP.attachDndData(_el, {
                 	title: _annotation.title,
