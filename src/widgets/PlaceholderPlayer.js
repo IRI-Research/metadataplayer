@@ -7,6 +7,7 @@ IriSP.Widgets.PlaceholderPlayer = function(player, config) {
 IriSP.Widgets.PlaceholderPlayer.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.PlaceholderPlayer.prototype.defaults = {
+    autostart: false
 }
 
 IriSP.Widgets.PlaceholderPlayer.prototype.template = '<div class="Ldt-PlaceholderPlayer">(loading)</div>';
@@ -59,5 +60,10 @@ IriSP.Widgets.PlaceholderPlayer.prototype.draw = function() {
     });
     
     media.trigger("loadedmetadata");
+    media.trigger("setcurrenttime", 0);
+    
+    if (this.autostart) {
+        media.trigger("setplay");
+    }
     
 }

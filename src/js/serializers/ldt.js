@@ -86,7 +86,6 @@ IriSP.serializers.ldt = {
         },
         tag : {
             serialized_name : "tags",
-            model_name : "tag",
             deserializer : function(_data, _source) {
                 var _res = new IriSP.Model.Tag(_data.id, _source);
                 _res.title = _data.meta["dc:title"];

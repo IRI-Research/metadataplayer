@@ -263,8 +263,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 _audiofile = _el.attr("data-audio").replace(_this.rtmp_streamer,"");
             _el.text(_this.l10n.now_playing);
             _this.jwplayer.load({
-                file: _audiofile,
-                streamer: _this.rtmp_streamer
+                file: _audiofile
             });
             _this.jwplayer.play(true);
             _this.media.pause();
@@ -306,9 +305,9 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
         this.jwplayer = jwplayer(_tmpId);
         this.jwplayer.setup({
             flashplayer: IriSP.getLib("jwPlayerSWF"),
+            fallback: false,
             width: 1,
             height: 1,
-            provider: "rtmp",
             events: {
                 onIdle: function() {
                     if (_this.jw_paused_media) {

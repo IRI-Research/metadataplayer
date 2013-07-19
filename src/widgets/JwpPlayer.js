@@ -12,43 +12,26 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
     var _opts = {},
         _player = jwplayer(this.$[0]),
         _seekPause = false,
-        _pauseState = true,
-        _props = [ "live", "provider", "autostart" ];
+        _pauseState = true;
     
     if (typeof this.video === "undefined") {
         this.video = this.media.video;
     }
-    
-    if (typeof this.streamer === "undefined") {
-        this.streamer = this.media.streamer;
-    }
-    
-    if (typeof this.streamer === "function") {
-        this.streamer = this.streamer(this.video);
-    }
-
-    if (typeof this.streamer === "string" && (this.provider === "http" || this.provider === "rtmp")) {
-        this.video = this.video.replace(this.streamer,"");
-        _opts.streamer = this.streamer;
-    }
         
     _opts.file = this.video;
     _opts.flashplayer = IriSP.getLib("jwPlayerSWF");
-    _opts["controlbar.position"] = "none";
+    _opts.primary = "flash";
+    _opts.fallback = false;
+    _opts.controls = false;
     _opts.width = this.width;
     if (this.height) {
         _opts.height = this.height;
     }
     
-    for (var i = 0; i < _props.length; i++) {
-        if (typeof this[_props[i]] !== "undefined") {
-            _opts[_props[i]] = this[_props[i]];
-        }
-    }
-    
-    if (this.autostart) {
-        _pauseState = false;
-        this.media.trigger("play");
+    if (this.autostart) { // There seems to be an autostart bug
+        //_opts.autostart = true;
+        //_pauseState = false;
+        //this.media.trigger("play");
     }
 
     // Binding functions to jwplayer
@@ -127,7 +110,8 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
             _media.trigger("volumechange");
         }
     }
-    _player.setup(_opts);
+    
+    _player = _player.setup(_opts);
     
     this.jwplayer = _player;
     
