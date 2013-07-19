@@ -1,0 +1,82 @@
+﻿<!doctype html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>Tests Spectacle en ligne(s)</title>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='test.css' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="metadataplayer/LdtPlayer-core.js"></script>
+        <script type="text/javascript" src="spel-serializer.js"></script>
+    </head>
+
+    <body>
+        <h1>Tests Spectacle en ligne(s)</h1>
+        <div id="LdtPlayer"></div>
+        <div id="AnnotationsListContainer"></div>
+        <script type="text/javascript">
+IriSP.libFiles.defaultDir = "libs/";
+IriSP.widgetsDir = "metadataplayer";
+var _metadata = {
+    url: "json/test-vecsys-filage-celestins.json",
+    format: 'spel'
+};
+var _config = {
+    width : 550,
+    container : 'LdtPlayer',
+    default_options: {
+        metadata: _metadata
+    },
+    css : 'metadataplayer/LdtPlayer-core.css',
+    widgets: [
+        {
+            type: "Title"
+        },
+        {
+            type: "JwpPlayer",
+            video: "rtmpt://sln8pxlnphabw.cloudfront.net/cfx/st/mp4:2013-07-05_10-39-03_test-vecsys-fil_4f8a31/original_web_low.mp4",
+            height: 320
+        },
+        { type: "Slider" },
+        { type: "Controller" },
+        {
+            type: "Segments",
+            annotation_type: ["performance","discussion"]
+        },
+        {
+            type: "Annotation",
+            show_social: false,
+            show_annotation_type: true,
+            annotation_type: ["performance","discussion"]
+        },
+        {
+            type: "Polemic",
+            annotation_type: "interpretation",
+            polemics: [
+                {
+                    keywords: [ "performance d'un(e) comédien(ne)" ],
+                    color: "#c00000"
+                },
+                {
+                    keywords: [ "Interpétation alternative de mise en scène" ],
+                    color: "#008000"
+                },
+                {
+                    keywords: [ "Intervention de la technique" ],
+                    color: "#0000f0"
+                },
+            ]
+        },
+        {
+            type: "Annotation",
+            annotation_type: "interpretation",
+            show_social: false,
+            arrow_position: 0
+        }
+    ]
+};
+_myPlayer = new IriSP.Metadataplayer(_config);
+        </script>
+    </body>
+</html>
