@@ -12,9 +12,11 @@
     </head>
 
     <body>
-        <h1>Tests Spectacle en ligne(s)</h1>
-        <div id="LdtPlayer"></div>
-        <div id="AnnotationsListContainer"></div>
+        <section style="width: 1070px; margin: 0 auto">
+            <h1>Tests Spectacle en ligne(s)</h1>
+            <div id="LdtPlayer"></div>
+            <div id="AnnotationsListContainer"></div>
+        </section>
         <script type="text/javascript">
 IriSP.libFiles.defaultDir = "libs/";
 IriSP.widgetsDir = "metadataplayer";
@@ -73,6 +75,13 @@ var _config = {
             annotation_type: "interpretation",
             show_social: false,
             arrow_position: 0
+        },
+        {
+            type: "SpelSyncHtml",
+            container: "AnnotationsListContainer",
+            height: 600,
+            width: 500,
+            src: "ctb.html"
         }
     ]
 };

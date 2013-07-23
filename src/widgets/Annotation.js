@@ -34,7 +34,7 @@ IriSP.Widgets.Annotation.prototype.template =
     + '<div class="Ldt-Annotation-Inner Ldt-Annotation-Empty{{#start_minimized}} Ldt-Annotation-Minimized{{/start_minimized}}">'
     + '<div class="Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-MaxMinButton"></div>'
     + '{{#show_social}}<div class="Ldt-Annotation-Social Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty"></div>{{/show_social}}'
-    + '<h3 class="Ldt-Annotation-HiddenWhenEmpty">{{#show_annotation_type}}<span class="Ldt-Annotation-Type"></span> » {{/show_annotation_type}}<span class="Ldt-Annotation-Title"></span> <span class="Ldt-Annotation-Time Ldt-Annotation-HiddenWhenMinimized">'
+    + '<h3 class="Ldt-Annotation-HiddenWhenEmpty">{{#show_annotation_type}}<span class="Ldt-Annotation-Type"></span> » {{/show_annotation_type}}<a class="Ldt-Annotation-Title" href="#"></a> <span class="Ldt-Annotation-Time Ldt-Annotation-HiddenWhenMinimized">'
     + '(<span class="Ldt-Annotation-Begin"></span> - <span class="Ldt-Annotation-End"></span>)</span></h3>'
     + '<h3 class="Ldt-Annotation-MashupOrigin Ldt-Annotation-HiddenWhenEmpty">{{l10n.excerpt_from}} <span class="Ldt-Annotation-MashupMedia"></span> <span class="Ldt-Annotation-Time Ldt-Annotation-HiddenWhenMinimized">'
     + '(<span class="Ldt-Annotation-MashupBegin"></span> - <span class="Ldt-Annotation-MashupEnd"></span>)</span></h3>'
@@ -147,6 +147,13 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
     }
     
     this.renderTemplate();
+    
+    this.$.find(".Ldt-Annotation-Title").click(function() {
+        if (currentAnnotation) {
+            _this.media.setCurrentTime(currentAnnotation.begin);
+        }
+        return false;
+    });
     
     if (this.show_social) {
         this.insertSubwidget(this.$.find(".Ldt-Annotation-Social"), { type: "Social" }, "socialWidget");

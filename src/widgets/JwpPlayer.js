@@ -33,6 +33,10 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
         //_pauseState = false;
         //this.media.trigger("play");
     }
+    
+    if (this.url_transform) {
+        _opts.file = this.url_transform(_opts.file);
+    }
 
     // Binding functions to jwplayer
 

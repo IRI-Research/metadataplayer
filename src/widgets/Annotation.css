@@ -59,6 +59,7 @@
 
 .Ldt-Annotation-Title, .Ldt-Annotation-MashupMedia {
     color: #0068c4;
+    text-decoration: none;
 }
 
 .Ldt-Annotation-Type {
