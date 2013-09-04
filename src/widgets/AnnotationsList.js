@@ -85,7 +85,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '{{/tags}}'
     + '</ul>'
     + '{{/tags.length}}'
-    + '{{#audio}}<div class="Ldt-AnnotationsList-Play" data-audio={{audio}}>{{l10n.voice_annotation}}</div>{{/audio}}'
+    + '{{#audio}}<div class="Ldt-AnnotationsList-Play" data-annotation-id="{{id}}">{{l10n.voice_annotation}}</div>{{/audio}}'
     + '</li>';
 
 //obj.url = this.project_url + "/" + media + "/" + annotations[i].meta.project + "/" + annotations[i].meta["id-ref"] + '#id=' + annotations[i].id;
@@ -211,9 +211,38 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 url : _url,
                 tags : _annotation.getTagTexts(),
                 specific_style : (typeof _bgcolor !== "undefined" ? "background-color: " + _bgcolor : ""),
-                audio : (_this.show_audio && _annotation.audio && _annotation.audio.href && _annotation.audio.href != "null" ? _annotation.audio.href : undefined),
                 l10n: _this.l10n
             };
+            if (_this.show_audio && _annotation.audio && _annotation.audio.href && _annotation.audio.href != "null") {
+                _data.audio = true;
+                if (!_this.jwplayers[_annotation.id]) {
+                    var _audiofile = _annotation.audio.href;
+                    if (_this.audio_url_transform) {
+                        _audiofile = _this.audio_url_transform(_annotation.audio.href);
+                    }
+                    var _tmpId = "jwplayer-" + IriSP.Model.getUID();
+                    _this.jwplayers[_annotation.id] = _tmpId;
+                    _this.$.find(".Ldt-AnnotationsList-Audio").append($("<div>").attr("id", _tmpId));
+                    console.log(_audiofile);
+                    jwplayer(_tmpId).setup({
+                        flashplayer: IriSP.getLib("jwPlayerSWF"),
+                        file: _audiofile,
+                        fallback: false,
+                        primary: "flash",
+                        controls: false,
+                        width: 1,
+                        height: 1,
+                        events: {
+                            onPause: function() {
+                                _this.$.find(".Ldt-AnnotationsList-Play[data-annotation-id=" + _annotation.id + "]").text(_this.l10n.voice_annotation)
+                            },
+                            onPlay: function() {
+                                _this.$.find(".Ldt-AnnotationsList-Play[data-annotation-id=" + _annotation.id + "]").text(_this.l10n.now_playing)
+                            },
+                        }
+                    });
+                }
+            }
             var _html = Mustache.to_html(_this.annotationTemplate, _data),
                 _el = IriSP.jQuery(_html),
                 _onselect = function() {
@@ -260,14 +289,11 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         
         this.$.find(".Ldt-AnnotationsList-Play").click(function() {
             var _el = IriSP.jQuery(this),
-                _audiofile = _el.attr("data-audio").replace(_this.rtmp_streamer,"");
-            _el.text(_this.l10n.now_playing);
-            _this.jwplayer.load({
-                file: _audiofile
-            });
-            _this.jwplayer.play(true);
+                _annid = _el.attr("data-annotation-id");
+            if (_this.jwplayers[_annid]) {
+                jwplayer(_this.jwplayers[_annid]).play();
+            }
             _this.media.pause();
-            _this.jw_paused_media = true;
         });
         
         if (this.source.getAnnotations().searching) {
@@ -293,34 +319,13 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
 
 IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     
+    this.jwplayers = {};
     this.mashupMode = (this.media.elementType === "mashup");
     
     this.renderTemplate();
     
     var _this = this;
-    
-    if (this.show_audio) {
-        var _tmpId = "jwplayer-" + IriSP.Model.getUID();
-        this.$.find(".Ldt-AnnotationsList-Audio").attr("id", _tmpId);
-        this.jwplayer = jwplayer(_tmpId);
-        this.jwplayer.setup({
-            flashplayer: IriSP.getLib("jwPlayerSWF"),
-            fallback: false,
-            width: 1,
-            height: 1,
-            events: {
-                onIdle: function() {
-                    if (_this.jw_paused_media) {
-                        _this.jw_paused_media = false;
-                        _this.media.play();
-                    }
-                    _this.$.find(".Ldt-AnnotationsList-Play").text(_this.l10n.voice_annotation)
-                }
-            }
-        });
-        this.jw_paused_media = false;
-    }
-    
+        
     this.list_$ = this.$.find(".Ldt-AnnotationsList-ul");
     
     

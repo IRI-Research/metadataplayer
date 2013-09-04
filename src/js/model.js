@@ -1010,7 +1010,7 @@ Source.prototype.getList = function(_listId, _global) {
         });
     } else {
         if (typeof this.contents[_listId] === "undefined") {
-            this.contents[_listId] = new IriSP.List(this.directory);
+            this.contents[_listId] = new List(this.directory);
         }
         return this.contents[_listId];
     }
