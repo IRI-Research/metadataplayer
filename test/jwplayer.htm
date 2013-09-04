@@ -19,8 +19,8 @@
     IriSP.language = 'fr';
     IriSP.widgetsDir = "metadataplayer";
     var _metadata = {
-        url: 'json/ldt-jwplayer.json',
-//          url: 'http://capsicum/pf/ldtplatform/ldt/cljson/id/33e49eac-b3b0-11e1-b44d-00145ea4a2be?callback=?',
+//        url: 'json/ldt-jwplayer.json',
+          url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/e2f36e5c-8b26-11e2-a28d-00145ea4a2be',
 //        url: 'http://capsicum/pf/ldtplatform/ldt/cljson/id/f1a17368-2bc8-11e1-b21a-00145ea49a02',
 //        url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/fc0a654e-49ea-11e2-b4ad-00145ea4a2be',
         format: 'ldt'
@@ -35,7 +35,10 @@
         widgets: [
             {
                 type: "JwpPlayer",
-                autostart: true
+                autostart: true,
+                url_transform: function(url) {
+                    return url.replace('/ddc_player/video/','/ddc_player/mp4:video/');
+                }
             },
             { type: "Slider" },
             { type: "Controller" },

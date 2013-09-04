@@ -15,6 +15,7 @@ IriSP.Widgets.Annotation.prototype.messages = {
         on_site: " sur ",
         tags_: "Mots-clés\u00a0:",
         description_: "Description\u00a0:",
+        creator_: "Créé par\u00a0:",
         excerpt_from: "Extrait de\u00a0:",
         untitled: "Segment sans titre"
     },
@@ -23,6 +24,7 @@ IriSP.Widgets.Annotation.prototype.messages = {
         on_site: " on ",
         tags_: "Keywords:",
         description_: "Description:",
+        creator_: "Created by\u00a0:",
         excerpt_from: "Excerpt from:",
         untitled: "Untitled segment"
     }
@@ -38,7 +40,9 @@ IriSP.Widgets.Annotation.prototype.template =
     + '(<span class="Ldt-Annotation-Begin"></span> - <span class="Ldt-Annotation-End"></span>)</span></h3>'
     + '<h3 class="Ldt-Annotation-MashupOrigin Ldt-Annotation-HiddenWhenEmpty">{{l10n.excerpt_from}} <span class="Ldt-Annotation-MashupMedia"></span> <span class="Ldt-Annotation-Time Ldt-Annotation-HiddenWhenMinimized">'
     + '(<span class="Ldt-Annotation-MashupBegin"></span> - <span class="Ldt-Annotation-MashupEnd"></span>)</span></h3>'
-    + '<div class="Ldt-Annotation-Cleared Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-Description-Block"><div class="Ldt-Annotation-Label">{{l10n.description_}}</div>'
+    + '<div class="Ldt-Annotation-Cleared Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-Creator-Block"><div class="Ldt-Annotation-Label">{{l10n.creator_}}</div>'
+    + '{{#show_creator}}<p class="Ldt-Annotation-Labelled Ldt-Annotation-Creator"></p></div>'
+    + '<div class="Ldt-Annotation-Cleared Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-Description-Block"><div class="Ldt-Annotation-Label">{{l10n.description_}}</div>{{/show_creator}}'
     + '<p class="Ldt-Annotation-Labelled Ldt-Annotation-Description"></p></div>'
     + '<div class="Ldt-Annotation-Tags-Block Ldt-Annotation-HiddenWhenMinimized Ldt-Annotation-HiddenWhenEmpty Ldt-Annotation-Cleared">'
     + '<div class="Ldt-Annotation-Label">{{l10n.tags_}}</div><ul class="Ldt-Annotation-Labelled Ldt-Annotation-Tags"></ul>'
@@ -48,6 +52,7 @@ IriSP.Widgets.Annotation.prototype.defaults = {
     annotation_type : "chap",
     start_minimized: false,
     show_arrow : true,
+    show_creator: true,
     arrow_position: .5,
     site_name : "Lignes de Temps",
     search_on_tag_click: true,
@@ -116,6 +121,9 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
             _this.$.find(".Ldt-Annotation-Tags-Block").addClass("Ldt-Annotation-EmptyBlock");
         }
         highlightTitleAndDescription();
+        if (_this.show_creator) {
+             _this.$.find(".Ldt-Annotation-Creator").text(_annotation.creator);
+        }
         if (_this.show_annotation_type) {
             _this.$.find(".Ldt-Annotation-Type").text(_annotation.getAnnotationType().title)
         }
