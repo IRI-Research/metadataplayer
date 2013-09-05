@@ -222,8 +222,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     }
                     var _tmpId = "jwplayer-" + IriSP.Model.getUID();
                     _this.jwplayers[_annotation.id] = _tmpId;
-                    _this.$.find(".Ldt-AnnotationsList-Audio").append($("<div>").attr("id", _tmpId));
-                    console.log(_audiofile);
+                    _this.$.find(".Ldt-AnnotationsList-Audio").append(IriSP.jQuery("<div>").attr("id", _tmpId));
                     jwplayer(_tmpId).setup({
                         flashplayer: IriSP.getLib("jwPlayerSWF"),
                         file: _audiofile,
@@ -238,7 +237,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                             },
                             onPlay: function() {
                                 _this.$.find(".Ldt-AnnotationsList-Play[data-annotation-id=" + _annotation.id + "]").text(_this.l10n.now_playing)
-                            },
+                            }
                         }
                     });
                 }
@@ -246,11 +245,11 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             var _html = Mustache.to_html(_this.annotationTemplate, _data),
                 _el = IriSP.jQuery(_html),
                 _onselect = function() {
-                    _this.annotations_$.removeClass("selected");
+                    _this.$.find('.Ldt-AnnotationsList-li').removeClass("selected");
                     _el.addClass("selected");
                 },
                 _onunselect = function() {
-                    _this.annotations_$.removeClass("selected");
+                    _this.$.find('.Ldt-AnnotationsList-li').removeClass("selected");
                 };
             _el.mouseover(function() {
                     _annotation.trigger("select");
@@ -272,8 +271,6 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             _annotation.on("select", _onselect);
             _annotation.on("unselect", _onunselect);
         });
-        
-        this.annotations_$ = this.$.find('.Ldt-AnnotationsList-li');
         
         /* Correct the empty tag bug */
         this.$.find('.Ldt-AnnotationsList-Tag-Li').each(function() {
