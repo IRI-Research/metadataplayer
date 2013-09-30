@@ -15,7 +15,8 @@ IriSP.Widgets.Polemic.prototype.messages = {
         _to_: " to ",
         _annotations: " annotation(s)"
     }
-}
+};
+
 IriSP.Widgets.Polemic.prototype.defaults = {
     element_width : 5,
     element_height : 5,
@@ -70,7 +71,9 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
         _slice_count = Math.floor( this.width / this.element_width ),
         _duration = this.source.getDuration(),
         _max = 0,
-        _list = this.getWidgetAnnotations(),
+        _list = this.getWidgetAnnotations().filter(function(_a) {
+            return !_a.getDuration().milliseconds;
+        }),
         _this = this;
     
     for (var _i = 0; _i < _slice_count; _i++) {
@@ -84,7 +87,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     return _annotation.begin >= _begin && _annotation.begin < _end;
                 }),
                 polemicStacks : []
-            }
+            };
             
         for (var _j = 0; _j < this.polemics.length; _j++) {
             var _polemic = _res.annotations.searchByDescription(this.polemics[_j].keywords);
@@ -252,7 +255,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
         IriSP._(_slices).forEach(function(_slice) {
             var _y = _this.height,
                 _nums = _slice.annotations.length + "," + IriSP._(_slice.polemicStacks).map(function(_annotations) {
-                    return _annotations.length
+                    return _annotations.length;
                 }).join(",");
             if (_slice.annotations.length) {
                 var _h = Math.ceil(_scale * _slice.annotations.length);
@@ -282,7 +285,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     _html = '<p>' + _this.l10n.from_ + _el.attr("begin-time") + _this.l10n._to_ + _el.attr("end-time") + '</p>';
                 for (var _i = 0; _i <= _this.polemics.length; _i++) {
                     var _color = _i ? _this.polemics[_i - 1].color : _this.defaultcolor;
-                    _html += '<div class="Ldt-Tooltip-AltColor" style="background: ' + _color + '"></div><p>' + _nums[_i] + _this.l10n._annotations + '</p>'
+                    _html += '<div class="Ldt-Tooltip-AltColor" style="background: ' + _color + '"></div><p>' + _nums[_i] + _this.l10n._annotations + '</p>';
                 }
                 if (_this.tooltip) {
                     _this.tooltip.show(+ _el.attr("pos-x"), + _el.attr("pos-y"), _html);
@@ -292,9 +295,9 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 if (_this.tooltip) {
                     _this.tooltip.hide();
                 }
-            })
+            });
             
-    }
+    };
     
     this.$position = IriSP.jQuery('<div>').addClass("Ldt-Polemic-Position");
         
@@ -316,7 +319,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
         },
         "tooltip"
     );
-}
+};
 
 IriSP.Widgets.Polemic.prototype.onTimeupdate = function(_time) {
     var _x = Math.floor( this.width * _time / this.media.duration);
@@ -325,5 +328,5 @@ IriSP.Widgets.Polemic.prototype.onTimeupdate = function(_time) {
     });
     this.$position.css({
         left: _x + "px"
-    })
-}
+    });
+};
