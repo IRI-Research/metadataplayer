@@ -1,4 +1,4 @@
-/* LDT Platform Serializer */
+/* Start ldt-serializer.js */
 
 if (typeof IriSP.serializers === "undefined") {
     IriSP.serializers = {};

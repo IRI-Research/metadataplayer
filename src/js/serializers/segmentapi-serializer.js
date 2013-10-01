@@ -1,3 +1,9 @@
+/* START segmentapi-serializer.js */
+
+if (typeof IriSP.serializers === "undefined") {
+    IriSP.serializers = {};
+}
+
 IriSP.serializers.segmentapi = {
     deSerialize : function(_data, _source) {
         var _annotationlist = new IriSP.Model.List(_source.directory),

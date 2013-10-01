@@ -1,3 +1,9 @@
+/* START contentapi-serializer.js */
+
+if (typeof IriSP.serializers === "undefined") {
+    IriSP.serializers = {};
+}
+
 IriSP.serializers.content = {
     deSerialize : function(_data, _source) {
         var _medialist = new IriSP.Model.List(_source.directory);
