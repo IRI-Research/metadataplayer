@@ -14,7 +14,7 @@ IriSP.getLib = function(lib) {
     if (typeof IriSP.libFiles.inDefaultDir[lib] == "string") {
         return IriSP.libFiles.defaultDir + '/' + IriSP.libFiles.inDefaultDir[lib];
     }
-}
+};
 
 IriSP._cssCache = [];
 
