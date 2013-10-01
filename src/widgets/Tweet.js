@@ -27,7 +27,7 @@ IriSP.Widgets.Tweet.prototype.defaults = {
     ],
     annotation_type: "tweet",
     pin_at_start: false
-}
+};
 
 IriSP.Widgets.Tweet.prototype.messages = {
     "fr": {
@@ -50,7 +50,7 @@ IriSP.Widgets.Tweet.prototype.messages = {
         video_time: "Video time: ",
         show_original: "Show original"
     }
-}
+};
 
 IriSP.Widgets.Tweet.prototype.template =
     '<div class="Ldt-Tweet-Widget"><div class="Ldt-Tweet-Inner"><div class="Ldt-Tweet-PinClose-Buttons">'
@@ -71,7 +71,7 @@ IriSP.Widgets.Tweet.prototype.draw = function() {
     var _this = this;
     this.$.find(".Ldt-Tweet-Pin").click(function() {
         _this.pinned = !_this.pinned;
-        var _el = IriSP.jQuery(this)
+        var _el = IriSP.jQuery(this);
         if (_this.pinned) {
             _el.addClass("active").attr("title",_this.l10n.dont_keep_visible);
             _this.cancelTimeout();
@@ -89,7 +89,7 @@ IriSP.Widgets.Tweet.prototype.draw = function() {
             _this.show(_annotation);
         });
     });
-}
+};
 
 IriSP.Widgets.Tweet.prototype.show = function(_tweet) {
     if (typeof _tweet !== "undefined" && typeof _tweet.source !== "undefined") {
@@ -97,7 +97,7 @@ IriSP.Widgets.Tweet.prototype.show = function(_tweet) {
             [
                 /#(\w+)/gm,
                 function(matches) {
-                    return '<a href="http://twitter.com/search?q=%23' + matches[1] + '" target="_blank">'
+                    return '<a href="http://twitter.com/search?q=%23' + matches[1] + '" target="_blank">';
                 },
                 '</a>'
             ]
@@ -147,22 +147,22 @@ IriSP.Widgets.Tweet.prototype.show = function(_tweet) {
     } else {
         this.hide();
     }
-}
+};
 
 IriSP.Widgets.Tweet.prototype.hide = function() {
     this.player.trigger("Annotation.maximize");
     this.$.slideUp();
     this.cancelTimeout();
-}
+};
 
 IriSP.Widgets.Tweet.prototype.cancelTimeout = function() {
     if (typeof this.hide_timer !== "undefined") {
         window.clearTimeout(this.hide_timer);
         this.hide_timer = undefined;
     }  
-}
+};
 
 IriSP.Widgets.Tweet.prototype.hideTimeout = function() {
     this.cancelTimeout();
     this.hide_timer = window.setTimeout(this.functionWrapper("hide"), this.hide_timeout);
-}
+};

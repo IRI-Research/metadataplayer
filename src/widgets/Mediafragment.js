@@ -9,11 +9,11 @@ IriSP.Widgets.Mediafragment = function(player, config) {
             if (/^#/.test(_msg.data)) {
                 _this.setWindowHash(_msg.data);
             }
-        })
+        });
     };
     this.onMdpEvent("Mediafragment.setHashToAnnotation","setHashToAnnotation");
     this.blocked = false;
-}
+};
 
 IriSP.Widgets.Mediafragment.prototype = new IriSP.Widgets.Widget();
 
@@ -23,14 +23,14 @@ IriSP.Widgets.Mediafragment.prototype.draw = function() {
     this.getWidgetAnnotations().forEach(function(_annotation) {
         _annotation.on("click", function() {
             _this.setHashToAnnotation(_annotation.id);
-        })
+        });
     });
     if (this.media.loadedMetadata) {
         this.goToHash();
     } else {
         this.onMediaEvent("loadedmetadata","goToHash");
     }
-}
+};
 
 IriSP.Widgets.Mediafragment.prototype.setWindowHash = function(_hash) {
     if (typeof window.history !== "undefined" && typeof window.history.replaceState !== "undefined") {
@@ -38,7 +38,7 @@ IriSP.Widgets.Mediafragment.prototype.setWindowHash = function(_hash) {
     } else {
         document.location.hash = _hash;
     }
-}
+};
 
 IriSP.Widgets.Mediafragment.prototype.getLastHash = function() {
     var _tab = document.location.hash.replace(/^#/,'').split('&');
@@ -49,7 +49,7 @@ IriSP.Widgets.Mediafragment.prototype.getLastHash = function() {
         _tab.push(this.last_hash_key + '=' + this.last_hash_value);
     }
     return '#' + _tab.join('&');
-}
+};
 
 IriSP.Widgets.Mediafragment.prototype.goToHash = function() {
     if (document.location.hash !== this.getLastHash()) {
@@ -72,15 +72,15 @@ IriSP.Widgets.Mediafragment.prototype.goToHash = function() {
             }
         }
     }
-}
+};
 
 IriSP.Widgets.Mediafragment.prototype.setHashToAnnotation = function(_annotationId) {
     this.setHash( 'id', _annotationId );
-}
+};
 
 IriSP.Widgets.Mediafragment.prototype.setHashToTime = function() {
     this.setHash( 't', this.media.getCurrentTime().getSeconds() );
-}
+};
 
 IriSP.Widgets.Mediafragment.prototype.setHash = function(_key, _value) {
     if (!this.blocked && (this.last_hash_key !== _key || this.last_hash_value !== _value)) {
@@ -89,11 +89,11 @@ IriSP.Widgets.Mediafragment.prototype.setHash = function(_key, _value) {
         var _hash = this.getLastHash();
         this.setWindowHash(_hash);
         if (window.parent !== window) {
-            window.parent.postMessage(_hash,"*")
+            window.parent.postMessage(_hash,"*");
         }
         this.block();
     }
-}
+};
 
 IriSP.Widgets.Mediafragment.prototype.unblock = function() {
     if (typeof this.blockTimeout !== "undefined") {
@@ -101,7 +101,7 @@ IriSP.Widgets.Mediafragment.prototype.unblock = function() {
     }
     this.blockTimeout = undefined;
     this.blocked = false;
-}
+};
 
 IriSP.Widgets.Mediafragment.prototype.block = function() {
     if (typeof this.blockTimeout !== "undefined") {
@@ -109,4 +109,4 @@ IriSP.Widgets.Mediafragment.prototype.block = function() {
     }
     this.blocked = true;
     this.blockTimeout = window.setTimeout(this.functionWrapper("unblock"), 1500);
-}
+};

@@ -12,7 +12,7 @@ IriSP.Widgets.MashupPlayer.prototype.defaults = {
     split_screen: false,
     player_type: "PopcornPlayer",
     background: "#000000"
-}
+};
 
 IriSP.Widgets.MashupPlayer.prototype.draw = function() {
     var _this = this,
@@ -27,7 +27,7 @@ IriSP.Widgets.MashupPlayer.prototype.draw = function() {
         _timedelta,
         medialist = _mashup.getMedias();
     
-    _mashup.paused = (!this.autostart && !this.autoplay)
+    _mashup.paused = (!this.autostart && !this.autoplay);
     
     function changeCurrentAnnotation() {
         if (_timecode >= _mashup.duration) {
@@ -198,7 +198,7 @@ IriSP.Widgets.MashupPlayer.prototype.draw = function() {
                 _seeking = false;
                 _seekdiv.hide();
             }
-        })
+        });
         _media.on("play", function() {
             if (_media === _currentMedia) {
                 _mashup.trigger("play");
@@ -255,4 +255,4 @@ IriSP.Widgets.MashupPlayer.prototype.draw = function() {
     
     _mashup.on("loadedmetadata", changeCurrentAnnotation);
    
-}
+};

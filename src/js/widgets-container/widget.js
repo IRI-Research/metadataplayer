@@ -73,7 +73,7 @@ IriSP.Widgets.Widget = function(player, config) {
             } else {
                 var _mediaopts = {
                     is_mashup: _this.is_mashup || false
-                }
+                };
                 _this.media = _this.source.getCurrentMedia(_mediaopts);
             }
             
@@ -120,9 +120,9 @@ IriSP.Widgets.Widget.prototype.functionWrapper = function(_name) {
     if (typeof _function !== "undefined") {
         return function() {
             return _function.apply(_this, Array.prototype.slice.call(arguments, 0));
-        }
+        };
     } else {
-        console.log("Error, Unknown function IriSP.Widgets." + this.type + "." + _name)
+        console.log("Error, Unknown function IriSP.Widgets." + this.type + "." + _name);
     }
 };
 

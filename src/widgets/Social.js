@@ -3,7 +3,7 @@
 IriSP.Widgets.Social = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
     ZeroClipboard.setMoviePath( IriSP.getLib('zeroClipboardSwf') );
-}
+};
 
 IriSP.Widgets.Social.prototype = new IriSP.Widgets.Widget();
 
@@ -15,7 +15,7 @@ IriSP.Widgets.Social.prototype.defaults = {
     show_fb: true,
     show_gplus: true,
     show_mail: true
-}
+};
 
 IriSP.Widgets.Social.prototype.template =
     '<span class="Ldt-Social">{{#show_url}}<div class="Ldt-Social-Url-Container"><a href="#" draggable="true" target="_blank" class="Ldt-Social-Square Ldt-Social-Url Ldt-TraceMe" title="{{l10n.share_link}}">'
@@ -38,7 +38,7 @@ IriSP.Widgets.Social.prototype.messages = {
         share_link: "Share hypertext link",
         copy: "Copy"
     }
-}
+};
 
 IriSP.Widgets.Social.prototype.draw = function() {
     this.renderTemplate();
@@ -63,7 +63,7 @@ IriSP.Widgets.Social.prototype.draw = function() {
         return false;
     });
     this.updateUrls(this.url, this.text);
-}
+};
 
 IriSP.Widgets.Social.prototype.toggleCopy = function() {
     var _pop = this.$.find(".Ldt-Social-UrlPop");
@@ -85,7 +85,7 @@ IriSP.Widgets.Social.prototype.toggleCopy = function() {
     } else {
         this.clip.hide();
     }
-}
+};
 
 IriSP.Widgets.Social.prototype.updateUrls = function(_url, _text) {
     this.url = _url;
@@ -94,4 +94,4 @@ IriSP.Widgets.Social.prototype.updateUrls = function(_url, _text) {
     this.$.find(".Ldt-Social-Twitter").attr("href", "https://twitter.com/intent/tweet?" + IriSP.jQuery.param({ url: _url, text: _text }));
     this.$.find(".Ldt-Social-Gplus").attr("href", "https://plus.google.com/share?" + IriSP.jQuery.param({ url: _url, title: _text }));
     this.$.find(".Ldt-Social-Mail").attr("href", "mailto:?" + IriSP.jQuery.param({ subject: _text, body: _text + ": " + _url }));
-}
+};

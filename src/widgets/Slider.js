@@ -16,7 +16,7 @@ IriSP.Widgets.Slider.prototype.defaults = {
 };
 
 IriSP.Widgets.Slider.prototype.template =
-    '<div class="Ldt-Slider"></div><div class="Ldt-Slider-Time">00:00</div>'
+    '<div class="Ldt-Slider"></div><div class="Ldt-Slider-Time">00:00</div>';
 
 IriSP.Widgets.Slider.prototype.draw = function() {
     
@@ -69,7 +69,7 @@ IriSP.Widgets.Slider.prototype.draw = function() {
 IriSP.Widgets.Slider.prototype.onTimeupdate = function(_time) {
     this.$slider.slider("value",_time);
     this.player.trigger("Arrow.updatePosition",{widget: this.type, time: _time});
-}
+};
 
 IriSP.Widgets.Slider.prototype.onMouseover = function() {
     if (this.minimize_timeout) {
@@ -82,7 +82,7 @@ IriSP.Widgets.Slider.prototype.onMouseover = function() {
            this.maximized = true;
         }
     }
-}
+};
 
 IriSP.Widgets.Slider.prototype.onMouseout = function() {
     this.$time.hide();
@@ -100,7 +100,7 @@ IriSP.Widgets.Slider.prototype.onMouseout = function() {
             _this.timeoutId = false;
         }, this.minimize_timeout);
     }
-}
+};
 
 IriSP.Widgets.Slider.prototype.animateToHeight = function(_height) {
     this.$slider.stop().animate(
@@ -115,19 +115,19 @@ IriSP.Widgets.Slider.prototype.animateToHeight = function(_height) {
         function() {
             IriSP.jQuery(this).css("overflow","visible");
         });
-}
+};
 
 IriSP.Widgets.Slider.prototype.calculateSliderCss = function(_size) {
     return {
         height: _size + "px",
         "margin-top": (this.minimized_height - _size) + "px"
     };
-}
+};
 
 IriSP.Widgets.Slider.prototype.calculateHandleCss = function(_size) {
     return {
         height: (2 + _size) + "px",
         width: (2 + _size) + "px",
         "margin-left": -Math.ceil(2 + _size / 2) + "px" 
-    }
-}
+    };
+};

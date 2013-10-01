@@ -8,7 +8,7 @@ IriSP.Widgets.HtmlMashupPlayer.prototype = new IriSP.Widgets.Widget();
 IriSP.Widgets.HtmlMashupPlayer.prototype.defaults = {
     aspect_ratio: 14/9,
     background: "#333333"
-}
+};
 
 IriSP.Widgets.HtmlMashupPlayer.prototype.draw = function() {
     
@@ -153,7 +153,7 @@ IriSP.Widgets.HtmlMashupPlayer.prototype.draw = function() {
                 media.loaded = true;
                 media.trigger("loadedmetadata");
                 media.trigger("volumechange");
-            })
+            });
             
             videoSelector.on("timeupdate", function() {
                 media.trigger("timeupdate", new IriSP.Model.Time(1000*videoElement.currentTime));
@@ -162,7 +162,7 @@ IriSP.Widgets.HtmlMashupPlayer.prototype.draw = function() {
             videoSelector.on("volumechange", function() {
                 getVolume();
                 media.trigger("volumechange");
-            })
+            });
             
             videoSelector.on("play", function() {
                 media.trigger("play");
@@ -179,12 +179,12 @@ IriSP.Widgets.HtmlMashupPlayer.prototype.draw = function() {
             videoSelector.on("seeked", function() {
                 media.trigger("seeked");
             });
-        }
+        };
         
         media.hide = function() {
             videoElement = undefined;
             sel.find("#" + videoid).remove();
-        }
+        };
         
         // Binding functions to Media Element Functions
         
@@ -342,4 +342,4 @@ IriSP.Widgets.HtmlMashupPlayer.prototype.draw = function() {
         changeCurrentAnnotation();
     });
     
-}
+};

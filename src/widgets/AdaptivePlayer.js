@@ -8,7 +8,7 @@ IriSP.Widgets.AdaptivePlayer.prototype.defaults = {
     mime_type: "video/mp4",
     normal_player: "HtmlPlayer",
     fallback_player: "JwpPlayer"
-}
+};
 
 IriSP.Widgets.AdaptivePlayer.prototype.draw = function() {
     
@@ -30,4 +30,4 @@ IriSP.Widgets.AdaptivePlayer.prototype.draw = function() {
 
     this.insertSubwidget(this.$, _opts);
     
-}
+};

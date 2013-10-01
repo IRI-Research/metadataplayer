@@ -127,7 +127,7 @@ Metadataplayer.prototype.onLibsLoaded = function() {
             return;
         }
         var isloaded = !ns._(_this.widgets).any(function(w) {
-            return !(w && w.isLoaded())
+            return !(w && w.isLoaded());
         });
         if (isloaded) {
             _this.widgetsLoaded = true;

@@ -6,10 +6,10 @@ IriSP.Widgets.HtmlPlayer.prototype = new IriSP.Widgets.Widget();
 
 
 IriSP.Widgets.HtmlPlayer.prototype.defaults = {
-}
+};
 
 IriSP.Widgets.HtmlPlayer.prototype.draw = function() {
 
     IriSP.htmlPlayer(this.media, this.$, this);
     
-}
+};

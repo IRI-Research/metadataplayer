@@ -6,7 +6,7 @@ IriSP.Widgets.DailymotionPlayer.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.DailymotionPlayer.prototype.defaults = {
     aspect_ratio: 14/9
-}
+};
 
 IriSP.Widgets.DailymotionPlayer.prototype.draw = function() {
     
@@ -30,35 +30,35 @@ IriSP.Widgets.DailymotionPlayer.prototype.draw = function() {
         
         _media.getCurrentTime = function() {
             return new IriSP.Model.Time(1000*_player.getCurrentTime());
-        }
+        };
         _media.getVolume = function() {
             return _player.getVolume() / 100;
-        }
+        };
         _media.getPaused = function() {
             return _pauseState;
-        }
+        };
         _media.getMuted = function() {
             return _player.isMuted();
-        }
+        };
         _media.setCurrentTime = function(_milliseconds) {
             _seekPause = _pauseState;
             return _player.seekTo(_milliseconds / 1000);
-        }
+        };
         _media.setVolume = function(_vol) {
             return _player.setVolume(Math.floor(_vol*100));
-        }
+        };
         _media.mute = function() {
             return _player.mute();
-        }
+        };
         _media.unmute = function() {
             return _player.unMute();
-        }
+        };
         _media.play = function() {
             return _player.playVideo();
-        }
+        };
         _media.pause = function() {
             return _player.pauseVideo();
-        }
+        };
         
         _player.addEventListener("onStateChange", "onDailymotionStateChange");
         _player.addEventListener("onVideoProgress", "onDailymotionVideoProgress");
@@ -66,7 +66,7 @@ IriSP.Widgets.DailymotionPlayer.prototype.draw = function() {
         _player.cueVideoByUrl(_this.video);
         
         _media.trigger("loadedmetadata");
-    }
+    };
     
     window.onDailymotionStateChange = function(_state) {
         switch(_state) {
@@ -84,11 +84,11 @@ IriSP.Widgets.DailymotionPlayer.prototype.draw = function() {
                 _media.trigger("seeked");
                 break;
         }
-    }
+    };
     
     window.onDailymotionVideoProgress = function(_progress) {
         _media.trigger("timeupdate", new IriSP.Model.Time(_progress.mediaTime * 1000));
-    }
+    };
     
     var params = {
         "allowScriptAccess" : "always",
@@ -101,4 +101,4 @@ IriSP.Widgets.DailymotionPlayer.prototype.draw = function() {
 
     swfobject.embedSWF("http://www.dailymotion.com/swf?chromeless=1&enableApi=1", this.container, this.width, this.height, "8", null, null, params, atts);
     
-}
+};

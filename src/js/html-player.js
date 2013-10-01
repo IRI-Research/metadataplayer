@@ -88,7 +88,7 @@ IriSP.htmlPlayer = function(media, jqselector, options) {
         getVolume();
         media.trigger("loadedmetadata");
         media.trigger("volumechange");
-    })
+    });
     
     videoEl.on("timeupdate", function() {
         media.trigger("timeupdate", new IriSP.Model.Time(1000*mediaEl.currentTime));
@@ -97,7 +97,7 @@ IriSP.htmlPlayer = function(media, jqselector, options) {
     videoEl.on("volumechange", function() {
         getVolume();
         media.trigger("volumechange");
-    })
+    });
     
     videoEl.on("play", function() {
         media.trigger("play");

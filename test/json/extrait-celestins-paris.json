@@ -1,0 +1,1747 @@
+{
+    "format": "http://advene.org/ns/cinelab/", 
+    "url": "2013-05-03_14-42-57", 
+    "annotation_types": [
+        {
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "id": "performance"
+        }, 
+        {
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "id": "discussion"
+        }, 
+        {
+            "id": "interpretation"
+        }, 
+        {
+            "id": "textnote"
+        }, 
+        {
+            "meta": {
+                "trim": "drop", 
+                "track": "primary"
+            }, 
+            "id": "a_supprimer"
+        }
+    ], 
+    "medias": [
+        {
+            "url": "original.mkv", 
+            "origin": 0, 
+            "meta": {
+                "profile": "Video Camera", 
+                "audio_channels": 2, 
+                "ratio": "16_9", 
+                "audio_samplerate": 44100, 
+                "width": 1920, 
+                "is_original": true, 
+                "height": 1080, 
+                "video_height": 1080, 
+                "duration": 11381600, 
+                "video_codec": "h264", 
+                "video_width": 1920, 
+                "video_framerate": 30, 
+                "is_main": true
+            }, 
+            "id": "primary", 
+            "unit": "ms"
+        }
+    ], 
+    "meta": {
+        "dc:contributor": "Pierre Gandar", 
+        "oeuvre": "Chatte sur un toit brûlant", 
+        "dc:language": "fr", 
+        "dc:creator": "Pierre Gandar", 
+        "dc:title": "Début du travail de précision sans texte à la main de l'ACTE 1", 
+        "director": "Claudia STAVISKY", 
+        "dc:created": "2013-05-03T14:42:58.997423", 
+        "media_type": "video", 
+        "recorder": "easycast-c4", 
+        "dc:modified": "2013-05-03T14:42:58.997423"
+    }, 
+    "annotations": [
+        {
+            "begin": 395671, 
+            "end": 464700, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "on peut entendre le bruit de la douche couler en fond", 
+                    "ref_text": "7-1"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a1"
+        }, 
+        {
+            "begin": 464700, 
+            "end": 530686, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "Margaret doit enlever sa robe directement", 
+                    "ref_text": "7-3"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a2"
+        }, 
+        {
+            "begin": 530686, 
+            "end": 599885, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "Margaret doit sortir plein de robes pour choisir la bonne", 
+                    "ref_text": "7-3"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a3"
+        }, 
+        {
+            "begin": 599885, 
+            "end": 613095, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "7-1"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a4"
+        }, 
+        {
+            "begin": 613095, 
+            "end": 793747, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "Margaret ne sais pas encore que Brick est sous la douche. Elle voit juste qu'il n'est pas là", 
+                    "ref_text": "7-1"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a5"
+        }, 
+        {
+            "begin": 757236, 
+            "end": 757236, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "text/plain", 
+                "data": "la metteur en scène et son assistant se mettent d'accord sur leurs interventions respectives"
+            }, 
+            "type": "textnote", 
+            "id": "a6"
+        }, 
+        {
+            "begin": 793747, 
+            "end": 1186636, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "7-1"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a7"
+        }, 
+        {
+            "begin": 1011862, 
+            "end": 1426818, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES,scène reprise", 
+                    "description": "Margaret est seule dans la chambre et essaye les robes les une apres les autres", 
+                    "titre": "référence texte: 7-9"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a8"
+        }, 
+        {
+            "begin": 1186636, 
+            "end": 1235242, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "7-1"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a9"
+        }, 
+        {
+            "begin": 1199874, 
+            "end": 1199874, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "text/plain", 
+                "data": "il fait tellement chaud que Margaret pourrait avoir envie de rejoindre Brick sous la douche pour se mouiller un peu"
+            }, 
+            "type": "textnote", 
+            "id": "a10"
+        }, 
+        {
+            "begin": 1235242, 
+            "end": 1400176, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "7-1"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a11"
+        }, 
+        {
+            "begin": 1400176, 
+            "end": 1526455, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "7-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a12"
+        }, 
+        {
+            "begin": 1426818, 
+            "end": 1709951, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "Margaret doit aller droit dans son discours pour arriver directement à la chute. Margaret aime le fait que malgré la richesse de grand papa il n'est pas de caractère gentleman farmer mais reste bouseux", 
+                    "titre": "référence texte:7-9"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a13"
+        }, 
+        {
+            "begin": 1526455, 
+            "end": 1561095, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "7-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a14"
+        }, 
+        {
+            "begin": 1561095, 
+            "end": 1621120, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "7-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a15"
+        }, 
+        {
+            "begin": 1621120, 
+            "end": 1683246, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "7-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a16"
+        }, 
+        {
+            "begin": 1683246, 
+            "end": 1888196, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "8-4"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a17"
+        }, 
+        {
+            "begin": 1709951, 
+            "end": 2006444, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "Brick ne doit pas se douter de ce que Margaret va lui parler, il faut qu'il se laisse ceuillir", 
+                    "titre": "référence texte:8-2"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a18"
+        }, 
+        {
+            "begin": 1888196, 
+            "end": 2102802, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "discution autour de la variation de sens due à la traduction française du texte", 
+                    "ref_text": "8-3"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a19"
+        }, 
+        {
+            "begin": 2006444, 
+            "end": 2285519, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "Adaptation du texte,intervention MES", 
+                    "description": "transformation de \"mais enfin, tu sais très bien ou ils veulent en venir\" en \"mais enfin, tu sais tès bien ce qu'ils sont entrain de manigancer", 
+                    "titre": "référence texte:8-3"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a20"
+        }, 
+        {
+            "begin": 2102802, 
+            "end": 2256635, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "7-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a21"
+        }, 
+        {
+            "begin": 2256635, 
+            "end": 2639292, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "8-4"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a22"
+        }, 
+        {
+            "begin": 2285519, 
+            "end": 2805381, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "Décision,intervention MES", 
+                    "description": "nous prenons la décision que Brick apprend par maggie à cet instant que son père à bel et bien le cancer. Il sait que son père attend les résultats médicaux mais ne les connait pas contrairement à sa femme. Ce dont il prend conscience ce n'est pas qu'il à un cancer mais plutot qu'il va mourir.", 
+                    "titre": "référence texte:8-4"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a23"
+        }, 
+        {
+            "begin": 2530917, 
+            "end": 2530917, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "text/plain", 
+                "data": "npon seulement le père à un cancer mais en phase terminale qui plus est"
+            }, 
+            "type": "textnote", 
+            "id": "a24"
+        }, 
+        {
+            "begin": 2639292, 
+            "end": 2787233, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "7-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a25"
+        }, 
+        {
+            "begin": 2787233, 
+            "end": 2829912, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "9-4"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a26"
+        }, 
+        {
+            "begin": 2805381, 
+            "end": 2859459, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "margaret doit INFORMER Brick", 
+                    "titre": "référence texte:9-4"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a27"
+        }, 
+        {
+            "begin": 2829912, 
+            "end": 2904270, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "9-4"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a28"
+        }, 
+        {
+            "begin": 2859459, 
+            "end": 2942850, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "performance d'un(e) comédien(ne)", 
+                    "description": "l'annonce de la mort du père, cela vaut bien un verre d'alcool", 
+                    "titre": "référence texte:9-3"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a29"
+        }, 
+        {
+            "begin": 2904270, 
+            "end": 2979356, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "9-4"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a30"
+        }, 
+        {
+            "begin": 2942850, 
+            "end": 3147555, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "performance d'un(e) comédien(ne)", 
+                    "description": "Maggie doit être hyper terrienne", 
+                    "titre": "9-4"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a31"
+        }, 
+        {
+            "begin": 2979356, 
+            "end": 3129321, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "7-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a32"
+        }, 
+        {
+            "begin": 3129321, 
+            "end": 3219632, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "9-6"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a33"
+        }, 
+        {
+            "begin": 3147555, 
+            "end": 3251208, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES,scène reprise", 
+                    "description": "\"il y a tellement de lumière ici\" veut dire qu'il fait vraiment trop chaud", 
+                    "titre": "référence texte:8-4"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a34"
+        }, 
+        {
+            "begin": 3219632, 
+            "end": 3330448, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "9-4"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a35"
+        }, 
+        {
+            "begin": 3251208, 
+            "end": 3425646, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "performance d'un(e) comédien(ne)", 
+                    "description": "Brick est allongé sur le canapé et Margaret continue de se changer puis vient jouer avec Brick", 
+                    "titre": "référence texte:9-4"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a36"
+        }, 
+        {
+            "begin": 3330448, 
+            "end": 3633961, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "9-4"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a37"
+        }, 
+        {
+            "begin": 3425646, 
+            "end": 3672545, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "Improvisation,performance d'un(e) comédien(ne)", 
+                    "description": "Brick retourne sa femme pour l'écarter d'au dessus de lui. destination finale:le sol. Avant de continuer de jouer ailleurs", 
+                    "titre": "9-6"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a38"
+        }, 
+        {
+            "begin": 3633961, 
+            "end": 3763714, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "9-6"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a39"
+        }, 
+        {
+            "begin": 3672545, 
+            "end": 4340357, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "Maggie ne doit pas toucher son mari", 
+                    "titre": "référence texte:9-6"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a40"
+        }, 
+        {
+            "begin": 3763714, 
+            "end": 3814504, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "9-6"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a41"
+        }, 
+        {
+            "begin": 3814504, 
+            "end": 4096820, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "on avance dans la scène à l'arrivée de Mae. Cette démarche car une comédienne doit partir au milieu de la reptition. il faut donc exploiter le temps de répétion de cette comédienne au maximum", 
+                    "ref_text": "16-7"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a42"
+        }, 
+        {
+            "begin": 4096820, 
+            "end": 4181933, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "15-5"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a43"
+        }, 
+        {
+            "begin": 4181933, 
+            "end": 4213293, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "14-11"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a44"
+        }, 
+        {
+            "begin": 4213293, 
+            "end": 4401327, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "16-2"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a45"
+        }, 
+        {
+            "begin": 4340357, 
+            "end": 4627420, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "Maggie et Brick doivent vraiment s'enerver sur cette chose aussi stupide qu'est le fait d'écrire un mot à grand papa pour son anniversaire", 
+                    "titre": "référence texte:16-2"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a46"
+        }, 
+        {
+            "begin": 4401327, 
+            "end": 4570221, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "14-11"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a47"
+        }, 
+        {
+            "begin": 4570221, 
+            "end": 4611926, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "19-8"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a48"
+        }, 
+        {
+            "begin": 4611926, 
+            "end": 4845338, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "16-15"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a49"
+        }, 
+        {
+            "begin": 4627420, 
+            "end": 5004398, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "La tension doit monter monter monter puis se cristaliser. Tout doit se figer pour l'entrée de Mae. puis l'energie repart. C'est comme si Mae devait rentrer dans une chaudière", 
+                    "titre": "référence texte:16-12"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a50"
+        }, 
+        {
+            "begin": 4845338, 
+            "end": 4991136, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "14-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a51"
+        }, 
+        {
+            "begin": 4991136, 
+            "end": 5107553, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "16-7"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a52"
+        }, 
+        {
+            "begin": 5004398, 
+            "end": 5400967, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "Ce que dit Brick à sa femme ne doit absolument pas être entendu par les reste de la famille. ", 
+                    "titre": "16-2"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a53"
+        }, 
+        {
+            "begin": 5107553, 
+            "end": 5366232, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "14-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a54"
+        }, 
+        {
+            "begin": 5265510, 
+            "end": 5265510, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "text/plain", 
+                "data": "le bordel en place, traduit par les affaires de Maggie traînant et jonchées sur le sol dessine un caractere adolescant et riche. Habitué à ce qu'on passe toujours derrère eux"
+            }, 
+            "type": "textnote", 
+            "id": "a55"
+        }, 
+        {
+            "begin": 5366232, 
+            "end": 5577043, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "16-13"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a56"
+        }, 
+        {
+            "begin": 5400967, 
+            "end": 5911738, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "Margaret doit en mettre plein la gueule à Mae", 
+                    "titre": "référence texte:16-13"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a57"
+        }, 
+        {
+            "begin": 5577043, 
+            "end": 5807491, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "15-2"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a58"
+        }, 
+        {
+            "begin": 5807491, 
+            "end": 5829293, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "16-15"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a59"
+        }, 
+        {
+            "begin": 5829293, 
+            "end": 5950406, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "16-16"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a60"
+        }, 
+        {
+            "begin": 5911738, 
+            "end": 6052180, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "performance d'un(e) comédien(ne)", 
+                    "description": "impossible pour Maggie d'être compatissante puis sortir ses griffes. Il faut qu'elle enfonce Mae de sa haine la plus profonde", 
+                    "titre": "référence texte:17-1"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a61"
+        }, 
+        {
+            "begin": 5950406, 
+            "end": 6106013, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "16-18"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a62"
+        }, 
+        {
+            "begin": 6052180, 
+            "end": 6308448, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "performance d'un(e) comédien(ne)", 
+                    "description": "Maggie est vraiment ignoble mais magnifique dans cette méchanceté. On la soutiendrai dans dans sa haine", 
+                    "titre": "17-7"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a63"
+        }, 
+        {
+            "begin": 6106013, 
+            "end": 6155094, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "17-1"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a64"
+        }, 
+        {
+            "begin": 6155094, 
+            "end": 6417496, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "17-1"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a65"
+        }, 
+        {
+            "begin": 6308448, 
+            "end": 6457443, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "performance d'un(e) comédien(ne)", 
+                    "description": "Maggie propose à Brick de s'habiller donc tout naturellement elle lui amène ce qu'elle propose, économisant ainsi à Brick des déplacements", 
+                    "titre": "17-9"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a66"
+        }, 
+        {
+            "begin": 6417496, 
+            "end": 6720673, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "17-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a67"
+        }, 
+        {
+            "begin": 6457443, 
+            "end": 6768871, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "scène reprise", 
+                    "description": "\"prends un amant\" est une réponse directe à \"je suis dévorée de désir\". Maggie s'adresse à son mari pour lui clouer le bec", 
+                    "titre": "référence texte:17-9"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a68"
+        }, 
+        {
+            "begin": 6720673, 
+            "end": 7142804, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "18-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a69"
+        }, 
+        {
+            "begin": 6768871, 
+            "end": 7918719, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES,performance d'un(e) comédien(ne)", 
+                    "description": "très belle tension", 
+                    "titre": "référence texte:18-9"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a70"
+        }, 
+        {
+            "begin": 7142804, 
+            "end": 7246629, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "", 
+                    "ref_text": "19-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a71"
+        }, 
+        {
+            "begin": 7246629, 
+            "end": 7669389, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "italienne entre les acteurs depuis l'entrée de grand maman dans la pièce", 
+                    "ref_text": "19-4"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a72"
+        }, 
+        {
+            "begin": 7669389, 
+            "end": 7983897, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "", 
+                    "ref_text": "19-4"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a73"
+        }, 
+        {
+            "begin": 7918719, 
+            "end": 8400431, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "scène reprise", 
+                    "description": "A la demande de Christianne la scène est reprise, s'étant perdue dans les texte, il lui faut reprendre pour plus de fluidité", 
+                    "titre": "référence texte:19-11"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a74"
+        }, 
+        {
+            "begin": 7983897, 
+            "end": 8144532, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "", 
+                    "ref_text": "19-11"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a75"
+        }, 
+        {
+            "begin": 8144532, 
+            "end": 8349675, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "Grand mama est persuadé que Maggie ne veut pas d'enfants", 
+                    "ref_text": "20-4"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a76"
+        }, 
+        {
+            "begin": 8349675, 
+            "end": 8736189, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "Grand mama est persuadé que Maggie ne veut pas d'enfants", 
+                    "ref_text": "19-11"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a77"
+        }, 
+        {
+            "begin": 8400431, 
+            "end": 8754487, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "performance d'un(e) comédien(ne),scène reprise", 
+                    "description": "Le texte doit se chevaucher, et les acteurs ne doivent jamais cesser de parler, parler, parler", 
+                    "titre": "référence texte:20-02"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a78"
+        }, 
+        {
+            "begin": 8736189, 
+            "end": 8821628, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "", 
+                    "ref_text": "20-7"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a79"
+        }, 
+        {
+            "begin": 8754487, 
+            "end": 9639277, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "grand maman veut du bien à Maggie. Il faut que Maggie soit touchée par elle", 
+                    "titre": "référence texte:20-07"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a80"
+        }, 
+        {
+            "begin": 8821628, 
+            "end": 9373952, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "", 
+                    "ref_text": "20-4"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a81"
+        }, 
+        {
+            "begin": 9152921, 
+            "end": 9152921, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "text/plain", 
+                "data": "Si toute la famille monte dans la chambre, c'est un problème que Maggie va devoir résoudre"
+            }, 
+            "type": "textnote", 
+            "id": "a82"
+        }, 
+        {
+            "begin": 9373952, 
+            "end": 9515184, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "", 
+                    "ref_text": "21-6"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a83"
+        }, 
+        {
+            "begin": 9515184, 
+            "end": 9711516, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "", 
+                    "ref_text": "20-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a84"
+        }, 
+        {
+            "begin": 9594567, 
+            "end": 9594567, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "text/plain", 
+                "data": "à la recherche du geste juste pour faire comprendre à Maggie que grand maman mime un homme qui boit"
+            }, 
+            "type": "textnote", 
+            "id": "a85"
+        }, 
+        {
+            "begin": 9639277, 
+            "end": 10671837, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "scène reprise", 
+                    "description": "", 
+                    "titre": "21-8"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a86"
+        }, 
+        {
+            "begin": 9711516, 
+            "end": 10234001, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "belle traversée de la scène", 
+                    "ref_text": "20-9"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a87"
+        }, 
+        {
+            "begin": 10234001, 
+            "end": 10625047, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "", 
+                    "ref_text": "19-4"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a88"
+        }, 
+        {
+            "begin": 10273674, 
+            "end": 10273674, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "text/plain", 
+                "data": "filage de la scène travaillée jusque là"
+            }, 
+            "type": "textnote", 
+            "id": "a89"
+        }, 
+        {
+            "begin": 10625047, 
+            "end": 10833134, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "le dessein de la scène est à peu près juste.", 
+                    "ref_text": "22-1"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a90"
+        }, 
+        {
+            "begin": 10671837, 
+            "end": 10966743, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "20-9", 
+                    "titre": "il n'y a aucune raison urgente pour que Maggie commence à ranger dans sa chambre"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a91"
+        }, 
+        {
+            "begin": 10833134, 
+            "end": 11186902, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "ce n'est pas une scène d'enguelade, il y a de la joie", 
+                    "ref_text": "22-1"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a92"
+        }, 
+        {
+            "begin": 10966743, 
+            "end": 11381600, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "Allemande de la scène", 
+                    "description": "allemande de toutr le passage ou grand maman se trouve dans la chambre", 
+                    "titre": ""
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a93"
+        }, 
+        {
+            "begin": 11186902, 
+            "end": 11381600, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "text/plain", 
+                "data": "pause cigarette"
+            }, 
+            "meta": {
+                "trim": "drop", 
+                "track": "primary"
+            }, 
+            "type": "a_supprimer", 
+            "id": "a94"
+        }
+    ]
+}

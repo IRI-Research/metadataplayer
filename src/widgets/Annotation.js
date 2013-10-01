@@ -28,7 +28,7 @@ IriSP.Widgets.Annotation.prototype.messages = {
         excerpt_from: "Excerpt from:",
         untitled: "Untitled segment"
     }
-}
+};
 
 IriSP.Widgets.Annotation.prototype.template =
     '{{#show_arrow}}<div class="Ldt-Annotation-Arrow"></div>{{/show_arrow}}'
@@ -58,7 +58,7 @@ IriSP.Widgets.Annotation.prototype.defaults = {
     search_on_tag_click: true,
     show_social: true,
     show_annotation_type: false
-}
+};
 
 IriSP.Widgets.Annotation.prototype.draw = function() {
     
@@ -125,7 +125,7 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
              _this.$.find(".Ldt-Annotation-Creator").text(_annotation.creator);
         }
         if (_this.show_annotation_type) {
-            _this.$.find(".Ldt-Annotation-Type").text(_annotation.getAnnotationType().title)
+            _this.$.find(".Ldt-Annotation-Type").text(_annotation.getAnnotationType().title);
         }
         _this.$.find(".Ldt-Annotation-Begin").text(_annotation.begin.toString());
         _this.$.find(".Ldt-Annotation-End").text(_annotation.end.toString());
@@ -179,7 +179,7 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
     this.$.find(".Ldt-Annotation-MaxMinButton").click(this.functionWrapper("toggleSize"));
     this.getWidgetAnnotations().forEach(function(_a) {
         _a.on("enter", function() {
-            drawAnnotation(_a)
+            drawAnnotation(_a);
         });
     });
     this.source.getAnnotations().on("found", highlightTitleAndDescription);
@@ -193,26 +193,26 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
 	    	uri: (typeof currentAnnotation.url !== "undefined" 
 	            ? currentAnnotation.url
 	            : (document.location.href.replace(/#.*$/,'') + '#id='  + currentAnnotation.id))
-	    }
+	    };
     });
-}
+};
 
 IriSP.Widgets.Annotation.prototype.sendBounds = function() {
     this.player.trigger("Annotation.boundsChanged",this.bounds);
-}
+};
 
 IriSP.Widgets.Annotation.prototype.drawAnnotation = function(_annotation) {
     this.lastAnnotation = _annotation.id;
 
-}
+};
 
 IriSP.Widgets.Annotation.prototype.hide = function() {
     this.$.slideUp();
-}
+};
 
 IriSP.Widgets.Annotation.prototype.show = function() {
     this.$.slideDown();
-}
+};
 
 IriSP.Widgets.Annotation.prototype.toggleSize = function() {
     if (this.minimized) {
@@ -220,14 +220,14 @@ IriSP.Widgets.Annotation.prototype.toggleSize = function() {
     } else {
         this.minimize();
     }
-}
+};
 
 IriSP.Widgets.Annotation.prototype.minimize = function() {
     this.minimized = true;
     this.$.find('.Ldt-Annotation-Inner').addClass("Ldt-Annotation-Minimized");
-}
+};
 
 IriSP.Widgets.Annotation.prototype.maximize = function() {
     this.minimized = false;
     this.$.find('.Ldt-Annotation-Inner').removeClass("Ldt-Annotation-Minimized");
-}
+};

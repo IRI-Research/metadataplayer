@@ -2,14 +2,14 @@
 
 IriSP.Widgets.Slideshare = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
-}
+};
 
 IriSP.Widgets.Slideshare.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Slideshare.prototype.defaults = {
     annotation_type: "slide",
     sync: true,
-}
+};
 
 IriSP.Widgets.Slideshare.prototype.messages = {
     fr: {
@@ -18,7 +18,7 @@ IriSP.Widgets.Slideshare.prototype.messages = {
     en: {
         slides_ : "Slides"
     }
-}
+};
 
 IriSP.Widgets.Slideshare.prototype.template =
     '<div class="Ldt-SlideShare"><h2>{{l10n.slides_}}</h2><hr /><div class="Ldt-SlideShare-Container"></div></div>';
@@ -35,7 +35,7 @@ IriSP.Widgets.Slideshare.prototype.draw = function() {
             var _id = IriSP.Model.getUID(),
                 _params = {
                     allowScriptAccess: "always"
-                }
+                },
                 _atts = {
                     id: _id
                 },
@@ -69,7 +69,7 @@ IriSP.Widgets.Slideshare.prototype.draw = function() {
             _embedObject = null,
             _oembedCache = {},
             _lastEmbedded = "",
-            _this = this
+            _this = this,
             $container = this.$.find(".Ldt-SlideShare-Container");
             
         this.embed_width = this.embed_width || $container.innerWidth();
@@ -111,7 +111,7 @@ IriSP.Widgets.Slideshare.prototype.draw = function() {
                 }
                 _lastPres = _presentation;
                 
-            })
-        })
+            });
+        });
     }
-}
+};

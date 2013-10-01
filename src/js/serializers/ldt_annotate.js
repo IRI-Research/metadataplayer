@@ -23,7 +23,7 @@ IriSP.serializers.ldt_annotate = {
                 created: _data.created,
                 creator: _data.creator
             }
-        }
+        };
     },
     deserializeAnnotation : function(_anndata, _source) {
         var _ann = new IriSP.Model.Annotation(_anndata.id, _source);

@@ -23,7 +23,7 @@ IriSP.Widgets.Segments.prototype.template =
 
 IriSP.Widgets.Segments.prototype.annotationTemplate =
     '<div class="Ldt-Segments-Segment Ldt-TraceMe" trace-info="segment-id:{{id}}, media-id:{{media_id}}, from:{{from}}, to:{{to}}" segment-text="{{text}}"'
-    + 'style="top:{{top}}px; height:{{height}}px; left:{{left}}px; width:{{width}}px; background:{{medcolor}}" data-base-color="{{color}}" data-low-color="{{lowcolor}}" data-medium-color="{{medcolor}}"></div>'
+    + 'style="top:{{top}}px; height:{{height}}px; left:{{left}}px; width:{{width}}px; background:{{medcolor}}" data-base-color="{{color}}" data-low-color="{{lowcolor}}" data-medium-color="{{medcolor}}"></div>';
 
 
 IriSP.Widgets.Segments.prototype.draw = function() {
@@ -58,7 +58,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             _fulltext = _annotation.title + ( _annotation.description ? ( '<br/>' + _annotation.description ) : '' ),
             line = IriSP._(lines).find(function(line) {
                 return !IriSP._(line.annotations).find(function(a) {
-                    return a.begin < _annotation.end && a.end > _annotation.begin
+                    return a.begin < _annotation.end && a.end > _annotation.begin;
                 });
             });
         if (!line) {
@@ -165,11 +165,11 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             _segment.css("background", _segment.attr("data-medium-color")).removeClass("found");
         });
     });
-}
+};
 
 IriSP.Widgets.Segments.prototype.onTimeupdate = function(_time) {
     var _x = Math.floor( this.width * _time / this.media.duration);
     this.$.find('.Ldt-Segments-Position').css({
         left: _x + "px"
-    })
-}
+    });
+};

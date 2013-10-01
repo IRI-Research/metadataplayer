@@ -44,7 +44,7 @@ IriSP.serializers.ldt = {
                         "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator,
                         "dc:duration" : _data.duration.milliseconds
                     }
-                }
+                };
                 _dest.medias.push(_res);
                 var _list = {
                     id: IriSP.Model.getUID(),
@@ -77,9 +77,9 @@ IriSP.serializers.ldt = {
                     }).map(function(_at) {
                         return {
                             "id-ref": _at.id
-                        }
+                        };
                     })
-                }
+                };
                 _dest.lists.push(_list);
                 _dest.views[0].contents.push(_data.id);
             }
@@ -105,7 +105,7 @@ IriSP.serializers.ldt = {
                         "dc:creator" : _data.creator || _source.creator,
                         "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator,
                     }
-                }
+                };
                 _dest.tags.push(_res);
             }
         },
@@ -126,7 +126,7 @@ IriSP.serializers.ldt = {
                     "dc:modified" : IriSP.Model.dateToIso(_data.modified || _source.modified),
                     "dc:creator" : _data.creator || _source.creator,
                     "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator,
-                }
+                };
                 _dest["annotation-types"].push(_res);
                 _dest.views[0].annotation_types.push(_data.id);
             }
@@ -197,18 +197,18 @@ IriSP.serializers.ldt = {
                         "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator,
 //                        project : _source.projectId
                     }
-                }
+                };
                 if (_source.regenerateTags) {
                     _res.tags = IriSP._(_data.keywords).map(function(_kw) {
                         return {
                             "id-ref": _source.__keywords[_kw.toLowerCase()].id
-                        } 
+                        };
                     });
                 } else {
                     _res.tags = IriSP._(_data.tag.id).map(function(_id) {
                        return {
                            "id-ref" : _id
-                       } 
+                       };
                     });
                 }
                 _res.content.title = _data.title || _res.content.title || "";
@@ -243,7 +243,7 @@ IriSP.serializers.ldt = {
                         return _annotation.annotation.id;
                     }),
                     id: _data.id
-                }
+                };
                 _dest.lists.push(_res);
             }
         }
@@ -283,13 +283,13 @@ IriSP.serializers.ldt = {
                             id: IriSP.Model.getUID(),
                             title: kw,
                             regenerated: true
-                        }
+                        };
                     }
                 });
             });
             IriSP._(_source.__keywords).each(function(kw) {
                 _this.types.tag.serializer(kw, _source, _res);
-            })
+            });
         }
         _source.forEach(function(_list, _typename) {
             if (typeof _this.types[_typename] !== "undefined") {

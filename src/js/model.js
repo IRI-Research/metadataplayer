@@ -54,7 +54,7 @@ var Model = {},
     isLocalURL = Model.isLocalURL = function(url) {
         var matches = url.match(/^(\w+:)\/\/([^/]+)/);
         if (matches) {
-            return(matches[1] === document.location.protocol && matches[2] === document.location.host)
+            return(matches[1] === document.location.protocol && matches[2] === document.location.host);
         }
         return true;
     },
@@ -81,7 +81,7 @@ var Model = {},
     fullTextRegexps = Model.fullTextRegexps = function(_text) {
         var remsrc = "[\\" + removeChars.join("\\") + "]",
             remrx = new RegExp(remsrc,"gm"),
-            txt = _text.toLowerCase().replace(remrx,"")
+            txt = _text.toLowerCase().replace(remrx,""),
             res = [],
             charsrx = ns._(charsub).map(function(c) {
                 return new RegExp(c);
@@ -131,7 +131,7 @@ var Model = {},
             + pad(2, d.getUTCDate())+'T'  
             + pad(2, d.getUTCHours())+':'  
             + pad(2, d.getUTCMinutes())+':'  
-            + pad(2, d.getUTCSeconds())+'Z'  
+            + pad(2, d.getUTCSeconds())+'Z'  ;
     };
 
 /*
@@ -154,7 +154,7 @@ var List = Model.List = function(_directory) {
             _element.found = undefined;
         });
         _this.trigger("search-cleared");
-    })
+    });
 };
 
 List.prototype = new Array();
@@ -172,7 +172,7 @@ if (typeof Array.prototype.forEach === "undefined") {
         ns._(this).forEach(function(_value, _key) {
             _callback(_value, _key, _this);
         });
-    }
+    };
 };
 
 if (typeof Array.prototype.map === "undefined") {
@@ -181,7 +181,7 @@ if (typeof Array.prototype.map === "undefined") {
         return ns._(this).map(function(_value, _key) {
             return _callback(_value, _key, _this);
         });
-    }
+    };
 };
 
 List.prototype.pluck = function(_key) {
@@ -261,9 +261,9 @@ List.prototype.search = function(_text) {
     }
     this.searching = true;
     this.trigger("search", _text);
-    var rxsource = fullTextRegexps(_text)
-        rgxp = new RegExp(rxsource,"im"),
-        this.regexp = new RegExp(rxsource,"gim");
+    var rxsource = fullTextRegexps(_text),
+        rgxp = new RegExp(rxsource,"im");
+    this.regexp = new RegExp(rxsource,"gim");
     var res = this.filter(function(_element, _k) {
         var titlematch = rgxp.test(_element.title),
             descmatch = rgxp.test(_element.description),
@@ -283,7 +283,7 @@ List.prototype.getTitles = function() {
 };
 
 List.prototype.addId = function(_id) {
-    var _el = this.directory.getElement(_id)
+    var _el = this.directory.getElement(_id);
     if (!this.hasId(_id) && typeof _el !== "undefined") {
         this.idIndex.push(_id);
         Array.prototype.push.call(this, _el);
@@ -416,7 +416,7 @@ Time.prototype.getHMS = function() {
         minutes : (Math.floor(_totalSeconds / 60) % 60),
         seconds : _totalSeconds % 60,
         milliseconds: this.milliseconds % 1000
-    } 
+    };
 };
 
 Time.prototype.add = function(_milliseconds) {
@@ -431,11 +431,11 @@ Time.prototype.toString = function(showCs) {
     var _hms = this.getHMS(),
         _res = '';
     if (_hms.hours) {
-        _res += _hms.hours + ':'
+        _res += _hms.hours + ':';
     }
     _res += pad(2, _hms.minutes) + ':' + pad(2, _hms.seconds);
     if (showCs) {
-        _res += "." + Math.floor(_hms.milliseconds / 100)
+        _res += "." + Math.floor(_hms.milliseconds / 100);
     }
     return _res;
 };
@@ -473,7 +473,7 @@ Reference.prototype.getContents = function() {
 
 Reference.prototype.isOrHasId = function(_idRef) {
     if (this.isList) {
-        return (ns._(this.id).indexOf(_idRef) !== -1)
+        return (ns._(this.id).indexOf(_idRef) !== -1);
     } else {
         return (this.id == _idRef);
     }
@@ -485,7 +485,7 @@ var BaseElement = Model.Element = function(_id, _source) {
     this.elementType = 'element';
     this.title = "";
     this.description = "";
-    this.__events = {}
+    this.__events = {};
     if (typeof _source === "undefined") {
         return;
     }
@@ -567,14 +567,14 @@ var Playable = Model.Playable = function(_id, _source) {
     this.on("timeupdate", function(_time) {
         _this.currentTime = _time;
         _this.getAnnotations().filter(function(_a) {
-            return (_a.end <= _time || _a.begin > _time) && _a.playing
+            return (_a.end <= _time || _a.begin > _time) && _a.playing;
         }).forEach(function(_a) {
             _a.playing = false;
             _a.trigger("leave");
             _this.trigger("leave-annotation",_a);
         });
         _this.getAnnotations().filter(function(_a) {
-            return _a.begin <= _time && _a.end > _time && !_a.playing
+            return _a.begin <= _time && _a.end > _time && !_a.playing;
         }).forEach(function(_a) {
             _a.playing = true;
             _a.trigger("enter");
@@ -657,7 +657,7 @@ Media.prototype.getAnnotationsByTypeTitle = function(_title) {
             return ns._(_annTypes).indexOf(_annotation.getAnnotationType().id) !== -1;
         });
     } else {
-        return new List(this.source.directory)
+        return new List(this.source.directory);
     }
 };
 
@@ -753,7 +753,7 @@ Annotation.prototype.getTagTexts = function() {
 };
 
 Annotation.prototype.getDuration = function() {
-    return new Time(this.end.milliseconds - this.begin.milliseconds)
+    return new Time(this.end.milliseconds - this.begin.milliseconds);
 };
 
 /* */
@@ -820,7 +820,7 @@ var Mashup = Model.Mashup = function(_id, _source) {
     this._updateTimes = function() {
         _this.updateTimes();
         _this.trigger("change");
-    }
+    };
     this.on("add", this._updateTimes);
     this.on("remove", this._updateTimes);
 };
@@ -909,19 +909,19 @@ Mashup.prototype.setAnnotationsById = function(_segments) {
 
 Mashup.prototype.hasAnnotation = function(_annotation) {
     return !!ns._(this.segments).find(function(_s) {
-        return _s.annotation === _annotation
+        return _s.annotation === _annotation;
     });
 };
 
 Mashup.prototype.getAnnotation = function(_annotation) {
     return ns._(this.segments).find(function(_s) {
-        return _s.annotation === _annotation
+        return _s.annotation === _annotation;
     });
 };
 
 Mashup.prototype.getAnnotationById = function(_id) {
     return ns._(this.segments).find(function(_s) {
-        return _s.annotation.id === _id
+        return _s.annotation.id === _id;
     });
 };
 
@@ -940,8 +940,8 @@ Mashup.prototype.getOriginalAnnotations = function() {
 Mashup.prototype.getMedias = function() {
     var medias = new List(this.source.directory);
     this.segments.forEach(function(_annotation) {
-        medias.push(_annotation.getMedia())
-    })
+        medias.push(_annotation.getMedia());
+    });
     return medias;
 };
 
@@ -952,7 +952,7 @@ Mashup.prototype.getAnnotationsByTypeTitle = function(_title) {
             return ns._(_annTypes).indexOf(_annotation.getAnnotationType().id) !== -1;
         });
     } else {
-        return new List(this.source.directory)
+        return new List(this.source.directory);
     }
 };
 
@@ -986,7 +986,7 @@ var Source = Model.Source = function(_config) {
         var _this = this;
         ns._(_config).forEach(function(_v, _k) {
             _this[_k] = _v;
-        })
+        });
         this.callbackQueue = [];
         this.contents = {};
         this.get();
@@ -1020,7 +1020,7 @@ Source.prototype.forEach = function(_callback) {
     var _this = this;
     ns._(this.contents).forEach(function(_value, _key) {
         _callback.call(_this, _value, _key);
-    })
+    });
 };
 
 Source.prototype.getElement = function(_elId) {
@@ -1093,7 +1093,7 @@ Source.prototype.getAnnotationsByTypeTitle = function(_title, _global) {
         _annTypes = this.getAnnotationTypes(_global).searchByTitle(_title);
     _annTypes.forEach(function(_annType) {
         _res.addElements(_annType.getAnnotations(_global));
-    })
+    });
     return _res;
 };
 

@@ -47,7 +47,7 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     after_send_timeout: 0,
     close_after_send: false,
     tag_prefix: "#"
-}
+};
 
 IriSP.Widgets.CreateAnnotation.prototype.messages = {
     en: {
@@ -92,7 +92,7 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
         "polemic??": "Question",
         "polemic==": "Référence"
     }
-}
+};
 
 IriSP.Widgets.CreateAnnotation.prototype.template =
     '{{#show_slice}}<div class="Ldt-CreateAnnotation-Slice"></div>{{/show_slice}}'
@@ -247,7 +247,7 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
     
     this.onMdpEvent("CreateAnnotation.toggle","toggle");
     this.$.find("form").submit(this.functionWrapper("onSubmit"));
-}
+};
 
 IriSP.Widgets.CreateAnnotation.prototype.showScreen = function(_screenName) {
     this.$.find('.Ldt-CreateAnnotation-' + _screenName).show()
@@ -272,7 +272,7 @@ IriSP.Widgets.CreateAnnotation.prototype.show = function() {
     if (this.minimize_annotation_widget) {
         this.player.trigger("Annotation.minimize");
     }
-}
+};
 
 IriSP.Widgets.CreateAnnotation.prototype.hide = function() {
     if (this.recorder) {
@@ -285,7 +285,7 @@ IriSP.Widgets.CreateAnnotation.prototype.hide = function() {
             this.player.trigger("Annotation.maximize");
         }
     }
-}
+};
 
 IriSP.Widgets.CreateAnnotation.prototype.toggle = function() {
     if (!this.always_visible) {
@@ -295,7 +295,7 @@ IriSP.Widgets.CreateAnnotation.prototype.toggle = function() {
             this.show();
         }
     }
-}
+};
 
 IriSP.Widgets.CreateAnnotation.prototype.addKeyword = function(_keyword) {
     var _field = this.$.find(".Ldt-CreateAnnotation-Description"),
@@ -307,13 +307,13 @@ IriSP.Widgets.CreateAnnotation.prototype.addKeyword = function(_keyword) {
     );
     _field.val(_contents.replace(/\s{2,}/g,' ').replace(/(^\s+|\s+$)/g,''));
     this.onDescriptionChange();
-}
+};
 
 IriSP.Widgets.CreateAnnotation.prototype.pauseOnWrite = function() {
     if (this.pause_on_write && !this.media.getPaused()) {
         this.media.pause();
     }
-}
+};
 
 IriSP.Widgets.CreateAnnotation.prototype.onDescriptionChange = function() {
     var _field = this.$.find(".Ldt-CreateAnnotation-Description"),
@@ -334,7 +334,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onDescriptionChange = function() {
     });
     this.pauseOnWrite();
     return !!_contents;
-}
+};
 
 IriSP.Widgets.CreateAnnotation.prototype.onTitleChange = function() {
     var _field = this.$.find(".Ldt-CreateAnnotation-Title"),
@@ -347,7 +347,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onTitleChange = function() {
     }
     this.pauseOnWrite();
     return !!_contents;
-}
+};
 
 
 IriSP.Widgets.CreateAnnotation.prototype.onCreatorChange = function() {
@@ -361,7 +361,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onCreatorChange = function() {
     }
     this.pauseOnWrite();
     return !!_contents;
-}
+};
 
 /* Fonction effectuant l'envoi des annotations */
 IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
@@ -484,5 +484,5 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
     this.showScreen('Wait');
     
     return false;
-}
+};
 

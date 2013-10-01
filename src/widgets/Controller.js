@@ -11,7 +11,7 @@ IriSP.Widgets.Controller.prototype.defaults = {
     disable_annotate_btn: false,
     disable_search_btn: false,
     disable_ctrl_f: false
-}
+};
 
 IriSP.Widgets.Controller.prototype.template =
     '<div class="Ldt-Ctrl">'
@@ -225,7 +225,7 @@ IriSP.Widgets.Controller.prototype.volumeUpdater = function() {
             .addClass("Ldt-Ctrl-Sound-Mute");    
     } else {
         _soundCtl.attr("title", this.l10n.mute)
-            .addClass(_vol < .5 ? "Ldt-Ctrl-Sound-Half" : "Ldt-Ctrl-Sound-Full" )
+            .addClass(_vol < .5 ? "Ldt-Ctrl-Sound-Half" : "Ldt-Ctrl-Sound-Full" );
     }
     this.$volumeBar.slider("value", _muted ? 0 : 100 * _vol);
 };

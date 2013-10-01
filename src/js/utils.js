@@ -58,10 +58,10 @@ IriSP.textFieldHtml = function(_text, _regexp, _extend) {
     }
     
     addToList(/(https?:\/\/)?[\w\d\-]+\.[\w\d\-]+\S+/gm, function(matches) {
-        return '<a href="' + (matches[1] ? '' : 'http://') + matches[0] + '" target="_blank">'
+        return '<a href="' + (matches[1] ? '' : 'http://') + matches[0] + '" target="_blank">';
     }, '</a>');
     addToList(/@([\d\w]{1,15})/gm, function(matches) {
-        return '<a href="http://twitter.com/' + matches[1] + '" target="_blank">'
+        return '<a href="http://twitter.com/' + matches[1] + '" target="_blank">';
     }, '</a>');
     addToList(/\*[^*]+\*/gm, '<b>', '</b>');
     addToList(/[\n\r]+/gm, '', '<br />');
@@ -73,7 +73,7 @@ IriSP.textFieldHtml = function(_text, _regexp, _extend) {
     positions = IriSP._(positions)
         .chain()
         .uniq()
-        .sortBy(function(p) { return parseInt(p) })
+        .sortBy(function(p) { return parseInt(p); })
         .value();
     
     var res = "", lastIndex = 0;
@@ -127,6 +127,6 @@ IriSP.FakeClass = function(properties) {
     var _this = this,
         noop = (function() {});
     IriSP._(properties).each(function(p) {
-        _this[p] = noop
+        _this[p] = noop;
     });
-}
+};

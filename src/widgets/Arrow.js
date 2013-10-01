@@ -15,7 +15,7 @@ IriSP.Widgets.Arrow.prototype.defaults = {
     stroke_color: "#b7b7b7",
     stroke_width: 1.5,
     animation_speed: 20
-}
+};
 
 IriSP.Widgets.Arrow.prototype.draw = function() {
     this.height = this.arrow_height + this.base_height;
@@ -33,7 +33,7 @@ IriSP.Widgets.Arrow.prototype.draw = function() {
         fill: this.fill_url ? ( 'url(' + this.fill_url + ')' ) : this.fill_color
     });
     this.moveToX(0);
-}
+};
 
 IriSP.Widgets.Arrow.prototype.drawAt = function(_x) {
     _x = Math.max(0, Math.min(_x, this.width));
@@ -53,7 +53,7 @@ IriSP.Widgets.Arrow.prototype.drawAt = function(_x) {
     this.svgArrow.attr({
         path: _d
     });
-}
+};
 
 IriSP.Widgets.Arrow.prototype.moveToX = function(_x) {
     this.targetX = Math.max(0, Math.min(_x, this.width));
@@ -61,14 +61,14 @@ IriSP.Widgets.Arrow.prototype.moveToX = function(_x) {
         this.animInterval = window.setInterval(
             this.functionWrapper("increment"),
             40
-        )
+        );
     }
     this.increment();
-}
+};
 
 IriSP.Widgets.Arrow.prototype.moveToTime = function(_t) {
     this.moveToX(this.width * _t / this.media.duration);
-}
+};
 
 IriSP.Widgets.Arrow.prototype.increment = function() {
     if (typeof this.currentX === "undefined") {
@@ -85,4 +85,4 @@ IriSP.Widgets.Arrow.prototype.increment = function() {
         this.animInterval = undefined;
     }
     this.drawAt(this.currentX);
-}
+};

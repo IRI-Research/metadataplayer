@@ -8,14 +8,14 @@ IriSP.Widgets.Renkan.prototype.defaults = {
     annotation_regexp: /player\/([a-zA-Z0-9_-]+)\/.*id=([a-zA-Z0-9_-]+)/,
     tag_regexp: /search=([^&=]+)/,
     min_duration: 5000
-}
+};
 
 IriSP.Widgets.Renkan.prototype.messages = {
     "fr": {
     },
     "en": {
     }
-}
+};
 
 IriSP.Widgets.Renkan.prototype.template =
     '<div class="Ldt-Renkan-Container"><div class="Ldt-Renkan"></div></div>';
@@ -52,7 +52,7 @@ IriSP.Widgets.Renkan.prototype.draw = function() {
                     annotation: _ann,
                     begin: _ann.begin - _preroll,
                     end: _ann.end + _preroll
-                }
+                };
                 _this.node_times.push(_nt);
                 var _annselected = false,
                     _nodeselected = false;
@@ -90,10 +90,10 @@ IriSP.Widgets.Renkan.prototype.draw = function() {
         if (_tagmatch) {
             _node.on("select", function() {
                 _this.source.getAnnotations().search(_tagmatch[1]);
-            })
+            });
             _node.on("unselect", function() {
                 _this.source.getAnnotations().search("");
-            })
+            });
         }
     });
     Rkns.jsonIO(this.renkan, {
@@ -114,7 +114,7 @@ IriSP.Widgets.Renkan.prototype.draw = function() {
             return false;
         }
     });
-}
+};
 
 IriSP.Widgets.Renkan.prototype.onTimeupdate = function(_time) {
     IriSP._(this.node_times).each(function(_nt) {
@@ -129,4 +129,4 @@ IriSP.Widgets.Renkan.prototype.onTimeupdate = function(_time) {
             }
         }
     });
-}
+};

@@ -15,7 +15,7 @@ IriSP.Widgets.Slice.prototype.defaults = {
 
 IriSP.Widgets.Slice.prototype.template =
     '<div class="Ldt-Slice"></div>'
-    + '{{#show_arrow}}<div class="Ldt-Slice-Arrow"></div>{{/show_arrow}}'
+    + '{{#show_arrow}}<div class="Ldt-Slice-Arrow"></div>{{/show_arrow}}';
 
 IriSP.Widgets.Slice.prototype.draw = function() {
     
@@ -40,7 +40,7 @@ IriSP.Widgets.Slice.prototype.draw = function() {
         max: this.max,
         change: function(event, ui) {
             if (_this.arrow) {
-                _this.arrow.moveToTime((ui.values[0]+ui.values[1])/2)
+                _this.arrow.moveToTime((ui.values[0]+ui.values[1])/2);
             }
             if (_this.onBoundsChanged) {
                 _this.onBoundsChanged(ui.values[0],ui.values[1]);
@@ -74,8 +74,8 @@ IriSP.Widgets.Slice.prototype.draw = function() {
 
 IriSP.Widgets.Slice.prototype.show = function() {
     this.$slider.show();
-}
+};
 
 IriSP.Widgets.Slice.prototype.hide = function() {
     this.$slider.hide();
-}
+};

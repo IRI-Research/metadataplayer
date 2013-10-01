@@ -5,7 +5,7 @@ IriSP.Widgets.JwpPlayer = function(player, config) {
 IriSP.Widgets.JwpPlayer.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.JwpPlayer.prototype.defaults = {
-}
+};
 
 IriSP.Widgets.JwpPlayer.prototype.draw = function() {
     
@@ -113,10 +113,10 @@ IriSP.Widgets.JwpPlayer.prototype.draw = function() {
             _media.volume = _event.volume / 100;
             _media.trigger("volumechange");
         }
-    }
+    };
     
     _player = _player.setup(_opts);
     
     this.jwplayer = _player;
     
-}
+};

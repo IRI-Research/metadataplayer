@@ -48,7 +48,7 @@ IriSP.Widgets.Sparkline.prototype.draw = function() {
         _d = IriSP._(_y).reduce(function(_memo, _v, _k) {
                return _memo + ( _k
                    ? 'C' + (_k * _width) + ' ' + _y[_k - 1] + ' ' + (_k * _width) + ' ' + _v + ' ' + ((_k + .5) * _width) + ' ' + _v
-                   : 'M0 ' + _v + 'L' + (.5*_width) + ' ' + _v )
+                   : 'M0 ' + _v + 'L' + (.5*_width) + ' ' + _v );
             },'') + 'L' + this.width + ' ' + _y[_y.length - 1],
         _d2 = _d + 'L' + this.width + ' ' + this.height + 'L0 ' + this.height;
     
@@ -78,7 +78,7 @@ IriSP.Widgets.Sparkline.prototype.draw = function() {
     });
     
     this.onMediaEvent("timeupdate","onTimeupdate");
-}
+};
 
 IriSP.Widgets.Sparkline.prototype.onTimeupdate = function(_time) {
     var _x = Math.floor( this.width * _time / this.media.duration);
@@ -88,4 +88,4 @@ IriSP.Widgets.Sparkline.prototype.onTimeupdate = function(_time) {
     this.ligneProgress.attr({
         "path" : "M" + _x + " 0L" + _x + " " + this.height
     });
-}
+};

@@ -1,0 +1,487 @@
+{
+    "format": "http://advene.org/ns/cinelab/", 
+    "url": "2013-05-06_14-53-10", 
+    "annotation_types": [
+        {
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "id": "performance"
+        }, 
+        {
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "id": "discussion"
+        }, 
+        {
+            "id": "interpretation"
+        }, 
+        {
+            "id": "textnote"
+        }, 
+        {
+            "meta": {
+                "trim": "drop", 
+                "track": "primary"
+            }, 
+            "id": "a_supprimer"
+        }
+    ], 
+    "medias": [
+        {
+            "url": "original.mkv", 
+            "origin": 0, 
+            "meta": {
+                "profile": "Video Camera", 
+                "audio_channels": 2, 
+                "ratio": "16_9", 
+                "audio_samplerate": 44100, 
+                "width": 1920, 
+                "is_original": true, 
+                "height": 1080, 
+                "video_height": 1080, 
+                "duration": 9410630, 
+                "video_codec": "h264", 
+                "video_width": 1920, 
+                "video_framerate": 30, 
+                "is_main": true
+            }, 
+            "id": "primary", 
+            "unit": "ms"
+        }
+    ], 
+    "meta": {
+        "dc:contributor": "Pierre Gandar", 
+        "oeuvre": "Chatte sur un toit brûlant", 
+        "dc:language": "fr", 
+        "dc:creator": "Pierre Gandar", 
+        "dc:title": "Travail sur l'acte 3", 
+        "director": "Claudia STAVISKY", 
+        "dc:created": "2013-05-06T14:53:12.605396", 
+        "media_type": "video", 
+        "recorder": "easycast-c4", 
+        "dc:modified": "2013-05-06T14:53:12.605396"
+    }, 
+    "annotations": [
+        {
+            "begin": 8123, 
+            "end": 2231933, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt,Grand Papa Pollitt,Mae,Gooper,Le Révérend Tooker,Le Docteur Baugh", 
+                    "commentaire": "", 
+                    "ref_text": "Italienne de l'acte 3"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a1"
+        }, 
+        {
+            "begin": 2231933, 
+            "end": 6557598, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt,Grand Papa Pollitt,Mae,Gooper,Le Révérend Tooker,Le Docteur Baugh", 
+                    "commentaire": "", 
+                    "ref_text": "Travail sur l'acte 3 référence texte: 58-1"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a2"
+        }, 
+        {
+            "begin": 2360792, 
+            "end": 2360792, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "text/plain", 
+                "data": "l'énérvement de la nature accompagne l'énervement des personnages. Personne n'est dans son état normal"
+            }, 
+            "type": "textnote", 
+            "id": "a3"
+        }, 
+        {
+            "begin": 2560319, 
+            "end": 2893505, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES,scène reprise", 
+                    "description": "les enfants courent partout. Tout le monde doit entrer dans la pièce avec l'envie d'en finir.", 
+                    "titre": "référence texte: 58-1"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a4"
+        }, 
+        {
+            "begin": 2893505, 
+            "end": 3420865, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "Maggie doit rester dans la chambre. La fuite de Brick et l'agitement qui règne dans la pièce font naître des suspicions chez Mae quand à ce que Brick aie lâché l'information sur les résultats médicaux à grand papa.", 
+                    "titre": "référence texte: 58-10"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a5"
+        }, 
+        {
+            "begin": 3420865, 
+            "end": 3714145, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "tout le monde s'installe autour de grand maman", 
+                    "titre": "référence texte: 59-14"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a6"
+        }, 
+        {
+            "begin": 3714145, 
+            "end": 4052267, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "scène reprise", 
+                    "description": "reprise au début de l'acte pour trouver la dynamique de l'entrée", 
+                    "titre": "référence texte: 58-1"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a7"
+        }, 
+        {
+            "begin": 4052267, 
+            "end": 4159542, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "", 
+                    "titre": "réglage de la dynamique de la scène"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a8"
+        }, 
+        {
+            "begin": 4159542, 
+            "end": 4537415, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "\"elle évite cette discussion\". Grand maman évite toutes les discussions ou elle évite celle qu'on lui a dit qu'on aillait avoir?", 
+                    "titre": "référence texte: 58-20"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a9"
+        }, 
+        {
+            "begin": 4537415, 
+            "end": 4812000, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "scène reprise", 
+                    "description": "", 
+                    "titre": "référence texte: 58-1"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a10"
+        }, 
+        {
+            "begin": 4812000, 
+            "end": 5293147, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES,scène reprise", 
+                    "description": "", 
+                    "titre": "59-17"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a11"
+        }, 
+        {
+            "begin": 5293147, 
+            "end": 5874258, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "Tout le monde attend que Brick revienne avant de s'engouffrer dans la lourde discussion de l'héritage", 
+                    "titre": "référence texte: révérend Tooker=\"cette maison doit être la plus fraîche de tout le delta\""
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a12"
+        }, 
+        {
+            "begin": 5874258, 
+            "end": 6047316, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "scène reprise", 
+                    "description": "", 
+                    "titre": "référence texte: 60-2"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a13"
+        }, 
+        {
+            "begin": 6047316, 
+            "end": 7063480, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "scène reprise", 
+                    "description": "", 
+                    "titre": "référence texte: 60-1"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a14"
+        }, 
+        {
+            "begin": 6557598, 
+            "end": 6986803, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt,Grand Papa Pollitt,Mae,Gooper,Le Révérend Tooker,Le Docteur Baugh", 
+                    "commentaire": "parcours de Maggie dans l'espace", 
+                    "ref_text": "62-4"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a15"
+        }, 
+        {
+            "begin": 6786135, 
+            "end": 6786135, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "text/plain", 
+                "data": "Magie insiste pour que Brick reveiien dans la chambre pour ne pas que l'heritage leur échappe"
+            }, 
+            "type": "textnote", 
+            "id": "a16"
+        }, 
+        {
+            "begin": 6986803, 
+            "end": 9326538, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt,Grand Papa Pollitt,Mae,Gooper,Le Révérend Tooker,Le Docteur Baugh", 
+                    "commentaire": "", 
+                    "ref_text": "60-1"
+                }
+            }, 
+            "meta": {
+                "trim": "keep", 
+                "track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a17"
+        }, 
+        {
+            "begin": 7063480, 
+            "end": 7544144, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "Grand maman devrait se lever lorsqu'elle voit son fils arriver.", 
+                    "titre": "référence texte: 61-1"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a18"
+        }, 
+        {
+            "begin": 7544144, 
+            "end": 7699159, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "scène reprise", 
+                    "description": "", 
+                    "titre": "référence texte: 62-2"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a19"
+        }, 
+        {
+            "begin": 7699159, 
+            "end": 7997895, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "reprise du mouvement de grand maman vers Brick", 
+                    "titre": "référence texte: 61-1"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a20"
+        }, 
+        {
+            "begin": 7997895, 
+            "end": 8251832, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "scène reprise", 
+                    "description": "", 
+                    "titre": "référence texte: 62-3"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a21"
+        }, 
+        {
+            "begin": 8251832, 
+            "end": 8281499, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "intervention MES", 
+                    "description": "réglage de placements", 
+                    "titre": "référence texte: 62-3"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a22"
+        }, 
+        {
+            "begin": 8281499, 
+            "end": 8703149, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "scène reprise", 
+                    "description": "", 
+                    "titre": "référence texte: 62-1"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a23"
+        }, 
+        {
+            "begin": 8703149, 
+            "end": 8936661, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "scène reprise", 
+                    "description": "", 
+                    "titre": "référence texte: 64-9"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a24"
+        }, 
+        {
+            "begin": 8936661, 
+            "end": 9274706, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "scène reprise", 
+                    "description": "", 
+                    "titre": "référence texte: 64-2"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a25"
+        }, 
+        {
+            "begin": 9274706, 
+            "end": 9410630, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "scène reprise", 
+                    "description": "", 
+                    "titre": "référence texte: 65-2"
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a26"
+        }, 
+        {
+            "begin": 9326538, 
+            "end": 9410630, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "text/plain", 
+                "data": "pause cigarette"
+            }, 
+            "meta": {
+                "trim": "drop", 
+                "track": "primary"
+            }, 
+            "type": "a_supprimer", 
+            "id": "a27"
+        }
+    ]
+}

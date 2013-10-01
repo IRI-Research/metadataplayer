@@ -16,7 +16,7 @@ IriSP.Widgets.MediaList.prototype.messages = {
         all_media: "All videos",
         other_media: "Other videos"
     }
-}
+};
 
 IriSP.Widgets.MediaList.prototype.defaults = {
     default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png",
@@ -54,7 +54,7 @@ IriSP.Widgets.MediaList.prototype.onSearch = function(searchString) {
             this.player.trigger("search.noMatchFound");
         }
     }
-}
+};
 
 IriSP.Widgets.MediaList.prototype.draw = function() {
     this.$.addClass("Ldt-MediaListWidget")
@@ -63,7 +63,7 @@ IriSP.Widgets.MediaList.prototype.draw = function() {
     if (typeof this.media.getMedias === "function") {
         this.media.on("enter-annotation", function(_a) {
             _this.redraw(_a.getMedia());
-        })
+        });
     }
     this.redraw();
 };
@@ -81,9 +81,9 @@ IriSP.Widgets.MediaList.prototype.getSegments = function(_media) {
                 left: _scale * _annotation.begin,
                 width: _scale * (_annotation.end - _annotation.begin),
                 color: ( typeof _annotation.color !== "undefined" && _annotation.color ? _annotation.color : _this.default_color )
-            }
-        })
-}
+            };
+        });
+};
 
 IriSP.Widgets.MediaList.prototype.redraw = function(_media) {
     if (typeof _media !== "undefined") {
@@ -121,7 +121,7 @@ IriSP.Widgets.MediaList.prototype.redraw = function(_media) {
                 title: _media.title,
                 description: _media.description,
                 segments: _this.getSegments(_media)
-            })
+            });
         }).join("");
         this.$.find('.Ldt-MediaList-OtherList').html(_html);
     } else {

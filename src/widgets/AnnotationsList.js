@@ -53,7 +53,7 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         voice_annotation: "Annotation Vocale",
         now_playing: "Lecture en cours..."
     }
-}
+};
 
 IriSP.Widgets.AnnotationsList.prototype.template =
     '<div class="Ldt-AnnotationsListWidget">'
@@ -102,7 +102,7 @@ IriSP.Widgets.AnnotationsList.prototype.ajaxSource = function() {
     this.currentSource = this.player.loadMetadata(IriSP._.defaults({
         "url" : _url
     }, this.metadata));
-}
+};
 
 IriSP.Widgets.AnnotationsList.prototype.ajaxMashup = function() {
     var _currentTime = this.media.getCurrentTime();
@@ -119,7 +119,7 @@ IriSP.Widgets.AnnotationsList.prototype.ajaxMashup = function() {
             "url" : _url
         }, this.metadata));
     }
-}
+};
 
 IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
     _forceRedraw = (typeof _forceRedraw !== "undefined" && _forceRedraw);
@@ -146,7 +146,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         /* Get the n annotations closest to current timecode */
         _list = _list.sortBy(function(_annotation) {
             return Math.abs((_annotation.begin + _annotation.end) / 2 - _currentTime);
-        }).slice(0, this.limit_count)
+        }).slice(0, this.limit_count);
     }
     if (this.newest_first) {
         _list = _list.sortBy(function(_annotation) {
@@ -233,10 +233,10 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         height: 1,
                         events: {
                             onPause: function() {
-                                _this.$.find(".Ldt-AnnotationsList-Play[data-annotation-id=" + _annotation.id + "]").text(_this.l10n.voice_annotation)
+                                _this.$.find(".Ldt-AnnotationsList-Play[data-annotation-id=" + _annotation.id + "]").text(_this.l10n.voice_annotation);
                             },
                             onPlay: function() {
-                                _this.$.find(".Ldt-AnnotationsList-Play[data-annotation-id=" + _annotation.id + "]").text(_this.l10n.now_playing)
+                                _this.$.find(".Ldt-AnnotationsList-Play[data-annotation-id=" + _annotation.id + "]").text(_this.l10n.now_playing);
                             }
                         }
                     });
@@ -312,7 +312,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         }
     }
     return _list.length;
-}
+};
 
 IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     
@@ -372,7 +372,7 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     
     if (this.refresh_interval) {
         window.setInterval(function() {
-            _this.currentSource.get()
+            _this.currentSource.get();
         }, this.refresh_interval);
     }
     

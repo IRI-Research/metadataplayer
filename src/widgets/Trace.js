@@ -1,7 +1,7 @@
 IriSP.Widgets.Trace = function(player, config) {
   IriSP.Widgets.Widget.call(this, player, config);
     
-}
+};
 
 IriSP.Widgets.Trace.prototype = new IriSP.Widgets.Widget();
 
@@ -13,7 +13,7 @@ IriSP.Widgets.Trace.prototype.defaults = {
     default_subject: "IRI",
     tracer: null,
     extend: false
-}
+};
 
 IriSP.Widgets.Trace.prototype.draw = function() {
   if (typeof window.tracemanager === "undefined") {
@@ -37,7 +37,7 @@ IriSP.Widgets.Trace.prototype.draw = function() {
     IriSP._(_medialisteners).each(function(_ms, _listener) {
         var _f = function(_arg) {
             _this.eventHandler(_listener, _arg);
-        }
+        };
         if (_ms) {
             _f = IriSP._.throttle(_f, _ms);
         }
@@ -47,7 +47,7 @@ IriSP.Widgets.Trace.prototype.draw = function() {
     IriSP._(_annlisteners).each(function(_ms, _listener) {
         var _f = function(_arg) {
             _this.eventHandler(_listener, _arg);
-        }
+        };
         if (_ms) {
             _f = IriSP._.throttle(_f, _ms);
         }
@@ -93,15 +93,15 @@ IriSP.Widgets.Trace.prototype.draw = function() {
         }
         _this.eventHandler('UIEvent', _data);
     });
-}
+};
 
 IriSP.Widgets.Trace.prototype.eventHandler = function(_listener, _arg) {
     var _traceName = 'Mdp_';
     if (typeof _arg == "string" || typeof _arg == "number") {
-        _arg = { "value" : _arg }
+        _arg = { "value" : _arg };
     }
     if (typeof _arg == "undefined") {
-        _arg = {}
+        _arg = {};
     }
     switch(_listener) {
         case 'UIEvent':
@@ -127,4 +127,4 @@ IriSP.Widgets.Trace.prototype.eventHandler = function(_listener, _arg) {
     if (this.js_console && typeof window.console !== "undefined" && typeof console.log !== "undefined") {
         console.log("tracer.trace('" + _traceName + "', " + JSON.stringify(_arg) + ");");
     }
-}
+};

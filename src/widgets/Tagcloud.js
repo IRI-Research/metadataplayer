@@ -1,7 +1,7 @@
 IriSP.Widgets.Tagcloud = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
     this.stopwords = IriSP._.uniq([].concat(this.custom_stopwords).concat(this.stopword_lists[this.stopword_language]));
-}
+};
 
 IriSP.Widgets.Tagcloud.prototype = new IriSP.Widgets.Widget();
 
@@ -22,7 +22,7 @@ IriSP.Widgets.Tagcloud.prototype.defaults = {
     segment_annotation_type: false,
     min_font_size: 10,
     max_font_size: 26
-}
+};
 
 IriSP.Widgets.Tagcloud.prototype.stopword_lists = {
     "fr" : [
@@ -36,7 +36,7 @@ IriSP.Widgets.Tagcloud.prototype.stopword_lists = {
         'get', 'here', 'http', 'like', 'more', 'one', 'our', 'she', 'that', 'the', 'their', 'then', 'there',
         'they', 'this', 'very', 'what', 'when', 'where', 'who', 'why', 'will', 'with', 'www', 'you', 'your'
     ]
-}
+};
 
 IriSP.Widgets.Tagcloud.prototype.draw = function() {
     
@@ -45,12 +45,12 @@ IriSP.Widgets.Tagcloud.prototype.draw = function() {
         this.source.getAnnotationsByTypeTitle(this.segment_annotation_type).forEach(function(_a) {
             _a.on("enter", function() {
                 _this.redraw(_a.begin, _a.end);
-            })
+            });
         });
     } else {
         this.redraw();
     }
-}
+};
 
 IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
     var _urlRegExp = /https?:\/\/[0-9a-zA-Z\.%\/-_]+/g,
@@ -62,7 +62,7 @@ IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
     if (typeof _from !== "undefined" && typeof _to !== "undefined") {
         _annotations = _annotations.filter(function(_annotation) {
             return _annotation.begin >= _from && _annotation.end <= _to;
-        })
+        });
     }
     
     _annotations.forEach(function(_annotation) {
@@ -76,7 +76,7 @@ IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
            if (IriSP._(_this.stopwords).indexOf(_word) == -1 && (!_this.exclude_pattern || !_this.exclude_pattern.test(_word))) {
                _words[_word] = 1 + (_words[_word] || 0);
            }
-       })
+       });
     });
     _words = IriSP._(_words)
         .chain()
@@ -84,7 +84,7 @@ IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
             return {
                 "word" : _k,
                 "count" : _v
-            }
+            };
         })
         .filter(function(_v) {
             return _v.count > 2;
@@ -109,7 +109,7 @@ IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
     });
     this.source.getAnnotations().on("search", this.functionWrapper("onSearch"));
     this.source.getAnnotations().on("search-cleared", this.functionWrapper("onSearch"));
-}
+};
 
 IriSP.Widgets.Tagcloud.prototype.onSearch = function(searchString) {
     searchString = typeof searchString !== "undefined" ? searchString : '';
@@ -125,4 +125,4 @@ IriSP.Widgets.Tagcloud.prototype.onSearch = function(searchString) {
             _el.html(_txt);
         }
     });
-}
+};

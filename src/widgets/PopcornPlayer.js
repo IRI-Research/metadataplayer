@@ -7,7 +7,7 @@ IriSP.Widgets.PopcornPlayer.prototype = new IriSP.Widgets.Widget();
 /* A Popcorn-based player for HTML5 Video, Youtube and Vimeo */
 
 IriSP.Widgets.PopcornPlayer.prototype.defaults = {
-}
+};
 
 IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
 
@@ -112,7 +112,7 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
         getVolume();
         _media.trigger("loadedmetadata");
         _media.trigger("volumechange");
-    })
+    });
     
     _popcorn.on("timeupdate", function() {
         _media.trigger("timeupdate", new IriSP.Model.Time(1000*_popcorn.currentTime()));
@@ -121,7 +121,7 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
     _popcorn.on("volumechange", function() {
         getVolume();
         _media.trigger("volumechange");
-    })
+    });
     
     _popcorn.on("play", function() {
         _media.trigger("play");
@@ -135,4 +135,4 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
         _media.trigger("seeked");
     });
     
-}
+};

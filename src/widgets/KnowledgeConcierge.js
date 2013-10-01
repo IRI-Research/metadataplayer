@@ -14,7 +14,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.defaults = {
     use_word_boundaries: false,
     related_data_type: 'json', // SET TO "jsonp" FOR CROSS-DOMAIN OPERATION
     related_count: 8,
-}
+};
 
 IriSP.Widgets.KnowledgeConcierge.prototype.messages = {
     "fr": {
@@ -29,7 +29,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.messages = {
         for_keywords_: "for keyword(s):",
         no_matching_videos: "No matching videos"
     }
-}
+};
 
 IriSP.Widgets.KnowledgeConcierge.prototype.template =
     '<div class="Ldt-Kc-Slider"></div><canvas class="Ldt-Kc-Canvas" />'
@@ -55,7 +55,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
         height: _canvasHeight
     });
     var _this = this,
-        _pjsfiles = IriSP._(this.sketch_files).map(function(_f) { return _this.sketch_path + "/" + _f }),
+        _pjsfiles = IriSP._(this.sketch_files).map(function(_f) { return _this.sketch_path + "/" + _f; }),
         _selectedText = "",
         currentNodesList = "",
         relatedCache = {},
@@ -83,7 +83,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
                     description: media.description.replace(/(\n|\r|\r\n)/mg,' ').replace(/(^.{120,140})[\s].+$/m,'$1&hellip;'),
                     duration: new IriSP.Model.Time(media.duration).toString(),
                     escaped_keyword: encodeURIComponent(keywords.split(",")[0])
-                }
+                };
                 _html += Mustache.to_html(relatedTemplate, _tmpldata);
                 if (i % 2) {
                     _html += '</div><div class="Ldt-Kc-Row">';
@@ -164,7 +164,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
                         .value();
                     renderRelated();
                 }
-            })
+            });
         } else {
             renderRelated();
         }
@@ -291,7 +291,7 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
                 triggerSearch();
             }
         }
-    }
+    };
     var uselessfuncts = [
         "selectnode", "selectedge", "topicnode","group_shapes",
         "allbackup", "allretrieve", "new_topic", "pedia", "set_mode",
@@ -325,9 +325,9 @@ IriSP.Widgets.KnowledgeConcierge.prototype.draw = function() {
     if (keywmatch) {
         this.player.on("widgets-loaded", function() {
             triggerSearch(decodeURIComponent(keywmatch[1]));
-        })
+        });
     }
     
     bindJavascript();
     
-}
+};

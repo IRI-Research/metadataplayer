@@ -9,7 +9,7 @@ IriSP.Widgets.MultiSegments.prototype.defaults = {
     annotation_start_minimized: true,
     annotation_show_annotation_type: true,
     show_all: false
-}
+};
 
 IriSP.Widgets.MultiSegments.prototype.draw = function() {
     var _this = this,
@@ -24,7 +24,7 @@ IriSP.Widgets.MultiSegments.prototype.draw = function() {
         if (/^annotation_/.test(_k)) {
             annotationopts[_k.replace(/^annotation_/,"")] = _v;
         }
-    })
+    });
     this.source.getAnnotationTypes().forEach(function(_anntype) {
         var segments = _anntype.getAnnotations().filter(function(_ann) {
             return _ann.getDuration() > 0;
@@ -54,7 +54,7 @@ IriSP.Widgets.MultiSegments.prototype.draw = function() {
                         this.annotationWidget.slideDown();
                     }
                 }
-            }
+            };
                 
                 
             line.segmentWidget
@@ -96,7 +96,7 @@ IriSP.Widgets.MultiSegments.prototype.draw = function() {
             lines.push(line);
         }
     });
-    var _annotationWidgets = _this.$.find(".Ldt-MultiSegments-Annotation")
+    var _annotationWidgets = _this.$.find(".Ldt-MultiSegments-Annotation");
     
     function checkVisibilities(_time) {
         if (!_this.show_all && currentLine && !currentLine.hasSegmentsNow()) {
@@ -119,4 +119,4 @@ IriSP.Widgets.MultiSegments.prototype.draw = function() {
     }
     
     this.onMediaEvent("timeupdate", checkVisibilities);
-}
+};

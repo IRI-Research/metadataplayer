@@ -6,7 +6,7 @@ IriSP.Widgets.AutoPlayer.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.AutoPlayer.prototype.defaults = {
     default_type: "JwpPlayer"
-}
+};
 
 IriSP.Widgets.AutoPlayer.prototype.draw = function() {
     
@@ -52,7 +52,7 @@ IriSP.Widgets.AutoPlayer.prototype.draw = function() {
     }
     
     if (typeof _opts.type === "undefined") {
-        _opts.type = this.default_type
+        _opts.type = this.default_type;
     }
     
     if (_opts.type === "AdaptivePlayer") {
@@ -73,4 +73,4 @@ IriSP.Widgets.AutoPlayer.prototype.draw = function() {
 
     this.insertSubwidget(this.$, _opts);
     
-}
+};
