@@ -22,6 +22,7 @@ IriSP.Widgets.Polemic.prototype.defaults = {
     element_height : 5,
     max_elements: 20,
     annotation_type : "tweet",
+    only_allow_zero_duration_annotations: true,
     defaultcolor : "#585858",
     foundcolor : "#fc00ff",
     polemics : [
@@ -71,10 +72,14 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
         _slice_count = Math.floor( this.width / this.element_width ),
         _duration = this.source.getDuration(),
         _max = 0,
-        _list = this.getWidgetAnnotations().filter(function(_a) {
+        _this = this,
+        _list = this.getWidgetAnnotations();
+    
+    if (this.only_allow_zero_duration_annotations) {
+        _list = _list.filter(function(_a) {
             return !_a.getDuration().milliseconds;
-        }),
-        _this = this;
+        });
+    }
     
     for (var _i = 0; _i < _slice_count; _i++) {
         var _begin = new IriSP.Model.Time( _i * _duration / _slice_count ),
@@ -140,12 +145,12 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     return false;
                 });
                 IriSP.attachDndData(_el, {
-                	title: _annotation.title,
-                	description: _annotation.description,
-                	image: _annotation.thumbnail,
-                	uri: (typeof _annotation.url !== "undefined" 
-		                ? _annotation.url
-		                : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id))
+                    title: _annotation.title,
+                    description: _annotation.description,
+                    image: _annotation.thumbnail,
+                    uri: (typeof _annotation.url !== "undefined" 
+                        ? _annotation.url
+                        : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id))
                 });
                 _annotation.on("select", function() {
                     if (_this.tooltip) {

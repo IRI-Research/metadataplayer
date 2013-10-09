@@ -25,7 +25,6 @@ IriSP.Widgets.Arrow.prototype.draw = function() {
         overflow: "hidden"
     });
     this.paper = new Raphael(this.container, this.width, 1+this.height );
-    window.myArrow = this;
     this.svgArrow = this.paper.path('M0,' + this.height + 'L' + this.width + ',' + this.height);
     this.svgArrow.attr({
         stroke: this.stroke_color,
