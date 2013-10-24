@@ -7,7 +7,8 @@ IriSP.Widgets.Renkan.prototype = new IriSP.Widgets.Widget();
 IriSP.Widgets.Renkan.prototype.defaults = {
     annotation_regexp: /player\/([a-zA-Z0-9_-]+)\/.*id=([a-zA-Z0-9_-]+)/,
     tag_regexp: /search=([^&=]+)/,
-    min_duration: 5000
+    min_duration: 5000,
+    renkan_options: {}
 };
 
 IriSP.Widgets.Renkan.prototype.messages = {
@@ -24,14 +25,15 @@ IriSP.Widgets.Renkan.prototype.draw = function() {
     this.renderTemplate();
     var _id = IriSP.Model.getUID();
     this.$.find(".Ldt-Renkan").attr("id", _id);
-    this.renkan = new Rkns.Renkan({
+    var renkan_options = IriSP._.extend({
         container: _id,
         editor_mode: false,
         show_bins: false,
         show_top_bar: false,
         force_resize: true,
         language: IriSP.language
-    });
+    }, this.renkan_options);
+    this.renkan = new Rkns.Renkan(renkan_options);
     this.node_times = [];
     var _this = this,
         _list = this.getWidgetAnnotations();

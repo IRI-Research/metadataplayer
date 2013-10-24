@@ -64,10 +64,10 @@
     <target name="minify" depends="concatenate-player">
         <jscomp compilationLevel="simple" warning="quiet" debug="false"
         output="../../build/LdtPlayer.min.raw.js">
-            <externs dir="${basedir}/../../res/">
-                <file name="js/jquery.min.js" />
-                <file name="js/jquery-ui.min.js" />
-                <file name="js/swfobject.js" />
+            <externs dir="${basedir}/../../src/js/">
+                <file name="libs/jquery.min.js" />
+                <file name="libs/jquery-ui.min.js" />
+                <file name="libs/swfobject.js" />
             </externs>
             <sources dir="${basedir}/../../build">
                 <file name="LdtPlayer-core.js" />

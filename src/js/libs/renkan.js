@@ -1,17 +1,11 @@
-          /* *********************************************************
-                  File generated on Wed May 15 15:42:55 CEST 2013
-          ************************************************************
-                          start of      main.js
-          ********************************************************* */
-
 /* 
-    _____            _               
-   |  __ \          | |              
-   | |__) |___ _ __ | | ____ _ _ __  
-   |  _  // _ \ '_ \| |/ / _` | '_ \ 
-   | | \ \  __/ | | |   < (_| | | | |
-   |_|  \_\___|_| |_|_|\_\__,_|_| |_|
-
+ *    _____            _               
+ *   |  __ \          | |              
+ *   | |__) |___ _ __ | | ____ _ _ __  
+ *   |  _  // _ \ '_ \| |/ / _` | '_ \ 
+ *   | | \ \  __/ | | |   < (_| | | | |
+ *   |_|  \_\___|_| |_|_|\_\__,_|_| |_|
+ *
  *  Copyright 2012-2013 Institut de recherche et d'innovation 
  *  contributor(s) : Yves-Marie Haussonne, Raphael Velt, Samuel Huron
  *   
@@ -28,18 +22,21 @@
  *  The fact that you are presently reading this means that you have had
  *  knowledge of the CeCILL-C license and that you accept its terms.
 */
-
 /* Declaring the Renkan Namespace Rkns and Default values */
 
-if (typeof Rkns !== "object") {
-    Rkns = {};
+(function(root) {
+
+"use strict";
+
+if (typeof root.Rkns !== "object") {
+    root.Rkns = {};
 }
 
-Rkns.$ = jQuery;
+var Rkns = root.Rkns;
+var $ = Rkns.$ = root.jQuery;
+var _ = Rkns._ = root._;
 
-Rkns._ = _;
-
-Rkns.VERSION = '0.2';
+Rkns.VERSION = '0.2.2';
 
 Rkns.pickerColors = ["#8f1919", "#a80000", "#d82626", "#ff0000", "#e87c7c", "#ff6565", "#f7d3d3", "#fecccc",
     "#8f5419", "#a85400", "#d87f26", "#ff7f00", "#e8b27c", "#ffb265", "#f7e5d3", "#fee5cc",
@@ -50,7 +47,9 @@ Rkns.pickerColors = ["#8f1919", "#a80000", "#d82626", "#ff0000", "#e87c7c", "#ff
     "#8f198f", "#a800a8", "#d826d8", "#ff00fe", "#e87ce8", "#ff65fe", "#f7d3f7", "#feccfe",
     "#000000", "#242424", "#484848", "#6d6d6d", "#919191", "#b6b6b6", "#dadada", "#ffffff"];
 
-Rkns._BaseBin = function(_renkan, _opts) {
+Rkns.__renkans = [];
+
+var _BaseBin = Rkns._BaseBin = function(_renkan, _opts) {
     if (typeof _renkan !== "undefined") {
         this.renkan = _renkan;
         this.renkan.$.find(".Rk-Bin-Main").hide();
@@ -111,19 +110,21 @@ Rkns._BaseBin = function(_renkan, _opts) {
     }
 };
 
-Rkns._BaseBin.prototype.destroy = function() {
+_BaseBin.prototype.destroy = function() {
     this.$.detach();
     this.renkan.resizeBins();
 };
 
 /* Point of entry */
 
-Rkns.Renkan = function(_opts) {
+var Renkan = Rkns.Renkan = function(_opts) {
     var _this = this;
+    
+    Rkns.__renkans.push(this);
     
     this.options = _.defaults(_opts, Rkns.defaults);
         
-    Rkns._(this.options.property_files).each(function(f) {
+    _(this.options.property_files).each(function(f) {
         Rkns.$.getJSON(f, function(data) {
             _this.options.properties = _this.options.properties.concat(data);
         });
@@ -140,26 +141,41 @@ Rkns.Renkan = function(_opts) {
     this.$
         .addClass("Rk-Main")
         .html(this.template(this));
-    this.renderer = new Rkns.Renderer.Scene(this);
+    
     this.tabs = [];
     this.search_engines = [];
 
     this.current_user_list = new Rkns.Models.UsersList();
     
+    this.current_user_list.on("add remove", function() {
+        if (this.renderer) {
+            this.renderer.redrawUsers();
+        }
+    });
+    
+    this.colorPicker = (function() {
+        var _tmpl = _.template('<li data-color="<%=c%>" style="background: <%=c%>"></li>');
+        return '<ul class="Rk-Edit-ColorPicker">' + Rkns.pickerColors.map(function(c) { return _tmpl({c:c})}).join("") + '</ul>'
+    })();
+    
+    if (this.options.show_editor) {
+        this.renderer = new Rkns.Renderer.Scene(this);
+    }
+    
     if (!this.options.search.length) {
         this.$.find(".Rk-Web-Search-Form").detach();
     } else {
-        var _tmpl = Rkns._.template('<li class="<%= className %>" data-key="<%= key %>"><%= title %></li>'),
+        var _tmpl = _.template('<li class="<%= className %>" data-key="<%= key %>"><%= title %></li>'),
             _select = this.$.find(".Rk-Search-List"),
             _input = this.$.find(".Rk-Web-Search-Input"),
             _form = this.$.find(".Rk-Web-Search-Form");
-        Rkns._(this.options.search).each(function(_search, _key) {
+        _(this.options.search).each(function(_search, _key) {
             if (Rkns[_search.type] && Rkns[_search.type].Search) {
                 _this.search_engines.push(new Rkns[_search.type].Search(_this, _search));
             }
         });
         _select.html(
-            Rkns._(this.search_engines).map(function(_search, _key) {
+            _(this.search_engines).map(function(_search, _key) {
                 return _tmpl({
                     key: _key,
                     title: _search.getSearchTitle(),
@@ -187,7 +203,7 @@ Rkns.Renkan = function(_opts) {
         );
         this.setSearchEngine(0);
     }
-    Rkns._(this.options.bins).each(function(_bin) {
+    _(this.options.bins).each(function(_bin) {
         if (Rkns[_bin.type] && Rkns[_bin.type].Bin) {
             _this.tabs.push(new Rkns[_bin.type].Bin(_this, _bin));
         }
@@ -202,13 +218,17 @@ Rkns.Renkan = function(_opts) {
                 _this.$.find(".Rk-Bin-Main").slideUp();
                 _mainDiv.slideDown();
             }
-        }).on("mouseover", ".Rk-Bin-Item", function(_e) {
+        });
+    
+    if (this.options.show_editor) {
+        
+        this.$.find(".Rk-Bins").on("mouseover", ".Rk-Bin-Item", function(_e) {
             var _t = Rkns.$(this);
             if (_t && $(_t).attr("data-uri")) {
                 var _models = _this.project.get("nodes").where({
                     uri: $(_t).attr("data-uri")
                 });
-                Rkns._(_models).each(function(_model) {
+                _(_models).each(function(_model) {
                     _this.renderer.highlightModel(_model);
                 });
             }
@@ -253,32 +273,48 @@ Rkns.Renkan = function(_opts) {
                 e.originalEvent.dataTransfer.setData("text",div.innerHTML);
             }
         });
+        
+    }
+    
     Rkns.$(window).resize(function() {
         _this.resizeBins();
     });
     
+    var lastsearch = false, lastval = '';
+    
     this.$.find(".Rk-Bins-Search-Input").on("change keyup paste input", function() {
-       var val = Rkns.$(this).val();
-       Rkns._(_this.tabs).each(function(tab) {
-           tab.render(val);
-       });
+        var val = Rkns.$(this).val();
+        if (val === lastval) {
+            return;
+        }
+        var search = Rkns.Utils.regexpFromTextOrArray(val.length > 1 ? val: null);
+        if (search.source === lastsearch) {
+            return;
+        }
+        lastsearch = search.source;
+        _(_this.tabs).each(function(tab) {
+            tab.render(search);
+        });
+        
     });
     this.$.find(".Rk-Bins-Search-Form").submit(function() {
         return false;
     });
+    
 };
 
-Rkns.Renkan.prototype.template = Rkns._.template(
+Renkan.prototype.template = _.template(
     '<% if (options.show_bins) { %><div class="Rk-Bins"><div class="Rk-Bins-Head"><h2 class="Rk-Bins-Title"><%- translate("Select contents:")%></h2>'
     + '<form class="Rk-Web-Search-Form Rk-Search-Form"><input class="Rk-Web-Search-Input Rk-Search-Input" type="search" placeholder="<%- translate("Search the Web") %>" />'
     + '<div class="Rk-Search-Select"><div class="Rk-Search-Current"></div><ul class="Rk-Search-List"></ul></div>'
     + '<input type="submit" value="" class="Rk-Web-Search-Submit Rk-Search-Submit" title="<%- translate("Search the Web") %>" /></form>'
     + '<form class="Rk-Bins-Search-Form Rk-Search-Form"><input class="Rk-Bins-Search-Input Rk-Search-Input" type="search" placeholder="<%- translate("Search in Bins") %>" />'
     + '<input type="submit" value="" class="Rk-Bins-Search-Submit Rk-Search-Submit" title="<%- translate("Search in Bins") %>" /></form></div>'
-    + '<ul class="Rk-Bin-List"></ul></div><% } %><div class="Rk-Render Rk-Render-<% if (options.show_bins) { %>Panel<% } else { %>Full<% } %>"></div>'
+    + '<ul class="Rk-Bin-List"></ul></div><% } %>'
+    + '<% if (options.show_editor) { %><div class="Rk-Render Rk-Render-<% if (options.show_bins) { %>Panel<% } else { %>Full<% } %>"></div><% } %>'
 );
 
-Rkns.Renkan.prototype.translate = function(_text) {
+Renkan.prototype.translate = function(_text) {
     if (Rkns.i18n[this.options.language] && Rkns.i18n[this.options.language][_text]) {
         return Rkns.i18n[this.options.language][_text];
     }
@@ -288,16 +324,16 @@ Rkns.Renkan.prototype.translate = function(_text) {
     return _text;
 };
 
-Rkns.Renkan.prototype.onStatusChange = function() {
+Renkan.prototype.onStatusChange = function() {
     this.renderer.onStatusChange();
 };
 
-Rkns.Renkan.prototype.setSearchEngine = function(_key) {
+Renkan.prototype.setSearchEngine = function(_key) {
     this.search_engine = this.search_engines[_key];
     this.$.find(".Rk-Search-Current").attr("class","Rk-Search-Current " + this.search_engine.getBgClass());
 };
 
-Rkns.Renkan.prototype.resizeBins = function() {
+Renkan.prototype.resizeBins = function() {
     var _d = + this.$.find(".Rk-Bins-Head").outerHeight();
     this.$.find(".Rk-Bin-Title:visible").each(function() {
         _d += Rkns.$(this).outerHeight();
@@ -310,10 +346,10 @@ Rkns.Renkan.prototype.resizeBins = function() {
 /* Utility functions */
 
 Rkns.Utils = {
-    _ID_AUTO_INCREMENT : 0,
-    _ID_BASE : (function(_d) {
-        
-        function pad(n){return n<10 ? '0'+n : n;}
+    getUID : (function() {
+        function pad(n){
+            return n<10 ? '0'+n : n;
+        }
         function fillrand(n) {
             var _res = '';
             for (var i=0; i<n; i++) {
@@ -321,22 +357,19 @@ Rkns.Utils = {
             }
             return _res;
         }
-        return _d.getUTCFullYear() + '-'  
+        var _d = new Date(),
+            ID_AUTO_INCREMENT = 0,
+            ID_BASE = _d.getUTCFullYear() + '-'  
             + pad(_d.getUTCMonth()+1) + '-'  
             + pad(_d.getUTCDate()) + '-'
             + fillrand(16);
-        
-    })(new Date()),
-    getUID : function(_base) {
-        
-        var _n = (++this._ID_AUTO_INCREMENT).toString(16),
-            _base = (typeof _base === "undefined" ? "" : _base + "-" );
-        while (_n.length < 4) {
-            _n = '0' + _n;
+        return function(_base) {
+            var _n = (++ID_AUTO_INCREMENT).toString(16),
+                _base = (typeof _base === "undefined" ? "" : _base + "-" );
+            while (_n.length < 4) { _n = '0' + _n; }
+            return _base + this._ID_BASE + '-' + _n;
         }
-        return _base + this._ID_BASE + '-' + _n;
-        
-    },
+    })(),
     getFullURL : function(url) {
         
         if(typeof(url) == 'undefined' || url == null ) {
@@ -364,21 +397,92 @@ Rkns.Utils = {
                 this._initialized = true;
             }
         };
-        Rkns._(_class.prototype).extend(_baseClass.prototype);
+        _(_class.prototype).extend(_baseClass.prototype);
         return _class;
         
-    }
+    },
+    regexpFromTextOrArray: (function() {
+        var charsub = [
+                '[aáàâä]',
+                '[cç]',
+                '[eéèêë]',
+                '[iíìîï]',
+                '[oóòôö]',
+                '[uùûü]'
+            ],
+            removeChars = [
+                String.fromCharCode(768), String.fromCharCode(769), String.fromCharCode(770), String.fromCharCode(771), String.fromCharCode(807),
+                "｛", "｝", "（", "）", "［", "］", "【", "】", "、", "・", "‥", "。", "「", "」", "『", "』", "〜", "：", "！", "？", "　",
+                ",", " ", ";", "(", ")", ".", "*", "+", "\\", "?", "|", "{", "}", "[", "]", "^", "#", "/"
+            ],
+            remsrc = "[\\" + removeChars.join("\\") + "]",
+            remrx = new RegExp(remsrc, "gm"),
+            charsrx = _(charsub).map(function(c) {
+                return new RegExp(c);
+            });
+        
+        function replaceText(_text) {
+            var txt = _text.toLowerCase().replace(remrx,""), src = "";
+            for (var j = 0; j < txt.length; j++) {
+                if (j) {
+                    src += remsrc + "*";
+                }
+                var l = txt[j];
+                _(charsub).each(function(v, k) {
+                    l = l.replace(charsrx[k], v);
+                });
+                src += l;
+            }
+            return src;
+        }
+        
+        function getSource(inp) {
+            switch (typeof inp) {
+                case "string":
+                    return replaceText(inp);
+                case "object":
+                    var src = '';
+                    _(inp).each(function(v) {
+                        var res = getSource(v);
+                        if (res) {
+                            if (src) {
+                                src += '|';
+                            }
+                            src += res;
+                        }
+                    });
+                    return src;
+            }
+            return '';
+        }
+        
+        return function(_textOrArray) {
+            var source = getSource(_textOrArray);
+            if (source) {
+                var testrx = new RegExp( source, "im"),
+                    replacerx = new RegExp( '(' + source + ')', "igm")
+                return {
+                    isempty: false,
+                    source: source,
+                    test: function(_t) { return testrx.test(_t) },
+                    replace: function(_text, _replace) { return _text.replace(replacerx, _replace); }
+                }
+            } else {
+                return {
+                    isempty: true,
+                    source: '',
+                    test: function() { return true },
+                    replace: function(_text) { return text }
+                }
+            }
+        }
+    })()
 };
+})(window);
 
-          /* *********************************************************
-                          end of        main.js
-          ************************************************************
-          ************************************************************
-                          start of      models.js
-          ********************************************************* */
-
+/* END main.js */
 (function() {
-    
+    "use strict";
     var root = this;
         
     var Backbone = root.Backbone;
@@ -440,9 +544,9 @@ Rkns.Utils = {
                 title: this.get("title"),
                 uri: this.get("uri"),
                 description: this.get("description"),
-                color: this.get("color"),
+                color: this.get("color")
             };
-        },
+        }
     });
     
     // NODE
@@ -454,7 +558,7 @@ Rkns.Utils = {
             relatedModel: User
         }],
         prepare: function(options) {
-            project = options.project;
+            var project = options.project;
             this.addReference(options, "created_by", project.get("users"), options.created_by, project.current_user);
             options.description = options.description || "";
             return options;
@@ -472,7 +576,7 @@ Rkns.Utils = {
                 size: this.get("size"),
                 "clip-path": this.get("clip-path")
             };
-        },
+        }
     });
     
     // EDGE
@@ -493,10 +597,10 @@ Rkns.Utils = {
             type: Backbone.HasOne,
             key: "to",
             relatedModel: Node
-          },
+          }
         ],
         prepare: function(options) {
-            project = options.project;
+            var project = options.project;
             this.addReference(options, "created_by", project.get("users"), options.created_by, project.current_user);
             this.addReference(options, "from", project.get("nodes"), options.from);
             this.addReference(options, "to", project.get("nodes"), options.to);
@@ -513,7 +617,7 @@ Rkns.Utils = {
                 color: this.get("color"),
                 created_by: this.get("created_by") ? this.get("created_by").get("_id") : null
             };
-        },
+        }
     });
         
     // PROJECT
@@ -527,7 +631,7 @@ Rkns.Utils = {
             reverseRelation: {
                 key: 'project',
                 includeInJSON: '_id'
-            },
+            }
           },
           {
             type: Backbone.HasMany,
@@ -536,7 +640,7 @@ Rkns.Utils = {
             reverseRelation: {
                 key: 'project',
                 includeInJSON: '_id'
-            },
+            }
           },
           {
             type: Backbone.HasMany,
@@ -545,7 +649,7 @@ Rkns.Utils = {
             reverseRelation: {
                 key: 'project',
                 includeInJSON: '_id'
-            },
+            }
           }
         ],
         addUser: function(_props, _options) {
@@ -639,7 +743,7 @@ Rkns.Utils = {
                 project: (this.get("project") != null)?this.get("project").get("id"):null,
                 site_id: this.get("site_id")
             };
-        },
+        }
     });
     
     var UsersList = Models.UsersList = Backbone.Collection.extend({
@@ -648,14 +752,6 @@ Rkns.Utils = {
     
 
 }).call(window);
-
-
-          /* *********************************************************
-                          end of        models.js
-          ************************************************************
-          ************************************************************
-                          start of      defaults.js
-          ********************************************************* */
 
 Rkns.defaults = {
     
@@ -673,6 +769,8 @@ Rkns.defaults = {
         /* Show bins in left column */
     properties: [],
         /* Semantic properties for edges */
+    show_editor: true,
+        /* Show the graph editor... Setting this to "false" only shows the bins part ! */
     read_only: false,
         /* Allows editing of renkan without changing the rest of the GUI. Can be switched on/off on the fly to block/enable editing */
     editor_mode: true,
@@ -687,10 +785,26 @@ Rkns.defaults = {
     force_resize: false,
     allow_double_click: true,
         /* Allows Double Click to create a node on an empty background */
+    zoom_on_scroll: true,
+        /* Allows to use the scrollwheel to zoom */
     element_delete_delay: 0,
         /* Delay between clicking on the bin on an element and really deleting it
            Set to 0 for delete confirm */
     autoscale_padding: 50,
+    
+    /* TOP BAR BUTTONS */
+    show_search_field: true,
+    show_user_list: true,
+    user_name_editable: true,
+    user_color_editable: true,
+    show_save_button: true,
+    show_open_button: false,
+    show_addnode_button: true,
+    show_addedge_button: true,
+    show_bookmarklet: true,
+    show_fullscreen_button: true,
+    home_button_url: false,
+    home_button_title: "Home",
     
     /* MINI-MAP OPTIONS */
     
@@ -762,6 +876,7 @@ Rkns.defaults = {
     show_node_editor_color: true,
     show_node_editor_image: true,
     show_node_editor_creator: true,
+    uploaded_image_max_kb: 500,
     
     /* NODE TOOLTIP OPTIONS */
     
@@ -789,14 +904,6 @@ Rkns.defaults = {
     /* */
     
 };
-
-          /* *********************************************************
-                          end of        defaults.js
-          ************************************************************
-          ************************************************************
-                          start of      i18n.js
-          ********************************************************* */
-
 Rkns.i18n = {
     fr: {
         "Edit Node": "Édition d’un nœud",
@@ -812,7 +919,8 @@ Rkns.i18n = {
         "Full Screen": "Mode plein écran",
         "Add Node": "Ajouter un nœud",
         "Add Edge": "Ajouter un lien",
-        "Archive Project": "Archiver le projet",
+        "Save Project": "Enregistrer le projet",
+        "Open Project": "Ouvrir un projet",
         "Auto-save enabled": "Enregistrement automatique activé",
         "Connection lost": "Connexion perdue",
         "Created by:": "Créé par :",
@@ -827,7 +935,6 @@ Rkns.i18n = {
         "Click on the background canvas to add a node": "Cliquer sur le fond du graphe pour rajouter un nœud",
         "Click on a first node to start the edge": "Cliquer sur un premier nœud pour commencer le lien",
         "Click on a second node to complete the edge": "Cliquer sur un second nœud pour terminer le lien",
-        "Twitter": "Twitter",
         "Wikipedia": "Wikipédia",
         "Wikipedia in ": "Wikipédia en ",
         "French": "Français",
@@ -873,31 +980,43 @@ Rkns.i18n = {
         "Drag items from this website, drop them in Renkan": "Glissez des éléments de ce site web vers Renkan",
         "Drag this button to your bookmark bar. When on a third-party website, click it to enable drag-and-drop from the website to Renkan.": "Glissez ce bouton vers votre barre de favoris. Ensuite, depuis un site tiers, cliquez dessus pour activer 'Drag-to-Add' puis glissez des éléments de ce site vers Renkan"
     }
-}
+};
+/* paper-renderer.js */
 
-          /* *********************************************************
-                          end of        i18n.js
-          ************************************************************
-          ************************************************************
-                          start of      paper-renderer.js
-          ********************************************************* */
+(function(root) {
 
-Rkns.Renderer = {
-    _MIN_DRAG_DISTANCE: 2,
-    _NODE_BUTTON_WIDTH: 40,
-    _EDGE_BUTTON_INNER: 2,
-    _EDGE_BUTTON_OUTER: 40,
-    _CLICKMODE_ADDNODE : 1,
-    _CLICKMODE_STARTEDGE : 2,
-    _CLICKMODE_ENDEDGE : 3,
-    _IMAGE_MAX_KB : 500,
-    _NODE_SIZE_STEP: Math.LN2/4,
-    _MIN_SCALE: 1/20,
-    _MAX_SCALE: 20,
-    _MOUSEMOVE_RATE: 80,
-    _DOUBLETAP_DELAY: 800,
-    _DOUBLETAP_DISTANCE: 20*20,
-    _USER_PLACEHOLDER : function(_renkan) {
+"use strict";
+
+var Rkns = root.Rkns,
+    _ = Rkns._,
+    $ = Rkns.$;
+
+/* Rkns.Renderer Object */
+
+/* This object contains constants, utility functions and classes for Renkan's Graph Manipulation GUI */
+
+var Renderer = Rkns.Renderer = {},
+        /* The minimum distance (in pixels) the mouse has to move to consider an element was dragged */
+    _MIN_DRAG_DISTANCE = 2,
+        /* Distance between the inner and outer radius of buttons that appear when hovering on a node */
+    _NODE_BUTTON_WIDTH = 40,
+    _EDGE_BUTTON_INNER = 2,
+    _EDGE_BUTTON_OUTER = 40,
+        /* Constants used to know if a specific action is to be performed when clicking on the canvas */
+    _CLICKMODE_ADDNODE = 1,
+    _CLICKMODE_STARTEDGE = 2,
+    _CLICKMODE_ENDEDGE = 3,
+        /* Node size step: Used to calculate the size change when clicking the +/- buttons */
+    _NODE_SIZE_STEP = Math.LN2/4,
+    _MIN_SCALE = 1/20,
+    _MAX_SCALE = 20,
+    _MOUSEMOVE_RATE = 80,
+    _DOUBLETAP_DELAY = 800,
+        /* Maximum distance in pixels (squared, to reduce calculations)
+         * between two taps when double-tapping on a touch terminal */
+    _DOUBLETAP_DISTANCE = 20*20,
+        /* A placeholder so a default colour is displayed when a node has a null value for its user property */
+    _USER_PLACEHOLDER = function(_renkan) {
         return {
             color: _renkan.options.default_user_color,
             title: _renkan.translate("(unknown user)"),
@@ -906,17 +1025,23 @@ Rkns.Renderer = {
             }
         };
     },
-    _BOOKMARKLET_CODE: function(_renkan) {
+        /* The code for the "Drag and Add Bookmarklet", slightly minified and with whitespaces removed, though
+         * it doesn't seem that it's still a requirement in newer browsers (i.e. the ones compatibles with canvas drawing)
+         */
+    _BOOKMARKLET_CODE = function(_renkan) {
         return "(function(a,b,c,d,e,f,h,i,j,k,l,m,n,o,p,q,r){a=document;b=a.body;c=a.location.href;j='draggable';m='text/x-iri-';d=a.createElement('div');d.innerHTML='<p_style=\"position:fixed;top:0;right:0;font:bold_18px_sans-serif;color:#fff;background:#909;padding:10px;z-index:100000;\">"
         + _renkan.translate("Drag items from this website, drop them in Renkan").replace(/ /g,"_")
         + "</p>'.replace(/_/g,String.fromCharCode(32));b.appendChild(d);e=[{r:/https?:\\/\\/[^\\/]*twitter\\.com\\//,s:'.tweet',n:'twitter'},{r:/https?:\\/\\/[^\\/]*google\\.[^\\/]+\\//,s:'.g',n:'google'},{r:/https?:\\/\\/[^\\/]*lemonde\\.fr\\//,s:'[data-vr-contentbox]',n:'lemonde'}];f=false;e.forEach(function(g){if(g.r.test(c)){f=g;}});if(f){h=function(){Array.prototype.forEach.call(a.querySelectorAll(f.s),function(i){i[j]=true;k=i.style;k.borderWidth='2px';k.borderColor='#909';k.borderStyle='solid';k.backgroundColor='rgba(200,0,180,.1)';})};window.setInterval(h,500);h();};a.addEventListener('dragstart',function(k){l=k.dataTransfer;l.setData(m+'source-uri',c);l.setData(m+'source-title',a.title);n=k.target;if(f){o=n;while(!o.attributes[j]){o=o.parentNode;if(o==b){break;}}}if(f&&o.attributes[j]){p=o.cloneNode(true);l.setData(m+'specific-site',f.n)}else{q=a.getSelection();if(q.type==='Range'||!q.type){p=q.getRangeAt(0).cloneContents();}else{p=n.cloneNode();}}r=a.createElement('div');r.appendChild(p);l.setData('text/x-iri-selected-text',r.textContent.trim());l.setData('text/x-iri-selected-html',r.innerHTML);},false);})();";
     },
-    shortenText : function(_text, _maxlength) {
+        /* Shortens text to the required length then adds ellipsis */
+    shortenText = function(_text, _maxlength) {
         return (_text.length > _maxlength ? (_text.substr(0,_maxlength) + '…') : _text);
     },
-    drawEditBox : function(_options, _coords, _path, _xmargin, _selector) {
+        /* Drawing an edit box with an arrow and positioning the edit box according to the position of the node/edge being edited
+         * Called by Rkns.Renderer.NodeEditor and Rkns.Renderer.EdgeEditor */
+    drawEditBox = function(_options, _coords, _path, _xmargin, _selector) {
         _selector.css({
-            width: ( _options.tooltip_width - 2* _options.tooltip_padding ),
+            width: ( _options.tooltip_width - 2* _options.tooltip_padding )
         });
         var _height = _selector.outerHeight() + 2* _options.tooltip_padding,
             _isLeft = (_coords.x < paper.view.center.x ? 1 : -1),
@@ -956,10 +1081,15 @@ Rkns.Renderer = {
             top: (_options.tooltip_padding + _top)
         });
         return _path;
-    }
-};
+    };
 
-Rkns.Renderer._BaseRepresentation = function(_renderer, _model) {
+/* Rkns.Renderer._BaseRepresentation Class */
+
+/* In Renkan, a "Representation" is a sort of ViewModel (in the MVVM paradigm) and bridges the gap between
+ * models (written with Backbone.js) and the view (written with Paper.js)
+ * Renkan's representations all inherit from Rkns.Renderer._BaseRepresentation '*/
+
+var _BaseRepresentation = Renderer._BaseRepresentation = function(_renderer, _model) {
     if (typeof _renderer !== "undefined") {
         this.renderer = _renderer;
         this.renkan = _renderer.renkan;
@@ -991,87 +1121,88 @@ Rkns.Renderer._BaseRepresentation = function(_renderer, _model) {
     }
 };
 
-Rkns.Renderer._BaseRepresentation.prototype.super = function(_func) {
-    Rkns.Renderer._BaseRepresentation.prototype[_func].apply(this, Array.prototype.slice.call(arguments, 1));
-};
+/* Rkns.Renderer._BaseRepresentation Methods */
 
-Rkns.Renderer._BaseRepresentation.prototype.redraw = function() {};
-
-Rkns.Renderer._BaseRepresentation.prototype.moveTo = function() {};
-
-Rkns.Renderer._BaseRepresentation.prototype.show = function() {};
-
-Rkns.Renderer._BaseRepresentation.prototype.hide = function() {};
-
-Rkns.Renderer._BaseRepresentation.prototype.select = function() {
-    if (this.model) {
-        this.model.trigger("selected");
+_(_BaseRepresentation.prototype).extend({
+    _super: function(_func) {
+        return _BaseRepresentation.prototype[_func].apply(this, Array.prototype.slice.call(arguments, 1));
+    },
+    redraw: function() {},
+    moveTo: function() {},
+    show: function() {},
+    hide: function() {},
+    select: function() {
+        if (this.model) {
+            this.model.trigger("selected");
+        }
+    },
+    unselect: function() {
+        if (this.model) {
+            this.model.trigger("unselected");
+        }
+    },
+    highlight: function() {},
+    unhighlight: function() {},
+    mousedown: function() {},
+    mouseup: function() {
+        if (this.model) {
+            this.model.trigger("clicked");
+        }
+    },
+    destroy: function() {
+        if (this.model) {
+            this.model.off("change", this._changeBinding );
+            this.model.off("remove", this._removeBinding );
+            this.model.off("select", this._selectBinding );
+            this.model.off("unselect", this._unselectBinding );
+        }
     }
-};
+});
 
-Rkns.Renderer._BaseRepresentation.prototype.unselect = function() {
-    if (this.model) {
-        this.model.trigger("unselected");
-    }
-};
+/* End of Rkns.Renderer._BaseRepresentation Class */
 
-Rkns.Renderer._BaseRepresentation.prototype.highlight = function() {};
+/* Rkns.Renderer._BaseButton Class */
 
-Rkns.Renderer._BaseRepresentation.prototype.unhighlight = function() {};
+/* BaseButton is extended by contextual buttons that appear when hovering on nodes and edges */
 
-Rkns.Renderer._BaseRepresentation.prototype.mousedown = function() {};
+var _BaseButton = Renderer._BaseButton = Rkns.Utils.inherit(_BaseRepresentation);
 
-Rkns.Renderer._BaseRepresentation.prototype.mouseup = function() {
-    if (this.model) {
-        this.model.trigger("clicked");
-    }
-};
-
-Rkns.Renderer._BaseRepresentation.prototype.destroy = function() {
-    if (this.model) {
-        this.model.off("change", this._changeBinding );
-        this.model.off("remove", this._removeBinding );
-        this.model.off("select", this._selectBinding );
-        this.model.off("unselect", this._unselectBinding );
-    }
-};
-
-/* */
-
-Rkns.Renderer._BaseButton = Rkns.Utils.inherit(Rkns.Renderer._BaseRepresentation);
-
-Rkns.Renderer._BaseButton.prototype.moveTo = function(_pos) {
+_(_BaseButton.prototype).extend({
+moveTo: function(_pos) {
     this.sector.moveTo(_pos);
-};
-
-Rkns.Renderer._BaseButton.prototype.show = function() {
+},
+show: function() {
     this.sector.show();
-};
-
-Rkns.Renderer._BaseButton.prototype.hide = function() {
+},
+hide: function() {
     this.sector.hide();
-};
-
-Rkns.Renderer._BaseButton.prototype.select = function() {
+},
+select: function() {
     this.sector.select();
-};
-
-Rkns.Renderer._BaseButton.prototype.unselect = function(_newTarget) {
+},
+unselect: function(_newTarget) {
     this.sector.unselect();
     if (!_newTarget || (_newTarget !== this.source_representation && _newTarget.source_representation !== this.source_representation)) {
         this.source_representation.unselect();
     }
-};
-
-Rkns.Renderer._BaseButton.prototype.destroy = function() {
+},
+destroy: function() {
     this.sector.destroy();
-};
+}
+});
 
-/* */
+/* End of Rkns.Renderer._BaseButton Class */
 
-Rkns.Renderer.Node = Rkns.Utils.inherit(Rkns.Renderer._BaseRepresentation);
+/* Rkns.Renderer.Node Class */
 
-Rkns.Renderer.Node.prototype._init = function() {
+/* The representation for the node : A circle, with an image inside and a text label underneath.
+ * The circle and the image are drawn on canvas and managed by Paper.js.
+ * The text label is an HTML node, managed by jQuery. */
+
+var NodeRepr = Renderer.Node = Rkns.Utils.inherit(_BaseRepresentation);
+
+_(NodeRepr.prototype).extend({
+_init: function() {
     this.renderer.node_layer.activate();
     this.type = "Node";
     this.circle = new paper.Path.Circle([0, 0], 1);
@@ -1082,17 +1213,17 @@ Rkns.Renderer.Node.prototype._init = function() {
     } else {
         this.h_ratio = 0;
     }
-    this.title = Rkns.$('<div class="Rk-Label">').appendTo(this.renderer.labels_$);
+    this.title = $('<div class="Rk-Label">').appendTo(this.renderer.labels_$);
     if (this.options.editor_mode) {
         this.normal_buttons = [
-            new Rkns.Renderer.NodeEditButton(this.renderer, null),
-            new Rkns.Renderer.NodeRemoveButton(this.renderer, null),
-            new Rkns.Renderer.NodeLinkButton(this.renderer, null),
-            new Rkns.Renderer.NodeEnlargeButton(this.renderer, null),
-            new Rkns.Renderer.NodeShrinkButton(this.renderer, null)
+            new NodeEditButton(this.renderer, null),
+            new NodeRemoveButton(this.renderer, null),
+            new NodeLinkButton(this.renderer, null),
+            new NodeEnlargeButton(this.renderer, null),
+            new NodeShrinkButton(this.renderer, null)
         ];
         this.pending_delete_buttons = [
-            new Rkns.Renderer.NodeRevertButton(this.renderer, null)
+            new NodeRevertButton(this.renderer, null)
         ];
         this.all_buttons = this.normal_buttons.concat(this.pending_delete_buttons);
         for (var i = 0; i < this.all_buttons.length; i++) {
@@ -1110,11 +1241,10 @@ Rkns.Renderer.Node.prototype._init = function() {
         this.minimap_circle.__representation = this.renderer.minimap.miniframe.__representation;
         this.renderer.minimap.node_group.addChild(this.minimap_circle);
     }
-};
-
-Rkns.Renderer.Node.prototype.redraw = function(_dontRedrawEdges) {
+},
+redraw: function(_dontRedrawEdges) {
     var _model_coords = new paper.Point(this.model.get("position")),
-        _baseRadius = this.options.node_size_base * Math.exp((this.model.get("size") || 0) * Rkns.Renderer._NODE_SIZE_STEP);
+        _baseRadius = this.options.node_size_base * Math.exp((this.model.get("size") || 0) * _NODE_SIZE_STEP);
     if (!this.is_dragging || !this.paper_coords) {
         this.paper_coords = this.renderer.toPaperCoords(_model_coords);
     }
@@ -1169,14 +1299,20 @@ Rkns.Renderer.Node.prototype.redraw = function(_dontRedrawEdges) {
     this.circle.opacity = this.options.show_node_circles ? opacity : .01;
     
     var _text = this.model.get("title") || this.renkan.translate(this.options.label_untitled_nodes) || "";
-    _text = Rkns.Renderer.shortenText(_text, this.options.node_label_max_length);
-    this.title.text(_text);
+    _text = shortenText(_text, this.options.node_label_max_length);
+    
+    if (typeof this.highlighted === "object") {
+        this.title.html(this.highlighted.replace(_(_text).escape(),'<span class="Rk-Highlighted">$1</span>'));
+    } else {
+        this.title.text(_text);
+    }
+    
     this.title.css({
         left: this.paper_coords.x,
         top: this.paper_coords.y + this.circle_radius * this.h_ratio + this.options.node_label_distance,
         opacity: opacity
     });
-    var _color = this.model.get("color") || (this.model.get("created_by") || Rkns.Renderer._USER_PLACEHOLDER(this.renkan)).get("color");
+    var _color = this.model.get("color") || (this.model.get("created_by") || _USER_PLACEHOLDER(this.renkan)).get("color");
     this.circle.strokeColor = _color;
     var _pc = this.paper_coords;
     this.all_buttons.forEach(function(b) {
@@ -1201,17 +1337,24 @@ Rkns.Renderer.Node.prototype.redraw = function(_dontRedrawEdges) {
     }
     
     if (!_dontRedrawEdges) {
-        Rkns._.each(this.project.get("edges").filter(function (ed) { return ((ed.to === this.model) || (ed.from === this.model));}), function(edge, index, list){
-            var repr = this.renderer.getRepresentationByModel(edge);
-            if (repr && typeof repr.from_representation !== "undefined" && typeof repr.from_representation.paper_coords !== "undefined" && typeof repr.to_representation !== "undefined" && typeof repr.to_representation.paper_coords !== "undefined") {
-                repr.redraw();
+        var _this = this;
+        _.each(
+            this.project.get("edges").filter(
+                function (ed) {
+                    return ((ed.get("to") === _this.model) || (ed.get("from") === _this.model));
+                }
+            ),
+            function(edge, index, list) {
+                var repr = _this.renderer.getRepresentationByModel(edge);
+                if (repr && typeof repr.from_representation !== "undefined" && typeof repr.from_representation.paper_coords !== "undefined" && typeof repr.to_representation !== "undefined" && typeof repr.to_representation.paper_coords !== "undefined") {
+                    repr.redraw();
+                }
             }
-        }, this);
+        );
     }
 
-};
-
-Rkns.Renderer.Node.prototype.showImage = function() {
+},
+showImage: function() {
     if (typeof this.renderer.image_cache[this.img] === "undefined") {
         var _image = new Image();
         this.renderer.image_cache[this.img] = _image;
@@ -1237,7 +1380,7 @@ Rkns.Renderer.Node.prototype.showImage = function() {
                 maxX = -Infinity,
                 maxY = -Infinity;
                 
-            function transformCoords(tabc, relative) {
+            var transformCoords = function(tabc, relative) {
                 var newCoords = tabc.slice(1).map(function(v, k) {
                     var res = parseFloat(v),
                         isY = k % 2;
@@ -1260,7 +1403,7 @@ Rkns.Renderer.Node.prototype.showImage = function() {
                 });
                 lastCoords = newCoords.slice(-2);
                 return newCoords;
-            }
+            };
             
             instructions.forEach(function(instr) {
                 var coords = instr.match(/([a-z]|[0-9.-]+)/ig) || [""];
@@ -1330,13 +1473,12 @@ Rkns.Renderer.Node.prototype.showImage = function() {
         this.renderer.throttledPaperDraw();
     } else {
         var _this = this;
-        Rkns.$(_image).on("load", function() {
+        $(_image).on("load", function() {
             _this.showImage();
         });
     }
-}
-
-Rkns.Renderer.Node.prototype.paperShift = function(_delta) {
+},
+paperShift: function(_delta) {
     if (this.options.editor_mode) {
         if (!this.renkan.read_only) {
             this.is_dragging = true;
@@ -1346,16 +1488,14 @@ Rkns.Renderer.Node.prototype.paperShift = function(_delta) {
     } else {
         this.renderer.paperShift(_delta);
     }
-};
-
-Rkns.Renderer.Node.prototype.openEditor = function() {
+},
+openEditor: function() {
     this.renderer.removeRepresentationsOfType("editor");
     var _editor = this.renderer.addRepresentation("NodeEditor",null);
     _editor.source_representation = this;
     _editor.draw();
-};
-
-Rkns.Renderer.Node.prototype.select = function() {
+},
+select: function() {
     this.selected = true;
     this.circle.strokeWidth = this.options.selected_node_stroke_width;
     if (this.renderer.isEditable()) {
@@ -1365,8 +1505,8 @@ Rkns.Renderer.Node.prototype.select = function() {
     }
     var _uri = this.model.get("uri");
     if (_uri) {
-        Rkns.$('.Rk-Bin-Item').each(function() {
-            var _el = Rkns.$(this);
+        $('.Rk-Bin-Item').each(function() {
+            var _el = $(this);
             if (_el.attr("data-uri") == _uri) {
                 _el.addClass("selected");
             }
@@ -1380,43 +1520,40 @@ Rkns.Renderer.Node.prototype.select = function() {
         this.minimap_circle.strokeWidth = this.options.minimap_highlight_weight;
         this.minimap_circle.strokeColor = this.options.minimap_highlight_color;
     }
-    this.super("select");
-};
-
-Rkns.Renderer.Node.prototype.unselect = function(_newTarget) {
+    this._super("select");
+},
+unselect: function(_newTarget) {
     if (!_newTarget || _newTarget.source_representation !== this) {
         this.selected = false;
         this.all_buttons.forEach(function(b) {
             b.hide();
         });
         this.circle.strokeWidth = this.options.node_stroke_width;
-        Rkns.$('.Rk-Bin-Item').removeClass("selected");
+        $('.Rk-Bin-Item').removeClass("selected");
         if (this.renderer.minimap) {
             this.minimap_circle.strokeColor = undefined;
         }
-        this.super("unselect");
+        this._super("unselect");
     }
-};
-    
-Rkns.Renderer.Node.prototype.highlight = function() {
-    if (this.highlighted) {
+},
+highlight: function(textToReplace) {
+    var hlvalue = textToReplace || true;
+    if (this.highlighted === hlvalue) {
         return;
     }
-    this.highlighted = true;
+    this.highlighted = hlvalue;
     this.redraw();
     this.renderer.throttledPaperDraw();
-};
-
-Rkns.Renderer.Node.prototype.unhighlight = function() {
+},
+unhighlight: function() {
     if (!this.highlighted) {
         return;
     }
     this.highlighted = false;
     this.redraw();
     this.renderer.throttledPaperDraw();
-};
-
-Rkns.Renderer.Node.prototype.saveCoords = function() {
+},
+saveCoords: function() {
     var _coords = this.renderer.toModelCoords(this.paper_coords),
         _data = {
             position: {
@@ -1427,16 +1564,14 @@ Rkns.Renderer.Node.prototype.saveCoords = function() {
     if (this.renderer.isEditable()) {
         this.model.set(_data);
     }
-};
-
-Rkns.Renderer.Node.prototype.mousedown = function(_event, _isTouch) {
+},
+mousedown: function(_event, _isTouch) {
     if (_isTouch) {
         this.renderer.unselectAll();
         this.select();
     }
-};
-
-Rkns.Renderer.Node.prototype.mouseup = function(_event, _isTouch) {
+},
+mouseup: function(_event, _isTouch) {
     if (this.renderer.is_dragging && this.renderer.isEditable()) {
         this.saveCoords();
     } else {
@@ -1448,10 +1583,9 @@ Rkns.Renderer.Node.prototype.mouseup = function(_event, _isTouch) {
     this.renderer.click_target = null;
     this.renderer.is_dragging = false;
     this.is_dragging = false;
-};
-
-Rkns.Renderer.Node.prototype.destroy = function(_event) {
-    this.super("destroy");
+},
+destroy: function(_event) {
+    this._super("destroy");
     this.all_buttons.forEach(function(b) {
         b.destroy();
     });
@@ -1463,13 +1597,15 @@ Rkns.Renderer.Node.prototype.destroy = function(_event) {
     if (this.node_image) {
         this.node_image.remove();
     }
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.Edge = Rkns.Utils.inherit(Rkns.Renderer._BaseRepresentation);
+var Edge = Renderer.Edge = Rkns.Utils.inherit(_BaseRepresentation);
 
-Rkns.Renderer.Edge.prototype._init = function() {
+_(Edge.prototype).extend({
+_init: function() {
     this.renderer.edge_layer.activate();
     this.type = "Edge";
     this.from_representation = this.renderer.getRepresentationByModel(this.model.get("from"));
@@ -1486,15 +1622,15 @@ Rkns.Renderer.Edge.prototype._init = function() {
         [ 0, this.options.edge_arrow_width ]
     );
     this.arrow.__representation = this;
-    this.text = Rkns.$('<div class="Rk-Label Rk-Edge-Label">').appendTo(this.renderer.labels_$);
+    this.text = $('<div class="Rk-Label Rk-Edge-Label">').appendTo(this.renderer.labels_$);
     this.arrow_angle = 0;
     if (this.options.editor_mode) {
         this.normal_buttons = [
-            new Rkns.Renderer.EdgeEditButton(this.renderer, null),
-            new Rkns.Renderer.EdgeRemoveButton(this.renderer, null),
+            new EdgeEditButton(this.renderer, null),
+            new EdgeRemoveButton(this.renderer, null)
         ];
         this.pending_delete_buttons = [
-            new Rkns.Renderer.EdgeRevertButton(this.renderer, null)
+            new EdgeRevertButton(this.renderer, null)
         ];
         this.all_buttons = this.normal_buttons.concat(this.pending_delete_buttons);
         for (var i = 0; i < this.all_buttons.length; i++) {
@@ -1512,9 +1648,8 @@ Rkns.Renderer.Edge.prototype._init = function() {
         this.minimap_line.__representation = this.renderer.minimap.miniframe.__representation;
         this.minimap_line.strokeWidth = 1;
     }
-};
-
-Rkns.Renderer.Edge.prototype.redraw = function() {
+},
+redraw: function() {
     var from = this.model.get("from"),
         to = this.model.get("to");
     if (!from || !to) {
@@ -1538,7 +1673,7 @@ Rkns.Renderer.Edge.prototype.redraw = function() {
         _a = _v.angle,
         _textdelta = _ortho.multiply(this.options.edge_label_distance),
         _handle = _v.divide(3),
-        _color = this.model.get("color") || this.model.get("color") || (this.model.get("created_by") || Rkns.Renderer._USER_PLACEHOLDER(this.renkan)).get("color");
+        _color = this.model.get("color") || this.model.get("color") || (this.model.get("created_by") || _USER_PLACEHOLDER(this.renkan)).get("color");
     
     if (this.model.get("delete_scheduled") || this.from_representation.model.get("delete_scheduled") || this.to_representation.model.get("delete_scheduled")) {
         var opacity = .5;
@@ -1583,7 +1718,7 @@ Rkns.Renderer.Edge.prototype.redraw = function() {
         _textdelta = _textdelta.multiply(-1);
     }
     var _text = this.model.get("title") || this.renkan.translate(this.options.label_untitled_edges) || "";
-    _text = Rkns.Renderer.shortenText(_text, this.options.node_label_max_length);
+    _text = shortenText(_text, this.options.node_label_max_length);
     this.text.text(_text);
     var _textpos = this.paper_coords.add(_textdelta);
     this.text.css({
@@ -1606,16 +1741,14 @@ Rkns.Renderer.Edge.prototype.redraw = function() {
         this.minimap_line.segments[0].point = this.renderer.toMinimapCoords(new paper.Point(this.from_representation.model.get("position")));
          this.minimap_line.segments[1].point = this.renderer.toMinimapCoords(new paper.Point(this.to_representation.model.get("position")));
     }
-};
-
-Rkns.Renderer.Edge.prototype.openEditor = function() {
+},
+openEditor: function() {
     this.renderer.removeRepresentationsOfType("editor");
     var _editor = this.renderer.addRepresentation("EdgeEditor",null);
     _editor.source_representation = this;
     _editor.draw();
-};
-
-Rkns.Renderer.Edge.prototype.select = function() {
+},
+select: function() {
     this.selected = true;
     this.line.strokeWidth = this.options.selected_edge_stroke_width;
     if (this.renderer.isEditable()) {
@@ -1626,10 +1759,9 @@ Rkns.Renderer.Edge.prototype.select = function() {
     if (!this.options.editor_mode) {
         this.openEditor();
     }
-    this.super("select");
-};
-
-Rkns.Renderer.Edge.prototype.unselect = function(_newTarget) {
+    this._super("select");
+},
+unselect: function(_newTarget) {
     if (!_newTarget || _newTarget.source_representation !== this) {
         this.selected = false;
         if (this.options.editor_mode) {
@@ -1638,18 +1770,16 @@ Rkns.Renderer.Edge.prototype.unselect = function(_newTarget) {
             });
         }
         this.line.strokeWidth = this.options.edge_stroke_width;
-        this.super("unselect");
+        this._super("unselect");
     }
-};
-
-Rkns.Renderer.Edge.prototype.mousedown = function(_event, _isTouch) {
+},
+mousedown: function(_event, _isTouch) {
     if (_isTouch) {
         this.renderer.unselectAll();
         this.select();
     }
-};
-
-Rkns.Renderer.Edge.prototype.mouseup = function(_event, _isTouch) {
+},
+mouseup: function(_event, _isTouch) {
     if (!this.renkan.read_only && this.renderer.is_dragging) {
         this.from_representation.saveCoords();
         this.to_representation.saveCoords();
@@ -1663,9 +1793,8 @@ Rkns.Renderer.Edge.prototype.mouseup = function(_event, _isTouch) {
     }
     this.renderer.click_target = null;
     this.renderer.is_dragging = false;
-};
-
-Rkns.Renderer.Edge.prototype.paperShift = function(_delta) {
+},
+paperShift: function(_delta) {
     if (this.options.editor_mode) {
         if (!this.options.read_only) {
             this.from_representation.paperShift(_delta);
@@ -1674,10 +1803,9 @@ Rkns.Renderer.Edge.prototype.paperShift = function(_delta) {
     } else {
         this.renderer.paperShift(_delta);
     }
-};
-
-Rkns.Renderer.Edge.prototype.destroy = function() {
-    this.super("destroy");
+},
+destroy: function() {
+    this._super("destroy");
     this.line.remove();
     this.arrow.remove();
     this.text.remove();
@@ -1688,20 +1816,22 @@ Rkns.Renderer.Edge.prototype.destroy = function() {
         b.destroy();
     });
     var _this = this;
-    this.bundle.edges = Rkns._(this.bundle.edges).reject(function(_edge) {
+    this.bundle.edges = _(this.bundle.edges).reject(function(_edge) {
         return _edge === _this;
     });
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.TempEdge = Rkns.Utils.inherit(Rkns.Renderer._BaseRepresentation);
+var TempEdge = Renderer.TempEdge = Rkns.Utils.inherit(_BaseRepresentation);
 
-Rkns.Renderer.TempEdge.prototype._init = function() {
+_(TempEdge.prototype).extend({
+_init: function() {
     this.renderer.edge_layer.activate();
     this.type = "Temp-edge";
     
-    var _color = (this.project.get("users").get(this.renkan.current_user) || Rkns.Renderer._USER_PLACEHOLDER(this.renkan)).get("color");
+    var _color = (this.project.get("users").get(this.renkan.current_user) || _USER_PLACEHOLDER(this.renkan)).get("color");
     this.line = new paper.Path();
     this.line.strokeColor = _color;
     this.line.dashArray = [4, 2];
@@ -1717,9 +1847,8 @@ Rkns.Renderer.TempEdge.prototype._init = function() {
     );
     this.arrow.__representation = this;
     this.arrow_angle = 0;
-};
-
-Rkns.Renderer.TempEdge.prototype.redraw = function() {
+},
+redraw: function() {
     var _p0 = this.from_representation.paper_coords,
         _p1 = this.end_pos,
         _a = _p1.subtract(_p0).angle,
@@ -1729,9 +1858,8 @@ Rkns.Renderer.TempEdge.prototype.redraw = function() {
     this.arrow.rotate(_a - this.arrow_angle);
     this.arrow.position = _c;
     this.arrow_angle = _a;
-};
-
-Rkns.Renderer.TempEdge.prototype.paperShift = function(_delta) {
+},
+paperShift: function(_delta) {
     if (!this.renderer.isEditable()) {
         this.renderer.removeRepresentation(_this);
         paper.view.draw();
@@ -1741,9 +1869,8 @@ Rkns.Renderer.TempEdge.prototype.paperShift = function(_delta) {
     var _hitResult = paper.project.hitTest(this.end_pos);
     this.renderer.findTarget(_hitResult);
     this.redraw();
-};
-
-Rkns.Renderer.TempEdge.prototype.mouseup = function(_event, _isTouch) {
+},
+mouseup: function(_event, _isTouch) {
     var _hitResult = paper.project.hitTest(_event.point),
         _model = this.from_representation.model,
         _endDrag = true;
@@ -1775,71 +1902,71 @@ Rkns.Renderer.TempEdge.prototype.mouseup = function(_event, _isTouch) {
         this.renderer.removeRepresentation(this);
         paper.view.draw();
     }
-};
-
-Rkns.Renderer.TempEdge.prototype.destroy = function() {
+},
+destroy: function() {
     this.arrow.remove();
     this.line.remove();
-};
+}
+});
 
 /* */
 
-Rkns.Renderer._BaseEditor = Rkns.Utils.inherit(Rkns.Renderer._BaseRepresentation);
+var _BaseEditor = Renderer._BaseEditor = Rkns.Utils.inherit(_BaseRepresentation);
 
-Rkns.Renderer._BaseEditor.prototype._init = function() {
+_(_BaseEditor.prototype).extend({
+_init: function() {
     this.renderer.buttons_layer.activate();
     this.type = "editor";
     this.editor_block = new paper.Path();
-    var _pts = Rkns._(Rkns._.range(8)).map(function() {return [0,0];});
+    var _pts = _(_.range(8)).map(function() {return [0,0];});
     this.editor_block.add.apply(this.editor_block, _pts);
     this.editor_block.strokeWidth = this.options.tooltip_border_width;
     this.editor_block.strokeColor = this.options.tooltip_border_color;
     this.editor_block.opacity = .8;
-    this.editor_$ = Rkns.$('<div>')
+    this.editor_$ = $('<div>')
         .appendTo(this.renderer.editor_$)
         .css({
             position: "absolute",
             opacity: .8
         })
         .hide();
-};
-
-Rkns.Renderer._BaseEditor.prototype.destroy = function() {
+},
+destroy: function() {
     this.editor_block.remove();
     this.editor_$.remove();
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.NodeEditor = Rkns.Utils.inherit(Rkns.Renderer._BaseEditor);
+var NodeEditor = Renderer.NodeEditor = Rkns.Utils.inherit(_BaseEditor);
 
-Rkns.Renderer.NodeEditor.prototype.template = Rkns._.template(
+_(NodeEditor.prototype).extend({
+template: _.template(
     '<h2><span class="Rk-CloseX">&times;</span><%-renkan.translate("Edit Node")%></span></h2>'
     + '<p><label><%-renkan.translate("Title:")%></label><input class="Rk-Edit-Title" type="text" value="<%-node.title%>"/></p>'
     + '<% if (options.show_node_editor_uri) { %><p><label><%-renkan.translate("URI:")%></label><input class="Rk-Edit-URI" type="text" value="<%-node.uri%>"/><a class="Rk-Edit-Goto" href="<%-node.uri%>" target="_blank"></a></p><% } %>'
     + '<% if (options.show_node_editor_description) { %><p><label><%-renkan.translate("Description:")%></label><textarea class="Rk-Edit-Description"><%-node.description%></textarea></p><% } %>'
     + '<% if (options.show_node_editor_size) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Size:")%></span><a href="#" class="Rk-Edit-Size-Down">-</a><span class="Rk-Edit-Size-Value"><%-node.size%></span><a href="#" class="Rk-Edit-Size-Up">+</a></p><% } %>'
-    + '<% if (options.show_node_editor_color) { %><div class="Rk-Editor-p"><span class="Rk-Editor-Label"><%-renkan.translate("Node color:")%></span><div class="Rk-Edit-ColorPicker-Wrapper"><span class="Rk-Edit-Color" style="background:<%-node.color%>;"><span class="Rk-Edit-ColorTip"></span></span><ul class="Rk-Edit-ColorPicker">'
-    + '<% _(Rkns.pickerColors).each(function(c) { %><li data-color="<%=c%>" style="background: <%=c%>"></li><% }); %></ul><span class="Rk-Edit-ColorPicker-Text"><%- renkan.translate("Choose color") %></span></div></div><% } %>'
+    + '<% if (options.show_node_editor_color) { %><div class="Rk-Editor-p"><span class="Rk-Editor-Label"><%-renkan.translate("Node color:")%></span><div class="Rk-Edit-ColorPicker-Wrapper"><span class="Rk-Edit-Color" style="background:<%-node.color%>;"><span class="Rk-Edit-ColorTip"></span></span>'
+    + '<%= renkan.colorPicker %><span class="Rk-Edit-ColorPicker-Text"><%- renkan.translate("Choose color") %></span></div></div><% } %>'
     + '<% if (options.show_node_editor_image) { %><div class="Rk-Edit-ImgWrap"><div class="Rk-Edit-ImgPreview"><img src="<%-node.image || node.image_placeholder%>" />'
     + '<% if (node.clip_path) { %><svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewbox="0 0 1 1" preserveAspectRatio="none"><path style="stroke-width: .02; stroke:red; fill-opacity:.3; fill:red;" d="<%- node.clip_path %>"/></svg><% }%>'
     + '</div></div><p><label><%-renkan.translate("Image URL:")%></label><input class="Rk-Edit-Image" type="text" value="<%-node.image%>"/></p>'
     + '<p><label><%-renkan.translate("Choose Image File:")%></label><input class="Rk-Edit-Image-File" type="file" accept="image/*"/></p><% } %>'    
-    + '<% if (options.show_node_editor_creator && node.has_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span> <span class="Rk-UserColor" style="background:<%-node.created_by_color%>;"></span><%- Rkns.Renderer.shortenText(node.created_by_title, 25) %></p><% } %>'
-);
-
-Rkns.Renderer.NodeEditor.prototype.readOnlyTemplate = Rkns._.template(
+    + '<% if (options.show_node_editor_creator && node.has_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span> <span class="Rk-UserColor" style="background:<%-node.created_by_color%>;"></span><%- shortenText(node.created_by_title, 25) %></p><% } %>'
+),
+readOnlyTemplate: _.template(
     '<h2><span class="Rk-CloseX">&times;</span><% if (options.show_node_tooltip_color) { %><span class="Rk-UserColor" style="background:<%-node.color%>;"></span><% } %>'
     + '<span class="Rk-Display-Title"><% if (node.uri) { %><a href="<%-node.uri%>" target="_blank"><% } %><%-node.title%><% if (node.uri) { %></a><% } %></span></h2>'
     + '<% if (node.uri && options.show_node_tooltip_uri) { %><p class="Rk-Display-URI"><a href="<%-node.uri%>" target="_blank"><%-node.short_uri%></a></p><% } %>'
-    + '<% if (options.show_node_tooltip_description) { %><p><%-node.description%></p><% } %>'
+    + '<% if (options.show_node_tooltip_description) { %><p class="Rk-Display-Description"><%-node.description%></p><% } %>'
     + '<% if (node.image && options.show_node_tooltip_image) { %><img class="Rk-Display-ImgPreview" src="<%-node.image%>" /><% } %>'
-    + '<% if (node.has_creator && options.show_node_tooltip_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span><span class="Rk-UserColor" style="background:<%-node.created_by_color%>;"></span><%- Rkns.Renderer.shortenText(node.created_by_title, 25) %></p><% } %>'
-);
-
-Rkns.Renderer.NodeEditor.prototype.draw = function() {
+    + '<% if (node.has_creator && options.show_node_tooltip_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span><span class="Rk-UserColor" style="background:<%-node.created_by_color%>;"></span><%- shortenText(node.created_by_title, 25) %></p><% } %>'
+),
+draw: function() {
     var _model = this.source_representation.model,
-        _created_by = _model.get("created_by") || Rkns.Renderer._USER_PLACEHOLDER(this.renkan),
+        _created_by = _model.get("created_by") || _USER_PLACEHOLDER(this.renkan),
         _template = (this.renderer.isEditable() ? this.template : this.readOnlyTemplate ),
         _image_placeholder = this.options.static_url + "img/image-placeholder.png",
         _size = (_model.get("size") || 0);
@@ -1849,7 +1976,7 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
                 has_creator: !!_model.get("created_by"),
                 title: _model.get("title"),
                 uri: _model.get("uri"),
-                short_uri:  Rkns.Renderer.shortenText((_model.get("uri") || "").replace(/^(https?:\/\/)?(www\.)?/,'').replace(/\/$/,''),40),
+                short_uri:  shortenText((_model.get("uri") || "").replace(/^(https?:\/\/)?(www\.)?/,'').replace(/\/$/,''),40),
                 description: _model.get("description"),
                 image: _model.get("image") || "",
                 image_placeholder: _image_placeholder,
@@ -1860,7 +1987,8 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
                 size: (_size > 0 ? "+" : "") + _size
             },
             renkan: this.renkan,
-            options: this.options
+            options: this.options,
+            shortenText: shortenText
         }));
     this.redraw();
     var _this = this,
@@ -1871,16 +1999,23 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
         
     this.editor_$.find(".Rk-CloseX").click(closeEditor);
     
+    this.editor_$.find(".Rk-Edit-Goto").click(function() {
+        if (!_model.get("uri")) {
+            return false;
+        }
+    });
+    
     if (this.renderer.isEditable()) {
         
-        var onFieldChange = Rkns._(function() {
-            Rkns._(function() {
+        var onFieldChange = _(function() {
+            _(function() {
                 if (_this.renderer.isEditable()) {
                     var _data = {
                         title: _this.editor_$.find(".Rk-Edit-Title").val()
                     };
                     if (_this.options.show_node_editor_uri) {
                         _data.uri = _this.editor_$.find(".Rk-Edit-URI").val();
+                        _this.editor_$.find(".Rk-Edit-Goto").attr("href",_data.uri || "#");
                     }
                     if (_this.options.show_node_editor_image) {
                         _data.image = _this.editor_$.find(".Rk-Edit-Image").val();
@@ -1914,8 +2049,8 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
                     alert(_this.renkan.translate("This file is not an image"));
                     return;
                 }
-                if (f.size > (Rkns.Renderer._IMAGE_MAX_KB * 1024)) {
-                    alert(_this.renkan.translate("Image size must be under ")+Rkns.Renderer._IMAGE_MAX_KB+_this.renkan.translate("KB"));
+                if (f.size > (_this.options.uploaded_image_max_kb * 1024)) {
+                    alert(_this.renkan.translate("Image size must be under ") + _this.options.uploaded_image_max_kb + _this.renkan.translate("KB"));
                     return;
                 }
                 fr.onload = function(e) {
@@ -1947,7 +2082,7 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
             },
             function(_e) {
                 _e.preventDefault();
-                _this.editor_$.find(".Rk-Edit-Color").css("background", _model.get("color") || (_model.get("created_by") || Rkns.Renderer._USER_PLACEHOLDER(_this.renkan)).get("color"));
+                _this.editor_$.find(".Rk-Edit-Color").css("background", _model.get("color") || (_model.get("created_by") || _USER_PLACEHOLDER(_this.renkan)).get("color"));
             }
         ).click(function(_e) {
             _e.preventDefault();
@@ -1960,7 +2095,7 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
             }
         });
         
-        function shiftSize(n) {
+        var shiftSize = function(n) {
             if (_this.renderer.isEditable()) {
                 var _newsize = n+(_model.get("size") || 0);
                 _this.editor_$.find(".Rk-Edit-Size-Value").text((_newsize > 0 ? "+" : "") + _newsize);
@@ -1969,7 +2104,7 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
             } else {
                 closeEditor();
             }
-        }
+        };
         
         this.editor_$.find(".Rk-Edit-Size-Down").click(function() {
             shiftSize(-1);
@@ -1979,24 +2114,33 @@ Rkns.Renderer.NodeEditor.prototype.draw = function() {
             shiftSize(1);
             return false;
         });
+    } else {
+        if (typeof this.source_representation.highlighted === "object") {
+            var titlehtml = this.source_representation.highlighted.replace(_(_model.get("title")).escape(),'<span class="Rk-Highlighted">$1</span>');
+            this.editor_$.find(".Rk-Display-Title" + (_model.get("uri") ? " a" : "")).html(titlehtml);
+            if (this.options.show_node_tooltip_description) {
+                this.editor_$.find(".Rk-Display-Description").html(this.source_representation.highlighted.replace(_(_model.get("description")).escape(),'<span class="Rk-Highlighted">$1</span>'));
+            }
+        }
     }
     this.editor_$.find("img").load(function() {
         _this.redraw();
     });
-};
-
-Rkns.Renderer.NodeEditor.prototype.redraw = function() {
+},
+redraw: function() {
     var _coords = this.source_representation.paper_coords;
-    Rkns.Renderer.drawEditBox(this.options, _coords, this.editor_block, this.source_representation.circle_radius * .75, this.editor_$);
+    drawEditBox(this.options, _coords, this.editor_block, this.source_representation.circle_radius * .75, this.editor_$);
     this.editor_$.show();
     paper.view.draw();
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.EdgeEditor = Rkns.Utils.inherit(Rkns.Renderer._BaseEditor);
+var EdgeEditor = Renderer.EdgeEditor = Rkns.Utils.inherit(_BaseEditor);
 
-Rkns.Renderer.EdgeEditor.prototype.template = Rkns._.template(
+_(EdgeEditor.prototype).extend({
+template: _.template(
     '<h2><span class="Rk-CloseX">&times;</span><%-renkan.translate("Edit Edge")%></span></h2>'
     + '<p><label><%-renkan.translate("Title:")%></label><input class="Rk-Edit-Title" type="text" value="<%-edge.title%>"/></p>'
     + '<% if (options.show_edge_editor_uri) { %><p><label><%-renkan.translate("URI:")%></label><input class="Rk-Edit-URI" type="text" value="<%-edge.uri%>"/><a class="Rk-Edit-Goto" href="<%-edge.uri%>" target="_blank"></a></p>'
@@ -2005,29 +2149,27 @@ Rkns.Renderer.EdgeEditor.prototype.template = Rkns._.template(
     + '<% _(ontology.properties).each(function(property) { var uri = ontology["base-uri"] + property.uri; %><option class="Rk-Edit-Vocabulary-Property" value="<%- uri %>'
     + '"<% if (uri === edge.uri) { %> selected<% } %>><%- renkan.translate(property.label) %></option>'
     + '<% }) %><% }) %></select></p><% } } %>'
-    + '<% if (options.show_edge_editor_color) { %><div class="Rk-Editor-p"><span class="Rk-Editor-Label"><%-renkan.translate("Edge color:")%></span><div class="Rk-Edit-ColorPicker-Wrapper"><span class="Rk-Edit-Color" style="background:<%-edge.color%>;"><span class="Rk-Edit-ColorTip"></span></span><ul class="Rk-Edit-ColorPicker">'
-    + '<% _(Rkns.pickerColors).each(function(c) { %><li data-color="<%=c%>" style="background: <%=c%>"></li><% }); %></ul><span class="Rk-Edit-ColorPicker-Text"><%- renkan.translate("Choose color") %></span></div></div><% } %>'
+    + '<% if (options.show_edge_editor_color) { %><div class="Rk-Editor-p"><span class="Rk-Editor-Label"><%-renkan.translate("Edge color:")%></span><div class="Rk-Edit-ColorPicker-Wrapper"><span class="Rk-Edit-Color" style="background:<%-edge.color%>;"><span class="Rk-Edit-ColorTip"></span></span>'
+    + '<%= renkan.colorPicker %><span class="Rk-Edit-ColorPicker-Text"><%- renkan.translate("Choose color") %></span></div></div><% } %>'
     + '<% if (options.show_edge_editor_direction) { %><p><span class="Rk-Edit-Direction"><%- renkan.translate("Change edge direction") %></span></p><% } %>'
-    + '<% if (options.show_edge_editor_nodes) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("From:")%></span><span class="Rk-UserColor" style="background:<%-edge.from_color%>;"></span><%- Rkns.Renderer.shortenText(edge.from_title, 25) %></p>'
-    + '<p><span class="Rk-Editor-Label"><%-renkan.translate("To:")%></span><span class="Rk-UserColor" style="background:<%-edge.to_color%>;"></span><%- Rkns.Renderer.shortenText(edge.to_title, 25) %></p><% } %>'
-    + '<% if (options.show_edge_editor_creator && edge.has_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span><span class="Rk-UserColor" style="background:<%-edge.created_by_color%>;"></span><%- Rkns.Renderer.shortenText(edge.created_by_title, 25) %></p><% } %>'
-);
-
-Rkns.Renderer.EdgeEditor.prototype.readOnlyTemplate = Rkns._.template(
+    + '<% if (options.show_edge_editor_nodes) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("From:")%></span><span class="Rk-UserColor" style="background:<%-edge.from_color%>;"></span><%- shortenText(edge.from_title, 25) %></p>'
+    + '<p><span class="Rk-Editor-Label"><%-renkan.translate("To:")%></span><span class="Rk-UserColor" style="background:<%-edge.to_color%>;"></span><%- shortenText(edge.to_title, 25) %></p><% } %>'
+    + '<% if (options.show_edge_editor_creator && edge.has_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span><span class="Rk-UserColor" style="background:<%-edge.created_by_color%>;"></span><%- shortenText(edge.created_by_title, 25) %></p><% } %>'
+),
+readOnlyTemplate: _.template(
     '<h2><span class="Rk-CloseX">&times;</span><% if (options.show_edge_tooltip_color) { %><span class="Rk-UserColor" style="background:<%-edge.color%>;"></span><% } %>'
     + '<span class="Rk-Display-Title"><% if (edge.uri) { %><a href="<%-edge.uri%>" target="_blank"><% } %><%-edge.title%><% if (edge.uri) { %></a><% } %></span></h2>'
     + '<% if (options.show_edge_tooltip_uri && edge.uri) { %><p class="Rk-Display-URI"><a href="<%-edge.uri%>" target="_blank"><%-edge.short_uri%></a></p><% } %>'
     + '<p><%-edge.description%></p>'
-    + '<% if (options.show_edge_tooltip_nodes) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("From:")%></span><span class="Rk-UserColor" style="background:<%-edge.from_color%>;"></span><%- Rkns.Renderer.shortenText(edge.from_title, 25) %></p>'
-    + '<p><span class="Rk-Editor-Label"><%-renkan.translate("To:")%></span><span class="Rk-UserColor" style="background:<%-edge.to_color%>;"></span><%- Rkns.Renderer.shortenText(edge.to_title, 25) %></p><% } %>'
-    + '<% if (options.show_edge_tooltip_creator && edge.has_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span><span class="Rk-UserColor" style="background:<%-edge.created_by_color%>;"></span><%- Rkns.Renderer.shortenText(edge.created_by_title, 25) %></p><% } %>'
-);
-
-Rkns.Renderer.EdgeEditor.prototype.draw = function() {
+    + '<% if (options.show_edge_tooltip_nodes) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("From:")%></span><span class="Rk-UserColor" style="background:<%-edge.from_color%>;"></span><%- shortenText(edge.from_title, 25) %></p>'
+    + '<p><span class="Rk-Editor-Label"><%-renkan.translate("To:")%></span><span class="Rk-UserColor" style="background:<%-edge.to_color%>;"></span><%- shortenText(edge.to_title, 25) %></p><% } %>'
+    + '<% if (options.show_edge_tooltip_creator && edge.has_creator) { %><p><span class="Rk-Editor-Label"><%-renkan.translate("Created by:")%></span><span class="Rk-UserColor" style="background:<%-edge.created_by_color%>;"></span><%- shortenText(edge.created_by_title, 25) %></p><% } %>'
+),
+draw: function() {
     var _model = this.source_representation.model,
         _from_model = _model.get("from"),
         _to_model = _model.get("to"),
-        _created_by = _model.get("created_by") || Rkns.Renderer._USER_PLACEHOLDER(this.renkan),
+        _created_by = _model.get("created_by") || _USER_PLACEHOLDER(this.renkan),
         _template = (this.renderer.isEditable() ? this.template : this.readOnlyTemplate);
     this.editor_$
         .html(_template({
@@ -2035,18 +2177,19 @@ Rkns.Renderer.EdgeEditor.prototype.draw = function() {
                 has_creator: !!_model.get("created_by"),
                 title: _model.get("title"),
                 uri: _model.get("uri"),
-                short_uri:  Rkns.Renderer.shortenText((_model.get("uri") || "").replace(/^(https?:\/\/)?(www\.)?/,'').replace(/\/$/,''),40),
+                short_uri:  shortenText((_model.get("uri") || "").replace(/^(https?:\/\/)?(www\.)?/,'').replace(/\/$/,''),40),
                 description: _model.get("description"),
                 color: _model.get("color") || _created_by.get("color"),
                 from_title: _from_model.get("title"),
                 to_title: _to_model.get("title"),
-                from_color: _from_model.get("color") || (_from_model.get("created_by") || Rkns.Renderer._USER_PLACEHOLDER(this.renkan)).get("color"),
-                to_color: _to_model.get("color") || (_to_model.get("created_by") || Rkns.Renderer._USER_PLACEHOLDER(this.renkan)).get("color"),
+                from_color: _from_model.get("color") || (_from_model.get("created_by") || _USER_PLACEHOLDER(this.renkan)).get("color"),
+                to_color: _to_model.get("color") || (_to_model.get("created_by") || _USER_PLACEHOLDER(this.renkan)).get("color"),
                 created_by_color: _created_by.get("color"),
                 created_by_title: _created_by.get("title")
             },
             renkan: this.renkan,
-            options: this.options,
+            shortenText: shortenText,
+            options: this.options
         }));
     this.redraw();
     var _this = this,
@@ -2055,11 +2198,16 @@ Rkns.Renderer.EdgeEditor.prototype.draw = function() {
             paper.view.draw();
         };
     this.editor_$.find(".Rk-CloseX").click(closeEditor);
+    this.editor_$.find(".Rk-Edit-Goto").click(function() {
+        if (!_model.get("uri")) {
+            return false;
+        }
+    });
     
     if (this.renderer.isEditable()) {
         
-        var onFieldChange = Rkns._(function() {
-            Rkns._(function() {
+        var onFieldChange = _(function() {
+            _(function() {
                 if (_this.renderer.isEditable()) {
                     var _data = {
                         title: _this.editor_$.find(".Rk-Edit-Title").val()
@@ -2067,7 +2215,7 @@ Rkns.Renderer.EdgeEditor.prototype.draw = function() {
                     if (_this.options.show_edge_editor_uri) {
                         _data.uri = _this.editor_$.find(".Rk-Edit-URI").val();
                     }
-                    _this.editor_$.find(".Rk-Edit-Goto").attr("href",_data.uri);
+                    _this.editor_$.find(".Rk-Edit-Goto").attr("href",_data.uri || "#");
                     _model.set(_data);
                     paper.view.draw();
                 } else {
@@ -2125,7 +2273,7 @@ Rkns.Renderer.EdgeEditor.prototype.draw = function() {
             },
             function(_e) {
                 _e.preventDefault();
-                _this.editor_$.find(".Rk-Edit-Color").css("background", _model.get("color") || (_model.get("created_by") || Rkns.Renderer._USER_PLACEHOLDER(_this.renkan)).get("color"));
+                _this.editor_$.find(".Rk-Edit-Color").css("background", _model.get("color") || (_model.get("created_by") || _USER_PLACEHOLDER(_this.renkan)).get("color"));
             }
         ).click(function(_e) {
             _e.preventDefault();
@@ -2138,20 +2286,21 @@ Rkns.Renderer.EdgeEditor.prototype.draw = function() {
             }
         });
     }
-};
-
-Rkns.Renderer.EdgeEditor.prototype.redraw = function() {
+},
+redraw: function() {
     var _coords = this.source_representation.paper_coords;
-    Rkns.Renderer.drawEditBox(this.options, _coords, this.editor_block, 5, this.editor_$);
+    drawEditBox(this.options, _coords, this.editor_block, 5, this.editor_$);
     this.editor_$.show();
     paper.view.draw();
-};
+}
+});
 
 /* */
 
-Rkns.Renderer._NodeButton = Rkns.Utils.inherit(Rkns.Renderer._BaseButton);
+var _NodeButton = Renderer._NodeButton = Rkns.Utils.inherit(_BaseButton);
 
-Rkns.Renderer._NodeButton.prototype.setSectorSize = function() {
+_(_NodeButton.prototype).extend({
+setSectorSize: function() {
     var sectorInner = this.source_representation.circle_radius;
     if (sectorInner !== this.lastSectorInner) {
         if (this.sector) {
@@ -2159,7 +2308,7 @@ Rkns.Renderer._NodeButton.prototype.setSectorSize = function() {
         }
         this.sector = this.renderer.drawSector(
             this, 1 + sectorInner,
-            Rkns.Renderer._NODE_BUTTON_WIDTH + sectorInner,
+            _NODE_BUTTON_WIDTH + sectorInner,
             this.startAngle,
             this.endAngle,
             1,
@@ -2168,41 +2317,43 @@ Rkns.Renderer._NodeButton.prototype.setSectorSize = function() {
         );
         this.lastSectorInner = sectorInner;
     }
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.NodeEditButton = Rkns.Utils.inherit(Rkns.Renderer._NodeButton);
+var NodeEditButton = Renderer.NodeEditButton = Rkns.Utils.inherit(_NodeButton);
 
-Rkns.Renderer.NodeEditButton.prototype._init = function() {
+_(NodeEditButton.prototype).extend({
+_init: function() {
     this.type = "Node-edit-button";
     this.lastSectorInner = 0;
     this.startAngle = -135;
     this.endAngle = -45;
     this.imageName = "edit";
     this.text = "Edit";
-};
-
-Rkns.Renderer.NodeEditButton.prototype.mouseup = function() {
+},
+mouseup: function() {
     if (!this.renderer.is_dragging) {
         this.source_representation.openEditor();
     }
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.NodeRemoveButton = Rkns.Utils.inherit(Rkns.Renderer._NodeButton);
+var NodeRemoveButton = Renderer.NodeRemoveButton = Rkns.Utils.inherit(_NodeButton);
 
-Rkns.Renderer.NodeRemoveButton.prototype._init = function() {
+_(NodeRemoveButton.prototype).extend({
+_init: function() {
     this.type = "Node-remove-button";
     this.lastSectorInner = 0;
     this.startAngle = 0;
     this.endAngle = 90;
     this.imageName = "remove";
     this.text = "Remove";
-};
-
-Rkns.Renderer.NodeRemoveButton.prototype.mouseup = function() {
+},
+mouseup: function() {
     this.renderer.click_target = null;
     this.renderer.is_dragging = false;
     this.renderer.removeRepresentationsOfType("editor");
@@ -2220,43 +2371,45 @@ Rkns.Renderer.NodeRemoveButton.prototype.mouseup = function() {
             }
         }
     }
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.NodeRevertButton = Rkns.Utils.inherit(Rkns.Renderer._NodeButton);
+var NodeRevertButton = Renderer.NodeRevertButton = Rkns.Utils.inherit(_NodeButton);
 
-Rkns.Renderer.NodeRevertButton.prototype._init = function() {
+_(NodeRevertButton.prototype).extend({
+_init: function() {
     this.type = "Node-revert-button";
     this.lastSectorInner = 0;
     this.startAngle = -135;
     this.endAngle = 135;
     this.imageName = "revert";
     this.text = "Cancel deletion";
-};
-
-Rkns.Renderer.NodeRevertButton.prototype.mouseup = function() {
+},
+mouseup: function() {
     this.renderer.click_target = null;
     this.renderer.is_dragging = false;
     if (this.renderer.isEditable()) {
         this.source_representation.model.unset("delete_scheduled");
     }
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.NodeLinkButton = Rkns.Utils.inherit(Rkns.Renderer._NodeButton);
+var NodeLinkButton = Renderer.NodeLinkButton = Rkns.Utils.inherit(_NodeButton);
 
-Rkns.Renderer.NodeLinkButton.prototype._init = function() {
+_(NodeLinkButton.prototype).extend({
+_init: function() {
     this.type = "Node-link-button";
     this.lastSectorInner = 0;
     this.startAngle = 90;
     this.endAngle = 180;
     this.imageName = "link";
     this.text = "Link to another node";
-};
-
-Rkns.Renderer.NodeLinkButton.prototype.mousedown = function(_event, _isTouch) {
+},
+mousedown: function(_event, _isTouch) {
     if (this.renderer.isEditable()) {
         var _off = this.renderer.canvas_$.offset(),
             _point = new paper.Point([
@@ -2267,75 +2420,79 @@ Rkns.Renderer.NodeLinkButton.prototype.mousedown = function(_event, _isTouch) {
         this.renderer.removeRepresentationsOfType("editor");
         this.renderer.addTempEdge(this.source_representation, _point);
     }
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.NodeEnlargeButton = Rkns.Utils.inherit(Rkns.Renderer._NodeButton);
+var NodeEnlargeButton = Renderer.NodeEnlargeButton = Rkns.Utils.inherit(_NodeButton);
 
-Rkns.Renderer.NodeEnlargeButton.prototype._init = function() {
+_(NodeEnlargeButton.prototype).extend({
+_init: function() {
     this.type = "Node-enlarge-button";
     this.lastSectorInner = 0;
     this.startAngle = -45;
     this.endAngle = 0;
     this.imageName = "enlarge";
     this.text = "Enlarge";
-};
-
-Rkns.Renderer.NodeEnlargeButton.prototype.mouseup = function() {
+},
+mouseup: function() {
     var _newsize = 1 + (this.source_representation.model.get("size") || 0);
     this.source_representation.model.set("size", _newsize);
     this.source_representation.select();
     this.select();
     paper.view.draw();
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.NodeShrinkButton = Rkns.Utils.inherit(Rkns.Renderer._NodeButton);
+var NodeShrinkButton = Renderer.NodeShrinkButton = Rkns.Utils.inherit(_NodeButton);
 
-Rkns.Renderer.NodeShrinkButton.prototype._init = function() {
+_(NodeShrinkButton.prototype).extend({
+_init: function() {
     this.type = "Node-shrink-button";
     this.lastSectorInner = 0;
     this.startAngle = -180;
     this.endAngle = -135;
     this.imageName = "shrink";
     this.text = "Shrink";
-};
-
-Rkns.Renderer.NodeShrinkButton.prototype.mouseup = function() {
+},
+mouseup: function() {
     var _newsize = -1 + (this.source_representation.model.get("size") || 0);
     this.source_representation.model.set("size", _newsize);
     this.source_representation.select();
     this.select();
     paper.view.draw();
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.EdgeEditButton = Rkns.Utils.inherit(Rkns.Renderer._BaseButton);
+var EdgeEditButton = Renderer.EdgeEditButton = Rkns.Utils.inherit(_BaseButton);
 
-Rkns.Renderer.EdgeEditButton.prototype._init = function() {
+_(EdgeEditButton.prototype).extend({
+_init: function() {
     this.type = "Edge-edit-button";
-    this.sector = this.renderer.drawSector(this, Rkns.Renderer._EDGE_BUTTON_INNER, Rkns.Renderer._EDGE_BUTTON_OUTER, -270, -90, 1, "edit", this.renkan.translate("Edit"));
-};
-
-Rkns.Renderer.EdgeEditButton.prototype.mouseup = function() {
+    this.sector = this.renderer.drawSector(this, _EDGE_BUTTON_INNER, _EDGE_BUTTON_OUTER, -270, -90, 1, "edit", this.renkan.translate("Edit"));
+},
+mouseup: function() {
     if (!this.renderer.is_dragging) {
         this.source_representation.openEditor();
     }
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.EdgeRemoveButton = Rkns.Utils.inherit(Rkns.Renderer._BaseButton);
+var EdgeRemoveButton = Renderer.EdgeRemoveButton = Rkns.Utils.inherit(_BaseButton);
 
-Rkns.Renderer.EdgeRemoveButton.prototype._init = function() {
+_(EdgeRemoveButton.prototype).extend({
+_init: function() {
     this.type = "Edge-remove-button";
-    this.sector = this.renderer.drawSector(this, Rkns.Renderer._EDGE_BUTTON_INNER, Rkns.Renderer._EDGE_BUTTON_OUTER, -90, 90, 1, "remove", this.renkan.translate("Remove"));
-};
-
-Rkns.Renderer.EdgeRemoveButton.prototype.mouseup = function() {
+    this.sector = this.renderer.drawSector(this, _EDGE_BUTTON_INNER, _EDGE_BUTTON_OUTER, -90, 90, 1, "remove", this.renkan.translate("Remove"));
+},
+mouseup: function() {
     this.renderer.click_target = null;
     this.renderer.is_dragging = false;
     this.renderer.removeRepresentationsOfType("editor");
@@ -2353,44 +2510,47 @@ Rkns.Renderer.EdgeRemoveButton.prototype.mouseup = function() {
             }
         }
     }
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.EdgeRevertButton = Rkns.Utils.inherit(Rkns.Renderer._BaseButton);
+var EdgeRevertButton = Renderer.EdgeRevertButton = Rkns.Utils.inherit(_BaseButton);
 
-Rkns.Renderer.EdgeRevertButton.prototype._init = function() {
+_(EdgeRevertButton.prototype).extend({
+_init: function() {
     this.type = "Edge-revert-button";
-    this.sector = this.renderer.drawSector(this, Rkns.Renderer._EDGE_BUTTON_INNER, Rkns.Renderer._EDGE_BUTTON_OUTER, -135, 135, 1, "revert", this.renkan.translate("Cancel deletion"));
-};
-
-Rkns.Renderer.EdgeRevertButton.prototype.mouseup = function() {
+    this.sector = this.renderer.drawSector(this, _EDGE_BUTTON_INNER, _EDGE_BUTTON_OUTER, -135, 135, 1, "revert", this.renkan.translate("Cancel deletion"));
+},
+mouseup: function() {
     this.renderer.click_target = null;
     this.renderer.is_dragging = false;
     if (this.renderer.isEditable()) {
         this.source_representation.model.unset("delete_scheduled");
     }
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.MiniFrame = Rkns.Utils.inherit(Rkns.Renderer._BaseRepresentation);
+var MiniFrame = Renderer.MiniFrame = Rkns.Utils.inherit(_BaseRepresentation);
 
-Rkns.Renderer.MiniFrame.prototype.paperShift = function(_delta) {
+_(MiniFrame.prototype).extend({
+paperShift: function(_delta) {
     this.renderer.offset = this.renderer.offset.subtract(_delta.divide(this.renderer.minimap.scale).multiply(this.renderer.scale));
     this.renderer.redraw();
-};
-
-Rkns.Renderer.MiniFrame.prototype.mouseup = function(_delta) {
+},
+mouseup: function(_delta) {
     this.renderer.click_target = null;
     this.renderer.is_dragging = false;
-};
+}
+});
 
 /* */
 
-Rkns.Renderer.Scene = function(_renkan) {
+var Scene = Renderer.Scene = function(_renkan) {
     this.renkan = _renkan;
-    this.$ = Rkns.$(".Rk-Render");
+    this.$ = $(".Rk-Render");
     this.representations = [];
     this.$.html(this.template(_renkan));
     this.onStatusChange();
@@ -2400,6 +2560,7 @@ Rkns.Renderer.Scene = function(_renkan) {
     this.notif_$ = this.$.find(".Rk-Notifications");
     paper.setup(this.canvas_$[0]);
     this.scale = 1;
+    this.initialScale = 1;
     this.offset = paper.view.center;
     this.totalScroll = 0;
     this.mouse_down = false;
@@ -2438,10 +2599,10 @@ Rkns.Renderer.Scene = function(_renkan) {
         this.minimap.miniframe.opacity = .3;
         this.minimap.miniframe.strokeColor = '#000080';
         this.minimap.miniframe.strokeWidth = 3;
-        this.minimap.miniframe.__representation = new Rkns.Renderer.MiniFrame(this, null);
+        this.minimap.miniframe.__representation = new MiniFrame(this, null);
     }
     
-    this.throttledPaperDraw = Rkns._(function() {
+    this.throttledPaperDraw = _(function() {
         paper.view.draw();
     }).throttle(100);
     
@@ -2467,8 +2628,8 @@ Rkns.Renderer.Scene = function(_renkan) {
     
     var throttledMouseMove = _.throttle(function(_event, _isTouch) {
         _this.onMouseMove(_event, _isTouch);
-    }, Rkns.Renderer._MOUSEMOVE_RATE);
-    
+    }, _MOUSEMOVE_RATE);
+        
     this.canvas_$.on({
         mousedown: function(_event) {
             _event.preventDefault();
@@ -2483,9 +2644,11 @@ Rkns.Renderer.Scene = function(_renkan) {
             _this.onMouseUp(_event, false);
         },
         mousewheel: function(_event, _delta) {
-            _event.preventDefault();
-            if (_allowScroll) {
-                _this.onScroll(_event, _delta);
+            if(_renkan.options.zoom_on_scroll) {
+                _event.preventDefault();
+                if (_allowScroll) {
+                    _this.onScroll(_event, _delta);
+                }
             }
         },
         touchstart: function(_event) {
@@ -2493,8 +2656,8 @@ Rkns.Renderer.Scene = function(_renkan) {
             var _touches = _event.originalEvent.touches[0];
             if (
                 _renkan.options.allow_double_click
-                && new Date() - _lastTap < Rkns.Renderer._DOUBLETAP_DELAY
-                && ( Math.pow(_lastTapX - _touches.pageX, 2) + Math.pow(_lastTapY - _touches.pageY, 2) < Rkns.Renderer._DOUBLETAP_DISTANCE )
+                && new Date() - _lastTap < _DOUBLETAP_DELAY
+                && ( Math.pow(_lastTapX - _touches.pageX, 2) + Math.pow(_lastTapY - _touches.pageY, 2) < _DOUBLETAP_DISTANCE )
             ) {
                 _lastTap = 0;
                 _this.onDoubleClick(_touches);
@@ -2562,7 +2725,7 @@ Rkns.Renderer.Scene = function(_renkan) {
             _event.preventDefault();
             _allowScroll = true;
             var res = {};
-            Rkns._(_event.originalEvent.dataTransfer.types).each(function(t) {
+            _(_event.originalEvent.dataTransfer.types).each(function(t) {
                 try {
                     res[t] = _event.originalEvent.dataTransfer.getData(t);
                 } catch(e) {}
@@ -2600,69 +2763,29 @@ Rkns.Renderer.Scene = function(_renkan) {
             _this.dropData(res, _event.originalEvent);
         }
     });
-    this.editor_$.find(".Rk-ZoomOut").click(function() {
-        var _newScale = _this.scale * Math.SQRT1_2,
-            _offset = new paper.Point([
-                _this.canvas_$.width(),
-                _this.canvas_$.height()
-            ]).multiply( .5 * ( 1 - Math.SQRT1_2 ) ).add(_this.offset.multiply( Math.SQRT1_2 ));
-        _this.setScale( _newScale, _offset );
-    });
-    this.editor_$.find(".Rk-ZoomIn").click(function() {
-        var _newScale = _this.scale * Math.SQRT2,
-            _offset = new paper.Point([
-                _this.canvas_$.width(),
-                _this.canvas_$.height()
-            ]).multiply( .5 * ( 1 - Math.SQRT2 ) ).add(_this.offset.multiply( Math.SQRT2 ));
-        _this.setScale( _newScale, _offset );
-    });
+    
+    var bindClick = function(selector, fname) {
+        _this.$.find(selector).click(function(evt) {
+            _this[fname](evt);
+            return false;
+        });
+    };
+    
+    bindClick(".Rk-ZoomOut", "zoomOut");
+    bindClick(".Rk-ZoomIn", "zoomIn");
     this.$.find(".Rk-CurrentUser").mouseenter(
         function() { _this.$.find(".Rk-UserList").slideDown(); }
     );
     this.$.find(".Rk-Users").mouseleave(
         function() { _this.$.find(".Rk-UserList").slideUp(); }
     );
-    this.$.find(".Rk-FullScreen-Button").click(function() {
-        var _isFull = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen,
-            _el = _this.renkan.$[0],
-            _requestMethods = ["requestFullScreen","mozRequestFullScreen","webkitRequestFullScreen"],
-            _cancelMethods = ["cancelFullScreen","mozCancelFullScreen","webkitCancelFullScreen"];
-        if (_isFull) {
-            for (var i = 0; i < _cancelMethods.length; i++) {
-                if (typeof document[_cancelMethods[i]] === "function") {
-                    document[_cancelMethods[i]]();
-                    break;
-                }
-            }
-        } else {
-            for (var i = 0; i < _requestMethods.length; i++) {
-                if (typeof _el[_requestMethods[i]] === "function") {
-                    _el[_requestMethods[i]]();
-                    break;
-                }
-            }
-        }
-    });
-    this.$.find(".Rk-AddNode-Button").click(function() {
-        if (_this.click_mode === Rkns.Renderer._CLICKMODE_ADDNODE) {
-            _this.click_mode = false;
-            _this.notif_$.hide();
-        } else {
-            _this.click_mode = Rkns.Renderer._CLICKMODE_ADDNODE;
-            _this.notif_$.text(_renkan.translate("Click on the background canvas to add a node")).fadeIn();
-        }
-    });
-    this.$.find(".Rk-AddEdge-Button").click(function() {
-        if (_this.click_mode === Rkns.Renderer._CLICKMODE_STARTEDGE || _this.click_mode === Rkns.Renderer._CLICKMODE_ENDEDGE) {
-            _this.click_mode = false;
-            _this.notif_$.hide();
-        } else {
-            _this.click_mode = Rkns.Renderer._CLICKMODE_STARTEDGE;
-            _this.notif_$.text(_renkan.translate("Click on a first node to start the edge")).fadeIn();
-        }
-    });
+    bindClick(".Rk-FullScreen-Button", "fullScreen");
+    bindClick(".Rk-AddNode-Button", "addNodeBtn");
+    bindClick(".Rk-AddEdge-Button", "addEdgeBtn");
+    bindClick(".Rk-Save-Button", "save");
+    bindClick(".Rk-Open-Button", "open");
     this.$.find(".Rk-Bookmarklet-Button")
-        .attr("href","javascript:" + Rkns.Renderer._BOOKMARKLET_CODE(_renkan))
+        .attr("href","javascript:" + _BOOKMARKLET_CODE(_renkan))
         .click(function(){
             _this.notif_$
                 .text(_renkan.translate("Drag this button to your bookmark bar. When on a third-party website, click it to enable drag-and-drop from the website to Renkan."))
@@ -2672,28 +2795,11 @@ Rkns.Renderer.Scene = function(_renkan) {
             return false;
         });
     this.$.find(".Rk-TopBar-Button").mouseover(function() {
-        Rkns.$(this).find(".Rk-TopBar-Tooltip").show();
+        $(this).find(".Rk-TopBar-Tooltip").show();
     }).mouseout(function() {
-        Rkns.$(this).find(".Rk-TopBar-Tooltip").hide();
+        $(this).find(".Rk-TopBar-Tooltip").hide();
     });
-    this.$.find(".Rk-Fold-Bins").click(function() {
-        var bins = _renkan.$.find(".Rk-Bins");
-        if (bins.offset().left < 0) {
-            bins.animate({left: 0},250);
-            _this.$.animate({left: 300},250,function() {
-                var w = _this.$.width();
-                paper.view.viewSize = new paper.Size([w, _this.canvas_$.height()]);
-            });
-            $(this).html("&laquo;");
-        } else {
-            bins.animate({left: -300},250);
-            _this.$.animate({left: 0},250,function() {
-                var w = _this.$.width();
-                paper.view.viewSize = new paper.Size([w, _this.canvas_$.height()]);
-            });
-            $(this).html("&raquo;");
-        }
-    });
+    bindClick(".Rk-Fold-Bins", "foldBins");
     
     paper.view.onResize = function(_event) {
         _this.offset = _this.offset.add(_event.delta.divide(2));
@@ -2705,7 +2811,7 @@ Rkns.Renderer.Scene = function(_renkan) {
         _this.redraw();
     };
     
-    var _thRedraw = Rkns._.throttle(function() {
+    var _thRedraw = _.throttle(function() {
         _this.redraw();
     },50);
     
@@ -2719,13 +2825,14 @@ Rkns.Renderer.Scene = function(_renkan) {
         _renkan.project.set({"title": $(this).val()});
     });
     
-    this.renkan.project.get("users").each(function(_user) {
-        _this.addUser(_user);
-    });
+    var _thRedrawUsers = _.throttle(function() {
+        _this.redrawUsers();
+    }, 100);
     
-    this.renkan.project.on("add:users", function(_user) {
-        _this.addUser(_user);
-    });
+    _thRedrawUsers();
+    
+    this.renkan.project.on("add:users remove:users", _thRedrawUsers);
+    
     this.renkan.project.on("add:nodes", function(_node) {
         _this.addRepresentation("Node", _node);
         _thRedraw();
@@ -2765,6 +2872,61 @@ Rkns.Renderer.Scene = function(_renkan) {
         });
     }
     
+    if (_renkan.options.show_user_list && _renkan.options.user_color_editable) {
+        var $cpwrapper = this.$.find(".Rk-Users .Rk-Edit-ColorPicker-Wrapper"),
+            $cplist = this.$.find(".Rk-Users .Rk-Edit-ColorPicker");
+        
+        $cpwrapper.hover(
+            function(_e) {
+                if (_this.isEditable()) {
+                    _e.preventDefault();
+                    $cplist.show();
+                }
+            },
+            function(_e) {
+                _e.preventDefault();
+                $cplist.hide();
+            }
+        );
+        
+        $cplist.find("li").mouseenter(
+            function(_e) {
+                if (_this.isEditable()) {
+                    _e.preventDefault();
+                    _this.$.find(".Rk-CurrentUser-Color").css("background", $(this).attr("data-color"));
+                }
+            }
+        );
+    }
+    
+    if (_renkan.options.show_search_field) {
+        
+        var lastval = '';
+        
+        this.$.find(".Rk-GraphSearch-Field").on("keyup change paste input", function() {
+            var $this = $(this),
+                val = $this.val();
+            if (val === lastval) {
+                return;
+            }
+            lastval = val;
+            if (val.length < 2) {
+                _renkan.project.get("nodes").each(function(n) {
+                    _this.getRepresentationByModel(n).unhighlight();
+                });
+            } else {
+                var rxs = Rkns.Utils.regexpFromTextOrArray(val);
+                _renkan.project.get("nodes").each(function(n) {
+                    if (rxs.test(n.get("title")) || rxs.test(n.get("description"))) {
+                        _this.getRepresentationByModel(n).highlight(rxs);
+                    } else {
+                        _this.getRepresentationByModel(n).unhighlight(); 
+                    }
+                });
+            }
+        });
+    }
+    
     this.redraw();
     
     window.setInterval(function() {
@@ -2794,27 +2956,33 @@ Rkns.Renderer.Scene = function(_renkan) {
 
 };
 
-Rkns.Renderer.Scene.prototype.template = Rkns._.template(
+_(Scene.prototype).extend({
+template: _.template(
     '<% if (options.show_top_bar) { %><div class="Rk-TopBar"><% if (!options.editor_mode) { %><h2 class="Rk-PadTitle"><%- project.get("title") || translate("Untitled project")%></h2>'
     + '<% } else { %><input type="text" class="Rk-PadTitle" value="<%- project.get("title") || "" %>" placeholder="<%-translate("Untitled project")%>" /><% } %>'
-    + '<div class="Rk-Users"><div class="Rk-CurrentUser"><span class="Rk-CurrentUser-Color"></span><span class="Rk-CurrentUser-Name">&lt;unknown user&gt;</span></div><ul class="Rk-UserList"></ul></div>'
-    + '<div class="Rk-TopBar-Separator"></div><div class="Rk-TopBar-Button Rk-FullScreen-Button"><div class="Rk-TopBar-Tooltip"><div class="Rk-TopBar-Tooltip-Tip"></div><div class="Rk-TopBar-Tooltip-Contents"><%-translate("Full Screen")%></div></div></div>'
+    + '<% if (options.show_user_list) { %><div class="Rk-Users"><div class="Rk-CurrentUser"><div class="Rk-Edit-ColorPicker-Wrapper"><span class="Rk-CurrentUser-Color"><% if (options.user_color_editable) { %><span class="Rk-Edit-ColorTip"></span><% } %></span>'
+    + '<% if (options.user_color_editable) { print(colorPicker) } %></div><span class="Rk-CurrentUser-Name">&lt;unknown user&gt;</span></div><ul class="Rk-UserList"></ul></div><% } %>'
+    + '<% if (options.home_button_url) {%><div class="Rk-TopBar-Separator"></div><a class="Rk-TopBar-Button Rk-Home-Button" href="<%- options.home_button_url %>"><div class="Rk-TopBar-Tooltip"><div class="Rk-TopBar-Tooltip-Contents">'
+    + '<%- translate(options.home_button_title) %></div></div></a><% } %>'
+    + '<% if (options.show_fullscreen_button) { %><div class="Rk-TopBar-Separator"></div><div class="Rk-TopBar-Button Rk-FullScreen-Button"><div class="Rk-TopBar-Tooltip"><div class="Rk-TopBar-Tooltip-Contents"><%-translate("Full Screen")%></div></div></div><% } %>'
     + '<% if (options.editor_mode) { %>'
-    + '<div class="Rk-TopBar-Separator"></div><div class="Rk-TopBar-Button Rk-AddNode-Button"><div class="Rk-TopBar-Tooltip"><div class="Rk-TopBar-Tooltip-Tip"></div><div class="Rk-TopBar-Tooltip-Contents"><%-translate("Add Node")%></div></div></div>'
-    + '<div class="Rk-TopBar-Separator"></div><div class="Rk-TopBar-Button Rk-AddEdge-Button"><div class="Rk-TopBar-Tooltip"><div class="Rk-TopBar-Tooltip-Tip"></div><div class="Rk-TopBar-Tooltip-Contents"><%-translate("Add Edge")%></div></div></div>'
-    + '<div class="Rk-TopBar-Separator"></div><div class="Rk-TopBar-Button Rk-Save-Button"><div class="Rk-TopBar-Tooltip"><div class="Rk-TopBar-Tooltip-Tip"></div><div class="Rk-TopBar-Tooltip-Contents"> </div></div></div>'
-    + '<div class="Rk-TopBar-Separator"></div><a class="Rk-TopBar-Button Rk-Bookmarklet-Button" href="#"><div class="Rk-TopBar-Tooltip"><div class="Rk-TopBar-Tooltip-Tip"></div><div class="Rk-TopBar-Tooltip-Contents">'
-    + '<%-translate("Renkan \'Drag-to-Add\' bookmarklet")%></div></div></a>'
-    + '<div class="Rk-TopBar-Separator"></div>'
-    + '<% } %></div><% } %>'
+    + '<% if (options.show_addnode_button) { %><div class="Rk-TopBar-Separator"></div><div class="Rk-TopBar-Button Rk-AddNode-Button"><div class="Rk-TopBar-Tooltip">'
+    + '<div class="Rk-TopBar-Tooltip-Contents"><%-translate("Add Node")%></div></div></div><% } %>'
+    + '<% if (options.show_addedge_button) { %><div class="Rk-TopBar-Separator"></div><div class="Rk-TopBar-Button Rk-AddEdge-Button"><div class="Rk-TopBar-Tooltip">'
+    + '<div class="Rk-TopBar-Tooltip-Contents"><%-translate("Add Edge")%></div></div></div><% } %>'
+    + '<% if (options.show_save_button) { %><div class="Rk-TopBar-Separator"></div><div class="Rk-TopBar-Button Rk-Save-Button"><div class="Rk-TopBar-Tooltip"><div class="Rk-TopBar-Tooltip-Contents"> </div></div></div><% } %>'
+    + '<% if (options.show_open_button) { %><div class="Rk-TopBar-Separator"></div><div class="Rk-TopBar-Button Rk-Open-Button"><div class="Rk-TopBar-Tooltip"><div class="Rk-TopBar-Tooltip-Contents"><%-translate("Open Project")%></div></div></div><% } %>'
+    + '<% if (options.show_bookmarklet) { %><div class="Rk-TopBar-Separator"></div><a class="Rk-TopBar-Button Rk-Bookmarklet-Button" href="#"><div class="Rk-TopBar-Tooltip"><div class="Rk-TopBar-Tooltip-Contents">'
+    + '<%-translate("Renkan \'Drag-to-Add\' bookmarklet")%></div></div></a><% } %>'
+    + '<div class="Rk-TopBar-Separator"></div><% }; if (options.show_search_field) { %>'
+    + '<form action="#" class="Rk-GraphSearch-Form"><input type="search" class="Rk-GraphSearch-Field" placeholder="<%- translate("Search in graph") %>" /></form><div class="Rk-TopBar-Separator"></div><% } %></div><% } %>'
     + '<div class="Rk-Editing-Space<% if (!options.show_top_bar) { %> Rk-Editing-Space-Full<% } %>">'
-    + '<div class="Rk-Labels"></div><canvas class="Rk-Canvas" resize></canvas><div class="Rk-Editor"><div class="Rk-Notifications"></div>'
+    + '<div class="Rk-Labels"></div><canvas class="Rk-Canvas" resize></canvas><div class="Rk-Notifications"></div><div class="Rk-Editor">'
     + '<% if (options.show_bins) { %><div class="Rk-Fold-Bins">&laquo;</div><% } %>'
     + '<div class="Rk-ZoomButtons"><div class="Rk-ZoomIn" title="<%-translate("Zoom In")%>"></div><div class="Rk-ZoomOut" title="<%-translate("Zoom Out")%>"></div></div>'
     + '</div></div>'
-);
-
-Rkns.Renderer.Scene.prototype.fixSize = function(_autoscale) {
+),
+fixSize: function(_autoscale) {
     var w = this.$.width(),
         h = this.$.height();
     if (this.renkan.options.show_top_bar) {
@@ -2830,9 +2998,8 @@ Rkns.Renderer.Scene.prototype.fixSize = function(_autoscale) {
     if (_autoscale) {
         this.autoScale();
     }
-};
-
-Rkns.Renderer.Scene.prototype.drawSector = function(_repr, _inR, _outR, _startAngle, _endAngle, _padding, _imgname, _caption) {
+},
+drawSector: function(_repr, _inR, _outR, _startAngle, _endAngle, _padding, _imgname, _caption) {
     var _options = this.renkan.options,
         _startRads = _startAngle * Math.PI / 180,
         _endRads = _endAngle * Math.PI / 180,
@@ -2930,14 +3097,13 @@ Rkns.Renderer.Scene.prototype.drawSector = function(_repr, _inR, _outR, _startAn
     if (_img.width) {
         showImage();
     } else {
-        Rkns.$(_img).on("load",showImage);
+        $(_img).on("load",showImage);
     }
     
     return _res;
-};
-
-Rkns.Renderer.Scene.prototype.addToBundles = function(_edgeRepr) {
-    var _bundle = Rkns._(this.bundles).find(function(_bundle) {
+},
+addToBundles: function(_edgeRepr) {
+    var _bundle = _(this.bundles).find(function(_bundle) {
         return ( 
             ( _bundle.from === _edgeRepr.from_representation && _bundle.to === _edgeRepr.to_representation )
             || ( _bundle.from === _edgeRepr.to_representation && _bundle.to === _edgeRepr.from_representation )
@@ -2952,19 +3118,17 @@ Rkns.Renderer.Scene.prototype.addToBundles = function(_edgeRepr) {
             edges: [ _edgeRepr ],
             getPosition: function(_er) {
                 var _dir = (_er.from_representation === this.from) ? 1 : -1;
-                return _dir * ( Rkns._(this.edges).indexOf(_er) - (this.edges.length - 1) / 2 );
+                return _dir * ( _(this.edges).indexOf(_er) - (this.edges.length - 1) / 2 );
             }
         };
         this.bundles.push(_bundle);
     }
     return _bundle;
-};
-
-Rkns.Renderer.Scene.prototype.isEditable = function() {
+},
+isEditable: function() {
     return (this.renkan.options.editor_mode && !this.renkan.read_only);
-};
-
-Rkns.Renderer.Scene.prototype.onStatusChange = function() {
+},
+onStatusChange: function() {
     var savebtn = this.$.find(".Rk-Save-Button"),
         tip = savebtn.find(".Rk-TopBar-Tooltip-Contents");
     if (this.renkan.read_only) {
@@ -2973,25 +3137,24 @@ Rkns.Renderer.Scene.prototype.onStatusChange = function() {
     } else {
         if (this.renkan.options.snapshot_mode) {
             savebtn.removeClass("Rk-Save-ReadOnly Rk-Save-Online");
-            tip.text(this.renkan.translate("Archive Project"));
+            tip.text(this.renkan.translate("Save Project"));
         } else {
             savebtn.removeClass("disabled Rk-Save-ReadOnly").addClass("Rk-Save-Online");
             tip.text(this.renkan.translate("Auto-save enabled"));
         }
     }
-};
-
-Rkns.Renderer.Scene.prototype.setScale = function(_newScale, _offset) {
-    if (_newScale > Rkns.Renderer._MIN_SCALE && _newScale < Rkns.Renderer._MAX_SCALE) {
+    this.redrawUsers();
+},
+setScale: function(_newScale, _offset) {
+    if ((_newScale/this.initialScale) > _MIN_SCALE && (_newScale/this.initialScale) < _MAX_SCALE) {
         this.scale = _newScale;
         if (_offset) {
             this.offset = _offset;
         }
         this.redraw();
     }
-};
-
-Rkns.Renderer.Scene.prototype.autoScale = function() {
+},
+autoScale: function() {
     var nodes = this.renkan.project.get("nodes");
     if (nodes.length > 1) {
         var _xx = nodes.map(function(_node) { return _node.get("position").x; }),
@@ -3000,21 +3163,20 @@ Rkns.Renderer.Scene.prototype.autoScale = function() {
             _miny = Math.min.apply(Math, _yy),
             _maxx = Math.max.apply(Math, _xx),
             _maxy = Math.max.apply(Math, _yy);
-        var _scale = Math.max(Rkns.Renderer._MIN_SCALE, Math.min(Rkns.Renderer._MAX_SCALE, (paper.view.size.width - 2 * this.renkan.options.autoscale_padding) / (_maxx - _minx), (paper.view.size.height - 2 * this.renkan.options.autoscale_padding) / (_maxy - _miny)));
+        var _scale = Math.min( (paper.view.size.width - 2 * this.renkan.options.autoscale_padding) / (_maxx - _minx), (paper.view.size.height - 2 * this.renkan.options.autoscale_padding) / (_maxy - _miny));
+        this.initialScale = _scale;
         this.setScale(_scale, paper.view.center.subtract(new paper.Point([(_maxx + _minx) / 2, (_maxy + _miny) / 2]).multiply(_scale)));
     }
     if (nodes.length === 1) {
         this.setScale(1, paper.view.center.subtract(new paper.Point([nodes.at(0).get("position").x, nodes.at(0).get("position").y])));
     }
-};
-
-Rkns.Renderer.Scene.prototype.redrawMiniframe = function() {
+},
+redrawMiniframe: function() {
     var topleft = this.toMinimapCoords(this.toModelCoords(new paper.Point([0,0]))),
         bottomright = this.toMinimapCoords(this.toModelCoords(paper.view.bounds.bottomRight));
     this.minimap.miniframe.fitBounds(topleft, bottomright);
-};
-
-Rkns.Renderer.Scene.prototype.rescaleMinimap = function() {
+},
+rescaleMinimap: function() {
     var nodes = this.renkan.project.get("nodes");
     if (nodes.length > 1) {
         var _xx = nodes.map(function(_node) { return _node.get("position").x; }),
@@ -3037,119 +3199,145 @@ Rkns.Renderer.Scene.prototype.rescaleMinimap = function() {
         this.minimap.offset = this.minimap.size.divide(2).subtract(new paper.Point([nodes.at(0).get("position").x, nodes.at(0).get("position").y]).multiply(this.minimap.scale));
     }
     this.redraw();
-};
-
-Rkns.Renderer.Scene.prototype.toPaperCoords = function(_point) {
+},
+toPaperCoords: function(_point) {
     return _point.multiply(this.scale).add(this.offset);
-};
-
-Rkns.Renderer.Scene.prototype.toMinimapCoords = function(_point) {
+},
+toMinimapCoords: function(_point) {
     return _point.multiply(this.minimap.scale).add(this.minimap.offset).add(this.minimap.topleft);
-};
-
-Rkns.Renderer.Scene.prototype.toModelCoords = function(_point) {
+},
+toModelCoords: function(_point) {
     return _point.subtract(this.offset).divide(this.scale);
-};
-
-Rkns.Renderer.Scene.prototype.addRepresentation = function(_type, _model) {
-    var _repr = new Rkns.Renderer[_type](this, _model);
+},
+addRepresentation: function(_type, _model) {
+    var _repr = new Renderer[_type](this, _model);
     this.representations.push(_repr);
     return _repr;
-};
-
-Rkns.Renderer.Scene.prototype.addRepresentations = function(_type, _collection) {
+},
+addRepresentations: function(_type, _collection) {
     var _this = this;
     _collection.forEach(function(_model) {
         _this.addRepresentation(_type, _model);
     });
-};
-
-Rkns.Renderer.Scene.prototype.userTemplate = Rkns._.template(
+},
+userTemplate: _.template(
     '<li class="Rk-User"><span class="Rk-UserColor" style="background:<%=background%>;"></span><%=name%></li>'
-);
-
-Rkns.Renderer.Scene.prototype.addUser = function(_user) {
-    if (_user.get("_id") === this.renkan.current_user) {
-        this.$.find(".Rk-CurrentUser-Name").text(_user.get("title"));
-        this.$.find(".Rk-CurrentUser-Color").css("background", _user.get("color"));
-    } else {
-        this.$.find(".Rk-UserList").append(
-            Rkns.$(
-                this.userTemplate({
-                    name: _user.get("title"),
-                    background: _user.get("color")
-                })
-            )
-        );
+),
+redrawUsers: function() {
+    if (!this.renkan.options.show_user_list) {
+        return;
     }
-};
-
-Rkns.Renderer.Scene.prototype.removeRepresentation = function(_representation) {
+    var allUsers = [].concat((this.renkan.project.current_user_list || {}).models || [], (this.renkan.project.get("users") || {}).models || []),
+        ulistHtml = '',
+        $userpanel = this.$.find(".Rk-Users"),
+        $name = $userpanel.find(".Rk-CurrentUser-Name"),
+        $cpwrapper = $userpanel.find(".Rk-Edit-ColorPicker-Wrapper"),
+        $cpitems = $userpanel.find(".Rk-Edit-ColorPicker li"),
+        $colorsquare = $userpanel.find(".Rk-CurrentUser-Color"),
+        _this = this;
+    $name.off("click").text(this.renkan.translate("<unknown user>"));
+    $cpitems.off("mouseleave click");
+    allUsers.forEach(function(_user) {
+        if (_user.get("_id") === _this.renkan.current_user) {
+            $name.text(_user.get("title"));
+            $colorsquare.css("background", _user.get("color"));
+            if (_this.isEditable()) {
+                
+                if (_this.renkan.options.user_name_editable) {
+                    $name.click(function() {
+                        var $this = $(this),
+                            $input = $('<input>').val(_user.get("title")).blur(function() {
+                                _user.set("title", $(this).val());
+                                _this.redrawUsers();
+                                _this.redraw();
+                            });
+                        $this.empty().html($input);
+                        $input.select();
+                    });
+                }
+                
+                if (_this.renkan.options.user_color_editable) {
+                    $cpitems.click(
+                        function(_e) {
+                            _e.preventDefault();
+                            if (_this.isEditable()) {
+                                _user.set("color", $(this).attr("data-color"));
+                            }
+                            $(this).parent().hide();
+                        }
+                    ).mouseleave(function() {
+                        $colorsquare.css("background", _user.get("color"));
+                    });
+                }
+            }
+            
+        } else {
+            ulistHtml += _this.userTemplate({
+                name: _user.get("title"),
+                background: _user.get("color")
+            });
+        }
+    });
+    $userpanel.find(".Rk-UserList").html(ulistHtml);
+},
+removeRepresentation: function(_representation) {
     _representation.destroy();
-    this.representations = Rkns._(this.representations).reject(
+    this.representations = _(this.representations).reject(
         function(_repr) {
             return _repr == _representation;
         }
     );
-};
-
-Rkns.Renderer.Scene.prototype.getRepresentationByModel = function(_model) {
+},
+getRepresentationByModel: function(_model) {
     if (!_model) {
         return undefined;
     }
-    return Rkns._(this.representations).find(function(_repr) {
+    return _(this.representations).find(function(_repr) {
         return _repr.model === _model;
     });
-};
-
-Rkns.Renderer.Scene.prototype.removeRepresentationsOfType = function(_type) {
-    var _representations = Rkns._(this.representations).filter(function(_repr) {
+},
+removeRepresentationsOfType: function(_type) {
+    var _representations = _(this.representations).filter(function(_repr) {
             return _repr.type == _type;
         }),
         _this = this;
-    Rkns._(_representations).each(function(_repr) {
+    _(_representations).each(function(_repr) {
         _this.removeRepresentation(_repr);
     });
-};
-
-Rkns.Renderer.Scene.prototype.highlightModel = function(_model) {
+},
+highlightModel: function(_model) {
     var _repr = this.getRepresentationByModel(_model);
     if (_repr) {
         _repr.highlight();
     }
-};
-
-Rkns.Renderer.Scene.prototype.unhighlightAll = function(_model) {
-    Rkns._(this.representations).each(function(_repr) {
+},
+unhighlightAll: function(_model) {
+    _(this.representations).each(function(_repr) {
         _repr.unhighlight();
     });
-};
-
-Rkns.Renderer.Scene.prototype.unselectAll = function(_model) {
-    Rkns._(this.representations).each(function(_repr) {
+},
+unselectAll: function(_model) {
+    _(this.representations).each(function(_repr) {
         _repr.unselect();
     });
-};
-
-Rkns.Renderer.Scene.prototype.redraw = function() {
-    Rkns._(this.representations).each(function(_representation) {
+},
+redraw: function() {
+    _(this.representations).each(function(_representation) {
         _representation.redraw(true);
     });
     if (this.minimap) {
         this.redrawMiniframe();
     }
     paper.view.draw();
-};
-
-Rkns.Renderer.Scene.prototype.addTempEdge = function(_from, _point) {
+},
+addTempEdge: function(_from, _point) {
     var _tmpEdge = this.addRepresentation("TempEdge",null);
     _tmpEdge.end_pos = _point;
     _tmpEdge.from_representation = _from;
     _tmpEdge.redraw();
     this.click_target = _tmpEdge;
-};
-
-Rkns.Renderer.Scene.prototype.findTarget = function(_hitResult) {
+},
+findTarget: function(_hitResult) {
     if (_hitResult && typeof _hitResult.item.__representation !== "undefined") {
         var _newTarget = _hitResult.item.__representation;
         if (this.selected_target !== _hitResult.item.__representation) {
@@ -3165,14 +3353,12 @@ Rkns.Renderer.Scene.prototype.findTarget = function(_hitResult) {
         }
         this.selected_target = null;
     }
-};
-
-Rkns.Renderer.Scene.prototype.paperShift = function(_delta) {
+},
+paperShift: function(_delta) {
     this.offset = this.offset.add(_delta);
     this.redraw();
-};
-
-Rkns.Renderer.Scene.prototype.onMouseMove = function(_event) {
+},
+onMouseMove: function(_event) {
     var _off = this.canvas_$.offset(),
         _point = new paper.Point([
             _event.pageX - _off.left,
@@ -3180,7 +3366,7 @@ Rkns.Renderer.Scene.prototype.onMouseMove = function(_event) {
         ]),
         _delta = _point.subtract(this.last_point);
     this.last_point = _point;
-    if (!this.is_dragging && this.mouse_down && _delta.length > Rkns.Renderer._MIN_DRAG_DISTANCE) {
+    if (!this.is_dragging && this.mouse_down && _delta.length > _MIN_DRAG_DISTANCE) {
         this.is_dragging = true;
     }
     var _hitResult = paper.project.hitTest(_point);
@@ -3194,9 +3380,8 @@ Rkns.Renderer.Scene.prototype.onMouseMove = function(_event) {
         this.findTarget(_hitResult);
     }
     paper.view.draw();
-};
-
-Rkns.Renderer.Scene.prototype.onMouseDown = function(_event, _isTouch) {
+},
+onMouseDown: function(_event, _isTouch) {
     var _off = this.canvas_$.offset(),
         _point = new paper.Point([
             _event.pageX - _off.left,
@@ -3213,7 +3398,7 @@ Rkns.Renderer.Scene.prototype.onMouseDown = function(_event, _isTouch) {
             this.click_target.mousedown(_event, _isTouch);
         } else {
             this.click_target = null;
-            if (this.isEditable() && this.click_mode === Rkns.Renderer._CLICKMODE_ADDNODE) {
+            if (this.isEditable() && this.click_mode === _CLICKMODE_ADDNODE) {
                 var _coords = this.toModelCoords(_point),
                     _data = {
                         id: Rkns.Utils.getUID('node'),
@@ -3229,12 +3414,12 @@ Rkns.Renderer.Scene.prototype.onMouseDown = function(_event, _isTouch) {
         }
     }
     if (this.click_mode) {
-        if (this.isEditable() && this.click_mode === Rkns.Renderer._CLICKMODE_STARTEDGE && this.click_target && this.click_target.type === "Node") {
+        if (this.isEditable() && this.click_mode === _CLICKMODE_STARTEDGE && this.click_target && this.click_target.type === "Node") {
             this.removeRepresentationsOfType("editor");
             this.addTempEdge(this.click_target, _point);
-            this.click_mode = Rkns.Renderer._CLICKMODE_ENDEDGE;
+            this.click_mode = _CLICKMODE_ENDEDGE;
             this.notif_$.fadeOut(function() {
-                Rkns.$(this).html(_renkan.translate("Click on a second node to complete the edge")).fadeIn();
+                $(this).html(_renkan.translate("Click on a second node to complete the edge")).fadeIn();
             });
         } else {
             this.notif_$.hide();
@@ -3242,9 +3427,8 @@ Rkns.Renderer.Scene.prototype.onMouseDown = function(_event, _isTouch) {
         }
     }
     paper.view.draw();
-};
-
-Rkns.Renderer.Scene.prototype.onMouseUp = function(_event, _isTouch) {
+},
+onMouseUp: function(_event, _isTouch) {
     this.mouse_down = false;
     if (this.click_target) {
         var _off = this.canvas_$.offset();
@@ -3265,9 +3449,8 @@ Rkns.Renderer.Scene.prototype.onMouseUp = function(_event, _isTouch) {
         }
     }
     paper.view.draw();
-};
-
-Rkns.Renderer.Scene.prototype.onScroll = function(_event, _scrolldelta) {
+},
+onScroll: function(_event, _scrolldelta) {
     this.totalScroll += _scrolldelta;
     if (Math.abs(this.totalScroll) >= 1) {
         var _off = this.canvas_$.offset(),
@@ -3282,9 +3465,8 @@ Rkns.Renderer.Scene.prototype.onScroll = function(_event, _scrolldelta) {
         }
         this.totalScroll = 0;
     }
-};
-
-Rkns.Renderer.Scene.prototype.onDoubleClick = function(_event) {
+},
+onDoubleClick: function(_event) {
     if (!this.isEditable()) {
         return;
     }
@@ -3303,14 +3485,13 @@ Rkns.Renderer.Scene.prototype.onDoubleClick = function(_event) {
                     x: _coords.x,
                     y: _coords.y
                 }
-            };
+            },
             _node = this.renkan.project.addNode(_data);
-            this.getRepresentationByModel(_node).openEditor();
+        this.getRepresentationByModel(_node).openEditor();
     }
     paper.view.draw();
-};
-
-Rkns.Renderer.Scene.prototype.dropData = function(_data, _event) {
+},
+dropData: function(_data, _event) {
     if (!this.isEditable()) {
         return;
     }
@@ -3324,7 +3505,7 @@ Rkns.Renderer.Scene.prototype.dropData = function(_data, _event) {
     var newNode = {};
     switch(_data["text/x-iri-specific-site"]) {
         case "twitter":
-            var snippet = Rkns.$('<div>').html(_data["text/x-iri-selected-html"]),
+            var snippet = $('<div>').html(_data["text/x-iri-selected-html"]),
                 tweetdiv = snippet.find(".tweet");
             newNode.title = _renkan.translate("Tweet by ") + tweetdiv.attr("data-name");
             newNode.uri = "http://twitter.com/" + tweetdiv.attr("data-screen-name") + "/status/" + tweetdiv.attr("data-tweet-id");
@@ -3332,7 +3513,7 @@ Rkns.Renderer.Scene.prototype.dropData = function(_data, _event) {
             newNode.description = tweetdiv.find(".js-tweet-text:first").text();
         break;
         case "google":
-            var snippet = Rkns.$('<div>').html(_data["text/x-iri-selected-html"]);
+            var snippet = $('<div>').html(_data["text/x-iri-selected-html"]);
             newNode.title = snippet.find("h3:first").text().trim();
             newNode.uri = snippet.find("h3 a").attr("href");
             newNode.description = snippet.find(".st:first").text().trim();
@@ -3346,7 +3527,7 @@ Rkns.Renderer.Scene.prototype.dropData = function(_data, _event) {
                 newNode.description = (_data["text/plain"] || _data["text/x-iri-selected-text"]).replace(/[\s\n]+/gm,' ').trim();
             }
             if (_data["text/html"] || _data["text/x-iri-selected-html"]) {
-                var snippet = Rkns.$('<div>').html(_data["text/html"] || _data["text/x-iri-selected-html"]);
+                var snippet = $('<div>').html(_data["text/html"] || _data["text/x-iri-selected-html"]);
                 var _svgimgs = snippet.find("image");
                 if (_svgimgs.length) {
                     newNode.image = _svgimgs.attr("xlink:href");
@@ -3424,15 +3605,91 @@ Rkns.Renderer.Scene.prototype.dropData = function(_data, _event) {
     if (_event.type === "drop") {
         _repr.openEditor();
     }
-};
+},
+fullScreen: function() {
+    var _isFull = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen,
+        _el = this.renkan.$[0],
+        _requestMethods = ["requestFullScreen","mozRequestFullScreen","webkitRequestFullScreen"],
+        _cancelMethods = ["cancelFullScreen","mozCancelFullScreen","webkitCancelFullScreen"];
+    if (_isFull) {
+        for (var i = 0; i < _cancelMethods.length; i++) {
+            if (typeof document[_cancelMethods[i]] === "function") {
+                document[_cancelMethods[i]]();
+                break;
+            }
+        }
+    } else {
+        for (var i = 0; i < _requestMethods.length; i++) {
+            if (typeof _el[_requestMethods[i]] === "function") {
+                _el[_requestMethods[i]]();
+                break;
+            }
+        }
+    }
+},
+zoomOut: function() {
+    var _newScale = this.scale * Math.SQRT1_2,
+        _offset = new paper.Point([
+            this.canvas_$.width(),
+            this.canvas_$.height()
+        ]).multiply( .5 * ( 1 - Math.SQRT1_2 ) ).add(this.offset.multiply( Math.SQRT1_2 ));
+    this.setScale( _newScale, _offset );
+},
+zoomIn: function() {
+    var _newScale = this.scale * Math.SQRT2,
+        _offset = new paper.Point([
+            this.canvas_$.width(),
+            this.canvas_$.height()
+        ]).multiply( .5 * ( 1 - Math.SQRT2 ) ).add(this.offset.multiply( Math.SQRT2 ));
+    this.setScale( _newScale, _offset );
+},
+addNodeBtn: function() {
+    if (this.click_mode === _CLICKMODE_ADDNODE) {
+        this.click_mode = false;
+        this.notif_$.hide();
+    } else {
+        this.click_mode = _CLICKMODE_ADDNODE;
+        this.notif_$.text(this.renkan.translate("Click on the background canvas to add a node")).fadeIn();
+    }
+    return false;
+},
+addEdgeBtn: function() {
+    if (this.click_mode === _CLICKMODE_STARTEDGE || this.click_mode === _CLICKMODE_ENDEDGE) {
+        this.click_mode = false;
+        this.notif_$.hide();
+    } else {
+        this.click_mode = _CLICKMODE_STARTEDGE;
+        this.notif_$.text(this.renkan.translate("Click on a first node to start the edge")).fadeIn();
+    }
+    return false;
+},
+foldBins: function() {
+    var foldBinsButton = this.$.find(".Rk-Fold-Bins"),
+        bins = this.renkan.$.find(".Rk-Bins");
+    if (bins.offset().left < 0) {
+        bins.animate({left: 0},250);
+        var _this = this;
+        this.$.animate({left: 300},250,function() {
+            var w = _this.$.width();
+            paper.view.viewSize = new paper.Size([w, _this.canvas_$.height()]);
+        });
+        foldBinsButton.html("&laquo;");
+    } else {
+        bins.animate({left: -300},250);
+        var _this = this;
+        this.$.animate({left: 0},250,function() {
+            var w = _this.$.width();
+            paper.view.viewSize = new paper.Size([w, _this.canvas_$.height()]);
+        });
+        foldBinsButton.html("&raquo;");
+    }
+},
+save: function() { },
+open: function() { }
+});
+})(window);
 
-          /* *********************************************************
-                          end of        paper-renderer.js
-          ************************************************************
-          ************************************************************
-                          start of      full-json.js
-          ********************************************************* */
-
+/* END paper-renderer.js */
 /* Saves the Full JSON at each modification */
 
 Rkns.jsonIO = function(_renkan, _opts) {
@@ -3476,8 +3733,467 @@ Rkns.jsonIO = function(_renkan, _opts) {
         
     _load();
 };
+(function(Rkns) {
+"use strict";
 
-          /* *********************************************************
-                          end of        full-json.js
-          ************************************************************
-          */
+var _ = Rkns._;
+
+var Ldt = Rkns.Ldt = {};
+
+var Bin = Ldt.Bin = function(_renkan, _opts) {
+    if (_opts.ldt_type) {
+        var resclass = Ldt[_opts.ldt_type+"Bin"];
+        if (resclass) {
+            return new resclass(_renkan, _opts);
+        }
+    }
+    console.error("No such LDT Bin Type");
+};
+
+var ProjectBin = Ldt.ProjectBin = Rkns.Utils.inherit(Rkns._BaseBin);
+
+ProjectBin.prototype.tagTemplate = _.template(
+    '<li class="Rk-Bin-Item" draggable="true" data-image="<%- Rkns.Utils.getFullURL(static_url+\'img/ldt-tag.png\') %>" data-uri="<%=ldt_platform%>ldtplatform/ldt/front/search/?search=<%=encodedtitle%>&field=all" data-title="<%-title%>" data-description="Tag \'<%-title%>\'">'
+    + '<img class="Rk-Ldt-Tag-Icon" src="<%-static_url%>img/ldt-tag.png" /><h4><%=htitle%></h4><div class="Rk-Clear"></div></li>'
+);
+
+ProjectBin.prototype.annotationTemplate = _.template(
+    '<li class="Rk-Bin-Item" draggable="true" data-image="<%- Rkns.Utils.getFullURL(image) %>" data-uri="<%=ldt_platform%>ldtplatform/ldt/front/player/<%=mediaid%>/#id=<%=annotationid%>" data-title="<%-title%>" data-description="<%-description%>">'
+    + '<img class="Rk-Ldt-Annotation-Icon" src="<%=image%>"/><h4><%=htitle%></h4><p><%=hdescription%></p><p>Start: <%=start%>, End: <%=end%>, Duration: <%=duration%></p><div class="Rk-Clear"></div></li>'
+);
+
+ProjectBin.prototype._init = function(_renkan, _opts) {
+    this.renkan = _renkan;
+    this.proj_id = _opts.project_id;
+    this.ldt_platform = _opts.ldt_platform || "http://ldt.iri.centrepompidou.fr/";
+    this.title_$.html(_opts.title);
+    this.title_icon_$.addClass('Rk-Ldt-Title-Icon');
+    this.refresh();
+};
+
+ProjectBin.prototype.render = function(searchbase) {
+    var search = searchbase || Rkns.Utils.regexpFromTextOrArray();
+    function highlight(_text) {
+        var _e = _(_text).escape();
+        return search.isempty ? _e : search.replace(_e, "<span class='searchmatch'>$1</span>");
+    }
+    function convertTC(_ms) {
+        function pad(_n) {
+            var _res = _n.toString();
+            while (_res.length < 2) {
+                _res = '0' + _res;
+            }
+            return _res;
+        }
+        var _totalSeconds = Math.abs(Math.floor(_ms/1000)),
+            _hours = Math.floor(_totalSeconds / 3600),
+            _minutes = (Math.floor(_totalSeconds / 60) % 60),
+            _seconds = _totalSeconds % 60,
+            _res = '';
+        if (_hours) {
+            _res += pad(_hours) + ':';
+        }
+        _res += pad(_minutes) + ':' + pad(_seconds);
+        return _res;
+    }
+    
+    var _html = '<li><h3>Tags</h3></li>',
+        _projtitle = this.data.meta["dc:title"],
+        _this = this,
+        count = 0;
+    _this.title_$.text('LDT Project: "' + _projtitle + '"');
+    _(_this.data.tags).map(function(_tag) {
+        var _title = _tag.meta["dc:title"];
+        if (!search.isempty && !search.test(_title)) {
+            return;
+        }
+        count++;
+        _html += _this.tagTemplate({
+            ldt_platform: _this.ldt_platform,
+            title: _title,
+            htitle: highlight(_title),
+            encodedtitle : encodeURIComponent(_title),
+            static_url: _this.renkan.options.static_url
+        });
+    });
+    _html += '<li><h3>Annotations</h3></li>';
+    _(_this.data.annotations).map(function(_annotation) {
+        var _description = _annotation.content.description,
+            _title = _annotation.content.title.replace(_description,"");
+        if (!search.isempty && !search.test(_title) && !search.test(_description)) {
+            return;
+        }
+        count++;
+        var _duration = _annotation.end - _annotation.begin,
+            _img = (
+                (_annotation.content && _annotation.content.img && _annotation.content.img.src)
+                ? _annotation.content.img.src
+                : ( _duration ? _this.renkan.options.static_url+"img/ldt-segment.png" : _this.renkan.options.static_url+"img/ldt-point.png" )
+            );
+        _html += _this.annotationTemplate({
+            ldt_platform: _this.ldt_platform,
+            title: _title,
+            htitle: highlight(_title),
+            description: _description,
+            hdescription: highlight(_description),
+            start: convertTC(_annotation.begin),
+            end: convertTC(_annotation.end),
+            duration: convertTC(_duration),
+            mediaid: _annotation.media,
+            annotationid: _annotation.id,
+            image: _img,
+            static_url: _this.renkan.options.static_url
+        });
+    });
+    
+    this.main_$.html(_html);
+    if (!search.isempty && count) {
+        this.count_$.text(count).show();
+    } else {
+        this.count_$.hide();
+    }
+    if (!search.isempty && !count) {
+        this.$.hide();
+    } else {
+        this.$.show();
+    }
+    this.renkan.resizeBins();
+};
+
+ProjectBin.prototype.refresh = function() {
+    var _this = this;
+    Rkns.$.ajax({
+        url: this.ldt_platform + 'ldtplatform/ldt/cljson/id/' + this.proj_id,
+        dataType: "jsonp",
+        success: function(_data) {
+            _this.data = _data;
+            _this.render();
+        }
+    });
+};
+
+var Search = Ldt.Search = function(_renkan, _opts) {
+    this.renkan = _renkan;
+    this.lang = _opts.lang || "en";
+};
+
+Search.prototype.getBgClass = function() {
+    return "Rk-Ldt-Icon";
+};
+
+Search.prototype.getSearchTitle = function() {
+    return this.renkan.translate("Lignes de Temps");
+};
+
+Search.prototype.search = function(_q) {
+    this.renkan.tabs.push(
+        new ResultsBin(this.renkan, {
+            search: _q
+        })
+    );
+};
+
+var ResultsBin = Ldt.ResultsBin = Rkns.Utils.inherit(Rkns._BaseBin);
+
+ResultsBin.prototype.segmentTemplate = _.template(
+    '<li class="Rk-Bin-Item" draggable="true" data-image="<%- Rkns.Utils.getFullURL(image) %>" data-uri="<%=ldt_platform%>ldtplatform/ldt/front/player/<%=mediaid%>/#id=<%=annotationid%>" data-title="<%-title%>" data-description="<%-description%>">'
+    + '<img class="Rk-Ldt-Annotation-Icon" src="<%=image%>"/><h4><%=htitle%></h4><p><%=hdescription%></p><p>Start: <%=start%>, End: <%=end%>, Duration: <%=duration%></p><div class="Rk-Clear"></div></li>'
+);
+
+ResultsBin.prototype._init = function(_renkan, _opts) {
+    this.renkan = _renkan;
+    this.ldt_platform = _opts.ldt_platform || "http://ldt.iri.centrepompidou.fr/";
+    this.max_results = _opts.max_results || 50;
+    this.search = _opts.search;
+    this.title_$.html('Lignes de Temps: "' + _opts.search + '"');
+    this.title_icon_$.addClass('Rk-Ldt-Title-Icon');
+    this.refresh();
+};
+
+ResultsBin.prototype.render = function(searchbase) {
+    if (!this.data) {
+        return;
+    }
+    var search = searchbase || Rkns.Utils.regexpFromTextOrArray();
+    var highlightrx = (search.isempty ? Rkns.Utils.regexpFromTextOrArray(this.search) : search);
+    function highlight(_text) {
+        return highlightrx.replace(_(_text).escape(), "<span class='searchmatch'>$1</span>");
+    }
+    function convertTC(_ms) {
+        function pad(_n) {
+            var _res = _n.toString();
+            while (_res.length < 2) {
+                _res = '0' + _res;
+            }
+            return _res;
+        }
+        var _totalSeconds = Math.abs(Math.floor(_ms/1000)),
+            _hours = Math.floor(_totalSeconds / 3600),
+            _minutes = (Math.floor(_totalSeconds / 60) % 60),
+            _seconds = _totalSeconds % 60,
+            _res = '';
+        if (_hours) {
+            _res += pad(_hours) + ':';
+        }
+        _res += pad(_minutes) + ':' + pad(_seconds);
+        return _res;
+    }
+    
+    var _html = '',
+        _this = this,
+        count = 0;
+    _(this.data.objects).each(function(_segment) {
+        var _description = _segment['abstract'],
+            _title = _segment.title;
+        if (!search.isempty && !search.test(_title) && !search.test(_description)) {
+            return;
+        }
+        count++;
+        var _duration = _segment.duration,
+            _begin = _segment.start_ts,
+            _end = + _segment.duration + _begin,
+            _img = (
+                _duration
+                ? _this.renkan.options.static_url + "img/ldt-segment.png"
+                : _this.renkan.options.static_url + "img/ldt-point.png"
+            );
+        _html += _this.segmentTemplate({
+            ldt_platform: _this.ldt_platform,
+            title: _title,
+            htitle: highlight(_title),
+            description: _description,
+            hdescription: highlight(_description),
+            start: convertTC(_begin),
+            end: convertTC(_end),
+            duration: convertTC(_duration),
+            mediaid: _segment.iri_id,
+            //projectid: _segment.project_id,
+            //cuttingid: _segment.cutting_id,
+            annotationid: _segment.element_id,
+            image: _img
+        });
+    });
+    
+    this.main_$.html(_html);
+    if (!search.isempty && count) {
+        this.count_$.text(count).show();
+    } else {
+        this.count_$.hide();
+    }
+    if (!search.isempty && !count) {
+        this.$.hide();
+    } else {
+        this.$.show();
+    }
+    this.renkan.resizeBins();
+};
+
+ResultsBin.prototype.refresh = function() {
+    var _this = this;
+    Rkns.$.ajax({
+        url: this.ldt_platform + 'ldtplatform/api/ldt/1.0/segments/search/',
+        data: {
+            format: "jsonp",
+            q: this.search,
+            limit: this.max_results
+        },
+        dataType: "jsonp",
+        success: function(_data) {
+            _this.data = _data;
+            _this.render();
+        }
+    });
+};
+
+})(window.Rkns);
+Rkns.ResourceList = {};
+
+Rkns.ResourceList.Bin = Rkns.Utils.inherit(Rkns._BaseBin);
+
+Rkns.ResourceList.Bin.prototype.resultTemplate = Rkns._.template(
+    '<li class="Rk-Bin-Item Rk-ResourceList-Item" draggable="true" data-uri="<%-url%>" '
+    + 'data-title="<%-title%>" data-description="<%-description%>" '
+    + '<% if (image) { %>data-image="<%- Rkns.Utils.getFullURL(image) %>"<% } else { %>data-image=""<% } %> >'
+    + '<% if (image) { %><img class="Rk-ResourceList-Image" src="<%-image%>"/><% } %><h4 class="Rk-ResourceList-Title">'
+    + '<% if (url) { %><a href="<%-url%>" target="_blank"><% } %><%=htitle%><% if (url) { %></a><% } %></h4>'
+    + '<% if (description) { %><p class="Rk-ResourceList-Description"><%=hdescription%></p><% } %><% if (image) { %><div style="clear: both;"></div><% } %></li>'
+);
+
+Rkns.ResourceList.Bin.prototype._init = function(_renkan, _opts) {
+    this.renkan = _renkan;
+    this.title_$.html(_opts.title);
+    if (_opts.list) {
+        this.data = _opts.list;
+    }
+    this.refresh();
+};
+
+Rkns.ResourceList.Bin.prototype.render = function(searchbase) {
+    var search = searchbase || Rkns.Utils.regexpFromTextOrArray();
+    function highlight(_text) {
+        var _e = _(_text).escape();
+        return search.isempty ? _e : search.replace(_e, "<span class='searchmatch'>$1</span>");
+    }
+    var _html = "",
+        _this = this,
+        count = 0;
+    Rkns._(this.data).each(function(_item) {
+        if (typeof _item === "string") {
+            if (/^(https?:\/\/|www)/.test(_item)) {
+                var _element = { url: _item };
+            } else {
+                var _element = { title: _item.replace(/[:,]?\s?(https?:\/\/|www)[\d\w\/.&?=#%-_]+\s?/,'').trim() },
+                    _match = _item.match(/(https?:\/\/|www)[\d\w\/.&?=#%-_]+/);
+                if (_match) {
+                    _element.url = _match[0];
+                }
+                if (_element.title.length > 80) {
+                    _element.description = _element.title;
+                    _element.title = _element.title.replace(/^(.{30,60})\s.+$/,'$1…');
+                }
+            }
+        } else {
+            var _element = _item;
+        }
+        var title = _element.title || (_element.url || "").replace(/^https?:\/\/(www\.)?/,'').replace(/^(.{40}).+$/,'$1…'),
+            url = _element.url || "",
+            description = _element.description || "",
+            image = _element.image || "";
+        if (url && !/^https?:\/\//.test(url)) {
+            url = 'http://' + url;
+        }
+        if (!search.isempty && !search.test(title) && !search.test(description)) {
+            return;
+        }
+        count++;
+        _html += _this.resultTemplate({
+            url: url,
+            title: title,
+            htitle: highlight(title),
+            image: image,
+            description: description,
+            hdescription: highlight(description),
+            static_url: _this.renkan.options.static_url
+        });
+    });
+    _this.main_$.html(_html);
+    if (!search.isempty && count) {
+        this.count_$.text(count).show();
+    } else {
+        this.count_$.hide();
+    }
+    if (!search.isempty && !count) {
+        this.$.hide();
+    } else {
+        this.$.show();
+    }
+    this.renkan.resizeBins();
+};
+    
+Rkns.ResourceList.Bin.prototype.refresh = function() {
+    if (this.data) {
+        this.render();
+    }
+};Rkns.Wikipedia = {
+};
+
+Rkns.Wikipedia.Search = function(_renkan, _opts) {
+    this.renkan = _renkan;
+    this.lang = _opts.lang || "en";
+};
+
+Rkns.Wikipedia.Search.prototype.getBgClass = function() {
+    return "Rk-Wikipedia-Search-Icon Rk-Wikipedia-Lang-" + this.lang;
+};
+
+Rkns.Wikipedia.Search.prototype.getSearchTitle = function() {
+    var langs = {
+        "fr": "French",
+        "en": "English",
+        "ja": "Japanese"
+    };
+    if (langs[this.lang]) {
+        return this.renkan.translate("Wikipedia in ") + this.renkan.translate(langs[this.lang]);
+    } else {
+        return this.renkan.translate("Wikipedia") + " [" + this.lang + "]";
+    }
+};
+
+Rkns.Wikipedia.Search.prototype.search = function(_q) {
+    this.renkan.tabs.push(
+        new Rkns.Wikipedia.Bin(this.renkan, {
+            lang: this.lang,
+            search: _q
+        })
+    );
+};
+
+Rkns.Wikipedia.Bin = Rkns.Utils.inherit(Rkns._BaseBin);
+
+Rkns.Wikipedia.Bin.prototype.resultTemplate = Rkns._.template(
+    '<li class="Rk-Wikipedia-Result Rk-Bin-Item" draggable="true" data-uri="<%-url%>" '
+    + 'data-title="Wikipedia: <%-title%>" data-description="<%-description%>" data-image="<%- Rkns.Utils.getFullURL( static_url + \'img/wikipedia.png\' ) %>">'
+    + '<img class="Rk-Wikipedia-Icon" src="<%-static_url%>img/wikipedia.png"></div><h4 class="Rk-Wikipedia-Title"><a href="<%-url%>" target="_blank"><%=htitle%></a></h4>'
+    + '<p class="Rk-Wikipedia-Snippet"><%=hdescription%></p></li>'
+);
+
+Rkns.Wikipedia.Bin.prototype._init = function(_renkan, _opts) {
+    this.renkan = _renkan;
+    this.search = _opts.search;
+    this.lang = _opts.lang || "en";
+    this.title_icon_$.addClass('Rk-Wikipedia-Title-Icon Rk-Wikipedia-Lang-' + this.lang);
+    this.title_$.html(this.search).addClass("Rk-Wikipedia-Title");
+    this.refresh();
+};
+
+Rkns.Wikipedia.Bin.prototype.render = function(searchbase) {
+    var search = searchbase || Rkns.Utils.regexpFromTextOrArray();
+    var highlightrx = (search.isempty ? Rkns.Utils.regexpFromTextOrArray(this.search) : search);
+    function highlight(_text) {
+        return highlightrx.replace(_(_text).escape(), "<span class='searchmatch'>$1</span>");
+    }
+    var _html = "",
+        _this = this,
+        count = 0;
+    Rkns._(this.data.query.search).each(function(_result) {
+        var title = _result.title,
+            url = "http://" + _this.lang + ".wikipedia.org/wiki/" + encodeURI(title.replace(/ /g,"_")),
+            description = Rkns.$('<div>').html(_result.snippet).text();
+        if (!search.isempty && !search.test(title) && !search.test(description)) {
+            return;
+        }
+        count++;
+        _html += _this.resultTemplate({
+            url: url,
+            title: title,
+            htitle: highlight(title),
+            description: description,
+            hdescription: highlight(description),
+            static_url: _this.renkan.options.static_url
+        });
+    });
+    _this.main_$.html(_html);
+    if (!search.isempty && count) {
+        this.count_$.text(count).show();
+    } else {
+        this.count_$.hide();
+    }
+    if (!search.isempty && !count) {
+        this.$.hide();
+    } else {
+        this.$.show();
+    }
+    this.renkan.resizeBins();
+};
+    
+Rkns.Wikipedia.Bin.prototype.refresh = function() {
+    var _this = this;
+    Rkns.$.ajax({
+        url: "http://" + _this.lang + ".wikipedia.org/w/api.php?action=query&list=search&srsearch=" + encodeURIComponent(this.search) + "&format=json",
+        dataType: "jsonp",
+        success: function(_data) {
+            _this.data = _data;
+            _this.render();
+        }
+    });
+};
