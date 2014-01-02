@@ -10,7 +10,7 @@ IriSP.Widgets.Slider.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Slider.prototype.defaults = {
     minimized_height : 4,
-    maximized_height : 10,
+    maximized_height : 4,
     minimize_timeout : 1500 /*  time before minimizing slider after mouseout,
                                 set to zero for fixed slider */
 };

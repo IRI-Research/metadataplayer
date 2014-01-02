@@ -28,7 +28,7 @@ IriSP.Widgets.Tooltip.prototype.draw = function() {
     this.$tip = this.$.find(".Ldt-Tooltip-Tip");
     this.$sw = this.$.find(".Ldt-Tooltip-Border-SW");
     this.$se = this.$.find(".Ldt-Tooltip-Border-SE");
-    this.__halfWidth = Math.floor(this.$.find(".Ldt-Tooltip-Main").width()/2);
+    this.__halfWidth = Math.floor(( this.$.find(".Ldt-Tooltip-Main").width() || 192)/2);
     this.__borderWidth = this.$.find(".Ldt-Tooltip-Border-Left").width();
     this.__tipDelta = this.__halfWidth - Math.floor(this.$tip.width()/2);
     this.__maxShift = this.__tipDelta - this.__borderWidth;
@@ -41,7 +41,21 @@ IriSP.Widgets.Tooltip.prototype.draw = function() {
 IriSP.Widgets.Tooltip.prototype.show = function(x, y, text, color) {
     
     if (typeof color !== "undefined") {
-        this.$.find(".Ldt-Tooltip-Color").show().css("background-color", color);
+    	// one color or array of colors
+    	if (typeof color === "string") {
+    		this.$.find(".Ldt-Tooltip-Color").html("");
+    		this.$.find(".Ldt-Tooltip-Color").show().css("background-color", color);
+    		this.$.find(".Ldt-Tooltip-Color").show().css("height", "");
+    	}
+    	else{
+    		var d = this.$.find(".Ldt-Tooltip-Color");
+    		d.html("");
+    		d.show();
+    		for(var i=0; i<color.length; i++){
+    			d.append('<div style="float: left; height: 10px; width: 10px; background-color: ' + color[i] + '">')
+    		}
+    		this.$.find(".Ldt-Tooltip-Color").css("height", (color.length * 10) + "px");
+    	}
     } else {
         this.$.find(".Ldt-Tooltip-Color").hide();
     }

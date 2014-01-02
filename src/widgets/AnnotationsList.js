@@ -183,15 +183,19 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     : document.location.href.replace(/#.*$/,'') + '#id=' + _annotation.id
                     )
             );
-            var _title = (_annotation.title || "").replace(_annotation.description,''),
+            var _title = "",
                 _description = _annotation.description,
                 _thumbnail = (typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail);
-            if (!_annotation.title) {
-                _title = _annotation.creator;
+            // Update : display creator
+            if (_annotation.creator) {
+            	_title = _annotation.creator;
             }
-            if (!_annotation.description && _annotation.creator) {
-                _description = _annotation.title;
-                _title = _annotation.creator;
+            if (_annotation.title) {
+            	var tempTitle = _annotation.title;
+            	if( tempTitle.substr(0, _title.length + 1) == (_title + ":") ){
+            		_title = "";
+            	}
+                _title = _title + ( (_title=="") ? "" : ": ") + _annotation.title;
             }
             var _bgcolor;
             IriSP._(_this.polemics).each(function(_polemic) {

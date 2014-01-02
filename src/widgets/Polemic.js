@@ -22,7 +22,6 @@ IriSP.Widgets.Polemic.prototype.defaults = {
     element_height : 5,
     max_elements: 20,
     annotation_type : "tweet",
-    only_allow_zero_duration_annotations: true,
     defaultcolor : "#585858",
     foundcolor : "#fc00ff",
     polemics : [
@@ -68,18 +67,13 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
         
     this.$zone.append(this.$elapsed);
     
+    // we don't filter with null duration anymore
     var _slices = [],
         _slice_count = Math.floor( this.width / this.element_width ),
         _duration = this.source.getDuration(),
         _max = 0,
-        _this = this,
-        _list = this.getWidgetAnnotations();
-    
-    if (this.only_allow_zero_duration_annotations) {
-        _list = _list.filter(function(_a) {
-            return !_a.getDuration().milliseconds;
-        });
-    }
+        _list = this.getWidgetAnnotations(),
+        _this = this;
     
     for (var _i = 0; _i < _slice_count; _i++) {
         var _begin = new IriSP.Model.Time( _i * _duration / _slice_count ),
@@ -145,20 +139,28 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     return false;
                 });
                 IriSP.attachDndData(_el, {
-                    title: _annotation.title,
-                    description: _annotation.description,
-                    image: _annotation.thumbnail,
-                    uri: (typeof _annotation.url !== "undefined" 
-                        ? _annotation.url
-                        : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id))
+                	title: _annotation.title,
+                	description: _annotation.description,
+                	image: _annotation.thumbnail,
+                	uri: (typeof _annotation.url !== "undefined" 
+		                ? _annotation.url
+		                : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id))
                 });
+            	// test if annotation has several colors.
+            	var colAr = [];
+            	for (var _j = 0; _j < _this.polemics.length; _j++) {
+            		if( IriSP.Model.regexpFromTextOrArray( _this.polemics[_j].keywords ).test( _annotation.title ) ){
+            			colAr.push(_this.polemics[_j].color);
+            		}
+                }
+            	// display annotation
                 _annotation.on("select", function() {
                     if (_this.tooltip) {
                         _this.tooltip.show(
                             + Math.floor(_elx + (_this.element_width - 1) / 2),
                             + _ely,
                             _annotation.title,
-                            _col
+                            ( (colAr.length>1) ? colAr : _col )
                         );
                     }
                     _this.$tweets.each(function() {

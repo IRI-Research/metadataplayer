@@ -56,7 +56,7 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
         at_time: "at",
         submit: "Submit",
         add_keywords_: "Add keywords:",
-        add_polemic_keywords_: "Add polemic keywords:",
+        add_polemic_keywords_: "Add polemic attributes :",
         your_name_: "Your name:",
         annotate_video: "Annotate this video",
         type_title: "Annotation title",
@@ -77,7 +77,7 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
         at_time: "à",
         submit: "Envoyer",
         add_keywords_: "Ajouter des mots-clés\u00a0:",
-        add_polemic_keywords_: "Ajouter des mots-clés polémiques\u00a0:",
+        add_polemic_keywords_: "Ajouter des attributs polémiques\u00a0:",
         your_name_: "Votre nom\u00a0:",
         annotate_video: "Annoter cette vidéo",
         type_title: "Titre de l'annotation",
@@ -150,18 +150,24 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
     this.tag_prefix = this.tag_prefix || "";
     
     if (this.tag_titles && !this.tags) {
-        this.tags = IriSP._(this.tag_titles).map(function(_tag_title) {
-            var _tag,
-                _tags = _this.source.getTags().searchByTitle(_tag_title, true);
-            if (_tags.length) {
-                _tag = _tags[0];
-            } else {
-                _tag = new IriSP.Model.Tag(false, _this.source);
-                _this.source.getTags().push(_tag);
-                _tag.title = _tag_title;
-            }
-            return _tag;
-        });
+		if(!(this.tag_titles.length==1 && this.tag_titles[0]=="")){
+			this.tags = IriSP._(this.tag_titles).map(function(_tag_title) {
+				var _tag,
+					_tags = _this.source.getTags().searchByTitle(_tag_title, true);
+				if (_tags.length) {
+					_tag = _tags[0];
+				} else {
+					_tag = new IriSP.Model.Tag(false, _this.source);
+					_this.source.getTags().push(_tag);
+					_tag.title = _tag_title;
+				}
+				return _tag;
+			});
+        }
+        else{
+        	// we forced no tags if this.tag_titles = [''] (and not false)
+        	this.tags = true;
+        }
     }
     if (!this.tags) {
         this.tags = this.source.getTags()
