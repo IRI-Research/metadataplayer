@@ -142,6 +142,7 @@ Situés dans le répertoire *src/widgets*, ils contiennent nécessairement un fi
 - **height**, hauteur du lecteur vidéo (la largeur est défini dans la *config* générale du IriSP.Metadataplayer(*config*) ).
 - **autostart**, comme son nom l'indique, *true* ou *false*.
 - **url\_transform**, fonction pour traiter l'url s'il y a besoin de la transformer avant de l'intégrer.
+    Ex: url\_transform: function(url) { return url + ".mp4"; }
 
 Voici la liste des widgets player actuellement disponibles avec leurs options. Aucun player n'utilise de fichier css spécifique.
 
@@ -252,17 +253,25 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
 
 - **Rôle**: Permet de créer une annotation en affichant un formulaire
 - **Options**:
-    - **show\_title\_field**: (défaut: true), affiche un champ permettant de saisir le titre de l’annotation.
-    - **creator\_name**: nom d’utilisateur du créateur de l’annotation.
-    - **creator\_avatar**: URL de l’image de profil du créateur de l’annotation.
-    - **tags**: (défaut: false), liste des tags à afficher, sous la forme d’un tableau d’objets type [ { id: "tag-001", title: "" } ]. Si la valeur est false, affiche les tags les plus utilisés du projet.
-    - **max\_tags**: (défaut: 8), nombre de tags à afficher.
-    - **polemics**: boutons polémiques à afficher, sous la forme d’un tableau d’objets indiquant mot-clé à ajouter, couleur du fond du bouton, couleur du bouton, ex: [ { keyword: "++", background\_color: "#00a000", text\_color: "#ffffff" } ]
+    - **after\_send\_timeout**: (défaut: 0), timeout de la requête d'ajout d'annotation.
+    - **always\_visible**: (défaut: false), widget toujours visible ou non.
     - **annotation\_type**: (défaut: "Contributions"), cf. *Options courantes*, plus haut.
-    - **api\_serializer**: (défaut: "ldt\_annotate"), sérialiseur à utiliser pour l’envoi des annotations.
     - **api\_endpoint\_template**: URL de l’API, où {{id\}\} est remplacé par l’ID du projet, ex: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/annotations/{{id}}.json".
-    - **api\_method**: (défaut: "PUT"), méthode HTTP utilisée pour envoyer les annotations. La plateforme *Lignes de temps* utilise PUT, mais cette méthode devrait être réservée pour la création d’une ressource dont l’URL est connue à l’avance.
+    - **api\_method**: (défaut: "POST"), méthode HTTP utilisée pour envoyer les annotations.
+    - **api\_serializer**: (défaut: "ldt\_annotate"), sérialiseur à utiliser pour l’envoi des annotations.
+    - **close\_after\_send**: (défaut: false), ferme le widget après avoir créé une annotation.
     - **close\_widget\_timeout**: (défaut: 0), durée en millisecondes avant que le widget ne soit refermé après l’envoi d’une annotation. Si la valeur est 0, le widget ne se referme pas.
+    - **creator\_avatar**: URL de l’image de profil du créateur de l’annotation.
+    - **creator\_name**: nom d’utilisateur du créateur de l’annotation.
+    - **max\_tags**: (défaut: 8), nombre de tags à afficher.
+    - **pause\_on\_write**: (défaut: true), arrête la lecture quand on commence à écrire.
+    - **polemics**: boutons polémiques à afficher, sous la forme d’un tableau d’objets indiquant mot-clé à ajouter, couleur du fond du bouton, couleur du bouton, ex: [ { keyword: "++", background\_color: "#00a000", text\_color: "#ffffff" } ]
+    - **show\_title\_field**: (défaut: true), affiche un champ permettant de saisir le titre de l’annotation.
+    - **show\_creator\_field**: (défaut: true), affiche un champ permettant de saisir l'auteur de l’annotation.
+    - **start\_visible**: (défaut: true), widget visible au démarrage.
+    - **tag\_prefix**: (défaut: "#"), comme son nom l'indique.
+    - **tag\_titles**: (default: false), liste des tags à afficher, sous la forme d’un tableau de strings: [ "#premierTag", "#secondTag" ]
+    - **tags**: (défaut: false), liste des tags à afficher, sous la forme d’un tableau d’objets type [ { id: "tag-001", title: "" } ]. Si la valeur est false, affiche les tags les plus utilisés du projet.
 - Utilise un fichier CSS: oui
 
 #### HelloWorld ####
@@ -272,7 +281,7 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
     - **text**: (défaut: "world"), texte à afficher après "Hello, "
 - Utilise un fichier CSS: oui
 
-#### Media ####
+#### MediaList ####
 
 - **Rôle**: Affiche le média en cours, ainsi que la liste des autres médias du projet. Utilisé principalement pour les mashups
 - **Options**:
@@ -286,6 +295,13 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
 - Une URL finissant par #id=*id de l’annotation* pointe sur une annotation, par #t=*temps en secondes* vers un timecode de la vidéo.
 - Pas d’options
 - Utilise un fichier CSS: non.
+
+#### MultiSegments ####
+
+- **Rôle**: Affiche tous les *annotation\_type* du média sous forme de Segments, en horizontal.
+- **Options**:
+    - **visible_by_default**: true ou false, comme son nom l'indique.
+- Utilise un fichier CSS: non
 
 #### Polemic ####
 
@@ -315,13 +331,6 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
     - **colors**: liste de couleurs à utiliser lorsque les annotations ne contiennent pas d’information de couleur.
     - **height**: hauteur du widget
 - Utilise un fichier CSS: oui
-
-#### MultiSegments ####
-
-- **Rôle**: Affiche tous les *annotation\_type* du média sous forme de Segment, en horizontal.
-- **Options**:
-    - **visible_by_default**: true ou false, comme son nom l'indique.
-- Utilise un fichier CSS: non
 
 #### Slider ####
 

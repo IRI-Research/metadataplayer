@@ -136,12 +136,13 @@ Widgets are modules, visible or not, adding functionalities to the Metadataplaye
 
 Located in the *src/widgets* directory, they’re composed of a mandatory JavaScript file, *WidgetName.js* and an optional stylesheet, *WidgetName.css*
 
-### Common video player Widget oOptions ###
+### Common video player Widget options ###
 
 - **video**, video file URL.
 - **height**, video player height (width is defined in the main *config* of IriSP.Metadataplayer(*config*) ).
 - **autostart**, as its name implies, *true* or *false*.
 - **url\_transform**, function to transform the video url, if a transformation is needed before integration.
+    Ex: url\_transform: function(url) { return url + ".mp4"; }
 
 Here is the list of available video player widget with their options. No specific css used.
 
@@ -206,7 +207,7 @@ Here’s a list of available widgets:
     - **site\_name**: "Lignes de Temps", site name to display when users click on "Share on social networks".
 - Uses a CSS stylesheet: yes
 
-### AnnotationsList ###
+#### AnnotationsList ####
 
 - **Role**: Show a list of annotations.
 - **Options**:
@@ -250,18 +251,25 @@ Here’s a list of available widgets:
 
 - **Role**: Displays a form to create a new annotation
 - **Options**:
-    - **show\_title\_field**: (default: true), shows or hides the annotation title field.
-    - **creator\_name**: Default annotation creator name.
+    - **after\_send\_timeout**: (default: 0), add annotation request timeout.
+    - **always\_visible**: (default: false), widget always visible or not.
+    - **annotation\_type**: (default: "Contributions"), see *Common widget options*.
+    - **api\_endpoint\_template**: API Endpoint URL, with {{id\}\} as a placeholder for project ID, e.g.: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/annotations/{{id}}.json".
+    - **api\_method**: (default: "POST"), HTTP method used to send annotations.
+    - **api\_serializer**: (default: "ldt\_annotate"), serializer to use when sending annotations.
+    - **close\_after\_send**: (default: false), closes the widget after adding annotation.
+    - **close\_widget\_timeout**: (default: 0), duration in milliseconds before widget is closed after send. If value is set to 0, the widget stays open.
     - **creator\_avatar**: Creator profile thumbnail URL.
+    - **creator\_name**: Default annotation creator name.
+    - **max\_tags**: (default: 8), maximum number of tags to display.
+    - **pause\_on\_write**: (default: true), pauses video when we start to write.
+    - **polemics**: polemic buttons to display, as an array of objects, e.g.: [ { keyword: "++", background\_color: "#00a000", text\_color: "#ffffff" } ]
+    - **show\_title\_field**: (default: true), shows or hides the annotation title field.
+    - **show\_creator\_field**: (default: true), shows or hides the annotation author field.
+    - **start\_visible**: (default: true), widget visible at start.
+    - **tag\_prefix**: (default: "#"), as its name implies.
     - **tag\_titles**: (default: false), list of tags to display, as an array of strings: [ "#firstTag", "#secondTag" ]
     - **tags**: (default: false), list of tags to display, as an array of objects: [ { id: "tag-001", title: "#firstTag" } ]. Overrides *tag\_titles*. If both options are set to *false*, the most frequent tags in the project will be displayed.
-    - **max\_tags**: (default: 8), maximum number of tags to display.
-    - **polemics**: polemic buttons to display, as an array of objects, e.g.: [ { keyword: "++", background\_color: "#00a000", text\_color: "#ffffff" } ]
-    - **annotation\_type**: (default: "Contributions"), see *Common widget options*.
-    - **api\_serializer**: (default: "ldt\_annotate"), serializer to use when sending annotations.
-    - **api\_endpoint\_template**: API Endpoint URL, with {{id\}\} as a placeholder for project ID, e.g.: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/annotations/{{id}}.json".
-    - **api\_method**: (default: "PUT"), HTTP method used to send annotations. *Lignes de temps* platform uses PUT.
-    - **close\_widget\_timeout**: (default: 0), duration in milliseconds before widget is closed after send. If value is set to 0, the widget stays open.
 - Uses a CSS stylesheet: yes
 
 #### HelloWorld ####
@@ -271,7 +279,7 @@ Here’s a list of available widgets:
     - **text**: (default: "world"), text to display after "Hello, "
 - Uses a CSS stylesheet: yes
 
-#### Media ####
+#### MediaList ####
 
 - **Role**: Shows current media, as well as other medias in the project. Mostly used for mashups
 - **Options**:
@@ -285,6 +293,13 @@ Here’s a list of available widgets:
 - An URL ending with #id=*annotation ID* points to an annotation, one with #t=*time in seconds* to a precise position.
 - No options
 - Uses a CSS stylesheet: no
+
+#### MultiSegments ####
+
+- **Rôle**: Displays horizontaly all the media's *annotation\_type* as Segments.
+- **Options**:
+    - **visible_by_default**: true by default or false, as its name implies.
+- Utilise un fichier CSS: non
 
 #### Polemic ####
 
