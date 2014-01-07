@@ -119,15 +119,7 @@ Contient la classe de base *IriSP.Widgets.Widget*, qui fournit les fonctionnalit
 
 ### players ###
 
-Les fichiers de ce répertoire permettent d’interfacer le *Popcorn Replacement* (cf. *pop.js*) avec des lecteurs vidéo tiers.
-
-Existent actuellement:
-
-1. **player.jwplayer**, pour communiquer avec JwPlayer, utilisé pour lire des flux RTMP sur la plateforme *Ligne de temps*
-2. **player.dailymotion**, pour lire des vidéos du *Youtube à la française*
-3. **player.allocine**, pour le player de allocine.net
-4. **player.mashup**, pour le player de bout à bout Flash créé par Thibaut Cavalié.
-5. **player.htmlMashup**, pour le lecteur de bout à bout de vidéos HTML5 basé sur Popcorn.
+Les lecteurs vidéos sont maintenant des widgets. Cf la section widgets pour leur configuration.
 
 ### serializers ###
 
@@ -144,7 +136,57 @@ Les Widgets sont des modules, visibles ou non, permettant de rajouter des foncti
 
 Situés dans le répertoire *src/widgets*, ils contiennent nécessairement un fichier de code *NomDuWidget.js* et, optionnellement un fichier de style *NomDuWidget.css*
 
-#### Options courantes ####
+### Options courantes des widgets lecteurs vidéo ###
+
+- **video**, URL du fichier vidéo.
+- **height**, hauteur du lecteur vidéo (la largeur est défini dans la *config* générale du IriSP.Metadataplayer(*config*) ).
+- **autostart**, comme son nom l'indique, *true* ou *false*.
+- **url\_transform**, fonction pour traiter l'url s'il y a besoin de la transformer avant de l'intégrer.
+
+Voici la liste des widgets player actuellement disponibles avec leurs options. Aucun player n'utilise de fichier css spécifique.
+
+#### HtmlPlayer ####
+
+- **Rôle** : lecteur pur html 5.
+
+#### JwpPlayer ####
+
+- **Rôle** : interface avec le JW Player, souvent utile pour les url de stream flash en rtmp ou le fallback des fichiers mp4. Dernière version livrée : 6.5.3609.
+
+#### PopcornPlayer ####
+
+- **Rôle** : interface avec le player popcorn, qui permet de lire des vidéos html5, youtube et vimeo. Version de popcorn livrée : 1.3.
+- **Option**:
+    - **video**: URL du fichier vidéo ou de la page youtube/vimeo, par exemple http://www.youtube.com/watch?v=Eb7U-umL5L4 ou http://vimeo.com/80887929.
+
+#### DailymotionPlayer ####
+
+- **Rôle** : interface avec le player dailymotion pour les vidéos issues de ce site.
+- **Option**:
+    - **video**: URL de la page dailymotion, par exemple http://www.dailymotion.com/video/x16kajy.
+
+#### AdaptivePlayer ####
+
+- **Rôle** : sélectionne JwpPlayer ou HtmlPlayer en fonction de l'url.
+
+#### AutoPlayer ####
+
+- **Rôle** : sélectionne le player approprié en fonction de l'url parmi tous les players disponibles. Par exemple rtmp donnera JwpPlayer, youtube donnera PopcornPlayer, webm donnera HtmlPlayer, etc.
+
+#### PlaceholderPlayer ####
+
+- **Rôle** : Placeholder, ne lit aucune vidéo.
+
+#### HtmlMashupPlayer ####
+
+- **Rôle** : Permet de réaliser des bout à bout de vidéos html5.
+
+#### MashupPlayer ####
+
+- **Rôle** : Permet de réaliser des bout à bout de vidéos html5.
+
+
+### Options courantes des autres widgets ###
 
 - **metadata**, source de métadonnées, sous la forme { url: *URL de la source de données*, type: *Type de sérialiseur utilisé* }
 - **container**, à utiliser seulement si le widget ne doit pas être aligné en dessous des autres widgets, pour spécifier l’ID de l’élément HTML dans lequel il doit être affiché.
@@ -156,7 +198,8 @@ Situés dans le répertoire *src/widgets*, ils contiennent nécessairement un fi
 
 Voici la liste des widgets actuellement disponibles, avec leurs options:
 
-### Annotation ###
+
+#### Annotation ####
 
 - **Rôle**: Affiche les informations relatives à une annotation au moment où celle-ci est jouée
 - **Options**:
@@ -165,7 +208,7 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
     - **site\_name**: "Lignes de Temps", nom du site à afficher lorsque l’on clique sur les boutons de partage pour réseaux sociaux.
 - Utilise un fichier CSS: oui
 
-### AnnotationsList ###
+#### AnnotationsList ####
 
 - **Rôle**: Affiche une liste d’annotations
 - **Options**:
@@ -179,7 +222,7 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
     - **newest\_first**: (défaut: false), *true*: classe les annotations par ordre antéchronologique de création, *false*: classe les annotations par ordre chronologique de leur timecode vidéo.
 - Utilise un fichier CSS: oui
 
-### Arrow ###
+#### Arrow ####
 
 - **Rôle**: Dessine la flèche indiquant la position de l’annotation
 - **Options**:
@@ -196,7 +239,7 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
 - Utilise la bibliothèque: Raphael
 - Utilise un fichier CSS: non
 
-### Controller ###
+#### Controller ####
 
 - **Rôle**: Boutons Lecture/Pause, Rechercher, Ouvrir l’annotateur et contrôle du volume
 - **Options**:
@@ -205,7 +248,7 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
 - Utilise la bibliothèque: jQuery UI
 - Utilise un fichier CSS: oui
 
-### CreateAnnotation ###
+#### CreateAnnotation ####
 
 - **Rôle**: Permet de créer une annotation en affichant un formulaire
 - **Options**:
@@ -222,14 +265,14 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
     - **close\_widget\_timeout**: (défaut: 0), durée en millisecondes avant que le widget ne soit refermé après l’envoi d’une annotation. Si la valeur est 0, le widget ne se referme pas.
 - Utilise un fichier CSS: oui
 
-### HelloWorld ###
+#### HelloWorld ####
 
 - **Rôle**: Widget d’exemple démontrant l’API de création de widgets
 - **Options**:
     - **text**: (défaut: "world"), texte à afficher après "Hello, "
 - Utilise un fichier CSS: oui
 
-### Media ###
+#### Media ####
 
 - **Rôle**: Affiche le média en cours, ainsi que la liste des autres médias du projet. Utilisé principalement pour les mashups
 - **Options**:
@@ -237,14 +280,14 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
     - **media\_url\_template**: spécifie un gabarit d’URL lorsque le média n’a pas d’information d’URL, par exemple: "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/"
 - Utilise un fichier CSS: oui
 
-### Mediafragment ###
+#### Mediafragment ####
 
 - **Rôle**: Gère les URLs à la norme *Mediafragment*: change la position de la tête de lecture en fonction de l’URL et inversement.
 - Une URL finissant par #id=*id de l’annotation* pointe sur une annotation, par #t=*temps en secondes* vers un timecode de la vidéo.
 - Pas d’options
 - Utilise un fichier CSS: non.
 
-### Polemic ###
+#### Polemic ####
 
 - **Rôle**: Affiche la *timeline polémique*, c’est à dire les tweets colorés en fonction de la syntaxe polémique. Selon le volume de tweets, deux modes de représentation existent:
     - Avec un faible volume, les tweets sont des carrés dessinés individuellement.
@@ -259,13 +302,13 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
     - **polemics**: couleurs polémiques à afficher, en fonction d’une recherche de termes, type [ { keywords: [ "++" ], color: "#1D973D" } ]
 - Utilise un fichier CSS: oui
 
-### Renkan ###
+#### Renkan ####
 
 - **Rôle**: Interface avec le projet *Renkan*
 - Utilise les bibliothèques: jQuery Mousewheel, Backbone, Backbone Relational, Renkan-Publish
 - Utilise un fichier CSS: oui
 
-### Segments ###
+#### Segments ####
 
 - **Rôle**: Affiche le *chapitrage* du média, en horizontal.
 - **Options**:
@@ -273,7 +316,14 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
     - **height**: hauteur du widget
 - Utilise un fichier CSS: oui
 
-### Slider ###
+#### MultiSegments ####
+
+- **Rôle**: Affiche tous les *annotation\_type* du média sous forme de Segment, en horizontal.
+- **Options**:
+    - **visible_by_default**: true ou false, comme son nom l'indique.
+- Utilise un fichier CSS: non
+
+#### Slider ####
 
 - **Rôle**: Barre de progression et *Slider* indiquant la position de la tête de lecture vidéo et permettant de la déplacer.
 - **Options**:
@@ -283,7 +333,7 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
 - Utilise la bibliothèque: jQuery UI
 - Utilise un fichier CSS: oui
 
-### Social ###
+#### Social ####
 
 - **Role**: Affiche des boutons pour partager une URL sur les réseaux sociaux
 - **Options**:
@@ -297,7 +347,7 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
 - Utilise un fichier CSS: oui.
 - Utilise la bibliothèque: ZeroClipboard
 
-### Sparkline ###
+#### Sparkline ####
 
 - **Rôle**: Affiche une courbe indiquant l’évolution du volume d’annotations au cours du temps.
 - **Options**:
@@ -311,7 +361,7 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
 - Utilise la bibliothèque: Raphael
 - Utilise un fichier CSS: non
 
-### Tagcloud ###
+#### Tagcloud ####
 
 - **Rôle**: Affiche un nuage de mots-clés
 - **Options**:
@@ -328,13 +378,13 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
     - **max\_font\_size**: (défaut: 26), taille de caractères (en pixels) pour le mot le plus fréquent.
 - Utilise un fichier CSS: oui
 
-### Tooltip ###
+#### Tooltip ####
 
 - **Rôle**: Affiche une infobulle, utilisé uniquement comme *widget inclus* dans d’autres widgets.
 - Pas d’options
 - Utilise un fichier CSS: oui
 
-### Trace ###
+#### Trace ####
 
 - **Rôle**: Envoi des traces au serveur KTBS
 - **Options**:
@@ -345,7 +395,7 @@ Voici la liste des widgets actuellement disponibles, avec leurs options:
 - Utilise la bibliothèque: ktbs4js tracemanager
 - Utilise un fichier CSS: non.
 
-### Tweet ###
+#### Tweet ####
 
 - **Rôle**: Affiche furtivement le contenu d’un tweet
 - **Options**:

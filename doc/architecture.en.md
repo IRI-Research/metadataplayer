@@ -119,15 +119,7 @@ Contains the (abstract) class *IriSP.Widgets.Widget*, containing base functional
 
 ### players ###
 
-Files in this directory interface *Popcorn Replacement* (see *pop.js*) with third-party video players.
-
-Five players are available:
-
-1. **player.jwplayer**, for JwPlayer, used to play RTMP streams on the *Ligne de temps* platform.
-2. **player.dailymotion**, to play videos on Dailymotion.
-3. **player.allocine**, to play videos on allocine.net
-4. **player.mashup**, for the flash based mashup player written by Thibaut Cavalié.
-5. **player.htmlMashup**, for the Popcorn-based HTML5 mashup player.
+Players are now widgets. See widget section for their configuration.
 
 ### serializers ###
 
@@ -144,7 +136,57 @@ Widgets are modules, visible or not, adding functionalities to the Metadataplaye
 
 Located in the *src/widgets* directory, they’re composed of a mandatory JavaScript file, *WidgetName.js* and an optional stylesheet, *WidgetName.css*
 
-#### Common Widget Options ####
+### Common video player Widget oOptions ###
+
+- **video**, video file URL.
+- **height**, video player height (width is defined in the main *config* of IriSP.Metadataplayer(*config*) ).
+- **autostart**, as its name implies, *true* or *false*.
+- **url\_transform**, function to transform the video url, if a transformation is needed before integration.
+
+Here is the list of available video player widget with their options. No specific css used.
+
+#### HtmlPlayer ####
+
+- **Role** : pure html5 video player.
+
+#### JwpPlayer ####
+
+- **Role** : interface with JW Player, often useful with rtmp streamed flash urls or mp4 files fallback. Last version delivered : 6.5.3609.
+
+#### PopcornPlayer ####
+
+- **Role** : interface with popcorn player, which enables to read html5, youtube and vimeo videos. Last version delivered : 1.3.
+- **Option**:
+    - **video**: video file URL or youtube/vimeo page, for example http://www.youtube.com/watch?v=Eb7U-umL5L4 or http://vimeo.com/80887929.
+
+#### DailymotionPlayer ####
+
+- **Role** : interface with the dailymotion player.
+- **Option**:
+    - **video**: URL of the dailymotion page, for example http://www.dailymotion.com/video/x16kajy.
+
+#### AdaptivePlayer ####
+
+- **Role** : selects JwpPlayer or HtmlPlayer depending of the url.
+
+#### AutoPlayer ####
+
+- **Role** : select the appropriate player depending of the url among all the available players. For example rtmp leads to JwpPlayer, youtube to PopcornPlayer, webm to HtmlPlayer, etc.
+
+#### PlaceholderPlayer ####
+
+- **Role** : Placeholder, does not read any video.
+
+#### HtmlMashupPlayer ####
+
+- **Role** : Enables to read mashup "bout à bout" of html5 videos.
+
+#### MashupPlayer ####
+
+- **Role** : Enables to read mashup "bout à bout" of html5 videos.
+
+
+### Common Widget Options ###
 
 - **metadata**, metadata source, as an object with the following properties: { url: *URL of the data source*, type: *Serializer type* }
 - **container**, used to position the widget in a given HTML element, given its ID. If omitted, the widget will be automatically aligned vertically below the player.
@@ -155,7 +197,7 @@ Located in the *src/widgets* directory, they’re composed of a mandatory JavaSc
 
 Here’s a list of available widgets:
 
-### Annotation ###
+#### Annotation ####
 
 - **Role**: Displays information relative to a single segment/annotation while it is being played
 - **Options**:
@@ -178,7 +220,7 @@ Here’s a list of available widgets:
     - **newest\_first**: (default: false), When *true*, annotations are sorted by decreasing creation date. When *false*, annotations are sorted by increasing timecode.
 - Uses a CSS stylesheet: yes
 
-### Arrow ###
+#### Arrow ####
 
 - **Role**: Draws the position arrow showing where the annotation is.
 - **Options**:
@@ -195,7 +237,7 @@ Here’s a list of available widgets:
 - Uses external library: Raphael
 - Uses a CSS stylesheet: no
 
-### Controller ###
+#### Controller ####
 
 - **Role**: Play, Pause, Search, Annotate buttons and volume control
 - **Options**:
@@ -204,7 +246,7 @@ Here’s a list of available widgets:
 - Uses external library: jQuery UI
 - Uses a CSS stylesheet: yes
 
-### CreateAnnotation ###
+#### CreateAnnotation ####
 
 - **Role**: Displays a form to create a new annotation
 - **Options**:
@@ -222,14 +264,14 @@ Here’s a list of available widgets:
     - **close\_widget\_timeout**: (default: 0), duration in milliseconds before widget is closed after send. If value is set to 0, the widget stays open.
 - Uses a CSS stylesheet: yes
 
-### HelloWorld ###
+#### HelloWorld ####
 
 - **Role**: Example widget demonstration the API capabilities
 - **Options**:
     - **text**: (default: "world"), text to display after "Hello, "
 - Uses a CSS stylesheet: yes
 
-### Media ###
+#### Media ####
 
 - **Role**: Shows current media, as well as other medias in the project. Mostly used for mashups
 - **Options**:
@@ -237,14 +279,14 @@ Here’s a list of available widgets:
     - **media\_url\_template**: Specifies an URL template for when a media doesn’t include URL information, e.g.: "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/"
 - Uses a CSS stylesheet: yes
 
-### Mediafragment ###
+#### Mediafragment ####
 
 - **Role**: Handles *Media fragments*-compliant URIs (W3C Recommandation): Changing the playing position changes the URL and vice-versa.
 - An URL ending with #id=*annotation ID* points to an annotation, one with #t=*time in seconds* to a precise position.
 - No options
 - Uses a CSS stylesheet: no
 
-### Polemic ###
+#### Polemic ####
 
 - **Role**: Shows the *polemical timeline*, i.e. tweets colored according to the polemical syntax. Depending on the number of tweets, two visualization modes exist:
     - Below the threshold (low volume mode), tweets are represented as individual squares.
@@ -259,13 +301,13 @@ Here’s a list of available widgets:
     - **polemics**: polemical colors to display, as an array of objects, e.g. [ { name: "OK", keywords: [ "++" ], color: "#1D973D" } ]
 - Uses a CSS stylesheet: yes
 
-### Renkan ###
+#### Renkan ####
 
 - **Role**: Interface with the *Renkan* project.
 - Uses external libraries: jQuery Mousewheel, Backbone, Backbone Relational, Renkan-Publish
 - Uses a CSS stylesheet: oui
 
-### Segments ###
+#### Segments ####
 
 - **Role**: Displays segments of a media as rectangles on an horizontal line.
 - **Options**:
@@ -273,7 +315,7 @@ Here’s a list of available widgets:
     - **height**: height of the widget, in pixels
 - Uses a CSS stylesheet: yes
 
-### Slider ###
+#### Slider ####
 
 - **Role**: A combination of a Progress bar and a Slider displaying and allowing repositioning of the current video playback position.
 - **Options**:
@@ -283,7 +325,7 @@ Here’s a list of available widgets:
 - Uses external library: jQuery UI
 - Uses a CSS stylesheet: yes
 
-### Social ###
+#### Social ####
 
 - **Role**: Adds buttons to share an URL on social networks
 - **Options**:
@@ -297,7 +339,7 @@ Here’s a list of available widgets:
 - Uses a CSS stylesheet: yes
 - Uses external library: ZeroClipboard
 
-### Sparkline ###
+#### Sparkline ####
 
 - **Role**: Displays a curve showing the volume of tweets across time.
 - **Options**:
@@ -311,7 +353,7 @@ Here’s a list of available widgets:
 - Uses external library: Raphael
 - Uses a CSS stylesheet: no
 
-### Tagcloud ###
+#### Tagcloud ####
 
 - **Role**: Shows a tag cloud - WARNING: Doesn’t work well with Japanese language because of word splitting issues
 - **Options**:
@@ -328,13 +370,13 @@ Here’s a list of available widgets:
     - **max\_font\_size**: (default: 26), font size for the least frequent word.
 - Uses a CSS stylesheet: yes
 
-### Tooltip ###
+#### Tooltip ####
 
 - **Role**: Displays a tooltip. Is mainly used as a subwidget, embedded and called from another widget.
 - No options
 - Uses a CSS stylesheet: yes
 
-### Trace ###
+#### Trace ####
 
 - **Role**: Sends traces to the KTBS server.
 - **Options**:
@@ -345,7 +387,7 @@ Here’s a list of available widgets:
 - Uses external library: ktbs4js tracemanager
 - Uses a CSS stylesheet: no
 
-### Tweet ###
+#### Tweet ####
 
 - **Role**: Show the contents on a tweet when clicked (in Polemic Widget)
 - **Options**:

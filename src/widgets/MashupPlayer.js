@@ -5,8 +5,6 @@ IriSP.Widgets.MashupPlayer = function(player, config) {
 
 IriSP.Widgets.MashupPlayer.prototype = new IriSP.Widgets.Widget();
 
-/* A Popcorn-based player for HTML5 Video, Youtube and Vimeo */
-
 IriSP.Widgets.MashupPlayer.prototype.defaults = {
     aspect_ratio: 14/9,
     split_screen: false,
