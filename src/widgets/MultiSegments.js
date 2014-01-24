@@ -98,7 +98,7 @@ IriSP.Widgets.MultiSegments.prototype.draw = function() {
     });
     
     // open line on segment click
-    $j(document).on("click",".Ldt-Segments-Segment",function(e){
+    IriSP.jQuery(document).on("click",".Ldt-Segments-Segment",function(e){
     	if (!_this.show_all && currentLine && !currentLine.hasSegmentsNow()) {
             currentLine = undefined;
         }
