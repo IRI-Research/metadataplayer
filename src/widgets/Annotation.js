@@ -126,6 +126,7 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
         }
         if (_this.show_annotation_type) {
             _this.$.find(".Ldt-Annotation-Type").text(_annotation.getAnnotationType().title);
+            _this.$.find(".Ldt-Annotation-Type").attr("title", _annotation.getAnnotationType().description);
         }
         _this.$.find(".Ldt-Annotation-Begin").text(_annotation.begin.toString());
         _this.$.find(".Ldt-Annotation-End").text(_annotation.end.toString());
