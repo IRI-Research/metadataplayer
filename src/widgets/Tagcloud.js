@@ -64,7 +64,7 @@ IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
     	var _regexpword = /[^\.&;,'"!\?\d\(\)\+\[\]\\\…\-«»\/]{3,}/g;
     }
     else{
-    	var _regexpword = /[^\s\.&;,'"!\?\d\(\)\+\[\]\\\â€¦\-Â«Â»:\/]{3,}/g;
+    	var _regexpword = /[^\s\.&;,'"!\?\d\(\)\+\[\]\\\…\-«»:\/]{3,}/g;
     }
         
     if (typeof _from !== "undefined" && typeof _to !== "undefined") {
