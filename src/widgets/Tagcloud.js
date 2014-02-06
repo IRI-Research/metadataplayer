@@ -22,7 +22,8 @@ IriSP.Widgets.Tagcloud.prototype.defaults = {
     segment_annotation_type: false,
     min_font_size: 10,
     max_font_size: 26,
-    min_count: 2
+    min_count: 2,
+    remove_zero_duration: false
 };
 
 IriSP.Widgets.Tagcloud.prototype.stopword_lists = {
@@ -55,16 +56,29 @@ IriSP.Widgets.Tagcloud.prototype.draw = function() {
 
 IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
     var _urlRegExp = /https?:\/\/[0-9a-zA-Z\.%\/-_]+/g,
-        _regexpword = /[^\.&;,'"!\?\d\(\)\+\[\]\\\…\-«»:\/]{3,}/g,
         _words = {},
         _this = this,
         _annotations = this.getWidgetAnnotations();
+    
+    if(!this.include_titles && !this.include_descriptions){
+    	var _regexpword = /[^\.&;,'"!\?\d\(\)\+\[\]\\\…\-«»\/]{3,}/g;
+    }
+    else{
+    	var _regexpword = /[^\s\.&;,'"!\?\d\(\)\+\[\]\\\â€¦\-Â«Â»:\/]{3,}/g;
+    }
         
     if (typeof _from !== "undefined" && typeof _to !== "undefined") {
         _annotations = _annotations.filter(function(_annotation) {
             return _annotation.begin >= _from && _annotation.end <= _to;
         });
     }
+    
+    if(this.remove_zero_duration){
+    	_annotations = _annotations.filter(function(_annotation) {
+	        return _annotation.getDuration()>0;
+	    });
+    }
+    
     _annotations.forEach(function(_annotation) {
        var _txt =
             (_this.include_titles ? _annotation.title : '')
