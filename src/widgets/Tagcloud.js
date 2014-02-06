@@ -21,7 +21,8 @@ IriSP.Widgets.Tagcloud.prototype.defaults = {
     annotation_type: false,
     segment_annotation_type: false,
     min_font_size: 10,
-    max_font_size: 26
+    max_font_size: 26,
+    min_count: 2
 };
 
 IriSP.Widgets.Tagcloud.prototype.stopword_lists = {
@@ -54,7 +55,7 @@ IriSP.Widgets.Tagcloud.prototype.draw = function() {
 
 IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
     var _urlRegExp = /https?:\/\/[0-9a-zA-Z\.%\/-_]+/g,
-        _regexpword = /[^\s\.&;,'"!\?\d\(\)\+\[\]\\\…\-«»:\/]{3,}/g,
+        _regexpword = /[^\.&;,'"!\?\d\(\)\+\[\]\\\…\-«»:\/]{3,}/g,
         _words = {},
         _this = this,
         _annotations = this.getWidgetAnnotations();
@@ -64,7 +65,6 @@ IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
             return _annotation.begin >= _from && _annotation.end <= _to;
         });
     }
-    
     _annotations.forEach(function(_annotation) {
        var _txt =
             (_this.include_titles ? _annotation.title : '')
@@ -73,6 +73,7 @@ IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
             + ' '
             + (_this.include_tag_texts ? _annotation.getTagTexts() : '');
        IriSP._(_txt.toLowerCase().replace(_urlRegExp, '').match(_regexpword)).each(function(_word) {
+    	   _word = _word.trim();
            if (IriSP._(_this.stopwords).indexOf(_word) == -1 && (!_this.exclude_pattern || !_this.exclude_pattern.test(_word))) {
                _words[_word] = 1 + (_words[_word] || 0);
            }
@@ -87,7 +88,7 @@ IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
             };
         })
         .filter(function(_v) {
-            return _v.count > 2;
+            return _v.count > _this.min_count;
         })
         .sortBy(function(_v) {
             return - _v.count;
@@ -105,7 +106,7 @@ IriSP.Widgets.Tagcloud.prototype.redraw = function(_from, _to) {
     this.$.html(Mustache.to_html(this.template,  {words: _words }));
     this.$.find(".Ldt-Tagcloud-item").click(function() {
         var _txt = IriSP.jQuery(this).attr("content");
-        _this.source.getAnnotations().search(_txt);
+        _this.source.getAnnotations().searchByTags(_txt);
     });
     this.source.getAnnotations().on("search", this.functionWrapper("onSearch"));
     this.source.getAnnotations().on("search-cleared", this.functionWrapper("onSearch"));

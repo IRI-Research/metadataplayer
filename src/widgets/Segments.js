@@ -77,7 +77,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             color : color,
             medcolor: medcolor,
             lowcolor: lowcolor,
-            text: _fulltext.replace(/(\n|\r|\r\n)/mg,' ').replace(/(^.{120,140})[\s].+$/m,'$1&hellip;'),
+            text: (_annotation.creator ? (_annotation.creator + " : ") : "" ) + _fulltext.replace(/(\n|\r|\r\n)/mg,' ').replace(/(^.{120,140})[\s].+$/m,'$1&hellip;'),
             left : _left,
             width : _width,
             top: _top,

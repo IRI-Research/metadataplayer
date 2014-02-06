@@ -276,6 +276,26 @@ List.prototype.search = function(_text) {
     return res;
 };
 
+List.prototype.searchByTags = function(_text) {
+    if (!_text) {
+        this.trigger("clear-search");
+        return this;
+    }
+    this.searching = true;
+    this.trigger("search", _text);
+    var rxsource = fullTextRegexps(_text),
+        rgxp = new RegExp(rxsource,"im");
+    this.regexp = new RegExp(rxsource,"gim");
+    var res = this.filter(function(_element, _k) {
+        var _isfound = rgxp.test(_element.getTagTexts());
+        _element.found = _isfound;
+        _element.trigger(_isfound ? "found" : "not-found");
+        return _isfound;
+    });
+    this.trigger(res.length ? "found" : "not-found",res);
+    return res;
+};
+
 List.prototype.getTitles = function() {
     return this.map(function(_el) {
         return _el.title;
