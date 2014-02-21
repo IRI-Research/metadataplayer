@@ -1,0 +1,17 @@
+/* Empty for now */
+
+.slide.panel {
+    display: flex;
+    width: 50%;
+    float: left;
+}
+
+.video.panel {
+    display: flex;
+    width: 50%;
+    float: right;
+}
+
+.Ldt-SlideVideoPlayer {
+    min-height: 400px;
+}
