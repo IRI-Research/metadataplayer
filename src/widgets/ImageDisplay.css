@@ -1,0 +1,9 @@
+/* Nothing */
+.Ldt-ImageDisplay-Container {
+    margin: auto;
+}
+
+.Ldt-ImageDisplay-Image {
+    max-width: 100%;
+    max-height: 100%;
+}
