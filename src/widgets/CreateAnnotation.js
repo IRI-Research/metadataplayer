@@ -12,6 +12,7 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     start_visible : true,
     always_visible : false,
     show_slice : true,
+    show_controls: false,
     show_arrow : true,
     show_mic_record: false,
     show_mic_play: false,
@@ -104,6 +105,11 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '<span class="Ldt-CreateAnnotation-Times"> {{#show_slice}}{{l10n.from_time}} {{/show_slice}}{{^show_slice}}{{l10n.at_time}} {{/show_slice}} <span class="Ldt-CreateAnnotation-Begin">00:00</span>'
     + '{{#show_slice}} {{l10n.to_time}} <span class="Ldt-CreateAnnotation-End">{{end}}</span>{{/show_slice}}</span></span>'
     + '{{#show_creator_field}}{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator empty" value="{{creator_name}}" />{{/show_creator_field}}</h3>'
+    + '{{#show_controls}}<div class="Ldt-CreateAnnotation-Controls">'
+    +   '<span class="Ldt-CreateAnnotation-Control-In">IN</span>'
+    +   '<span class="Ldt-CreateAnnotation-Control-Out">OUT</span>'
+    +   '<span class="Ldt-CreateAnnotation-Control-Play">Play</span>'
+    + '</div>{{/show_controls}}'
     + '<textarea class="Ldt-CreateAnnotation-Description empty" placeholder="{{l10n.type_description}}"></textarea>'
     + '<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>'
     + '<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{l10n.submit}}" />'
@@ -243,6 +249,26 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
     if (this.show_creator_field) {
         this.$.find(".Ldt-CreateAnnotation-Creator").bind("change keyup input paste", this.functionWrapper("onCreatorChange"));
     }
+    this.$.find("[class^='Ldt-CreateAnnotation-Control-']").click(function() {
+        var action = this.className.replace('Ldt-CreateAnnotation-Control-', '');
+        switch (action) {
+            case "In":
+               // Set In bound to current player time
+               _this.begin = new IriSP.Model.Time(_this.media.getCurrentTime() || 0);
+               _this.$.find(".Ldt-CreateAnnotation-Begin").html(_this.begin.toString());
+               break;
+            case "Out":
+               // Set In bound to current player time
+               _this.end = new IriSP.Model.Time(_this.media.getCurrentTime() || _this.media.duration);
+               _this.$.find(".Ldt-CreateAnnotation-End").html(_this.end.toString());
+               break;
+            case "Play":
+               _this.media.setCurrentTime(_this.begin);
+               _this.media.play()
+               break;
+        }
+        return false;
+    });
     
     if (this.start_visible) {
         this.show();
