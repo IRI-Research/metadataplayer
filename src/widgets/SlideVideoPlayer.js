@@ -25,7 +25,7 @@ IriSP.Widgets.SlideVideoPlayer.prototype.draw = function() {
         _this.$.find(".Ldt-SlideVideoPlayer-panel.Ldt-SlideVideoPlayer-slide"),
             {
                 type: "ImageDisplay",
-                annotation_type: this.annotation_type,
+                annotation_type: _this.annotation_type,
                 width: '100%'
             },
             "slide"
@@ -35,7 +35,8 @@ IriSP.Widgets.SlideVideoPlayer.prototype.draw = function() {
             {
                 type: "HtmlPlayer",
                 video: _this.video,
-                width: '100%'
+                width: '100%',
+                url_transform: _this.url_transform
             },
             "player"
         );
