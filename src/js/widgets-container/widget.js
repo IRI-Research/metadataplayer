@@ -146,13 +146,19 @@ IriSP.Widgets.Widget.prototype.onMediaEvent = function(_eventName, _functionOrNa
 };
 
 IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function() {
+    var result = null;
     if (typeof this.annotation_type === "undefined") {
-        return this.media.getAnnotations();
+        result = this.media.getAnnotations();
+    } else if (this.annotation_type.elementType === "annotationType") {
+        result = this.annotation_type.getAnnotations();
+    } else {
+        result = this.media.getAnnotationsByTypeTitle(this.annotation_type);
     }
-    if (this.annotation_type.elementType === "annotationType") {
-        return this.annotation_type.getAnnotations();
+    if (typeof this.annotation_filter !== "undefined") {
+        return this.annotation_filter(result);
+    } else {
+        return result;
     }
-    return this.media.getAnnotationsByTypeTitle(this.annotation_type);
 };
 
 IriSP.Widgets.Widget.prototype.getWidgetAnnotationsAtTime = function() {
