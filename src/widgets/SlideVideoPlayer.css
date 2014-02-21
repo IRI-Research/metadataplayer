@@ -1,15 +1,9 @@
 /* Empty for now */
 
-.slide.panel {
+.Ldt-SlideVideoPlayer-panel {
     display: flex;
     width: 50%;
     float: left;
-}
-
-.video.panel {
-    display: flex;
-    width: 50%;
-    float: right;
 }
 
 .Ldt-SlideVideoPlayer {
