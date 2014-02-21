@@ -89,14 +89,17 @@ IriSP.Widgets.Segments.prototype.draw = function() {
         };
         var _html = Mustache.to_html(_this.annotationTemplate, _data),
             _el = IriSP.jQuery(_html);
-        _el.mouseover(function() {
+            _el.mouseover(function() {
                 _annotation.trigger("select");
+                _this.player.trigger('annotation-select', _annotation);
             })
             .mouseout(function() {
                 _annotation.trigger("unselect");
+                _this.player.trigger('annotation-unselect', _annotation);
             })
             .click(function() {
                 _annotation.trigger("click");
+                _this.player.trigger('annotation-click', _annotation);
             })
             .appendTo(list_$);
         IriSP.attachDndData(_el, {
