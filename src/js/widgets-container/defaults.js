@@ -27,7 +27,9 @@ IriSP.libFiles = {
         cssSplitter: "jquery.splitter.css",
         renkanPublish: "renkan.js",
         processing: "processing-1.3.6.min.js",
-        recordMicSwf: "record_mic.swf"
+        recordMicSwf: "record_mic.swf",
+        mousetrap: "mousetrap.min.js",
+        mousetrapGlobal: "mousetrap-global-bind.js"
     },
     locations : {
         // use to define locations outside default_dir
@@ -105,6 +107,9 @@ IriSP.widgetsRequirements = {
     },
     SlideVideoPlayer: {
         requires: [ "jQuery", "jQueryUI", "splitter" ]
+    },
+    Shortcuts: {
+        requires: [ "mousetrap", "mousetrapGlobal" ]
     }
 };
 
