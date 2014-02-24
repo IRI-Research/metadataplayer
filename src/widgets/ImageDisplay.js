@@ -13,7 +13,7 @@ IriSP.Widgets.ImageDisplay.prototype.defaults = {
 
 IriSP.Widgets.ImageDisplay.prototype.template = '';
 
-IriSP.Widgets.ImageDisplay.prototype.annotationTemplate = '<div class="Ldt-ImageDisplay-Container"><h2 class="Ldt-ImageDisplay-Title>{{ htitle }}</h2><a href="#{{id}}"><img class="Ldt-ImageDisplay-Image" title="{{ htitle }} - {{ begin }}" alt="{{ htitle }}" src="{{thumbnail}}"/></a></div>';
+IriSP.Widgets.ImageDisplay.prototype.annotationTemplate = '<div class="Ldt-ImageDisplay-Container"><h2 class="Ldt-ImageDisplay-Title">{{ htitle }}</h2><a href="#{{id}}"><img class="Ldt-ImageDisplay-Image" title="{{ htitle }} - {{ begin }}" alt="{{ htitle }}" src="{{thumbnail}}"/></a></div>';
 
 IriSP.Widgets.ImageDisplay.prototype.draw = function() {    
     var _annotations = this.getWidgetAnnotations();
