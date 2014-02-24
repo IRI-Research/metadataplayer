@@ -164,3 +164,17 @@ a.Ldt-CreateAnnotation-Close {
 a.Ldt-CreateAnnotation-Close:hover {
     background-position: -17px 0;
 }
+
+.Ldt-CreateAnnotation-Controls {
+    position: absolute;
+    top: 32px;
+    left: 2px;
+}
+
+span[class^='Ldt-CreateAnnotation-Control-'] {
+    background-color: #ddd;
+    padding: 2px;
+    margin: 4px;
+    border-radius: 3px;
+    border: 1px solid #888;
+}
