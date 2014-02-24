@@ -27,7 +27,7 @@ IriSP.Widgets.Controller.prototype.template =
     + '<div class="Ldt-Ctrl-spacer"></div>'
     + '{{/disable_search_btn}}'
     + '<div class="Ldt-Ctrl-Search">'
-    + '<input class="Ldt-Ctrl-SearchInput Ldt-TraceMe"></input>'
+    + '<input placeholder="{{ l10n.search }}" type="search" class="Ldt-Ctrl-SearchInput Ldt-TraceMe"></input>'
     + '</div>'
     + '</div>'
     + '<div class="Ldt-Ctrl-Right">'
@@ -102,6 +102,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     this.$.find(".Ldt-Ctrl-SearchBtn").click(this.functionWrapper("searchButtonHandler"));
     
     this.$searchInput.keyup(this.functionWrapper("searchHandler"));
+    this.$searchInput.on("search", this.functionWrapper("searchHandler"));
   
 	var _volctrl = this.$.find(".Ldt-Ctrl-Volume-Control");
     this.$.find('.Ldt-Ctrl-Sound')
