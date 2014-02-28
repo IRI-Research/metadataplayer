@@ -23,7 +23,11 @@ IriSP.Widgets.Shortcuts.prototype.draw = function() {
     /* Standard shortcuts */
     Mousetrap.bindGlobal(["esc", "ctrl+space"], function (e) {
         e.preventDefault();
-        _this.media.play();
+        if (! _this.media.getPaused()) {
+            _this.media.pause();
+        } else {
+            _this.media.play();
+        }
         return false;
     });
     Mousetrap.bindGlobal("ctrl+left", function (e) {
