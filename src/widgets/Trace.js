@@ -68,7 +68,7 @@ IriSP.Widgets.Trace.prototype.draw = function() {
     
     
     this.tracer.trace("TraceWidgetInit", {});
-    
+    _this.player.trigger("trace-ready");
     this.mouseLocation = '';
     IriSP.jQuery(".Ldt-Widget").on("mousedown mouseenter mouseleave", ".Ldt-TraceMe", function(_e) {
         var _target = IriSP.jQuery(this);
