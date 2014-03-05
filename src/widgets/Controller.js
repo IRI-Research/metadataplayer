@@ -10,7 +10,8 @@ IriSP.Widgets.Controller.prototype = new IriSP.Widgets.Widget();
 IriSP.Widgets.Controller.prototype.defaults = {
     disable_annotate_btn: false,
     disable_search_btn: false,
-    disable_ctrl_f: false
+    disable_ctrl_f: false,
+    always_show_search: false
 };
 
 IriSP.Widgets.Controller.prototype.template =
@@ -169,7 +170,9 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     annotations.on("search-cleared", function() {
         _this.hideSearchBlock();
     });
-   
+    if (_this.always_show_search) {
+        _this.showSearchBlock();
+    }
 };
 
 /* Update the elasped time div */
@@ -238,7 +241,9 @@ IriSP.Widgets.Controller.prototype.showSearchBlock = function() {
 };
 
 IriSP.Widgets.Controller.prototype.hideSearchBlock = function() {
-    this.$searchBlock.animate( { width: 0 }, 200);
+    if (! this.always_show_search) {
+        this.$searchBlock.animate( { width: 0 }, 200);
+    }
 };
 
 /** react to clicks on the search button */
