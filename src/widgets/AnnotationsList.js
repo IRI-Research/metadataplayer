@@ -29,6 +29,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     limit_count : 20,
     newest_first : false,
     show_audio: true,
+    show_controls: false,
     polemics : [{
         keyword: "++",
         background_color: "#c9ecc6"
@@ -58,6 +59,7 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
 IriSP.Widgets.AnnotationsList.prototype.template =
     '<div class="Ldt-AnnotationsListWidget">'
     + '{{#show_audio}}<div class="Ldt-AnnotationsList-Audio"></div>{{/show_audio}}'
+    + '{{#show_controls}}<div class="Ldt-AnnotationsList-Controls"><span class="Ldt-AnnotationsList-Control-Prev">Previous</span> | <span class="Ldt-AnnotationsList-Control-Next">Next</span></div>{{/show_controls}}'
     + '<ul class="Ldt-AnnotationsList-ul">'
     + '</ul>'
     + '</div>';
@@ -102,6 +104,23 @@ IriSP.Widgets.AnnotationsList.prototype.ajaxSource = function() {
     this.currentSource = this.player.loadMetadata(IriSP._.defaults({
         "url" : _url
     }, this.metadata));
+};
+
+IriSP.Widgets.AnnotationsList.prototype.navigate = function(offset) {
+    // offset is normally either -1 (previous slide) or +1 (next slide)
+    var _this = this;
+    var currentTime = _this.media.getCurrentTime();
+    var annotations = _this.source.getAnnotations().sortBy(function(_annotation) {
+        return _annotation.begin;
+    });
+    for (var i = 0; i < annotations.length; i++) {
+        if (annotations[i].begin <= currentTime && currentTime < annotations[i].end) {
+            // Found a current annotation - clamp i+offset value to [0, length - 1]
+            i = Math.min(annotations.length - 1, Math.max(0, i + offset));
+            _this.media.setCurrentTime(annotations[i].begin);
+            break;
+        }
+    };
 };
 
 IriSP.Widgets.AnnotationsList.prototype.ajaxMashup = function() {
@@ -218,6 +237,10 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 specific_style : (typeof _bgcolor !== "undefined" ? "background-color: " + _bgcolor : ""),
                 l10n: _this.l10n
             };
+            if (_this.show_controls) {
+                _this.$.find(".Ldt-AnnotationsList-Control-Prev").on("click", function () { _this.navigate(-1); }); 
+                _this.$.find(".Ldt-AnnotationsList-Control-Next").on("click", function () { _this.navigate(+1); });
+           }
             if (_this.show_audio && _annotation.audio && _annotation.audio.href && _annotation.audio.href != "null") {
                 _data.audio = true;
                 if (!_this.jwplayers[_annotation.id]) {
