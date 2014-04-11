@@ -1,0 +1,89 @@
+﻿<!doctype html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <title>Metadataplayer test with JwPlayer</title>
+<!--        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+-->        <link href='test.css' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="metadataplayer/LdtPlayer-core.js" type="text/javascript"></script>
+    </head>
+
+    <body>
+        <h1>Metadataplayer test with JwPlayer</h1>
+        <div id="LdtPlayer"></div>
+        <div id="AnnotationsListContainer"></div>
+        <div id="SlideShareContainer"></div>
+        <script type="text/javascript">
+    IriSP.libFiles.defaultDir = "libs/";
+    IriSP.language = 'fr';
+    IriSP.widgetsDir = "metadataplayer";
+    var _metadata = {
+//        url: 'json/ldt-jwplayer.json',
+          url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/e2f36e5c-8b26-11e2-a28d-00145ea4a2be',
+//        url: 'http://capsicum/pf/ldtplatform/ldt/cljson/id/f1a17368-2bc8-11e1-b21a-00145ea49a02',
+//        url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/fc0a654e-49ea-11e2-b4ad-00145ea4a2be',
+        format: 'ldt'
+    };
+    var _config = {
+        width : 550,
+        container : 'LdtPlayer',
+        default_options: {
+            metadata: _metadata
+        },
+        css : 'metadataplayer/LdtPlayer-core.css',
+        widgets: [
+            {
+                type: "JwpPlayer",
+                autostart: true,
+                url_transform: function(url) {
+                    return url.replace('/ddc_player/video/','/ddc_player/mp4:video/');
+                }
+            },
+            { type: "Slider" },
+            { type: "Controller" },
+            {
+                type: "Polemic",
+                max_elements: 20,
+                annotation_type: false
+            },
+            { type: "Sparkline" },
+            { type: "MultiSegments" },
+            {
+                type: "CreateAnnotation",
+                api_endpoint_template: "post-test.php",
+                creator_name: "Metadataplayer",
+                creator_avatar: "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+                tag_titles: ["amateur", "digital-humanities"],
+                //show_title_field: false,
+                //show_creator_field: false,
+                show_slice: false
+            },
+            {
+                type: "Tweet"
+            },
+            {
+                type: "Tagcloud"
+            },
+            {
+                type: "AnnotationsList",
+                container: "AnnotationsListContainer",
+                default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png",
+                //ajax_url: "/pf/ldtplatform/api/ldt/1.0/segments/bytimecode/{{media}}/{{begin}}/{{end}}",
+                //ajax_granularity : 300000
+            },
+            {
+                type: "Slideshare",
+                container: "SlideShareContainer"
+            },
+            { type: "Mediafragment"},
+//            { type: "Trace",
+//            js_console: true }
+        ]
+    };
+    
+    var _myPlayer = new IriSP.Metadataplayer(_config);
+    
+        </script>
+    </body>
+</html>

@@ -1,0 +1,130 @@
+
+.Ldt-Renkan-Container {
+    position: relative; width: 100%; height: 100%;
+}
+
+.Ldt-Renkan a {
+    color: #303080;
+}
+
+
+.Rk-Main {
+    position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+}
+
+.Rk-Render {
+    position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+    background: #ffffff;
+}
+
+/* Canvas */
+
+.Rk-Editing-Space {
+    position: absolute; left: 0; top: 35px; right: 0; bottom: 0; overflow: hidden;
+    background: -moz-radial-gradient( center, circle, #ffffff 40%, #e0e0e0 90%);
+    background: -webkit-radial-gradient( center, circle, #ffffff 40%, #e0e0e0 90%);
+    background: -ms-radial-gradient( center, circle, #ffffff 40%, #e0e0e0 90%);
+}
+
+.Rk-Editing-Space-Full {
+    top: 0;
+}
+
+.Rk-Canvas {
+    position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 2;
+}
+
+/* Node Labels */
+
+.Rk-Labels {
+    position: absolute; left: 0; top: 0; z-index: 1;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+.Rk-Label {
+    position: absolute; width: 160px; margin-left: -80px; text-align: center; font-size: 13px; line-height: 13px;
+}
+
+.Rk-Edge-Label {
+    font-size: 11px; transform-origin: 50% 0; -moz-transform-origin: 50% 0;
+    -webkit-transform-origin: 50% 0; -ms-transform-origin: 50% 0;
+}
+
+/* Editors */
+
+.Rk-Editor {
+    position: absolute; left: 0; top: 0; z-index: 3;
+}
+
+.Rk-Notifications {
+    position: absolute; right: 15px; top: 15px; width: 200px;
+    padding: 10px; border-radius: 8px; display: none;
+    color: #ffffff; font-size: 13px; text-align: center; font-weight: bold;
+    background: rgba(20,20,20,.7);
+    background: -moz-linear-gradient(top, rgba(40,40,40,.7) 20%, rgba(0,0,0,.7) 80%);
+    background: -webkit-linear-gradient(top, rgba(40,40,40,.7) 20%, rgba(0,0,0,.7) 80%);
+    background: -ms-linear-gradient(top, rgba(40,40,40,.7) 20%, rgba(0,0,0,.7) 80%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#202020', endColorstr='#000000',GradientType=0 );
+}
+
+.Rk-CloseX {
+    float: right; cursor: pointer;
+}
+
+.Rk-Editor h2 {
+    font-size: 16px; font-weight: bold; padding: 0;
+}
+
+.Rk-Editor p, .Rk-Editor-p {
+    margin: 5px 0; font-size: 12px; clear: both; padding: 0;
+}
+
+.Rk-Editor-Label {
+    float: left; width: 80px;
+}
+
+.Rk-UserColor {
+    display: inline-block; width: 12px; height: 12px; border: 1px solid #666666; margin: -2px 2px;
+}
+
+.Rk-Display-Title a {
+    text-decoration: none; color: #000000;
+}
+
+.Rk-Display-Title a:hover {
+    text-decoration: underline;
+}
+
+.Rk-Display-URI {
+    font-style: italic;
+}
+
+.Rk-Display-ImgPreview {
+    margin: 5px auto; display: block; max-width: 255px !important; max-height: 120px !important;
+}
+
+
+.Rk-ZoomButtons {
+    position: absolute; left: 0; top: 35px; cursor: pointer;
+}
+
+.Rk-Editing-Space-Full .Rk-ZoomButtons {
+    top: 0;
+}
+
+.Rk-ZoomIn, .Rk-ZoomOut {
+    width: 21px; height: 20px; background: url(img/zoombuttons.png); margin: 5px;
+}
+
+.Rk-ZoomIn:hover {
+    background-position: 0 -20px;
+}
+
+.Rk-ZoomOut {
+    background-position: -21px 0;
+}
+
+.Rk-ZoomOut:hover {
+    background-position: -21px -20px;
+}
+

@@ -1,0 +1,71 @@
+﻿<!doctype html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>Metadataplayer test with HTML5 / OGG Video</title>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='test.css' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="metadataplayer/LdtPlayer-core.js" type="text/javascript"></script>
+        <script type="text/javascript" src="libs/underscore-min.js" type="text/javascript"></script>
+    </head>
+
+    <body>
+        <h1>Metadataplayer test with HTML5 / H.264 Video - Uses Popcorn with compatible browsers, JwPlayer with others</h1>
+        <div id="LdtPlayer"></div>
+        <div id="AnnotationsListContainer"></div>
+        <script type="text/javascript">
+IriSP._ = _;
+IriSP.libFiles.defaultDir = "libs/";
+IriSP.widgetsDir = "metadataplayer";
+var _dir = new IriSP.Model.Directory(),
+    _src = _dir.newLocalSource(),
+    _media = new IriSP.Model.Media(false, _src),
+    _cutt = new IriSP.Model.AnnotationType(false, _src),
+    _ann1 = new IriSP.Model.Annotation(false, _src),
+    _ann2 = new IriSP.Model.Annotation(false, _src);
+_cutt.title = "Chapitrage";
+_ann1.setAnnotationType(_cutt.id);
+_ann2.setAnnotationType(_cutt.id);
+_ann1.setMedia(_media.id);
+_ann2.setMedia(_media.id);
+_ann1.setBegin(0);
+_ann1.setEnd(32000);
+_ann1.title = "Première Annotation";
+_ann2.setBegin(32000);
+_ann2.setEnd(64000);
+_ann2.title = "Deuxième Annotation";
+_media.video = "trailer.mp4";
+_media.setDuration(64000);
+console.log("OK");
+var _config = {
+    width : 620,
+    container : 'LdtPlayer',
+    default_options: {
+        metadata: _src
+    },
+    css : 'metadataplayer/LdtPlayer-core.css',
+    widgets: [
+        {
+            type: "AdaptivePlayer"
+        },
+        { type: "Sparkline" },
+        { type: "Slider" },
+        { type: "Controller" },
+        { type: "Polemic" },
+        { type: "Segments" },
+        { type: "Annotation" },
+        { type: "Tweet" },
+        { type: "Tagcloud" },
+        {
+            type: "AnnotationsList",
+            container: "AnnotationsListContainer"
+        },
+        { type: "Mediafragment"}
+    ]
+};
+_myPlayer = new IriSP.Metadataplayer(_config);
+        </script>
+    </body>
+</html>

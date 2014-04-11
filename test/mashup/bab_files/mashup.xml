@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='utf-8'?>
+<iri xmlns:dc="http://dublincore.org/documents/dcmi-namespace/" ldtversion="1.6.3">
+  <project id="5afd8bbe-9b75-11e1-9e5d-00145ea4a2be" user="admin" title="test bout à bout" abstract=""/>
+  <medias>
+    <media id="c1a84ff8-e2b0-11e0-8472-00145ea49a02" src="http://ldt.iri.centrepompidou.fr//static/media/ldt/c1a84ff8-e2b0-11e0-8472-00145ea49a02/c1a84ff8-e2b0-11e0-8472-00145ea49a02.iri" video="rtmp://media.iri.centrepompidou.fr/ddc_player/" pict="" extra=""/>
+    <media id="c4ff2454-9842-11e1-9f9f-00145ea4a2be" src="http://ldt.iri.centrepompidou.fr//static/media/ldt/c4ff2454-9842-11e1-9f9f-00145ea4a2be/c4ff2454-9842-11e1-9f9f-00145ea4a2be.iri" video="rtmp://media.iri.centrepompidou.fr/ddc_player/" pict="" extra=""/>
+  </medias>
+  <annotations>
+    <content id="c4ff2454-9842-11e1-9f9f-00145ea4a2be">
+      <ensemble id="g_5665330A-7789-1E08-13C2-3C4D26B44EAF" idProject="5afd8bbe-9b75-11e1-9e5d-00145ea4a2be" title="Découpages personnels" author="undefined" abstract="">
+        <decoupage id="c_3D9A9B5D-E144-4920-A9CA-3C4D26B48425" author="perso">
+          <title>Mon découpage</title>
+          <abstract/>
+          <elements>
+            <element id="s_471A1070-AAD9-32F6-1E1B-3C4D52B5E4B9" begin="370000" dur="10000" author="admin" date="2012-05-11T16:29:33" color="10027008" src="">
+              <title/>
+              <abstract/>
+              <audio source=""/>
+              <tags/>
+            </element>
+            <element id="s_7EB7522B-82D7-4FD6-2C5F-3C4D6945539E" begin="1090000" dur="15000" author="admin" date="2012-05-11T16:30:39" color="13369344" src="">
+              <title/>
+              <abstract/>
+              <audio source=""/>
+              <tags/>
+            </element>
+            <element id="s_E8C653B6-2B35-B2D6-1040-3C4D75BDF31B" begin="2030000" dur="5000" author="admin" date="2012-05-11T16:30:36" color="10027008" src="">
+              <title/>
+              <abstract/>
+              <audio source=""/>
+              <tags/>
+            </element>
+            <element id="s_971168A0-A9B3-064D-46B4-3C4D7FA5DFD5" begin="2922000" dur="18000" author="admin" date="2012-05-11T16:30:33" color="10027008" src="">
+              <title/>
+              <abstract/>
+              <audio source=""/>
+              <tags/>
+            </element>
+          </elements>
+        </decoupage>
+      </ensemble>
+    </content>
+    <content id="c1a84ff8-e2b0-11e0-8472-00145ea49a02">
+      <ensemble id="g_F84E6DE7-FB3E-4672-3E87-3C4B87BA959E" idProject="5afd8bbe-9b75-11e1-9e5d-00145ea4a2be" title="Découpages personnels" author="undefined" abstract="">
+        <decoupage id="c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67" author="perso">
+          <title>Mon découpage</title>
+          <abstract/>
+          <elements>
+            <element id="s_48D417FA-D34B-C954-05F6-3C4B9392367E" begin="420000" dur="5000" author="admin" date="2012-05-11T16:27:53" color="16763904" src="">
+              <title/>
+              <abstract/>
+              <audio source=""/>
+              <tags/>
+            </element>
+            <element id="s_5D30DD53-BE06-49E0-EB72-3C4B99BA0AA4" begin="980096" dur="15000" author="admin" date="2012-05-11T16:32:08" color="16763904" src="">
+              <title/>
+              <abstract/>
+              <audio source=""/>
+              <tags/>
+            </element>
+            <element id="s_2B3C5B17-FB5E-8B99-AEDA-3C4BA2EB4234" begin="1833044" dur="27000" author="admin" date="2012-05-11T16:28:12" color="16763904" src="">
+              <title/>
+              <abstract/>
+              <audio source=""/>
+              <tags/>
+            </element>
+            <element id="s_2376F9F0-AC9A-229C-9A60-3C4BAEE2D03F" begin="2436996" dur="23100" author="admin" date="2012-05-11T16:28:18" color="16763904" src="">
+              <title/>
+              <abstract/>
+              <audio source=""/>
+              <tags/>
+            </element>
+            <element id="s_0DB7AABB-3973-9352-95DF-3C4BC3DCFB2D" begin="3240000" dur="10000" author="admin" date="2012-05-11T16:28:26" color="16763904" src="">
+              <title/>
+              <abstract/>
+              <audio source=""/>
+              <tags/>
+            </element>
+          </elements>
+        </decoupage>
+      </ensemble>
+    </content>
+  </annotations>
+  <displays>
+    <display id="v_33227665-49F3-7111-2BC6-3C4B6E90411C" title="Init view" idsel="c1a84ff8-e2b0-11e0-8472-00145ea49a02" tc="0" zoom="68" scroll="0" infoBAB="">
+      <audio source=""/>
+      <content id="c1a84ff8-e2b0-11e0-8472-00145ea49a02">
+        <decoupage idens="g_F84E6DE7-FB3E-4672-3E87-3C4B87BA959E" id="c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67" tagsSelect=""/>
+      </content>
+      <content id="c4ff2454-9842-11e1-9f9f-00145ea4a2be">
+        <decoupage idens="g_5665330A-7789-1E08-13C2-3C4D26B44EAF" id="c_3D9A9B5D-E144-4920-A9CA-3C4D26B48425" tagsSelect=""/>
+      </content>
+    </display>
+  </displays>
+  <edits>
+    <editing id="0" tags="">
+      <title>Bout à bout 1</title>
+      <abstract/>
+      <edit id="edit1" tags="">
+        <eList>
+          <inst ref="c1a84ff8-e2b0-11e0-8472-00145ea49a02|;|g_F84E6DE7-FB3E-4672-3E87-3C4B87BA959E|;|c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67|;||;||;|s_D673EC15-794D-49DA-8C7F-3C4FA26D31EB" begin="420" end="425" m="0" v="100" eBegin="0" eEnd="5" trId="0" trIc="0" trOd="0" trOc="0"/>
+          <inst ref="c1a84ff8-e2b0-11e0-8472-00145ea49a02|;|g_F84E6DE7-FB3E-4672-3E87-3C4B87BA959E|;|c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67|;||;||;|s_042EF890-7308-36B2-B062-3C50742B82DF" begin="980" end="995" m="0" v="100" eBegin="5" eEnd="20" trId="0" trIc="0" trOd="0" trOc="0"/>
+          <inst ref="c4ff2454-9842-11e1-9f9f-00145ea4a2be|;|g_5665330A-7789-1E08-13C2-3C4D26B44EAF|;|c_3D9A9B5D-E144-4920-A9CA-3C4D26B48425|;||;||;|s_04198AE9-E293-3D75-02E7-3C50AE71F332" begin="370" end="380" m="1" v="100" eBegin="20" eEnd="30" trId="0" trIc="0" trOd="0" trOc="0"/>
+          <inst ref="c1a84ff8-e2b0-11e0-8472-00145ea49a02|;|g_F84E6DE7-FB3E-4672-3E87-3C4B87BA959E|;|c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67|;||;||;|s_6F2C6F16-30B4-FFAF-4570-3C50F05F55F7" begin="1833" end="1860" m="0" v="100" eBegin="30" eEnd="57" trId="0" trIc="0" trOd="0" trOc="0"/>
+          <inst ref="c4ff2454-9842-11e1-9f9f-00145ea4a2be|;|g_5665330A-7789-1E08-13C2-3C4D26B44EAF|;|c_3D9A9B5D-E144-4920-A9CA-3C4D26B48425|;||;||;|s_EA82B8B1-2937-2C4D-D120-3C510AA3C604" begin="1090" end="1105" m="2" v="100" eBegin="57" eEnd="72" trId="0" trIc="0" trOd="0" trOc="0"/>
+          <inst ref="c1a84ff8-e2b0-11e0-8472-00145ea49a02|;|g_F84E6DE7-FB3E-4672-3E87-3C4B87BA959E|;|c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67|;||;||;|s_296D8184-D13B-3F5E-6227-3C517EFC3672" begin="2436" end="2459" m="0" v="100" eBegin="72" eEnd="95" trId="0" trIc="0" trOd="0" trOc="0"/>
+          <inst ref="c4ff2454-9842-11e1-9f9f-00145ea4a2be|;|g_5665330A-7789-1E08-13C2-3C4D26B44EAF|;|c_3D9A9B5D-E144-4920-A9CA-3C4D26B48425|;||;||;|s_4DE6A596-1A2C-F204-E95C-3C519162E526" begin="2030" end="2035" m="1" v="100" eBegin="95" eEnd="100" trId="0" trIc="0" trOd="0" trOc="0"/>
+          <inst ref="c4ff2454-9842-11e1-9f9f-00145ea4a2be|;|g_5665330A-7789-1E08-13C2-3C4D26B44EAF|;|c_3D9A9B5D-E144-4920-A9CA-3C4D26B48425|;||;||;|s_E50BC064-9913-C603-F646-3C519D22AE91" begin="2922" end="2940" m="1" v="100" eBegin="100" eEnd="118" trId="0" trIc="0" trOd="0" trOc="0"/>
+          <inst ref="c1a84ff8-e2b0-11e0-8472-00145ea49a02|;|g_F84E6DE7-FB3E-4672-3E87-3C4B87BA959E|;|c_3B9ADA5A-DBB7-00AC-BA4E-3C4B87B9EA67|;||;||;|s_CA30F86A-51E2-4C4D-9B72-3C51A9A31A39" begin="3240" end="3250" m="0" v="100" eBegin="118" eEnd="128" trId="0" trIc="0" trOd="0" trOc="0"/>
+        </eList>
+        <caption/>
+        <audio/>
+        <mList>
+          <m ref="c1a84ff8-e2b0-11e0-8472-00145ea49a02" id="0" t="v" c="16763904">
+            <content>rtmp://media.iri.centrepompidou.fr/ddc_player/mp4:video/ldtplatform/rsln_jane_mcgonigal.mp4</content>
+          </m>
+          <m ref="c4ff2454-9842-11e1-9f9f-00145ea4a2be" id="1" t="v" c="10027008">
+            <content>rtmp://media.iri.centrepompidou.fr/ddc_player/mp4:video/ldtplatform/www2012_timbernerslee.mp4</content>
+          </m>
+          <m ref="c4ff2454-9842-11e1-9f9f-00145ea4a2be" id="2" t="v" c="13369344">
+            <content>rtmp://media.iri.centrepompidou.fr/ddc_player/mp4:video/ldtplatform/www2012_timbernerslee.mp4</content>
+          </m>
+        </mList>
+      </edit>
+      <edit id="edit2" tags="">
+        <eList/>
+        <caption/>
+        <audio/>
+        <mList/>
+      </edit>
+    </editing>
+  </edits>
+</iri>

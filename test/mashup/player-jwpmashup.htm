@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Preuve de concept Mashup</title>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <script type="text/javascript" src="../metadataplayer/LdtPlayer-core.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="main-container">
+            <div class="header">
+                <h1>Hash Cut #</h1>
+            </div>
+            <div class="steps">
+                <h2>Créer un Hash-cut en 3 étapes&nbsp;:</h2>
+                <div class="steps-frame">
+                    <div class="step">
+                        <div class="step-icon step-1"></div>
+                        <div class="step-title">S'inscrire et<br />créer un projet</div>
+                    </div>
+                    <div class="step-separator"></div>
+                    <div class="step">
+                        <div class="step-icon step-2"></div>
+                        <div class="step-title">Découper et<br />Assembler</div>
+                    </div>
+                    <div class="step-separator"></div>
+                    <div class="step active">
+                        <div class="step-icon step-3"></div>
+                        <div class="step-title">Partager et<br />regarder&nbsp;!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="colgauche">
+                <h2>Mon HashCut, avec des instances de Jw Player</h2>
+                <hr />
+                <div id="LdtPlayer"></div>
+            </div>
+            <div class="coldroite">
+                <div id="mediaList"></div>
+                <h2>Annotations</h2>
+                <hr />
+                <div id="annotationList"></div>
+            </div>
+            <div class="footer">
+                <hr />
+                <p style="text-align: right;">&copy; IRI 2012</p>
+            </div>
+        </div>
+    <script type="text/javascript">
+    
+IriSP.libFiles.defaultDir = "../libs/";
+IriSP.widgetsDir = "../metadataplayer";
+IriSP.language = 'fr';
+var _metadata = {
+    url: 'bab_files/mashup.json',
+//    url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/b2754186-a0c9-11e0-b8bd-00145ea49a02?callback=?',
+//    url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/5afd8bbe-9b75-11e1-9e5d-00145ea4a2be?callback=?'
+    format: 'ldt'
+};
+var _config = {
+    width : 630,
+    container : 'LdtPlayer',
+    default_options: {
+        metadata: _metadata
+    },
+    css : '../metadataplayer/LdtPlayer-core.css',
+    widgets: [
+        {
+            type: "MashupPlayer",
+            player_type: "JwpPlayer",
+            player_options: {
+                live: true,
+                provider: "rtmp",
+                streamer: function(_url) {
+                    var _matches = _url.match(/^[^\/]+\/\/[^\/]+\/[^\/]+\//);
+                    if (_matches) {
+                        return _matches[0];
+                    } else {
+                        return _url;
+                    }
+                }
+            },
+//            split_screen: true
+        },
+        { type: "Slider" },
+        { type: "Controller" },
+        {
+            type: "Segments",
+            annotation_type: false
+        },
+        {
+            type: "Annotation",
+            annotation_type: false
+        },
+        {
+            type: "Tagger",
+            api_endpoint: "../post-test.php",
+            tags: ["actif","amour","bonheur","captif","charité","désir","dieu","doute","famille","idéal","internationale","passif","patrie","peur","politique","président","spleen","travail"]
+        },
+        {
+            type: "MediaList",
+            container: "mediaList"
+        },
+        {
+            type: "AnnotationsList",
+            container: "annotationList",
+            //ajax_url: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?",
+            //ajax_granularity: 30000,
+            //limit_count: 3
+        },
+        { type: "Mediafragment" }
+    ]
+};
+
+_myPlayer = new IriSP.Metadataplayer(_config);
+
+    </script>
+    </body>
+</html>

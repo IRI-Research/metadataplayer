@@ -1,0 +1,84 @@
+﻿<!doctype html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <title>Metadataplayer test with JwPlayer</title>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='test.css' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="metadataplayer/LdtPlayer-core.js" type="text/javascript"></script>
+    </head>
+
+    <body>
+        <h1>Metadataplayer test with JwPlayer</h1>
+        <div id="LdtPlayer"></div>
+        <div id="AnnotationsListContainer"></div>
+        <script type="text/javascript">
+    IriSP.libFiles.defaultDir = "libs/";
+    IriSP.language = 'fr';
+    IriSP.widgetsDir = "metadataplayer";
+    var _metadata = {
+        url: 'http://exp.iri.centrepompidou.fr/tralalere/tralalere/ldt/cljson/id/42a3fc0a-afee-11e1-82e8-58b035f6b93d?callback=?',
+        format: 'ldt'
+    };
+    var _config = {
+        width : 550,
+        container : 'LdtPlayer',
+        default_options: {
+            metadata: _metadata
+        },
+        css : 'metadataplayer/LdtPlayer-core.css',
+        widgets: [
+            {
+                type: "JwpPlayer",
+                live: true,
+                width: 1,
+                height: 1,
+                provider: "rtmp",
+                streamer: function(_url) {
+                    var _matches = _url.match(/^[^\/]+\/\/[^\/]+\/[^\/]+\//);
+                    if (_matches) {
+                        return _matches[0];
+                    } else {
+                        return _url;
+                    }
+                }
+            },
+            { type: "Slider" },
+            { type: "Controller" },
+            { type: "Polemic" },
+            { type: "Segments" },
+            { type: "Annotation" },
+            {
+                type: "CreateAnnotation",
+                api_endpoint_template: "post-test.php",
+                creator_name: "Metadataplayer",
+                creator_avatar: "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+                show_mic_record: true
+            },
+            { type: "Tweet" },
+            {
+                type: "Tagger",
+                api_endpoint: "post-test.php"
+            },
+            {
+                type: "Tagcloud"
+            },
+            {
+                type: "AnnotationsList",
+                container: "AnnotationsListContainer",
+                default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png",
+                show_audio: true,
+                rtmp_streamer: "rtmp://media.iri.centrepompidou.fr/ddc_micro_record/"
+                //ajax_url: "/pf/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}",
+                //ajax_granularity : 300000
+            },
+            { type: "Mediafragment"}
+        ]
+    };
+    
+    var _myPlayer = new IriSP.Metadataplayer(_config);
+    
+        </script>
+    </body>
+</html>

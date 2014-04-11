@@ -1,0 +1,19 @@
+/* Base classes */
+
+.Ldt-Loader {
+    min-height: 128px;
+    background:url(img/loader.gif) center no-repeat;
+    text-indent: -9999px;
+    position: absolute;
+    width: 100%;
+}
+
+.Ldt-Widget {
+/*    font-family: Arial, Helvetica, sans-serif; */
+    color: black;
+    font-size: 12px;
+}
+
+.Ldt-Highlight {
+    background: #ffa0fc;
+}

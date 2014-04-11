@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Test Modèle de Données</title>
+        <script type="text/javascript" src="../../src/js/libs/jquery.min.js"></script>
+        <script type="text/javascript" src="../../src/js/libs/underscore.js"></script>
+        <script type="text/javascript">
+            IriSP = {}
+        </script>
+        <script type="text/javascript" src="../../src/js/model.js"></script>
+        <script type="text/javascript" src="../../src/js/serializers/PlatformSerializer.js"></script>
+        <script type="text/javascript" src="../../src/js/serializers/CinecastSerializer.js"></script>
+        <script type="text/javascript">
+            IriSP.jQuery = jQuery;
+            IriSP._ = _;
+            var _directory = new IriSP.Model.Directory();
+            var _source = _directory.remoteSource({
+                //url: "../integration/polemic_fr.json",
+                url : '../integration/allocine_dossier_independant/json_examples/movie32.json',
+                namespace: "cinecast",
+                serializer: IriSP.serializers.cinecast
+            });
+            function showExport() {
+                console.log(_source.serialize());
+                $("body").html(JSON.stringify(_source.serialize()).replace(/(\[|\{)/g,'$1<ul><li>').replace(/(\]|\})/g,'</li></ul>$1').replace(/,/g,',</li><li>'))
+            }
+            function benchmark(name, callback) {
+                document.write('<p>Running benchmark ' + name + '</p>');
+                var b = new Date();
+                for (var i = 0; i < 100000; i++) {
+                    callback(i);
+                }
+                document.write('<p>Took ' + (new Date() - b) + 'ms</p>');
+            }
+        </script>
+        <style type="text/css">
+            ul, li {
+                list-style: none;
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="#" onclick="showExport(); return false;">Export Json</a>
+    </body>
+</html>

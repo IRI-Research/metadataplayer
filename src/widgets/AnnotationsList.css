@@ -1,0 +1,109 @@
+/* AnnotationsListWidget */
+
+.Ldt-AnnotationsListWidget {
+    border: none; margin: 0; padding: 0;
+    overflow: auto;
+    max-height: 480px;
+}
+.Ldt-AnnotationsListWidget a {
+    text-decoration: none;
+}
+
+.Ldt-AnnotationsList-Audio {
+    width: 1px; height: 1px;
+}
+
+ul.Ldt-AnnotationsList-ul {
+    list-style: none;
+    padding: 2px;
+    margin: 0;
+}
+li.Ldt-AnnotationsList-li {
+    width: 100%;
+    clear: both;
+    margin: 2px 0;
+    padding: 2px 0;
+    min-height: 60px;
+}
+.Ldt-AnnotationsList-li.selected {
+    background-image: url(img/pinstripe-grey.png);
+}
+.Ldt-AnnotationsList-ThumbContainer {
+    float: left;
+    width: 80px;
+    height: 50px;
+    text-align: center;
+    margin: 2px 0;
+}
+.Ldt-AnnotationsList-Thumbnail {
+    border: none;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+}
+.Ldt-AnnotationsList-Duration {
+    color: #f7268e;
+    float: right;
+    text-align: right;
+    font-size: 12px;
+    margin: 2px;
+}
+h3.Ldt-AnnotationsList-Title {
+    color: #0068c4;
+    font-size: 13px;
+    margin: 2px 2px 0 82px;
+    font-weight: bold;
+}
+
+.Ldt-AnnotationsList-Title a {
+    color: #0068c4;
+}
+
+p.Ldt-AnnotationsList-Description {
+    margin: 2px 0 2px 82px;
+    font-size: 12px;
+    color: #333333;
+}
+
+.Ldt-AnnotationsList-Description a {
+    color: #0068c4;
+}
+
+.Ldt-AnnotationsList-Description a:hover {
+    text-decoration: underline; color: #800000;
+}
+
+ul.Ldt-AnnotationsList-Tags {
+    list-style: none;
+    padding: 0;
+    margin: 2px 0 0 82px;
+}
+
+li.Ldt-AnnotationsList-Tag-Li {
+    display: inline-block; border: none; margin: 0 10px 5px 0; height: 23px; padding: 0 0 0 20px;
+    background: url(img/tag.png) left top no-repeat;
+    cursor: pointer;
+}
+
+.Ldt-AnnotationsList-Tag-Li span {
+    display: inline-block; font-size: 12px; height: 19px; padding: 4px 5px 0 0; border: none; margin: 0;
+    background: url(img/tag.png) right top no-repeat;
+}
+
+li.Ldt-AnnotationsList-Tag-Li:hover {
+    background-position: left -23px;
+}
+
+.Ldt-AnnotationsList-Tag-Li:hover span {
+    background-position: right -23px;
+}
+
+.Ldt-AnnotationsList-Play {
+    width: 125px; height: 20px; margin: 2px 0 2px 82px; text-align: center;
+    padding: 3px 5px 0 20px; font-size: 12px; cursor: pointer;
+    background: url(img/voiceannotation.png); color: #333333;
+}
+
+.Ldt-AnnotationsList-Play:hover {
+    background-position: 0 bottom;
+}

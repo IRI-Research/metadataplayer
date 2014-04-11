@@ -1,0 +1,90 @@
+﻿<!doctype html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <title>Metadataplayer test with JwPlayer</title>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='test.css' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="metadataplayer/LdtPlayer-core.js" type="text/javascript"></script>
+        <script type="text/javascript" src="libs/jquery.min.js"></script>
+        <script type="text/javascript" src="libs/tracemanager.js" type="text/javascript"></script>
+    </head>
+
+    <body>
+        <h1>Metadataplayer test with JwPlayer</h1>
+        <div id="LdtPlayer"></div>
+        <div id="AnnotationsListContainer"></div>
+        <script type="text/javascript">
+IriSP.libFiles.defaultDir = "libs/";
+IriSP.language = 'fr';
+IriSP.widgetsDir = "metadataplayer";
+var _tracer = tracemanager.init_trace("test", {
+        url: "http://traces.advene.org:5000/",
+        requestmode: "GET",
+        syncmode: "sync",
+        default_subject: "tests-Metadataplayer"
+    });
+_tracer.trace("CallFromOutside");
+var _metadata = {
+    url: 'json/ldt-ogv.json',
+    format: 'ldt'
+};
+var _config = {
+    width : 550,
+    container : 'LdtPlayer',
+    default_options: {
+        metadata: _metadata
+    },
+    css : 'metadataplayer/LdtPlayer-core.css',
+    widgets: [
+        {
+            type: "AutoPlayer",
+            live: true, 
+            height: 350, 
+            width: 550, 
+            provider: "rtmp",
+            autostart: true
+        },
+        { type: "Slider" },
+        { type: "Controller" },
+        { type: "Polemic" },
+        { type: "Segments" },
+        { type: "Slice" },
+        {
+            type: "Arrow",
+            base_height: 4
+        },
+        { type: "Annotation" },
+        {
+            type: "CreateAnnotation",
+            api_endpoint_template: "http://capsicum/pf/ldtplatform/api/ldt/annotations/{{id}}.json",
+            creator_name: "Metadataplayer",
+            creator_avatar: "https://si0.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+            tag_titles: ["#amateur", "#digital-humanities"]
+        },
+        { type: "Tweet" },
+        {
+            type: "Tagcloud"
+        },
+        {
+            type: "AnnotationsList",
+            container: "AnnotationsListContainer",
+            default_thumbnail : "http://ldt.iri.centrepompidou.fr/static/site/ldt/css/imgs/video_sequence.png"
+        },
+        {
+            type: "Trace",
+            tracer: _tracer,
+            js_console: true,
+            extend: {
+                test: 42
+            }
+        }
+    ]
+};
+
+var _myPlayer = new IriSP.Metadataplayer(_config);
+    
+        </script>
+    </body>
+</html>

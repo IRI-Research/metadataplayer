@@ -1,0 +1,519 @@
+{
+    "format": "http://advene.org/ns/cinelab/", 
+    "@context": {
+        "ucm": "http://ubicast.eu/ns/", 
+        "dc": "http://purl.org/dc/elements/1.1/"
+    }, 
+    "meta": {
+        "dc:contributor": "Pierre Gandar", 
+        "dc:language": "fr", 
+        "ucm:recorder": "easycast-l20", 
+        "ucm:media_type": "video", 
+        "dc:creator": "Pierre Gandar", 
+        "dc:title": "Dernier filage de la pièce jour 44 deuxième partie", 
+        "dc:created": "2013-06-23T21:07:47.077831", 
+        "ucm:oeuvre": "Chatte sur un toit brûlant", 
+        "ucm:director": "Claudia STAVISKY", 
+        "dc:modified": "2013-06-23T21:07:47.077831"
+    }, 
+    "medias": [
+        {
+            "url": "original.mkv", 
+            "origin": 0, 
+            "meta": {
+                "ucm:is_original": true, 
+                "ucm:video_height": 1080, 
+                "ucm:video_codec": "h264", 
+                "ucm:video_width": 1920, 
+                "ucm:audio_samplerate": 44100, 
+                "ucm:width": 1920, 
+                "duration": 8121570, 
+                "ucm:audio_channels": 2, 
+                "ucm:ratio": "16_9", 
+                "ucm:is_main": true, 
+                "ucm:video_framerate": 30, 
+                "ucm:height": 1080, 
+                "ucm:profile": "Video Camera"
+            }, 
+            "id": "primary", 
+            "unit": "ms"
+        }
+    ], 
+    "annotation_types": [
+        {
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "id": "performance"
+        }, 
+        {
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "id": "discussion"
+        }, 
+        {
+            "id": "interpretation"
+        }, 
+        {
+            "id": "textnote"
+        }, 
+        {
+            "meta": {
+                "ucm:trim": "drop", 
+                "ucm:track": "primary"
+            }, 
+            "id": "a_supprimer"
+        }
+    ], 
+    "annotations": [
+        {
+            "begin": 1007, 
+            "end": 1032033, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,lumières,musique,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "7-1"
+                }
+            }, 
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a1"
+        }, 
+        {
+            "begin": 864450, 
+            "end": 2578597, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "performance d'un(e) comédien(ne)", 
+                    "ref_text": "13-6", 
+                    "description": "Maggie prend enfin son temps pour expliquer point par point ce qu'engrange le silence de Brick.", 
+                    "titre": ""
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a2"
+        }, 
+        {
+            "begin": 1032033, 
+            "end": 1293681, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,lumières,musique,son,décors", 
+                    "personnages": "Margaret,Brick,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "16-10"
+                }
+            }, 
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a3"
+        }, 
+        {
+            "begin": 1293681, 
+            "end": 1528172, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,lumières,musique,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt", 
+                    "commentaire": "", 
+                    "ref_text": "19-9"
+                }
+            }, 
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a4"
+        }, 
+        {
+            "begin": 1528172, 
+            "end": 2348324, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,lumières,musique,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": "22-2"
+                }
+            }, 
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a5"
+        }, 
+        {
+            "begin": 2348324, 
+            "end": 2441672, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,lumières,musique,son,décors", 
+                    "personnages": "Margaret,Brick,Dixie", 
+                    "commentaire": "", 
+                    "ref_text": "27-1"
+                }
+            }, 
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a6"
+        }, 
+        {
+            "begin": 2441672, 
+            "end": 3185488, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,lumières,musique,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt,Grand Papa Pollitt,Mae,Gooper,Le Révérend Tooker,Le Docteur Baugh,Dixie,Polly Sonny", 
+                    "commentaire": "", 
+                    "ref_text": "29-1"
+                }
+            }, 
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a7"
+        }, 
+        {
+            "begin": 2578597, 
+            "end": 2978597, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "performance d'un(e) comédien(ne),Interpétation alternative de mise en scène", 
+                    "ref_text": "30-7", 
+                    "description": "Lorsque grand maman dit que Brick n'a jamais aimé se faire embrasser, cela pourrait peut être avoir une répercution sur Maggie", 
+                    "titre": ""
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a8"
+        }, 
+        {
+            "begin": 2978597, 
+            "end": 3407008, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "performance d'un(e) comédien(ne)", 
+                    "ref_text": "35-15", 
+                    "description": "Gooper et mae mettent leurs enfants à l'abri de l'altercation entre grand papa et grand maman. Ils rapatrient leurs fils et laissent grand maman se débroiller toute seule.", 
+                    "titre": ""
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a9"
+        }, 
+        {
+            "begin": 3185488, 
+            "end": 3302369, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,lumières,musique,son,décors", 
+                    "personnages": "Brick,Grand Papa Pollitt", 
+                    "commentaire": "", 
+                    "ref_text": "37-1"
+                }
+            }, 
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a10"
+        }, 
+        {
+            "begin": 3302369, 
+            "end": 3363627, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,lumières,musique,son,décors", 
+                    "personnages": "Brick,Grand Papa Pollitt,Mae", 
+                    "commentaire": "", 
+                    "ref_text": "38-12"
+                }
+            }, 
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a11"
+        }, 
+        {
+            "begin": 3363627, 
+            "end": 5474599, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,lumières,musique,son,décors", 
+                    "personnages": "Brick,Grand Papa Pollitt", 
+                    "commentaire": "", 
+                    "ref_text": "39-1"
+                }
+            }, 
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a12"
+        }, 
+        {
+            "begin": 3407008, 
+            "end": 4204286, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "Identification d'un problème,performance d'un(e) comédien(ne),Interpétation alternative de mise en scène", 
+                    "ref_text": "39-10", 
+                    "description": "Grand papa demande à son d'arrêter de fixer \"ce truc\" mais on ne voit pas de quoi il parle...", 
+                    "titre": ""
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a13"
+        }, 
+        {
+            "begin": 4204286, 
+            "end": 4832600, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "Intervention de la technique", 
+                    "ref_text": "44-8", 
+                    "description": "Les feux d'artifices sur le balcon ont été supprimé et on été remplacé par un(e) passage/traversée derrière la baie vitrée avec Mae, Gooper et leurs enfants.", 
+                    "titre": ""
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a14"
+        }, 
+        {
+            "begin": 4832600, 
+            "end": 5542298, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "Identification d'un problème,performance d'un(e) comédien(ne),Interpétation alternative de mise en scène", 
+                    "ref_text": "53-4", 
+                    "description": "On a du mal à croire en la violence du coup de béquille de Brick dirigé vers son père. On sent que le coup est téléphoné et on voit grand papa préparer sa défense à ce coup en amont de l'attaque. Avec la béquille qui continue à partir dans le public.", 
+                    "titre": ""
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a15"
+        }, 
+        {
+            "begin": 5474599, 
+            "end": 5521096, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,lumières,musique,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt,Grand Papa Pollitt,Mae,Gooper,Le Révérend Tooker,Le Docteur Baugh,Dixie,Polly Sonny", 
+                    "commentaire": "", 
+                    "ref_text": "58-1"
+                }
+            }, 
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a16"
+        }, 
+        {
+            "begin": 5521096, 
+            "end": 7500616, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,lumières,musique,son,décors", 
+                    "personnages": "Margaret,Brick,Grand Maman Pollitt,Grand Papa Pollitt,Mae,Gooper,Le Révérend Tooker,Le Docteur Baugh", 
+                    "commentaire": "", 
+                    "ref_text": "58-9"
+                }
+            }, 
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a17"
+        }, 
+        {
+            "begin": 5542298, 
+            "end": 5726647, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "Interpétation alternative de mise en scène", 
+                    "ref_text": "58-6", 
+                    "description": "La sortie des enfants est un peu téléphonée. Ils doivent être surexités et on voit encore que cela n'est pas le cas et qu'il exécutent ce qu'on leur demande sans trop de fluidité.", 
+                    "titre": ""
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a18"
+        }, 
+        {
+            "begin": 5726647, 
+            "end": 6264612, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "Intervention de la technique", 
+                    "ref_text": "60-15", 
+                    "description": "Le filage est arrêté car les feux d'artifice ont fait brûler la nappe du salon de jardin. Nous avons cru au début que Brick est rentré sur scène sans béquille par erreur et l'on a ensuite compris que c'était parce qu'il s'était empresser de venir nous dire que la table était en train d prendre feu.", 
+                    "titre": ""
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a19"
+        }, 
+        {
+            "begin": 6264612, 
+            "end": 7176917, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "Interpétation alternative de mise en scène", 
+                    "ref_text": "66-2", 
+                    "description": "Aucun regard échangé entre Mae et Gooper face à la volonté de grand maman à ce que Brick reprenne le domaine en main. Pourtant c'est là un bâton qu'on leur met dans les roues et vient perturber leur plan. Le fait qu'il n'y ait aucune consultation oculaire mutuelle est regrétable.", 
+                    "titre": ""
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a20"
+        }, 
+        {
+            "begin": 7176917, 
+            "end": 8121570, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "type_inter": "Interpétation alternative de mise en scène", 
+                    "ref_text": "73-6", 
+                    "description": "A cet instant tout le monde comprend que grand papa va mourir, pourtant on ne le voit pas. Aucune réaction de la part des personnages, seulement grand maman qui esquisse quelques pleurs mais c'est insuffisant pour souligner la révélation.", 
+                    "titre": ""
+                }
+            }, 
+            "type": "interpretation", 
+            "id": "a21"
+        }, 
+        {
+            "begin": 7500616, 
+            "end": 7671608, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,lumières,musique,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "", 
+                    "ref_text": ""
+                }
+            }, 
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "type": "performance", 
+            "id": "a22"
+        }, 
+        {
+            "begin": 7671608, 
+            "end": 8115628, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "application/x-easycast-structured+json", 
+                "data": {
+                    "modalites_sceniques": "costumes,lumières,musique,son,décors", 
+                    "personnages": "Margaret,Brick", 
+                    "commentaire": "Fin du filage", 
+                    "ref_text": ""
+                }
+            }, 
+            "meta": {
+                "ucm:trim": "keep", 
+                "ucm:track": "primary"
+            }, 
+            "type": "discussion", 
+            "id": "a23"
+        }, 
+        {
+            "begin": 7795686, 
+            "end": 7795686, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "text/plain", 
+                "data": "Dernier filage avant la première devant le public. Les phtographes de presse étaient présents ce soir et les acteurs ont pu se rendre compte des premières réactions suscitées par le specatcle à des yeux extérieurs à l'équipe du théâtre des Ceslestins. "
+            }, 
+            "type": "textnote", 
+            "id": "a24"
+        }, 
+        {
+            "begin": 8115628, 
+            "end": 8121570, 
+            "media": "primary", 
+            "content": {
+                "mimetype": "text/plain", 
+                "data": "Fin de la journée de travail"
+            }, 
+            "meta": {
+                "ucm:trim": "drop", 
+                "ucm:track": "primary"
+            }, 
+            "type": "a_supprimer", 
+            "id": "a25"
+        }
+    ]
+}

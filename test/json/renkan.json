@@ -1,0 +1,299 @@
+{
+    "title": "Intervention de Stiegler",
+    "users": [
+        {
+            "_id": "u-anonymous",
+            "title": "anonymous",
+            "uri": "",
+            "description": "",
+            "color": "#dd00dd"
+        }, {
+            "_id": "u-cybunk",
+            "title": "Samuel",
+            "uri": "http://twitter.com/cybunk",
+            "description": "",
+            "color": "#e00000"
+        }, {
+            "_id": "u-raphv",
+            "title": "Raphael",
+            "uri": "http://twitter.com/raphv",
+            "description": "",
+            "color": "#00a000"
+        }
+    ],
+    "nodes": [
+        {
+            "_id": "node-2012-08-22-9da6eef6c6391d05-0001",
+            "title": "Chocs technologiques et tâches de l’université...",
+            "uri": "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/e328e188-ff2f-11e0-b9e1-00145ea49a02/#id=s_6C326EED-B91A-AEDF-032D-40D9A60AAD7E",
+            "description": "Bernard Stiegler:\nChocs technologiques et tâches de l’université. L'époque des digital studies\nベルナール・スティグレールによるプレゼンテーション『テクノロジーの衝撃と大学の諸課題――デジタル・スタディーズの時代』 (langue française フランス語)",
+            "position": {
+                "x": 35.50145330596697,
+                "y": -79.8809523809524
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/ldt-segment.png",
+            "created_by": "u-cybunk"
+        }, {
+            "_id": "node-2012-08-22-9da6eef6c6391d05-0002",
+            "title": "Wiki: ベルナール・スティグレール",
+            "uri": "http://ja.wikipedia.org/wiki/%E3%83%99%E3%83%AB%E3%83%8A%E3%83%BC%E3%83%AB%E3%83%BB%E3%82%B9%E3%83%86%E3%82%A3%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%AB",
+            "description": "|image_name = Bernard-Stiegler.jpg\n'''ベルナール・スティグレール'''（'''Bernard Stiegler''',[[1952年]][[4月1日]] - ）は、[[フランス]]の[[哲学者]]。\n",
+            "position": {
+                "x": -212.89325104742056,
+                "y": -142.05921029473706
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/wikipedia.png",
+            "created_by": "u-raphv"
+        }, {
+            "_id": "node-2012-08-22-9da6eef6c6391d05-0003",
+            "title": "Wiki: Bernard Stiegler",
+            "uri": "http://fr.wikipedia.org/wiki/Bernard_Stiegler",
+            "description": "Bernard Stiegler, né le 1 | avril | 1952, est un philosophe  français  qui axe sa réflexion sur les enjeux des mutations actuelles —  ... ",
+            "position": {
+                "x": -199.613212880364,
+                "y": -297.6715155910511
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/wikipedia.png",
+            "created_by": "u-raphv"
+        }, {
+            "_id": "node-2012-08-22-9da6eef6c6391d05-0004",
+            "title": "Tag: Stiegler",
+            "uri": "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/search/?search=Stiegler&field=all",
+            "description": "Tag 'Stiegler'",
+            "position": {
+                "x": -68.40773762286169,
+                "y": -205.76155213199334
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/ldt-tag.png",
+            "created_by": "u-raphv"
+        }, {
+            "_id": "node-2012-08-22-9da6eef6c6391d05-0009",
+            "title": "Wiki: Humanités numériques",
+            "uri": "http://fr.wikipedia.org/wiki/Humanit%C3%A9s_num%C3%A9riques",
+            "description": "une proposition de définition a été élaborée lors du THATCamp des 18 et 19 mai 2010 sous la forme d'un « Manifeste des digital humanities : ... ",
+            "position": {
+                "x": -227.84295519248332,
+                "y": 91.1816115015538
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/wikipedia.png",
+            "created_by": "u-raphv"
+        }, {
+            "_id": "node-2012-08-22-9da6eef6c6391d05-000a",
+            "title": "Wiki: デジタル・ヒューマニティーズ",
+            "uri": "http://ja.wikipedia.org/wiki/%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E3%83%BB%E3%83%92%E3%83%A5%E3%83%BC%E3%83%9E%E3%83%8B%E3%83%86%E3%82%A3%E3%83%BC%E3%82%BA",
+            "description": "...（digital humanities）は、コンピューティングと人文科学（humanities）諸分野と間の接点に関して調査、研究、教育、および�\n* Centre for Computing in the Humanities\n",
+            "position": {
+                "x": -221.48701615763574,
+                "y": 242.80740052545508
+            },
+            "image": "http://www.iri.centrepompidou.fr/dev/~veltr/hitachi-tests/img/wikipedia.png",
+            "created_by": "u-raphv"
+        }, {
+            "_id": "node-2012-08-22-9da6eef6c6391d05-000b",
+            "title": "Digital studies",
+            "uri": "",
+            "description": "",
+            "position": {
+                "x": -62.798895620242085,
+                "y": 32.09820725365255
+            },
+            "created_by": "u-raphv"
+        }, {
+            "_id": "node-2012-08-22-9da6eef6c6391d05-000c",
+            "title": "Digital Humanities",
+            "uri": "",
+            "description": "",
+            "position": {
+                "x": -110.57020731070799,
+                "y": 160.92139209086253
+            },
+            "created_by": "u-raphv"
+        }, {
+            "_id": "node-2012-08-22-b778a9fc31296d6b-0008",
+            "title": "Les rétentions (Tweet)",
+            "uri": "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/e328e188-ff2f-11e0-b9e1-00145ea49a02/#id=a924b90c-46a1-4f0a-9e13-bcf69f7b5de0-127750274034049024",
+            "description": "Tweet by Vincent Puig: #tfcem Les rétentions primaires (perception) s'aggrégent et forment des rétentions secondaires (mémoire), gravées sur rétentions tertiaires",
+            "position": {
+                "x": 186.15055288633457,
+                "y": -184.66836073709257
+            },
+            "image": "http://a1.twimg.com/profile_images/379424006/PortaitVP120Ko_normal.jpg",
+            "created_by": "u-cybunk"
+        }, {
+            "_id": "node-2012-08-22-b778a9fc31296d6b-0009",
+            "title": "L'origine de la géométrie (Tweet)",
+            "uri": "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/e328e188-ff2f-11e0-b9e1-00145ea49a02/#id=5b34ae61-ffb1-4535-a479-007cb0ef57e8-127752118743474177",
+            "description": "Tweet by Vincent Puig: #tfcem L'origine de la géométrie: l'écriture est processus long de transindividuation. Nos tweets quasi temps réel sont de même nature++",
+            "position": {
+                "x": 87.82365160023906,
+                "y": -280.3591650733953
+            },
+            "image": "http://a1.twimg.com/profile_images/379424006/PortaitVP120Ko_normal.jpg",
+            "created_by": "u-cybunk"
+        }, {
+            "_id": "node-2012-08-22-b778a9fc31296d6b-000a",
+            "title": "Polemictweet : un outil Digital Studies (Tweet)",
+            "uri": "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/e328e188-ff2f-11e0-b9e1-00145ea49a02/#id=4b34e895-221b-467b-a0f2-8ff4ae87cae4-127758736415666177",
+            "description": "Tweet by Vincent Puig:\n#tfcem Polemictweet : un outil Digital Studies pensé à l'IRI comme rétention tertiaire numérique avec les même armes que l'industrie",
+            "position": {
+                "x": 168.59118089416432,
+                "y": 57.97933221077804
+            },
+            "image": "http://a1.twimg.com/profile_images/379424006/PortaitVP120Ko_normal.jpg",
+            "created_by": "u-cybunk"
+        }, {
+            "_id": "node-2012-08-22-b778a9fc31296d6b-000f",
+            "title": "Rétention (Définition AI)",
+            "uri": "http://arsindustrialis.org/vocabulaire-ars-industrialis/r%C3%A9tention",
+            "description": "Les rétentions sont ce qui est retenu ou recueilli par la conscience. Ce terme est emprunté à Husserl ; mais les rétentions tertiaires sont propres à la philosophie de Bernard Stiegler.\n\nLes rétentions sont des sélections : dans le flux de conscience que vous êtes vous ne pouvez pas tout retenir, ce que vous retenez est ce que vous êtes, mais ce que vous retenez dépend ce que vous avez déjà retenu.\n\nL’espèce humaine, étant originairement constituée par sa prothéticité, dispose d’une troisième mémoire, ni génétique, ni épigénétique : le milieu épiphylogénétique, comme ensemble des rétentions tertiaires formant des dispositifs rétentionels.",
+            "position": {
+                "x": 276.41820932461013,
+                "y": -62.82646518900019
+            },
+            "image": "http://www.arsindustrialis.org/sites/default/files/userfiles/user3/Logovocabulairenoir.JPG",
+            "created_by": "u-cybunk"
+        }, {
+            "_id": "node-2012-08-22-5b349e49066c1b01-0001",
+            "title": "Polemic Tweet",
+            "uri": "http://polemictweet.com/",
+            "description": "Polemic Tweet Web Site",
+            "position": {
+                "x": 220.96817493563964,
+                "y": 196.75746750735607
+            },
+            "image": "http://www.polemictweet.com/images/ENMI_2010_logo.gif",
+            "created_by": "u-cybunk"
+        }
+    ],
+    "edges": [
+        {
+            "_id": "edge-2012-08-22-9da6eef6c6391d05-0005",
+            "title": "is about",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-9da6eef6c6391d05-0002",
+            "to": "node-2012-08-22-9da6eef6c6391d05-0004",
+            "created_by": "u-raphv"
+        }, {
+            "_id": "edge-2012-08-22-9da6eef6c6391d05-0006",
+            "title": "is about",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-9da6eef6c6391d05-0003",
+            "to": "node-2012-08-22-9da6eef6c6391d05-0004",
+            "created_by": "u-raphv"
+        }, {
+            "_id": "edge-2012-08-22-9da6eef6c6391d05-0007",
+            "title": "speech by",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-9da6eef6c6391d05-0001",
+            "to": "node-2012-08-22-9da6eef6c6391d05-0004",
+            "created_by": "u-raphv"
+        }, {
+            "_id": "edge-2012-08-22-b778a9fc31296d6b-0001",
+            "title": "is about",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-9da6eef6c6391d05-0001",
+            "to": "node-2012-08-22-9da6eef6c6391d05-000b",
+            "created_by": "u-raphv"
+        }, {
+            "_id": "edge-2012-08-22-b778a9fc31296d6b-0002",
+            "title": "Are related to",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-9da6eef6c6391d05-000b",
+            "to": "node-2012-08-22-9da6eef6c6391d05-000c",
+            "created_by": "u-raphv"
+        }, {
+            "_id": "edge-2012-08-22-b778a9fc31296d6b-0003",
+            "title": "is about",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-9da6eef6c6391d05-0009",
+            "to": "node-2012-08-22-9da6eef6c6391d05-000c",
+            "created_by": "u-raphv"
+        }, {
+            "_id": "edge-2012-08-22-b778a9fc31296d6b-0004",
+            "title": "is about",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-9da6eef6c6391d05-000a",
+            "to": "node-2012-08-22-9da6eef6c6391d05-000c",
+            "created_by": "u-raphv"
+        }, {
+            "_id": "edge-2012-08-22-b778a9fc31296d6b-000b",
+            "title": "is about",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-b778a9fc31296d6b-000a",
+            "to": "node-2012-08-22-9da6eef6c6391d05-000b",
+            "created_by": "u-raphv"
+        }, {
+            "_id": "edge-2012-08-22-b778a9fc31296d6b-000c",
+            "title": "tweeted during",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-b778a9fc31296d6b-0009",
+            "to": "node-2012-08-22-9da6eef6c6391d05-0001",
+            "created_by": "u-cybunk"
+        }, {
+            "_id": "edge-2012-08-22-b778a9fc31296d6b-000d",
+            "title": "tweeted during",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-b778a9fc31296d6b-0008",
+            "to": "node-2012-08-22-9da6eef6c6391d05-0001",
+            "created_by": "u-cybunk"
+        }, {
+            "_id": "edge-2012-08-22-b778a9fc31296d6b-000e",
+            "title": "tweeted during",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-b778a9fc31296d6b-000a",
+            "to": "node-2012-08-22-9da6eef6c6391d05-0001",
+            "created_by": "u-cybunk"
+        }, {
+            "_id": "edge-2012-08-22-b778a9fc31296d6b-0011",
+            "title": "is about",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-b778a9fc31296d6b-0008",
+            "to": "node-2012-08-22-b778a9fc31296d6b-000f",
+            "created_by": "u-cybunk"
+        }, {
+            "_id": "edge-2012-08-22-b778a9fc31296d6b-0012",
+            "title": "is about",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-b778a9fc31296d6b-000a",
+            "to": "node-2012-08-22-b778a9fc31296d6b-000f",
+            "created_by": "u-cybunk"
+        }, {
+            "_id": "edge-2012-08-22-5b349e49066c1b01-0002",
+            "title": "is about",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-b778a9fc31296d6b-000a",
+            "to": "node-2012-08-22-5b349e49066c1b01-0001",
+            "created_by": "u-cybunk"
+        }, {
+            "_id": "edge-2012-09-06-70cc0c2d5e1112d3-0001",
+            "title": "is an example of",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-b778a9fc31296d6b-000a",
+            "to": "node-2012-08-22-9da6eef6c6391d05-000b",
+            "created_by": "u-anonymous"
+        }, {
+            "_id": "edge-2012-09-06-70cc0c2d5e1112d3-0002",
+            "title": "tool used",
+            "uri": "",
+            "description": "",
+            "from": "node-2012-08-22-5b349e49066c1b01-0001",
+            "to": "node-2012-08-22-b778a9fc31296d6b-000a",
+            "created_by": "u-anonymous"
+        }
+    ]
+}

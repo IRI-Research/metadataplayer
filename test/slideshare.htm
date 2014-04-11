@@ -1,0 +1,84 @@
+﻿<!doctype html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <title>Metadataplayer test with JwPlayer</title>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='test.css' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="metadataplayer/LdtPlayer-core.js" type="text/javascript"></script>
+        <style type="text/css">
+        #SlideShareContainer {
+            float: left;
+            width: 400px;
+            margin: 10px 0;
+        }
+    </style>
+    </head>
+
+    <body>
+        <h1>Metadataplayer test with JwPlayer</h1>
+        <div id="LdtPlayer"></div>
+        <div id="SlideShareContainer"></div>
+        <div id="AnnotationsListContainer"></div>
+        <script type="text/javascript">
+IriSP.libFiles.defaultDir = "libs/";
+IriSP.language = 'fr';
+IriSP.widgetsDir = "metadataplayer";
+var _metadata = {
+    url: 'http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/cljson/id/8a1a344a-7f34-11e1-9ee2-00145ea4a2be?callback=?',
+    format: 'ldt'
+};
+var _config = {
+    width : 620,
+    container : 'LdtPlayer',
+    default_options: {
+        metadata: _metadata
+    },
+    css : 'metadataplayer/LdtPlayer-core.css',
+    widgets: [
+        {
+            type: "JwpPlayer",
+            live: true,
+            height: 350,
+            provider: "rtmp",
+            autostart: true,
+            streamer: function(_url) {
+                var _matches = _url.match(/^[^\/]+\/\/[^\/]+\/[^\/]+\//);
+                if (_matches) {
+                    return _matches[0];
+                } else {
+                    return _url;
+                }
+            }
+        },
+        { type: "Slider" },
+        { type: "Controller" },
+        { type: "Polemic" },
+        { type: "Segments" },
+        { type: "Annotation" },
+        {
+            type: "Segments",
+            annotation_type: "Slide"
+        },
+        { type: "Tweet" },
+        {
+            type: "Tagcloud"
+        },
+        {
+            type: "AnnotationsList",
+            container: "AnnotationsListContainer"
+        },
+        {
+            type: "Slideshare",
+            container: "SlideShareContainer"
+        },
+        { type: "Mediafragment"}
+    ]
+};
+    
+    var _myPlayer = new IriSP.Metadataplayer(_config);
+    
+        </script>
+    </body>
+</html>

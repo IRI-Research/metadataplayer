@@ -1,0 +1,132 @@
+.Ldt-Annotation-Widget {
+    border-style: none solid solid;
+    border-width: 1px;
+    border-color: #b7b7b7;
+    padding: 0 1px 1px;
+    margin: 0;
+}
+
+.Ldt-Annotation-Widget.Ldt-Annotation-ShowTop {
+    border-top-style: solid;
+    padding-top: 1px;
+}
+
+.Ldt-Annotation-Inner {
+    background: url(img/pinstripe.png);
+    padding: 5px;
+    margin: 0;
+}
+
+.Ldt-Annotation-Inner h3 {
+    margin: 5px 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.Ldt-Annotation-Description {
+    max-height: 150px;
+    overflow: auto;
+}
+
+.Ldt-Annotation-Cleared {
+    clear: both;
+}
+
+.Ldt-Annotation-MaxMinButton {
+    float: right; margin: 5px 5px 0; width: 17px; height: 17px;
+    background: url(img/widget-control.png); background-position: 0 -51px; cursor: pointer;
+}
+
+.Ldt-Annotation-Social {
+    float: right;
+}
+
+.Ldt-Annotation-MaxMinButton:hover {
+    background-position: -17px -51px;
+}
+
+.Ldt-Annotation-Minimized div.Ldt-Annotation-MaxMinButton {
+    background-position: 0 -34px;
+}
+
+.Ldt-Annotation-Minimized div.Ldt-Annotation-MaxMinButton:hover {
+    background-position: -17px -34px;
+}
+
+.Ldt-Annotation-Inner h3.Ldt-Annotation-MashupOrigin {
+    font-size: 12px;
+}
+
+.Ldt-Annotation-Title, .Ldt-Annotation-MashupMedia {
+    color: #0068c4;
+    text-decoration: none;
+}
+
+.Ldt-Annotation-Type {
+    color: #8080A0;
+}
+
+.Ldt-Annotation-Time {
+    color: #ff3b77
+}
+
+.Ldt-Annotation-Inner p {
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.Ldt-Annotation-Label {
+    font-size: 12px; font-weight: bold; max-width: 90px; float: left; clear: left;
+}
+
+.Ldt-Annotation-Labelled {
+    margin: 5px 0 0 90px; clear: right;
+}
+
+.Ldt-Annotation-Tags-Block {
+    font-size: 12px;
+}
+
+ul.Ldt-Annotation-Tags {
+    list-style: none; padding: 0;
+}
+
+li.Ldt-Annotation-TagLabel {
+    display: inline-block; border: none; margin: 0 10px 5px 0; height: 23px; padding: 0 0 0 20px;
+    background: url(img/tag.png) left top no-repeat;
+    cursor: pointer;
+}
+
+.Ldt-Annotation-TagLabel span {
+    display: inline-block; font-size: 12px; height: 19px; padding: 4px 5px 0 0; border: none; margin: 0;
+    background: url(img/tag.png) right top no-repeat;
+}
+
+li.Ldt-Annotation-TagLabel:hover {
+    background-position: left -23px;
+}
+
+.Ldt-Annotation-TagLabel:hover span {
+    background-position: right -23px;
+}
+
+.Ldt-Annotation-MashupOrigin {
+    display: none;
+}
+
+.Ldt-Annotation-isMashup .Ldt-Annotation-MashupOrigin {
+    display: block;
+}
+
+.Ldt-Annotation-Empty .Ldt-Annotation-HiddenWhenEmpty {
+    display: none;
+}
+
+.Ldt-Annotation-Minimized .Ldt-Annotation-HiddenWhenMinimized {
+    display: none;
+}
+
+.Ldt-Annotation-EmptyBlock {
+    display: none;
+}
+

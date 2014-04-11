@@ -1,0 +1,22 @@
+{
+    "meta": {
+        "creator": "admin",
+        "created": "Tue May 29 2012 18:05:31 GMT+0200 (Romance Daylight Time)"
+    },
+    "annotations": [
+        {
+            "begin": 0,
+            "end": 290685,
+            "tags": [
+                "#amateur"
+            ],
+            "media": "9a493932-3053-11e0-862b-00145ea49a02",
+            "content": {
+                "data": "Test d'annotation #amateur ++"
+            },
+            "type_title": "Contributions",
+            "type": "c_1e2d0340-a9a8-11e1-9466-08002791f1b7",
+            "id": "s_1e2e3f4e-a9a8-11e1-9466-08002791f1b7"
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+.Ldt-MashupPlayer-Media {
+    position: absolute;
+}
+
+.Ldt-MashupPlayer-Waiting {
+    position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(120, 120, 140, .6);
+    background-image: url(img/reel.gif);
+    background-position: center;
+    background-repeat: no-repeat;
+}

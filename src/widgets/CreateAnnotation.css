@@ -1,0 +1,166 @@
+/*
+ *
+ */
+
+.Ldt-CreateAnnotation {
+    border-style: none solid solid;
+    border-width: 1px;
+    border-color: #b7b7b7;
+    padding: 0 1px 1px;
+    margin: 0;
+}
+
+.Ldt-CreateAnnotation-Inner {
+    background: url(img/pinstripe.png); padding: 5px; margin: 0; position: relative;
+}
+
+.Ldt-CreateAnnotation-Inner h3 {
+    margin: 5px 0; font-size: 14px; font-weight: bold; text-align: right; clear:both; color: #0068c4;
+}
+
+.Ldt-CreateAnnotation-h3Left {
+    float: left;
+}
+
+.Ldt-CreateAnnotation-Main {
+    min-height: 150px;
+}
+
+.Ldt-CreateAnnotation-Title, .Ldt-CreateAnnotation-Creator {
+    font-size: 14px;
+    font-weight: bold;
+    color: #0068c4;
+    border: 1px solid #666666;
+    border-radius: 2px;
+}
+
+.Ldt-CreateAnnotation-Title.empty, .Ldt-CreateAnnotation-Creator.empty {
+    font-style: italic;
+    color: #90b0d0;
+}
+
+.Ldt-CreateAnnotation-Times {
+    color: #ff3b77
+}
+
+.Ldt-CreateAnnotation-Submit {
+    position: absolute;
+    bottom: 7px;
+    right: 7px;
+    color: #ffffff;
+    cursor: pointer;
+    background: url('img/submit_annotation.png');
+    height: 50px;
+    width: 50px;
+    padding: 28px 0 0;
+    font-size: 12px;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+.Ldt-CreateAnnotation-Submit:hover {
+    background-position: -50px 0;
+}
+
+.Ldt-CreateAnnotation-Description {
+    height: 56px;
+    padding: 2px;
+    resize: none;
+    width: 460px;
+    border: 1px solid #666666;
+    border-radius: 2px;
+}
+
+.Ldt-CreateAnnotation-Description.empty {
+    font-style: italic; color: #999999;
+}
+
+.Ldt-CreateAnnotation-Avatar {
+    float: right;
+    width: 48px;
+    height: 48px;
+    margin: 5px 0;
+    padding: 0 0 0 15px;
+    background: url('img/profile_arrow.png') left no-repeat;
+}
+
+.Ldt-CreateAnnotation-Avatar img {
+    float: right;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    border: 1px solid #bbbbbb;
+}
+
+.Ldt-CreateAnnotation-RecBlock {
+    width: 220px; float: left;
+}
+
+.Ldt-CreateAnnotation-TagTitle, .Ldt-CreateAnnotation-PolemicTitle, .Ldt-CreateAnnotation-RecLabel {
+    display: block; margin: 5px 0 2px; font-size: 12px;
+}
+
+.Ldt-CreateAnnotation-TagList, .Ldt-CreateAnnotation-PolemicList {
+    list-style: none;
+}
+
+li.Ldt-CreateAnnotation-TagLi {
+    display: inline-block; border: none; margin: 0 10px 5px 0; height: 23px; padding: 0 0 0 20px;
+    background: url(img/tag.png) left top no-repeat;
+    cursor: pointer;
+}
+
+.Ldt-CreateAnnotation-TagButton {
+    display: inline-block; font-size: 12px; height: 19px; padding: 4px 5px 0 0; border: none; margin: 0;
+    background: url(img/tag.png) right top no-repeat;
+}
+
+li.Ldt-CreateAnnotation-TagLi:hover {
+    background-position: left -23px;
+}
+
+.Ldt-CreateAnnotation-TagLi:hover .Ldt-CreateAnnotation-TagButton {
+    background-position: right -23px;
+}
+
+li.Ldt-CreateAnnotation-TagLi.selected {
+    background-position: left -46px;
+}
+
+.Ldt-CreateAnnotation-TagLi.selected .Ldt-CreateAnnotation-TagButton {
+    background-position: right -46px;
+}
+
+li.Ldt-CreateAnnotation-PolemicLi {
+    display: inline-block; border: none; margin: 0 5px 0; height: 21px; width: 26px; padding: 2px 0 0;
+    background: url(img/polemic.png) left top no-repeat; font-size: 14px; font-weight: bold; text-align: center;
+    cursor: pointer;
+}
+
+li.Ldt-CreateAnnotation-PolemicLi:hover {
+    background-position: 0 -23px;
+}
+
+li.Ldt-CreateAnnotation-PolemicLi.selected {
+    background-position: 0 -46px;
+}
+
+.Ldt-CreateAnnotation-InnerBox {
+    margin: 20px 50px;
+    border: 1px solid #CCCCCC;
+    padding: 20px;
+    background: #FFFFFF;
+    color: #FF3B77; text-align: center;
+    font-size: 13px; font-weight: bold;
+}
+
+a.Ldt-CreateAnnotation-Close {
+    position: absolute; top: 2px; right: 2px;
+    display: inline-block; width: 17px; height: 17px; margin: 2px;
+    background: url(img/widget-control.png);
+}
+
+a.Ldt-CreateAnnotation-Close:hover {
+    background-position: -17px 0;
+}

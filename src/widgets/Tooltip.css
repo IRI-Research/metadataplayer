@@ -1,0 +1,123 @@
+.Ldt-Tooltip {
+    position: absolute;
+    height: 0; width: 0;
+    z-index: 100000;
+}
+
+.Ldt-Tooltip-Main {
+    position: absolute; bottom: 0; left: -96px;
+}
+
+.Ldt-Tooltip-Corner-NW,
+.Ldt-Tooltip-Corner-NE,
+.Ldt-Tooltip-Corner-SW,
+.Ldt-Tooltip-Corner-SE {
+    position: absolute; width: 6px; height: 6px; background: url(img/tooltip-corners.png);
+}
+
+.Ldt-Tooltip-Corner-NW,
+.Ldt-Tooltip-Corner-SW {
+    left: 0;
+}
+
+.Ldt-Tooltip-Corner-NE,
+.Ldt-Tooltip-Corner-SE {
+    right: 0;
+}
+
+.Ldt-Tooltip-Corner-NW,
+.Ldt-Tooltip-Corner-NE {
+    top: 0;
+}
+
+.Ldt-Tooltip-Corner-SW,
+.Ldt-Tooltip-Corner-SE {
+    bottom: 10px;
+}
+
+.Ldt-Tooltip-Corner-NW {
+    background-position: top left;
+}
+
+.Ldt-Tooltip-Corner-NE {
+    background-position: top right;
+}
+
+.Ldt-Tooltip-Corner-SW {
+    background-position: bottom left;
+}
+
+.Ldt-Tooltip-Corner-SE {
+    background-position: bottom right;
+}
+
+.Ldt-Tooltip-Border-Top,
+.Ldt-Tooltip-Border-SW,
+.Ldt-Tooltip-Border-SE {
+    position: absolute; height: 6px; background: url(img/tooltip-h-borders.png);
+}
+
+.Ldt-Tooltip-Border-Top {
+    left: 6px; right: 6px;
+}
+
+.Ldt-Tooltip-Border-SW,
+.Ldt-Tooltip-Border-SE {
+    bottom: 10px; background-position: bottom;
+}
+
+.Ldt-Tooltip-Border-SW {
+    left: 6px;
+}
+
+.Ldt-Tooltip-Border-SE {
+    right: 6px;
+}
+
+.Ldt-Tooltip-Tip {
+    position: absolute; height: 16px; width: 22px;
+    background: url(img/tooltip-tip.png);
+    bottom: 0;
+}
+
+.Ldt-Tooltip-Border-Left,
+.Ldt-Tooltip-Border-Right {
+    position: absolute; width: 6px; background: url(img/tooltip-v-borders.png);
+    top: 6px; bottom: 16px;
+}
+
+.Ldt-Tooltip-Border-Left {
+    left: 0; background-position: left;
+}
+
+.Ldt-Tooltip-Border-Right {
+    right: 0; background-position: right;
+}
+
+.Ldt-Tooltip-Inner {
+    min-height: 30px;
+    max-height: 140px;
+    width: 180px;
+    overflow: hidden;
+    margin: 6px 6px 16px;
+    background: url(img/tooltip-gradient.png) bottom;
+}
+
+
+.Ldt-Tooltip-Color {
+    float: left; margin: 8px 2px 2px 8px; width: 10px; height: 10px;
+}
+
+.Ldt-Tooltip-AltColor {
+    float: left; margin: 2px 2px 2px 3px; width: 10px; height: 10px;
+}
+
+.Ldt-Tooltip img {
+    max-width: 140px; max-height: 80px; margin: 2px 20px;
+}
+
+.Ldt-Tooltip p {
+    margin: 6px 8px;
+    font-size: 12px;
+    line-height: 14px;
+}

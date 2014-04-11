@@ -1,0 +1,18 @@
+/*
+ * Segments Widget
+ */
+
+.Ldt-Segments-Segment {
+    position: absolute; margin-left: -1px; border: 1px solid #ffffff;
+}
+
+.Ldt-Segments-Position {
+    background: #fc00ff;
+    position: absolute;
+    top: -1px;
+    left: 0;
+    margin-left: -1px;
+    width: 2px;
+    bottom: -1px;
+    z-index: 80000;
+}
