@@ -65,7 +65,7 @@ IriSP.Widgets.AnnotationsList.prototype.template =
     + '</div>';
 
 IriSP.Widgets.AnnotationsList.prototype.annotationTemplate = 
-    '<li class="Ldt-AnnotationsList-li Ldt-TraceMe" trace-info="annotation-id:{{id}}, media-id:{{media_id}}" style="{{specific_style}}">'
+    '<li class="Ldt-AnnotationsList-li Ldt-Highlighter-Annotation Ldt-TraceMe" data-annotation="{{ id }}" data-begin="{{ begin_ms }}" data-end="{{ end_ms }}" trace-info="annotation-id:{{id}}, media-id:{{media_id}}" style="{{specific_style}}">'
     + '<div class="Ldt-AnnotationsList-ThumbContainer">'
     + '<a href="{{url}}" draggable="true">'
     + '<img title="{{ begin }} - {{ atitle }}" class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
@@ -214,6 +214,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 hdescription : IriSP.textFieldHtml(_description),
                 begin : _annotation.begin.toString(),
                 end : _annotation.end.toString(),
+                begin_ms : _annotation.begin.milliseconds,
+                end_ms : _annotation.end.milliseconds,
                 thumbnail : _thumbnail,
                 url : _url,
                 tags : _annotation.getTagTexts(),
