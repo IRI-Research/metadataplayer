@@ -106,23 +106,6 @@ IriSP.Widgets.AnnotationsList.prototype.ajaxSource = function() {
     }, this.metadata));
 };
 
-IriSP.Widgets.AnnotationsList.prototype.navigate = function(offset) {
-    // offset is normally either -1 (previous slide) or +1 (next slide)
-    var _this = this;
-    var currentTime = _this.media.getCurrentTime();
-    var annotations = _this.source.getAnnotations().sortBy(function(_annotation) {
-        return _annotation.begin;
-    });
-    for (var i = 0; i < annotations.length; i++) {
-        if (annotations[i].begin <= currentTime && currentTime < annotations[i].end) {
-            // Found a current annotation - clamp i+offset value to [0, length - 1]
-            i = Math.min(annotations.length - 1, Math.max(0, i + offset));
-            _this.media.setCurrentTime(annotations[i].begin);
-            break;
-        }
-    };
-};
-
 IriSP.Widgets.AnnotationsList.prototype.ajaxMashup = function() {
     var _currentTime = this.media.getCurrentTime();
     var _currentAnnotation = this.source.currentMedia.getAnnotationAtTime(_currentTime);
