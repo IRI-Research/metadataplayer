@@ -11,8 +11,6 @@ IriSP.Widgets.SlideVideoPlayer.prototype.defaults = {
 
 IriSP.Widgets.SlideVideoPlayer.prototype.template = '<div class="Ldt-SlideVideoPlayer">\
 <div class="Ldt-SlideVideoPlayer-slide Ldt-SlideVideoPlayer-panel">\
- <h2 class="Ldt-ImageDisplay-Title">&nbsp;</h2>\
- <div class="Ldt-ImageDisplay-Container"><img class="Ldt-ImageDisplay-Image" title="" alt="Titre" src="imagecache/00.png"></div>\
 </div>\
 <div class="Ldt-SlideVideoPlayer-video Ldt-SlideVideoPlayer-panel"></div>\
 </div>';
