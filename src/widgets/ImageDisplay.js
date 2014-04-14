@@ -11,31 +11,33 @@ IriSP.Widgets.ImageDisplay.prototype.defaults = {
     // container: "imageContainer"
 }
 
-IriSP.Widgets.ImageDisplay.prototype.template = '';
+IriSP.Widgets.ImageDisplay.prototype.template = '<div class="Ldt-ImageDisplay-Container"><img class="Ldt-ImageDisplay-Image" title="" alt="Slide Image" src=""/><div class="Ldt-ImageDisplay-Overlay Ldt-ImageDisplay-Overlay-Left"></div><div class="Ldt-ImageDisplay-Overlay Ldt-ImageDisplay-Overlay-Right"></div></div>';
 
-IriSP.Widgets.ImageDisplay.prototype.annotationTemplate = '<div class="Ldt-ImageDisplay-Container"><h2 class="Ldt-ImageDisplay-Title">{{ htitle }}</h2><a href="#{{id}}"><img class="Ldt-ImageDisplay-Image" title="{{ htitle }} - {{ begin }}" alt="{{ htitle }}" src="{{thumbnail}}"/></a></div>';
+IriSP.Widgets.ImageDisplay.prototype.annotationTemplate = '';
+
+IriSP.Widgets.ImageDisplay.prototype.update = function(annotation) {
+    // Update the widget with data corresponding to the annotation
+    console.log(this.image);
+    this.image.setAttribute("title", IriSP.textFieldHtml(annotation.title) + " - " + annotation.begin.toString());
+    this.image.setAttribute("src", annotation.thumbnail);
+};
 
 IriSP.Widgets.ImageDisplay.prototype.draw = function() {    
-    var _annotations = this.getWidgetAnnotations();
+    var _annotations = this.getWidgetAnnotations().sortBy(function(_annotation) {
+        return _annotation.begin;
+    });
     var _this = this;
-    if (!_annotations.length) {
-        _this.$.hide();
-    } else {
-        _annotations.forEach(function(_a) {
-            _a.on("enter", function() {
-                var _data = {
-                    id : _a.id,
-                    htitle : IriSP.textFieldHtml(_a.title),
-                    begin : _a.begin.toString(),
-                    end : _a.end.toString(),
-                    thumbnail : _a.thumbnail,
-                    url : _a.url,
-                };
-                var _html = Mustache.to_html(_this.annotationTemplate, _data);
-                var _el = IriSP.jQuery(_html);
-                _this.$.empty();
-                _this.$.append(_el);
-            })
+    _this.renderTemplate();
+    _this.image = _this.$.find("img")[0];
+
+    _this.$.find(".Ldt-ImageDisplay-Overlay-Left").on("click", function () { _this.navigate(-1); });
+    _this.$.find(".Ldt-ImageDisplay-Overlay-Right").on("click", function () { _this.navigate(+1); });
+
+    _annotations.forEach(function(_a) {
+        _a.on("enter", function() {
+            _this.update(_a);
         });
-    }
+    });
+    if (_annotations.length)
+        _this.update(_annotations[0]);
 }
