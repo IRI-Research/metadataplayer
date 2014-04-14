@@ -9,7 +9,7 @@
 }
 
 .Ldt-ImageDisplay-Overlay {
-    width: 33%;
+    width: 20%;
     min-width: 20px;
     height: 100%;
     opacity: 0.1;
@@ -19,7 +19,6 @@
 }
 
 .Ldt-ImageDisplay-Overlay:hover {
-    background-color: #333;
 }
 
 .Ldt-ImageDisplay-Overlay-Left {
