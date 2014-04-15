@@ -17,7 +17,6 @@ IriSP.Widgets.ImageDisplay.prototype.annotationTemplate = '';
 
 IriSP.Widgets.ImageDisplay.prototype.update = function(annotation) {
     // Update the widget with data corresponding to the annotation
-    console.log(this.image);
     this.image.setAttribute("title", IriSP.textFieldHtml(annotation.title) + " - " + annotation.begin.toString());
     this.image.setAttribute("src", annotation.thumbnail);
 };
