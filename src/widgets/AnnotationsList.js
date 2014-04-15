@@ -223,8 +223,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 l10n: _this.l10n
             };
             if (_this.show_controls) {
-                _this.$.find(".Ldt-AnnotationsList-Control-Prev").on("click", function () { _this.navigate(-1); }); 
-                _this.$.find(".Ldt-AnnotationsList-Control-Next").on("click", function () { _this.navigate(+1); });
+                _this.$.find(".Ldt-AnnotationsList-Control-Prev").on("click", function (e) { e.preventDefault(); _this.navigate(-1); }); 
+                _this.$.find(".Ldt-AnnotationsList-Control-Next").on("click", function (e) { e.preventDefault(); _this.navigate(+1); });
            }
             if (_this.show_audio && _annotation.audio && _annotation.audio.href && _annotation.audio.href != "null") {
                 _data.audio = true;
