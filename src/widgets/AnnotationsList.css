@@ -107,3 +107,11 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 .Ldt-AnnotationsList-Play:hover {
     background-position: 0 bottom;
 }
+
+.Ldt-AnnotationsList-Control-Prev {
+    cursor: w-resize;
+}
+
+.Ldt-AnnotationsList-Control-Next {
+    cursor: e-resize;
+}
