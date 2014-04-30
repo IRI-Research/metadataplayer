@@ -103,7 +103,7 @@ IriSP.Widgets.MultiSegments.prototype.draw = function() {
             currentLine = undefined;
         }
         IriSP._(lines).each(function(line) {
-        	if($j(e.target).parent().parent()[0]==line.segmentWidget[0]){
+        	if(IriSP.jQuery(e.target).parent().parent()[0]==line.segmentWidget[0]){
         		currentLine = line;
         		line.show();
         	} else {
