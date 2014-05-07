@@ -1,6 +1,22 @@
-
 syntax: regexp
 ^src/js/LdtPlayer\.min\.js$
+^src/css/LdtPlayer-release\.css$
+^build$
+^test/libs$
+^test/metadataplayer$
+\.mp4$
+\.dokuwiki$
+^\.pydevproject$
+^doc/.+\.html$
+^assets/player_bab_ldt/player_bab_ldt/bin$
+^\.settings/org\.eclipse\.core\.runtime\.prefs$
+^sbin/build/compil-to-platform\.sh$
+\.webm$
+^downloads/.+\.zip$
+^sbin/build/compil-to-polemic-tweet\.sh$
+^.git$
+^.gitignore$
+
 syntax: glob
 build/LdtPlayer-release.js
 build/LdtPlayer.min.js
@@ -8,32 +24,3 @@ build/LdtPlayer.min.js
 *.orig
 src/js/site.js
 doc/jsdoc/*
-
-syntax: regexp
-^src/css/LdtPlayer-release\.css$
-syntax: regexp
-^build$
-syntax: regexp
-^test/libs$
-syntax: regexp
-^test/metadataplayer$
-syntax: regexp
-\.mp4$
-syntax: regexp
-\.dokuwiki$
-syntax: regexp
-^\.pydevproject$
-syntax: regexp
-^doc/.+\.html$
-syntax: regexp
-^assets/player_bab_ldt/player_bab_ldt/bin$
-syntax: regexp
-^\.settings/org\.eclipse\.core\.runtime\.prefs$
-syntax: regexp
-^sbin/build/compil-to-platform\.sh$
-syntax: regexp
-\.webm$
-syntax: regexp
-^downloads/.+\.zip$
-syntax: regexp
-^sbin/build/compil-to-polemic-tweet\.sh$

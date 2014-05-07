@@ -1,4 +1,4 @@
-Ceci est le README de MetaDataPlayer, un lecteur web écrit en Javascript qui supporte l'affichage
+Ceci est le README de MetaDataPlayer, un lecteur web écrit en Javascript qui supporte l'affichage de données temporalisées.
 
 Dépendances 
 ===========
