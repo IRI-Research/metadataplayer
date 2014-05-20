@@ -23,10 +23,10 @@
 
 .Ldt-ImageDisplay-Overlay-Left {
     left: 0px;
-    cursor: w-resize;
+    cursor: url(img/hand_left.png), pointer;
 }
 
 .Ldt-ImageDisplay-Overlay-Right {
     right: 0px;
-    cursor: e-resize;
+    cursor: url(img/hand_right.png), pointer;
 }

@@ -109,9 +109,9 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 }
 
 .Ldt-AnnotationsList-Control-Prev {
-    cursor: w-resize;
+    cursor: url(img/hand_left.png), pointer;
 }
 
 .Ldt-AnnotationsList-Control-Next {
-    cursor: e-resize;
+    cursor: url(img/hand_right.png), pointer;
 }
