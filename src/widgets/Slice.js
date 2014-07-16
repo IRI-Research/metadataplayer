@@ -67,12 +67,16 @@ IriSP.Widgets.Slice.prototype.draw = function() {
     
     this.getWidgetAnnotations().forEach(function(_a) {
         _a.on("enter", function() {
-            _this.$slider.slider("values",[_a.begin, _a.end]);
+            _this.setBounds(_a.begin, _a.end);
         });
     });
     this.player.on("annotation-click", function(_a) {
-        _this.$slider.slider("values", [_a.begin, _a.end]);
+        _this.setBounds(_a.begin, _a.end);
     });
+};
+
+IriSP.Widgets.Slice.prototype.setBounds = function(begin, end) {
+    this.$slider.slider("values", [ begin, end ]);
 };
 
 IriSP.Widgets.Slice.prototype.show = function() {
