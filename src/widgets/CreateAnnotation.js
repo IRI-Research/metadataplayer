@@ -1,7 +1,16 @@
 /* TODO: Add Social Network Sharing */
 
 IriSP.Widgets.CreateAnnotation = function(player, config) {
+    var _this = this;
     IriSP.Widgets.Widget.call(this, player, config);
+    if (_this.api_method == 'local' && window.localStorage[_this.api_endpoint_template]) {
+        this.source.onLoad(function () {
+            var _export = _this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[_this.api_serializer]});
+            _export.deSerialize(window.localStorage[_this.api_endpoint_template]);
+            console.log("Loaded personal annotations", _export);
+            _this.source.merge(_export);
+        });
+    };
 };
 
 IriSP.Widgets.CreateAnnotation.prototype = new IriSP.Widgets.Widget();
@@ -136,7 +145,7 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '             pluginspage="http://www.macromedia.com/go/getflashplayer">'
     + '        </embed>'
     + '    </object>'
-    + '</div>{{/show_mic_record}}' 
+    + '</div>{{/show_mic_record}}'
     + '{{#tags.length}}<div class="Ldt-CreateAnnotation-Tags"><div class="Ldt-CreateAnnotation-TagTitle">{{l10n.add_keywords_}}</div><ul class="Ldt-CreateAnnotation-TagList">'
     + '{{#tags}}<li class="Ldt-CreateAnnotation-TagLi" tag-id="{{id}}" data-text="{{tag_prefix}}{{title}}"><span class="Ldt-CreateAnnotation-TagButton">{{title}}</span></li>{{/tags}}</ul></div>{{/tags.length}}'
     + '{{#polemics.length}}<div class="Ldt-CreateAnnotation-Polemics"><div class="Ldt-CreateAnnotation-PolemicTitle">{{l10n.add_polemic_keywords_}}</div><ul class="Ldt-CreateAnnotation-PolemicList">'
@@ -146,15 +155,15 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '<div class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Error">{{^always_visible}}<a title="{{l10n.close_widget}}" class="Ldt-CreateAnnotation-Close" href="#"></a>{{/always_visible}}<div class="Ldt-CreateAnnotation-InnerBox">{{l10n.error_while_contacting}}</div></div>'
     + '<div class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Saved">{{^always_visible}}<a title="{{l10n.close_widget}}" class="Ldt-CreateAnnotation-Close" href="#"></a>{{/always_visible}}<div class="Ldt-CreateAnnotation-InnerBox">{{l10n.annotation_saved}}</div></div>'
     + '</div></div>';
-    
+
 IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
     var _this = this;
-    
+
     this.begin = new IriSP.Model.Time();
     this.end = this.source.getDuration();
-    
+
     this.tag_prefix = this.tag_prefix || "";
-    
+
     if (this.tag_titles && !this.tags) {
 		if(!(this.tag_titles.length==1 && this.tag_titles[0]=="")){
 			this.tags = IriSP._(this.tag_titles).map(function(_tag_title) {
@@ -190,7 +199,7 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
     this.renderTemplate();
     if (this.show_mic_record) {
         this.recorder = this.$.find("embed")[0];
-        
+
         window.setAudioUrl = function(_url) {
             _this.audio_url = _url;
         }
@@ -269,14 +278,14 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
         }
         return false;
     });
-    
+
     if (this.start_visible) {
         this.show();
     } else {
         this.$.hide();
         this.hide();
     }
-    
+
     this.onMdpEvent("CreateAnnotation.toggle","toggle");
     this.$.find("form").submit(this.functionWrapper("onSubmit"));
 };
@@ -401,11 +410,11 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
     if (!this.onDescriptionChange() || (this.show_title_field && !this.onTitleChange()) || (this.show_creator_field && !this.onCreatorChange())) {
         return false;
     }
-    
+
     if (this.recorder) {
         this.recorder.stopRecord();
     }
-    
+
     var _this = this,
         _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* Création d'une liste d'annotations contenant une annotation afin de l'envoyer au serveur */
         _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}), /* Création d'un objet source utilisant un sérialiseur spécifique pour l'export */
@@ -413,7 +422,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         _annotationTypes = this.source.getAnnotationTypes().searchByTitle(this.annotation_type, true), /* Récupération du type d'annotation dans lequel l'annotation doit être ajoutée */
         _annotationType = (_annotationTypes.length ? _annotationTypes[0] : new IriSP.Model.AnnotationType(false, _export)), /* Si le Type d'Annotation n'existe pas, il est créé à la volée */
         _url = Mustache.to_html(this.api_endpoint_template, {id: this.source.projectId}); /* Génération de l'URL à laquelle l'annotation doit être envoyée, qui doit inclure l'ID du projet */
-    
+
     /* Si nous avons dû générer un ID d'annotationType à la volée... */
     if (!_annotationTypes.length) {
         /* Il ne faudra pas envoyer l'ID généré au serveur */
@@ -421,7 +430,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         /* Il faut inclure le titre dans le type d'annotation */
         _annotationType.title = this.annotation_type;
     }
-    
+
     /*
      * Nous remplissons les données de l'annotation générée à la volée
      * ATTENTION: Si nous sommes sur un MASHUP, ces éléments doivent se référer AU MEDIA D'ORIGINE
@@ -444,7 +453,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         this.$.find(".Ldt-CreateAnnotation-TagLi.selected"),
         function(el) { return IriSP.jQuery(el).attr("tag-id")}
     );
-        
+
     IriSP._(_annotation.description.match(/#[^\s#.,;]+/g)).each(function(_tt) {
         var _tag,
             _tag_title = _tt.replace(/^#/,''),
@@ -459,9 +468,9 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         if (tagIds.indexOf(_tag.id) === -1) {
             tagIds.push(_tag.id);
         }
-        
+
     })
-   
+
     _annotation.setTags(IriSP._(tagIds).uniq()); /*Liste des ids de tags */
     if (this.audio_url) {
         _annotation.audio = {
@@ -476,47 +485,64 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         _annotation.creator = this.creator_name;
     }
     _exportedAnnotations.push(_annotation); /* Ajout de l'annotation à la liste à exporter */
-    _export.addList("annotation",_exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
-    
-    var _this = this;
-    /* Envoi de l'annotation via AJAX au serveur ! */
-    IriSP.jQuery.ajax({
-        url: _url,
-        type: this.api_method,
-        contentType: 'application/json',
-        data: _export.serialize(), /* L'objet Source est sérialisé */
-        success: function(_data) {
-            _this.showScreen('Saved'); /* Si l'appel a fonctionné, on affiche l'écran "Annotation enregistrée" */
-            if (_this.after_send_timeout) { /* Selon les options de configuration, on revient à l'écran principal ou on ferme le widget, ou rien */
-                window.setTimeout(
-                    function() {
-                        _this.close_after_send
-                        ? _this.hide()
-                        : _this.show();
-                    },
-                    _this.after_send_timeout
-                );
-            }
-            _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
-            _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
-            _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
-            if (_this.pause_on_write && _this.media.getPaused()) {
-                _this.media.play();
-            }
-            _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
-        },
-        error: function(_xhr, _error, _thrown) {
-            IriSP.log("Error when sending annotation", _thrown);
-            _export.getAnnotations().removeElement(_annotation, true);
-            _this.showScreen('Error');
-            window.setTimeout(function(){
-                _this.showScreen("Main")
-            },
-            (_this.after_send_timeout || 5000));
+
+    if (this.api_method == 'local') {
+        // Append to existing localStorage annotations
+        // FIXME: handle movie ids
+        /* Use localStorage */
+        /* Data will be serialized in the localStore property designated by api_endpoint_template */
+        if (window.localStorage[_this.api_endpoint_template]) {
+            _export.deSerialize(window.localStorage[_this.api_endpoint_template]);
         }
-    });
-    this.showScreen('Wait');
-    
+        _export.addList("annotation", _exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
+        window.localStorage[_this.api_endpoint_template] = _export.serialize();
+        _this.source.addList("annotation", _exportedAnnotations); /* On ajoute la nouvelle annotation au recueil original */
+
+        if (_this.pause_on_write && _this.media.getPaused()) {
+            _this.media.play();
+        }
+        _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+        _this.$.find(".Ldt-CreateAnnotation-Description").val("");
+    } else {
+        _export.addList("annotation",_exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
+       /* Envoi de l'annotation via AJAX au serveur ! */
+        IriSP.jQuery.ajax({
+            url: _url,
+            type: this.api_method,
+            contentType: 'application/json',
+            data: _export.serialize(), /* L'objet Source est sérialisé */
+            success: function(_data) {
+                _this.showScreen('Saved'); /* Si l'appel a fonctionné, on affiche l'écran "Annotation enregistrée" */
+                if (_this.after_send_timeout) { /* Selon les options de configuration, on revient à l'écran principal ou on ferme le widget, ou rien */
+                    window.setTimeout(
+                        function() {
+                            _this.close_after_send
+                                ? _this.hide()
+                                : _this.show();
+                        },
+                        _this.after_send_timeout
+                    );
+                }
+                _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
+                _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
+                _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
+                if (_this.pause_on_write && _this.media.getPaused()) {
+                    _this.media.play();
+                }
+                _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+            },
+            error: function(_xhr, _error, _thrown) {
+                IriSP.log("Error when sending annotation", _thrown);
+                _export.getAnnotations().removeElement(_annotation, true);
+                _this.showScreen('Error');
+                window.setTimeout(function(){
+                    _this.showScreen("Main")
+                },
+                                  (_this.after_send_timeout || 5000));
+            }
+        });
+        this.showScreen('Wait');
+    }
+
     return false;
 };
-
