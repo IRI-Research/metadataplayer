@@ -56,7 +56,8 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     api_method: "POST",
     after_send_timeout: 0,
     close_after_send: false,
-    tag_prefix: "#"
+    tag_prefix: "#",
+    slice_widget: null
 };
 
 IriSP.Widgets.CreateAnnotation.prototype.messages = {
@@ -202,10 +203,10 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
 
         window.setAudioUrl = function(_url) {
             _this.audio_url = _url;
-        }
+        };
     }
     if (this.show_slice) {
-        this.insertSubwidget(
+        this.slice_widget = this.insertSubwidget(
             this.$.find(".Ldt-CreateAnnotation-Slice"),
             {
                 type: "Slice",
@@ -329,10 +330,18 @@ IriSP.Widgets.CreateAnnotation.prototype.hide = function() {
 };
 
 IriSP.Widgets.CreateAnnotation.prototype.toggle = function() {
+    var _this = this;
     if (!this.always_visible) {
         if (this.visible) {
             this.hide();
         } else {
+            _this.begin = new IriSP.Model.Time(_this.media.getCurrentTime() || 0);
+            _this.end = new IriSP.Model.Time(_this.media.getCurrentTime() || 0);
+            _this.$.find(".Ldt-CreateAnnotation-Begin").html(_this.begin.toString());
+            _this.$.find(".Ldt-CreateAnnotation-End").html(_this.end.toString());
+            if (_this.slice_widget) {
+                _this.slice_widget.setBounds(_this.begin, _this.end);
+            }
             this.show();
         }
     }
@@ -491,13 +500,14 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         // FIXME: handle movie ids
         /* Use localStorage */
         /* Data will be serialized in the localStore property designated by api_endpoint_template */
+        _export.addList("annotation", _exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
+        _this.source.merge(_export); /* On ajoute la nouvelle annotation au recueil original */
+        // Import previously saved local annotations
         if (window.localStorage[_this.api_endpoint_template]) {
             _export.deSerialize(window.localStorage[_this.api_endpoint_template]);
         }
-        _export.addList("annotation", _exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
+        // Save everything back
         window.localStorage[_this.api_endpoint_template] = _export.serialize();
-        _this.source.addList("annotation", _exportedAnnotations); /* On ajoute la nouvelle annotation au recueil original */
-
         if (_this.pause_on_write && _this.media.getPaused()) {
             _this.media.play();
         }
