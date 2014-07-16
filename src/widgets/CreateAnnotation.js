@@ -429,15 +429,17 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
     _annotation.setMedia(this.source.currentMedia.id); /* Id du média annoté */
     _annotation.setBegin(this.begin); /*Timecode de début */
     _annotation.setEnd(this.end); /* Timecode de fin */
-   
+    _annotation.created = new Date(); /* Date de création de l'annotation */
+
     _annotation.setAnnotationType(_annotationType.id); /* Id du type d'annotation */
+    _annotation.description = this.$.find(".Ldt-CreateAnnotation-Description").val(); /* Champ description */
     if (this.show_title_field) {
         /* Champ titre, seulement s'il est visible */
         _annotation.title = this.$.find(".Ldt-CreateAnnotation-Title").val();
+    } else {
+        _annotation.title = _annotation.description;
     }
-    _annotation.created = new Date(); /* Date de création de l'annotation */
-    _annotation.description = this.$.find(".Ldt-CreateAnnotation-Description").val(); /* Champ description */
-   
+
     var tagIds = Array.prototype.map.call(
         this.$.find(".Ldt-CreateAnnotation-TagLi.selected"),
         function(el) { return IriSP.jQuery(el).attr("tag-id")}
