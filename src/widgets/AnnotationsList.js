@@ -29,6 +29,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     limit_count : 20,
     newest_first : false,
     show_audio: true,
+    show_creator: false,
     show_controls: false,
     polemics : [{
         keyword: "++",
@@ -189,7 +190,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 _description = _annotation.description,
                 _thumbnail = (typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail);
             // Update : display creator
-            if (_annotation.creator) {
+            if (_annotation.creator && _this.show_creator) {
             	_title = _annotation.creator;
             }
             if (_annotation.title) {
