@@ -23,9 +23,13 @@ IriSP.libFiles = {
         backboneRelational: "backbone-relational.js",
         paper: "paper.js",
         jqueryMousewheel: "jquery.mousewheel.min.js",
+        splitter: "jquery.splitter.js",
+        cssSplitter: "jquery.splitter.css",
         renkanPublish: "renkan.js",
         processing: "processing-1.3.6.min.js",
-        recordMicSwf: "record_mic.swf"
+        recordMicSwf: "record_mic.swf",
+        mousetrap: "mousetrap.min.js",
+        mousetrapGlobal: "mousetrap-global-bind.js"
     },
     locations : {
         // use to define locations outside default_dir
@@ -100,6 +104,12 @@ IriSP.widgetsRequirements = {
     },
     MultiSegments: {
         noCss: true
+    },
+    SlideVideoPlayer: {
+        requires: [ "jQuery", "jQueryUI", "splitter" ]
+    },
+    Shortcuts: {
+        requires: [ "mousetrap", "mousetrapGlobal" ]
     }
 };
 

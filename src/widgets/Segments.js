@@ -13,7 +13,9 @@ IriSP.Widgets.Segments.prototype.defaults = {
     background: "#e0e0e0",
     overlap: .25,
     found_color: "#FF00FC",
-    faded_found_color: "#ff80fc"
+    faded_found_color: "#ff80fc",
+    // Display creator info in segment tooltip
+    show_creator: true
 };
 
 IriSP.Widgets.Segments.prototype.template =
@@ -77,7 +79,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             color : color,
             medcolor: medcolor,
             lowcolor: lowcolor,
-            text: (_annotation.creator ? (_annotation.creator + " : ") : "" ) + _fulltext.replace(/(\n|\r|\r\n)/mg,' ').replace(/(^.{120,140})[\s].+$/m,'$1&hellip;'),
+            text: ((_this.show_creator && _annotation.creator) ? (_annotation.creator + " : ") : "" ) + _fulltext.replace(/(\n|\r|\r\n)/mg,' ').replace(/(^.{120,140})[\s].+$/m,'$1&hellip;'),
             left : _left,
             width : _width,
             top: _top,
@@ -89,14 +91,17 @@ IriSP.Widgets.Segments.prototype.draw = function() {
         };
         var _html = Mustache.to_html(_this.annotationTemplate, _data),
             _el = IriSP.jQuery(_html);
-        _el.mouseover(function() {
+            _el.mouseover(function() {
                 _annotation.trigger("select");
+                _this.player.trigger('annotation-select', _annotation);
             })
             .mouseout(function() {
                 _annotation.trigger("unselect");
+                _this.player.trigger('annotation-unselect', _annotation);
             })
             .click(function() {
                 _annotation.trigger("click");
+                _this.player.trigger('annotation-click', _annotation);
             })
             .appendTo(list_$);
         IriSP.attachDndData(_el, {

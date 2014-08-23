@@ -29,6 +29,8 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     limit_count : 20,
     newest_first : false,
     show_audio: true,
+    show_creator: false,
+    show_controls: false,
     polemics : [{
         keyword: "++",
         background_color: "#c9ecc6"
@@ -58,15 +60,16 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
 IriSP.Widgets.AnnotationsList.prototype.template =
     '<div class="Ldt-AnnotationsListWidget">'
     + '{{#show_audio}}<div class="Ldt-AnnotationsList-Audio"></div>{{/show_audio}}'
+    + '{{#show_controls}}<div class="Ldt-AnnotationsList-Controls"><span class="Ldt-AnnotationsList-Control-Prev">Previous</span> | <span class="Ldt-AnnotationsList-Control-Next">Next</span></div>{{/show_controls}}'
     + '<ul class="Ldt-AnnotationsList-ul">'
     + '</ul>'
     + '</div>';
 
 IriSP.Widgets.AnnotationsList.prototype.annotationTemplate = 
-    '<li class="Ldt-AnnotationsList-li Ldt-TraceMe" trace-info="annotation-id:{{id}}, media-id:{{media_id}}" style="{{specific_style}}">'
+    '<li class="Ldt-AnnotationsList-li Ldt-Highlighter-Annotation Ldt-TraceMe" data-annotation="{{ id }}" data-begin="{{ begin_ms }}" data-end="{{ end_ms }}" trace-info="annotation-id:{{id}}, media-id:{{media_id}}" style="{{specific_style}}">'
     + '<div class="Ldt-AnnotationsList-ThumbContainer">'
     + '<a href="{{url}}" draggable="true">'
-    + '<img class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
+    + '<img title="{{ begin }} - {{ atitle }}" class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
     + '</a>'
     + '</div>'
     + '<div class="Ldt-AnnotationsList-Duration">{{begin}} - {{end}}</div>'
@@ -187,7 +190,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 _description = _annotation.description,
                 _thumbnail = (typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail);
             // Update : display creator
-            if (_annotation.creator) {
+            if (_annotation.creator && _this.show_creator) {
             	_title = _annotation.creator;
             }
             if (_annotation.title) {
@@ -207,16 +210,23 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             var _data = {
                 id : _annotation.id,
                 media_id : _annotation.getMedia().id,
+                atitle: IriSP.textFieldHtml(_annotation.title),
                 htitle : IriSP.textFieldHtml(_title),
                 hdescription : IriSP.textFieldHtml(_description),
                 begin : _annotation.begin.toString(),
                 end : _annotation.end.toString(),
+                begin_ms : _annotation.begin.milliseconds,
+                end_ms : _annotation.end.milliseconds,
                 thumbnail : _thumbnail,
                 url : _url,
                 tags : _annotation.getTagTexts(),
                 specific_style : (typeof _bgcolor !== "undefined" ? "background-color: " + _bgcolor : ""),
                 l10n: _this.l10n
             };
+            if (_this.show_controls) {
+                _this.$.find(".Ldt-AnnotationsList-Control-Prev").on("click", function (e) { e.preventDefault(); _this.navigate(-1); });
+                _this.$.find(".Ldt-AnnotationsList-Control-Next").on("click", function (e) { e.preventDefault(); _this.navigate(+1); });
+           }
             if (_this.show_audio && _annotation.audio && _annotation.audio.href && _annotation.audio.href != "null") {
                 _data.audio = true;
                 if (!_this.jwplayers[_annotation.id]) {

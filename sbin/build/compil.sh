@@ -1,2 +1,3 @@
 #!/bin/sh
-sh ../res/ant/bin/ant -f client.xml
+DIR=$(dirname $0)
+sh ${DIR}/../res/ant/bin/ant -f ${DIR}/client.xml
