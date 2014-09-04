@@ -274,7 +274,7 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
                break;
             case "Play":
                _this.media.setCurrentTime(_this.begin);
-               _this.media.play()
+               _this.media.play();
                break;
         }
         return false;
