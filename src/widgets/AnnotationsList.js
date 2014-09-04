@@ -31,6 +31,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     show_audio: true,
     show_creator: false,
     show_controls: false,
+    editable: false,
     polemics : [{
         keyword: "++",
         background_color: "#c9ecc6"
@@ -72,11 +73,11 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '<img title="{{ begin }} - {{ atitle }}" class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
     + '</a>'
     + '</div>'
-    + '<div class="Ldt-AnnotationsList-Duration"><span class="Ldt-AnnotationsList-Begin" data-value="{{begin}}">{{begin}}</a> - <span class="Ldt-AnnotationsList-End" data-value="{{end}}">{{end}}</a></div>'
+    + '<div class="Ldt-AnnotationsList-Duration"><span class="Ldt-AnnotationsList-Begin Ldt-live-editable" data-value="{{begin}}" data-id="{{id}}" data-field="begin">{{begin}}</span> - <span class="Ldt-AnnotationsList-End Ldt-live-editable" data-value="{{end}}" data-id="{{id}}" data-field="end">{{end}}</span></div>'
     + '<h3 class="Ldt-AnnotationsList-Title" draggable="true">'
-    + '<a href="{{url}}">{{{htitle}}}</a>'
+    + '<a href="{{url}}" class="Ldt-live-editable" data-value="{{htitle}}" data-id="{{id}}" data-field="title">{{{htitle}}}</a>'
     + '</h3>'
-    + '<p class="Ldt-AnnotationsList-Description">{{{hdescription}}}</p>'
+    + '<p class="Ldt-AnnotationsList-Description Ldt-live-editable" data-value="{{description}}" data-id="{{id}}" data-field="description">{{{hdescription}}}</p>'
     + '{{#tags.length}}'
     + '<ul class="Ldt-AnnotationsList-Tags">'
     + '{{#tags}}'
@@ -293,7 +294,65 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 _el.remove();
             }
         });
-    
+
+        if (this.editable) {
+            this.$.find('.Ldt-live-editable').dblclick(function(e) {
+                var _this = this;
+                var $ = IriSP.jQuery;
+                e.preventDefault();
+                this.contentEditable = true;
+            
+                function clearSelection() {
+                    if (document.selection && document.selection.empty) {
+                        document.selection.empty();
+                    } else if (window.getSelection) {
+                        var sel = window.getSelection();
+                        sel.removeAllRanges();
+                    }
+                }
+                clearSelection();
+                
+                function cancelChanges(s) {
+                    _this.contentEditable = false;
+                    if (_this.innerText == _this.dataset.value) {
+                        return;
+                    }
+                    // Restore previous value
+                    _this.innerText = _this.dataset.value;
+                    var color = $(_this).css("background-color");
+                    $(_this).stop().css("background-color", "#FF9999")
+                        .animate({ backgroundColor: color}, 1000);
+                }
+                function validateChanges() {
+                    _this.contentEditable = false;
+                    var n = _this.innerText.trim();
+                    if (n == _this.dataset.value) {
+                        return;
+                    }
+                    if (n == '') {
+                        cancelChanges();
+                        return;
+                    }
+                    _this.dataset.value = n;
+                    // FIXME: send to storage
+                    var color = $(_this).css("background-color");
+                    $(_this).stop().css("background-color", "#99FF99")
+                        .animate({ backgroundColor: color}, 1000);
+                }
+                $(this).bind('keydown', function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        validateChanges();
+                    } else if (e.which == 27) {
+                        e.preventDefault();
+                        cancelChanges();
+                    }
+                }).bind("blur", function (e) {
+                    validateChanges();
+                });
+            });
+        }
+
         this.$.find('.Ldt-AnnotationsList-Tag-Li').click(function() {
             _this.source.getAnnotations().search(IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));
         });
