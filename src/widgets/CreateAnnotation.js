@@ -80,7 +80,10 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
         "polemic++": "Agree",
         "polemic--": "Disagree",
         "polemic??": "Question",
-        "polemic==": "Reference"
+        "polemic==": "Reference",
+        "in_tooltip": "Set begin time to current player time",
+        "out_tooltip": "Set begin time to current player time",
+        "play_tooltip": "Play the fragment"
     },
     fr: {
         from_time: "de",
@@ -101,7 +104,10 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
         "polemic++": "Accord",
         "polemic--": "Désaccord",
         "polemic??": "Question",
-        "polemic==": "Référence"
+        "polemic==": "Référence",
+        "in_tooltip": "Utiliser le temps courant comme début",
+        "out_tooltip": "Utiliser le temps courant comme fin",
+        "play_tooltip": "Jouer le fragment"
     }
 };
 
@@ -116,9 +122,9 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '{{#show_slice}} {{l10n.to_time}} <span class="Ldt-CreateAnnotation-End">{{end}}</span>{{/show_slice}}</span></span>'
     + '{{#show_creator_field}}{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator empty" value="{{creator_name}}" />{{/show_creator_field}}</h3>'
     + '{{#show_controls}}<div class="Ldt-CreateAnnotation-Controls">'
-    +   '<span class="Ldt-CreateAnnotation-Control-In">IN</span>'
-    +   '<span class="Ldt-CreateAnnotation-Control-Out">OUT</span>'
-    +   '<span class="Ldt-CreateAnnotation-Control-Play">Play</span>'
+    +   '<span title="{{l10n.in_tooltip}}" class="Ldt-CreateAnnotation-Control-In">In</span>'
+    +   '<span title="{{l10n.out_tooltip}}" class="Ldt-CreateAnnotation-Control-Out">Out</span>'
+    +   '<span title="{{l10n.play_tooltip}}" class="Ldt-CreateAnnotation-Control-Play">Play</span>'
     + '</div>{{/show_controls}}'
     + '<textarea class="Ldt-CreateAnnotation-Description empty" placeholder="{{l10n.type_description}}"></textarea>'
     + '{{#show_creator_field}}<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>{{/show_creator_field}}'
