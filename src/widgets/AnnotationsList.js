@@ -72,7 +72,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '<img title="{{ begin }} - {{ atitle }}" class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
     + '</a>'
     + '</div>'
-    + '<div class="Ldt-AnnotationsList-Duration">{{begin}} - {{end}}</div>'
+    + '<div class="Ldt-AnnotationsList-Duration"><span class="Ldt-AnnotationsList-Begin" data-value="{{begin}}">{{begin}}</a> - <span class="Ldt-AnnotationsList-End" data-value="{{end}}">{{end}}</a></div>'
     + '<h3 class="Ldt-AnnotationsList-Title" draggable="true">'
     + '<a href="{{url}}">{{{htitle}}}</a>'
     + '</h3>'
