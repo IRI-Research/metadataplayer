@@ -349,6 +349,8 @@ IriSP.Widgets.CreateAnnotation.prototype.toggle = function() {
                 _this.slice_widget.setBounds(_this.begin, _this.end);
             }
             this.show();
+            // Set focus on textarea
+            _this.$.find(".Ldt-CreateAnnotation-Description").focus();
         }
     }
 };
