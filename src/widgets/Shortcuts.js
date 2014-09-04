@@ -54,5 +54,11 @@ IriSP.Widgets.Shortcuts.prototype.draw = function() {
         _this.media.setCurrentTime(Math.min(_this.media.duration, _this.media.getCurrentTime() + 5 * _this.time_increment));
         return false;
     });
+    Mousetrap.bindGlobal("ctrl+a", function (e) {
+        // Annotate
+        e.preventDefault();
+        _this.player.trigger("CreateAnnotation.toggle");
+        return false;
+    });
 
 };
