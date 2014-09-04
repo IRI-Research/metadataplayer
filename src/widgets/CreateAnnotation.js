@@ -373,7 +373,12 @@ IriSP.Widgets.CreateAnnotation.prototype.pauseOnWrite = function() {
     }
 };
 
-IriSP.Widgets.CreateAnnotation.prototype.onDescriptionChange = function() {
+IriSP.Widgets.CreateAnnotation.prototype.onDescriptionChange = function(e) {
+    if (e !== undefined && e.ctrlKey && e.keyCode == 13) {
+        // Control-Return: submit
+        this.onSubmit();
+        return true;
+    }
     var _field = this.$.find(".Ldt-CreateAnnotation-Description"),
         _contents = _field.val();
     _field.css("border-color", !!_contents ? "#666666" : "#ff0000");
