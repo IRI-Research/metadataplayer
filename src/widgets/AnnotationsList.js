@@ -7,6 +7,7 @@ IriSP.Widgets.AnnotationsList = function(player, config) {
     }, 800);
     this.searchString = false;
     this.lastSearch = false;
+    this.localSource = undefined;
 };
 
 IriSP.Widgets.AnnotationsList.prototype = new IriSP.Widgets.Widget();
@@ -32,6 +33,8 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     show_creator: false,
     show_controls: false,
     editable: false,
+    // Id that will be used as localStorage key
+    editable_storage: "",
     polemics : [{
         keyword: "++",
         background_color: "#c9ecc6"
@@ -348,22 +351,44 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         }
                         n = 1000 * (parseInt(s[0], 10) * 60 + parseInt(s[1], 10));
                     }
-                    var an = IriSP._.first(IriSP._.filter(widget.source.getAnnotations(), function (a) { return a.id == _this.dataset.editable_id; }));
+
+                    // Update local storage
+                    if (widget.localSource === undefined) {
+                        // Initialize local source
+                        widget.localSource = widget.player.sourceManager.newLocalSource({serializer: IriSP.serializers['ldt_localstorage']});
+                    }
+                    // Load current local annotations
+                    widget.localSource.deSerialize(window.localStorage[widget.editable_storage]);
+
+                    // We cannot use .getElement since it fetches
+                    // elements from the global Directory
+                    var an = IriSP._.first(IriSP._.filter(widget.localSource.getAnnotations(), function (a) { return a.id ==_this.dataset.editable_id; }));
                     if (an === undefined) {
                         console.log("Strange error: cannot find edited annotation");                        
+                        // Give some feedback
+                        var color = $(_this).css("background-color");
+                        $(_this).stop().css("background-color", "#FF9999")
+                            .animate({ backgroundColor: color}, 1000);
+
                     } else {
                         _this.dataset.editable_value = n;
-                        // Update annotation
+                        // Update annotation for storage
                         an[_this.dataset.editable_field] = n;
-                        // FIXME: update dc:modified/dc:contributor
-                        // FIXME: update local storage
-                        
+                        an.modified = new Date();
+                        // FIXME: use user name, when available
+                        an.contributor = "COCo User";
+                        widget.localSource.merge( [ an ] );
+                        // Save annotations back
+                        window.localStorage[widget.editable_storage] = widget.localSource.serialize();
+                        // Merge modifications into widget source
+                        widget.source.merge(widget.localSource);
+
+                        // Give some feedback
+                        var color = $(_this).css("background-color");
+                        $(_this).stop().css("background-color", "#99FF99")
+                            .animate({ backgroundColor: color}, 1000);
                     }
                                       
-                    // Give some feedback
-                    var color = $(_this).css("background-color");
-                    $(_this).stop().css("background-color", "#99FF99")
-                        .animate({ backgroundColor: color}, 1000);
                 }
                 $(this).bind('keydown', function(e) {
                     if (e.which == 13) {
