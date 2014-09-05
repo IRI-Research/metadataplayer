@@ -336,20 +336,21 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         return;
                     }
                     if (n == '') {
-                        cancelChanges();
-                        return;
-                    }
-                    _this.dataset.value = n;
-
-                    if (_this.dataset.editable_type == 'timestamp') {
-                        // Convert timestamp to numeric value
-                        var s = n.split(":");
-                        if (s.length == 1) {
-                            // Only a single value, considering it in seconds
-                            s.push("0");
-                            s.reverse();
+                        // Delete annotation
+                        ;
+                    } else {
+                        _this.dataset.value = n;
+                        
+                        if (_this.dataset.editable_type == 'timestamp') {
+                            // Convert timestamp to numeric value
+                            var s = n.split(":");
+                            if (s.length == 1) {
+                                // Only a single value, considering it in seconds
+                                s.push("0");
+                                s.reverse();
+                            }
+                            n = 1000 * (parseInt(s[0], 10) * 60 + parseInt(s[1], 10));
                         }
-                        n = 1000 * (parseInt(s[0], 10) * 60 + parseInt(s[1], 10));
                     }
 
                     // Update local storage
@@ -371,13 +372,20 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                             .animate({ backgroundColor: color}, 1000);
 
                     } else {
-                        _this.dataset.editable_value = n;
-                        // Update annotation for storage
-                        an[_this.dataset.editable_field] = n;
-                        an.modified = new Date();
-                        // FIXME: use user name, when available
-                        an.contributor = "COCo User";
-                        widget.localSource.merge( [ an ] );
+                        if (n == '') {
+                            // Delete annotation
+                            widget.localSource.getAnnotations().removeId(_this.dataset.editable_id);
+                            widget.source.getAnnotations().removeId(_this.dataset.editable_id);
+                            widget.throttledRefresh();
+                        } else {
+                            _this.dataset.editable_value = n;
+                            // Update annotation for storage
+                            an[_this.dataset.editable_field] = n;
+                            an.modified = new Date();
+                            // FIXME: use user name, when available
+                            an.contributor = "COCo User";
+                            widget.localSource.merge( [ an ] );
+                        }
                         // Save annotations back
                         window.localStorage[widget.editable_storage] = widget.localSource.serialize();
                         // Merge modifications into widget source
