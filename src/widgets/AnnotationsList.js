@@ -73,11 +73,11 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '<img title="{{ begin }} - {{ atitle }}" class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
     + '</a>'
     + '</div>'
-    + '<div class="Ldt-AnnotationsList-Duration"><span class="Ldt-AnnotationsList-Begin Ldt-live-editable" data-value="{{begin}}" data-id="{{id}}" data-field="begin">{{begin}}</span> - <span class="Ldt-AnnotationsList-End Ldt-live-editable" data-value="{{end}}" data-id="{{id}}" data-field="end">{{end}}</span></div>'
+    + '<div class="Ldt-AnnotationsList-Duration"><span class="Ldt-AnnotationsList-Begin Ldt-live-editable" data-editable_value="{{begin}}" data-editable_id="{{id}}" data-editable_field="begin" data-editable_type="timestamp">{{begin}}</span> - <span class="Ldt-AnnotationsList-End Ldt-live-editable" data-editable_value="{{end}}" data-editable_id="{{id}}" data-editable_field="end" data-editable_type="timestamp">{{end}}</span></div>'
     + '<h3 class="Ldt-AnnotationsList-Title" draggable="true">'
-    + '<a href="{{url}}" class="Ldt-live-editable" data-value="{{htitle}}" data-id="{{id}}" data-field="title">{{{htitle}}}</a>'
+    + '<a href="{{url}}" class="Ldt-live-editable" data-editable_value="{{htitle}}" data-editable_id="{{id}}" data-editable_field="title">{{{htitle}}}</a>'
     + '</h3>'
-    + '<p class="Ldt-AnnotationsList-Description Ldt-live-editable" data-value="{{description}}" data-id="{{id}}" data-field="description">{{{hdescription}}}</p>'
+    + '<p class="Ldt-AnnotationsList-Description Ldt-live-editable" data-editable_value="{{description}}" data-editable_id="{{id}}" data-editable_field="description">{{{hdescription}}}</p>'
     + '{{#tags.length}}'
     + '<ul class="Ldt-AnnotationsList-Tags">'
     + '{{#tags}}'
@@ -314,11 +314,13 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 
                 function cancelChanges(s) {
                     _this.contentEditable = false;
-                    if (_this.innerText == _this.dataset.value) {
+                    if (_this.innerText == _this.dataset.editable_value) {
                         return;
                     }
                     // Restore previous value
-                    _this.innerText = _this.dataset.value;
+                    _this.innerText = _this.dataset.editable_value;
+
+                    // Give some feedback
                     var color = $(_this).css("background-color");
                     $(_this).stop().css("background-color", "#FF9999")
                         .animate({ backgroundColor: color}, 1000);
@@ -326,7 +328,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 function validateChanges() {
                     _this.contentEditable = false;
                     var n = _this.innerText.trim();
-                    if (n == _this.dataset.value) {
+                    if (n == _this.dataset.editable_value) {
                         return;
                     }
                     if (n == '') {
@@ -334,7 +336,27 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         return;
                     }
                     _this.dataset.value = n;
-                    // FIXME: send to storage
+
+                    if (_this.dataset.editable_type == 'timestamp') {
+                        // Convert timestamp to numeric value
+                        var s = n.split(":");
+                        if (s.length == 1) {
+                            // Only a single value, considering it in seconds
+                            s.push("0");
+                            s.reverse();
+                        }
+                        n = 1000 * (parseInt(s[0], 10) * 60 + parseInt(s[1], 10));
+                    }
+                    var an = IriSP._.first(IriSP._.filter(_this.source.getAnnotations(), function (a) { return a.id == _this.dataset.editable_id }));
+                    if (an === undefined) {
+                        console.log("Strange error: cannot find edited annotation");                        
+                    } else {
+                        an[_this.dataset.editable_field] = n;
+                        // FIXME: update local storage
+                        
+                    }
+                                      
+                    // Give some feedback
                     var color = $(_this).css("background-color");
                     $(_this).stop().css("background-color", "#99FF99")
                         .animate({ backgroundColor: color}, 1000);
