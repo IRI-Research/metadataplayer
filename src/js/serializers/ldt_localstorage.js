@@ -8,6 +8,7 @@ IriSP.serializers.ldt_localstorage = {
     serializeAnnotation : function(_data, _source) {
         var _annType = _data.getAnnotationType();
         return {
+            id: _data.id,
             begin: _data.begin.milliseconds,
             end: _data.end.milliseconds,
             content: {
@@ -21,7 +22,9 @@ IriSP.serializers.ldt_localstorage = {
             type: ( typeof _annType.dont_send_id !== "undefined" && _annType.dont_send_id ? "" : _annType.id ),
             meta: {
                 created: _data.created,
-                creator: _data.creator
+                creator: _data.creator,
+                modified: _data.modified,
+                contributor: _data.contributor
             }
         };
     },
@@ -31,6 +34,8 @@ IriSP.serializers.ldt_localstorage = {
         _ann.title = _anndata.content.title || "";
         _ann.creator = _anndata.meta.creator || "";
         _ann.created = new Date(_anndata.meta.created);
+        _ann.contributor = _anndata.meta.contributor || "";
+        _ann.modified = new Date(_anndata.meta.modified);
         _ann.setMedia(_anndata.media, _source);
         var _anntype = _source.getElement(_anndata.type);
         if (!_anntype) {
