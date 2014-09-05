@@ -296,6 +296,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         });
 
         if (this.editable) {
+            var widget = _this;
             this.$.find('.Ldt-live-editable').dblclick(function(e) {
                 var _this = this;
                 var $ = IriSP.jQuery;
@@ -347,10 +348,12 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         }
                         n = 1000 * (parseInt(s[0], 10) * 60 + parseInt(s[1], 10));
                     }
-                    var an = IriSP._.first(IriSP._.filter(_this.source.getAnnotations(), function (a) { return a.id == _this.dataset.editable_id }));
+                    var an = IriSP._.first(IriSP._.filter(widget.source.getAnnotations(), function (a) { return a.id == _this.dataset.editable_id; }));
                     if (an === undefined) {
                         console.log("Strange error: cannot find edited annotation");                        
                     } else {
+                        _this.dataset.editable_value = n;
+                        // Update annotation
                         an[_this.dataset.editable_field] = n;
                         // FIXME: update dc:modified/dc:contributor
                         // FIXME: update local storage
