@@ -352,6 +352,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         console.log("Strange error: cannot find edited annotation");                        
                     } else {
                         an[_this.dataset.editable_field] = n;
+                        // FIXME: update dc:modified/dc:contributor
                         // FIXME: update local storage
                         
                     }
