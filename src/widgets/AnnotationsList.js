@@ -300,12 +300,23 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
 
         if (this.editable) {
             var widget = _this;
+
             this.$.find('.Ldt-live-editable').dblclick(function(e) {
                 var _this = this;
                 var $ = IriSP.jQuery;
+                var feedback_wrong = "#FF9999";
+                var feedback_ok = "#99FF99";
+
                 e.preventDefault();
                 this.contentEditable = true;
             
+                function feedback(color) {
+                    // Give some feedback
+                    var previous_color = $(_this).css("background-color");
+                    $(_this).stop().css("background-color", color)
+                        .animate({ backgroundColor: previous_color}, 1000);
+                }
+
                 function clearSelection() {
                     if (document.selection && document.selection.empty) {
                         document.selection.empty();
@@ -323,11 +334,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     }
                     // Restore previous value
                     $(_this).text(_this.dataset.editable_value);
-
-                    // Give some feedback
-                    var color = $(_this).css("background-color");
-                    $(_this).stop().css("background-color", "#FF9999")
-                        .animate({ backgroundColor: color}, 1000);
+                    feedback(feedback_wrong);
                 }
                 function timestamp2ms(t) {
                     // Convert timestamp to numeric value
@@ -372,11 +379,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     var an = IriSP._.first(IriSP._.filter(widget.localSource.getAnnotations(), function (a) { return a.id ==_this.dataset.editable_id; }));
                     if (an === undefined) {
                         console.log("Strange error: cannot find edited annotation");                        
-                        // Give some feedback
-                        var color = $(_this).css("background-color");
-                        $(_this).stop().css("background-color", "#FF9999")
-                            .animate({ backgroundColor: color}, 1000);
-
+                        feedback(feedback_wrong);
                     } else {
                         if (n == '') {
                             // Delete annotation
@@ -402,10 +405,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         // Merge modifications into widget source
                         widget.source.merge(widget.localSource);
 
-                        // Give some feedback
-                        var color = $(_this).css("background-color");
-                        $(_this).stop().css("background-color", "#99FF99")
-                            .animate({ backgroundColor: color}, 1000);
+                        feedback(feedback_ok);
                     }
                                       
                 }
