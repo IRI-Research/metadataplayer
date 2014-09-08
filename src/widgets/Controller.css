@@ -86,6 +86,7 @@
 }
 
 input.Ldt-Ctrl-SearchInput {
+    -moz-box-sizing: border-box;
     width: 145px; height: 20px; margin: 2px; padding: 3px;
     border: 1px solid #8080a0; border-radius: 3px; font-size: 13px;
 }
