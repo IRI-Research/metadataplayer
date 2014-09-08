@@ -389,7 +389,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                             // Delete annotation
                             widget.localSource.getAnnotations().removeId(_this.dataset.editable_id);
                             widget.source.getAnnotations().removeId(_this.dataset.editable_id);
-                            widget.throttledRefresh();
+                            widget.refresh(true);
                         } else {
                             _this.dataset.editable_value = n;
                             // Update annotation for storage
