@@ -21,25 +21,26 @@ IriSP.Widgets.NoteTaking.prototype.draw = function() {
     widget.renderTemplate();
     content = widget.$.find('.Ldt-NoteTaking-Text');
 
+    function load_content() {
+        $(content).val(window.localStorage[widget.editable_storage]);
+    }
+    function save_content() {
+        window.localStorage[widget.editable_storage] = $(content).val();
+    }
+
     // Load current transcript
     if (window.localStorage[widget.editable_storage]) {
-        $(content).val(window.localStorage[widget.editable_storage]);
+        load_content();
     }
 
     // Thanks to http://stackoverflow.com/questions/4456545/how-to-insert-text-at-the-current-caret-position-in-a-textarea
     $.fn.insertAtCaret = function(text) {
         return this.each(function() {
-            if (document.selection && this.tagName == 'TEXTAREA') {
-                //IE textarea support
-                this.focus();
-                sel = document.selection.createRange();
-                sel.text = text;
-                this.focus();
-            } else if (this.selectionStart || this.selectionStart == '0') {
-                //MOZILLA/NETSCAPE support
-                startPos = this.selectionStart;
-                endPos = this.selectionEnd;
-                scrollTop = this.scrollTop;
+            if (this.selectionStart !== undefined) {
+                // mozilla/netscape support
+                var startPos = this.selectionStart,
+                    endPos = this.selectionEnd,
+                    scrollTop = this.scrollTop;
                 this.value = this.value.substring(0, startPos) + text + this.value.substring(endPos, this.value.length);
                 this.focus();
                 this.selectionStart = startPos + text.length;
@@ -50,19 +51,40 @@ IriSP.Widgets.NoteTaking.prototype.draw = function() {
                 this.value += text;
                 this.focus();
                 this.value = this.value;    // forces cursor to end
-        }
+            }
         });
     };
- 
+
+    function getAroundCaret(el, length) {
+        // Return a selection of 2 * length characters around the caret
+        var startPos = el.selectionStart;
+        return el.value.substring(startPos - length, startPos + length);
+    };
+
     $(content).keydown(function (_event) {
         if (_event.keyCode == 13 && (_event.ctrlKey || _event.metaKey)) {
             // Insert current timestamp
             _event.preventDefault();
-            $(content).insertAtCaret("[" + (new IriSP.Model.Time(widget.media.getCurrentTime())).toString() + "]");
+            // Get current value
+            var match = /\[(\d\d?):(\d\d?)\]/.exec(getAroundCaret(content[0], 7));
+            if (match) {
+                // Found a timecode. Go to position.
+                widget.media.setCurrentTime(1000 * (parseInt(match[1], 10) * 60 + parseInt(match[2], 10)));
+            } else {
+                $(content).insertAtCaret("[" + (new IriSP.Model.Time(widget.media.getCurrentTime())).toString() + "]");
+                save_content();
+            }
         }
     }).on("input", function (_event) {
         console.log("Change");
         // Store updated value
-        window.localStorage[widget.editable_storage] = $(content).val();
+        save_content();
+    }).on("dblclick", function (_event) {
+            var match = /\[(\d\d?):(\d\d?)\]/.exec(getAroundCaret(content[0], 7));
+            if (match) {
+                // Found a timecode. Go to position.
+                _event.preventDefault();
+                widget.media.setCurrentTime(1000 * (parseInt(match[1], 10) * 60 + parseInt(match[2], 10)));
+            };
     });
 };
