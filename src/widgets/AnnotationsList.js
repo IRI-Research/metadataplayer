@@ -356,11 +356,15 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         // Delete annotation
                         ;
                     } else {
-                        var val = timestamp2ms(n);
-                        if (Number.isNaN(val)) {
-                            // Invalid value. Cancel changes
-                            cancelChanges();
-                            return;
+                        // Convert value if necessary.
+                        var val = n;
+                        if (_this.dataset.editable_type == 'timestamp') {
+                            val = timestamp2ms(n);
+                            if (Number.isNaN(val)) {
+                                // Invalid value. Cancel changes
+                                cancelChanges();
+                                return;
+                            }
                         }
                         _this.dataset.editable_value = n;
                         n = val;
