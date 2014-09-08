@@ -211,7 +211,7 @@ IriSP.Widgets.Widget.prototype.navigate = function(offset) {
     // offset is normally either -1 (previous slide) or +1 (next slide)
     var _this = this;
     var currentTime = _this.media.getCurrentTime();
-    var annotations = _this.source.getAnnotations().sortBy(function(_annotation) {
+    var annotations = _this.getWidgetAnnotations().sortBy(function(_annotation) {
         return _annotation.begin;
     });
     for (var i = 0; i < annotations.length; i++) {
