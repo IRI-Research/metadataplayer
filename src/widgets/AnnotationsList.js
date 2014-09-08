@@ -80,7 +80,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '<h3 class="Ldt-AnnotationsList-Title" draggable="true">'
     + '<a href="{{url}}" class="Ldt-live-editable" data-editable_value="{{htitle}}" data-editable_id="{{id}}" data-editable_field="title">{{{htitle}}}</a>'
     + '</h3>'
-    + '<p class="Ldt-AnnotationsList-Description Ldt-live-editable" data-editable_value="{{description}}" data-editable_id="{{id}}" data-editable_field="description">{{{hdescription}}}</p>'
+    + '<p class="Ldt-AnnotationsList-Description Ldt-live-editable" data-editable_value="{{hdescription}}" data-editable_id="{{id}}" data-editable_field="description">{{{hdescription}}}</p>'
     + '{{#tags.length}}'
     + '<ul class="Ldt-AnnotationsList-Tags">'
     + '{{#tags}}'
