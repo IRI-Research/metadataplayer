@@ -318,20 +318,30 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 
                 function cancelChanges(s) {
                     _this.contentEditable = false;
-                    if (_this.innerText == _this.dataset.editable_value) {
+                    if ($(_this).text() == _this.dataset.editable_value) {
                         return;
                     }
                     // Restore previous value
-                    _this.innerText = _this.dataset.editable_value;
+                    $(_this).text(_this.dataset.editable_value);
 
                     // Give some feedback
                     var color = $(_this).css("background-color");
                     $(_this).stop().css("background-color", "#FF9999")
                         .animate({ backgroundColor: color}, 1000);
                 }
+                function timestamp2ms(t) {
+                    // Convert timestamp to numeric value
+                    var s = t.split(":");
+                    if (s.length == 1) {
+                        // Only a single value, considering it as seconds
+                        s.push("0");
+                        s.reverse();
+                    }
+                    return 1000 * (parseInt(s[0], 10) * 60 + parseInt(s[1], 10));
+                }
                 function validateChanges() {
                     _this.contentEditable = false;
-                    var n = _this.innerText.trim();
+                    var n = $(_this).text();
                     if (n == _this.dataset.editable_value) {
                         return;
                     }
@@ -339,18 +349,14 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         // Delete annotation
                         ;
                     } else {
-                        _this.dataset.value = n;
-                        
-                        if (_this.dataset.editable_type == 'timestamp') {
-                            // Convert timestamp to numeric value
-                            var s = n.split(":");
-                            if (s.length == 1) {
-                                // Only a single value, considering it in seconds
-                                s.push("0");
-                                s.reverse();
-                            }
-                            n = 1000 * (parseInt(s[0], 10) * 60 + parseInt(s[1], 10));
+                        var val = timestamp2ms(n);
+                        if (Number.isNaN(val)) {
+                            // Invalid value. Cancel changes
+                            cancelChanges();
+                            return;
                         }
+                        _this.dataset.editable_value = n;
+                        n = val;
                     }
 
                     // Update local storage
@@ -380,7 +386,12 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         } else {
                             _this.dataset.editable_value = n;
                             // Update annotation for storage
-                            an[_this.dataset.editable_field] = n;
+                            if (_this.dataset.editable_field == 'begin')
+                                an.setBegin(n);
+                            else if (_this.dataset.editable_field == 'end')
+                                an.setEnd(n);
+                            else
+                                an[_this.dataset.editable_field] = n;
                             an.modified = new Date();
                             // FIXME: use user name, when available
                             an.contributor = "COCo User";
