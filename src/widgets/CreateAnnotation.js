@@ -377,8 +377,8 @@ IriSP.Widgets.CreateAnnotation.prototype.pauseOnWrite = function() {
 };
 
 IriSP.Widgets.CreateAnnotation.prototype.onDescriptionChange = function(e) {
-    if (e !== undefined && e.ctrlKey && e.keyCode == 13) {
-        // Control-Return: submit
+    if (e !== undefined && e.keyCode == 13 && !e.shiftKey) {
+        // Return: submit. Use shift-Return to insert a LF
         this.onSubmit();
         return true;
     }
