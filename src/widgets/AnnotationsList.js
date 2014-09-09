@@ -339,13 +339,13 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 }
                 function timestamp2ms(t) {
                     // Convert timestamp to numeric value
-                    var s = t.split(":");
-                    if (s.length == 1) {
-                        // Only a single value, considering it as seconds
+                    // It accepts the following forms:
+                    // [h:mm:ss] [mm:ss] [ss]
+                    var s = t.split(":").reverse();
+                    while (s.length < 3) {
                         s.push("0");
-                        s.reverse();
                     }
-                    return 1000 * (parseInt(s[0], 10) * 60 + parseInt(s[1], 10));
+                    return 1000 * (3600 * parseInt(s[2], 10) + 60 * parseInt(s[1], 10) + parseInt(s[0], 10));
                 }
                 function validateChanges() {
                     _this.contentEditable = false;
