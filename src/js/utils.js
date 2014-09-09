@@ -132,3 +132,15 @@ IriSP.FakeClass = function(properties) {
         _this[p] = noop;
     });
 };
+
+IriSP.timestamp2ms = function(t) {
+    // Convert timestamp to numeric value
+    // It accepts the following forms:
+    // [h:mm:ss] [mm:ss] [ss]
+    var s = t.split(":").reverse();
+    while (s.length < 3) {
+        s.push("0");
+    }
+    return 1000 * (3600 * parseInt(s[2], 10) + 60 * parseInt(s[1], 10) + parseInt(s[0], 10));
+};
+

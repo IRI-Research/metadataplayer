@@ -337,16 +337,6 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     $(_this).text(_this.dataset.editable_value);
                     feedback(feedback_wrong);
                 }
-                function timestamp2ms(t) {
-                    // Convert timestamp to numeric value
-                    // It accepts the following forms:
-                    // [h:mm:ss] [mm:ss] [ss]
-                    var s = t.split(":").reverse();
-                    while (s.length < 3) {
-                        s.push("0");
-                    }
-                    return 1000 * (3600 * parseInt(s[2], 10) + 60 * parseInt(s[1], 10) + parseInt(s[0], 10));
-                }
                 function validateChanges() {
                     _this.contentEditable = false;
                     var n = $(_this).text();
@@ -360,7 +350,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         // Convert value if necessary.
                         var val = n;
                         if (_this.dataset.editable_type == 'timestamp') {
-                            val = timestamp2ms(n);
+                            val = IriSP.timestamp2ms(n);
                             if (Number.isNaN(val)) {
                                 // Invalid value. Cancel changes
                                 cancelChanges();
