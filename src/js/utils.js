@@ -112,13 +112,23 @@ IriSP.attachDndData = function(jqSel, data) {
 	jqSel.attr("draggable", "true").on("dragstart", function(_event) {
 		var d = (typeof data === "function" ? data.call(this) : data);
 		try {
+            if (d.html === undefined && d.uri && d.text) {
+                d.html = '<a href="' + d.uri + '">' + d.text + '</a>';
+            }
 			IriSP._(d).each(function(v, k) {
-                if (k == 'text') {
-                    _event.originalEvent.dataTransfer.setData("text/plain", v);
-                } else if (v) {
+                if (v && k != 'text' && k != 'html') {
 					_event.originalEvent.dataTransfer.setData("text/x-iri-" + k, v);
 				}
 			});
+            // Define generic text/html and text/plain last (least
+            // specific types, see
+            // https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Drag_operations#Drag_Data)
+            if (d.html !== undefined) {
+                _event.originalEvent.dataTransfer.setData("text/html", d.html);
+            }
+            if (d.text !== undefined) {
+                _event.originalEvent.dataTransfer.setData("text/plain", d.text);
+            }
 		} catch(err) {
 			_event.originalEvent.dataTransfer.setData("Text", JSON.stringify(d));
 		}
