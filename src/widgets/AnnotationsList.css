@@ -24,6 +24,7 @@ li.Ldt-AnnotationsList-li {
     margin: 2px 0;
     padding: 2px 0;
     min-height: 60px;
+    position: relative;
 }
 .Ldt-AnnotationsList-li.selected {
     background-image: url(img/pinstripe-grey.png);
@@ -114,4 +115,13 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 
 .Ldt-AnnotationsList-Control-Next {
     cursor: url(img/hand_right.png), pointer;
+}
+.Ldt-AnnotationsList-Delete {
+    display: none;
+    position: absolute;
+    bottom: 2px;
+    right: 8px;
+}
+.Ldt-AnnotationsList-li:hover .Ldt-AnnotationsList-Delete {
+    display: inline;
 }

@@ -94,6 +94,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '</ul>'
     + '{{/tags.length}}'
     + '{{#audio}}<div class="Ldt-AnnotationsList-Play" data-annotation-id="{{id}}">{{l10n.voice_annotation}}</div>{{/audio}}'
+    + '{{#editable}}<div class="Ldt-AnnotationsList-Delete" data-editable_id="{{id}}">Delete</div>{{/editable}}'
     + '</li>';
 
 //obj.url = this.project_url + "/" + media + "/" + annotations[i].meta.project + "/" + annotations[i].meta["id-ref"] + '#id=' + annotations[i].id;
@@ -226,7 +227,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 url : _url,
                 tags : _annotation.getTagTexts(),
                 specific_style : (typeof _bgcolor !== "undefined" ? "background-color: " + _bgcolor : ""),
-                l10n: _this.l10n
+                l10n: _this.l10n,
+                editable: _this.editable
             };
             if (_this.show_controls) {
                 _this.$.find(".Ldt-AnnotationsList-Control-Prev").on("click", function (e) { e.preventDefault(); _this.navigate(-1); });
@@ -303,6 +305,36 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         if (this.editable) {
             var widget = _this;
 
+            var load_local_annotations = function() {
+                // Update local storage
+                if (widget.localSource === undefined) {
+                    // Initialize local source
+                    widget.localSource = widget.player.sourceManager.newLocalSource({serializer: IriSP.serializers['ldt_localstorage']});
+                }
+                // Load current local annotations
+                widget.localSource.deSerialize(window.localStorage[widget.editable_storage]);
+            };
+
+            var save_local_annotations = function() {
+                // Save annotations back
+                window.localStorage[widget.editable_storage] = widget.localSource.serialize();
+                // Merge modifications into widget source
+                widget.source.merge(widget.localSource);
+            };
+
+            var delete_local_annotation = function(i) {
+                load_local_annotations();
+                widget.localSource.getAnnotations().removeId(i);
+                widget.source.getAnnotations().removeId(i);
+                save_local_annotations();
+                widget.refresh(true);
+            };
+
+            this.$.find('.Ldt-AnnotationsList-Delete').click(function(e) {
+                // Delete annotation
+                delete_local_annotation(this.dataset.editable_id);
+            });
+
             this.$.find('.Ldt-live-editable').dblclick(function(e) {
                 var _this = this;
                 var $ = IriSP.jQuery;
@@ -346,7 +378,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     }
                     if (n == '') {
                         // Delete annotation
-                        ;
+                        delete_local_annotation(_this.dataset.editable_id);
+                        return;
                     } else {
                         // Convert value if necessary.
                         var val = n;
@@ -362,13 +395,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         n = val;
                     }
 
-                    // Update local storage
-                    if (widget.localSource === undefined) {
-                        // Initialize local source
-                        widget.localSource = widget.player.sourceManager.newLocalSource({serializer: IriSP.serializers['ldt_localstorage']});
-                    }
-                    // Load current local annotations
-                    widget.localSource.deSerialize(window.localStorage[widget.editable_storage]);
+                    load_local_annotations();
 
                     // We cannot use .getElement since it fetches
                     // elements from the global Directory
@@ -377,29 +404,20 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         console.log("Strange error: cannot find edited annotation");                        
                         feedback(feedback_wrong);
                     } else {
-                        if (n == '') {
-                            // Delete annotation
-                            widget.localSource.getAnnotations().removeId(_this.dataset.editable_id);
-                            widget.source.getAnnotations().removeId(_this.dataset.editable_id);
-                            widget.refresh(true);
-                        } else {
-                            _this.dataset.editable_value = n;
-                            // Update annotation for storage
-                            if (_this.dataset.editable_field == 'begin')
-                                an.setBegin(n);
-                            else if (_this.dataset.editable_field == 'end')
-                                an.setEnd(n);
-                            else
-                                an[_this.dataset.editable_field] = n;
-                            an.modified = new Date();
-                            // FIXME: use user name, when available
-                            an.contributor = "COCo User";
-                            widget.localSource.merge( [ an ] );
-                        }
-                        // Save annotations back
-                        window.localStorage[widget.editable_storage] = widget.localSource.serialize();
-                        // Merge modifications into widget source
-                        widget.source.merge(widget.localSource);
+                        _this.dataset.editable_value = n;
+                        // Update annotation for storage
+                        if (_this.dataset.editable_field == 'begin')
+                            an.setBegin(n);
+                        else if (_this.dataset.editable_field == 'end')
+                            an.setEnd(n);
+                        else
+                            an[_this.dataset.editable_field] = n;
+                        an.modified = new Date();
+                        // FIXME: use user name, when available
+                        an.contributor = "COCo User";
+                        widget.localSource.merge( [ an ] );
+
+                        save_local_annotations();
 
                         feedback(feedback_ok);
                     }
