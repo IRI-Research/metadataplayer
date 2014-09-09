@@ -300,7 +300,7 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
 IriSP.Widgets.CreateAnnotation.prototype.showScreen = function(_screenName) {
     this.$.find('.Ldt-CreateAnnotation-' + _screenName).show()
         .siblings().hide();
-}
+};
 
 IriSP.Widgets.CreateAnnotation.prototype.show = function() {
     this.visible = true;
@@ -473,7 +473,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
 
     var tagIds = Array.prototype.map.call(
         this.$.find(".Ldt-CreateAnnotation-TagLi.selected"),
-        function(el) { return IriSP.jQuery(el).attr("tag-id")}
+        function(el) { return IriSP.jQuery(el).attr("tag-id"); }
     );
 
     IriSP._(_annotation.description.match(/#[^\s#.,;]+/g)).each(function(_tt) {
@@ -491,7 +491,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
             tagIds.push(_tag.id);
         }
 
-    })
+    });
 
     _annotation.setTags(IriSP._(tagIds).uniq()); /*Liste des ids de tags */
     if (this.audio_url) {
@@ -559,7 +559,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
                 _export.getAnnotations().removeElement(_annotation, true);
                 _this.showScreen('Error');
                 window.setTimeout(function(){
-                    _this.showScreen("Main")
+                    _this.showScreen("Main");
                 },
                                   (_this.after_send_timeout || 5000));
             }
