@@ -219,10 +219,8 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
                 show_arrow: this.show_arrow,
                 annotation_type: this.slice_annotation_type,
                 onBoundsChanged: function(_from, _to) {
-                    _this.begin = new IriSP.Model.Time(_from || 0);
-                    _this.end = new IriSP.Model.Time(_to || 0);
-                    _this.$.find(".Ldt-CreateAnnotation-Begin").html(_this.begin.toString());
-                    _this.$.find(".Ldt-CreateAnnotation-End").html(_this.end.toString());
+                    this.setBegin(_from);
+                    this.setEnd(_to);
                 }
             },
             "slice"
@@ -232,9 +230,8 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
             this.insertSubwidget(this.$.find(".Ldt-CreateAnnotation-Arrow"), {type: "Arrow"},"arrow");
         }
         this.onMediaEvent("timeupdate", function(_time) {
-            _this.begin = new IriSP.Model.Time(_time || 0);
-            _this.end = new IriSP.Model.Time(_time || 0);
-            _this.$.find(".Ldt-CreateAnnotation-Begin").html(_this.begin.toString());
+            _this.setBegin(_time);
+            _this.setEnd(_time);
             if (_this.arrow) {
                 _this.arrow.moveToTime(_time);
             }
@@ -270,17 +267,15 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
         switch (action) {
             case "In":
                // Set In bound to current player time
-               _this.begin = new IriSP.Model.Time(_this.media.getCurrentTime() || 0);
-               _this.$.find(".Ldt-CreateAnnotation-Begin").html(_this.begin.toString());
+               this.setBegin(_this.media.getCurrentTime());
                break;
             case "Out":
                // Set In bound to current player time
-               _this.end = new IriSP.Model.Time(_this.media.getCurrentTime() || _this.media.duration);
-               _this.$.find(".Ldt-CreateAnnotation-End").html(_this.end.toString());
+               this.setEnd(_this.media.getCurrentTime() || _this.media.duration);
                break;
             case "Play":
-               _this.media.setCurrentTime(_this.begin);
-               _this.media.play();
+               this.media.setCurrentTime(_this.begin);
+               this.media.play();
                break;
         }
         return false;
@@ -295,6 +290,16 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
 
     this.onMdpEvent("CreateAnnotation.toggle","toggle");
     this.$.find("form").submit(this.functionWrapper("onSubmit"));
+};
+
+IriSP.Widgets.CreateAnnotation.prototype.setBegin = function (t) {
+    this.begin = new IriSP.Model.Time(t || 0);
+    this.$.find(".Ldt-CreateAnnotation-Begin").html(this.begin.toString());
+};
+
+IriSP.Widgets.CreateAnnotation.prototype.setEnd = function (t) {
+    this.end = new IriSP.Model.Time(t || 0);
+    this.$.find(".Ldt-CreateAnnotation-End").html(this.end.toString());
 };
 
 IriSP.Widgets.CreateAnnotation.prototype.showScreen = function(_screenName) {
@@ -341,10 +346,8 @@ IriSP.Widgets.CreateAnnotation.prototype.toggle = function() {
         if (this.visible) {
             this.hide();
         } else {
-            _this.begin = new IriSP.Model.Time(_this.media.getCurrentTime() || 0);
-            _this.end = new IriSP.Model.Time(_this.media.getCurrentTime() || 0);
-            _this.$.find(".Ldt-CreateAnnotation-Begin").html(_this.begin.toString());
-            _this.$.find(".Ldt-CreateAnnotation-End").html(_this.end.toString());
+            _this.setBegin(_this.media.getCurrentTime() || 0);
+            _this.setEnd(_this.media.getCurrentTime() || 0);
             if (_this.slice_widget) {
                 _this.slice_widget.setBounds(_this.begin, _this.end);
             }
