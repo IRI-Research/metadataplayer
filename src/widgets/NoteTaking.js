@@ -61,15 +61,16 @@ IriSP.Widgets.NoteTaking.prototype.draw = function() {
         return el.value.substring(startPos - length, startPos + length);
     };
 
+
     $(content).keydown(function (_event) {
         if (_event.keyCode == 13 && (_event.ctrlKey || _event.metaKey)) {
             // Insert current timestamp
             _event.preventDefault();
             // Get current value
-            var match = /\[(\d\d?):(\d\d?)\]/.exec(getAroundCaret(content[0], 6));
+            var match = /\[([\d:]+)\]/.exec(getAroundCaret(content[0], 8));
             if (match) {
                 // Found a timecode. Go to position.
-                widget.media.setCurrentTime(1000 * (parseInt(match[1], 10) * 60 + parseInt(match[2], 10)));
+                widget.media.setCurrentTime(IriSP.timestamp2ms(match[1]));
             } else {
                 $(content).insertAtCaret("[" + (new IriSP.Model.Time(widget.media.getCurrentTime())).toString() + "]");
                 save_content();
@@ -80,11 +81,11 @@ IriSP.Widgets.NoteTaking.prototype.draw = function() {
         // Store updated value
         save_content();
     }).on("dblclick", function (_event) {
-            var match = /\[(\d\d?):(\d\d?)\]/.exec(getAroundCaret(content[0], 6));
+            var match = /\[([\d:]+)\]/.exec(getAroundCaret(content[0], 8));
             if (match) {
                 // Found a timecode. Go to position.
                 _event.preventDefault();
-                widget.media.setCurrentTime(1000 * (parseInt(match[1], 10) * 60 + parseInt(match[2], 10)));
+                widget.media.setCurrentTime(IriSP.timestamp2ms(match[1]));
             };
     });
 };
