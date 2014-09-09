@@ -32,6 +32,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     show_audio: true,
     show_creator: false,
     show_controls: false,
+    show_end_time: true,
     editable: false,
     // Id that will be used as localStorage key
     editable_storage: "",
@@ -76,7 +77,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '<img title="{{ begin }} - {{ atitle }}" class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
     + '</a>'
     + '</div>'
-    + '<div class="Ldt-AnnotationsList-Duration"><span class="Ldt-AnnotationsList-Begin Ldt-live-editable" data-editable_value="{{begin}}" data-editable_id="{{id}}" data-editable_field="begin" data-editable_type="timestamp">{{begin}}</span> - <span class="Ldt-AnnotationsList-End Ldt-live-editable" data-editable_value="{{end}}" data-editable_id="{{id}}" data-editable_field="end" data-editable_type="timestamp">{{end}}</span></div>'
+    + '<div class="Ldt-AnnotationsList-Duration"><span class="Ldt-AnnotationsList-Begin Ldt-live-editable" data-editable_value="{{begin}}" data-editable_id="{{id}}" data-editable_field="begin" data-editable_type="timestamp">{{begin}}</span>{{#show_end_time}} - <span class="Ldt-AnnotationsList-End Ldt-live-editable" data-editable_value="{{end}}" data-editable_id="{{id}}" data-editable_field="end" data-editable_type="timestamp">{{end}}</span>{{/show_end_time}}</div>'
     + '<h3 class="Ldt-AnnotationsList-Title" draggable="true">'
     + '<a href="{{url}}" class="Ldt-live-editable" data-editable_value="{{htitle}}" data-editable_id="{{id}}" data-editable_field="title">{{{htitle}}}</a>'
     + '</h3>'
