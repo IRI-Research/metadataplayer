@@ -25,7 +25,6 @@ IriSP.Widgets.Controller.prototype.template =
     + '{{/disable_annotate_btn}}'
     + '{{^disable_search_btn}}'
     + '<div class="Ldt-Ctrl-button Ldt-Ctrl-SearchBtn Ldt-TraceMe" title="{{l10n.search}}"></div>'
-    + '<div class="Ldt-Ctrl-spacer"></div>'
     + '{{/disable_search_btn}}'
     + '<div class="Ldt-Ctrl-Search">'
     + '<input placeholder="{{ l10n.search }}" type="search" class="Ldt-Ctrl-SearchInput Ldt-TraceMe"></input>'
