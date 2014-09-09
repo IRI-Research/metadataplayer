@@ -194,7 +194,8 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
 	    	image: currentAnnotation.thumbnail,
 	    	uri: (typeof currentAnnotation.url !== "undefined" 
 	            ? currentAnnotation.url
-	            : (document.location.href.replace(/#.*$/,'') + '#id='  + currentAnnotation.id))
+	            : (document.location.href.replace(/#.*$/,'') + '#id='  + currentAnnotation.id)),
+            text: '[' + currentAnnotation.begin.toString() + '] ' + currentAnnotation.title
 	    };
     });
 };

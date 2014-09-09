@@ -113,7 +113,9 @@ IriSP.attachDndData = function(jqSel, data) {
 		var d = (typeof data === "function" ? data.call(this) : data);
 		try {
 			IriSP._(d).each(function(v, k) {
-				if (v) {
+                if (k == 'text') {
+                    _event.originalEvent.dataTransfer.setData("text/plain", v);
+                } else if (v) {
 					_event.originalEvent.dataTransfer.setData("text/x-iri-" + k, v);
 				}
 			});

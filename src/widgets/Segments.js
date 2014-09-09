@@ -110,7 +110,8 @@ IriSP.Widgets.Segments.prototype.draw = function() {
         	uri: (typeof _annotation.url !== "undefined" 
                 ? _annotation.url
                 : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id)),
-            image: _annotation.thumbnail
+            image: _annotation.thumbnail,
+            text: '[' + _annotation.begin.toString() + '] ' + _annotation.title
         });
         _annotation.on("select", function() {
             _this.$segments.each(function() {

@@ -280,7 +280,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             	title: _title,
             	description: _description,
             	uri: _url,
-            	image: _annotation.thumbnail
+                image: _annotation.thumbnail,
+                text: '[' + _annotation.begin.toString() + '] ' + _title
             });
             _el.on("remove", function() {
                 _annotation.off("select", _onselect);
