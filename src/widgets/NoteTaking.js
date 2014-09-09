@@ -66,7 +66,7 @@ IriSP.Widgets.NoteTaking.prototype.draw = function() {
             // Insert current timestamp
             _event.preventDefault();
             // Get current value
-            var match = /\[(\d\d?):(\d\d?)\]/.exec(getAroundCaret(content[0], 7));
+            var match = /\[(\d\d?):(\d\d?)\]/.exec(getAroundCaret(content[0], 6));
             if (match) {
                 // Found a timecode. Go to position.
                 widget.media.setCurrentTime(1000 * (parseInt(match[1], 10) * 60 + parseInt(match[2], 10)));
@@ -80,7 +80,7 @@ IriSP.Widgets.NoteTaking.prototype.draw = function() {
         // Store updated value
         save_content();
     }).on("dblclick", function (_event) {
-            var match = /\[(\d\d?):(\d\d?)\]/.exec(getAroundCaret(content[0], 7));
+            var match = /\[(\d\d?):(\d\d?)\]/.exec(getAroundCaret(content[0], 6));
             if (match) {
                 // Found a timecode. Go to position.
                 _event.preventDefault();
