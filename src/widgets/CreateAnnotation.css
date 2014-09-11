@@ -46,7 +46,8 @@
 .Ldt-CreateAnnotation-SubmitArea {
     display: inline-block;
     float: right;
-    width: 60px;
+    width: 50px;
+    text-align: center;
 }
 
 .Ldt-CreateAnnotation-SubmitArea .Ldt-CreateAnnotation-Begin {
@@ -74,10 +75,10 @@
 }
 
 .Ldt-CreateAnnotation-Description {
-    height: 2em;
+    height: 3em;
     padding: 2px;
     resize: none;
-    width: calc(100% - 72px);
+    width: calc(100% - 62px);
     border: 1px solid #666666;
     border-radius: 2px;
 }
