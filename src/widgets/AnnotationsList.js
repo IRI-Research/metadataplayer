@@ -54,18 +54,22 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
 IriSP.Widgets.AnnotationsList.prototype.messages = {
     en: {
         voice_annotation: "Voice Annotation",
-        now_playing: "Now playing..."
+        now_playing: "Now playing...",
+        previous: "Previous",
+        next: "Next"
     },
     fr: {
         voice_annotation: "Annotation Vocale",
-        now_playing: "Lecture en cours..."
+        now_playing: "Lecture en cours...",
+        previous: "Précédent",
+        next: "Suivant"
     }
 };
 
 IriSP.Widgets.AnnotationsList.prototype.template =
     '<div class="Ldt-AnnotationsListWidget">'
     + '{{#show_audio}}<div class="Ldt-AnnotationsList-Audio"></div>{{/show_audio}}'
-    + '{{#show_controls}}<div class="Ldt-AnnotationsList-Controls"><span class="Ldt-AnnotationsList-Control-Prev">Previous</span> | <span class="Ldt-AnnotationsList-Control-Next">Next</span></div>{{/show_controls}}'
+    + '{{#show_controls}}<div class="Ldt-AnnotationsList-Controls"><span class="Ldt-AnnotationsList-Control-Prev">{{ l10n.previous }}</span> | <span class="Ldt-AnnotationsList-Control-Next">{{ l10n.next }}</span></div>{{/show_controls}}'
     + '<ul class="Ldt-AnnotationsList-ul">'
     + '</ul>'
     + '</div>';
