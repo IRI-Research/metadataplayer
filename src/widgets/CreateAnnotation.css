@@ -43,10 +43,20 @@
     color: #ff3b77
 }
 
+.Ldt-CreateAnnotation-SubmitArea {
+    display: inline-block;
+    float: right;
+    width: 60px;
+}
+
+.Ldt-CreateAnnotation-SubmitArea .Ldt-CreateAnnotation-Begin {
+    display: none;
+    width: 100%;
+    text-align: center;
+}
+
 .Ldt-CreateAnnotation-Submit {
-    position: absolute;
-    bottom: 7px;
-    right: 7px;
+    float: left;
     color: #ffffff;
     cursor: pointer;
     background: url('img/submit_annotation.png');
