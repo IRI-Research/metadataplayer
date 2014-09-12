@@ -472,7 +472,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
     _annotation.created = new Date(); /* Date de création de l'annotation */
 
     _annotation.setAnnotationType(_annotationType.id); /* Id du type d'annotation */
-    _annotation.description = this.$.find(".Ldt-CreateAnnotation-Description").val(); /* Champ description */
+    _annotation.description = this.$.find(".Ldt-CreateAnnotation-Description").val().trim(); /* Champ description */
     if (this.show_title_field) {
         /* Champ titre, seulement s'il est visible */
         _annotation.title = this.$.find(".Ldt-CreateAnnotation-Title").val();
