@@ -21,12 +21,11 @@
 window.tracemanager = (function($) {
      // If there are more than MAX_FAILURE_COUNT synchronisation
      // failures, then disable synchronisation
-     MAX_FAILURE_COUNT = 20;
+    var MAX_FAILURE_COUNT = 20;
 
      // If there are more than MAX_BUFFER_SIZE obsels in the buffer,
      // then "compress" them as a single "ktbsFullBuffer"
-     MAX_BUFFER_SIZE = 500;
-
+    var  MAX_BUFFER_SIZE = 500;
      var BufferedService_prototype = {
          /*
           *  Buffered service for traces
