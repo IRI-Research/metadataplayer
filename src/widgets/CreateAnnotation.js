@@ -112,7 +112,7 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
 };
 
 IriSP.Widgets.CreateAnnotation.prototype.template =
-    '{{#show_slice}}<div class="Ldt-CreateAnnotation-Slice"></div>{{/show_slice}}'
+    '{{#show_slice}}<div class="Ldt-CreateAnnotation-Slice Ldt-TraceMe"></div>{{/show_slice}}'
     + '{{^show_slice}}{{#show_arrow}}<div class="Ldt-CreateAnnotation-Arrow"></div>{{/show_arrow}}{{/show_slice}}'
     + '<div class="Ldt-CreateAnnotation"><div class="Ldt-CreateAnnotation-Inner">'
     + '<form class="Ldt-CreateAnnotation-Screen Ldt-CreateAnnotation-Main">'
@@ -126,9 +126,9 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     +   '<span title="{{l10n.out_tooltip}}" class="Ldt-CreateAnnotation-Control-Out">Out</span>'
     +   '<span title="{{l10n.play_tooltip}}" class="Ldt-CreateAnnotation-Control-Play">Play</span>'
     + '</div>{{/show_controls}}'
-    + '<textarea class="Ldt-CreateAnnotation-Description empty" placeholder="{{l10n.type_description}}"></textarea>'
+    + '<textarea class="Ldt-CreateAnnotation-Description Ldt-TraceMe empty" placeholder="{{l10n.type_description}}"></textarea>'
     + '{{#show_creator_field}}<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>{{/show_creator_field}}'
-    + '<div class="Ldt-CreateAnnotation-SubmitArea">'
+    + '<div class="Ldt-CreateAnnotation-SubmitArea Ldt-TraceMe">'
     +   '<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{l10n.submit}}" />'
     +   '<div class="Ldt-CreateAnnotation-Begin Ldt-CreateAnnotation-Times">00:00</div>'
     + '</div>'
