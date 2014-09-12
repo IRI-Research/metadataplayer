@@ -42,5 +42,5 @@ IriSP.Widgets.SlideVideoPlayer.prototype.draw = function() {
     // when widgets are ready (and not just loaded)
     window.setTimeout(function () {
         _this.$.find(".Ldt-SlideVideoPlayer").split({ orientation: 'vertical' });
-    }, 1000);
+    }, 1500);
 }
