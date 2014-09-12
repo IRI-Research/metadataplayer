@@ -109,13 +109,6 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
     background-position: 0 bottom;
 }
 
-.Ldt-AnnotationsList-Control-Prev {
-    cursor: url(img/hand_left.png), pointer;
-}
-
-.Ldt-AnnotationsList-Control-Next {
-    cursor: url(img/hand_right.png), pointer;
-}
 .Ldt-AnnotationsList-Delete {
     display: none;
     position: absolute;
