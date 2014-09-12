@@ -233,11 +233,14 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
             this.insertSubwidget(this.$.find(".Ldt-CreateAnnotation-Arrow"), {type: "Arrow"},"arrow");
         }
         this.onMediaEvent("timeupdate", function(_time) {
-            _this.setBegin(_time);
-            _this.setEnd(_time);
-            if (_this.arrow) {
-                _this.arrow.moveToTime(_time);
-            }
+            // Do not update timecode if description is not empty
+            if (_this.$.find(".Ldt-CreateAnnotation-Description").val().trim() == "") {
+                _this.setBegin(_time);
+                _this.setEnd(_time);
+                if (_this.arrow) {
+                    _this.arrow.moveToTime(_time);
+                }
+            };
         });
     }
     this.$.find(".Ldt-CreateAnnotation-Close").click(function() {
