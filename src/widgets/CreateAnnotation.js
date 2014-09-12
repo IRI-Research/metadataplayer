@@ -534,6 +534,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
             _this.media.play();
         }
         _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+        _this.player.trigger("CreateAnnotation.created", _annotation.id);
         _this.$.find(".Ldt-CreateAnnotation-Description").val("");
     } else {
         _export.addList("annotation",_exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
@@ -562,6 +563,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
                     _this.media.play();
                 }
                 _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+                _this.player.trigger("CreateAnnotation.created", _annotation.id);
             },
             error: function(_xhr, _error, _thrown) {
                 IriSP.log("Error when sending annotation", _thrown);
