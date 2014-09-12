@@ -98,7 +98,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '</ul>'
     + '{{/tags.length}}'
     + '{{#audio}}<div class="Ldt-AnnotationsList-Play" data-annotation-id="{{id}}">{{l10n.voice_annotation}}</div>{{/audio}}'
-    + '{{#editable}}<div class="Ldt-AnnotationsList-Delete" data-editable_id="{{id}}">Delete</div>{{/editable}}'
+    + '{{#editable}}<div class="Ldt-AnnotationsList-Delete" data-editable_id="{{id}}"></div>{{/editable}}'
     + '</li>';
 
 //obj.url = this.project_url + "/" + media + "/" + annotations[i].meta.project + "/" + annotations[i].meta["id-ref"] + '#id=' + annotations[i].id;
