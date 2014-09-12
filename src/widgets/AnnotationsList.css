@@ -117,6 +117,7 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
     width: 16px;
     height: 16px;
     background: url(img/delete.png);
+    cursor: pointer;
 }
 
 .Ldt-AnnotationsList-li:hover .Ldt-AnnotationsList-Delete {
