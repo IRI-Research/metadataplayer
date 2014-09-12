@@ -9,7 +9,7 @@
 }
 
 .Ldt-ImageDisplay-Overlay {
-    width: 20%;
+    width: 30%;
     min-width: 20px;
     height: 100%;
     opacity: 0.1;
@@ -23,10 +23,10 @@
 
 .Ldt-ImageDisplay-Overlay-Left {
     left: 0px;
-    cursor: url(img/left_arrow.png), pointer;
+    cursor: url(img/left_arrow.svg), pointer;
 }
 
 .Ldt-ImageDisplay-Overlay-Right {
     right: 0px;
-    cursor: url(img/right_arrow.png), pointer;
+    cursor: url(img/right_arrow.svg), pointer;
 }
