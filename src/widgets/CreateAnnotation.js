@@ -556,7 +556,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
                     _this.after_send_timeout
                 );
             }
-            if (this.editable_storage != '') {
+            if (this.editable_storage == '') {
                 _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
                 _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
                 _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
