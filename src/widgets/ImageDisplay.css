@@ -23,10 +23,10 @@
 
 .Ldt-ImageDisplay-Overlay-Left {
     left: 0px;
-    cursor: url(img/left_arrow.svg), pointer;
+    cursor: url(img/left_arrow.svg) 20 20, pointer;
 }
 
 .Ldt-ImageDisplay-Overlay-Right {
     right: 0px;
-    cursor: url(img/right_arrow.svg), pointer;
+    cursor: url(img/right_arrow.svg) 20 20, pointer;
 }
