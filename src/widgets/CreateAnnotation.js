@@ -556,14 +556,16 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
                     _this.after_send_timeout
                 );
             }
-            _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
-            _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
-            _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
-            if (_this.pause_on_write && _this.media.getPaused()) {
-                _this.media.play();
+            if (this.editable_storage != '') {
+                _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
+                _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
+                _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
+                if (_this.pause_on_write && _this.media.getPaused()) {
+                    _this.media.play();
+                }
+                _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+                _this.player.trigger("CreateAnnotation.created", _annotation.id);
             }
-            _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
-            _this.player.trigger("CreateAnnotation.created", _annotation.id);
         },
         error: function(_xhr, _error, _thrown) {
             IriSP.log("Error when sending annotation", _thrown);
