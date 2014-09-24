@@ -109,17 +109,38 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
     background-position: 0 bottom;
 }
 
-.Ldt-AnnotationsList-Delete {
+.Ldt-AnnotationsList-EditControls {
     display: none;
     position: absolute;
     bottom: 2px;
     right: 8px;
-    width: 16px;
-    height: 16px;
-    background: url(img/delete.png);
-    cursor: pointer;
 }
 
-.Ldt-AnnotationsList-li:hover .Ldt-AnnotationsList-Delete {
-    display: inline;
+.Ldt-AnnotationsList-li:hover .Ldt-AnnotationsList-EditControls {
+    display: inline-block;
+}
+
+.Ldt-AnnotationsList-EditControls > div {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.Ldt-AnnotationsList-Delete {
+    background: url(img/delete.png);
+}
+
+.Ldt-AnnotationsList-Edit {
+    background: url(img/edit.png);
+}
+
+.Ldt-AnnotationsList-TimeEdit {
+    background: url(img/time_edit.png);
+}
+
+.editing {
+    border: 1px solid black;
+    background-color: #ddd;
 }

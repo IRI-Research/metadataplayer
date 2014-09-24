@@ -56,13 +56,19 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         voice_annotation: "Voice Annotation",
         now_playing: "Now playing...",
         previous: "Previous",
-        next: "Next"
+        next: "Next",
+        set_time: "Use current player time",
+        edit_annotation: "Edit annotation",
+        delete_annotation: "Delete annotation"
     },
     fr: {
         voice_annotation: "Annotation Vocale",
         now_playing: "Lecture en cours...",
         previous: "Précédent",
-        next: "Suivant"
+        next: "Suivant",
+        set_time: "Utiliser le temps du lecteur",
+        edit_annotation: "Éditer l'annotation",
+        delete_annotation: "Supprimer l'annotation"
     }
 };
 
@@ -98,7 +104,11 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '</ul>'
     + '{{/tags.length}}'
     + '{{#audio}}<div class="Ldt-AnnotationsList-Play" data-annotation-id="{{id}}">{{l10n.voice_annotation}}</div>{{/audio}}'
-    + '{{#editable}}<div class="Ldt-AnnotationsList-Delete" data-editable_id="{{id}}"></div>{{/editable}}'
+    + '{{#editable}}<div class="Ldt-AnnotationsList-EditControls">'
+    +    '<div title="{{l10n.set_time}}" class="Ldt-AnnotationsList-TimeEdit" data-editable_id="{{id}}"></div>'
+    +    '<div title="{{l10n.edit_annotation}}" class="Ldt-AnnotationsList-Edit" data-editable_id="{{id}}"></div>'
+    +    '<div title="{{l10n.delete_annotation}}" class="Ldt-AnnotationsList-Delete" data-editable_id="{{id}}"></div>'
+    + '</div>{{/editable}}'
     + '</li>';
 
 //obj.url = this.project_url + "/" + media + "/" + annotations[i].meta.project + "/" + annotations[i].meta["id-ref"] + '#id=' + annotations[i].id;
@@ -308,48 +318,42 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
 
         if (this.editable) {
             var widget = _this;
+            var $ = IriSP.jQuery;
 
-            var load_local_annotations = function() {
-                // Update local storage
-                if (widget.localSource === undefined) {
-                    // Initialize local source
-                    widget.localSource = widget.player.sourceManager.newLocalSource({serializer: IriSP.serializers['ldt_localstorage']});
+            var place_caret_at_end = function (el) {
+                if (typeof window.getSelection != "undefined"
+                    && typeof document.createRange != "undefined") {
+                    var range = document.createRange();
+                    range.selectNodeContents(el);
+                    range.collapse(false);
+                    var sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                } else if (typeof document.body.createTextRange != "undefined") {
+                    var textRange = document.body.createTextRange();
+                    textRange.moveToElementText(el);
+                    textRange.collapse(false);
+                    textRange.select();
                 }
-                // Load current local annotations
-                widget.localSource.deSerialize(window.localStorage[widget.editable_storage]);
             };
 
-            var save_local_annotations = function() {
-                // Save annotations back
-                window.localStorage[widget.editable_storage] = widget.localSource.serialize();
-                // Merge modifications into widget source
-                widget.source.merge(widget.localSource);
-            };
-
-            var delete_local_annotation = function(i) {
-                load_local_annotations();
-                widget.localSource.getAnnotations().removeId(i);
-                widget.source.getAnnotations().removeId(i);
-                save_local_annotations();
-                widget.refresh(true);
-            };
-
-            this.$.find('.Ldt-AnnotationsList-Delete').click(function(e) {
-                // Delete annotation
-                delete_local_annotation(this.dataset.editable_id);
-            });
-
-            this.$.find('.Ldt-live-editable').dblclick(function(e) {
-                var _this = this;
-                var $ = IriSP.jQuery;
+            var edit_element = function (_this) {
                 var feedback_wrong = "#FF9999";
                 var feedback_ok = "#99FF99";
 
-                e.preventDefault();
-                this.contentEditable = true;
-            
+                _this.contentEditable = true;
+                $(_this).addClass("editing");
+                $(_this).focus( function () {
+                    window.setTimeout(function () {
+                        place_caret_at_end(_this);
+                    }, 1);
+                });
+                _this.focus();
+
                 function feedback(color) {
                     // Give some feedback
+                    $(_this).removeClass("editing");
+                    _this.contentEditable = false;
                     var previous_color = $(_this).css("background-color");
                     $(_this).stop().css("background-color", color)
                         .animate({ backgroundColor: previous_color}, 1000);
@@ -425,9 +429,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
 
                         feedback(feedback_ok);
                     }
-                                      
                 }
-                $(this).bind('keydown', function(e) {
+                $(_this).bind('keydown', function(e) {
                     if (e.which == 13) {
                         e.preventDefault();
                         validateChanges();
@@ -438,6 +441,54 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 }).bind("blur", function (e) {
                     validateChanges();
                 });
+            };
+
+            var load_local_annotations = function() {
+                // Update local storage
+                if (widget.localSource === undefined) {
+                    // Initialize local source
+                    widget.localSource = widget.player.sourceManager.newLocalSource({serializer: IriSP.serializers['ldt_localstorage']});
+                }
+                // Load current local annotations
+                widget.localSource.deSerialize(window.localStorage[widget.editable_storage]);
+            };
+
+            var save_local_annotations = function() {
+                // Save annotations back
+                window.localStorage[widget.editable_storage] = widget.localSource.serialize();
+                // Merge modifications into widget source
+                widget.source.merge(widget.localSource);
+            };
+
+            var delete_local_annotation = function(i) {
+                load_local_annotations();
+                widget.localSource.getAnnotations().removeId(i);
+                widget.source.getAnnotations().removeId(i);
+                save_local_annotations();
+                widget.refresh(true);
+            };
+
+            this.$.find('.Ldt-AnnotationsList-Delete').click(function(e) {
+                // Delete annotation
+                delete_local_annotation(this.dataset.editable_id);
+            });
+            this.$.find('.Ldt-AnnotationsList-Edit').click(function(e) {
+                // Edit annotation title
+                edit_element($(this).parents(".Ldt-AnnotationsList-li").find(".Ldt-AnnotationsList-Title a")[0]);
+            });
+            this.$.find('.Ldt-AnnotationsList-TimeEdit').click(function(e) {
+                var _this = this;
+                // Use current player time
+                load_local_annotations();
+                // We cannot use .getElement since it fetches
+                // elements from the global Directory
+                var an = IriSP._.first(IriSP._.filter(widget.localSource.getAnnotations(), function (a) { return a.id == _this.dataset.editable_id; }));
+                if (an !== undefined) {
+                    // FIXME: implement Undo feature
+                    an.setBegin(widget.media.getCurrentTime().milliseconds);
+                    save_local_annotations();
+                    widget.refresh(true);
+                }
             });
         }
 
