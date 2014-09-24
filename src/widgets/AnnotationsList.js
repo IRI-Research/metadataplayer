@@ -387,7 +387,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     if (n == '') {
                         // Delete annotation
                         delete_local_annotation(_this.dataset.editable_id);
-                        this.player.trigger("Annotation.delete", _this.dataset.editable_id);
+                        widget.player.trigger("Annotation.delete", _this.dataset.editable_id);
                         return;
                     } else {
                         // Convert value if necessary.
@@ -428,7 +428,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
 
                         save_local_annotations();
 
-                        this.player.trigger("Annotation.update", an);
+                        widget.player.trigger("Annotation.update", an);
                         feedback(feedback_ok);
                     }
                 }
@@ -489,7 +489,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     // FIXME: implement Undo feature
                     an.setBegin(widget.media.getCurrentTime().milliseconds);
                     save_local_annotations();
-                    this.player.trigger("Annotation.update", an);
+                    widget.player.trigger("Annotation.update", an);
                     widget.refresh(true);
                 }
             });
