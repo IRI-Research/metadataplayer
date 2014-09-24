@@ -533,7 +533,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         // Save everything back
         window.localStorage[_this.editable_storage] = _local_export.serialize();
         _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
-        _this.player.trigger("CreateAnnotation.created", _annotation);
+        _this.player.trigger("Annotation.create", _annotation);
         _this.$.find(".Ldt-CreateAnnotation-Description").val("");
     }
 
