@@ -203,7 +203,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                             annotationType : _annotation.annotationType.id
                         }
                     )
-                    : document.location.href.replace(/#.*$/,'') + '#id=' + _annotation.id
+                    : document.location.href.replace(/#.*$/,'') + '#id=' + _annotation.id + '&t=' + (_annotation.begin / 1000.0)
                     )
             );
             var _title = "",
