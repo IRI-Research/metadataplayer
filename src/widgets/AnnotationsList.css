@@ -110,7 +110,7 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 }
 
 .Ldt-AnnotationsList-EditControls {
-    display: none;
+    opacity: 0;
     position: absolute;
     bottom: 2px;
     right: 8px;
@@ -118,6 +118,8 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 
 .Ldt-AnnotationsList-li:hover .Ldt-AnnotationsList-EditControls {
     display: inline-block;
+    opacity: .8;
+    transition: opacity 1000ms ease-in-out;
 }
 
 .Ldt-AnnotationsList-EditControls > div {
