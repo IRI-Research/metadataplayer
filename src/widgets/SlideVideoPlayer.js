@@ -41,6 +41,6 @@ IriSP.Widgets.SlideVideoPlayer.prototype.draw = function() {
     // FIXME: this should be better implemented through a signal sent
     // when widgets are ready (and not just loaded)
     window.setTimeout(function () {
-        _this.$.find(".Ldt-SlideVideoPlayer").split({ orientation: 'vertical' });
+        _this.$.find(".Ldt-SlideVideoPlayer").split({ orientation: (screen.height > screen.width) ? 'horizontal' : 'vertical' });
     }, 1500);
 }
