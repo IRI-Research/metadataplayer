@@ -11,6 +11,12 @@
     max-height: 100%;
 }
 
+@media all and (max-height: 600px) {
+    .Ldt-SlideVideoPlayer {
+        min-height: 300px;
+    }
+}
+
 .Ldt-SlideVideoPlayer {
     width: 100%;
     max-width: 100%;
