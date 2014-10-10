@@ -1,6 +1,5 @@
-/* Empty for now */
-
 .Ldt-SlideVideoPlayer-panel {
+    display: -webkit-flex;
     display: flex;
     width: 50%;
     float: left;
