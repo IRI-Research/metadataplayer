@@ -34,7 +34,8 @@ li.Ldt-AnnotationsList-li {
     width: 80px;
     height: 50px;
     text-align: center;
-    margin: 2px 0;
+    margin: 10px 2px;
+    box-shadow: #808080 0px 0px 2px;
 }
 .Ldt-AnnotationsList-Thumbnail {
     border: none;
