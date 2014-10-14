@@ -523,7 +523,6 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         // Append to localStorage annotations
 
         // FIXME: handle movie ids
-        /* Data will be serialized in the localStore property designated by api_endpoint_template */
         _local_export.addList("annotation", _exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
         _this.source.merge(_local_export); /* On ajoute la nouvelle annotation au recueil original */
         // Import previously saved local annotations
