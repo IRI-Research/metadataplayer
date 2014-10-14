@@ -536,48 +536,49 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         _this.player.trigger("Annotation.create", _annotation);
         _this.$.find(".Ldt-CreateAnnotation-Description").val("");
     }
-
-    _export.addList("annotation",_exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
-    /* Envoi de l'annotation via AJAX au serveur ! */
-    IriSP.jQuery.ajax({
-        url: _url,
-        type: this.api_method,
-        contentType: 'application/json',
-        data: _export.serialize(), /* L'objet Source est sérialisé */
-        success: function(_data) {
-            _this.showScreen('Saved'); /* Si l'appel a fonctionné, on affiche l'écran "Annotation enregistrée" */
-            if (_this.after_send_timeout) { /* Selon les options de configuration, on revient à l'écran principal ou on ferme le widget, ou rien */
-                window.setTimeout(
-                    function() {
-                        _this.close_after_send
-                            ? _this.hide()
-                            : _this.show();
-                    },
-                    _this.after_send_timeout
-                );
-            }
-            if (this.editable_storage == '') {
-                _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
-                _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
-                _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
-                if (_this.pause_on_write && _this.media.getPaused()) {
-                    _this.media.play();
+    
+    if (_url !== "") {
+        _export.addList("annotation",_exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
+        /* Envoi de l'annotation via AJAX au serveur ! */
+        IriSP.jQuery.ajax({
+            url: _url,
+            type: this.api_method,
+            contentType: 'application/json',
+            data: _export.serialize(), /* L'objet Source est sérialisé */
+            success: function(_data) {
+                _this.showScreen('Saved'); /* Si l'appel a fonctionné, on affiche l'écran "Annotation enregistrée" */
+                if (_this.after_send_timeout) { /* Selon les options de configuration, on revient à l'écran principal ou on ferme le widget, ou rien */
+                    window.setTimeout(
+                        function() {
+                            _this.close_after_send
+                                ? _this.hide()
+                                : _this.show();
+                        },
+                        _this.after_send_timeout
+                    );
                 }
-                _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
-                _this.player.trigger("CreateAnnotation.created", _annotation.id);
-            }
-        },
-        error: function(_xhr, _error, _thrown) {
-            IriSP.log("Error when sending annotation", _thrown);
-            _export.getAnnotations().removeElement(_annotation, true);
-            _this.showScreen('Error');
-            window.setTimeout(function(){
-                _this.showScreen("Main");
+                if (this.editable_storage == '') {
+                    _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
+                    _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
+                    _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
+                    if (_this.pause_on_write && _this.media.getPaused()) {
+                        _this.media.play();
+                    }
+                    _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+                    _this.player.trigger("CreateAnnotation.created", _annotation.id);
+                }
             },
-                              (_this.after_send_timeout || 5000));
-        }
-    });
-    this.showScreen('Wait');
-
+            error: function(_xhr, _error, _thrown) {
+                IriSP.log("Error when sending annotation", _thrown);
+                _export.getAnnotations().removeElement(_annotation, true);
+                _this.showScreen('Error');
+                window.setTimeout(function(){
+                    _this.showScreen("Main");
+                },
+                                  (_this.after_send_timeout || 5000));
+            }
+        });
+        this.showScreen('Wait');
+    };
     return false;
 };
