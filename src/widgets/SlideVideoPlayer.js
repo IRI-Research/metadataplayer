@@ -7,6 +7,7 @@ IriSP.Widgets.SlideVideoPlayer.prototype = new IriSP.Widgets.Widget();
 
 
 IriSP.Widgets.SlideVideoPlayer.prototype.defaults = {
+    playerModule: "HtmlPlayer"
 };
 
 IriSP.Widgets.SlideVideoPlayer.prototype.template = '<div class="Ldt-SlideVideoPlayer">\
@@ -31,7 +32,7 @@ IriSP.Widgets.SlideVideoPlayer.prototype.draw = function() {
     this.insertSubwidget(
         _this.$.find(".Ldt-SlideVideoPlayer-panel.Ldt-SlideVideoPlayer-video"),
             {
-                type: "HtmlPlayer",
+                type: _this.playerModule,
                 video: _this.video,
                 width: '100%',
                 url_transform: _this.url_transform
