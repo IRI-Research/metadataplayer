@@ -32,7 +32,8 @@ IriSP.Widgets.DailymotionPlayer.prototype.draw = function() {
         videoid = m[1];
     }
 
-    var player_url = Mustache.to_html('http://www.dailymotion.com/embed/video/{{ videoid }}', {
+    var player_url = Mustache.to_html('{{ protocol }}//www.dailymotion.com/embed/video/{{ videoid }}', {
+        protocol: document.location.protocol.search('http') == 0 ? document.location.protocol : 'http:',
         videoid: videoid
     });
     var params = {
