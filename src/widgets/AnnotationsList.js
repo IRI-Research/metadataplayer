@@ -33,6 +33,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     show_creator: false,
     show_controls: false,
     show_end_time: true,
+    show_publish: false,
     editable: false,
     // Id that will be used as localStorage key
     editable_storage: "",
@@ -59,7 +60,8 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         next: "Next",
         set_time: "Use current player time",
         edit_annotation: "Edit annotation",
-        delete_annotation: "Delete annotation"
+        delete_annotation: "Delete annotation",
+        publish_annotation: "Make annotation public"
     },
     fr: {
         voice_annotation: "Annotation Vocale",
@@ -68,7 +70,8 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         next: "Suivant",
         set_time: "Utiliser le temps du lecteur",
         edit_annotation: "Éditer l'annotation",
-        delete_annotation: "Supprimer l'annotation"
+        delete_annotation: "Supprimer l'annotation",
+        publish_annotation: "Rendre l'annotation publique"
     }
 };
 
@@ -105,6 +108,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '{{/tags.length}}'
     + '{{#audio}}<div class="Ldt-AnnotationsList-Play" data-annotation-id="{{id}}">{{l10n.voice_annotation}}</div>{{/audio}}'
     + '{{#editable}}<div class="Ldt-AnnotationsList-EditControls">'
+    +    '{{#show_publish}}<div title="{{l10n.publish_annotation}}" class="Ldt-AnnotationsList-PublishAnnotation" data-editable_id="{{id}}"></div>{{/show_publish}}'
     +    '<div title="{{l10n.set_time}}" class="Ldt-AnnotationsList-TimeEdit" data-editable_id="{{id}}"></div>'
     +    '<div title="{{l10n.edit_annotation}}" class="Ldt-AnnotationsList-Edit" data-editable_id="{{id}}"></div>'
     +    '<div title="{{l10n.delete_annotation}}" class="Ldt-AnnotationsList-Delete" data-editable_id="{{id}}"></div>'
@@ -478,6 +482,32 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 // Edit annotation title
                 edit_element($(this).parents(".Ldt-AnnotationsList-li").find(".Ldt-AnnotationsList-Title a")[0]);
             });
+            this.$.find('.Ldt-AnnotationsList-PublishAnnotation').click(function(e) {
+                // Publish annotation to the server
+                var _url = Mustache.to_html(this.api_endpoint_template, {id: widget.source.projectId});
+                if (_url !== "") {
+                    var _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]});
+                    var _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager);
+                    _exportedAnnotations.push(_annotation);
+                    _export.addList("annotation", _exportedAnnotations);
+                    IriSP.jQuery.ajax({
+                        url: _url,
+                        type: this.api_method,
+                        contentType: 'application/json',
+                        data: _export.serialize(),
+                        success: function(_data) {
+                            widget.addClass("published");
+                            // Save the published information
+                            load_local_annotations();
+                            var an = IriSP._.first(IriSP._.filter(widget.localSource.getAnnotations(), function (a) { return a.id == _annotation.id; }));
+                            save_local_annotations();
+                        },
+                        error: function(_xhr, _error, _thrown) {
+                            IriSP.log("Error when sending annotation", _thrown);
+                        }
+                    });
+                }
+            });
             this.$.find('.Ldt-AnnotationsList-TimeEdit').click(function(e) {
                 var _this = this;
                 // Use current player time
@@ -493,7 +523,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     widget.refresh(true);
                 }
             });
-        }
+        };
 
         this.$.find('.Ldt-AnnotationsList-Tag-Li').click(function() {
             _this.source.getAnnotations().search(IriSP.jQuery(this).text().replace(/(^\s+|\s+$)/g,''));

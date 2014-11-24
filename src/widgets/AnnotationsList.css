@@ -143,6 +143,14 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
     background: url(img/time_edit.png);
 }
 
+.Ldt-AnnotationsList-PublishAnnotation {
+    background: url(img/publish_annotation.png);
+}
+
+.published .Ldt-AnnotationsList-PublishAnnotation {
+    background: url(img/published_annotation.png);
+}
+
 .editing {
     border: 1px solid black;
     background-color: #ddd;
