@@ -17,44 +17,44 @@ if (typeof IriSP.Widgets === "undefined") {
 
 
 IriSP.Widgets.Widget = function(player, config) {
-    
+
     if( typeof player === "undefined") {
         /* Probably an abstract call of the class when
          * individual widgets set their prototype */
         return;
     }
-    
+
     this.__subwidgets = [];
-    
+
     /* Setting all the configuration options */
     var _type = config.type || "(unknown)",
         _config = IriSP._.defaults({}, config, (player && player.config ? player.config.default_options : {}), this.defaults),
         _this = this;
-    
+
     IriSP._(_config).forEach(function(_value, _key) {
        _this[_key] = _value;
     });
-    
+
     this.$ = IriSP.jQuery('#' + this.container);
-    
+
     if (typeof this.width === "undefined") {
         this.width = this.$.width();
     } else {
         this.$.css("width", this.width);
     }
-    
+
     if (typeof this.height !== "undefined") {
         this.$.css("height", this.height);
     }
-    
+
     /* Setting this.player at the end in case it's been overriden
      * by a configuration option of the same name :-(
      */
     this.player = player || new IriSP.FakeClass(["on","trigger","off","loadWidget","loadMetadata"]);
-    
+
     /* Adding classes and html attributes */
     this.$.addClass("Ldt-TraceMe Ldt-Widget").attr("widget-type", _type);
-    
+
     this.l10n = (
         typeof this.messages[IriSP.language] !== "undefined"
         ? this.messages[IriSP.language]
@@ -64,9 +64,9 @@ IriSP.Widgets.Widget = function(player, config) {
             : this.messages["en"]
         )
     );
-    
+
     /* Loading Metadata if required */
-   
+
     function onsourceloaded() {
         if (_this.media_id) {
                 _this.media = this.getElement(_this.media_id);
@@ -76,15 +76,15 @@ IriSP.Widgets.Widget = function(player, config) {
                 };
                 _this.media = _this.source.getCurrentMedia(_mediaopts);
             }
-            
+
         _this.draw();
         _this.player.trigger("widget-loaded");
     }
-    
+
     if (this.metadata) {
         /* Getting metadata */
         this.source = player.loadMetadata(this.metadata);
-        
+
         /* Call draw when loaded */
         this.source.onLoad(onsourceloaded);
     } else {
@@ -92,8 +92,8 @@ IriSP.Widgets.Widget = function(player, config) {
             onsourceloaded();
         }
     }
-    
-    
+
+
 };
 
 IriSP.Widgets.Widget.prototype.defaults = {};
@@ -234,12 +234,28 @@ IriSP.Widgets.Widget.prototype.exportAnnotations = function(annotations) {
     if (annotations === undefined)
         annotations = this.getWidgetAnnotations();
     var $ = IriSP.jQuery;
-    var content = annotations.map( function(a) { return Mustache.to_html("[{{ a.begin }}]{{ a.title }} {{ a.description }}[{{ a.end }}]", { a: a }); }).join("\n");
+
+    // FIXME: this should belong to a proper serialize/deserialize component?
+    var content = Mustache.to_html("[video:{{url}}]\n", {url: widget.media.url}) + annotations.map( function(a) { return Mustache.to_html("[{{ a.begin }}]{{ a.title }} {{ a.description }}[{{ a.end }}]", { a: a }); }).join("\n");
+
     var el = $("<pre>")
             .addClass("exportContainer")
             .text(content)
             .dialog({
                 title: "Annotation export",
+                open: function( event, ui ) {
+                    // Select text
+                    var range;
+                    if (document.selection) {
+		                range = document.body.createTextRange();
+                        range.moveToElementText(this[0]);
+		                range.select();
+		            } else if (window.getSelection) {
+		                range = document.createRange();
+		                range.selectNode(this[0]);
+		                window.getSelection().addRange(range);
+		            }
+                },
                 autoOpen: true,
                 width: '80%',
                 minHeight: '400',
