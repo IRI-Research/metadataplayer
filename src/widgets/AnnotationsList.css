@@ -152,9 +152,9 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 }
 
 .editing {
-    border: 1px solid black;
-    background-color: #ddd;
+    display: none;
+}
+
+.editableInput {
     width: 80%;
-    min-height: 3em;
-    padding: .5em;
 }

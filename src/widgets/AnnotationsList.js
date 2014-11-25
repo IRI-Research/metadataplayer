@@ -94,7 +94,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '<h3 class="Ldt-AnnotationsList-Title" draggable="true">'
     +   '<a href="{{url}}" class="Ldt-live-editable" data-editable_value="{{htitle}}" data-editable_id="{{id}}" data-editable_field="title">{{{htitle}}}</a>'
     + '</h3>'
-    + '<p class="Ldt-AnnotationsList-Description Ldt-live-editable" data-editable_value="{{hdescription}}" data-editable_id="{{id}}" data-editable_field="description">{{{hdescription}}}</p>'
+    + '<p class="Ldt-AnnotationsList-Description Ldt-live-editable" data-editable_type="multiline" data-editable_value="{{hdescription}}" data-editable_id="{{id}}" data-editable_field="description">{{{hdescription}}}</p>'
     + '{{#tags.length}}'
     + '<ul class="Ldt-AnnotationsList-Tags">'
     +   '{{#tags}}'
@@ -324,68 +324,36 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             var widget = _this;
             var $ = IriSP.jQuery;
 
-            var place_caret_at_end = function (el) {
-                if (typeof window.getSelection != "undefined"
-                    && typeof document.createRange != "undefined") {
-                    var range = document.createRange();
-                    range.selectNodeContents(el);
-                    range.collapse(false);
-                    var sel = window.getSelection();
-                    sel.removeAllRanges();
-                    sel.addRange(range);
-                } else if (typeof document.body.createTextRange != "undefined") {
-                    var textRange = document.body.createTextRange();
-                    textRange.moveToElementText(el);
-                    textRange.collapse(false);
-                    textRange.select();
-                }
-            };
-
             var edit_element = function (_this) {
                 var feedback_wrong = "#FF9999";
                 var feedback_ok = "#99FF99";
 
-                _this.contentEditable = true;
+                // Insert input element
+                var input_element = $(_this.dataset.editable_type === 'multiline' ? "<textarea>" : "<input>")
+                        .addClass("editableInput")
+                        .insertAfter($(_this));
+                input_element[0].value = $(_this).text();
+                console.log("Input", input_element);
+                $(input_element).show().focus();
                 $(_this).addClass("editing");
-                $(_this).focus( function () {
-                    window.setTimeout(function () {
-                        place_caret_at_end(_this);
-                    }, 1);
-                });
-                _this.focus();
 
                 function feedback(color) {
                     // Give some feedback
                     $(_this).removeClass("editing");
-                    _this.contentEditable = false;
+                    input_element.remove();
                     var previous_color = $(_this).css("background-color");
                     $(_this).stop().css("background-color", color)
                         .animate({ backgroundColor: previous_color}, 1000);
                 }
 
-                function clearSelection() {
-                    if (document.selection && document.selection.empty) {
-                        document.selection.empty();
-                    } else if (window.getSelection) {
-                        var sel = window.getSelection();
-                        sel.removeAllRanges();
-                    }
-                }
-                clearSelection();
-                
                 function cancelChanges(s) {
-                    _this.contentEditable = false;
-                    if ($(_this).text() == _this.dataset.editable_value) {
-                        return;
-                    }
-                    // Restore previous value
-                    $(_this).text(_this.dataset.editable_value);
                     feedback(feedback_wrong);
                 }
                 function validateChanges() {
-                    _this.contentEditable = false;
-                    var n = $(_this).text();
+                    var n = input_element[0].value;
                     if (n == _this.dataset.editable_value) {
+                        // No change
+                        feedback(feedback_ok);
                         return;
                     }
                     if (n == '') {
@@ -406,6 +374,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         }
                         _this.dataset.editable_value = n;
                         n = val;
+                        $(_this).text(val);
                     }
 
                     load_local_annotations();
@@ -436,7 +405,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         feedback(feedback_ok);
                     }
                 }
-                $(_this).bind('keydown', function(e) {
+                $(input_element).bind('keydown', function(e) {
                     if (e.which == 13) {
                         e.preventDefault();
                         validateChanges();
