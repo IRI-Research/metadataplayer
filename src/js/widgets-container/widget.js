@@ -224,6 +224,35 @@ IriSP.Widgets.Widget.prototype.navigate = function(offset) {
     };
 };
 
+/*
+ * Propose an export of the widget's annotations
+ *
+ * Parameter: a list of annotations. If not specified, the widget's annotations will be exported.
+ */
+IriSP.Widgets.Widget.prototype.exportAnnotations = function(annotations) {
+    var widget = this;
+    if (annotations === undefined)
+        annotations = this.getWidgetAnnotations();
+    var $ = IriSP.jQuery;
+    var content = annotations.map( function(a) { return Mustache.to_html("[{{ a.begin }}]{{ a.title }} {{ a.description }}[{{ a.end }}]", { a: a }); }).join("\n");
+    var el = $("<pre>")
+            .addClass("exportContainer")
+            .text(content)
+            .dialog({
+                title: "Annotation export",
+                autoOpen: true,
+                width: '80%',
+                minHeight: '400',
+                height: 400,
+                buttons: [ { text: "Close", click: function() { $( this ).dialog( "close" ); } },
+                           { text: "Download", click: function () {
+                               a = document.createElement('a');
+                               a.setAttribute('href', 'data:text/plain;base64,' + btoa(content));
+                               a.setAttribute('download', 'Annotations - ' + widget.media.title.replace(/[^ \w]/g, '') + '.txt');
+                               a.click();
+                           } } ]
+            });
+};
 
 /**
  * This method responsible of drawing a widget on screen.
