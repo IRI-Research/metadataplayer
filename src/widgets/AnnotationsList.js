@@ -61,7 +61,9 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         set_time: "Use current player time",
         edit_annotation: "Edit annotation",
         delete_annotation: "Delete annotation",
-        publish_annotation: "Make annotation public"
+        publish_annotation: "Make annotation public",
+        import_annotations: "Paste or load annotations in this field and press Import.",
+        confirm_delete_message: "Are you sure you want to delete this note?"
     },
     fr: {
         voice_annotation: "Annotation Vocale",
@@ -71,7 +73,10 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         set_time: "Utiliser le temps du lecteur",
         edit_annotation: "Éditer l'annotation",
         delete_annotation: "Supprimer l'annotation",
-        publish_annotation: "Rendre l'annotation publique"
+        publish_annotation: "Rendre l'annotation publique",
+        import_annotations: "Copiez ou chargez des annotations dans ce champ et appuyez sur Import",
+        confirm_delete_message: "Êtes-vous certain(e) de vouloir supprimer cette note ?"
+
     }
 };
 
@@ -147,6 +152,78 @@ IriSP.Widgets.AnnotationsList.prototype.ajaxMashup = function() {
         }, this.metadata));
     }
 };
+
+/*
+ * Import annotations
+ */
+IriSP.Widgets.AnnotationsList.prototype.importAnnotations = function () {
+    var widget = this;
+    var $ = IriSP.jQuery;
+    var textarea = $("<textarea>");
+    var el = $("<div>")
+            .append($("<span>")
+                    .addClass("importAnnotationsLabel")
+                    .text(widget.messages.import_annotations))
+            .addClass("importContainer")
+            .dialog({
+                title: "Annotation import",
+                autoOpen: true,
+                width: '80%',
+                minHeight: '400',
+                height: 400,
+                buttons: [ { text: "Close", click: function() { $( this ).dialog( "close" ); } },
+                           // { text: "Load", click: function () {
+                           //     // TODO
+                           //     // http://www.html5rocks.com/en/tutorials/file/dndfiles/?redirect_from_locale=fr
+                           //     console.log("Load from a file");
+                           // } },
+                           { text: "Import", click: function () {
+                               // FIXME: this should be a model.Source method
+                               var time_regexp = /(\[[\d:]+\])/;
+                               console.log("Import data");
+                               // widget.localSource
+                               // Dummy parsing for the moment
+                               var data = textarea[0].value
+                                       .split(time_regexp)
+                                       .filter( function (s) { return ! s.match(/^\s*$/)});
+                               var begin = null,
+                                   end = null,
+                                   content = null,
+                                   // Previous is either null, timestamp or text
+                                   previous = null;
+                               for (var i = 0; i < data.length; i++) {
+                                   var el = data[i];
+                                   if (el.match(time_regexp)) {
+                                       if (previous == 'text') {
+                                           // Timestamp following text. Let's make it an annotation
+                                           end = IriSP.timestamp2ms(el.slice(1, -1));
+                                           TODO.createAnnotation(begin, end, content);
+                                           // Preserve the end value, which may be the begin value of the next annotation.
+                                           begin = end;
+                                           end = null;
+                                           content = null;
+                                       } else {
+                                           //  (previous == 'timestamp' || previous == null)
+                                           // 2 consecutive timestamps. Let's start a new annotation
+                                           content = null;
+                                           begin = IriSP.timestamp2ms(el.slice(1, -1));
+                                           end = null;
+                                       };
+                                       previous = 'timestamp';
+                                   } else {
+                                       // Text content
+                                       content = el;
+                                       previous = 'text';
+                                   }
+                                   // Last textual value
+                                   if (previous == 'text' && begin !== null) {
+                                       TODO.createAnnotation(begin, begin, content);
+                                   }
+                               }
+                           } } ]
+            });
+
+}
 
 IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
     _forceRedraw = (typeof _forceRedraw !== "undefined" && _forceRedraw);
@@ -445,7 +522,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
 
             this.$.find('.Ldt-AnnotationsList-Delete').click(function(e) {
                 // Delete annotation
-                delete_local_annotation(this.dataset.editable_id);
+                if (confirm(widget.l10n.confirm_delete_message))
+                    delete_local_annotation(this.dataset.editable_id);
             });
             this.$.find('.Ldt-AnnotationsList-Edit').click(function(e) {
                 // Edit annotation title
