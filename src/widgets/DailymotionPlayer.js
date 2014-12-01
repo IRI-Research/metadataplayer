@@ -40,7 +40,8 @@ IriSP.Widgets.DailymotionPlayer.prototype.draw = function() {
         'api': 'postMessage',
         'chromeless': 1,
         'id': 'dm_player',
-        'related': 0
+        'related': 0,
+        'autoplay': 1
     };
 
     _this.$.html(Mustache.to_html('<iframe id="{{ id }}" src="{{ player_url }}?{{ params }}" width="{{ width }}" height="{{ height }}" frameborder="0"></iframe>', {
@@ -93,7 +94,13 @@ IriSP.Widgets.DailymotionPlayer.prototype.draw = function() {
 
     window.addEventListener("message", function (event) {
         // Parse event.data (query-string for to object)
+
+        // Duck-checking if event.data is a string
+        if (event.data.split === undefined)
+            return;
+        
         var info = event.data.split("&").map( function(s) { return s.split("="); }).reduce( function(o, v) { o[v[0]] = decodeURIComponent(v[1]); return o; }, {});
+
         switch (info.event) {
         case "apiready":
             state.apiready = true;
