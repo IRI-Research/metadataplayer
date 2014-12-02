@@ -98,7 +98,7 @@ IriSP.Widgets.DailymotionPlayer.prototype.draw = function() {
         // Duck-checking if event.data is a string
         if (event.data.split === undefined)
             return;
-        
+
         var info = event.data.split("&").map( function(s) { return s.split("="); }).reduce( function(o, v) { o[v[0]] = decodeURIComponent(v[1]); return o; }, {});
 
         switch (info.event) {
