@@ -410,7 +410,6 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         .addClass("editableInput")
                         .insertAfter($(_this));
                 input_element[0].value = $(_this).text();
-                console.log("Input", input_element);
                 $(input_element).show().focus();
                 $(_this).addClass("editing");
 
