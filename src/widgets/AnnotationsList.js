@@ -34,6 +34,8 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     show_controls: false,
     show_end_time: true,
     show_publish: false,
+    // Used to publish annotations
+    api_endpoint_template: "",
     editable: false,
     // Id that will be used as localStorage key
     editable_storage: "",
