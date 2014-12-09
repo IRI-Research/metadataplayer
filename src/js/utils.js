@@ -120,13 +120,17 @@ IriSP.attachDndData = function(jqSel, data) {
 					_event.originalEvent.dataTransfer.setData("text/x-iri-" + k, v);
 				}
 			});
+            if (d.uri && d.text) {
+                _event.originalEvent.dataTransfer.setData("text/x-moz-url", d.uri + "\n" + d.text.replace("\n", " "));
+                _event.originalEvent.dataTransfer.setData("text/plain", d.text + " " + d.uri);
+            }
             // Define generic text/html and text/plain last (least
             // specific types, see
             // https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Drag_operations#Drag_Data)
             if (d.html !== undefined) {
                 _event.originalEvent.dataTransfer.setData("text/html", d.html);
             }
-            if (d.text !== undefined) {
+            if (d.text !== undefined && ! d.uri) {
                 _event.originalEvent.dataTransfer.setData("text/plain", d.text);
             }
 		} catch(err) {
