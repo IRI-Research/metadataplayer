@@ -401,14 +401,23 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             var widget = _this;
             var $ = IriSP.jQuery;
 
-            var edit_element = function (_this) {
+            var edit_element = function (_this, insertion_point) {
                 var feedback_wrong = "#FF9999";
                 var feedback_ok = "#99FF99";
 
+                // insertion_point can be used to specify where to
+                // insert the input field.  Firefox is buggy wrt input
+                // fields inside <a> or <h?> tags, it does not
+                // propagate mouse clicks. If _this is a <a> then we
+                // have to specify the ancestor before which we can
+                // insert the input widget.
+                if (insertion_point === undefined)
+                    insertion_point = _this;
+                
                 // Insert input element
                 var input_element = $(_this.dataset.editable_type === 'multiline' ? "<textarea>" : "<input>")
                         .addClass("editableInput")
-                        .insertAfter($(_this));
+                        .insertBefore($(insertion_point));
                 input_element[0].value = $(_this).text();
                 $(input_element).show().focus();
                 $(_this).addClass("editing");
@@ -525,8 +534,10 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     delete_local_annotation(this.dataset.editable_id);
             });
             this.$.find('.Ldt-AnnotationsList-Edit').click(function(e) {
-                // Edit annotation title
-                edit_element($(this).parents(".Ldt-AnnotationsList-li").find(".Ldt-AnnotationsList-Title a")[0]);
+                // Edit annotation title. We have to specify the insertion point.
+                var insertion_point = $(this).parents(".Ldt-AnnotationsList-li").find(".Ldt-AnnotationsList-Title");
+                var element = insertion_point.find("a");
+                edit_element(element[0], insertion_point[0]);
             });
             this.$.find('.Ldt-AnnotationsList-PublishAnnotation').click(function(e) {
                 // Publish annotation to the server
