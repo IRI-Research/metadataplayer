@@ -61,10 +61,10 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         previous: "Previous",
         next: "Next",
         set_time: "Use current player time",
-        edit_annotation: "Edit annotation",
-        delete_annotation: "Delete annotation",
-        publish_annotation: "Make annotation public",
-        import_annotations: "Paste or load annotations in this field and press Import.",
+        edit_annotation: "Edit note",
+        delete_annotation: "Delete note",
+        publish_annotation: "Make ntoe public",
+        import_annotations: "Paste or load notes in this field and press Import.",
         confirm_delete_message: "Are you sure you want to delete this note?"
     },
     fr: {
@@ -73,10 +73,10 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         previous: "Précédent",
         next: "Suivant",
         set_time: "Utiliser le temps du lecteur",
-        edit_annotation: "Éditer l'annotation",
-        delete_annotation: "Supprimer l'annotation",
-        publish_annotation: "Rendre l'annotation publique",
-        import_annotations: "Copiez ou chargez des annotations dans ce champ et appuyez sur Import",
+        edit_annotation: "Éditer la note",
+        delete_annotation: "Supprimer la note",
+        publish_annotation: "Rendre la note publique",
+        import_annotations: "Copiez ou chargez des notes dans ce champ et appuyez sur Import",
         confirm_delete_message: "Êtes-vous certain(e) de vouloir supprimer cette note ?"
 
     }
