@@ -36,6 +36,8 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     show_publish: false,
     // Used to publish annotations
     api_endpoint_template: "",
+    api_serializer: "ldt_annotate",
+    api_method: "POST",
     editable: false,
     // Id that will be used as localStorage key
     editable_storage: "",
@@ -549,22 +551,24 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             });
             this.$.find('.Ldt-AnnotationsList-PublishAnnotation').click(function(e) {
                 // Publish annotation to the server
-                var _url = Mustache.to_html(this.api_endpoint_template, {id: widget.source.projectId});
+                var _url = Mustache.to_html(widget.api_endpoint_template, {id: widget.source.projectId});
                 if (_url !== "") {
-                    var _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]});
-                    var _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager);
+                    var _export = widget.player.sourceManager.newLocalSource({serializer: IriSP.serializers[widget.api_serializer]});
+
+                    var _annotation = get_local_annotation(this.dataset.editable_id);
+                    var _exportedAnnotations = new IriSP.Model.List(widget.player.sourceManager);
                     _exportedAnnotations.push(_annotation);
                     _export.addList("annotation", _exportedAnnotations);
                     IriSP.jQuery.ajax({
                         url: _url,
-                        type: this.api_method,
+                        type: widget.api_method,
                         contentType: 'application/json',
                         data: _export.serialize(),
                         success: function(_data) {
-                            widget.addClass("published");
+                            $(this).addClass("published");
                             // Save the published information
-                            load_local_annotations();
-                            var an = IriSP._.first(IriSP._.filter(widget.localSource.getAnnotations(), function (a) { return a.id == _annotation.id; }));
+                            var an = get_local_annotation(_annotation.id);
+                            // FIXME: add "published" tag
                             save_local_annotations();
                         },
                         error: function(_xhr, _error, _thrown) {
