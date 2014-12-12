@@ -62,7 +62,7 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         now_playing: "Now playing...",
         previous: "Previous",
         next: "Next",
-        set_time: "Use current player time",
+        set_time: "Double-click to update to current player time",
         edit_annotation: "Edit note",
         delete_annotation: "Delete note",
         publish_annotation: "Make ntoe public",
@@ -74,7 +74,7 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         now_playing: "Lecture en cours...",
         previous: "Précédent",
         next: "Suivant",
-        set_time: "Utiliser le temps du lecteur",
+        set_time: "Double-cliquer pour fixer au temps du lecteur",
         edit_annotation: "Éditer la note",
         delete_annotation: "Supprimer la note",
         publish_annotation: "Rendre la note publique",
@@ -99,7 +99,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     +     '<img title="{{ begin }} - {{ atitle }}" class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
     +   '</a>'
     + '</div>'
-    + '<div class="Ldt-AnnotationsList-Duration"><span class="Ldt-AnnotationsList-Begin Ldt-live-editable" data-editable_value="{{begin}}" data-editable_id="{{id}}" data-editable_field="begin" data-editable_type="timestamp">{{begin}}</span>{{#show_end_time}} - <span class="Ldt-AnnotationsList-End Ldt-live-editable" data-editable_value="{{end}}" data-editable_id="{{id}}" data-editable_field="end" data-editable_type="timestamp">{{end}}</span>{{/show_end_time}}</div>'
+    + '<div title="{{l10n.set_time}}" class="Ldt-AnnotationsList-Duration"><span class="Ldt-AnnotationsList-Begin Ldt-live-editable Ldt-AnnotationsList-TimeEdit" data-editable_value="{{begin}}" data-editable_id="{{id}}" data-editable_field="begin" data-editable_type="timestamp">{{begin}}</span>{{#show_end_time}} - <span class="Ldt-AnnotationsList-End Ldt-live-editable" data-editable_value="{{end}}" data-editable_id="{{id}}" data-editable_field="end" data-editable_type="timestamp">{{end}}</span>{{/show_end_time}}</div>'
     + '<h3 class="Ldt-AnnotationsList-Title" draggable="true">'
     +   '<a href="{{url}}" class="Ldt-live-editable" data-editable_value="{{htitle}}" data-editable_type="multiline" data-editable_id="{{id}}" data-editable_field="title">{{{htitle}}}</a>'
     + '</h3>'
@@ -118,7 +118,6 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '{{#audio}}<div class="Ldt-AnnotationsList-Play" data-annotation-id="{{id}}">{{l10n.voice_annotation}}</div>{{/audio}}'
     + '{{#editable}}<div class="Ldt-AnnotationsList-EditControls">'
     +    '{{#show_publish}}<div title="{{l10n.publish_annotation}}" class="Ldt-AnnotationsList-PublishAnnotation" data-editable_id="{{id}}"></div>{{/show_publish}}'
-    +    '<div title="{{l10n.set_time}}" class="Ldt-AnnotationsList-TimeEdit" data-editable_id="{{id}}"></div>'
     +    '<div title="{{l10n.edit_annotation}}" class="Ldt-AnnotationsList-Edit" data-editable_id="{{id}}"></div>'
     +    '<div title="{{l10n.delete_annotation}}" class="Ldt-AnnotationsList-Delete" data-editable_id="{{id}}"></div>'
     + '</div>{{/editable}}'
@@ -577,7 +576,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     });
                 }
             });
-            this.$.find('.Ldt-AnnotationsList-TimeEdit').click(function(e) {
+            this.$.find('.Ldt-AnnotationsList-TimeEdit').dblclick(function(e) {
                 var _this = this;
                 // Use current player time
                 var an = get_local_annotation(_this.dataset.editable_id);
