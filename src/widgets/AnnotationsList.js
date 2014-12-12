@@ -465,11 +465,9 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         $(_this).text(val);
                     }
 
-                    load_local_annotations();
-
                     // We cannot use .getElement since it fetches
                     // elements from the global Directory
-                    var an = IriSP._.first(IriSP._.filter(widget.localSource.getAnnotations(), function (a) { return a.id ==_this.dataset.editable_id; }));
+                    var an = get_local_annotation(_this.dataset.editable_id);
                     if (an === undefined) {
                         console.log("Strange error: cannot find edited annotation");                        
                         feedback(feedback_wrong);
@@ -514,6 +512,13 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 }
                 // Load current local annotations
                 widget.localSource.deSerialize(window.localStorage[widget.editable_storage]);
+            };
+
+            var get_local_annotation = function (ident) {
+                load_local_annotations();
+                // We cannot use .getElement since it fetches
+                // elements from the global Directory
+                return IriSP._.first(IriSP._.filter(widget.localSource.getAnnotations(), function (a) { return a.id == ident; }));
             };
 
             var save_local_annotations = function() {
@@ -571,10 +576,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             this.$.find('.Ldt-AnnotationsList-TimeEdit').click(function(e) {
                 var _this = this;
                 // Use current player time
-                load_local_annotations();
-                // We cannot use .getElement since it fetches
-                // elements from the global Directory
-                var an = IriSP._.first(IriSP._.filter(widget.localSource.getAnnotations(), function (a) { return a.id == _this.dataset.editable_id; }));
+                var an = get_local_annotation(_this.dataset.editable_id);
                 if (an !== undefined) {
                     // FIXME: implement Undo feature
                     an.setBegin(widget.media.getCurrentTime().milliseconds);
