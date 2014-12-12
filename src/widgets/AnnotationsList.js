@@ -325,7 +325,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 tags : _annotation.getTagTexts(),
                 specific_style : (typeof _bgcolor !== "undefined" ? "background-color: " + _bgcolor : ""),
                 l10n: _this.l10n,
-                editable: _this.editable
+                editable: _this.editable,
+                show_publish: _this.show_publish
             };
             if (_this.show_controls) {
                 _this.$.find(".Ldt-AnnotationsList-Control-Prev").on("click", function (e) { e.preventDefault(); _this.navigate(-1); });
