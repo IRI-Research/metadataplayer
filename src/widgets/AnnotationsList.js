@@ -34,6 +34,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     show_controls: false,
     show_end_time: true,
     show_publish: false,
+    publish_type: "PublicContribution",
     // Used to publish annotations
     api_endpoint_template: "",
     api_serializer: "ldt_annotate",
@@ -555,6 +556,13 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     var _export = widget.player.sourceManager.newLocalSource({serializer: IriSP.serializers[widget.api_serializer]});
 
                     var _annotation = get_local_annotation(this.dataset.editable_id);
+                    if (widget.publish_type) {
+                        // If publish_type is specified, try to set the annotation type of the exported annotation
+                        var at = widget.source.getAnnotationTypes().filter(function(at) { return at.title == widget.publish_type; });
+                        if (at.length == 1) {
+                            _annotation.setAnnotationType(at[0].id);
+                        }
+                    }
                     var _exportedAnnotations = new IriSP.Model.List(widget.player.sourceManager);
                     _exportedAnnotations.push(_annotation);
                     _export.addList("annotation", _exportedAnnotations);
