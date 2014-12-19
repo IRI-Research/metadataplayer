@@ -71,6 +71,7 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         publish_annotation: "Make ntoe public",
         import_annotations: "Paste or load notes in this field and press Import.",
         confirm_delete_message: "Are you sure you want to delete this note?",
+        confirm_publish_message: "Are you sure you want to make this note public?",
         tweet_annotation: "Tweet annotation"
     },
     fr: {
@@ -84,6 +85,7 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         publish_annotation: "Rendre la note publique",
         import_annotations: "Copiez ou chargez des notes dans ce champ et appuyez sur Import",
         confirm_delete_message: "Êtes-vous certain(e) de vouloir supprimer cette note ?",
+        confirm_publish_message: "Êtes-vous certain(e) de vouloir rendre cette note publique ?",
         tweet_annotation: "Tweeter l'annotation"
     }
 };
@@ -557,6 +559,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             });
             this.$.find('.Ldt-AnnotationsList-PublishAnnotation').click(function(e) {
                 // Publish annotation to the server
+                if (!confirm(widget.l10n.confirm_publish_message))
+                    return;
                 var _url = Mustache.to_html(widget.api_endpoint_template, {id: widget.source.projectId});
                 if (_url !== "") {
                     var _export = widget.player.sourceManager.newLocalSource({serializer: IriSP.serializers[widget.api_serializer]});
