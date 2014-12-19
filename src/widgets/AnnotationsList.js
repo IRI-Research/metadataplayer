@@ -119,12 +119,12 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '</ul>'
     + '{{/tags.length}}'
     + '{{#audio}}<div class="Ldt-AnnotationsList-Play" data-annotation-id="{{id}}">{{l10n.voice_annotation}}</div>{{/audio}}'
-    + '{{#editable}}<div class="Ldt-AnnotationsList-EditControls">'
+    + '<div class="Ldt-AnnotationsList-EditControls">'
     +    '{{#show_twitter}}<a title="{{l10n.tweet_annotation}}" target="_blank" href="https://twitter.com/intent/tweet?{{twitter_param}}"><img width="16" height="16" src="metadataplayer/img/twitter.svg"></a>{{/show_twitter}}'
     +    '{{#show_publish}}<div title="{{l10n.publish_annotation}}" class="Ldt-AnnotationsList-PublishAnnotation" data-editable_id="{{id}}"></div>{{/show_publish}}'
-    +    '<div title="{{l10n.edit_annotation}}" class="Ldt-AnnotationsList-Edit" data-editable_id="{{id}}"></div>'
-    +    '<div title="{{l10n.delete_annotation}}" class="Ldt-AnnotationsList-Delete" data-editable_id="{{id}}"></div>'
-    + '</div>{{/editable}}'
+    +    '{{#editable}}<div title="{{l10n.edit_annotation}}" class="Ldt-AnnotationsList-Edit" data-editable_id="{{id}}"></div>'
+    +    '<div title="{{l10n.delete_annotation}}" class="Ldt-AnnotationsList-Delete" data-editable_id="{{id}}"></div>{{/editable}}'
+    + '</div>'
     + '</li>';
 
 //obj.url = this.project_url + "/" + media + "/" + annotations[i].meta.project + "/" + annotations[i].meta["id-ref"] + '#id=' + annotations[i].id;
