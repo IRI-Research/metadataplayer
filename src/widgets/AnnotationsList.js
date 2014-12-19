@@ -34,6 +34,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     show_controls: false,
     show_end_time: true,
     show_publish: false,
+    show_twitter: false,
     publish_type: "PublicContribution",
     // Used to publish annotations
     api_endpoint_template: "",
@@ -68,7 +69,8 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         delete_annotation: "Delete note",
         publish_annotation: "Make ntoe public",
         import_annotations: "Paste or load notes in this field and press Import.",
-        confirm_delete_message: "Are you sure you want to delete this note?"
+        confirm_delete_message: "Are you sure you want to delete this note?",
+        tweet_annotation: "Tweet annotation"
     },
     fr: {
         voice_annotation: "Annotation Vocale",
@@ -80,8 +82,8 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         delete_annotation: "Supprimer la note",
         publish_annotation: "Rendre la note publique",
         import_annotations: "Copiez ou chargez des notes dans ce champ et appuyez sur Import",
-        confirm_delete_message: "Êtes-vous certain(e) de vouloir supprimer cette note ?"
-
+        confirm_delete_message: "Êtes-vous certain(e) de vouloir supprimer cette note ?",
+        tweet_annotation: "Tweeter l'annotation"
     }
 };
 
@@ -118,6 +120,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '{{/tags.length}}'
     + '{{#audio}}<div class="Ldt-AnnotationsList-Play" data-annotation-id="{{id}}">{{l10n.voice_annotation}}</div>{{/audio}}'
     + '{{#editable}}<div class="Ldt-AnnotationsList-EditControls">'
+    +    '{{#show_twitter}}<a title="{{l10n.tweet_annotation}}" target="_blank" href="https://twitter.com/intent/tweet?{{twitter_param}}"><img width="16" height="16" src="metadataplayer/img/twitter.svg"></a>{{/show_twitter}}'
     +    '{{#show_publish}}<div title="{{l10n.publish_annotation}}" class="Ldt-AnnotationsList-PublishAnnotation" data-editable_id="{{id}}"></div>{{/show_publish}}'
     +    '<div title="{{l10n.edit_annotation}}" class="Ldt-AnnotationsList-Edit" data-editable_id="{{id}}"></div>'
     +    '<div title="{{l10n.delete_annotation}}" class="Ldt-AnnotationsList-Delete" data-editable_id="{{id}}"></div>'
@@ -328,7 +331,9 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 specific_style : (typeof _bgcolor !== "undefined" ? "background-color: " + _bgcolor : ""),
                 l10n: _this.l10n,
                 editable: _this.editable,
-                show_publish: _this.show_publish
+                show_publish: _this.show_publish,
+                show_twitter: _this.show_twitter,
+                twitter_param: IriSP.jQuery.param({ url: _url, text: IriSP.textFieldHtml(_title) })
             };
             if (_this.show_controls) {
                 _this.$.find(".Ldt-AnnotationsList-Control-Prev").on("click", function (e) { e.preventDefault(); _this.navigate(-1); });
