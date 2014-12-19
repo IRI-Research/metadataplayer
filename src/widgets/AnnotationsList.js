@@ -575,8 +575,10 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                             $(this).addClass("published");
                             // Save the published information
                             var an = get_local_annotation(_annotation.id);
-                            // FIXME: add "published" tag
+                            // FIXME: handle "published" tag
+                            an.setTags( [ "published" ]);
                             save_local_annotations();
+                            widget.player.trigger("AnnotationsList.refresh");
                         },
                         error: function(_xhr, _error, _thrown) {
                             IriSP.log("Error when sending annotation", _thrown);
