@@ -35,6 +35,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     show_end_time: true,
     show_publish: false,
     show_twitter: false,
+    twitter_hashtag: '',
     publish_type: "PublicContribution",
     // Used to publish annotations
     api_endpoint_template: "",
@@ -333,7 +334,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 editable: _this.editable,
                 show_publish: _this.show_publish,
                 show_twitter: _this.show_twitter,
-                twitter_param: IriSP.jQuery.param({ url: _url, text: IriSP.textFieldHtml(_title) })
+                twitter_param: IriSP.jQuery.param({ url: _url, text: IriSP.textFieldHtml(_title) + (_this.twitter_hashtag ? ' #' + _this.twitter_hashtag : "") })
             };
             if (_this.show_controls) {
                 _this.$.find(".Ldt-AnnotationsList-Control-Prev").on("click", function (e) { e.preventDefault(); _this.navigate(-1); });
