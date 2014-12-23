@@ -108,6 +108,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '<div title="{{l10n.set_time}}" class="Ldt-AnnotationsList-Duration"><span class="Ldt-AnnotationsList-Begin Ldt-live-editable Ldt-AnnotationsList-TimeEdit" data-editable_value="{{begin}}" data-editable_id="{{id}}" data-editable_field="begin" data-editable_type="timestamp">{{begin}}</span>{{#show_end_time}} - <span class="Ldt-AnnotationsList-End Ldt-live-editable" data-editable_value="{{end}}" data-editable_id="{{id}}" data-editable_field="end" data-editable_type="timestamp">{{end}}</span>{{/show_end_time}}</div>'
     + '<h3 class="Ldt-AnnotationsList-Title Ldt-Annotation-Timecode" data-timecode="{{ begin_ms }}" draggable="true">'
     +   '<a href="{{url}}" class="Ldt-live-editable" data-editable_value="{{htitle}}" data-editable_type="multiline" data-editable_id="{{id}}" data-editable_field="title">{{{htitle}}}</a>'
+    + '{{#show_creator}}<span class="Ldt-AnnotationsList-Creator">{{ creator }}</span>{{/show_creator}}'
     + '</h3>'
     + '<p class="Ldt-AnnotationsList-Description Ldt-live-editable" data-editable_type="multiline" data-editable_value="{{hdescription}}" data-editable_id="{{id}}" data-editable_field="description">{{{hdescription}}}</p>'
     + '{{#tags.length}}'
@@ -300,10 +301,6 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             var _title = "",
                 _description = _annotation.description,
                 _thumbnail = (typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail);
-            // Update : display creator
-            if (_annotation.creator && _this.show_creator) {
-            	_title = _annotation.creator;
-            }
             if (_annotation.title) {
             	var tempTitle = _annotation.title;
             	if( tempTitle.substr(0, _title.length + 1) == (_title + ":") ){
@@ -323,6 +320,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 media_id : _annotation.getMedia().id,
                 atitle: IriSP.textFieldHtml(_annotation.title),
                 htitle : IriSP.textFieldHtml(_title),
+                creator: _annotation.creator ? ' (' + _annotation.creator + ')' : "",
                 hdescription : IriSP.textFieldHtml(_description),
                 begin : _annotation.begin.toString(),
                 end : _annotation.end.toString(),
@@ -335,6 +333,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 l10n: _this.l10n,
                 editable: _this.editable,
                 show_publish: _this.show_publish,
+                show_creator: _this.show_creator,
                 show_twitter: _this.show_twitter,
                 twitter_param: IriSP.jQuery.param({ url: _url, text: IriSP.textFieldHtml(_title) + (_this.twitter_hashtag ? ' #' + _this.twitter_hashtag : "") })
             };

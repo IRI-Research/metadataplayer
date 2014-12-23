@@ -61,6 +61,10 @@ h3.Ldt-AnnotationsList-Title {
     color: #0068c4;
 }
 
+.Ldt-AnnotationsList-Creator {
+    color: #aaa;
+}
+
 p.Ldt-AnnotationsList-Description {
     margin: 2px 0 2px 82px;
     font-size: 12px;
