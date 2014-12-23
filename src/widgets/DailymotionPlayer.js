@@ -121,12 +121,12 @@ IriSP.Widgets.DailymotionPlayer.prototype.draw = function() {
             _media.trigger("loadedmetadata");
             break;
         case "pause":
-            _media.trigger("pause");
             state.pause = true;
+            _media.trigger("pause");
             break;
         case "play":
-            _media.trigger("play");
             state.pause = false;
+            _media.trigger("play");
             break;
             //case "playing":
             //    break;
@@ -134,8 +134,8 @@ IriSP.Widgets.DailymotionPlayer.prototype.draw = function() {
             //  Loading progress
             //    break;
         case "seeked":
-            _media.trigger("seeked");
             state.time = new IriSP.Model.Time(1000 * Number(info.time));
+            _media.trigger("seeked");            
             break;
         case "timeupdate":
             state.time = new IriSP.Model.Time(1000 * Number(info.time));
