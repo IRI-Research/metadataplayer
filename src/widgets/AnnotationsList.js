@@ -491,7 +491,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                             an[_this.dataset.editable_field] = n;
                         an.modified = new Date();
                         // FIXME: use user name, when available
-                        an.contributor = "COCo User";
+                        an.contributor = widget.player.config.username || "COCo User";
                         widget.localSource.merge( [ an ] );
 
                         save_local_annotations();
