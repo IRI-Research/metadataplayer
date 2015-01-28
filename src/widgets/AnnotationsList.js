@@ -587,7 +587,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                             // FIXME: handle "published" tag
                             an.setTags( [ "published" ]);
                             save_local_annotations();
-                            widget.player.trigger("AnnotationsList.refresh");
+                            widget.player.trigger("Annotation.publish", _annotation);
                         },
                         error: function(_xhr, _error, _thrown) {
                             IriSP.log("Error when sending annotation", _thrown);
