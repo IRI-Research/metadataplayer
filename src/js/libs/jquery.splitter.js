@@ -44,7 +44,7 @@
             panel_2 = panel_1.next().addClass('right_panel');
             cls = 'vsplitter';
         } else if (settings.orientation == 'horizontal') {
-            panel_1 = children.first().addClass('top_panel')
+            panel_1 = children.first().addClass('top_panel');
             panel_2 = panel_1.next().addClass('bottom_panel');
             cls = 'hsplitter';
         }
@@ -83,7 +83,7 @@
             } else {
                 //throw 'position have invalid type';
             }
-        }
+        };
 
         var self = $.extend(this, {
             refresh: function() {
