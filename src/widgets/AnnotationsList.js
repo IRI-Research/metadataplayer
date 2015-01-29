@@ -70,8 +70,8 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         delete_annotation: "Delete note",
         publish_annotation: "Make ntoe public",
         import_annotations: "Paste or load notes in this field and press Import.",
-        confirm_delete_message: "Are you sure you want to delete this note?",
-        confirm_publish_message: "Are you sure you want to make this note public?",
+        confirm_delete_message: "You are about to delete {{ annotation.title }}. Are you sure you want to delete it?",
+        confirm_publish_message: "You are about to publish {{ annotation.title }}. Are you sure you want to make it public?",
         tweet_annotation: "Tweet annotation"
     },
     fr: {
@@ -84,8 +84,8 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         delete_annotation: "Supprimer la note",
         publish_annotation: "Rendre la note publique",
         import_annotations: "Copiez ou chargez des notes dans ce champ et appuyez sur Import",
-        confirm_delete_message: "Êtes-vous certain(e) de vouloir supprimer cette note ?",
-        confirm_publish_message: "Êtes-vous certain(e) de vouloir rendre cette note publique ?",
+        confirm_delete_message: "Vous allez supprimer {{ annotation.title }}. Êtes-vous certain(e) ?",
+        confirm_publish_message: "Vous allez publier {{ annotation.title }}. Êtes-vous certain(e) ?",
         tweet_annotation: "Tweeter l'annotation"
     }
 };
@@ -547,7 +547,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
 
             this.$.find('.Ldt-AnnotationsList-Delete').click(function(e) {
                 // Delete annotation
-                if (confirm(widget.l10n.confirm_delete_message))
+                var _annotation = get_local_annotation(this.dataset.editable_id);
+                if (confirm(Mustache.to_html(widget.l10n.confirm_delete_message, { annotation: _annotation })))
                     delete_local_annotation(this.dataset.editable_id);
             });
             this.$.find('.Ldt-AnnotationsList-Edit').click(function(e) {
@@ -557,14 +558,14 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 edit_element(element[0], insertion_point[0]);
             });
             this.$.find('.Ldt-AnnotationsList-PublishAnnotation').click(function(e) {
+                var _annotation = get_local_annotation(this.dataset.editable_id);
                 // Publish annotation to the server
-                if (!confirm(widget.l10n.confirm_publish_message))
+                if (!confirm(Mustache.to_html(widget.l10n.confirm_publish_message, { annotation: _annotation })))
                     return;
                 var _url = Mustache.to_html(widget.api_endpoint_template, {id: widget.source.projectId});
                 if (_url !== "") {
                     var _export = widget.player.sourceManager.newLocalSource({serializer: IriSP.serializers[widget.api_serializer]});
 
-                    var _annotation = get_local_annotation(this.dataset.editable_id);
                     if (widget.publish_type) {
                         // If publish_type is specified, try to set the annotation type of the exported annotation
                         var at = widget.source.getAnnotationTypes().filter(function(at) { return at.title == widget.publish_type; });
