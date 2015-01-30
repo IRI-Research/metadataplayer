@@ -3,6 +3,7 @@
     display: flex;
     width: 50%;
     float: left;
+    margin: -6px;
 }
 
 .Ldt-SlideVideoPlayer {
