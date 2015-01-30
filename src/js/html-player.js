@@ -115,5 +115,15 @@ IriSP.htmlPlayer = function(media, jqselector, options) {
         media.trigger("seeked");
     });
     
-    
+    videoEl.on("dblclick", function () {
+        // Toggle fullscreen
+        var elem = videoEl[0];
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+        }
+    });
 };
