@@ -80,7 +80,7 @@ IriSP.Widgets.MultiSegments.prototype.draw = function() {
                 IriSP._({
                     type: "Segments",
                     annotation_type: _anntype,
-                    width: _this.width
+                    width: '100%'
                 }).extend(segmentsopts)
             );
             
@@ -89,7 +89,7 @@ IriSP.Widgets.MultiSegments.prototype.draw = function() {
                 IriSP._({
                     type: "Annotation",
                     annotation_type: _anntype,
-                    width: _this.width
+                    width: '100%'
                 }).extend(annotationopts)
             );
             
