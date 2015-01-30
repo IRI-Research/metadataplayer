@@ -7,16 +7,23 @@
 .splitter_panel {
   position: relative;
 }
-.splitter_panel .vsplitter {
-    background-color: grey;
-    cursor: col-resize;
+.splitter_panel .vsplitter, .splitter_panel .hsplitter {
+    background-color: white;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+
     width: 8px;
 }
-
+.splitter_panel .vsplitter:hover, .splitter_panel .hsplitter:hover {
+    background-color: #ddd;
+    border-left: 2px solid #ccc;
+    border-right: 2px solid #ccc;
+}
+.splitter_panel .vsplitter {
+    cursor: col-resize;
+}
 .splitter_panel .hsplitter {
-    background-color: #5F5F5F;
     cursor: row-resize;
-    height: 8px;
 }
 .splitter_panel .vsplitter.splitter-invisible,
 .splitter_panel .hsplitter.splitter-invisible {
