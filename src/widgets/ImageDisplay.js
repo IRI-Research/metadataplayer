@@ -7,7 +7,7 @@ IriSP.Widgets.ImageDisplay = function(player, config) {
 IriSP.Widgets.ImageDisplay.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.ImageDisplay.prototype.defaults = {
-    annotation_type: "Slides",
+    annotation_type: "Slides"
     // container: "imageContainer"
 }
 
