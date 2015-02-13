@@ -20,4 +20,5 @@ sbin/build/compil-to-polemic-tweet.sh
 *.orig
 src/js/site.js
 doc/jsdoc/*
+test/
 build/

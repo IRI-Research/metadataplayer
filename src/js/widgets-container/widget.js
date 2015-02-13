@@ -146,13 +146,19 @@ IriSP.Widgets.Widget.prototype.onMediaEvent = function(_eventName, _functionOrNa
 };
 
 IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function() {
+    var result = null;
     if (typeof this.annotation_type === "undefined") {
-        return this.media.getAnnotations();
+        result = this.media.getAnnotations();
+    } else if (this.annotation_type.elementType === "annotationType") {
+        result = this.annotation_type.getAnnotations();
+    } else {
+        result = this.media.getAnnotationsByTypeTitle(this.annotation_type);
     }
-    if (this.annotation_type.elementType === "annotationType") {
-        return this.annotation_type.getAnnotations();
+    if (typeof this.annotation_filter !== "undefined") {
+        return this.annotation_filter(result);
+    } else {
+        return result;
     }
-    return this.media.getAnnotationsByTypeTitle(this.annotation_type);
 };
 
 IriSP.Widgets.Widget.prototype.getWidgetAnnotationsAtTime = function() {
@@ -195,6 +201,29 @@ IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _widgetopti
         });
     });
 };
+
+/*
+ * Position the player to the next/previous annotations based on current player position
+ *
+ * Parameter: offset: -1 for previous annotation, +1 for next annotation
+ */
+IriSP.Widgets.Widget.prototype.navigate = function(offset) {
+    // offset is normally either -1 (previous slide) or +1 (next slide)
+    var _this = this;
+    var currentTime = _this.media.getCurrentTime();
+    var annotations = _this.source.getAnnotations().sortBy(function(_annotation) {
+        return _annotation.begin;
+    });
+    for (var i = 0; i < annotations.length; i++) {
+        if (annotations[i].begin <= currentTime && currentTime < annotations[i].end) {
+            // Found a current annotation - clamp i+offset value to [0, length - 1]
+            i = Math.min(annotations.length - 1, Math.max(0, i + offset));
+            _this.media.setCurrentTime(annotations[i].begin);
+            break;
+        }
+    };
+};
+
 
 /**
  * This method responsible of drawing a widget on screen.

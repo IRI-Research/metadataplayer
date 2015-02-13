@@ -23,7 +23,7 @@
 }
 
 .Ldt-CreateAnnotation-Main {
-    min-height: 150px;
+    min-height: 100px;
 }
 
 .Ldt-CreateAnnotation-Title, .Ldt-CreateAnnotation-Creator {
@@ -47,6 +47,7 @@
     position: absolute;
     bottom: 7px;
     right: 7px;
+    display: inline;
     color: #ffffff;
     cursor: pointer;
     background: url('img/submit_annotation.png');
@@ -163,4 +164,18 @@ a.Ldt-CreateAnnotation-Close {
 
 a.Ldt-CreateAnnotation-Close:hover {
     background-position: -17px 0;
+}
+
+.Ldt-CreateAnnotation-Controls {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+}
+
+span[class^='Ldt-CreateAnnotation-Control-'] {
+    background-color: #ddd;
+    padding: 2px;
+    margin: 4px;
+    border-radius: 3px;
+    border: 1px solid #888;
 }
