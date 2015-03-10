@@ -2,6 +2,7 @@
 .Ldt-ImageDisplay-Container {
     margin: auto;
     height: 100%;
+    max-width: 100%;
 }
 
 .Ldt-ImageDisplay-Image {
