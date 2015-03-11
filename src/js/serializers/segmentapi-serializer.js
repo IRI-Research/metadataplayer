@@ -19,7 +19,7 @@ IriSP.serializers.segmentapi = {
             }
             _ann.setMedia(_s.iri_id);
             _ann.title = _s.title;
-            _ann.description = _s.abstract;
+            _ann.description = _s['abstract'];
             _ann.begin = new IriSP.Model.Time(_s.start_ts);
             _ann.end = new IriSP.Model.Time(_s.start_ts + _s.duration);
             _ann.keywords = (_s.tags ? _s.tags.split(",") : []);

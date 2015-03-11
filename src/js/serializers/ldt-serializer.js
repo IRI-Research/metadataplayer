@@ -103,7 +103,7 @@ IriSP.serializers.ldt = {
                         "dc:created" : IriSP.Model.dateToIso(_data.created || _source.created),
                         "dc:modified" : IriSP.Model.dateToIso(_data.modified || _source.modified),
                         "dc:creator" : _data.creator || _source.creator,
-                        "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator,
+                        "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator
                     }
                 };
                 _dest.tags.push(_res);
@@ -125,7 +125,7 @@ IriSP.serializers.ldt = {
                     "dc:created" : IriSP.Model.dateToIso(_data.created || _source.created),
                     "dc:modified" : IriSP.Model.dateToIso(_data.modified || _source.modified),
                     "dc:creator" : _data.creator || _source.creator,
-                    "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator,
+                    "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator
                 };
                 _dest["annotation-types"].push(_res);
                 _dest.views[0].annotation_types.push(_data.id);
@@ -194,7 +194,7 @@ IriSP.serializers.ldt = {
                         "dc:created" : IriSP.Model.dateToIso(_data.created || _source.created),
                         "dc:modified" : IriSP.Model.dateToIso(_data.modified || _source.modified),
                         "dc:creator" : _data.creator || _source.creator,
-                        "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator,
+                        "dc:contributor" : _data.contributor || _source.contributor || _data.creator || _source.creator
 //                        project : _source.projectId
                     }
                 };

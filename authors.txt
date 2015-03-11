@@ -1,0 +1,7 @@
+cavaliet = tbcvl <tibo_c@yahoo.fr>
+hamidouk = Karim Hamidou <khamidou@gmail.com>
+hurons = Samuel Huron <cybunk@gmail.com>
+raph = Raphaël Velt <raphael@velt.info>
+veltr = Raphaël Velt <raphael@velt.info>
+ymh = Yves-Marie Haussonne <ymh.work+github@gmail.com>
+
