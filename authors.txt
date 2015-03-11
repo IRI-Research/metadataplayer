@@ -4,4 +4,4 @@ hurons = Samuel Huron <cybunk@gmail.com>
 raph = Raphaël Velt <raphael@velt.info>
 veltr = Raphaël Velt <raphael@velt.info>
 ymh = Yves-Marie Haussonne <ymh.work+github@gmail.com>
-
+oaubert = Olivier Aubert <contact@olivieraubert.net>
