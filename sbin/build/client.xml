@@ -13,7 +13,7 @@
     </taskdef>
     <delete dir="${basedir}/../../build" />
     <mkdir  dir="${basedir}/../../build" />
-    
+
     <target name="makeall" depends="concatenate-player,copytotest" />
 
     <target name="concatenate-core">
@@ -26,7 +26,7 @@
             </filterchain>
         </concat>
     </target>
-	
+
     <target name="concatenate-player" description="Build the developer release file" depends="concatenate-core">
         <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/LdtPlayer-core.js">
             <filelist dir="../../src/js/libs" files="LAB.min.js" />
@@ -44,7 +44,7 @@
             </filterchain>
         </concat>
     </target>
-    
+
     <target name="copytotest" description="Copy files to test directory">
         <delete dir="../../test/metadataplayer" />
         <delete dir="../../test/libs" />
@@ -60,7 +60,7 @@
             <fileset dir="../../src/css/img"/>
         </copy>
     </target>
-    
+
     <target name="minify" depends="concatenate-player">
         <jscomp compilationLevel="simple" warning="quiet" debug="false"
         output="../../build/LdtPlayer.min.raw.js">
@@ -83,11 +83,13 @@
     <property name="rhino.jar" value="${basedir}/../res/rhino.jar"/>
     <property name="jslint-wrapper.js" value="${basedir}/../res/jslint-wrapper.js"/>
     <property name="jslint.js" value="${basedir}/../res/jslint.js"/>
-    <target name="jslint" description="Run jslint on the files" depends="concatenate-player">
+    <target name="jslint" description="Run jslint on the files">
         <apply executable="java" parallel="false">
-            <filelist dir="../../build">
-                <file name="LdtPlayer-core.js"/>
-            </filelist>
+            <fileset dir="../../src">
+                <include name="js/**/*.js"/>
+                <exclude name="js/libs/**"/>
+                <include name="widgets/**/*.js"/>
+            </fileset>
             <arg line="-jar"/>
             <arg path="${rhino.jar}"/>
             <arg path="${jslint-wrapper.js}"/>
