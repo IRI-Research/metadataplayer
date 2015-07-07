@@ -21,7 +21,7 @@
 
 .Ldt-Slider-Time {
     position: absolute;
-    top: -16px;
+    bottom: 32px;
     background: #ffffc0;
     color: #000000;
     border-radius: 3px;
