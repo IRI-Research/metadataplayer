@@ -3,18 +3,6 @@
     display: flex;
     width: 50%;
     float: left;
-    margin: -6px;
-}
-
-.Ldt-SlideVideoPlayer {
-    min-height: 400px;
-    max-height: 100%;
-}
-
-@media all and (max-height: 600px) {
-    .Ldt-SlideVideoPlayer {
-        min-height: 300px;
-    }
 }
 
 .Ldt-SlideVideoPlayer {
