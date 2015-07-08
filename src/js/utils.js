@@ -33,7 +33,7 @@ IriSP.textFieldHtml = function(_text, _regexp, _extend) {
     var list = [],
         positions = [],
         text = _text.replace(/(^\s+|\s+$)/g,'');
-    
+
     function addToList(_rx, _startHtml, _endHtml) {
         while(true) {
             var result = _rx.exec(text);
@@ -52,11 +52,11 @@ IriSP.textFieldHtml = function(_text, _regexp, _extend) {
             positions.push(end);
         }
     }
-    
+
     if (_regexp) {
         addToList(_regexp, '<span class="Ldt-Highlight">', '</span>');
     }
-    
+
     addToList(/(https?:\/\/)?[\w\d\-]+\.[\w\d\-]+\S+/gm, function(matches) {
         return '<a href="' + (matches[1] ? '' : 'http://') + matches[0] + '" target="_blank">';
     }, '</a>');
@@ -65,19 +65,19 @@ IriSP.textFieldHtml = function(_text, _regexp, _extend) {
     }, '</a>');
     addToList(/\*[^*]+\*/gm, '<b>', '</b>');
     addToList(/[\n\r]+/gm, '', '<br />');
-    
+
     IriSP._(_extend).each(function(x) {
         addToList.apply(null, x);
     });
-    
+
     positions = IriSP._(positions)
         .chain()
         .uniq()
         .sortBy(function(p) { return parseInt(p); })
         .value();
-    
+
     var res = "", lastIndex = 0;
-    
+
     for (var i = 0; i < positions.length; i++) {
         var pos = positions[i];
         res += text.substring(lastIndex, pos);
@@ -95,11 +95,11 @@ IriSP.textFieldHtml = function(_text, _regexp, _extend) {
         }
         lastIndex = pos;
     }
-    
+
     res += text.substring(lastIndex);
-    
+
     return res;
-    
+
 };
 
 IriSP.log = function() {
