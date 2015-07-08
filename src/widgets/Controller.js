@@ -12,8 +12,8 @@ IriSP.Widgets.Controller.prototype.defaults = {
     disable_search_btn: false,
     disable_ctrl_f: false,
     always_show_search: false,
-    create_quizz_callback: undefined,
-    enable_quizz_toggle: true
+    create_quiz_callback: undefined,
+    enable_quiz_toggle: true
 };
 
 IriSP.Widgets.Controller.prototype.template =
@@ -31,9 +31,9 @@ IriSP.Widgets.Controller.prototype.template =
     + '<div class="Ldt-Ctrl-Search">'
     + '<input placeholder="{{ l10n.search }}" type="search" class="Ldt-Ctrl-SearchInput Ldt-TraceMe"></input>'
     + '</div>'
-    + '<div class="Ldt-Ctrl-Quizz-Enable-Button Ldt-TraceMe" title="Activer/Désactiver le quizz">'
+    + '<div class="Ldt-Ctrl-Quiz-Enable-Button Ldt-TraceMe" title="Activer/Désactiver le quiz">'
     + '</div>'
-    + '<div class="Ldt-Ctrl-Quizz-Create Ldt-TraceMe" ></div>'
+    + '<div class="Ldt-Ctrl-Quiz-Create Ldt-TraceMe" ></div>'
     + '</div>'
     + '<div class="Ldt-Ctrl-Right">'
     + '<div class="Ldt-Ctrl-Fullscreen-Button Ldt-TraceMe"></div>'
@@ -65,7 +65,7 @@ IriSP.Widgets.Controller.prototype.messages = {
         total_time: "Total duration",
         volume: "Volume",
         volume_control: "Volume control",
-        enable_quizz: "Enable quizz"
+        enable_quiz: "Enable quiz"
     },
     fr: {
         play_pause: "Lecture/Pause",
@@ -80,7 +80,7 @@ IriSP.Widgets.Controller.prototype.messages = {
         total_time: "Durée totale",
         volume: "Niveau sonore",
         volume_control: "Réglage du niveau sonore",
-        enable_quizz: "Activer le quizz"
+        enable_quiz: "Activer le quiz"
     }
 };
 
@@ -104,15 +104,15 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     // handle clicks
     this.$playButton.click(this.functionWrapper("playHandler"));
 
-    if (this.enable_quizz_toggle) {
-        $(".Ldt-Ctrl-Quizz-Enable-Button").css( "background-image", "url(img/quiz_on.svg)");
-        this.player.trigger("QuizzCreator.show");
-        $("#QuizzEditContainer").show();
+    if (this.enable_quiz_toggle) {
+        $(".Ldt-Ctrl-Quiz-Enable-Button").css( "background-image", "url(img/quiz_on.svg)");
+        this.player.trigger("QuizCreator.show");
+        $("#QuizEditContainer").show();
     }
     else
     {
-        $(".Ldt-Ctrl-Quizz-Enable-Button").css( "background-image", "url(img/quiz_off.svg)");
-        $("#QuizzEditContainer").show();
+        $(".Ldt-Ctrl-Quiz-Enable-Button").css( "background-image", "url(img/quiz_off.svg)");
+        $("#QuizEditContainer").show();
     }
 
     this.$.find(".Ldt-Ctrl-Annotate").click(function() {
@@ -126,9 +126,9 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     // Fullscreen handling
     this.$.find(".Ldt-Ctrl-Fullscreen-Button").click(this.functionWrapper("toggleFullscreen"));
 
-    // Quizz activation
-    this.$.find(".Ldt-Ctrl-Quizz-Enable").click(this.functionWrapper("toggleQuizz"));
-    this.$.find(".Ldt-Ctrl-Quizz-Create").click(this.functionWrapper("createQuizz"));
+    // Quiz activation
+    this.$.find(".Ldt-Ctrl-Quiz-Enable").click(this.functionWrapper("toggleQuiz"));
+    this.$.find(".Ldt-Ctrl-Quiz-Create").click(this.functionWrapper("createQuiz"));
 
     var _volctrl = this.$.find(".Ldt-Ctrl-Volume-Control");
     this.$.find('.Ldt-Ctrl-Sound')
@@ -239,29 +239,29 @@ IriSP.Widgets.Controller.prototype.toggleFullscreen = function() {
     }
 };
 
-//Quizz
-IriSP.Widgets.Controller.prototype.createQuizz = function() {
-    if (typeof this.create_quizz_callback !== "undefined") {
-        this.create_quizz_callback();
-        this.player.trigger("Quizz.hide");
-        this.player.trigger("QuizzCreator.create");
+//Quiz
+IriSP.Widgets.Controller.prototype.createQuiz = function() {
+    if (typeof this.create_quiz_callback !== "undefined") {
+        this.create_quiz_callback();
+        this.player.trigger("Quiz.hide");
+        this.player.trigger("QuizCreator.create");
     }
 };
 
-IriSP.Widgets.Controller.prototype.toggleQuizz = function() {
-    this.enable_quizz_toggle = !this.enable_quizz_toggle;
-    if (this.enable_quizz_toggle) {
-        $(".Ldt-Ctrl-Quizz-Enable-Button").css("background-image", "url(img/quiz_on.svg)");
-        $(".Ldt-Ctrl-Quizz-Create").show();
-        this.player.trigger("Quizz.activate");
-        this.player.trigger("QuizzCreator.show");
+IriSP.Widgets.Controller.prototype.toggleQuiz = function() {
+    this.enable_quiz_toggle = !this.enable_quiz_toggle;
+    if (this.enable_quiz_toggle) {
+        $(".Ldt-Ctrl-Quiz-Enable-Button").css("background-image", "url(img/quiz_on.svg)");
+        $(".Ldt-Ctrl-Quiz-Create").show();
+        this.player.trigger("Quiz.activate");
+        this.player.trigger("QuizCreator.show");
     }
     else
     {
-        $(".Ldt-Ctrl-Quizz-Enable-Button").css("background-image", "url(img/quiz_off.svg)");
-        $(".Ldt-Ctrl-Quizz-Create").hide();
-        this.player.trigger("Quizz.deactivate");
-        this.player.trigger("QuizzCreator.hide");
+        $(".Ldt-Ctrl-Quiz-Enable-Button").css("background-image", "url(img/quiz_off.svg)");
+        $(".Ldt-Ctrl-Quiz-Create").hide();
+        this.player.trigger("Quiz.deactivate");
+        this.player.trigger("QuizCreator.hide");
     }
 };
 

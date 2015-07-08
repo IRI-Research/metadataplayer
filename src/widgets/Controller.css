@@ -200,21 +200,21 @@ input.Ldt-Ctrl-SearchInput {
     background: #F7268E;
 }
 
-/* quizz */
+/* quiz */
 
-.Ldt-Ctrl-Quizz-Enable button, .Ldt-Ctrl-Quizz-Create button, .Ldt-Ctrl-Quizz-Disactivated button, .Ldt-Ctrl-Fullscreen-Button{
+.Ldt-Ctrl-Quiz-Enable button, .Ldt-Ctrl-Quiz-Create button, .Ldt-Ctrl-Quiz-Disactivated button, .Ldt-Ctrl-Fullscreen-Button{
 	border: none;
 	background: transparent;
 }
 
-.Ldt-Ctrl-Quizz-Enable-Button {
+.Ldt-Ctrl-Quiz-Enable-Button {
     float: left;
     height: 22px;
     width: 22px;
     background-repeat: no-repeat;
 }
 
-.Ldt-Ctrl-Quizz-Create {
+.Ldt-Ctrl-Quiz-Create {
     background-image: url("img/quiz_add_question.svg");
     float: left;
     height: 23px;
