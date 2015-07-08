@@ -36,6 +36,7 @@ IriSP.Widgets.Controller.prototype.template =
     + '<div class="Ldt-Ctrl-Quizz-Create Ldt-TraceMe" ></div>'
     + '</div>'
     + '<div class="Ldt-Ctrl-Right">'
+    + '<div class="Ldt-Ctrl-Fullscreen-Button Ldt-TraceMe"></div>'
     + '<div class="Ldt-Ctrl-spacer"></div>'
     + '<div class="Ldt-Ctrl-Time">'
     + '<div class="Ldt-Ctrl-Time-Elapsed" title="{{l10n.elapsed_time}}">00:00</div>'
@@ -121,13 +122,15 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     
     this.$searchInput.keyup(this.functionWrapper("searchHandler"));
     this.$searchInput.on("search", this.functionWrapper("searchHandler"));
-  
-	var _volctrl = this.$.find(".Ldt-Ctrl-Volume-Control");
+
+    // Fullscreen handling
+    this.$.find(".Ldt-Ctrl-Fullscreen-Button").click(this.functionWrapper("toggleFullscreen"));
 
     // Quizz activation
     this.$.find(".Ldt-Ctrl-Quizz-Enable").click(this.functionWrapper("toggleQuizz"));
     this.$.find(".Ldt-Ctrl-Quizz-Create").click(this.functionWrapper("createQuizz"));
 
+    var _volctrl = this.$.find(".Ldt-Ctrl-Volume-Control");
     this.$.find('.Ldt-Ctrl-Sound')
         .click(this.functionWrapper("muteHandler"))
         .mouseover(function() {
@@ -222,6 +225,17 @@ IriSP.Widgets.Controller.prototype.playButtonUpdater = function() {
             .attr("title", this.l10n.pause)
             .removeClass("Ldt-Ctrl-Play-PlayState")
             .addClass("Ldt-Ctrl-Play-PauseState");
+    }
+};
+
+//FullScreen
+IriSP.Widgets.Controller.prototype.toggleFullscreen = function() {
+    if (IrisSP.isFullscreen) {
+        IriSP.setFullScreen(this.$[0],false);
+        this.$.removeClass("fullscreen");
+    } else {
+        IriSP.setFullScreen(this.$[0],true);
+        this.$.addClass("fullscreen");
     }
 };
 

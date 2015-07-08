@@ -201,3 +201,18 @@ input.Ldt-Ctrl-SearchInput {
   margin-top: 0px;
 }
 
+.Ldt-Ctrl-Fullscreen-Button
+{
+  margin-top: 3px;
+}
+
+.Ldt-Ctrl-Fullscreen-Button {
+  float: left;
+  background-image: url("img/fullscreen.svg");
+  background-position: right;
+  margin-right: 6px;
+  margin-top: 1px;
+  height: 22px;
+  width: 22px;
+  border: none;
+}

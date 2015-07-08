@@ -158,3 +158,31 @@ IriSP.timestamp2ms = function(t) {
     return 1000 * (3600 * parseInt(s[2], 10) + 60 * parseInt(s[1], 10) + parseInt(s[0], 10));
 };
 
+IriSP.setFullScreen= function(elem, value) {
+    // Set fullscreen on or off
+    if (value) {
+		if (elem.requestFullscreen) {
+			elem.requestFullscreen();
+		} else if (elem.mozRequestFullScreen) {
+			elem.mozRequestFullScreen();
+		} else if (elem.webkitRequestFullscreen) {
+			elem.webkitRequestFullscreen();
+		} else if (elem.msRequestFullscreen) {
+			elem.msRequestFullscreen();
+		}
+	} else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+    }
+};
+
+IriSP.isFullscreen = function() {
+	return (document.fullscreenElement ||  document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+};
