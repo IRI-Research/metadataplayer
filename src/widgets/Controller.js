@@ -87,7 +87,7 @@ IriSP.Widgets.Controller.prototype.messages = {
 IriSP.Widgets.Controller.prototype.draw = function() {
     var _this = this;
     this.renderTemplate();
-    
+
     // Define blocks
     this.$playButton = this.$.find(".Ldt-Ctrl-Play");
     this.$searchBlock = this.$.find(".Ldt-Ctrl-Search");
@@ -100,10 +100,10 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     this.onMediaEvent("volumechange","volumeUpdater");
     this.onMediaEvent("timeupdate","timeDisplayUpdater");
     this.onMediaEvent("loadedmetadata","volumeUpdater");
-    
+
     // handle clicks
     this.$playButton.click(this.functionWrapper("playHandler"));
-    
+
     if (this.enable_quizz_toggle) {
         $(".Ldt-Ctrl-Quizz-Enable-Button").css( "background-image", "url(img/quiz_on.svg)");
         this.player.trigger("QuizzCreator.show");
@@ -119,7 +119,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
         _this.player.trigger("CreateAnnotation.toggle");
     });
     this.$.find(".Ldt-Ctrl-SearchBtn").click(this.functionWrapper("searchButtonHandler"));
-    
+
     this.$searchInput.keyup(this.functionWrapper("searchHandler"));
     this.$searchInput.on("search", this.functionWrapper("searchHandler"));
 
@@ -144,7 +144,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     }).mouseout(function() {
         _volctrl.hide();
     });
-    
+
     // Handle CTRL-F
     if (!this.disable_ctrl_f) {
         var _fKey = "F".charCodeAt(0),
@@ -160,7 +160,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
             }
         });
     }
-    
+
     // Allow Volume Cursor Dragging
     this.$volumeBar.slider({
         slide: function(event, ui) {
@@ -174,13 +174,13 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     this.$.hover(
         function() {
             _this.player.trigger("Player.MouseOver");
-        }, 
+        },
         function() {
             _this.player.trigger("Player.MouseOut");
         });
-    
+
     this.timeDisplayUpdater(new IriSP.Model.Time(0));
-    
+
     var annotations = this.source.getAnnotations();
     annotations.on("search", function(_text) {
         _this.$searchInput.val(_text);
@@ -202,7 +202,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
 
 /* Update the elasped time div */
 IriSP.Widgets.Controller.prototype.timeDisplayUpdater = function(_time) {
-  
+
     // we get it at each call because it may change.
     var _totalTime = this.media.duration;
     this.$.find(".Ldt-Ctrl-Time-Elapsed").html(_time.toString());
@@ -266,11 +266,11 @@ IriSP.Widgets.Controller.prototype.toggleQuizz = function() {
 };
 
 IriSP.Widgets.Controller.prototype.playHandler = function() {
-    if (this.media.getPaused()) {        
+    if (this.media.getPaused()) {
         this.media.play();
     } else {
         this.media.pause();
-    }  
+    }
 };
 
 IriSP.Widgets.Controller.prototype.muteHandler = function() {
@@ -285,9 +285,9 @@ IriSP.Widgets.Controller.prototype.volumeUpdater = function() {
     }
     var _soundCtl = this.$.find(".Ldt-Ctrl-Sound");
     _soundCtl.removeClass("Ldt-Ctrl-Sound-Mute Ldt-Ctrl-Sound-Half Ldt-Ctrl-Sound-Full");
-    if (_muted) {        
+    if (_muted) {
         _soundCtl.attr("title", this.l10n.unmute)
-            .addClass("Ldt-Ctrl-Sound-Mute");    
+            .addClass("Ldt-Ctrl-Sound-Mute");
     } else {
         _soundCtl.attr("title", this.l10n.mute)
             .addClass(_vol < .5 ? "Ldt-Ctrl-Sound-Half" : "Ldt-Ctrl-Sound-Full" );
@@ -329,7 +329,7 @@ IriSP.Widgets.Controller.prototype.searchHandler = function() {
     }
     var _val = this.$searchInput.val();
     this._positiveMatch = false;
-    
+
     // do nothing if the search field is empty, instead of highlighting everything.
     if (_val !== this.lastSearchValue) {
         if (_val) {
@@ -341,4 +341,3 @@ IriSP.Widgets.Controller.prototype.searchHandler = function() {
     }
     this.lastSearchValue = _val;
 };
-
