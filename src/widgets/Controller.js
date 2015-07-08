@@ -31,8 +31,7 @@ IriSP.Widgets.Controller.prototype.template =
     + '<div class="Ldt-Ctrl-Search">'
     + '<input placeholder="{{ l10n.search }}" type="search" class="Ldt-Ctrl-SearchInput Ldt-TraceMe"></input>'
     + '</div>'
-    + '<div class="Ldt-Ctrl-Quiz-Enable-Button Ldt-TraceMe" title="Activer/Désactiver le quiz">'
-    + '</div>'
+    + '<div class="Ldt-Ctrl-Quiz-Enable Ldt-TraceMe" title="Activer/Désactiver le quiz"></div>'
     + '<div class="Ldt-Ctrl-Quiz-Create Ldt-TraceMe" ></div>'
     + '</div>'
     + '<div class="Ldt-Ctrl-Right">'
@@ -104,15 +103,22 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     // handle clicks
     this.$playButton.click(this.functionWrapper("playHandler"));
 
-    if (this.enable_quiz_toggle) {
-        $(".Ldt-Ctrl-Quiz-Enable-Button").css( "background-image", "url(img/quiz_on.svg)");
-        this.player.trigger("QuizCreator.show");
-        $("#QuizEditContainer").show();
-    }
-    else
-    {
-        $(".Ldt-Ctrl-Quiz-Enable-Button").css( "background-image", "url(img/quiz_off.svg)");
-        $("#QuizEditContainer").show();
+    if (this.enable_quiz_toggle !== undefined) {
+        if (this.enable_quiz_toggle) {
+            $(".Ldt-Ctrl-Quiz-Enable").addClass("Ldt-Ctrl-Quiz-Toggle-Active");
+            $(".Ldt-Ctrl-Quiz-Create").addClass("Ldt-Ctrl-Quiz-Toggle-Active");
+            this.player.trigger("QuizCreator.show");
+            $("#QuizEditContainer").show();
+        }
+        else
+        {
+            $(".Ldt-Ctrl-Quiz-Enable").removeClass("Ldt-Ctrl-Quiz-Toggle-Active");
+            $(".Ldt-Ctrl-Quiz-Create").removeClass("Ldt-Ctrl-Quiz-Toggle-Active");
+            this.player.trigger("QuizCreator.hide");
+            $("#QuizEditContainer").hide();
+        }
+    } else {
+            $(".Ldt-Ctrl-Quiz-Enable").hide();
     }
 
     this.$.find(".Ldt-Ctrl-Annotate").click(function() {
@@ -259,15 +265,15 @@ IriSP.Widgets.Controller.prototype.createQuiz = function() {
 IriSP.Widgets.Controller.prototype.toggleQuiz = function() {
     this.enable_quiz_toggle = !this.enable_quiz_toggle;
     if (this.enable_quiz_toggle) {
-        $(".Ldt-Ctrl-Quiz-Enable-Button").css("background-image", "url(img/quiz_on.svg)");
-        $(".Ldt-Ctrl-Quiz-Create").show();
+        $(".Ldt-Ctrl-Quiz-Enable").addClass("Ldt-Ctrl-Quiz-Toggle-Active");
+        $(".Ldt-Ctrl-Quiz-Create").addClass("Ldt-Ctrl-Quiz-Toggle-Active");
         this.player.trigger("Quiz.activate");
         this.player.trigger("QuizCreator.show");
     }
     else
     {
-        $(".Ldt-Ctrl-Quiz-Enable-Button").css("background-image", "url(img/quiz_off.svg)");
-        $(".Ldt-Ctrl-Quiz-Create").hide();
+        $(".Ldt-Ctrl-Quiz-Enable").removeClass("Ldt-Ctrl-Quiz-Toggle-Active");
+        $(".Ldt-Ctrl-Quiz-Create").removeClass("Ldt-Ctrl-Quiz-Toggle-Active");
         this.player.trigger("Quiz.deactivate");
         this.player.trigger("QuizCreator.hide");
     }

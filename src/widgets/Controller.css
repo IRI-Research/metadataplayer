@@ -207,11 +207,15 @@ input.Ldt-Ctrl-SearchInput {
 	background: transparent;
 }
 
-.Ldt-Ctrl-Quiz-Enable-Button {
+.Ldt-Ctrl-Quiz-Enable {
+    background-image: url("img/quiz_off.svg");
     float: left;
     height: 22px;
     width: 22px;
     background-repeat: no-repeat;
+}
+.Ldt-Ctrl-Quiz-Enable.Ldt-Ctrl-Quiz-Toggle-Active {
+    background-image: url("img/quiz_on.svg");
 }
 
 .Ldt-Ctrl-Quiz-Create {
@@ -222,6 +226,10 @@ input.Ldt-Ctrl-SearchInput {
     background-repeat: no-repeat;
     margin-left: 4px;
     margin-top: 0px;
+    display: none;
+}
+.Ldt-Ctrl-Quiz-Create.Ldt-Ctrl-Quiz-Toggle-Active {
+    display: inline-block;
 }
 
 .Ldt-Ctrl-Fullscreen-Button {
