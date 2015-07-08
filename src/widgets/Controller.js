@@ -13,7 +13,7 @@ IriSP.Widgets.Controller.prototype.defaults = {
     disable_ctrl_f: false,
     always_show_search: false,
     create_quiz_callback: undefined,
-    enable_quiz_toggle: false
+    enable_quiz_toggle: undefined
 };
 
 IriSP.Widgets.Controller.prototype.template =
