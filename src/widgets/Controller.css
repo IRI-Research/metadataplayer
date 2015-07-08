@@ -175,3 +175,29 @@ input.Ldt-Ctrl-SearchInput {
 .Ldt-Ctrl-Volume-Control:hover .ui-slider-handle {
      background: #F7268E;
 }
+
+/* quizz */
+
+.Ldt-Ctrl-Quizz-Enable button, .Ldt-Ctrl-Quizz-Create button, .Ldt-Ctrl-Quizz-Disactivated button, .Ldt-Ctrl-Fullscreen-Button{
+
+	border: none;
+	background: transparent;
+}
+
+.Ldt-Ctrl-Quizz-Enable-Button {
+  float: left;
+  height: 22px;
+  width: 22px;
+  background-repeat: no-repeat;
+}
+
+.Ldt-Ctrl-Quizz-Create {
+  background-image: url("img/quiz_add_question.svg");
+  float: left;
+  height: 23px;
+  width: 26px;
+  background-repeat: no-repeat;
+  margin-left: 4px;
+  margin-top: 0px;
+}
+
