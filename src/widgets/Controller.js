@@ -125,6 +125,16 @@ IriSP.Widgets.Controller.prototype.draw = function() {
 
     // Fullscreen handling
     this.$.find(".Ldt-Ctrl-Fullscreen-Button").click(this.functionWrapper("toggleFullscreen"));
+    var fullscreen_event_name = IriSP.getFullscreenEventname();
+    if (fullscreen_event_name) {
+        document.addEventListener(fullscreen_event_name, function() {
+            if (IriSP.isFullscreen() && IriSP.getFullscreenElement() == _this.$[0]) {
+                _this.$.addClass("Ldt-Fullscreen-Element");
+            } else {
+                _this.$.removeClass("Ldt-Fullscreen-Element");
+            }
+        });
+    };
 
     // Quiz activation
     this.$.find(".Ldt-Ctrl-Quiz-Enable").click(this.functionWrapper("toggleQuiz"));
@@ -230,12 +240,10 @@ IriSP.Widgets.Controller.prototype.playButtonUpdater = function() {
 
 //FullScreen
 IriSP.Widgets.Controller.prototype.toggleFullscreen = function() {
-    if (IrisSP.isFullscreen) {
-        IriSP.setFullScreen(this.$[0],false);
-        this.$.removeClass("fullscreen");
+    if (IriSP.isFullscreen()) {
+        IriSP.setFullScreen(this.$[0], false);
     } else {
-        IriSP.setFullScreen(this.$[0],true);
-        this.$.addClass("fullscreen");
+        IriSP.setFullScreen(this.$[0], true);
     }
 };
 

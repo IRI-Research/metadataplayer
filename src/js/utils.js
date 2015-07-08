@@ -186,3 +186,19 @@ IriSP.setFullScreen= function(elem, value) {
 IriSP.isFullscreen = function() {
 	return (document.fullscreenElement ||  document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
 };
+
+IriSP.getFullscreenElement = function () {
+    return (document.fullscreenElement
+            || document.webkitFullscreenElement
+            || document.mozFullScreenElement
+            || document.msFullscreenElement
+            || undefined);
+};
+
+IriSP.getFullscreenEventname = function () {
+    return ((document.exitFullscreen && "fullscreenchange")
+            || (document.webkitExitFullscreen && "webkitfullscreenchange")
+            || (document.mozExitFullScreen && "mozfullscreenchange")
+            || (document.msExitFullscreen && "msfullscreenchange")
+            || "");
+};
