@@ -5,7 +5,7 @@ IriSP.Widgets.Quiz = function(player, config) {
 IriSP.Widgets.Quiz.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Quiz.prototype.defaults = {
-    annotation_type: "Quiz",
+    annotation_type: "at_quiz",
 	quiz_activated: true,
 	api_serializer: "ldt_annotate",
     api_endpoint_template: "",
@@ -264,7 +264,7 @@ IriSP.Widgets.Quiz.prototype.draw = function() {
 
     // Add Ldt-Quiz-Overlay widget on top of video player
 	_this.overlay = $("<div class='Ldt-Quiz-Overlay'></div>").appendTo($('#' + _this.container));
-	_this.PauseAddQuestion = $("<div class='Ldt-Pause-Add-Question'><img class='Ldt-Pause-Add-Question-icon' title='Ajoutez une question !' src='../widgets/img/buzz.svg'>").appendTo($('#' + _this.container));
+	_this.PauseAddQuestion = $("<div class='Ldt-Pause-Add-Question' title='Ajoutez une question !'>").appendTo($('#' + _this.container));
 	_this.overlay.html(this.template);
 
 	$(".Ldt-Quiz-Overlay").hide();
