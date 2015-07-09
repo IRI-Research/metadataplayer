@@ -163,6 +163,7 @@ IriSP.Widgets.Quiz.prototype.answer = function() {
 		this.correct[this.annotation.id] = 1;
 		ans_property = "right_answer";
 	}
+    // TODO: use CSS animation, it will be smoother
 	$(".Ldt-Quiz-Result").animate({height:"100%"},500, "linear", function() {
 		$(".Ldt-Quiz-Result").delay(2000).animate({ height:"0%" }, 500);
 	});
