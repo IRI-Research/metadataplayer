@@ -82,11 +82,17 @@ IriSP.Widgets.Quiz.prototype.update = function(annotation) {
 		this.resource = new IriSP.Widgets.UniqueChoiceQuestion(resource);
 		}
 
+        function insert_timecode_links (s) {
+            return s.replace(/\s(\d+:\d+)/, function (match, timecode) {
+                return ' <a href="#t=' + (IriSP.timestamp2ms(timecode) / 1000) + '">' + timecode + '</a>';
+            });
+        };
+
 		var output = "";
 		for (i = 0; i < answers.length; i++) {
 			output += '<div class="quiz-question-block"><p>' + this.question.renderQuizTemplate(answers[i], i) + '<span class="quiz-question-label">'+ answers[i].content + '</span></p>';
 			var color = (answers[i].correct == true) ? "quiz-question-correct-feedback" : "quiz-question-incorrect-feedback";
-			output += '<div class="quiz-question-feedback '+ color +'">'+ answers[i].feedback +'</div>';
+			output += '<div class="quiz-question-feedback '+ color +'">'+ insert_timecode_links(answers[i].feedback) +'</div>';
 			output += '</div>';
 		}
 
