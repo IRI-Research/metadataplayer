@@ -195,6 +195,7 @@ input[type="button"] {
     text-align: center;
     background-color: #5BCE5B;
     color: #fff;
+    cursor: pointer;
 }
 
 input[value="Non"] {
