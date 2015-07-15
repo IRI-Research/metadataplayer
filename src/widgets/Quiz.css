@@ -17,10 +17,11 @@
 }
 
 .Ldt-Quiz-Header {
-	font-size: 14px;
+	font-size: 12px;
 	color: black;
 	border-bottom: 1px solid green;
-	padding: 10px;
+	padding: 2px;
+    height: 22px;
 }
 
 .Ldt-Quiz-Score {
@@ -85,15 +86,15 @@
 }
 
 .Ldt-Quiz-Incorrect-Answer:before {
-	background: url(img/min_valid_sprites.png) -25px top no-repeat;
+	background: url(img/min_valid_sprites.png) -13px top no-repeat;
 }
 
 .Ldt-Quiz-Correct-Answer:before, .Ldt-Quiz-Incorrect-Answer:before {
 		                              content: '';
 		                              vertical-align: middle;
 		                              display: inline-block;
-		                              width: 24px;
-		                              height: 24px;
+		                              width: 12px;
+		                              height: 12px;
                                   }
 
 .Ldt-Quiz-Submit {
