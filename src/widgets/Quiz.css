@@ -24,6 +24,21 @@
     height: 22px;
 }
 
+.Ldt-Quiz-Content {
+    height: calc(100% - 96px);
+    overflow-y: auto;
+}
+
+.Ldt-Quiz-Footer {
+    height: 54px;
+	width: 100%;
+	position: absolute;
+	bottom: 0px;
+	border-top: 2px solid black;
+	background-color: white;
+}
+
+
 .Ldt-Quiz-Score {
 	display: inline-block;
 	position: absolute;
@@ -40,8 +55,7 @@
 }
 
 .Ldt-Quiz-Questions {
-	overflow-y: auto;
-	max-height: 350px;
+    height: calc(100% - 2.5em);
     margin: 10px;
     padding: 10px;
     border-left: 5px solid gray;
@@ -108,14 +122,6 @@
 .quiz-submit-skip-link a {
     text-decoration: none;
     font-size: 16pt;
-}
-
-.Ldt-Quiz-Footer {
-	width: 100%;
-	position: absolute;
-	bottom: 0px;
-	border-top: 2px solid black;
-	background-color: white;
 }
 
 .Ldt-Quiz-Submit .quiz-submit-button {
