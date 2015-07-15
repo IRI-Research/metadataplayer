@@ -25,12 +25,12 @@
 }
 
 .Ldt-Quiz-Content {
-    height: calc(100% - 96px);
+    height: calc(100% - 82px);
     overflow-y: auto;
 }
 
 .Ldt-Quiz-Footer {
-    height: 54px;
+    height: 60px;
 	width: 100%;
 	position: absolute;
 	bottom: 0px;
@@ -138,6 +138,10 @@
     display: none;
 }
 
+.Ldt-Quiz-Votes-Question {
+    font-size: 16px;
+}
+
 .Ldt-Quiz-Votes-Buttons div{
     display: inline-block;
     width: 33%;
@@ -191,7 +195,7 @@
 
 input[type="button"] {
     border: none;
-    font-size: 20pt;
+    font-size: 18pt;
     text-align: center;
     background-color: #5BCE5B;
     color: #fff;
