@@ -236,12 +236,10 @@ IriSP.Widgets.Quiz.prototype.draw = function() {
 	_this.quiz_displayed = false;
     this.onMdpEvent("Quiz.activate", function() {
 		_this.quiz_activated = true;
-		$("#tab_quiz_toc").show();
     });
 
     this.onMdpEvent("Quiz.deactivate", function() {
 		_this.quiz_activated = false;
-		$("#tab_quiz_toc").hide();
 		_this.hide();
     });
 
