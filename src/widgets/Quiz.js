@@ -25,10 +25,6 @@ IriSP.Widgets.Quiz.prototype.template = '<div class="Ldt-Quiz-Container">'
                                         + '</div>'
                                         + '<div class="Ldt-Quiz-Footer">'
                                         + '  <div class="Ldt-Quiz-Result">Bonne réponse</div>'
-                                        + '  <div class="Ldt-Quiz-Submit">'
-                                        + '      <div class="quiz-submit-button"><input type="button" value="Valider" /></div>'
-                                        + '      <div class="quiz-submit-skip-link"><a href="#">Passer</a></div><div style="clear:both;"></div>'
-                                        + '  </div>'
                                         + '  <div class="Ldt-Quiz-Votes">'
                                         + '      <span class="Ldt-Quiz-Votes-Question">Avez-vous trouvé cette question utile ?</span>'
                                         + '      <div class="Ldt-Quiz-Votes-Buttons">'
@@ -36,6 +32,10 @@ IriSP.Widgets.Quiz.prototype.template = '<div class="Ldt-Quiz-Container">'
                                         + '          <div><input type="button" value="Non" class="Ldt-Quiz-Vote-Useless" /></div>'
                                         + '          <div><input type="button" value="Oui" class="Ldt-Quiz-Vote-Useful" /></div>'
                                         + '      </div>'
+                                        + '  </div>'
+                                        + '  <div class="Ldt-Quiz-Submit">'
+                                        + '      <div class="quiz-submit-button"><input type="button" value="Valider" /></div>'
+                                        + '      <div class="quiz-submit-skip-link"><a href="#">Passer</a></div><div style="clear:both;"></div>'
                                         + '  </div>'
                                         + '</div>'
 										+ '</div>';
@@ -118,7 +118,7 @@ IriSP.Widgets.Quiz.prototype.update = function(annotation) {
 IriSP.Widgets.Quiz.prototype.hide = function() {
 	var _this = this;
 
-	$(".Ldt-Quiz-Votes").fadeOut();
+	$(".Ldt-Quiz-Votes").hide();
 	$(".Ldt-Quiz-Overlay").hide();
 	$(".Ldt-Pause-Add-Question").hide();
 	_this.quiz_displayed = false;
@@ -149,7 +149,6 @@ IriSP.Widgets.Quiz.prototype.answer = function() {
 		}
 		j++;
 	}
-	$(".Ldt-Quiz-Score").fadeIn();
 
 	// TODO: factorize this code
 	if (faux == true) {
@@ -182,8 +181,9 @@ IriSP.Widgets.Quiz.prototype.answer = function() {
 	this.submit(this.user, this.userid, this.annotation.id, ans_property, ans_value);
 
 	//Hide the "Validate" button and display the UI dedicated to votes
-	$(".Ldt-Quiz-Submit").fadeOut();
-	$(".Ldt-Quiz-Votes").delay(500).fadeIn();
+	$(".Ldt-Quiz-Submit").fadeOut(400, function () {
+	    $(".Ldt-Quiz-Votes").show();
+    });
 };
 
 IriSP.Widgets.Quiz.prototype.globalScore = function() {
