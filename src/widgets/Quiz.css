@@ -217,18 +217,14 @@ input.quiz-question-edition {
 
 input.quiz-question-edition[type='radio'] + label,
 input.quiz-question-edition[type='checkbox'] + label {
-	height: 50px;
-	width: 50px;
+	height: 12px;
+	width: 12px;
 	display: inline-block;
-	background: url(img/min_valid_sprites.png) -25px top no-repeat;
+	background: url(img/min_valid_sprites.png) -13px top no-repeat;
 	cursor: pointer;
 }
 
 input.quiz-question-edition[type='radio']:checked + label,
 input.quiz-question-edition[type='checkbox']:checked + label {
-	height: 50px;
-	width: 25px;
-	display: inline-block;
 	background: url(img/min_valid_sprites.png) left top no-repeat;
-	cursor: pointer;
 }
