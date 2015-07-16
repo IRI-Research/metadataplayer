@@ -8,7 +8,7 @@ IriSP.Widgets.Quiz.prototype.defaults = {
     annotation_type: "at_quiz",
 	quiz_activated: true,
 	api_serializer: "ldt_annotate",
-    api_endpoint_template: "",
+    analytics_api: "",
     api_method: "POST",
     user: "",
     userid:""
@@ -409,7 +409,7 @@ IriSP.Widgets.MultipleChoiceQuestion.prototype.renderFullTemplate = function(ans
 
 IriSP.Widgets.Quiz.prototype.submit = function(user,user_id,question,prop,val) {
     var _this = this;
-	var _url = Mustache.to_html(this.api_endpoint_template, {id: this.source.projectId}),
+	var _url = Mustache.to_html(this.analytics_api, {id: this.source.projectId}),
 	donnees = {
 			"username": user,
 			"useruuid": user_id,
