@@ -270,7 +270,7 @@ IriSP.Widgets.Quiz.prototype.draw = function() {
     // Add Ldt-Quiz-Overlay widget on top of video player
 	_this.overlay = $("<div class='Ldt-Quiz-Overlay'></div>").appendTo($('#' + _this.container));
 	_this.PauseAddQuestion = $("<div class='Ldt-Pause-Add-Question' title='Ajoutez une question !'>")
-        .on("click", function() { _this.create_quiz_callback(); })
+        .on("click", function() { _this.player.trigger("QuizCreator.create"); })
         .appendTo($('#' + _this.container));
 	_this.overlay.html(this.template);
 
