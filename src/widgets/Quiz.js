@@ -318,6 +318,7 @@ IriSP.Widgets.Quiz.prototype.draw = function() {
 	});
 
 	_this.totalAmount = _annotations.length;
+    _this.session_id = _this.generateUid();
 	_this.number = 0;
 	_this.correct = {};
 	_this.keys = {};
@@ -407,13 +408,15 @@ IriSP.Widgets.MultipleChoiceQuestion.prototype.renderFullTemplate = function(ans
 }
 
 IriSP.Widgets.Quiz.prototype.submit = function(user,user_id,question,prop,val) {
+    var _this = this;
 	var _url = Mustache.to_html(this.api_endpoint_template, {id: this.source.projectId}),
 	donnees = {
 			"username": user,
 			"useruuid": user_id,
 			"subject": question,
 			"property": prop,
-			"value": val
+		    "value": val,
+            "session": _this.session_id
 		};
 
 	IriSP.jQuery.ajax({
