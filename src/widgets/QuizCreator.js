@@ -23,7 +23,7 @@ IriSP.Widgets.QuizCreator.prototype.defaults = {
     editable_storage: "",
     after_send_timeout: 0,
     close_after_send: true,
-    tag_prefix: "#",
+    tag_prefix: "#"
 };
 
 IriSP.Widgets.QuizCreator.prototype.messages = {
