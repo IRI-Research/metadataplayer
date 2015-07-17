@@ -136,13 +136,25 @@
 
 .Ldt-Quiz-Votes {
     display: none;
+    height: 53px;
+    position: relative;
 }
 
 .Ldt-Quiz-Votes-Question {
     font-size: 16px;
+    position: absolute;
+    top: 2px;
+    left: 0px;
 }
 
-.Ldt-Quiz-Votes-Buttons div{
+.Ldt-Quiz-Votes-Buttons {
+    position: absolute;
+    bottom: 2px;
+    left: 0px;
+    right: 0px;
+}
+
+.Ldt-Quiz-Votes-Buttons div {
     display: inline-block;
     width: 33%;
     text-align: center;
