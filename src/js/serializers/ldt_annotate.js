@@ -17,6 +17,7 @@ IriSP.serializers.ldt_annotate = {
             },
             tags: _data.getTagTexts(),
             media: _data.getMedia().id,
+            project: _data.project_id,
             type_title: _annType.title,
             type: ( typeof _annType.dont_send_id !== "undefined" && _annType.dont_send_id ? "" : _annType.id ),
             meta: {

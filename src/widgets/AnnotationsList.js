@@ -12,25 +12,47 @@ IriSP.Widgets.AnnotationsList = function(player, config) {
 IriSP.Widgets.AnnotationsList.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.AnnotationsList.prototype.defaults = {
-    /* URL when the annotations are to be reloaded from an LDT-like segment API
-     * e.g. http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?
+    /*
+     * URL when the annotations are to be reloaded from an LDT-like segment API
+     * e.g.
+     * http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?
      */
     ajax_url : false,
-    /* number of milliseconds before/after the current timecode when calling the segment API
+    /*
+     * number of milliseconds before/after the current timecode when calling the
+     * segment API
      */
     ajax_granularity : 600000, 
     default_thumbnail : "",
-    /* URL when the annotation is not in the current project,
-     * e.g. http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}
+    /*
+     * URL when the annotation is not in the current project, e.g.
+     * http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}
      */
     foreign_url : "",
     annotation_type : false,
     refresh_interval : 0,
     limit_count : 20,
     newest_first : false,
-    show_audio: true,
-    show_creator: false,
-    show_controls: false,
+    always_visible : false,
+    start_visible: true,
+    show_audio : true,
+    show_filters : false,
+    show_creation_date : false,
+    show_timecode : true, 
+    /*
+     * Only annotation in the current segment will be displayed. Designed to work with the Segments Widget.
+     */
+    filter_by_segments: false,
+    segments_annotation_type: "chap",
+    /*
+     * Set to a username if you only want to display annotations from a given user
+     */
+    show_only_annotation_from_user: false,
+    /*
+     * Show a text field that filter annotations by username
+     */
+    filter_by_user: false,
+    tags : true,
     polemics : [{
         keyword: "++",
         background_color: "#c9ecc6"
@@ -59,24 +81,33 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
 
 IriSP.Widgets.AnnotationsList.prototype.template =
     '<div class="Ldt-AnnotationsListWidget">'
+    + '{{#show_filters}}'
+    + '<div class="Ldt-AnnotationsList-Filters">'
+    +    '<input class="Ldt-AnnotationsList-filter-text" type="text" value="Mot-clés"></input>'
+    +    '<select class="Ldt-AnnotationsList-filter-dropdown"></select>'
+    +    '<label class="Ldt-AnnotationsList-filter-checkbox"><input type="checkbox">Toutes annotations</label>'
+    + '</div>'
+    + '{{/show_filters}}'
     + '{{#show_audio}}<div class="Ldt-AnnotationsList-Audio"></div>{{/show_audio}}'
-    + '{{#show_controls}}<div class="Ldt-AnnotationsList-Controls"><span class="Ldt-AnnotationsList-Control-Prev">Previous</span> | <span class="Ldt-AnnotationsList-Control-Next">Next</span></div>{{/show_controls}}'
     + '<ul class="Ldt-AnnotationsList-ul">'
     + '</ul>'
     + '</div>';
 
 IriSP.Widgets.AnnotationsList.prototype.annotationTemplate = 
-    '<li class="Ldt-AnnotationsList-li Ldt-Highlighter-Annotation Ldt-TraceMe" data-annotation="{{ id }}" data-begin="{{ begin_ms }}" data-end="{{ end_ms }}" trace-info="annotation-id:{{id}}, media-id:{{media_id}}" style="{{specific_style}}">'
+    '<li class="Ldt-AnnotationsList-li Ldt-TraceMe" trace-info="annotation-id:{{id}}, media-id:{{media_id}}" style="{{specific_style}}">'
     + '<div class="Ldt-AnnotationsList-ThumbContainer">'
     + '<a href="{{url}}" draggable="true">'
-    + '<img title="{{ begin }} - {{ atitle }}" class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
+    + '<img class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
     + '</a>'
     + '</div>'
-    + '<div class="Ldt-AnnotationsList-Duration">{{begin}} - {{end}}</div>'
+    + '{{#show_timecode}}<div class="Ldt-AnnotationsList-Duration">{{begin}} - {{end}}</div>{{/show_timecode}}'
     + '<h3 class="Ldt-AnnotationsList-Title" draggable="true">'
     + '<a href="{{url}}">{{{htitle}}}</a>'
     + '</h3>'
     + '<p class="Ldt-AnnotationsList-Description">{{{hdescription}}}</p>'
+    + '{{#created}}'
+    + '<div class="Ldt-AnnotationsList-CreationDate">{{{created}}}</div>'
+    + '{{/created}}'
     + '{{#tags.length}}'
     + '<ul class="Ldt-AnnotationsList-Tags">'
     + '{{#tags}}'
@@ -91,7 +122,8 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '{{#audio}}<div class="Ldt-AnnotationsList-Play" data-annotation-id="{{id}}">{{l10n.voice_annotation}}</div>{{/audio}}'
     + '</li>';
 
-//obj.url = this.project_url + "/" + media + "/" + annotations[i].meta.project + "/" + annotations[i].meta["id-ref"] + '#id=' + annotations[i].id;
+// obj.url = this.project_url + "/" + media + "/" + annotations[i].meta.project
+// + "/" + annotations[i].meta["id-ref"] + '#id=' + annotations[i].id;
 
 IriSP.Widgets.AnnotationsList.prototype.ajaxSource = function() {
     var _currentTime = this.media.getCurrentTime(),
@@ -145,6 +177,32 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
     _list = _list.filter(function(_annotation) {
         return _annotation.found !== false;
     });
+    if (this.filter_by_segments) {
+        /*
+         *  A given annotation is considered "in" segment if the middle of it is between the segment beginning and the segment end. 
+         *  Note this is meant to be used for "markings" annotations (not segments)
+         */
+        _segmentsAnnotation = this.currentSource.getAnnotationsByTypeTitle(this.segments_annotation_type)
+        _currentSegments = _segmentsAnnotation.filter(function(_segment){
+            return (_currentTime >= _segment.begin && _currentTime <= _segment.end)
+        });
+        if (_currentSegments.length == 0) {
+            _list = _list.filter(function(_annotation){
+                return false;
+            });
+        }
+        else {
+            _list = _list.filter(function(_annotation){
+                _annotation_time = (_annotation.begin+_annotation.end)/2;
+                return (_currentSegments[0].begin <= _annotation_time && _currentSegments[0].end >= _annotation_time)
+            });
+        }
+    }
+    if (this.show_only_annotation_from_user){
+        _list = _list.filter(function(_annotation){
+           return _annotation.creator == _this.show_only_annotation_from_user;
+        });
+    }
     if (this.limit_count) {
         /* Get the n annotations closest to current timecode */
         _list = _list.sortBy(function(_annotation) {
@@ -190,14 +248,14 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 _description = _annotation.description,
                 _thumbnail = (typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail);
             // Update : display creator
-            if (_annotation.creator && _this.show_creator) {
-            	_title = _annotation.creator;
+            if (_annotation.creator) {
+                _title = _annotation.creator;
             }
             if (_annotation.title) {
-            	var tempTitle = _annotation.title;
-            	if( tempTitle.substr(0, _title.length + 1) == (_title + ":") ){
-            		_title = "";
-            	}
+                var tempTitle = _annotation.title;
+                if( tempTitle.substr(0, _title.length + 1) == (_title + ":") ){
+                    _title = "";
+                }
                 _title = _title + ( (_title=="") ? "" : ": ") + _annotation.title;
             }
             var _bgcolor;
@@ -207,26 +265,31 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     _bgcolor = _polemic.background_color;
                 }
             });
+            var _created = false;
+            if (_this.show_creation_date) {
+                _created = _annotation.created.toLocaleDateString()+", "+_annotation.created.toLocaleTimeString();
+            }
+            if(this.tags == true){
+                var _tags = _annotation.getTagTexts();
+            }
+            else {
+                var _tags = false;
+            }
             var _data = {
                 id : _annotation.id,
                 media_id : _annotation.getMedia().id,
-                atitle: IriSP.textFieldHtml(_annotation.title),
                 htitle : IriSP.textFieldHtml(_title),
                 hdescription : IriSP.textFieldHtml(_description),
                 begin : _annotation.begin.toString(),
                 end : _annotation.end.toString(),
-                begin_ms : _annotation.begin.milliseconds,
-                end_ms : _annotation.end.milliseconds,
+                created : _created,
+                show_timecode : _this.show_timecode,
                 thumbnail : _thumbnail,
                 url : _url,
-                tags : _annotation.getTagTexts(),
+                tags : _tags,
                 specific_style : (typeof _bgcolor !== "undefined" ? "background-color: " + _bgcolor : ""),
                 l10n: _this.l10n
             };
-            if (_this.show_controls) {
-                _this.$.find(".Ldt-AnnotationsList-Control-Prev").on("click", function (e) { e.preventDefault(); _this.navigate(-1); });
-                _this.$.find(".Ldt-AnnotationsList-Control-Next").on("click", function (e) { e.preventDefault(); _this.navigate(+1); });
-           }
             if (_this.show_audio && _annotation.audio && _annotation.audio.href && _annotation.audio.href != "null") {
                 _data.audio = true;
                 if (!_this.jwplayers[_annotation.id]) {
@@ -273,10 +336,10 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 })
                 .appendTo(_this.list_$);
             IriSP.attachDndData(_el.find("[draggable]"), {
-            	title: _title,
-            	description: _description,
-            	uri: _url,
-            	image: _annotation.thumbnail
+                title: _title,
+                description: _description,
+                uri: _url,
+                image: _annotation.thumbnail
             });
             _el.on("remove", function() {
                 _annotation.off("select", _onselect);
@@ -325,7 +388,33 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             }
         }
     }
+    
     return _list.length;
+};
+
+IriSP.Widgets.AnnotationsList.prototype.hide = function() {
+    if (this.visible){
+        this.visible = false;
+        this.widget_$.slideUp()
+    }
+}
+
+IriSP.Widgets.AnnotationsList.prototype.show = function() {
+    if(!this.visible){
+        this.visible = true;
+        this.widget_$.slideDown()
+    }
+}
+
+
+IriSP.Widgets.AnnotationsList.prototype.toggle = function() {
+    if (!this.always_visible) {
+        if (this.visible) {
+            this.hide();
+        } else {
+            this.show();
+        }
+    }
 };
 
 IriSP.Widgets.AnnotationsList.prototype.draw = function() {
@@ -338,6 +427,7 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     var _this = this;
         
     this.list_$ = this.$.find(".Ldt-AnnotationsList-ul");
+    this.widget_$ = this.$.find(".Ldt-AnnotationsListWidget");
     
     
     this.source.getAnnotations().on("search", function(_text) {
@@ -390,7 +480,11 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
         }, this.refresh_interval);
     }
     
-    this.onMdpEvent("createAnnotationWidget.addedAnnotation");
+    this.onMdpEvent("AnnotationsList.toggle","toggle");
+    this.onMdpEvent("AnnotationsList.hide", "hide");
+    this.onMdpEvent("AnnotationsList.show", "show");
+    
+    this.onMdpEvent("createAnnotationWidget.addedAnnotation", "refresh");
     var _events = [
         "timeupdate",
         "seeked",
@@ -401,5 +495,10 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     }
     
     this.throttledRefresh();
-
+    
+    this.visible = true;
+    if (!this.start_visible){
+        this.hide();
+    }
+    
 };

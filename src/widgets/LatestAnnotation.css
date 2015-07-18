@@ -1,0 +1,39 @@
+.Ldt-LatestAnnotation{
+	background: url(img/pinstripe.png);
+	width: 535px;
+	max-height: 180px;
+	margin: 0px;
+	margin-top: 4px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #b7b7b7;
+}
+
+.Ldt-LatestAnnotation-Element{
+	margin: 5px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.Ldt-LatestAnnotation-Box{
+	background-color: #ffffff;
+	margin: 3px;
+}
+
+.Ldt-LatestAnnotation-CreationDate{
+	color: #f7268e;
+}
+
+.Ldt-LatestAnnotation-Content{
+}
+
+.Ldt-LatestAnnotation-Title{
+	color: #0068c4;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.Ldt-LatestAnnotation-NoAnnotation{
+	font-size: 14px;
+    font-weight: bold;
+}

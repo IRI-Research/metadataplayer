@@ -13,6 +13,33 @@
     width: 1px; height: 1px;
 }
 
+.Ldt-AnnotationsList-Filters {
+	display: table-cell;
+	width: 100%;
+	height: 30px;
+	vertical-align: middle;
+    text-align: center;
+	
+}
+
+.Ldt-AnnotationsList-filter-text {
+    text-align: left;
+	display: inline;
+	margin: 4px 2px;
+}
+
+.Ldt-AnnotationsList-filter-dropdown {
+    text-align: center;
+	display: inline;
+	margin: 4px 2px;
+}
+
+.Ldt-AnnotationsList-filter-checkbox {
+    text-align: center;
+	display: inline;
+	margin: 4px 2px;
+}
+
 ul.Ldt-AnnotationsList-ul {
     list-style: none;
     padding: 2px;
@@ -47,6 +74,12 @@ li.Ldt-AnnotationsList-li {
     text-align: right;
     font-size: 12px;
     margin: 2px;
+}
+.Ldt-AnnotationsList-CreationDate {
+    color: #f7268e;
+    text-align: left;
+    font-size: 12px;
+    margin: 2px 2px 0 82px;
 }
 h3.Ldt-AnnotationsList-Title {
     color: #0068c4;
@@ -106,12 +139,4 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 
 .Ldt-AnnotationsList-Play:hover {
     background-position: 0 bottom;
-}
-
-.Ldt-AnnotationsList-Control-Prev {
-    cursor: url(img/hand_left.png), pointer;
-}
-
-.Ldt-AnnotationsList-Control-Next {
-    cursor: url(img/hand_right.png), pointer;
 }
