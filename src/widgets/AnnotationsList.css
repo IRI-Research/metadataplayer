@@ -3,7 +3,6 @@
 .Ldt-AnnotationsListWidget {
     border: none; margin: 0; padding: 0;
     overflow: auto;
-    max-height: 480px;
 }
 .Ldt-AnnotationsListWidget a {
     text-decoration: none;
