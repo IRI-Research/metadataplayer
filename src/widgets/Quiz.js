@@ -83,7 +83,7 @@ IriSP.Widgets.Quiz.prototype.update = function(annotation) {
 		}
 
         function insert_timecode_links (s) {
-            return s.replace(/\s(\d+:\d+)/, function (match, timecode) {
+            return (s || "").replace(/\s(\d+:\d+)/, function (match, timecode) {
                 return ' <a href="#t=' + (IriSP.timestamp2ms(timecode) / 1000) + '">' + timecode + '</a>';
             });
         };
