@@ -12,6 +12,7 @@ IriSP.serializers.ldt_localstorage = {
             begin: _data.begin.milliseconds,
             end: _data.end.milliseconds,
             content: {
+                data: _data.content.data || {},
                 description: _data.description,
                 title: _data.title,
                 audio: _data.audio
@@ -61,7 +62,10 @@ IriSP.serializers.ldt_localstorage = {
         _ann.setEnd(_anndata.end);
         if (typeof _anndata.content.audio !== "undefined" && _anndata.content.audio.href) {
             _ann.audio = _anndata.content.audio;
-        }
+        };
+        if (_anndata.content.data) {
+            _ann.content = { data: _anndata.content.data };
+        };
         _source.getAnnotations().push(_ann);
     },
     serialize : function(_source) {

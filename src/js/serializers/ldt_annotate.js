@@ -8,9 +8,11 @@ IriSP.serializers.ldt_annotate = {
     serializeAnnotation : function(_data, _source) {
         var _annType = _data.getAnnotationType();
         return {
+            id: _data.id,
             begin: _data.begin.milliseconds,
             end: _data.end.milliseconds,
             content: {
+                data: _data.content.data || {},
                 description: _data.description,
                 title: _data.title,
                 audio: _data.audio
@@ -21,7 +23,9 @@ IriSP.serializers.ldt_annotate = {
             type: ( typeof _annType.dont_send_id !== "undefined" && _annType.dont_send_id ? "" : _annType.id ),
             meta: {
                 created: _data.created,
-                creator: _data.creator
+                creator: _data.creator,
+                modified: _data.modified,
+                contributor: _data.contributor
             }
         };
     },
@@ -56,7 +60,10 @@ IriSP.serializers.ldt_annotate = {
         _ann.setEnd(_anndata.end);
         if (typeof _anndata.content.audio !== "undefined" && _anndata.content.audio.href) {
             _ann.audio = _anndata.content.audio;
-        }
+        };
+        if (_anndata.content.data) {
+            _ann.content = { data: _anndata.content.data };
+        };
         _source.getAnnotations().push(_ann);
     },
     serialize : function(_source) {
@@ -66,7 +73,7 @@ IriSP.serializers.ldt_annotate = {
         if (typeof _data == "string") {
             _data = JSON.parse(_data);
         }
-        
+
         _source.addList('tag', new IriSP.Model.List(_source.directory));
         _source.addList('annotationType', new IriSP.Model.List(_source.directory));
         _source.addList('annotation', new IriSP.Model.List(_source.directory));
