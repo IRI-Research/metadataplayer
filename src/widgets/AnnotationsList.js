@@ -520,7 +520,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     widget.localSource = widget.player.sourceManager.newLocalSource({serializer: IriSP.serializers['ldt_localstorage']});
                 }
                 // Load current local annotations
-                widget.localSource.deSerialize(window.localStorage[widget.editable_storage]);
+                widget.localSource.deSerialize(window.localStorage[widget.editable_storage] || "[]");
             };
 
             var get_local_annotation = function (ident) {
