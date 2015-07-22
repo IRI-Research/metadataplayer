@@ -12,7 +12,7 @@ IriSP.serializers.ldt_localstorage = {
             begin: _data.begin.milliseconds,
             end: _data.end.milliseconds,
             content: {
-                data: _data.content.data || {},
+                data: (_data.content ? _data.content.data || {} : {}),
                 description: _data.description,
                 title: _data.title,
                 audio: _data.audio
