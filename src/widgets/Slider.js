@@ -53,7 +53,7 @@ IriSP.Widgets.Slider.prototype.draw = function() {
         this.timeoutId = false;
     }
 
-    this.$
+    this.$slider
         .mouseover(function() {
             _this.$time.show();
             _this.onMouseover();
