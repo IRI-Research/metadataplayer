@@ -12,7 +12,6 @@ IriSP.Widgets.Controller.prototype.defaults = {
     disable_search_btn: false,
     disable_ctrl_f: false,
     always_show_search: false,
-    create_quiz_callback: undefined,
     enable_quiz_toggle: undefined
 };
 
@@ -255,11 +254,8 @@ IriSP.Widgets.Controller.prototype.toggleFullscreen = function() {
 
 //Quiz
 IriSP.Widgets.Controller.prototype.createQuiz = function() {
-    if (typeof this.create_quiz_callback !== "undefined") {
-        this.create_quiz_callback();
-        this.player.trigger("Quiz.hide");
-        this.player.trigger("QuizCreator.create");
-    }
+    this.player.trigger("Quiz.hide");
+    this.player.trigger("QuizCreator.create");
 };
 
 IriSP.Widgets.Controller.prototype.toggleQuiz = function() {
