@@ -255,6 +255,7 @@ IriSP.Widgets.Controller.prototype.toggleFullscreen = function() {
 //Quiz
 IriSP.Widgets.Controller.prototype.createQuiz = function() {
     this.player.trigger("Quiz.hide");
+    this.media.pause();
     this.player.trigger("QuizCreator.create");
 };
 
