@@ -119,8 +119,6 @@ IriSP.Widgets.QuizCreator.prototype.draw = function() {
 	this.$.find(".Ldt-QuizCreator-Question-Add").bind("click", this.functionWrapper("onQuestionAdd"));
 	this.$.find(".Ldt-QuizCreator-Question-Save").bind("click", this.functionWrapper("onSubmit"));
 
-	$("#tab-quiz").prepend('<button class="Ldt-QuizCreator-Export-Link">Exporter</button>');
-
 	$(".Ldt-QuizCreator-Export-Link").click(function() {
 		_this.exportAnnotations();
 	});
