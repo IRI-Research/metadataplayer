@@ -68,7 +68,7 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         set_time: "Double-click to update to current player time",
         edit_annotation: "Edit note",
         delete_annotation: "Delete note",
-        publish_annotation: "Make ntoe public",
+        publish_annotation: "Make note public",
         import_annotations: "Paste or load notes in this field and press Import.",
         confirm_delete_message: "You are about to delete {{ annotation.title }}. Are you sure you want to delete it?",
         confirm_publish_message: "You are about to publish {{ annotation.title }}. Are you sure you want to make it public?",
