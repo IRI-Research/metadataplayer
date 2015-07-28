@@ -13,25 +13,43 @@ IriSP.Widgets.EnrichedPlan.prototype.defaults = {
     // Main type for slide segmentation
     annotation_type: "Slides",
     // If no annotation type list is specified, use all other types
-    annotation_types: []
+    annotation_types: [],
+    show_controls: true
 }
 
-IriSP.Widgets.EnrichedPlan.prototype.template = '<div class="Ldt-EnrichedPlan-Container"></div>';
+IriSP.Widgets.EnrichedPlan.prototype.template =
+      '<div class="Ldt-EnrichedPlan-Container">'
+    + '{{#show_controls}}<form class="Ldt-EnrichedPlan-Controls">'
+    + ' <input id="{{prefix}}teacher_note_checkbox" class="Ldt-EnrichedPlan-Control-Checkbox Ldt-EnrichedPlan-Note-Teacher" checked type="checkbox">'
+    + ' <label for="{{prefix}}teacher_note_checkbox" class="Ldt-EnrichedPlan-Control-Label Ldt-EnrichedPlan-Note-Teacher">Notes Enseignant</label>'
+    + ' <input id="{{prefix}}other_note_checkbox" class="Ldt-EnrichedPlan-Control-Checkbox Ldt-EnrichedPlan-Note-Other" checked type="checkbox">'
+    + ' <label for="{{prefix}}other_note_checkbox" class="Ldt-EnrichedPlan-Control-Label Ldt-EnrichedPlan-Note-Other">Notes Autres</label>'
+    + ' <input id="{{prefix}}simplified_plan_checkbox" class="Ldt-EnrichedPlan-Control-Checkbox Ldt-EnrichedPlan-Note-Own" checked type="checkbox">'
+    + ' <label for="{{prefix}}simplified_plan_checkbox" class="Ldt-EnrichedPlan-Control-Label Ldt-EnrichedPlan-Note-Own">Notes perso.</label>'
+    + ' <input id="{{prefix}}slide_display_checkbox" class="Ldt-EnrichedPlan-Control-Checkbox Ldt-EnrichedPlan-Slide-Display" checked type="checkbox">'
+    + ' <label for="{{prefix}}slide_display_checkbox" class="Ldt-EnrichedPlan-Control-Label Ldt-EnrichedPlan-Slide-Display">Diapo<br/>&nbsp;</label>'
+    + ' <input class="Ldt-EnrichedPlan-Search-Input" type="search" placeholder="Recherchez"/>'
+    + '</form>{{/show_controls}}'
+    + '<div class="Ldt-EnrichedPlan-Content"></div>'
+    + '</div>';
 
 IriSP.Widgets.EnrichedPlan.prototype.slideTemplate =
       '<div data-id="{{ id }}" class="Ldt-EnrichedPlan-Slide">'
     + '  <div class="Ldt-EnrichedPlan-SlideTimecode">{{ begin }}</div>'
-    + '  <div data-timecode="{{begintc}}" class="Ldt-EnrichedPlan-SlideThumbnail"><img title="{{ begin }} - {{ atitle }}" src="{{ thumbnail }}"></div>'
+    + '  <div data-timecode="{{begintc}}" class="Ldt-EnrichedPlan-SlideThumbnail Ldt-EnrichedPlan-Slide-Display"><img title="{{ begin }} - {{ atitle }}" src="{{ thumbnail }}"></div>'
     + '  <div class="Ldt-EnrichedPlan-SlideContent">'
     + '     <div data-timecode="{{begintc}}" class="Ldt-EnrichedPlan-SlideTitle Ldt-EnrichedPlan-SlideTitle{{ level }}">{{ atitle }}</div>'
     + '     <div class="Ldt-EnrichedPlan-SlideNotes">{{{ notes }}}</div>'
     + '  </div>'
     + '</div>';
 
-IriSP.Widgets.EnrichedPlan.prototype.annotationTemplate = '<div title="{{ begin }} - {{ atitle }}" data-id="{{ id }}" data-timecode="{{begintc}}" class="Ldt-EnrichedPlan-Note"><span class="Ldt-EnrichedPlan-Note-Text">{{ text }}</span> <span class="Ldt-EnrichedPlan-Note-Author">{{ author }}</span></div>';
+IriSP.Widgets.EnrichedPlan.prototype.annotationTemplate = '<div title="{{ begin }} - {{ atitle }}" data-id="{{ id }}" data-timecode="{{begintc}}" class="Ldt-EnrichedPlan-Note {{category}}"><span class="Ldt-EnrichedPlan-Note-Text">{{ text }}</span> <span class="Ldt-EnrichedPlan-Note-Author">{{ author }}</span></div>';
 
 IriSP.Widgets.EnrichedPlan.prototype.draw = function() {
     var _this = this;
+    // Generate a unique prefix, so that ids of input fields
+    // (necessary for label association) are unique too.
+    _this.prefix = "TODO";
     // slides content: title, level (for toc)
     var _slides = this.getWidgetAnnotations().sortBy(function(_annotation) {
         return _annotation.begin;
@@ -52,7 +70,8 @@ IriSP.Widgets.EnrichedPlan.prototype.draw = function() {
     });
 
     _this.renderTemplate();
-    var content = _this.$.find('.Ldt-EnrichedPlan-Container');
+    var container = _this.$.find('.Ldt-EnrichedPlan-Container');
+    var content = _this.$.find('.Ldt-EnrichedPlan-Content');
 
     _slides.forEach(function(slide) {
         var _html = Mustache.to_html(_this.slideTemplate, {
@@ -69,7 +88,9 @@ IriSP.Widgets.EnrichedPlan.prototype.draw = function() {
                     author: a.creator,
                     begin: a.begin.toString(),
                     begintc: a.begin.milliseconds,
-                    atitle: a.title.slice(0, 20)
+                    atitle: a.title.slice(0, 20),
+                    // FIXME: Temporary hack waiting for a proper metadata definition
+                    category: a.title.indexOf('Anonyme') < 0 ? "Ldt-EnrichedPlan-Note-Own" : "Ldt-EnrichedPlan-Note-Other"
                 });
             }).join("\n")
         });
@@ -77,7 +98,20 @@ IriSP.Widgets.EnrichedPlan.prototype.draw = function() {
         content.append(_el);
     });
 
-    content.on("click", "[data-timecode]", function () {
+    container.on("click", "[data-timecode]", function () {
         _this.media.setCurrentTime(Number(this.dataset.timecode));
     });
+
+    container.on("click", ".Ldt-EnrichedPlan-Control-Checkbox", function () {
+        var classname = Array.prototype.slice.call(this.classList).filter( function (s) { return s != "Ldt-EnrichedPlan-Control-Checkbox"; });
+        if (classname.length) {
+            if ($(this).is(':checked')) {
+                content.find(".Ldt-EnrichedPlan-Slide ." + classname[0]).show(300);
+            } else {
+                content.find(".Ldt-EnrichedPlan-Slide ." + classname[0]).hide(300);
+            }
+        }
+    });
+
+
 };
