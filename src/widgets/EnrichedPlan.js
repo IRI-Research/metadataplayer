@@ -27,7 +27,7 @@ IriSP.Widgets.EnrichedPlan.prototype.template =
     + ' <label for="{{prefix}}simplified_plan_checkbox" class="Ldt-EnrichedPlan-Control-Label Ldt-EnrichedPlan-Note-Own">Notes perso.</label>'
     + ' <input id="{{prefix}}slide_display_checkbox" class="Ldt-EnrichedPlan-Control-Checkbox Ldt-EnrichedPlan-Slide-Display" checked type="checkbox">'
     + ' <label for="{{prefix}}slide_display_checkbox" class="Ldt-EnrichedPlan-Control-Label Ldt-EnrichedPlan-Slide-Display">Diapo<br/>&nbsp;</label>'
-    + ' <input class="Ldt-EnrichedPlan-Search-Input" type="search" placeholder="Recherchez"/>'
+    + ' <input class="Ldt-EnrichedPlan-Search-Input" type="search" incremental placeholder="Recherchez"/>'
     + '</form>{{/show_controls}}'
     + '<div class="Ldt-EnrichedPlan-Content"></div>'
     + '</div>';
@@ -113,6 +113,23 @@ IriSP.Widgets.EnrichedPlan.prototype.draw = function() {
                 if (classname[0] == 'Ldt-EnrichedPlan-Slide-Display')
                     content.find(".Ldt-EnrichedPlan-SlideContent").addClass("wide");
              }
+        }
+    });
+
+    container.find(".Ldt-EnrichedPlan-Search-Input").on("search", function () {
+        var q = $(this).val().toLocaleLowerCase();
+        if (q === "") {
+            // Show all
+            content.find(".Ldt-EnrichedPlan-Note").removeClass("non_matching");
+        } else {
+            $(".Ldt-EnrichedPlan-Note").each( function () {
+                var node = $(this);
+                if (node.text().toLocaleLowerCase().indexOf(q) > -1) {
+                    node.removeClass("non_matching");
+                } else {
+                    node.addClass("non_matching");
+                }
+            });
         }
     });
 };

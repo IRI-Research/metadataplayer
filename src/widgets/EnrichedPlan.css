@@ -118,6 +118,10 @@
     width: calc(100% - 340px);
 }
 
+.Ldt-EnrichedPlan-Note.non_matching {
+    display: none;
+}
+
 .Ldt-EnrichedPlan-Control- {
     font-style: normal;
 }
