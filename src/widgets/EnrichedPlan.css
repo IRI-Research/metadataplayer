@@ -1,0 +1,81 @@
+.Ldt-EnrichedPlan-Slide {
+    border-bottom: 2px dotted #ccc;
+    padding-top: 4px;
+}
+
+.Ldt-EnrichedPlan-SlideTimecode {
+    display: inline-block;
+    width: 24px;
+    color: #999 !important;
+    font-size: 9px !important;
+    width: 24px;
+    vertical-align: top;
+}
+
+.Ldt-EnrichedPlan-SlideThumbnail {
+    display: inline-block;
+    width: 180px;
+    height: 100px;
+    padding-left: 10px;
+    margin: 0;
+    vertical-align: top;
+}
+
+.Ldt-EnrichedPlan-SlideThumbnail img {
+    max-width: 180px;
+    max-height: 100px;
+    margin: auto;
+    border: 1px solid #ccc;
+}
+
+.Ldt-EnrichedPlan-SlideContent {
+    display: inline-block;
+    width: calc(100% - 220px);
+}
+
+.Ldt-EnrichedPlan-SlideTitle {
+    display: inline-block;
+    font-size: 14px;
+    width: 100%;
+    height: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.Ldt-EnrichedPlan-SlideTitle1 {
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.Ldt-EnrichedPlan-Note {
+    font-weight: normal;
+    font-size: 14px;
+    font-family: Roboto-italic;
+}
+.Ldt-EnrichedPlan-Note:hover {
+    background-color: #eee;
+}
+
+.Ldt-EnrichedPlan-Note.official {
+    color: #e5007e;
+    font-style: italic;
+}
+.Ldt-EnrichedPlan-Note.own {
+    color: #66ccff;
+}
+.Ldt-EnrichedPlan-Note.other {
+    color: #996633;
+}
+
+.Ldt-EnrichedPlan-Note-Text {
+    line-height: 22px;
+    word-wrap: break-word;
+}
+
+.Ldt-EnrichedPlan-Note-Author {
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
