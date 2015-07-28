@@ -79,12 +79,21 @@
     font-size: 10px;
 }
 
+.Ldt-EnrichedPlan-Content {
+    margin-top: 37px;
+}
+
 .Ldt-EnrichedPlan-Controls {
     height: 36px;
     padding: 9px 0px 6px 0px;
     border-bottom: 1px solid #000;
     overflow-y: hidden;
     overflow-x: hidden;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+    background-color: #fff;
 }
 
 .Ldt-EnrichedPlan-Control-Label {
