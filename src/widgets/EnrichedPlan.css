@@ -33,6 +33,10 @@
     width: calc(100% - 220px);
 }
 
+.Ldt-EnrichedPlan-SlideContent.wide {
+    width: calc(100% - 40px);
+}
+
 .Ldt-EnrichedPlan-SlideTitle {
     display: inline-block;
     font-size: 14px;

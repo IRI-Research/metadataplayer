@@ -107,12 +107,12 @@ IriSP.Widgets.EnrichedPlan.prototype.draw = function() {
             if ($(this).is(':checked')) {
                 content.find(".Ldt-EnrichedPlan-Slide ." + classname[0]).show(300);
                 if (classname[0] == 'Ldt-EnrichedPlan-Slide-Display')
-                    content.find(".Ldt-EnrichedPlan-SlideContent").css({ width: "calc(100% - 220px)"});
+                    content.find(".Ldt-EnrichedPlan-SlideContent").removeClass("wide");
             } else {
                 content.find(".Ldt-EnrichedPlan-Slide ." + classname[0]).hide(300);
                 if (classname[0] == 'Ldt-EnrichedPlan-Slide-Display')
-                    content.find(".Ldt-EnrichedPlan-SlideContent").css({ width: "calc(100% - 40px)"});
-            }
+                    content.find(".Ldt-EnrichedPlan-SlideContent").addClass("wide");
+             }
         }
     });
 };
