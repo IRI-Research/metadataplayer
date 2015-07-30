@@ -20,10 +20,7 @@ IriSP.Widgets.QuizCreator.prototype.defaults = {
     api_endpoint_template: "",
     api_method: "POST",
     // Id that will be used as localStorage key
-    editable_storage: "",
-    after_send_timeout: 0,
-    close_after_send: true,
-    tag_prefix: "#"
+    editable_storage: ""
 };
 
 IriSP.Widgets.QuizCreator.prototype.messages = {
@@ -453,19 +450,8 @@ IriSP.Widgets.QuizCreator.prototype.onSubmit = function() {
             contentType: 'application/json',
             data: _export.serialize(), /* L'objet Source est sérialisé */
             success: function(_data) {
-                if (_this.after_send_timeout) { /* Selon les options de configuration, on revient à l'écran principal ou on ferme le widget, ou rien */
-                    window.setTimeout(
-                        function() {
-                            _this.close_after_send
-                                ? _this.hide()
-                                : _this.show();
-                        },
-                        _this.after_send_timeout
-                    );
-                }
-
-					_this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
-                    _this.player.trigger("CreateAnnotation.created", _annotation.id);
+				_this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+                _this.player.trigger("CreateAnnotation.created", _annotation.id);
 
                 if (this.editable_storage == '') {
                     _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
