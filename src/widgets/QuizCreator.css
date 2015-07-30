@@ -15,6 +15,10 @@
 
 }
 
+.Ldt-QuizCreator-Question-Area {
+    width:calc(100% - 20px);
+}
+
 .Ldt-QuizCreator-Questions-Block {
 	width: 100%;
 }

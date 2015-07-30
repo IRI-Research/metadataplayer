@@ -36,8 +36,8 @@ IriSP.Widgets.QuizCreator.prototype.messages = {
 IriSP.Widgets.QuizCreator.prototype.template =
 	  '<div class="Ldt-QuizCreator-Ui Ldt-TraceMe">'
 	+	'<div class="Ldt-QuizCreator-Question-Form">'
-	+		'<textarea class="Ldt-QuizCreator-Question-Area" style="width:calc(100% - 20px);" placeholder="Votre question"></textarea><br />'
-	+		'<textarea class="Ldt-QuizCreator-Resource-Area" style="width:calc(100% - 20px);" placeholder="Ressources (lien vers une image, etc.)"></textarea><br />'
+	+		'<textarea class="Ldt-QuizCreator-Question-Area" placeholder="Votre question"></textarea><br />'
+	+		'<textarea class="Ldt-QuizCreator-Resource-Area" placeholder="Ressources (lien vers une image, etc.)"></textarea><br />'
 	+	'</div>'
 	+		'<p>Type de question  '
 	+ 		'<select name="type" class="Ldt-QuizCreator-Question-Type">'
