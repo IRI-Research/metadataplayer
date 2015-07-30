@@ -103,7 +103,7 @@ IriSP.Widgets.Quiz.prototype.update = function(annotation) {
             QR = '<div class="quiz-resource-block" id="resource" >' + resource + '</div>';
         };
 		$(".Ldt-Quiz-Questions").html(QR + output);
-		$(".Ldt-Quiz-Overlay").show();
+		$(".Ldt-Quiz-Overlay").fadeIn();
 
 		$(".Ldt-Quiz-Submit").fadeIn();
 
