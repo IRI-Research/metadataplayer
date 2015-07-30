@@ -8,13 +8,10 @@ IriSP.Widgets.QuizCreator = function(player, config) {
 IriSP.Widgets.QuizCreator.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.QuizCreator.prototype.defaults = {
-    start_visible : true,
-    always_visible : false,
     creator_name : "",
     tags : false,
     tag_titles : false,
     pause_on_write : true,
-    max_tags : 8,
     annotation_type: "Quiz",
     api_serializer: "ldt_annotate",
     api_endpoint_template: "",
