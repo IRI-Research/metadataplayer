@@ -33,8 +33,8 @@ IriSP.Widgets.Quiz.prototype.template = '<div class="Ldt-Quiz-Container">'
                                         + '      </div>'
                                         + '  </div>'
                                         + '  <div class="Ldt-Quiz-Submit">'
-                                        + '      <div class="quiz-submit-button"><input type="button" value="Valider" /></div>'
-                                        + '      <div class="quiz-submit-skip-link"><a href="#">Passer</a></div><div style="clear:both;"></div>'
+                                        + '      <div class="Ldt-Quiz-Submit-Button"><input type="button" value="Valider" /></div>'
+                                        + '      <div class="Ldt-Quiz-Submit-Skip-Link"><a href="#">Passer</a></div><div style="clear:both;"></div>'
                                         + '  </div>'
                                         + '  <div class="Ldt-Quiz-Result">Bonne réponse</div>'
                                         + '</div>'
@@ -119,7 +119,7 @@ IriSP.Widgets.Quiz.prototype.update = function(annotation) {
 		});
 
 		//In case we click on the first "Skip" link
-		$(".quiz-submit-skip-link").click({media: this.media}, function(event) {
+		$(".Ldt-Quiz-Submit-Skip-Link").click({media: this.media}, function(event) {
 			_this.hide();
 			_this.player.trigger("QuizCreator.skip");
 			event.data.media.play();
@@ -287,7 +287,7 @@ IriSP.Widgets.Quiz.prototype.draw = function() {
     });
 
 	//In case we click on the first "Skip" link
-	$(".quiz-submit-skip-link").click({ media: this.media }, function(event) {
+	$(".Ldt-Quiz-Submit-Skip-Link").click({ media: this.media }, function(event) {
 		_this.submit(_this.user, _this.userid, _this.annotation.id, "skipped_answer", 0);
 		_this.hide();
 		_this.player.trigger("QuizCreator.skip");

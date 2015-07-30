@@ -121,16 +121,16 @@
     margin: 10px;
 }
 
-.Ldt-Quiz-Submit .quiz-submit-skip-link {
+.Ldt-Quiz-Submit .Ldt-Quiz-Submit-Skip-Link {
     float: left;
 }
 
-.quiz-submit-skip-link a {
+.Ldt-Quiz-Submit-Skip-Link a {
     text-decoration: none;
     font-size: 16pt;
 }
 
-.Ldt-Quiz-Submit .quiz-submit-button {
+.Ldt-Quiz-Submit .Ldt-Quiz-Submit-Button {
     float: right;
 }
 
