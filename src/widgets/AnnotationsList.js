@@ -107,7 +107,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '</div>'
     + '<div title="{{l10n.set_time}}" class="Ldt-AnnotationsList-Duration"><span class="Ldt-AnnotationsList-Begin Ldt-live-editable Ldt-AnnotationsList-TimeEdit" data-editable_value="{{begin}}" data-editable_id="{{id}}" data-editable_field="begin" data-editable_type="timestamp">{{begin}}</span>{{#show_end_time}} - <span class="Ldt-AnnotationsList-End Ldt-live-editable" data-editable_value="{{end}}" data-editable_id="{{id}}" data-editable_field="end" data-editable_type="timestamp">{{end}}</span>{{/show_end_time}}</div>'
     + '<h3 class="Ldt-AnnotationsList-Title Ldt-Annotation-Timecode" data-timecode="{{ begin_ms }}" draggable="true">'
-    +   '<a href="{{url}}" class="Ldt-live-editable" data-editable_value="{{htitle}}" data-editable_type="multiline" data-editable_id="{{id}}" data-editable_field="title">{{{htitle}}}</a>'
+    +   '<a href="{{url}}" class="Ldt-live-editable" data-editable_value="{{htitletext}}" data-editable_type="multiline" data-editable_id="{{id}}" data-editable_field="title">{{{htitle}}}</a>'
     + '{{#show_creator}}<span class="Ldt-AnnotationsList-Creator">{{ creator }}</span>{{/show_creator}}'
     + '</h3>'
     + '<p class="Ldt-AnnotationsList-Description Ldt-live-editable" data-editable_type="multiline" data-editable_value="{{hdescription}}" data-editable_id="{{id}}" data-editable_field="description">{{{hdescription}}}</p>'
@@ -320,6 +320,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 media_id : _annotation.getMedia().id,
                 atitle: IriSP.textFieldHtml(_annotation.title),
                 htitle : IriSP.textFieldHtml(_title),
+                htitletext: _title,
                 creator: _annotation.creator ? ' (' + _annotation.creator + ')' : "",
                 hdescription : IriSP.textFieldHtml(_description),
                 begin : _annotation.begin.toString(),
