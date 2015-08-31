@@ -46,10 +46,10 @@ IriSP.Widgets.QuizCreator.prototype.template =
 
 /* Hide and clear the interface is case of someone skipped or answer the current question in the Quiz panel*/
 IriSP.Widgets.QuizCreator.prototype.skip = function() {
-	$(".Ldt-QuizCreator-Time").val("");
-	$(".Ldt-QuizCreator-Question-Area").val("");
-	$(".Ldt-QuizCreator-Resource-Area").val("");
-	$(".Ldt-QuizCreator-Questions-Block").html("");
+	this.$.find(".Ldt-QuizCreator-Time").val("");
+	this.$.find(".Ldt-QuizCreator-Question-Area").val("");
+	this.$.find(".Ldt-QuizCreator-Resource-Area").val("");
+	this.$.find(".Ldt-QuizCreator-Questions-Block").html("");
 };
 
 IriSP.Widgets.QuizCreator.prototype.reloadAnnotations = function() {
@@ -68,7 +68,7 @@ IriSP.Widgets.QuizCreator.prototype.reloadAnnotations = function() {
 };
 
 IriSP.Widgets.QuizCreator.prototype.nbAnswers = function(){
-	var numItems = $('.Ldt-QuizCreator-Questions-Answer').length;
+	var numItems = this.$.find('.Ldt-QuizCreator-Questions-Answer').length;
 	return numItems;
 };
 
@@ -111,12 +111,12 @@ IriSP.Widgets.QuizCreator.prototype.draw = function() {
 	this.$.find(".Ldt-QuizCreator-Question-Add").bind("click", this.functionWrapper("onQuestionAdd"));
 	this.$.find(".Ldt-QuizCreator-Question-Save").bind("click", this.functionWrapper("onSubmit"));
 
-	$(".Ldt-QuizCreator-Export-Link").click(function() {
+	this.$.find(".Ldt-QuizCreator-Export-Link").click(function() {
 		_this.exportAnnotations();
 	});
 
-	$(".Ldt-QuizCreator-Time").keyup(function() {
-		var str = $(".Ldt-QuizCreator-Time").val();
+	this.$.find(".Ldt-QuizCreator-Time").keyup(function() {
+		var str = this.$.find(".Ldt-QuizCreator-Time").val();
 		_this.begin = IriSP.timestamp2ms(str);
 		_this.end = _this.begin + 1000;
 	});
@@ -147,13 +147,13 @@ IriSP.Widgets.QuizCreator.prototype.addQuestion = function(annotation, number) {
 	this.answers = [];
 
 	var output = '';
-	$(".Ldt-QuizCreator-Questions-Block").html(output);
+	this.$.find(".Ldt-QuizCreator-Questions-Block").html(output);
 
-	$(".Ldt-QuizCreator-Time").val(annotation.begin);
-	$(".Ldt-QuizCreator-Question-Area").val(annotation.content.data.question);
-	$(".Ldt-QuizCreator-Resource-Area").val(annotation.content.data.resource);
+	this.$.find(".Ldt-QuizCreator-Time").val(annotation.begin);
+	this.$.find(".Ldt-QuizCreator-Question-Area").val(annotation.content.data.question);
+	this.$.find(".Ldt-QuizCreator-Resource-Area").val(annotation.content.data.resource);
 
-	for (i = 0; i < answers.length; i++) {
+	for (var i = 0; i < answers.length; i++) {
 		output += '<div class="Ldt-QuizCreator-Questions-Answer">'
 		+	'<div class="Ldt-QuizCreator-Questions-Answer-Correct">'+ this.question.renderFullTemplate(answers[i], this.nbAnswers()) +'</div>'
 		+ 	'<div class="Ldt-QuizCreator-Questions-Answer-Content">Réponse <br />'
@@ -163,7 +163,7 @@ IriSP.Widgets.QuizCreator.prototype.addQuestion = function(annotation, number) {
 		+ 	'<div class="Ldt-QuizCreator-Questions-Answer-Delete"><div class="Ldt-QuizCreator-Remove" id="remove'+ this.nbAnswers() +'">&nbsp;</div></div>'
 		+	'</div>';
 	}
-	$(".Ldt-QuizCreator-Questions-Block").append(output);
+	this.$.find(".Ldt-QuizCreator-Questions-Block").append(output);
 }
 
 IriSP.Widgets.QuizCreator.prototype.onQuestionTypeChange = function(e) {
@@ -184,7 +184,7 @@ IriSP.Widgets.QuizCreator.prototype.onQuestionTypeChange = function(e) {
 
 	var output = "";
 
-	$(".Ldt-QuizCreator-Questions-Block").html(output);
+	_this.$.find(".Ldt-QuizCreator-Questions-Block").html(output);
 
     this.pauseOnWrite();
 };
@@ -199,8 +199,8 @@ IriSP.Widgets.QuizCreator.prototype.onQuestionAdd = function(e) {
 	+ '</div>';
 
 
-	$(".Ldt-QuizCreator-Questions-Block").append(output);
-	$(".Ldt-QuizCreator-Answer-Content").last().focus();
+	this.$.find(".Ldt-QuizCreator-Questions-Block").append(output);
+	this.$.find(".Ldt-QuizCreator-Answer-Content").last().focus();
 
     this.pauseOnWrite();
 };
@@ -214,7 +214,7 @@ IriSP.Widgets.QuizCreator.prototype.pauseOnWrite = function() {
 IriSP.Widgets.QuizCreator.prototype.setBegin = function (t) {
     this.begin = new IriSP.Model.Time(t || 0);
 	this.end = this.begin + 500;
-    $(".Ldt-QuizCreator-Time").val(this.begin.toString());
+    this.$.find(".Ldt-QuizCreator-Time").val(this.begin.toString());
 };
 
 IriSP.Widgets.QuizCreator.prototype.load_local_annotations = function() {
@@ -254,10 +254,10 @@ IriSP.Widgets.QuizCreator.prototype.show = function() {
 };
 
 IriSP.Widgets.QuizCreator.prototype.hide = function() {
-	$(".Ldt-QuizCreator-Questions-Block").html("");
-	$(".Ldt-QuizCreator-Question-Area").val("");
-	$(".Ldt-QuizCreator-Resource-Area").val("");
-	$(".Ldt-QuizCreator-Time").val("");
+	this.$.find(".Ldt-QuizCreator-Questions-Block").html("");
+	this.$.find(".Ldt-QuizCreator-Question-Area").val("");
+	this.$.find(".Ldt-QuizCreator-Resource-Area").val("");
+	this.$.find(".Ldt-QuizCreator-Time").val("");
 };
 
 
@@ -364,17 +364,17 @@ IriSP.Widgets.QuizCreator.prototype.onSubmit = function() {
     _annotation.description = _this.getDescription();
 	_annotation.content = {};
 	_annotation.content.data = {};
-	_annotation.content.data.type = $(".Ldt-QuizCreator-Question-Type").val();
+	_annotation.content.data.type = this.$.find(".Ldt-QuizCreator-Question-Type").val();
 	_annotation.content.data.question = _annotation.description;
-	_annotation.content.data.resource = $(".Ldt-QuizCreator-Resource-Area").val();
+	_annotation.content.data.resource = this.$.find(".Ldt-QuizCreator-Resource-Area").val();
 	_annotation.content.data.answers = [];
 
 	for (var i = 0; i < this.nbAnswers(); i++) {
-		if (typeof $("#question"+ i) != "undefined") {
+		if (typeof this.$.find("#question"+ i) != "undefined") {
 			var answer = {
-				correct : ($(".Ldt-Quiz-Question-Check-"+ i).is(':checked')) ? true : false,
-				content : $("#question"+ i).val(),
-				feedback : $("#feedback"+ i).val()
+				correct : (this.$.find(".Ldt-Quiz-Question-Check-"+ i).is(':checked')) ? true : false,
+				content : this.$.find("#question"+ i).val(),
+				feedback : this.$.find("#feedback"+ i).val()
 			};
 			_annotation.content.data.answers.push(answer);
 		}
@@ -383,7 +383,7 @@ IriSP.Widgets.QuizCreator.prototype.onSubmit = function() {
     _annotation.title = _annotation.description;
 
     var tagIds = Array.prototype.map.call(
-        $(".Ldt-CreateAnnotation-TagLi.selected"),
+        this.$.find(".Ldt-CreateAnnotation-TagLi.selected"),
         function(el) { return IriSP.jQuery(el).attr("tag-id"); }
     );
 
@@ -422,7 +422,7 @@ IriSP.Widgets.QuizCreator.prototype.onSubmit = function() {
         window.localStorage[_this.editable_storage] = _local_export.serialize();
         _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
         _this.player.trigger("Annotation.create", _annotation);
-        $(".Ldt-CreateAnnotation-Description").val("");
+        this.$.find(".Ldt-CreateAnnotation-Description").val("");
     }
 
     if (_url !== "") {
