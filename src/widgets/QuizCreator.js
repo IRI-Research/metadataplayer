@@ -81,19 +81,13 @@ IriSP.Widgets.QuizCreator.prototype.draw = function() {
     });
 
 	this.onMdpEvent("QuizCreator.show", function() {
-		$("#QuizEditContainer").show();
 		_this.setBegin(_this.media.currentTime);
     });
 
 	this.onMdpEvent("QuizCreator.create", function() {
-		$("#QuizEditContainer").show();
 		_this.skip();
 		_this.setBegin(_this.media.currentTime);
     });
-
-	this.onMdpEvent("QuizCreator.hide", function() {
-		$("#QuizEditContainer").hide();
-	});
 
     this.onMdpEvent("QuizCreator.skip", function() {
 		_this.skip();
