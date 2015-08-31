@@ -152,7 +152,7 @@ IriSP.Widgets.QuizCreator.prototype.addQuestion = function(annotation, number) {
 	var output = '';
 	$(".Ldt-QuizCreator-Questions-Block").html(output);
 
-	$("#Ldt-QuizCreator-Time").val(annotation.begin);
+	$(".Ldt-QuizCreator-Time").val(annotation.begin);
 	$(".Ldt-QuizCreator-Question-Area").val(annotation.content.data.question);
 	$(".Ldt-QuizCreator-Resource-Area").val(annotation.content.data.resource);
 
