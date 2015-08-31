@@ -93,6 +93,10 @@ IriSP.Widgets.QuizCreator.prototype.draw = function() {
 		_this.skip();
     });
 
+	this.$.on("click", ".Ldt-QuizCreator-Remove", function() {
+        $(this).parents(".Ldt-QuizCreator-Questions-Answer").remove();
+	});
+
     this.begin = new IriSP.Model.Time();
     this.end = this.source.getDuration();
 	this.answers = [];
@@ -129,13 +133,6 @@ IriSP.Widgets.QuizCreator.prototype.getDescription = function() {
     return this.$.find(".Ldt-QuizCreator-Question-Area").val().trim();
 };
 
-IriSP.Widgets.QuizCreator.prototype.removeAnswer = function() {
-	$("body").on("click", ".Ldt-QuizCreator-Remove", function() {
-		var id = this.id;
-		$("#"+ id).closest(".Ldt-QuizCreator-Questions-Answer").remove();
-	});
-};
-
 IriSP.Widgets.QuizCreator.prototype.addQuestion = function(annotation, number) {
 
 	if (annotation.content.data.type == "multiple_choice") {
@@ -166,9 +163,6 @@ IriSP.Widgets.QuizCreator.prototype.addQuestion = function(annotation, number) {
 		+ 	'<div class="Ldt-QuizCreator-Questions-Answer-Delete"><div class="Ldt-QuizCreator-Remove" id="remove'+ this.nbAnswers() +'">&nbsp;</div></div>'
 		+	'</div>';
 	}
-
-	this.removeAnswer();
-
 	$(".Ldt-QuizCreator-Questions-Block").append(output);
 }
 
@@ -190,8 +184,6 @@ IriSP.Widgets.QuizCreator.prototype.onQuestionTypeChange = function(e) {
 
 	var output = "";
 
-	this.removeAnswer();
-
 	$(".Ldt-QuizCreator-Questions-Block").html(output);
 
     this.pauseOnWrite();
@@ -208,9 +200,6 @@ IriSP.Widgets.QuizCreator.prototype.onQuestionAdd = function(e) {
 
 
 	$(".Ldt-QuizCreator-Questions-Block").append(output);
-
-	this.removeAnswer();
-
 	$(".Ldt-QuizCreator-Answer-Content").last().focus();
 
     this.pauseOnWrite();
