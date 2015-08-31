@@ -12,11 +12,11 @@
 }
 
 .Ldt-QuizCreator-Question-Type {
-
 }
 
-.Ldt-QuizCreator-Question-Area {
-    width:calc(100% - 20px);
+.Ldt-QuizCreator-Question-Area,
+.Ldt-QuizCreator-Resource-Area {
+    width: calc(100% - 20px);
 }
 
 .Ldt-QuizCreator-Questions-Block {
