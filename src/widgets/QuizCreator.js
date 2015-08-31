@@ -119,10 +119,14 @@ IriSP.Widgets.QuizCreator.prototype.draw = function() {
 
     this.onMediaEvent("timeupdate", function(_time) {
         // Do not update timecode if description is not empty
-        if (_this.$.find(".Ldt-QuizCreator-Question-Area").val().trim() != "") {
+        if (_this.getDescription()) {
             _this.setBegin(_time);
         };
     });
+};
+
+IriSP.Widgets.QuizCreator.prototype.getDescription = function() {
+    return this.$.find(".Ldt-QuizCreator-Question-Area").val().trim();
 };
 
 IriSP.Widgets.QuizCreator.prototype.removeAnswer = function() {
@@ -368,7 +372,7 @@ IriSP.Widgets.QuizCreator.prototype.onSubmit = function() {
     _annotation.created = new Date(); /* Date de création de l'annotation */
 
     _annotation.setAnnotationType(_annotationType.id); /* Id du type d'annotation */
-    _annotation.description = $(".Ldt-QuizCreator-Question-Area").val().trim(); /* Champ description */
+    _annotation.description = _this.getDescription();
 	_annotation.content = {};
 	_annotation.content.data = {};
 	_annotation.content.data.type = $(".Ldt-QuizCreator-Question-Type").val();
