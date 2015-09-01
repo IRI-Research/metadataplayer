@@ -333,6 +333,10 @@ IriSP.Widgets.QuizCreator.prototype.onSubmit = function() {
 		alert("Vous devez spécifier au moins une réponse à votre question !");
 		return false;
 	};
+    // Check that there is at least 1 valid answer
+    if (! this.$.find(".quiz-question-edition:checked").length) {
+        alert("Vous n'avez pas indiqué de bonne réponse.");
+    };
 
     var _this = this,
         _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* Création d'une liste d'annotations contenant une annotation afin de l'envoyer au serveur */
