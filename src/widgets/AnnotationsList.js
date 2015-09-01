@@ -107,10 +107,10 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '</div>'
     + '<div title="{{l10n.set_time}}" class="Ldt-AnnotationsList-Duration"><span class="Ldt-AnnotationsList-Begin Ldt-live-editable Ldt-AnnotationsList-TimeEdit" data-editable_value="{{begin}}" data-editable_id="{{id}}" data-editable_field="begin" data-editable_type="timestamp">{{begin}}</span>{{#show_end_time}} - <span class="Ldt-AnnotationsList-End Ldt-live-editable" data-editable_value="{{end}}" data-editable_id="{{id}}" data-editable_field="end" data-editable_type="timestamp">{{end}}</span>{{/show_end_time}}</div>'
     + '<h3 class="Ldt-AnnotationsList-Title Ldt-Annotation-Timecode" data-timecode="{{ begin_ms }}" draggable="true">'
-    +   '<span href="{{url}}" class="Ldt-live-editable" data-editable_value="{{htitletext}}" data-editable_type="multiline" data-editable_id="{{id}}" data-editable_field="title">{{{htitle}}}</span>'
+    +   '<span class="Ldt-AnnotationsList-TitleContent Ldt-live-editable" data-editable_value="{{title}}" data-editable_type="multiline" data-editable_id="{{id}}" data-editable_field="title">{{{htitle}}}</span>'
     + '{{#show_creator}}<span class="Ldt-AnnotationsList-Creator">{{ creator }}</span>{{/show_creator}}'
     + '</h3>'
-    + '<p class="Ldt-AnnotationsList-Description Ldt-live-editable" data-editable_type="multiline" data-editable_value="{{hdescription}}" data-editable_id="{{id}}" data-editable_field="description">{{{hdescription}}}</p>'
+    + '<p class="Ldt-AnnotationsList-Description Ldt-live-editable" data-editable_type="multiline" data-editable_value="{{description}}" data-editable_id="{{id}}" data-editable_field="description">{{{hdescription}}}</p>'
     + '{{#tags.length}}'
     + '<ul class="Ldt-AnnotationsList-Tags">'
     +   '{{#tags}}'
@@ -320,9 +320,10 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 media_id : _annotation.getMedia().id,
                 atitle: IriSP.textFieldHtml(_annotation.title),
                 htitle : IriSP.textFieldHtml(_title),
-                htitletext: _title,
+                title: _title,
                 creator: _annotation.creator ? ' (' + _annotation.creator + ')' : "",
                 hdescription : IriSP.textFieldHtml(_description),
+                description: _description,
                 begin : _annotation.begin.toString(),
                 end : _annotation.end.toString(),
                 begin_ms : _annotation.begin.milliseconds,
@@ -554,9 +555,8 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             });
             this.$.find('.Ldt-AnnotationsList-Edit').click(function(e) {
                 // Edit annotation title. We have to specify the insertion point.
-                var insertion_point = $(this).parents(".Ldt-AnnotationsList-li").find(".Ldt-AnnotationsList-Title");
-                var element = insertion_point.find("a");
-                edit_element(element[0], insertion_point[0]);
+                var element = $(this).parents(".Ldt-AnnotationsList-li").find(".Ldt-AnnotationsList-TitleContent.Ldt-live-editable");
+                edit_element(element[0]);
             });
             this.$.find('.Ldt-AnnotationsList-PublishAnnotation').click(function(e) {
                 var _annotation = get_local_annotation(this.dataset.editable_id);
