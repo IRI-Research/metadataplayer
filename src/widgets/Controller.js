@@ -106,7 +106,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
         if (this.enable_quiz_toggle) {
             $(".Ldt-Ctrl-Quiz-Enable").addClass("Ldt-Ctrl-Quiz-Toggle-Active");
             $(".Ldt-Ctrl-Quiz-Create").addClass("Ldt-Ctrl-Quiz-Toggle-Active");
-            this.player.trigger("QuizCreator.show");
+            // this.player.trigger("QuizCreator.show");
             $("#QuizEditContainer").show();
         }
         else
@@ -265,7 +265,6 @@ IriSP.Widgets.Controller.prototype.toggleQuiz = function() {
         $(".Ldt-Ctrl-Quiz-Enable").addClass("Ldt-Ctrl-Quiz-Toggle-Active");
         $(".Ldt-Ctrl-Quiz-Create").addClass("Ldt-Ctrl-Quiz-Toggle-Active");
         this.player.trigger("Quiz.activate");
-        this.player.trigger("QuizCreator.show");
     }
     else
     {
