@@ -2,8 +2,8 @@ IriSP.Widgets.AnnotationsList = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
     this.lastIds = [];
     var _this = this;
-    this.throttledRefresh = IriSP._.throttle(function() {
-        _this.refresh(false);
+    this.throttledRefresh = IriSP._.throttle(function(full) {
+        _this.refresh(full);
     }, 800);
     this.searchString = false;
     this.lastSearch = false;
@@ -533,6 +533,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 var _annotation = get_local_annotation(this.dataset.editable_id);
                 if (confirm(Mustache.to_html(widget.l10n.confirm_delete_message, { annotation: _annotation })))
                     delete_local_annotation(this.dataset.editable_id);
+                widget.refresh(true);
             });
             this.$.find('.Ldt-AnnotationsList-Edit').click(function(e) {
                 // Edit annotation title. We have to specify the insertion point.
@@ -672,7 +673,18 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
                 _this.ajaxSource();
             }
         }
-        _this.throttledRefresh();
+        _this.throttledRefresh(false);
+    });
+
+    this.onMdpEvent("AnnotationsList.update", function() {
+        if (_this.ajax_url) {
+            if (_this.mashupMode) {
+                _this.ajaxMashup();
+            } else {
+                _this.ajaxSource();
+            }
+        }
+        _this.throttledRefresh(true);
     });
 
     if (this.ajax_url) {
