@@ -237,7 +237,7 @@ IriSP.Widgets.QuizCreator.prototype.delete_local_annotation = function(ident) {
 };
 
 IriSP.Widgets.QuizCreator.prototype.show = function() {
-	//do something
+	this.$.find(".Ldt-QuizCreator-Question-Area").focus();
 };
 
 IriSP.Widgets.QuizCreator.prototype.hide = function() {
