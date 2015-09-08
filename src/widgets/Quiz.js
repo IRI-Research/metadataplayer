@@ -188,22 +188,12 @@ IriSP.Widgets.Quiz.prototype.answer = function() {
 };
 
 IriSP.Widgets.Quiz.prototype.globalScore = function() {
-	//Define 2 variables to know how many good and bad answers there are
-    // TODO: replace by _.countBy
-	var ok = 0;
-	var ko = 0;
-	for (var i = 0; i < this.totalAmount; i++) {
-		if (this.correct[this.keys[i]] == 1) {
-			ok++;
-		}
-		else if (this.correct[this.keys[i]] == 0)
-		{
-			ko++;
-		}
-	}
-	var array = [ok, ko];
-	return array;
-}
+    // Return 2 variables to know how many right and wrong answers there are
+    var values = _.values(this.correct);
+    var ok = values.filter( function (s) { return s == 1; }).length;
+    var not_ok = values.length - ok;
+	return [ok, not_ok];
+};
 
 IriSP.Widgets.Quiz.prototype.refresh = function() {
     var _annotations = this.getWidgetAnnotations().sortBy(function(_annotation) {
