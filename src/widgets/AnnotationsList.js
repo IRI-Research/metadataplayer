@@ -19,7 +19,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     ajax_url : false,
     /* number of milliseconds before/after the current timecode when calling the segment API
      */
-    ajax_granularity : 600000, 
+    ajax_granularity : 600000,
     default_thumbnail : "",
     /* URL when the annotation is not in the current project,
      * e.g. http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}
@@ -98,7 +98,7 @@ IriSP.Widgets.AnnotationsList.prototype.template =
     + '</ul>'
     + '</div>';
 
-IriSP.Widgets.AnnotationsList.prototype.annotationTemplate = 
+IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     '<li class="Ldt-AnnotationsList-li Ldt-Highlighter-Annotation Ldt-TraceMe" data-annotation="{{ id }}" data-begin="{{ begin_ms }}" data-end="{{ end_ms }}" trace-info="annotation-id:{{id}}, media-id:{{media_id}}" style="{{specific_style}}">'
     + '<div class="Ldt-AnnotationsList-ThumbContainer">'
     +   '<a href="{{url}}" draggable="true">'
@@ -272,9 +272,9 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             return _annotation.begin;
         });
     }
-    
+
     var _ids = _list.idIndex;
-    
+
     if (_forceRedraw || !IriSP._.isEqual(_ids, this.lastIds) || this.searchString !== this.lastSearch) {
         /* This part only gets executed if the list needs updating */
         this.lastSearch = this.searchString;
@@ -402,7 +402,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             _annotation.on("select", _onselect);
             _annotation.on("unselect", _onunselect);
         });
-        
+
         /* Correct the empty tag bug */
         this.$.find('.Ldt-AnnotationsList-Tag-Li').each(function() {
             var _el = IriSP.jQuery(this);
@@ -427,7 +427,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 // insert the input widget.
                 if (insertion_point === undefined)
                     insertion_point = _this;
-                
+
                 // Insert input element
                 var input_element = $(_this.dataset.editable_type === 'multiline' ? "<textarea>" : "<input>")
                         .addClass("editableInput")
@@ -598,7 +598,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
         this.$.find('.Ldt-Annotation-Timecode').click(function () {
             _this.media.setCurrentTime(Number(this.dataset.timecode));
         });
-        
+
         this.$.find(".Ldt-AnnotationsList-Play").click(function() {
             var _el = IriSP.jQuery(this),
                 _annid = _el.attr("data-annotation-id");
@@ -607,7 +607,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             }
             _this.media.pause();
         });
-        
+
         if (this.source.getAnnotations().searching) {
             var rx = _this.source.getAnnotations().regexp || false;
             this.$.find(".Ldt-AnnotationsList-Title a, .Ldt-AnnotationsList-Description").each(function() {
@@ -616,7 +616,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             });
         }
     }
-    
+
     if (this.ajax_url) {
         if (this.mashupMode) {
             this.ajaxMashup();
@@ -630,17 +630,17 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
 };
 
 IriSP.Widgets.AnnotationsList.prototype.draw = function() {
-    
+
     this.jwplayers = {};
     this.mashupMode = (this.media.elementType === "mashup");
-    
+
     this.renderTemplate();
-    
+
     var _this = this;
-        
+
     this.list_$ = this.$.find(".Ldt-AnnotationsList-ul");
-    
-    
+
+
     this.source.getAnnotations().on("search", function(_text) {
         _this.searchString = _text;
         if (_this.source !== _this.currentSource) {
@@ -663,7 +663,7 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     this.source.getAnnotations().on("search-cleared", function() {
         _this.throttledRefresh();
     });
-    
+
     this.onMdpEvent("AnnotationsList.refresh", function() {
         if (_this.ajax_url) {
             if (_this.mashupMode) {
@@ -674,7 +674,7 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
         }
         _this.throttledRefresh();
     });
-    
+
     if (this.ajax_url) {
         if (this.mashupMode) {
             this.ajaxMashup();
@@ -684,13 +684,13 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     } else {
         this.currentSource = this.source;
     }
-    
+
     if (this.refresh_interval) {
         window.setInterval(function() {
             _this.currentSource.get();
         }, this.refresh_interval);
     }
-    
+
     this.onMdpEvent("createAnnotationWidget.addedAnnotation");
     var _events = [
         "timeupdate",
@@ -700,7 +700,7 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     for (var _i = 0; _i < _events.length; _i++) {
         this.onMediaEvent(_events[_i], this.throttledRefresh);
     }
-    
+
     this.throttledRefresh();
 
 };
