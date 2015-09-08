@@ -38,7 +38,7 @@ IriSP.Widgets.QuizCreator.prototype.template =
 	+			'<option value="unique_choice">Choix unique</option>'
 	+			'<option value="multiple_choice">Choix multiple</option>'
 	+		'</select>'
-	+		' à <input type="text" placeholder="hh:mm:ss" size="6" class="Ldt-QuizCreator-Time" /><button class="Ldt-QuizCreator-Question-Save">Sauvegarder</button></p>'
+	+		' à <input type="text" placeholder="hh:mm:ss" size="6" class="Ldt-QuizCreator-Time" /><button class="Ldt-QuizCreator-Question-Save">Sauvegarder</button><button class="Ldt-QuizCreator-Question-Publish">Publier</button></p>'
 	+ 	'<div class="Ldt-QuizCreator-Questions-Block">'
 	+ 	'</div>'
 	+	'<div><button class="Ldt-QuizCreator-Question-Add">Ajouter une réponse</button></div>'
@@ -50,6 +50,7 @@ IriSP.Widgets.QuizCreator.prototype.skip = function() {
 	this.$.find(".Ldt-QuizCreator-Question-Area").val("");
 	this.$.find(".Ldt-QuizCreator-Resource-Area").val("");
 	this.$.find(".Ldt-QuizCreator-Questions-Block").html("");
+    this.current_annotation = undefined;
 };
 
 IriSP.Widgets.QuizCreator.prototype.reloadAnnotations = function() {
@@ -109,14 +110,15 @@ IriSP.Widgets.QuizCreator.prototype.draw = function() {
 
 	this.$.find(".Ldt-QuizCreator-Question-Type").bind("change", this.functionWrapper("onQuestionTypeChange"));
 	this.$.find(".Ldt-QuizCreator-Question-Add").bind("click", this.functionWrapper("onQuestionAdd"));
-	this.$.find(".Ldt-QuizCreator-Question-Save").bind("click", this.functionWrapper("onSubmit"));
+	this.$.find(".Ldt-QuizCreator-Question-Save").bind("click", this.functionWrapper("onSave"));
+	this.$.find(".Ldt-QuizCreator-Question-Publish").bind("click", this.functionWrapper("onPublish"));
 
 	this.$.find(".Ldt-QuizCreator-Export-Link").click(function() {
 		_this.exportAnnotations();
 	});
 
 	this.$.find(".Ldt-QuizCreator-Time").keyup(function() {
-		var str = this.$.find(".Ldt-QuizCreator-Time").val();
+		var str = _this.$.find(".Ldt-QuizCreator-Time").val();
 		_this.begin = IriSP.timestamp2ms(str);
 		_this.end = _this.begin + 1000;
 	});
@@ -312,8 +314,10 @@ IriSP.Widgets.QuizCreator.prototype.exportAnnotations = function() {
             });
 };
 
-/* Fonction effectuant l'envoi des annotations */
-IriSP.Widgets.QuizCreator.prototype.onSubmit = function() {
+/* Save a local annotation */
+IriSP.Widgets.QuizCreator.prototype.onSave = function(should_publish) {
+    // Either the annotation already exists (then we overwrite its
+    // content) or it must be created.
 	if (this.nbAnswers() <= 0) {
 		alert("Vous devez spécifier au moins une réponse à votre question !");
 		return false;
@@ -321,36 +325,42 @@ IriSP.Widgets.QuizCreator.prototype.onSubmit = function() {
     // Check that there is at least 1 valid answer
     if (! this.$.find(".quiz-question-edition:checked").length) {
         alert("Vous n'avez pas indiqué de bonne réponse.");
+        return false;
     };
+    var _annotation;
+    if (this.current_annotation) {
+        _annotation = this.current_annotation;
+    } else {
+        var _annotationTypes = this.source.getAnnotationTypes().searchByTitle(this.annotation_type, true), /* Récupération du type d'annotation dans lequel l'annotation doit être ajoutée */
+        _annotationType = (_annotationTypes.length ? _annotationTypes[0] : new IriSP.Model.AnnotationType(false, this.player.localSource)); /* Si le Type d'Annotation n'existe pas, il est créé à la volée */
 
-    var _this = this,
-        _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* Création d'une liste d'annotations contenant une annotation afin de l'envoyer au serveur */
-        _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}), /* Création d'un objet source utilisant un sérialiseur spécifique pour l'export */
-        _local_export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers['ldt_localstorage']}), /* Création d'un objet source utilisant un sérialiseur spécifique pour l'export local */
-        _annotation = new IriSP.Model.Annotation(false, _export), /* Création d'une annotation dans cette source avec un ID généré à la volée (param. false) */
-        _annotationTypes = this.source.getAnnotationTypes().searchByTitle(this.annotation_type, true), /* Récupération du type d'annotation dans lequel l'annotation doit être ajoutée */
-        _annotationType = (_annotationTypes.length ? _annotationTypes[0] : new IriSP.Model.AnnotationType(false, _export)), /* Si le Type d'Annotation n'existe pas, il est créé à la volée */
-        _url = Mustache.to_html(this.api_endpoint_template, {id: this.source.projectId}); /* Génération de l'URL à laquelle l'annotation doit être envoyée, qui doit inclure l'ID du projet */
+        /* Si nous avons dû générer un ID d'annotationType à la volée... */
+        if (!_annotationTypes.length) {
+            /* Il ne faudra pas envoyer l'ID généré au serveur */
+            _annotationType.dont_send_id = true;
+            /* Il faut inclure le titre dans le type d'annotation */
+            _annotationType.title = this.annotation_type;
+        }
 
-    /* Si nous avons dû générer un ID d'annotationType à la volée... */
-    if (!_annotationTypes.length) {
-        /* Il ne faudra pas envoyer l'ID généré au serveur */
-        _annotationType.dont_send_id = true;
-        /* Il faut inclure le titre dans le type d'annotation */
-		_annotationType.id = "Quiz";
-        _annotationType.title = this.annotation_type;
+        _annotation = new IriSP.Model.Annotation(false, this.player.localSource); /* Création d'une annotation dans cette source avec un ID généré à la volée (param. false) */
+
+        // Initialize some fields in case of creation
+        _annotation.created = new Date(); /* Date de création de l'annotation */
+        _annotation.creator = this.creator_name;
+        _annotation.setAnnotationType(_annotationType.id); /* Id du type d'annotation */
     }
 
     /*
-     * Nous remplissons les données de l'annotation générée à la volée
+     * Nous remplissons les données de l'annotation
      * */
+    this.player.localSource.getMedias().push(this.source.currentMedia);
     _annotation.setMedia(this.source.currentMedia.id); /* Id du média annoté */
     _annotation.setBegin(this.begin); /*Timecode de début */
     _annotation.setEnd(this.end); /* Timecode de fin */
-    _annotation.created = new Date(); /* Date de création de l'annotation */
-
-    _annotation.setAnnotationType(_annotationType.id); /* Id du type d'annotation */
-    _annotation.description = _this.getDescription();
+    _annotation.modified = new Date(); /* Date de modification de l'annotation */
+    _annotation.contributor = this.creator_name;
+    _annotation.description = this.getDescription();
+    _annotation.title = _annotation.description;
 	_annotation.content = {};
 	_annotation.content.data = {};
 	_annotation.content.data.type = this.$.find(".Ldt-QuizCreator-Question-Type").val();
@@ -368,51 +378,37 @@ IriSP.Widgets.QuizCreator.prototype.onSubmit = function() {
 			_annotation.content.data.answers.push(answer);
 		}
 	}
+    if (this.player.getLocalAnnotation(_annotation.id)) {
+        // Update the annotation
+        this.player.saveLocalAnnotations();
+    } else {
+        // Add the annotation to the localSource
+        this.player.addLocalAnnotation(_annotation);
+    };
 
-    _annotation.title = _annotation.description;
-
-    var tagIds = Array.prototype.map.call(
-        this.$.find(".Ldt-CreateAnnotation-TagLi.selected"),
-        function(el) { return IriSP.jQuery(el).attr("tag-id"); }
-    );
-
-    IriSP._(_annotation.description.match(/#[^\s#.,;]+/g)).each(function(_tt) {
-        var _tag,
-            _tag_title = _tt.replace(/^#/,''),
-            _tags = _this.source.getTags().searchByTitle(_tag_title, true);
-        if (_tags.length) {
-            _tag = _tags[0];
-        } else {
-            _tag = new IriSP.Model.Tag(false, _this.source);
-            _this.source.getTags().push(_tag);
-            _tag.title = _tag_title;
-        }
-        if (tagIds.indexOf(_tag.id) === -1) {
-            tagIds.push(_tag.id);
-        }
-
-    });
-
-    _annotation.setTags(IriSP._(tagIds).uniq()); /*Liste des ids de tags */
-    _annotation.creator = this.creator_name;
-    _exportedAnnotations.push(_annotation); /* Ajout de l'annotation à la liste à exporter */
-
-    if (this.editable_storage != '') {
-        // Append to localStorage annotations
-
-        // FIXME: handle movie ids
-        _local_export.addList("annotation", _exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
-        _this.source.merge(_local_export); /* On ajoute la nouvelle annotation au recueil original */
-        // Import previously saved local annotations
-        if (window.localStorage[this.editable_storage]) {
-            _local_export.deSerialize(window.localStorage[this.editable_storage]);
-        }
-        // Save everything back
-        window.localStorage[_this.editable_storage] = _local_export.serialize();
-        _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
-        _this.player.trigger("Annotation.create", _annotation);
-        this.$.find(".Ldt-CreateAnnotation-Description").val("");
+    if (!should_publish) {
+        this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+        this.player.trigger("Annotation.create", _annotation);
     }
+};
+
+/* Publish an annotation */
+IriSP.Widgets.QuizCreator.prototype.onPublish = function() {
+    this.onSave(true);
+    var _this = this,
+        _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* Création d'une liste d'annotations contenant une annotation afin de l'envoyer au serveur */
+        _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}), /* Création d'un objet source utilisant un sérialiseur spécifique pour l'export */
+        _url = Mustache.to_html(this.api_endpoint_template, {id: this.source.projectId}); /* Génération de l'URL à laquelle l'annotation doit être envoyée, qui doit inclure l'ID du projet */
+
+    // Replace annotation type for public annotation
+    if (_this.publish_type) {
+        // If publish_type is specified, try to set the annotation type of the exported annotation
+        var at = _this.source.getAnnotationTypes().filter(function(at) { return at.title == _this.publish_type; });
+        if (at.length == 1) {
+            this.current_annotation.setAnnotationType(at[0].id);
+        }
+    }
+    _exportedAnnotations.push(this.current_annotation); /* Ajout de l'annotation à la liste à exporter */
 
     if (_url !== "") {
         _export.addList("annotation",_exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
@@ -423,29 +419,21 @@ IriSP.Widgets.QuizCreator.prototype.onSubmit = function() {
             contentType: 'application/json',
             data: _export.serialize(), /* L'objet Source est sérialisé */
             success: function(_data) {
-				_this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
-                _this.player.trigger("CreateAnnotation.created", _annotation.id);
 
-                if (this.editable_storage == '') {
-                    _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
-                    _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
-                    _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
-                    if (_this.pause_on_write && _this.media.getPaused()) {
-                        _this.media.play();
-                    }
-                    _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
-                    _this.player.trigger("CreateAnnotation.created", _annotation.id);
+                _export.getAnnotations().removeElement(this.current_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
+                _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
+                _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
+                if (_this.pause_on_write && _this.media.getPaused()) {
+                    _this.media.play();
                 }
-
-				_tabs.tabs("option", "active", get_tab_index('#tab-quiz'));
-
-				//Refresh the quiz container
-				_this.player.trigger("Quiz.refresh");
-				_this.reloadAnnotations();
-            },
+                IriSP.jQuery(this).addClass("published");
+				_this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+                _this.player.trigger("Annotation.publish", this.current_annotation);
+                _this.player.trigger("CreateAnnotation.created", this.current_annotation.id);
+                },
             error: function(_xhr, _error, _thrown) {
                 IriSP.log("Error when sending annotation", _thrown);
-                _export.getAnnotations().removeElement(_annotation, true);
+                _export.getAnnotations().removeElement(this.current_annotation, true);
                 window.setTimeout(function(){
                 },
                                   (_this.after_send_timeout || 5000));
