@@ -29,10 +29,6 @@
 	vertical-align: middle;
 }
 
-.Ldt-QuizCreator-Questions-Answer-Correct {
-	width: 30px;
-}
-
 .Ldt-QuizCreator-Questions-Answer-Content {
 	width: calc(100% - 80px);
 }
