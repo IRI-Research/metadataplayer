@@ -362,35 +362,34 @@ IriSP.Widgets.QuizCreator.prototype.onSave = function(should_publish) {
 	_annotation.content.data.type = this.$.find(".Ldt-QuizCreator-Question-Type").val();
 	_annotation.content.data.question = _annotation.description;
 	_annotation.content.data.resource = this.$.find(".Ldt-QuizCreator-Resource-Area").val();
-	_annotation.content.data.answers = [];
-
-	for (var i = 0; i < this.nbAnswers(); i++) {
-		if (typeof this.$.find("#question"+ i) != "undefined") {
-			var answer = {
-				correct : (this.$.find(".Ldt-Quiz-Question-Check-"+ i).is(':checked')) ? true : false,
-				content : this.$.find("#question"+ i).val(),
-				feedback : this.$.find("#feedback"+ i).val()
-			};
-			_annotation.content.data.answers.push(answer);
-		}
-	}
+    _annotation.content.data.answers = $.makeArray($(".Ldt-QuizCreator-Questions-Answer")
+                                                   .map(function (ans)
+                                                        {
+                                                            return {
+                                                                content: $(this).find(".Ldt-QuizCreator-Answer-Content").val(),
+                                                                feedback: $(this).find(".Ldt-QuizCreator-Answer-Feedback").val(),
+                                                                correct: $(this).find(".Ldt-Quiz-Question-Check").is(':checked')
+                                                            };
+                                                        }));
     if (this.player.getLocalAnnotation(_annotation.id)) {
         // Update the annotation
         this.player.saveLocalAnnotations();
     } else {
         // Add the annotation to the localSource
         this.player.addLocalAnnotation(_annotation);
+        // Update also the remote source
+        this.source.merge([ _annotation ]);
     };
     this.current_annotation = _annotation;
     if (!should_publish) {
-        this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+        this.player.trigger("AnnotationsList.update"); /* On force le rafraîchissement des widgets AnnotationsList */
         this.player.trigger("Annotation.create", _annotation);
     }
 };
 
 /* Publish an annotation */
 IriSP.Widgets.QuizCreator.prototype.onPublish = function() {
-    this.onSave(true);
+    this.onSave(null, true);
     var _this = this,
         _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* Création d'une liste d'annotations contenant une annotation afin de l'envoyer au serveur */
         _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}), /* Création d'un objet source utilisant un sérialiseur spécifique pour l'export */
