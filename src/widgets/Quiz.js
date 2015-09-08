@@ -242,9 +242,6 @@ IriSP.Widgets.Quiz.prototype.refresh = function() {
 
 IriSP.Widgets.Quiz.prototype.draw = function() {
 	var _this = this;
-    var _annotations = this.getWidgetAnnotations().sortBy(function(_annotation) {
-        return _annotation.begin;
-    });
 	_this.quiz_displayed = false;
     this.onMdpEvent("Quiz.activate", function() {
 		_this.quiz_activated = true;
@@ -323,22 +320,8 @@ IriSP.Widgets.Quiz.prototype.draw = function() {
 		_this.player.trigger("QuizCreator.skip");
 	});
 
-	_this.totalAmount = _annotations.length;
-    _this.session_id = _this.generateUid();
-	_this.number = 0;
-	_this.correct = {};
-	_this.keys = {};
-
-    _annotations.forEach(function(_a) {
-		// Mark each annotation as "non-answered yet"
-		_this.correct[_a.id] = -1;
-		_this.keys[_this.number] = _a.id;
-		_a.number = _this.number++;
-        _a.on("enter", function() {
-            _this.update(_a);
-        });
-    });
-}
+    _this.refresh();
+};
 
 //Generates uid
 //source : http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
