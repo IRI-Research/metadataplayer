@@ -68,6 +68,9 @@ IriSP.Widgets.Widget = function(player, config) {
     /* Loading Metadata if required */
 
     function onsourceloaded() {
+        if (_this.localannotations) {
+            _this.localsource = player.loadLocalAnnotations(_this.localannotations);
+        }
         if (_this.media_id) {
                 _this.media = this.getElement(_this.media_id);
             } else {
@@ -84,7 +87,6 @@ IriSP.Widgets.Widget = function(player, config) {
     if (this.metadata) {
         /* Getting metadata */
         this.source = player.loadMetadata(this.metadata);
-
         /* Call draw when loaded */
         this.source.onLoad(onsourceloaded);
     } else {

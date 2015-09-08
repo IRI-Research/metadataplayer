@@ -133,7 +133,44 @@ Metadataplayer.prototype.onLibsLoaded = function() {
             _this.widgetsLoaded = true;
             _this.trigger("widgets-loaded");
         }
-    });   
+    });
+};
+
+Metadataplayer.prototype.loadLocalAnnotations = function(localsourceidentifier) {
+    if (this.localSource === undefined)
+        this.localSource = this.sourceManager.newLocalSource({serializer: IriSP.serializers['ldt_localstorage']});
+    // Load current local annotations
+    if (localsourceidentifier) {
+        // Allow to override localsourceidentifier when necessary (usually at init time)
+        this.localSource.identifier = localsourceidentifier;
+    }
+    this.localSource.deSerialize(window.localStorage[this.localSource.identifier] || "[]");
+    return this.localSource;
+};
+
+Metadataplayer.prototype.saveLocalAnnotations = function() {
+    // Save annotations back to localstorage
+    window.localStorage[this.localSource.identifier] = this.localSource.serialize();
+    // Merge modifications into widget source
+    // this.source.merge(this.localSource);
+};
+
+Metadataplayer.prototype.addLocalAnnotation = function(a) {
+    this.loadLocalAnnotations();
+    this.localSource.getAnnotations().push(a);
+    this.saveLocalAnnotations();
+};
+
+Metadataplayer.prototype.deleteLocalAnnotation = function(ident) {
+    this.localSource.getAnnotations().removeId(ident, true);
+    this.saveLocalAnnotations();
+};
+
+Metadataplayer.prototype.getLocalAnnotation = function (ident) {
+    this.loadLocalAnnotations();
+    // We cannot use .getElement since it fetches
+    // elements from the global Directory
+    return IriSP._.first(IriSP._.filter(this.localSource.getAnnotations(), function (a) { return a.id == ident; }));
 };
 
 Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {
