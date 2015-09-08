@@ -6,11 +6,11 @@
     height: 25px;
     border: 1px solid #b6b8b8;
     position: relative;
+    overflow: hidden;
 }
 
 .Ldt-Ctrl-Left {
     float: left;
-    width: 500px;
 }
 
 .Ldt-Ctrl-Right {
