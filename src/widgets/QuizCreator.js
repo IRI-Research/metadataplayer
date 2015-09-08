@@ -38,10 +38,14 @@ IriSP.Widgets.QuizCreator.prototype.template =
 	+			'<option value="unique_choice">Choix unique</option>'
 	+			'<option value="multiple_choice">Choix multiple</option>'
 	+		'</select>'
-	+		' à <input type="text" placeholder="hh:mm:ss" size="6" class="Ldt-QuizCreator-Time" /><button class="Ldt-QuizCreator-Question-Save">Sauvegarder</button><button class="Ldt-QuizCreator-Question-Publish">Publier</button></p>'
+	+		' à <input type="text" placeholder="hh:mm:ss" size="6" class="Ldt-QuizCreator-Time" />'
 	+ 	'<div class="Ldt-QuizCreator-Questions-Block">'
 	+ 	'</div>'
-	+	'<div><button class="Ldt-QuizCreator-Question-Add">Ajouter une réponse</button></div>'
+	+	'<div>'
+    +   '  <button class="Ldt-QuizCreator-Question-Add">Ajouter une réponse</button><hr>'
+    +   '  <button class="Ldt-QuizCreator-Question-Save">Sauvegarder</button>'
+    +   '  <button class="Ldt-QuizCreator-Question-Publish">Publier</button></p>'
+    +   '</div>'
 	+ '</div>';
 
 /* Hide and clear the interface is case of someone skipped or answer the current question in the Quiz panel*/
