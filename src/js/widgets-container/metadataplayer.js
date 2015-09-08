@@ -44,23 +44,23 @@ Metadataplayer.prototype.loadLibs = function() {
     ns.log("IriSP.Metadataplayer.prototype.loadLibs");
     var $L = $LAB
         .script(ns.getLib("Mustache"));
-    
+
     formerJQuery = !!window.jQuery;
     former$ = !!window.$;
     formerUnderscore = !!window._;
-    
+
     if (typeof ns.jQuery === "undefined") {
         $L.script(ns.getLib("jQuery"));
     }
-    
+
     if (typeof ns._ === "undefined") {
         $L.script(ns.getLib("underscore"));
     }
-    
+
     if (typeof window.JSON == "undefined") {
         $L.script(ns.getLib("json"));
     }
-    
+
     $L.wait()
         .script(ns.getLib("jQueryUI"));
 
@@ -73,9 +73,9 @@ Metadataplayer.prototype.loadLibs = function() {
             }
         }
     }
-    
+
     var _this = this;
-    
+
     $L.wait(function() {
         _this.onLibsLoaded();
     });
@@ -97,7 +97,7 @@ Metadataplayer.prototype.onLibsLoaded = function() {
     }
     ns.loadCss(ns.getLib("cssjQueryUI"));
     ns.loadCss(this.config.css);
-    
+
     this.$ = ns.jQuery('#' + this.config.container);
     this.$.css({
         "width": this.config.width,
@@ -106,7 +106,7 @@ Metadataplayer.prototype.onLibsLoaded = function() {
     if (typeof this.config.height !== "undefined") {
         this.$.css("height", this.config.height);
     }
-      
+
     this.widgets = [];
     var _this = this;
     ns._(this.config.widgets).each(function(widgetconf, key) {
@@ -119,9 +119,9 @@ Metadataplayer.prototype.onLibsLoaded = function() {
         });
     });
     this.$.find('.Ldt-Loader').detach();
-    
+
     this.widgetsLoaded = false;
-    
+
     this.on("widget-loaded", function() {
         if (_this.widgetsLoaded) {
             return;
@@ -156,9 +156,9 @@ Metadataplayer.prototype.loadWidget = function(_widgetConfig, _callback) {
         var _divs = this.layoutDivs(_widgetConfig.type);
         _widgetConfig.container = _divs[0];
     }
-    
+
     var _this = this;
-    
+
     if (typeof ns.Widgets[_widgetConfig.type] !== "undefined") {
         ns._.defer(function() {
             _callback(new ns.Widgets[_widgetConfig.type](_this, _widgetConfig));
@@ -203,7 +203,7 @@ Metadataplayer.prototype.layoutDivs = function(_name, _height) {
     if (typeof _height !== "undefined") {
         divHtml.css("height", _height);
     }
-            
+
     this.$.append(divHtml);
     this.$.append(spacerHtml);
 
