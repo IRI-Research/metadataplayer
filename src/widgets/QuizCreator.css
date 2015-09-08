@@ -61,15 +61,15 @@ input.quiz-question-edition {
 input.quiz-question-edition[type='radio'] + label,
 input.quiz-question-edition[type='checkbox'] + label {
 	height: 12px;
-	width: 12px;
+	width: 24px;
 	display: inline-block;
-	background: url(img/min_valid_sprites.png) -13px top no-repeat;
+	background: url(img/min_wrong_toggle.png);
 	cursor: pointer;
     content: "Mauvaise";
 }
 
 input.quiz-question-edition[type='radio']:checked + label,
 input.quiz-question-edition[type='checkbox']:checked + label {
-	background: url(img/min_valid_sprites.png) left top no-repeat;
+	background: url(img/min_right_toggle.png);
     content: "Bonne";
 }
