@@ -5,7 +5,7 @@ IriSP.Widgets.Quiz = function(player, config) {
 IriSP.Widgets.Quiz.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Quiz.prototype.defaults = {
-    annotation_type: "at_quiz",
+    // annotation_type: "at_quiz",
 	quiz_activated: true,
 	api_serializer: "ldt_annotate",
     analytics_api: "",
