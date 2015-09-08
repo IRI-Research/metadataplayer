@@ -311,7 +311,7 @@ IriSP.Widgets.QuizCreator.prototype.exportAnnotations = function() {
 };
 
 /* Save a local annotation */
-IriSP.Widgets.QuizCreator.prototype.onSave = function(should_publish) {
+IriSP.Widgets.QuizCreator.prototype.onSave = function(event, should_publish) {
     // Either the annotation already exists (then we overwrite its
     // content) or it must be created.
 	if (this.nbAnswers() <= 0) {
@@ -422,9 +422,8 @@ IriSP.Widgets.QuizCreator.prototype.onPublish = function() {
                     _this.media.play();
                 }
                 IriSP.jQuery(this).addClass("published");
-				_this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+				_this.player.trigger("AnnotationsList.update"); /* On force le rafraîchissement du widget AnnotationsList */
                 _this.player.trigger("Annotation.publish", this.current_annotation);
-                _this.player.trigger("CreateAnnotation.created", this.current_annotation.id);
                 },
             error: function(_xhr, _error, _thrown) {
                 IriSP.log("Error when sending annotation", _thrown);
