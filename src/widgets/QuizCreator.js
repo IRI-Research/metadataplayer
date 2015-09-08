@@ -389,7 +389,7 @@ IriSP.Widgets.QuizCreator.prototype.onSave = function(should_publish) {
         // Add the annotation to the localSource
         this.player.addLocalAnnotation(_annotation);
     };
-
+    this.current_annotation = _annotation;
     if (!should_publish) {
         this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
         this.player.trigger("Annotation.create", _annotation);
