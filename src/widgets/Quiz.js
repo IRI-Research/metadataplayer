@@ -82,18 +82,9 @@ IriSP.Widgets.Quiz.prototype.update = function(annotation) {
 		this.resource = new IriSP.Widgets.UniqueChoiceQuestion(resource);
 		}
 
-        function insert_timecode_links (s) {
-            return (s || "").replace(/\s(\d+:\d+)/, function (match, timecode) {
-                return ' <a href="#t=' + (IriSP.timestamp2ms(timecode) / 1000) + '">' + timecode + '</a>';
-            });
-        };
-
 		var output = "";
 		for (i = 0; i < answers.length; i++) {
-			output += '<div class="quiz-question-block"><p>' + this.question.renderQuizTemplate(answers[i], i) + '<span class="quiz-question-label">'+ answers[i].content + '</span></p>';
-			var color = (answers[i].correct == true) ? "quiz-question-correct-feedback" : "quiz-question-incorrect-feedback";
-			output += '<div class="quiz-question-feedback '+ color +'">'+ insert_timecode_links(answers[i].feedback) +'</div>';
-			output += '</div>';
+			output += '<div class="quiz-question-block"><p>' + this.question.renderQuizTemplate(answers[i], i) + '<span class="quiz-question-label">'+ answers[i].content + '</span></p></div>';
 		}
 
 
@@ -138,59 +129,57 @@ IriSP.Widgets.Quiz.prototype.hide = function() {
 
 IriSP.Widgets.Quiz.prototype.answer = function() {
 	var _this = this;
-	//Display feedbacks
-	$( ".quiz-question-feedback").each(function(index) {
-		$(this).fadeIn();
-	});
+
+    function insert_timecode_links (s) {
+        return (s || "").replace(/\s(\d+:\d+)/, function (match, timecode) {
+            return ' <a href="#t=' + (IriSP.timestamp2ms(timecode) / 1000) + '">' + timecode + '</a>';
+        });
+    };
 
 	var answers = _this.annotation.content.data.answers;
-	var faux = false;
-	var i =0;
-	var ans_property;
-	var ans_value;
-	while (i < answers.length && faux == false) {
-		if ( !this.question.isCorrect(i, $(".Ldt-Quiz-Container .Ldt-Quiz-Question-Check-" + i).is(':checked'))) {
-			faux = true;
-		}
-		i++;
-	}
-	var j = 0;
-	while (j < answers.length){
-		if($(".Ldt-Quiz-Container .Ldt-Quiz-Question-Check-" + j).is(':checked')) {
-			ans_value = j;
-		}
-		j++;
-	}
 
-	// TODO: factorize this code
-	if (faux == true) {
+    // Augment answers with the correct feedback
+    var i = 0;
+    var wrong = 0;
+    // Signature is an array giving the answers signature: 1 for checked, 0 for unchecked
+    // We cannot simply store the right answer index, since there may be multiple-choice questions
+    var signature = [];
+    _this.$.find(".Ldt-Quiz-Question-Check").each( function (code) {
+        var checked = $(this).is(":checked");
+        signature.push(checked ? 1 : 0);
+        var ans = answers[i];
+        if ((ans.correct && !checked)
+            || (!ans.correct && checked)) {
+            wrong += 1;
+            IriSP.jQuery(this).parents(".quiz-question-block").append('<div class="quiz-question-feedback quiz-question-incorrect-feedback">'+ insert_timecode_links(ans.feedback) +'</div>');
+        } else {
+            IriSP.jQuery(this).parents(".quiz-question-block").append('<div class="quiz-question-feedback quiz-question-correct-feedback">'+ insert_timecode_links(ans.feedback) +'</div>');
+        }
+        i++;
+    });
+
+	if (wrong) {
 		$(".Ldt-Quiz-Result").html("Mauvaise réponse");
 		$(".Ldt-Quiz-Result").css({"background-color" : "red"});
-		$('*[data-annotation="'+ this.annotation.id +'"]').children(".Ldt-AnnotationsList-Duration").children(".Ldt-AnnotationsList-Begin").removeClass("Ldt-Quiz-Correct-Answer").addClass("Ldt-Quiz-Incorrect-Answer");
 		this.correct[this.annotation.id] = 0;
-		ans_property = "wrong_answer";
-	}
-	else
-	{
+	} else {
 		$(".Ldt-Quiz-Result").html("Bonne réponse !");
 		$(".Ldt-Quiz-Result").css({"background-color" : "green"});
-		$('*[data-annotation="'+ this.annotation.id +'"]').children(".Ldt-AnnotationsList-Duration").children(".Ldt-AnnotationsList-Begin").removeClass("Ldt-Quiz-Incorrect-Answer").addClass("Ldt-Quiz-Correct-Answer");
 		this.correct[this.annotation.id] = 1;
-		ans_property = "right_answer";
 	}
-    // TODO: use CSS animation, it will be smoother
+
 	$(".Ldt-Quiz-Result").animate({height:"100%"},500, "linear", function() {
 		$(".Ldt-Quiz-Result").delay(2000).animate({ height:"0%" }, 500);
 	});
 
-	var question_number= this.annotation.number + 1;
+	var question_number = this.annotation.number + 1;
 	var correctness = this.globalScore();
 	var score = "";
 	score += '<span class="Ldt-Quiz-Correct-Answer">' + correctness[0] +'</span> / <span class="Ldt-Quiz-Incorrect-Answer">' + correctness[1] + '</span>';
 	$(".Ldt-Quiz-Index").html("Q"+ question_number + "/" + this.totalAmount);
 	$(".Ldt-Quiz-Score").html(score);
 
-	this.submit(this.user, this.userid, this.annotation.id, ans_property, ans_value);
+	this.submit(this.user, this.userid, this.annotation.id, wrong ? 'wrong_answer' : 'right_answer', signature.join(""));
 
 	//Hide the "Validate" button and display the UI dedicated to votes
 	$(".Ldt-Quiz-Submit").fadeOut(400, function () {
@@ -339,15 +328,6 @@ IriSP.Widgets.UniqueChoiceQuestion = function(annotation) {
 
 IriSP.Widgets.UniqueChoiceQuestion.prototype = new IriSP.Widgets.Widget();
 
-IriSP.Widgets.UniqueChoiceQuestion.prototype.isCorrect = function(answer, valid) {
-	if (this.annotation.content.data.answers[answer].correct && valid) {
-		return true;
-	} else if ((typeof this.annotation.content.data.answers[answer].correct === "undefined" || ! this.annotation.content.data.answers[answer].correct) && ! valid) {
-		return true;
-	}
-	return false;
-}
-
 IriSP.Widgets.UniqueChoiceQuestion.prototype.renderQuizTemplate = function(answer, identifier) {
 	return '<input type="radio" class="quiz-question Ldt-Quiz-Question-Check Ldt-Quiz-Question-Check-' + identifier + '" name="question" data-question="' + identifier + '" value="' + identifier + '" />';
 }
@@ -370,16 +350,6 @@ IriSP.Widgets.MultipleChoiceQuestion = function(annotation) {
 }
 
 IriSP.Widgets.MultipleChoiceQuestion.prototype = new IriSP.Widgets.Widget();
-
-IriSP.Widgets.MultipleChoiceQuestion.prototype.isCorrect = function(answer, valid) {
-	if (this.annotation.content.data.answers[answer].correct && valid) {
-		return true;
-	}
-	else if ((typeof this.annotation.content.data.answers[answer].correct === "undefined" || ! this.annotation.content.data.answers[answer].correct) && ! valid) {
-		return true;
-	}
-	return false;
-}
 
 IriSP.Widgets.MultipleChoiceQuestion.prototype.renderQuizTemplate = function(answer, identifier) {
 	return '<input type="checkbox" class="quiz-question Ldt-Quiz-Question-Check-'+ identifier + '" name="question['+ identifier +']" data-question="'+ identifier +'" value="' + identifier + '" /> ';
