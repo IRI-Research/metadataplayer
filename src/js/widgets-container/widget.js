@@ -70,6 +70,7 @@ IriSP.Widgets.Widget = function(player, config) {
     function onsourceloaded() {
         if (_this.localannotations) {
             _this.localsource = player.loadLocalAnnotations(_this.localannotations);
+            _this.source.merge(_this.localsource);
         }
         if (_this.media_id) {
                 _this.media = this.getElement(_this.media_id);
