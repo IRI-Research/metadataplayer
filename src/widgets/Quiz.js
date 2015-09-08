@@ -366,18 +366,18 @@ IriSP.Widgets.UniqueChoiceQuestion.prototype.isCorrect = function(answer, valid)
 }
 
 IriSP.Widgets.UniqueChoiceQuestion.prototype.renderQuizTemplate = function(answer, identifier) {
-	return '<input type="radio" class="quiz-question Ldt-Quiz-Question-Check-' + identifier + '" name="question" data-question="' + identifier + '" value="' + identifier + '" />';
+	return '<input type="radio" class="quiz-question Ldt-Quiz-Question-Check Ldt-Quiz-Question-Check-' + identifier + '" name="question" data-question="' + identifier + '" value="' + identifier + '" />';
 }
 
 IriSP.Widgets.UniqueChoiceQuestion.prototype.renderTemplate = function(answer, identifier) {
 	var id = this.generateUid();
-	return '<input type="radio" id="' + id + '" class="quiz-question-edition Ldt-Quiz-Question-Check-'+ identifier +'" name="question" data-question="'+ identifier +'" value="' + identifier + '" /><label for="'+ id +'" title="Veuillez sélectionner la réponse correcte"></label>';
+	return '<input type="radio" id="' + id + '" class="quiz-question-edition Ldt-Quiz-Question-Check Ldt-Quiz-Question-Check-'+ identifier +'" name="question" data-question="'+ identifier +'" value="' + identifier + '" /><label for="'+ id +'" title="Veuillez sélectionner la réponse correcte"></label>';
 }
 
 IriSP.Widgets.UniqueChoiceQuestion.prototype.renderFullTemplate = function(answer, identifier) {
 	var correct = (answer.correct == true) ? "checked=\"checked\"" : "";
 	var id = this.generateUid();
-	return '<input type="radio" id="'+ id +'" '+ correct +' class="quiz-question-edition Ldt-Quiz-Question-Check-'+ identifier +'" name="question" data-question="'+ identifier +'" value="' + identifier + '" /><label for="'+ id +'"></label>';
+	return '<input type="radio" id="'+ id +'" '+ correct +' class="quiz-question-edition Ldt-Quiz-Question-Check Ldt-Quiz-Question-Check-'+ identifier +'" name="question" data-question="'+ identifier +'" value="' + identifier + '" /><label for="'+ id +'"></label>';
 }
 
 
@@ -399,18 +399,18 @@ IriSP.Widgets.MultipleChoiceQuestion.prototype.isCorrect = function(answer, vali
 }
 
 IriSP.Widgets.MultipleChoiceQuestion.prototype.renderQuizTemplate = function(answer, identifier) {
-	return '<input type="checkbox" class="quiz-question Ldt-Quiz-Question-Check-'+ identifier +'" name="question['+ identifier +']" data-question="'+ identifier +'" value="' + identifier + '" /> ';
+	return '<input type="checkbox" class="quiz-question Ldt-Quiz-Question-Check-'+ identifier + '" name="question['+ identifier +']" data-question="'+ identifier +'" value="' + identifier + '" /> ';
 }
 
 IriSP.Widgets.MultipleChoiceQuestion.prototype.renderTemplate = function(answer, identifier) {
 	var id = this.generateUid();
-	return '<input type="checkbox" id="'+ id +'" class="quiz-question-edition Ldt-Quiz-Question-Check-'+ identifier +'" name="question['+ identifier +']" data-question="'+ identifier +'" value="' + identifier + '" /><label for="'+ id +'" title="Veuillez sélectionner la ou les réponses correctes"></label>';
+	return '<input type="checkbox" id="'+ id +'" class="quiz-question-edition Ldt-Quiz-Question-Check" name="question['+ identifier +']" data-question="'+ identifier +'" value="' + identifier + '" /><label for="'+ id +'" title="Veuillez sélectionner la ou les réponses correctes"></label>';
 }
 
 IriSP.Widgets.MultipleChoiceQuestion.prototype.renderFullTemplate = function(answer, identifier) {
 	var correct = (answer.correct == true) ? "checked=\"checked\"" : "";
 	var id = this.generateUid();
-	return '<input type="checkbox" id="'+ id +'" '+ correct +' class="quiz-question-edition Ldt-Quiz-Question-Check-'+ identifier +'" name="question['+ identifier +']" data-question="'+ identifier +'" value="' + identifier + '" /><label for="'+ id +'"></label> ';
+	return '<input type="checkbox" id="'+ id +'" '+ correct +' class="quiz-question-edition Ldt-Quiz-Question-Check" name="question['+ identifier +']" data-question="'+ identifier +'" value="' + identifier + '" /><label for="'+ id +'"></label> ';
 }
 
 IriSP.Widgets.Quiz.prototype.submit = function(user,user_id,question,prop,val) {
