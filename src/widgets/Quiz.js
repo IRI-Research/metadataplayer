@@ -375,7 +375,7 @@ IriSP.Widgets.UniqueChoiceQuestion.prototype.renderTemplate = function(answer, i
 }
 
 IriSP.Widgets.UniqueChoiceQuestion.prototype.renderFullTemplate = function(answer, identifier) {
-	var correct = (answer.correct == true) ? "checked=\"checked\"" : "";
+	var correct = (answer && answer.correct) ? "checked" : "";
 	var id = this.generateUid();
 	return '<input type="radio" id="'+ id +'" '+ correct +' class="quiz-question-edition Ldt-Quiz-Question-Check Ldt-Quiz-Question-Check-'+ identifier +'" name="question" data-question="'+ identifier +'" value="' + identifier + '" /><label for="'+ id +'"></label>';
 }
@@ -408,7 +408,7 @@ IriSP.Widgets.MultipleChoiceQuestion.prototype.renderTemplate = function(answer,
 }
 
 IriSP.Widgets.MultipleChoiceQuestion.prototype.renderFullTemplate = function(answer, identifier) {
-	var correct = (answer.correct == true) ? "checked=\"checked\"" : "";
+	var correct = (answer && answer.correct) ? "checked" : "";
 	var id = this.generateUid();
 	return '<input type="checkbox" id="'+ id +'" '+ correct +' class="quiz-question-edition Ldt-Quiz-Question-Check" name="question['+ identifier +']" data-question="'+ identifier +'" value="' + identifier + '" /><label for="'+ id +'"></label> ';
 }
