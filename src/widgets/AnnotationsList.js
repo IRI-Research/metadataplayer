@@ -480,7 +480,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     // elements from the global Directory
                     var an = get_local_annotation(_this.dataset.editable_id);
                     if (an === undefined) {
-                        console.log("Strange error: cannot find edited annotation");                        
+                        console.log("Strange error: cannot find edited annotation");
                         feedback(feedback_wrong);
                     } else {
                         _this.dataset.editable_value = n;
@@ -494,10 +494,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                         an.modified = new Date();
                         // FIXME: use user name, when available
                         an.contributor = widget.player.config.username || "COCo User";
-                        widget.localSource.merge( [ an ] );
-
-                        save_local_annotations();
-
+                        widget.player.addLocalAnnotation(an);
                         widget.player.trigger("Annotation.update", an);
                         feedback(feedback_ok);
                     }
@@ -515,35 +512,19 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 });
             };
 
-            var load_local_annotations = function() {
-                // Update local storage
-                if (widget.localSource === undefined) {
-                    // Initialize local source
-                    widget.localSource = widget.player.sourceManager.newLocalSource({serializer: IriSP.serializers['ldt_localstorage']});
-                }
-                // Load current local annotations
-                widget.localSource.deSerialize(window.localStorage[widget.editable_storage] || "[]");
-            };
-
             var get_local_annotation = function (ident) {
-                load_local_annotations();
-                // We cannot use .getElement since it fetches
-                // elements from the global Directory
-                return IriSP._.first(IriSP._.filter(widget.localSource.getAnnotations(), function (a) { return a.id == ident; }));
+                return widget.player.getLocalAnnotation(ident);
             };
 
             var save_local_annotations = function() {
-                // Save annotations back
-                window.localStorage[widget.editable_storage] = widget.localSource.serialize();
+                widget.player.saveLocalAnnotations();
                 // Merge modifications into widget source
-                widget.source.merge(widget.localSource);
+                widget.source.merge(widget.player.localSource);
             };
 
-            var delete_local_annotation = function(i) {
-                load_local_annotations();
-                widget.localSource.getAnnotations().removeId(i);
-                widget.source.getAnnotations().removeId(i);
-                save_local_annotations();
+            var delete_local_annotation = function(ident) {
+                widget.source.getAnnotations().removeId(ident, true);
+                widget.player.deleteLocalAnnotation(ident);
                 widget.refresh(true);
             };
 

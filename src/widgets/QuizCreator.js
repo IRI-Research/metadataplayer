@@ -217,35 +217,20 @@ IriSP.Widgets.QuizCreator.prototype.setBegin = function (t) {
     this.$.find(".Ldt-QuizCreator-Time").val(this.begin.toString());
 };
 
-IriSP.Widgets.QuizCreator.prototype.load_local_annotations = function() {
-    // Update local storage
-    if (this.localSource === undefined) {
-        // Initialize local source
-        this.localSource = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers['ldt_localstorage']});
-    }
-    // Load current local annotations
-    this.localSource.deSerialize(window.localStorage[this.editable_storage]);
-};
-
 IriSP.Widgets.QuizCreator.prototype.get_local_annotation = function (ident) {
-    load_local_annotations();
-    // We cannot use .getElement since it fetches
-    // elements from the global Directory
-    return IriSP._.first(IriSP._.filter(this.localSource.getAnnotations(), function (a) { return a.id == ident; }));
+    return this.player.getLocalAnnotation(ident);
 };
 
 IriSP.Widgets.QuizCreator.prototype.save_local_annotations = function() {
-    // Save annotations back
-    window.localStorage[widget.editable_storage] = this.localSource.serialize();
+    this.player.saveLocalAnnotations();
     // Merge modifications into widget source
-    this.source.merge(this.localSource);
+    this.source.merge(this.player.localSource);
 };
 
-IriSP.Widgets.QuizCreator.prototype.delete_local_annotation = function(i) {
-    load_local_annotations();
-    this.localSource.getAnnotations().removeId(i);
-    this.source.getAnnotations().removeId(i);
-    save_local_annotations();
+IriSP.Widgets.QuizCreator.prototype.delete_local_annotation = function(ident) {
+    this.source.getAnnotations().removeId(ident);
+    this.player.deleteLocalAnnotation(ident);
+    this.current_annotation = undefined;
     this.refresh(true);
 };
 
