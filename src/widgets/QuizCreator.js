@@ -140,6 +140,7 @@ IriSP.Widgets.QuizCreator.prototype.getDescription = function() {
 };
 
 IriSP.Widgets.QuizCreator.prototype.addQuestion = function(annotation, number) {
+    var _this = this;
 
 	if (annotation.content.data.type == "multiple_choice") {
 		this.question = new IriSP.Widgets.MultipleChoiceQuestion(annotation);
@@ -152,25 +153,15 @@ IriSP.Widgets.QuizCreator.prototype.addQuestion = function(annotation, number) {
 
 	this.answers = [];
 
-	var output = '';
-	this.$.find(".Ldt-QuizCreator-Questions-Block").html(output);
 
 	this.$.find(".Ldt-QuizCreator-Time").val(annotation.begin);
 	this.$.find(".Ldt-QuizCreator-Question-Area").val(annotation.content.data.question);
 	this.$.find(".Ldt-QuizCreator-Resource-Area").val(annotation.content.data.resource);
-
-	for (var i = 0; i < answers.length; i++) {
-		output += '<div class="Ldt-QuizCreator-Questions-Answer">'
-		+	'<div class="Ldt-QuizCreator-Questions-Answer-Correct">'+ this.question.renderFullTemplate(answers[i], this.nbAnswers()) +'</div>'
-		+ 	'<div class="Ldt-QuizCreator-Questions-Answer-Content">Réponse <br />'
-		+		'<input type="text" class="Ldt-QuizCreator-Answer-Content" data-question="'+ this.nbAnswers() +'" id="question'+ this.nbAnswers() +'" value="'+ answers[i].content +'" /><br />'
-		+		'Commentaire <br/><textarea class="Ldt-QuizCreator-Answer-Feedback" data-question="'+ this.nbAnswers() +'" id="feedback'+ this.nbAnswers() +'">'+ answers[i].feedback +'</textarea>'
-		+	'</div>'
-		+ 	'<div class="Ldt-QuizCreator-Questions-Answer-Delete"><div class="Ldt-QuizCreator-Remove" id="remove'+ this.nbAnswers() +'">&nbsp;</div></div>'
-		+	'</div>';
-	}
-	this.$.find(".Ldt-QuizCreator-Questions-Block").append(output);
-}
+	this.$.find(".Ldt-QuizCreator-Questions-Block").html('');
+    answers.forEach( function (ans) {
+        _this.onQuestionAdd(null, ans);
+    });
+};
 
 IriSP.Widgets.QuizCreator.prototype.onQuestionTypeChange = function(e) {
 
@@ -195,16 +186,17 @@ IriSP.Widgets.QuizCreator.prototype.onQuestionTypeChange = function(e) {
     this.pauseOnWrite();
 };
 
-IriSP.Widgets.QuizCreator.prototype.onQuestionAdd = function(e) {
-
+// Either e !== undefined, then it has been called by the interface and answer === undefined, generate an empty form.
+// Or e === null && answer !== undefined, an existing answer is provided.
+IriSP.Widgets.QuizCreator.prototype.onQuestionAdd = function(e, answer) {
 	var output = '<div class="Ldt-QuizCreator-Questions-Answer">'
-	+ 	'<div class="Ldt-QuizCreator-Questions-Answer-Correct">'+ this.question.renderTemplate(null, this.nbAnswers()) +'</div>'
-	+ 	'<div class="Ldt-QuizCreator-Questions-Answer-Content">Réponse <br /><input class="Ldt-QuizCreator-Answer-Content" data-question="'+ this.nbAnswers() +'" type="text" id="question'+ this.nbAnswers() +'" /><br />'
-	+	'Commentaire <br/><textarea class="class="Ldt-QuizCreator-Answer-Feedback" data-question="'+ this.nbAnswers() +'"id="feedback'+ this.nbAnswers()+'"></textarea></div>'
-	+ 	'<div class="Ldt-QuizCreator-Questions-Answer-Delete"><div class="Ldt-QuizCreator-Remove" id="remove'+ this.nbAnswers() +'">&nbsp;</div></div>'
-	+ '</div>';
-
-
+		+	'Réponse <div class="Ldt-QuizCreator-Questions-Answer-Correct">'+ this.question.renderFullTemplate(answer, this.nbAnswers()) +'</div><br />'
+		+ 	'<div class="Ldt-QuizCreator-Questions-Answer-Content">'
+		+		'<input type="text" class="Ldt-QuizCreator-Answer-Content" data-question="'+ this.nbAnswers() +'" id="question'+ this.nbAnswers() + '"' +  (answer ? ' value="'+ answer.content + '"' : "") + '/><br />'
+		+		'Commentaire <br/><textarea class="Ldt-QuizCreator-Answer-Feedback" data-question="'+ this.nbAnswers() +'" id="feedback'+ this.nbAnswers() +'">' + (answer ? answer.feedback : "") + '</textarea>'
+		+	'</div>'
+		+ 	'<div class="Ldt-QuizCreator-Questions-Answer-Delete"><div class="Ldt-QuizCreator-Remove">&nbsp;</div></div>'
+		+	'</div>';
 	this.$.find(".Ldt-QuizCreator-Questions-Block").append(output);
 	this.$.find(".Ldt-QuizCreator-Answer-Content").last().focus();
 
