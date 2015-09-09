@@ -54,21 +54,6 @@ IriSP.Widgets.QuizCreator.prototype.skip = function() {
     this.current_annotation = undefined;
 };
 
-IriSP.Widgets.QuizCreator.prototype.reloadAnnotations = function() {
-	var _this = this;
-    var _annotations = this.getWidgetAnnotations().sortBy(function(_annotation) {
-        return _annotation.begin;
-    });
-	var flag = 1;
-
-    _annotations.forEach(function(_a) {
-		_a.on("enter", function() {
-            _this.addQuestion(_a, flag++);
-        });
-    });
-
-};
-
 IriSP.Widgets.QuizCreator.prototype.nbAnswers = function(){
 	var numItems = this.$.find('.Ldt-QuizCreator-Questions-Answer').length;
 	return numItems;
@@ -76,7 +61,6 @@ IriSP.Widgets.QuizCreator.prototype.nbAnswers = function(){
 
 IriSP.Widgets.QuizCreator.prototype.draw = function() {
 	var _this = this;
-    this.reloadAnnotations();
 
     this.onMediaEvent("timeupdate", function(_time) {
     	_this.setBegin(_time);
@@ -93,6 +77,11 @@ IriSP.Widgets.QuizCreator.prototype.draw = function() {
 
     this.onMdpEvent("QuizCreator.skip", function() {
 		_this.skip();
+    });
+
+    this.onMdpEvent("QuizCreator.edit", function (_annotation) {
+		_this.skip();
+        _this.addQuestion(_annotation);
     });
 
 	this.$.on("click", ".Ldt-QuizCreator-Remove", function() {
