@@ -142,6 +142,7 @@ IriSP.Widgets.QuizCreator.prototype.addQuestion = function(annotation, number) {
     answers.forEach( function (ans) {
         _this.onQuestionAdd(null, ans);
     });
+    _this.current_annotation = annotation;
 };
 
 IriSP.Widgets.QuizCreator.prototype.onQuestionTypeChange = function(e) {
