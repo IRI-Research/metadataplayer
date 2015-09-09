@@ -212,9 +212,6 @@ IriSP.Widgets.Quiz.prototype.refresh = function() {
 		_this.correct[_a.id] = -1;
 		_this.keys[_this.number] = _a.id;
 		_a.number = _this.number++;
-        _a.on("enter", function() {
-            _this.update(_a);
-        });
     });
 
 }
@@ -222,6 +219,15 @@ IriSP.Widgets.Quiz.prototype.refresh = function() {
 IriSP.Widgets.Quiz.prototype.draw = function() {
 	var _this = this;
 	_this.quiz_displayed = false;
+    this.onMediaEvent("enter-annotation", function (annotation) {
+        var an = _this.getWidgetAnnotations().filter( function (a) { return a === annotation; });
+        if (an.number === undefined) {
+            _this.refresh();
+        }
+        if (an.length) {
+            _this.update(an[0]);
+        };
+    });
     this.onMdpEvent("Quiz.activate", function() {
 		_this.quiz_activated = true;
     });
