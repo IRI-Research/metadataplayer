@@ -15,9 +15,7 @@ IriSP.Widgets.QuizCreator.prototype.defaults = {
     annotation_type: "Quiz",
     api_serializer: "ldt_annotate",
     api_endpoint_template: "",
-    api_method: "POST",
-    // Id that will be used as localStorage key
-    editable_storage: ""
+    api_method: "POST"
 };
 
 IriSP.Widgets.QuizCreator.prototype.messages = {
