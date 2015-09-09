@@ -42,7 +42,6 @@ IriSP.Widgets.QuizCreator.prototype.template =
 	+	'<div>'
     +   '  <button class="Ldt-QuizCreator-Question-Add">Ajouter une réponse</button><hr>'
     +   '  <button class="Ldt-QuizCreator-Question-Save">Sauvegarder</button>'
-    +   '  <button class="Ldt-QuizCreator-Question-Publish">Publier</button></p>'
     +   '</div>'
 	+ '</div>';
 
@@ -113,11 +112,6 @@ IriSP.Widgets.QuizCreator.prototype.draw = function() {
 	this.$.find(".Ldt-QuizCreator-Question-Type").bind("change", this.functionWrapper("onQuestionTypeChange"));
 	this.$.find(".Ldt-QuizCreator-Question-Add").bind("click", this.functionWrapper("onQuestionAdd"));
 	this.$.find(".Ldt-QuizCreator-Question-Save").bind("click", this.functionWrapper("onSave"));
-	this.$.find(".Ldt-QuizCreator-Question-Publish").bind("click", this.functionWrapper("onPublish"));
-
-	this.$.find(".Ldt-QuizCreator-Export-Link").click(function() {
-		_this.exportAnnotations();
-	});
 
 	this.$.find(".Ldt-QuizCreator-Time").keyup(function() {
 		var str = _this.$.find(".Ldt-QuizCreator-Time").val();
@@ -241,73 +235,6 @@ IriSP.Widgets.QuizCreator.prototype.hide = function() {
 	this.$.find(".Ldt-QuizCreator-Time").val("");
 };
 
-
-IriSP.Widgets.QuizCreator.prototype.exportAnnotations = function() {
-    var widget = this;
-    var annotations = this.getWidgetAnnotations().sortBy(function(_annotation) {
-        return _annotation.begin;
-    });
-    var $ = IriSP.jQuery;
-
-	var content = "{annotations : [\n";
-
-	var i = 0;
-	var goal = annotations.length - 1;
-	var _this = this;
-
-	annotations.forEach(function(_a) {
-		var _exportedAnnotations = new IriSP.Model.List(_this.player.sourceManager), /* Création d'une liste d'annotations contenant une annotation afin de l'envoyer au serveur */
-        _export = _this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[_this.api_serializer]}); /* Création d'un objet source utilisant un sérialiseur spécifique pour l'export */
-		_a.setAnnotationType("Quiz");
-		_exportedAnnotations.push(_a); /* Ajout de l'annotation à la liste à exporter */
-		_export.addList("annotation",_exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
-		content += _export.serialize();
-		if (i < goal) {
-			content += ",\n";
-		}
-		i++;
-	});
-	content += "]}";
-
-    var el = $("<pre>")
-            .addClass("exportContainer")
-            .text(content)
-            .dialog({
-                title: "Annotation export",
-                open: function( event, ui ) {
-                    // Select text
-                    var range;
-                    if (document.selection) {
-		                range = document.body.createTextRange();
-                        range.moveToElementText(this[0]);
-		                range.select();
-		            } else if (window.getSelection) {
-		                range = document.createRange();
-		                range.selectNode(this[0]);
-		                window.getSelection().addRange(range);
-		            }
-                },
-                autoOpen: true,
-                width: '80%',
-                minHeight: '400',
-                height: 400,
-                buttons: [ { text: "Close", click: function() { $( this ).dialog( "close" ); } },
-                           { text: "Download", click: function () {
-								function encode_utf8( s ) {
-								  return unescape( encodeURIComponent( s ) );
-								}
-
-								function decode_utf8( s ) {
-								  return decodeURIComponent( escape( s ) );
-								}
-                               a = document.createElement('a');
-                               a.setAttribute('href', 'data:text/plain;base64,' + btoa(encode_utf8(content)));
-                               a.setAttribute('download', 'Annotations - ' + widget.media.title.replace(/[^ \w]/g, '') + '.json');
-                               a.click();
-                           } } ]
-            });
-};
-
 /* Save a local annotation */
 IriSP.Widgets.QuizCreator.prototype.onSave = function(event, should_publish) {
     // Either the annotation already exists (then we overwrite its
@@ -379,58 +306,6 @@ IriSP.Widgets.QuizCreator.prototype.onSave = function(event, should_publish) {
         this.source.merge([ _annotation ]);
     };
     this.current_annotation = _annotation;
-    if (!should_publish) {
-        this.player.trigger("AnnotationsList.update"); /* On force le rafraîchissement des widgets AnnotationsList */
-        this.player.trigger("Annotation.create", _annotation);
-    }
-};
-
-/* Publish an annotation */
-IriSP.Widgets.QuizCreator.prototype.onPublish = function() {
-    this.onSave(null, true);
-    var _this = this,
-        _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* Création d'une liste d'annotations contenant une annotation afin de l'envoyer au serveur */
-        _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}), /* Création d'un objet source utilisant un sérialiseur spécifique pour l'export */
-        _url = Mustache.to_html(this.api_endpoint_template, {id: this.source.projectId}); /* Génération de l'URL à laquelle l'annotation doit être envoyée, qui doit inclure l'ID du projet */
-
-    // Replace annotation type for public annotation
-    if (_this.publish_type) {
-        // If publish_type is specified, try to set the annotation type of the exported annotation
-        var at = _this.source.getAnnotationTypes().filter(function(at) { return at.title == _this.publish_type; });
-        if (at.length == 1) {
-            this.current_annotation.setAnnotationType(at[0].id);
-        }
-    }
-    _exportedAnnotations.push(this.current_annotation); /* Ajout de l'annotation à la liste à exporter */
-
-    if (_url !== "") {
-        _export.addList("annotation",_exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
-        /* Envoi de l'annotation via AJAX au serveur ! */
-        IriSP.jQuery.ajax({
-            url: _url,
-            type: this.api_method,
-            contentType: 'application/json',
-            data: _export.serialize(), /* L'objet Source est sérialisé */
-            success: function(_data) {
-
-                _export.getAnnotations().removeElement(this.current_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
-                _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
-                _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
-                if (_this.pause_on_write && _this.media.getPaused()) {
-                    _this.media.play();
-                }
-                IriSP.jQuery(this).addClass("published");
-				_this.player.trigger("AnnotationsList.update"); /* On force le rafraîchissement du widget AnnotationsList */
-                _this.player.trigger("Annotation.publish", this.current_annotation);
-                },
-            error: function(_xhr, _error, _thrown) {
-                IriSP.log("Error when sending annotation", _thrown);
-                _export.getAnnotations().removeElement(this.current_annotation, true);
-                window.setTimeout(function(){
-                },
-                                  (_this.after_send_timeout || 5000));
-            }
-        });
-    };
-    return false;
+    this.player.trigger("AnnotationsList.update"); /* On force le rafraîchissement des widgets AnnotationsList */
+    this.player.trigger("Annotation.create", _annotation);
 };
