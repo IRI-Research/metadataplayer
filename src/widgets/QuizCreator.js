@@ -229,6 +229,8 @@ IriSP.Widgets.QuizCreator.prototype.hide = function() {
 IriSP.Widgets.QuizCreator.prototype.onSave = function(event, should_publish) {
     // Either the annotation already exists (then we overwrite its
     // content) or it must be created.
+    var is_created = false;
+
 	if (this.nbAnswers() <= 0) {
 		alert("Vous devez spécifier au moins une réponse à votre question !");
 		return false;
@@ -240,8 +242,10 @@ IriSP.Widgets.QuizCreator.prototype.onSave = function(event, should_publish) {
     };
     var _annotation;
     if (this.current_annotation) {
+        is_created = false;
         _annotation = this.current_annotation;
     } else {
+        is_created = true;
         var _annotationTypes = this.source.getAnnotationTypes().searchByTitle(this.annotation_type, true), /* Récupération du type d'annotation dans lequel l'annotation doit être ajoutée */
         _annotationType = (_annotationTypes.length ? _annotationTypes[0] : new IriSP.Model.AnnotationType(false, this.player.localSource)); /* Si le Type d'Annotation n'existe pas, il est créé à la volée */
 
@@ -259,13 +263,13 @@ IriSP.Widgets.QuizCreator.prototype.onSave = function(event, should_publish) {
         _annotation.created = new Date(); /* Date de création de l'annotation */
         _annotation.creator = this.creator_name;
         _annotation.setAnnotationType(_annotationType.id); /* Id du type d'annotation */
+        this.player.localSource.getMedias().push(this.source.currentMedia);
+        _annotation.setMedia(this.source.currentMedia.id); /* Id du média annoté */
     }
 
     /*
      * Nous remplissons les données de l'annotation
      * */
-    this.player.localSource.getMedias().push(this.source.currentMedia);
-    _annotation.setMedia(this.source.currentMedia.id); /* Id du média annoté */
     _annotation.setBegin(this.begin); /*Timecode de début */
     _annotation.setEnd(this.end); /* Timecode de fin */
     _annotation.modified = new Date(); /* Date de modification de l'annotation */
@@ -286,16 +290,16 @@ IriSP.Widgets.QuizCreator.prototype.onSave = function(event, should_publish) {
                                                                 correct: $(this).find(".Ldt-Quiz-Question-Check").is(':checked')
                                                             };
                                                         }));
-    if (this.player.getLocalAnnotation(_annotation.id)) {
-        // Update the annotation
-        this.player.saveLocalAnnotations();
-    } else {
+    this.current_annotation = _annotation;
+    if (is_created) {
         // Add the annotation to the localSource
         this.player.addLocalAnnotation(_annotation);
         // Update also the remote source
         this.source.merge([ _annotation ]);
+        this.player.trigger("Annotation.create", _annotation);
+    } else {
+        // Update the annotation
+        this.player.saveLocalAnnotations();
     };
-    this.current_annotation = _annotation;
     this.player.trigger("AnnotationsList.update"); /* On force le rafraîchissement des widgets AnnotationsList */
-    this.player.trigger("Annotation.create", _annotation);
 };
