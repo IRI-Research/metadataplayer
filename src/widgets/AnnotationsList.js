@@ -36,6 +36,8 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     show_publish: false,
     show_twitter: false,
     twitter_hashtag: '',
+    // Callback for Edit action. Leave undefined for default action.
+    on_edit: undefined,
     publish_type: "PublicContribution",
     // Used to publish annotations
     api_endpoint_template: "",
@@ -536,9 +538,14 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 widget.refresh(true);
             });
             this.$.find('.Ldt-AnnotationsList-Edit').click(function(e) {
-                // Edit annotation title. We have to specify the insertion point.
-                var element = $(this).parents(".Ldt-AnnotationsList-li").find(".Ldt-AnnotationsList-TitleContent.Ldt-live-editable");
-                edit_element(element[0]);
+                if (widget.on_edit) {
+                    var _annotation = get_local_annotation(this.dataset.editable_id);
+                    widget.on_edit(_annotation);
+                } else {
+                    // Edit annotation title. We have to specify the insertion point.
+                    var element = $(this).parents(".Ldt-AnnotationsList-li").find(".Ldt-AnnotationsList-TitleContent.Ldt-live-editable");
+                    edit_element(element[0]);
+                }
             });
             this.$.find('.Ldt-AnnotationsList-PublishAnnotation').click(function(e) {
                 var _annotation = get_local_annotation(this.dataset.editable_id);
