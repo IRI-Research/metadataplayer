@@ -300,6 +300,8 @@ IriSP.Widgets.QuizCreator.prototype.onSave = function(event, should_publish) {
     } else {
         // Update the annotation
         this.player.saveLocalAnnotations();
+        this.player.trigger("Annotation.update", _annotation);
     };
     this.player.trigger("AnnotationsList.update"); /* On force le rafraîchissement des widgets AnnotationsList */
+    this.player.trigger("Quiz.refresh"); /* On force le rafraîchissement des widgets Quiz */
 };
