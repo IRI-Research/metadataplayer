@@ -153,8 +153,7 @@ IriSP.serializers.ldt = {
                 _res.setAnnotationType(_data.meta["id-ref"]);
                 _res.setTags(IriSP._(_data.tags).pluck("id-ref"));
                 _res.keywords = _res.getTagTexts();
-                _res.setBegin(_data.begin);
-                _res.setEnd(_data.end);
+                _res.setBeginEnd(_data.begin, _data.end);
                 _res.creator = _data.meta["dc:creator"] || "";
                 _res.project = _data.meta.project || "";
                 if (typeof _data.meta["dc:source"] !== "undefined" && typeof _data.meta["dc:source"].content !== "undefined") {

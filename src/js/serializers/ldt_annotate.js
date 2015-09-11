@@ -56,8 +56,7 @@ IriSP.serializers.ldt_annotate = {
             return _tag.id;
         });
         _ann.setTags(_tagIds);
-        _ann.setBegin(_anndata.begin);
-        _ann.setEnd(_anndata.end);
+        _ann.setBeginEnd(_anndata.begin, _anndata.end);
         if (typeof _anndata.content.audio !== "undefined" && _anndata.content.audio.href) {
             _ann.audio = _anndata.content.audio;
         };

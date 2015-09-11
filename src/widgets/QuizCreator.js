@@ -270,8 +270,7 @@ IriSP.Widgets.QuizCreator.prototype.onSave = function(event, should_publish) {
     /*
      * Nous remplissons les données de l'annotation
      * */
-    _annotation.setBegin(this.begin); /*Timecode de début */
-    _annotation.setEnd(this.end); /* Timecode de fin */
+    _annotation.setBeginEnd(this.begin, this.end);
     _annotation.modified = new Date(); /* Date de modification de l'annotation */
     _annotation.contributor = this.creator_name;
     _annotation.description = this.getDescription();

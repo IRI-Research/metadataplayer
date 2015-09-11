@@ -223,8 +223,7 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
                 show_arrow: this.show_arrow,
                 annotation_type: this.slice_annotation_type,
                 onBoundsChanged: function(_from, _to) {
-                    this.setBegin(_from);
-                    this.setEnd(_to);
+                    this.setBeginEnd(_from, _to);
                 }
             },
             "slice"
@@ -236,8 +235,7 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
         this.onMediaEvent("timeupdate", function(_time) {
             // Do not update timecode if description is not empty
             if (_this.$.find(".Ldt-CreateAnnotation-Description").val().trim() == "") {
-                _this.setBegin(_time);
-                _this.setEnd(_time);
+                _this.setBeginEnd(_time, _time);
                 if (_this.arrow) {
                     _this.arrow.moveToTime(_time);
                 }
@@ -353,8 +351,8 @@ IriSP.Widgets.CreateAnnotation.prototype.toggle = function() {
         if (this.visible) {
             this.hide();
         } else {
-            _this.setBegin(_this.media.getCurrentTime() || 0);
-            _this.setEnd(_this.media.getCurrentTime() || 0);
+            var t = _this.media.getCurrentTime() || 0;
+            _this.setBeginEnd(t, t);
             if (_this.slice_widget) {
                 _this.slice_widget.setBounds(_this.begin, _this.end);
             }
@@ -469,8 +467,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
      * ATTENTION: Si nous sommes sur un MASHUP, ces éléments doivent se référer AU MEDIA D'ORIGINE
      * */
     _annotation.setMedia(this.source.currentMedia.id); /* Id du média annoté */
-    _annotation.setBegin(this.begin); /*Timecode de début */
-    _annotation.setEnd(this.end); /* Timecode de fin */
+    _annotation.setBegin(this.begin, this.end); /* Timecode de fin */
     _annotation.created = new Date(); /* Date de création de l'annotation */
 
     _annotation.setAnnotationType(_annotationType.id); /* Id du type d'annotation */
