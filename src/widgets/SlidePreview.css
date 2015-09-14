@@ -5,6 +5,7 @@
     height: 36px;
     padding-left: 4px;
     padding-top: 9px;
+    overflow-y: hidden;
 }
 .Ldt-SlidePreview-Item {
     display: inline-block;
