@@ -8,7 +8,7 @@ IriSP.Widgets.SlidePreview.prototype.defaults = {
     annotation_type: "Slides"
 }
 
-IriSP.Widgets.SlidePreview.prototype.template = '<div class="Ldt-SlidePreview-Container"></div>';
+IriSP.Widgets.SlidePreview.prototype.template = '<div class="Ldt-SlidePreview-Container"><div class="Ldt-SlidePreview-Slides"></div></div>';
 
 IriSP.Widgets.SlidePreview.prototype.annotationTemplate = '<div data-id="{{ id }}" data-timecode="{{ ms }}" class="Ldt-SlidePreview-Item"><img title="{{ begin }} - {{ atitle }}" class="Ldt-AnnotationsList-Thumbnail" src="{{ thumbnail }}"></div>';
 
@@ -18,7 +18,7 @@ IriSP.Widgets.SlidePreview.prototype.draw = function() {
     });
     var _this = this;
     _this.renderTemplate();
-    var content = _this.$.find('.Ldt-SlidePreview-Container');
+    var content = _this.$.find('.Ldt-SlidePreview-Slides');
 
     this.getWidgetAnnotations().forEach(function(_a) {
         var _data = {
