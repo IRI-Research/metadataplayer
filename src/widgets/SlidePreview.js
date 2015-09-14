@@ -10,7 +10,7 @@ IriSP.Widgets.SlidePreview.prototype.defaults = {
 
 IriSP.Widgets.SlidePreview.prototype.template = '<div class="Ldt-SlidePreview-Container"></div>';
 
-IriSP.Widgets.SlidePreview.prototype.annotationTemplate = '<div data-id="{{ id }}" class="Ldt-SlidePreview-Item"><img title="{{ begin }} - {{ atitle }}" class="Ldt-AnnotationsList-Thumbnail" src="{{ thumbnail }}"></div>';
+IriSP.Widgets.SlidePreview.prototype.annotationTemplate = '<div data-id="{{ id }}" data-timecode="{{ ms }}" class="Ldt-SlidePreview-Item"><img title="{{ begin }} - {{ atitle }}" class="Ldt-AnnotationsList-Thumbnail" src="{{ thumbnail }}"></div>';
 
 IriSP.Widgets.SlidePreview.prototype.draw = function() {
     var _annotations = this.getWidgetAnnotations().sortBy(function(_annotation) {
@@ -25,11 +25,14 @@ IriSP.Widgets.SlidePreview.prototype.draw = function() {
             id : _a.id,
             content : IriSP.textFieldHtml(_a.title),
             begin : _a.begin.toString(),
+            ms: _a.begin.milliseconds,
             thumbnail: _a.thumbnail
             };
         var _html = Mustache.to_html(_this.annotationTemplate, _data);
         var _el = IriSP.jQuery(_html);
         content.append(_el);
     });
+    _this.$.on("click", ".Ldt-SlidePreview-Item", function () {
+        _this.media.setCurrentTime(Number(this.dataset.timecode));
+    });
 };
-
