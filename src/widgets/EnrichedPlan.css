@@ -1,6 +1,7 @@
 .Ldt-EnrichedPlan-Slide {
     border-bottom: 2px dotted #ccc;
     padding-top: 4px;
+    cursor: pointer;
 }
 
 .Ldt-EnrichedPlan-SlideTimecode {
