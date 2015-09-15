@@ -32,8 +32,7 @@ IriSP.Widgets.SlideVideoPlayer.prototype.draw = function() {
         _this.$.find(".Ldt-SlideVideoPlayer-panel.Ldt-SlideVideoPlayer-slide"),
             {
                 type: "ImageDisplay",
-                annotation_type: _this.annotation_type,
-                width: '100%'
+                annotation_type: _this.annotation_type
             },
             "slide"
         );
@@ -69,7 +68,11 @@ IriSP.Widgets.SlideVideoPlayer.prototype.draw = function() {
 };
 
 IriSP.Widgets.SlideVideoPlayer.prototype.toggleMainDisplay = function() {
-    this.setMainDisplay('slides');
+    if (this.$.find(".Ldt-SlideVideoPlayer-panel.Ldt-SlideVideoPlayer-video").hasClass("Ldt-SlideVideoPlayer-pip-main")) {
+        this.setMainDisplay('slides');
+    } else {
+        this.setMainDisplay('video');
+    }
 };
 
 // Set main display (in case of a "switch" display mode)
@@ -82,22 +85,6 @@ IriSP.Widgets.SlideVideoPlayer.prototype.setMainDisplay = function(video_or_slid
         main = pip;
         pip = temp;
     };
-    main.css({
-        position: 'relative',
-        width: '100%',
-        height: '100%',
-        top: '0px',
-        left: '0px',
-        right: '0px',
-        bottom: '0px',
-        "z-index": 1
-    });
-    pip.css({
-        position: 'absolute',
-        width: '30%',
-        height: '30%',
-        right: '2px',
-        bottom: '2px',
-        "z-index": 3
-    });
+    main.removeClass('Ldt-SlideVideoPlayer-pip-pip').addClass('Ldt-SlideVideoPlayer-pip-main');
+    pip.removeClass('Ldt-SlideVideoPlayer-pip-main').addClass('Ldt-SlideVideoPlayer-pip-pip');
 }
