@@ -14,8 +14,14 @@ IriSP.Widgets.SlideVideoPlayer.prototype.defaults = {
 
 IriSP.Widgets.SlideVideoPlayer.prototype.template = '<div class="Ldt-SlideVideoPlayer">\
 <div class="Ldt-SlideVideoPlayer-slide Ldt-SlideVideoPlayer-panel">\
+    <div class="Ldt-SlideVideoPlayer-pip-menu">\
+       <div class="Ldt-SlideVideoPlayer-pip-menu-toggle"></div>\
+    </div>\
 </div>\
 <div class="Ldt-SlideVideoPlayer-video Ldt-SlideVideoPlayer-panel"></div>\
+    <div class="Ldt-SlideVideoPlayer-pip-menu">\
+       <div class="Ldt-SlideVideoPlayer-pip-menu-toggle"></div>\
+    </div>\
 </div>';
 
 IriSP.Widgets.SlideVideoPlayer.prototype.draw = function() {
@@ -43,8 +49,9 @@ IriSP.Widgets.SlideVideoPlayer.prototype.draw = function() {
     );
 
     if (_this.mode == 'pip') {
-
-
+        _this.$.on("click", ".Ldt-SlideVideoPlayer-pip-menu-toggle", function () {
+            _this.toggleMainDisplay();
+        });
         window.setTimeout(function () {
             _this.setMainDisplay('video');
         }, 1500);
@@ -59,6 +66,10 @@ IriSP.Widgets.SlideVideoPlayer.prototype.draw = function() {
                                                              });
         }, 1500);
     }
+};
+
+IriSP.Widgets.SlideVideoPlayer.prototype.toggleMainDisplay = function() {
+    this.setMainDisplay('slides');
 };
 
 // Set main display (in case of a "switch" display mode)

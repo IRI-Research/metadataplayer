@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="5.0797176mm"
+   height="5.0799999mm"
+   viewBox="0 0 17.998999 18"
+   id="svg19931"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="pip_toggle.svg">
+  <defs
+     id="defs19933" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-245.28621,-280.50506)">
+    <polygon
+       transform="translate(232.09221,226.21106)"
+       style="fill:#ffffff"
+       points="23.586,59.714 22.193,57.364 20.805,59.714 "
+       id="polygon13969" />
+    <polygon
+       transform="translate(232.09221,226.21106)"
+       style="fill:#ffffff"
+       points="22.971,59.364 21.417,59.364 22.496,57.544 22.193,57.364 21.894,57.544 22.193,57.364 21.894,57.187 20.19,60.063 24.199,60.063 22.193,56.679 21.894,57.187 22.193,57.364 21.894,57.544 "
+       id="polygon13971" />
+    <polygon
+       transform="translate(232.09221,226.21106)"
+       style="fill:#ffffff"
+       points="20.805,66.874 22.193,69.224 23.586,66.874 "
+       id="polygon13973" />
+    <polygon
+       transform="translate(232.09221,226.21106)"
+       style="fill:#ffffff"
+       points="21.417,67.224 22.971,67.224 21.894,69.044 22.193,69.224 22.496,69.044 22.193,69.224 22.496,69.399 24.199,66.522 20.19,66.522 22.193,69.909 22.496,69.399 22.193,69.224 22.496,69.044 "
+       id="polygon13975" />
+    <polygon
+       transform="translate(232.09221,226.21106)"
+       style="fill:#ffffff"
+       points="25.818,64.685 28.168,63.294 25.818,61.903 "
+       id="polygon13977" />
+    <polygon
+       transform="translate(232.09221,226.21106)"
+       style="fill:#ffffff"
+       points="26.168,64.071 26.168,62.517 27.988,63.595 28.168,63.294 27.988,62.993 28.168,63.294 28.347,62.993 25.468,61.29 25.468,65.298 28.855,63.294 28.347,62.993 28.168,63.294 27.988,62.993 "
+       id="polygon13979" />
+    <polygon
+       transform="translate(232.09221,226.21106)"
+       style="fill:#ffffff"
+       points="18.659,61.903 16.31,63.294 18.659,64.685 "
+       id="polygon13981" />
+    <polygon
+       transform="translate(232.09221,226.21106)"
+       style="fill:#ffffff"
+       points="18.309,62.517 18.309,64.071 16.488,62.993 16.31,63.294 16.488,63.595 16.31,63.294 16.132,63.595 19.009,65.298 19.009,61.29 15.624,63.294 16.132,63.595 16.31,63.294 16.488,63.595 "
+       id="polygon13983" />
+    <path
+       inkscape:connector-curvature="0"
+       style="fill:#ffffff"
+       d="m 254.28521,298.00506 0,0.5 c 4.965,-0.002 9,-4.035 9,-9 0,-4.965 -4.035,-9 -9,-9 -4.963,0 -8.998,4.035 -8.999,9 10e-4,4.965 4.036,8.998 8.999,9 l 0,-0.5 0,-0.5 c -2.206,0 -4.202,-0.896 -5.653,-2.346 -1.45,-1.451 -2.346,-3.447 -2.346,-5.654 0,-2.207 0.896,-4.203 2.346,-5.654 1.451,-1.449 3.448,-2.346 5.653,-2.346 2.207,0 4.205,0.896 5.654,2.346 1.45,1.451 2.347,3.447 2.347,5.654 0,2.207 -0.896,4.203 -2.347,5.654 -1.449,1.449 -3.447,2.346 -5.654,2.346 l 0,0.5 0,0 z"
+       id="path13985" />
+  </g>
+</svg>
