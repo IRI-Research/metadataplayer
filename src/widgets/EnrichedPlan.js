@@ -102,15 +102,15 @@ IriSP.Widgets.EnrichedPlan.prototype.draw = function() {
     });
 
     container.on("click", ".Ldt-EnrichedPlan-Control-Checkbox", function () {
-        var classname = Array.prototype.slice.call(this.classList).filter( function (s) { return s != "Ldt-EnrichedPlan-Control-Checkbox"; });
-        if (classname.length) {
+        var classname = _.first(_.filter(this.classList, function (s) { return s != "Ldt-EnrichedPlan-Control-Checkbox"; }));
+        if (classname !== undefined) {
             if ($(this).is(':checked')) {
-                content.find(".Ldt-EnrichedPlan-Slide ." + classname[0]).show(300);
-                if (classname[0] == 'Ldt-EnrichedPlan-Slide-Display')
+                content.find(".Ldt-EnrichedPlan-Slide ." + classname).show(300);
+                if (classname == 'Ldt-EnrichedPlan-Slide-Display')
                     content.find(".Ldt-EnrichedPlan-SlideContent").removeClass("wide");
             } else {
-                content.find(".Ldt-EnrichedPlan-Slide ." + classname[0]).hide(300);
-                if (classname[0] == 'Ldt-EnrichedPlan-Slide-Display')
+                content.find(".Ldt-EnrichedPlan-Slide ." + classname).hide(300);
+                if (classname == 'Ldt-EnrichedPlan-Slide-Display')
                     content.find(".Ldt-EnrichedPlan-SlideContent").addClass("wide");
              }
         }
