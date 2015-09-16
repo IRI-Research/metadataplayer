@@ -307,6 +307,11 @@ IriSP.Widgets.CreateAnnotation.prototype.setEnd = function (t) {
     this.$.find(".Ldt-CreateAnnotation-End").html(this.end.toString());
 };
 
+IriSP.Widgets.CreateAnnotation.prototype.setBeginEnd = function (begin, end) {
+    this.setBegin(begin);
+    this.setEnd(end);
+};
+
 IriSP.Widgets.CreateAnnotation.prototype.showScreen = function(_screenName) {
     this.$.find('.Ldt-CreateAnnotation-' + _screenName).show()
         .siblings().hide();
