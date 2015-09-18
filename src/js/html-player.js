@@ -62,6 +62,20 @@ IriSP.htmlPlayer = function(media, jqselector, options) {
         }
     });
     
+    media.on("settimerange", function(_timeRange){
+        media.timeRange = _timeRange;
+        try {
+            if (media.getCurrentTime() > _timeRange[0] || media.getCurrentTime() < _timeRange){
+                mediaEl.currentTime = (_timeRange[0] / 1000);
+            }
+        } catch (err) {
+        }
+    })
+    
+    media.on("resettimerange", function(){
+        media.timeRange = false;
+    })
+    
     media.on("setplay", function() {
         try {
             mediaEl.play();
@@ -114,6 +128,5 @@ IriSP.htmlPlayer = function(media, jqselector, options) {
     videoEl.on("seeked", function() {
         media.trigger("seeked");
     });
-    
     
 };

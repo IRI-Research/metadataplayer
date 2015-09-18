@@ -14,8 +14,10 @@ IriSP.Widgets.Segments.prototype.defaults = {
     overlap: .25,
     found_color: "#FF00FC",
     faded_found_color: "#ff80fc",
-    // Display creator info in segment tooltip
-    show_creator: true
+    selected_color: "#74d600",
+    faded_selected_color: "#baf9b5",
+    no_tooltip: false,
+    use_timerange: false,
 };
 
 IriSP.Widgets.Segments.prototype.template =
@@ -79,7 +81,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             color : color,
             medcolor: medcolor,
             lowcolor: lowcolor,
-            text: ((_this.show_creator && _annotation.creator) ? (_annotation.creator + " : ") : "" ) + _fulltext.replace(/(\n|\r|\r\n)/mg,' ').replace(/(^.{120,140})[\s].+$/m,'$1&hellip;'),
+            text: (_annotation.creator ? (_annotation.creator + " : ") : "" ) + _fulltext.replace(/(\n|\r|\r\n)/mg,' ').replace(/(^.{120,140})[\s].+$/m,'$1&hellip;'),
             left : _left,
             width : _width,
             top: _top,
@@ -91,17 +93,40 @@ IriSP.Widgets.Segments.prototype.draw = function() {
         };
         var _html = Mustache.to_html(_this.annotationTemplate, _data),
             _el = IriSP.jQuery(_html);
-            _el.mouseover(function() {
+        _el.mouseover(function() {
                 _annotation.trigger("select");
-                _this.player.trigger('annotation-select', _annotation);
             })
             .mouseout(function() {
                 _annotation.trigger("unselect");
-                _this.player.trigger('annotation-unselect', _annotation);
             })
             .click(function() {
+                if(_this.use_timerange){
+                    if(!_this.media.getTimeRange()){
+                        _this.media.setTimeRange(_annotation.begin, _annotation.end)              
+                        _this.$segments.each(function(){
+                            var _segment = IriSP.jQuery(this);
+                            _segment.css("background", lowcolor).removeClass("selected");
+                        })
+                        _el.css("background", _this.selected_color).addClass("selected");
+                    }
+                    else if (_this.media.getTimeRange()[0]==_annotation.begin || _this.media.getTimeRange()[1]==_annotation.end){
+                        _this.media.resetTimeRange();
+                        _this.$segments.each(function(){
+                            var _segment = IriSP.jQuery(this);
+                            _segment.css("background", lowcolor).removeClass("selected");
+                            _annotation.trigger("select");
+                        })
+                    }
+                    else {
+                        _this.media.setTimeRange(_annotation.begin, _annotation.end);
+                        _this.$segments.each(function(){
+                            var _segment = IriSP.jQuery(this);
+                            _segment.css("background", lowcolor).removeClass("selected");
+                        })
+                        _el.css("background", _this.selected_color).addClass("selected");
+                    }
+                }
                 _annotation.trigger("click");
-                _this.player.trigger('annotation-click', _annotation);
             })
             .appendTo(list_$);
         IriSP.attachDndData(_el, {
@@ -118,9 +143,13 @@ IriSP.Widgets.Segments.prototype.draw = function() {
                 _segment.css({
                     background: _segment.hasClass("found") ? _this.faded_found_color : _segment.attr("data-low-color")
                 });
+                _segment.css({
+                    background: _segment.hasClass("selected") ? _this.faded_selected_color : _segment.attr("data-low-color")
+                })
             });
             _el.css({
                 background: _el.hasClass("found") ? _this.found_color: color,
+                background: _el.hasClass("selected") ? _this.selected_color: color,
                 "z-index": ++zindex
             });
             if (_this.tooltip) {
@@ -134,6 +163,7 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             _this.$segments.each(function() {
                 var _segment = IriSP.jQuery(this);
                 _segment.css("background", _segment.hasClass("found") ? _this.found_color : _segment.attr(searching ? "data-low-color" : "data-medium-color"));
+                _segment.css("background", _segment.hasClass("selected") ? _this.selected_color : _segment.attr(searching ? "data-low-color" : "data-medium-color"));
             });
         });
         _annotation.on("found", function() {
@@ -150,15 +180,17 @@ IriSP.Widgets.Segments.prototype.draw = function() {
         background : this.background,
         margin: "1px 0"
     });
-    this.insertSubwidget(
-        this.$.find(".Ldt-Segments-Tooltip"),
-        {
-            type: "Tooltip",
-            min_x: 0,
-            max_x: this.width
-        },
-        "tooltip"
-    );
+    if (!this.no_tooltip){
+        this.insertSubwidget(
+            this.$.find(".Ldt-Segments-Tooltip"),
+            {
+                type: "Tooltip",
+                min_x: 0,
+                max_x: this.width
+            },
+            "tooltip"
+        );
+    }
     this.$segments = this.$.find('.Ldt-Segments-Segment');
     this.source.getAnnotations().on("search", function() {
         searching = true;
@@ -172,9 +204,10 @@ IriSP.Widgets.Segments.prototype.draw = function() {
     });
 };
 
-IriSP.Widgets.Segments.prototype.onTimeupdate = function(_time) {
+IriSP.Widgets.Segments.prototype.onTimeupdate = function(_time) {    
     var _x = Math.floor( this.width * _time / this.media.duration);
     this.$.find('.Ldt-Segments-Position').css({
         left: _x + "px"
     });
 };
+

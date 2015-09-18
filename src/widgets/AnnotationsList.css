@@ -1,9 +1,14 @@
 /* AnnotationsListWidget */
 
+#ui-datepicker-div
+{
+    display: none;
+}
+
 .Ldt-AnnotationsListWidget {
     border: none; margin: 0; padding: 0;
     overflow: auto;
-    max-height: 480px;
+    max-height: 380px;
 }
 .Ldt-AnnotationsListWidget a {
     text-decoration: none;
@@ -40,11 +45,12 @@
 	margin: 4px 2px;
 }
 
-ul.Ldt-AnnotationsList-ul {
+ul.Ldt-AnnotationsList-ul, ul.Ldt-AnnotationsList-ul-toDelete  {
     list-style: none;
-    padding: 2px;
-    margin: 0;
+    padding: 0px;
+    margin: 0px;
 }
+
 li.Ldt-AnnotationsList-li {
     width: 100%;
     clear: both;
@@ -68,6 +74,21 @@ li.Ldt-AnnotationsList-li {
     max-height: 100%;
     margin: 0 auto;
 }
+
+.Ldt-AnnotationsList-DeleteButton {
+	margin: 0px;
+	float: right;
+	font-size: 20px;
+	position: relative;
+	top: -50px;
+	left: -5px;
+	color: #787878
+}
+.Ldt-AnnotationsList-DeleteButton:hover {
+	color: #f7268e;
+	cursor: pointer;
+}
+
 .Ldt-AnnotationsList-Duration {
     color: #f7268e;
     float: right;
@@ -139,4 +160,26 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 
 .Ldt-AnnotationsList-Play:hover {
     background-position: 0 bottom;
+}
+
+.Ldt-AnnotationsList-ScreenMain{
+	margin: 0px;
+	padding: 0px;
+}
+
+.Ldt-AnnotationsList-ScreenDelete, .Ldt-AnnotationsList-ScreenSending, 
+.Ldt-AnnotationsList-ScreenError, .Ldt-AnnotationsList-ScreenSuccess{
+	margin-top: 15px;
+	width: 100%
+	text-align: center;
+	vertical-align: middle;
+	font-size: 14px;
+	font-weight: bold;
+	color: #68273C;
+}
+
+a.Ldt-AnnotationsList-Close {
+    position: absolute; right: 2px;
+    display: inline-block; width: 17px; height: 17px; margin: 4px;
+    background: url(img/widget-control.png);
 }

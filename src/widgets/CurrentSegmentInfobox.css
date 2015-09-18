@@ -39,10 +39,96 @@
 	font-weight: bold;
 }
 
+textarea.Ldt-CurrentSegmentInfobox-DescriptionInput.Ldt-CurrentSegmentInfobox-Description{
+	display: inline-block;
+	width: 95%;
+}
+
 .Ldt-CurrentSegmentInfobox-Tags{
 }
 
 .Ldt-CurrentSegmentInfobox-NoSegment{
 	font-size: 15px;
 	font-weight: bold;
+}
+
+.Ldt-CurrentSegmentInfobox-SubmitButton{
+	display: inline-block;
+    background-color: #d93c71;
+    color: #ffffff;
+    float: right;
+    cursor: pointer;
+    height: 14px;
+    width: 100px;
+    margin: 2px;
+    margin-top: 5px;
+    padding: 2px;
+    font-size: 11px;
+    border: 1px solid;
+    border-color: #eca3bc #631e34 #36101c #e16e93;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.Ldt-CurrentSegmentInfobox-CancelButton{
+	display: inline-block;
+    background-color: #d93c71;
+    color: #ffffff;
+    float: right;
+    cursor: pointer;
+    height: 14px;
+    width: 100px;
+    margin: 2px;
+    margin-top: 5px;
+    margin-right: 5px;
+    padding: 2px;
+    font-size: 11px;
+    border: 1px solid;
+    border-color: #eca3bc #631e34 #36101c #e16e93;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.Ldt-CurrentSegmentInfobox-CreateTagButton{
+	display: block;
+    background-color: #d93c71;
+    color: #ffffff;
+    cursor: pointer;
+    height: 14px;
+    width: 75px;
+    margin: 2px;
+    padding: 2px;
+    font-size: 11px;
+    border: 1px solid;
+    border-color: #eca3bc #631e34 #36101c #e16e93;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.Ldt-CurrentSegmentInfobox-Tags-Li-Input{
+	width: 80px;
+}
+
+.Ldt-CurrentSegmentInfobox-CreateTagButton:hover, .Ldt-CurrentSegmentInfobox-CancelButton:hover,
+.Ldt-CurrentSegmentInfobox-SubmitButton:hover{
+	background-color: #e15581;
+	border-color: #222222 #e87d9f #f0adc3 #68273c;
+}
+
+.Ldt-CurrentSegmentInfobox-Tags-Li-DeleteTagButton{
+	font-weight: bold;
+	color: #d93c71
+}
+
+.Ldt-CurrentSegmentInfobox-Tags-Li-DeleteTagButton:hover{
+	color: #e16e93
+}
+
+.Ldt-CurrentSegmentInfobox-CreateTagInput{
+    border: 2px solid #848484;
+    margin: 5px 0;
+    padding: 4px;
 }

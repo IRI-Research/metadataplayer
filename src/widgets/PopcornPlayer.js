@@ -101,6 +101,20 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
         _popcorn.pause();
     });
     
+    _media.on("settimerange", function(_timeRange){
+        _media.timeRange = _timeRange;
+        try {
+            if (_media.getCurrentTime() > _timeRange[0] || _media.getCurrentTime() < _timeRange){
+                _popcorn.currentTime(_timeRange[0] / 1000);
+            }
+        } catch (err) {
+        }
+    })
+    
+    _media.on("resettimerange", function(){
+        _media.timeRange = false;
+    })
+    
     // Binding Popcorn events to media
     
     function getVolume() {

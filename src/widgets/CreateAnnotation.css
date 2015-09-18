@@ -43,7 +43,8 @@
     color: #ff3b77
 }
 
-.Ldt-CreateAnnotation-Submit {
+.Ldt-CreateAnnotation-Submit,
+.Ldt-CreateAnnotation-Cancel{
     position: absolute;
     bottom: 7px;
     right: 7px;

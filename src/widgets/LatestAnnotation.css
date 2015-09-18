@@ -25,6 +25,8 @@
 }
 
 .Ldt-LatestAnnotation-Content{
+	max-width: 230px;
+	text-align: justify;
 }
 
 .Ldt-LatestAnnotation-Title{
@@ -36,4 +38,27 @@
 .Ldt-LatestAnnotation-NoAnnotation{
 	font-size: 14px;
     font-weight: bold;
+}
+
+.Ldt-LatestAnnotation-CopyEditButton{
+	display: inline-block;
+    background-color: #d93c71;
+    color: #ffffff;
+    float: right;
+    cursor: pointer;
+    height: 14px;
+    width: 100px;
+    margin: 2px;
+    padding: 2px;
+    font-size: 11px;
+    border: 1px solid;
+    border-color: #eca3bc #631e34 #36101c #e16e93;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.Ldt-LatestAnnotation-CopyEditButton:hover{
+	background-color: #e15581;
+	border-color: #222222 #e87d9f #f0adc3 #68273c;
 }

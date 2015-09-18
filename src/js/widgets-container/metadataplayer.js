@@ -43,42 +43,43 @@ Metadataplayer.prototype.trigger = function(_event, _data) {
 Metadataplayer.prototype.loadLibs = function() {
     ns.log("IriSP.Metadataplayer.prototype.loadLibs");
     var $L = $LAB
-        .script(ns.getLib("Mustache"));
+        .queueScript(ns.getLib("Mustache"));
     
     formerJQuery = !!window.jQuery;
     former$ = !!window.$;
     formerUnderscore = !!window._;
     
     if (typeof ns.jQuery === "undefined") {
-        $L.script(ns.getLib("jQuery"));
+        $L.queueScript(ns.getLib("jQuery"));
     }
     
     if (typeof ns._ === "undefined") {
-        $L.script(ns.getLib("underscore"));
+        $L.queueScript(ns.getLib("underscore"));
     }
     
     if (typeof window.JSON == "undefined") {
-        $L.script(ns.getLib("json"));
+        $L.queueScript(ns.getLib("json"));
     }
     
-    $L.wait()
-        .script(ns.getLib("jQueryUI"));
+    $L.queueWait().queueScript(ns.getLib("jQueryUI")).queueWait();
 
     /* widget specific requirements */
     for(var _i = 0; _i < this.config.widgets.length; _i++) {
         var _t = this.config.widgets[_i].type;
         if (typeof ns.widgetsRequirements[_t] !== "undefined" && typeof ns.widgetsRequirements[_t].requires !== "undefined" ) {
             for (var _j = 0; _j < ns.widgetsRequirements[_t].requires.length; _j++) {
-                $L.script(ns.getLib(ns.widgetsRequirements[_t].requires[_j]));
+                $L.queueScript(ns.getLib(ns.widgetsRequirements[_t].requires[_j]));
             }
         }
     }
     
     var _this = this;
     
-    $L.wait(function() {
+    $L.queueWait(function() {
         _this.onLibsLoaded();
     });
+    
+    $L.runQueue();
 };
 
 Metadataplayer.prototype.onLibsLoaded = function() {

@@ -1,0 +1,180 @@
+
+.Ldt-Markers-Marker {
+    position: absolute; 
+    margin-left: -1px; 
+    border: 1px solid #ffffff;
+}
+
+.Ldt-Markers-MarkerBall {
+	background: #ffffff;
+}
+
+.Ldt-Markers-MarkerBall:hover {
+	background: #bebebe;
+}
+
+.Ldt-Markers-List{
+	overflow: hidden;
+}
+
+.Ldt-Markers-Position {
+    background: #fc00ff;
+    position: absolute;
+    top: -1px;
+    left: 0;
+    margin-left: -1px;
+    width: 2px;
+    bottom: -1px;
+    z-index: 80000;
+}
+
+.Ldt-Markers-Inputs{
+	background-color: #e0e0e0;
+	margin-top: 1px;
+}
+
+.Ldt-Markers-RoundButton{
+	display: inline-block;
+    background-color: #d93c71;
+    color: #ffffff;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+    font-size: 25px;
+    font-style: bold;
+    border: 1px solid;
+    border-color: #eca3bc #631e34 #36101c #e16e93;
+    cursor: pointer;
+    margin-right: 0px;
+    margin-left: 13px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 4px;
+    text-align: center;
+	vertical-align: top;
+	line-height: 20px;
+}
+
+.Ldt-Markers-RoundButton.Ldt-Markers-CannotCreate{
+	background-color: #999999;
+	border-color: #797979 #444444 #222222 #696969;
+}
+
+.Ldt-Markers-RoundButton.Ldt-Markers-Delete{
+	line-height: 23px;
+	text-indent: 2px;
+}
+
+.Ldt-Markers-Info{
+	height: 125px;
+	width: 90%;
+	display: inline-block;
+	margin: 0px;
+}
+
+.Ldt-Markers-Screen{
+	height: 125px;
+	margin: 0px;
+}
+
+.Ldt-Markers-ScreenSending, .Ldt-Markers-ScreenFailure, .Ldt-Markers-ScreenSuccess, 
+.Ldt-Markers-ScreenConfirmDelete, .Ldt-Markers-ScreenDeleteSuccess{
+	text-align: center;
+	vertical-align: middle;
+	line-height: 125px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #68273C;
+}
+
+.Ldt-Markers-Screen-InnerBox{
+    border: 1px solid #CCCCCC;
+    background: #FFFFFF;
+    color: #FF3B77; text-align: center;
+    font-size: 13px; font-weight: bold;
+}
+
+a.Ldt-Markers-Close {
+    position: absolute; right: 2px;
+    display: inline-block; width: 17px; height: 17px; margin: 4px;
+    background: url(img/widget-control.png);
+}
+
+a.Ldt-Markers-Screen-SubmitDelete, a.Ldt-Markers-Screen-CancelDelete {
+	color: #3366BB;
+	cursor: pointer;
+}
+
+a.Ldt-Markers-Screen-SubmitDelete:hover, a.Ldt-Markers-Screen-CancelDelete:hover {
+	color: #3a75ff;
+}
+
+.Ldt-Markers-MarkerDescription{
+	height: 45%;
+	width: 90%;
+	border: 1px solid #68273c;
+	margin: 10px;
+	padding: 10px;
+	background: #ffffff;
+}
+
+.Ldt-Markers-MarkerDescription:hover{
+	border: 2px solid #e87d9f;
+}
+
+.Ldt-Markers-MarkerEdit{
+	height: 70%;
+	width: 100%;
+	margin: 10px;
+}
+
+.Ldt-Markers-MarkerTextArea{
+	height: auto;
+	width: auto;
+	max-width: 82%;
+	max-height: 100%;
+	padding: 10px;
+	background: #ffffff;
+	border: 2px solid #e87d9f;
+	margin: 0px;
+}
+
+.Ldt-Markers-Buttons{
+	display: inline-block;
+	width: 17%;
+	vertical-align: top;
+}
+
+.Ldt-Markers-MarkerSend, .Ldt-Markers-MarkerCancel{
+	display: inline-block;
+    background-color: #d93c71;
+    color: #ffffff;
+    cursor: pointer;
+    height: 20px;
+    width: 80px;
+    font-size: 11;
+    font-style: bold;
+    border: 1px solid;
+    border-color: #eca3bc #631e34 #36101c #e16e93;
+    cursor: pointer;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    margin-top: 0px;
+    padding: 4px;
+    text-align: center;
+	vertical-align: top;
+	line-height: 20px;
+	vertical-align: top;
+}
+
+.Ldt-Markers-RoundButton:hover, .Ldt-Markers-MarkerSend:hover, .Ldt-Markers-MarkerCancel:hover{
+	background-color: #e15581;
+	border-color: #222222 #e87d9f #f0adc3 #68273c;
+}
+
+.Ldt-Markers-RoundButton.Ldt-Markers-CannotCreate:hover{	
+	background-color: #999999;
+	border-color: #797979 #444444 #222222 #696969;
+}

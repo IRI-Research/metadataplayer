@@ -576,6 +576,7 @@ var Playable = Model.Playable = function(_id, _source) {
     this.volume = .5;
     this.paused = true;
     this.muted = false;
+    this.timeRange = false;
     this.loadedMetadata = false;
     var _this = this;
     this.on("play", function() {
@@ -600,6 +601,18 @@ var Playable = Model.Playable = function(_id, _source) {
             _a.trigger("enter");
             _this.trigger("enter-annotation",_a);
         });
+        
+        if (_this.getTimeRange()){
+            if (_this.getTimeRange()[0] > _time) {
+                _this.pause();
+                _this.setCurrentTime(_this.getTimeRange()[0]);
+            }
+            if (_this.getTimeRange()[1] < _time){
+                _this.pause();
+                _this.setCurrentTime(_this.getTimeRange()[1]);
+            }
+        }
+        
     });
     this.on("loadedmetadata", function() {
         _this.loadedMetadata = true;
@@ -624,6 +637,10 @@ Playable.prototype.getMuted = function() {
     return this.muted;
 };
 
+Playable.prototype.getTimeRange = function() {
+    return this.timeRange;
+}
+
 Playable.prototype.setCurrentTime = function(_time) {
     this.trigger("setcurrenttime",_time);
 };
@@ -635,6 +652,16 @@ Playable.prototype.setVolume = function(_vol) {
 Playable.prototype.setMuted = function(_muted) {
     this.trigger("setmuted",_muted);
 };
+
+Playable.prototype.setTimeRange = function(_timeBegin, _timeEnd) {
+    if ((_timeBegin < _timeEnd)&&(_timeBegin >= 0)&&(_timeEnd>0)){
+        return this.trigger("settimerange", [_timeBegin, _timeEnd]);
+    }
+}
+
+Playable.prototype.resetTimeRange = function() {
+    return this.trigger("resettimerange");
+}
 
 Playable.prototype.play = function() {
     this.trigger("setplay");
@@ -648,6 +675,17 @@ Playable.prototype.show = function() {};
 
 Playable.prototype.hide = function() {};
 
+/* */
+
+var Media = Model.Media = function(_id, _source) {
+    Playable.call(this, _id, _source);
+    this.elementType = 'media';
+    this.duration = new Time();
+    this.video = '';
+    var _this = this;
+};
+
+extendPrototype(Media, Playable);
 /* */
 
 var Media = Model.Media = function(_id, _source) {

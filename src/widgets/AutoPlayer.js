@@ -56,8 +56,8 @@ IriSP.Widgets.AutoPlayer.prototype.draw = function() {
     }
     
     if (_opts.type === "AdaptivePlayer") {
-        var _canPlayType = document.createElement('video').canPlayType("video/mp4");
-        _opts.type = (_canPlayType == "maybe" || _canPlayType == "probably") ? "HtmlPlayer" : "JwpPlayer";
+        var _canPlayType = document.createElement('video').canPlayType('video/mp4; codecs="avc1.42E01E"');
+        _opts.type = (_canPlayType !== "no") ? "HtmlPlayer" : "JwpPlayer";
     }
     
     if (_rtmprgx.test(this.video)) {

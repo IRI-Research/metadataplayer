@@ -51,7 +51,10 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     project_id: "",
     after_send_timeout: 0,
     close_after_send: false,
-    tag_prefix: "#"
+    tag_prefix: "#",
+    pause_when_displaying: false,
+    custom_send_button: false,
+    custom_cancel_button: false,
 };
 
 IriSP.Widgets.CreateAnnotation.prototype.messages = {
@@ -60,6 +63,7 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
         to_time: "to",
         at_time: "at",
         submit: "Submit",
+        cancel: "Cancel",
         add_keywords_: "Add keywords:",
         add_polemic_keywords_: "Add polemic attributes :",
         your_name_: "Your name:",
@@ -81,6 +85,7 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
         to_time: "à",
         at_time: "à",
         submit: "Envoyer",
+        cancel: "Annuler",
         add_keywords_: "Ajouter des mots-clés\u00a0:",
         add_polemic_keywords_: "Ajouter des attributs polémiques\u00a0:",
         your_name_: "Votre nom\u00a0:",
@@ -111,7 +116,8 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '{{#show_creator_field}}{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator empty" value="{{creator_name}}" {{#creator_field_readonly}}readonly{{/creator_field_readonly}}/>{{/show_creator_field}}</h3>'
     + '<textarea class="Ldt-CreateAnnotation-Description empty" placeholder="{{l10n.type_description}}"></textarea>'
     + '<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>'
-    + '<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{l10n.submit}}" />'
+    + '<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{#custom_send_button}}{{custom_send_button}}{{/custom_send_button}}{{^custom_send_button}}{{l10n.submit}}{{/custom_send_button}}" />'
+    + '<input type="button" class="Ldt-CreateAnnotation-Cancel" value="{{#custom_cancel_button}}{{custom_cancel_button}}{{/custom_cancel_button}}{{^custom_cancel_button}}{{l10n.cancel}}{{/custom_cancel_button}}" />'
     + '{{#show_mic_record}}<div class="Ldt-CreateAnnotation-RecBlock"><div class="Ldt-CreateAnnotation-RecLabel">Add voice annotation</div>'
     + '    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="220" height="160">'
     + '        <param name="movie" value="{{record_swf}}" />'
@@ -223,6 +229,9 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
             }
         });
     }
+    this.$.find(".Ldt-CreateAnnotation-Cancel").click(function() {
+        _this.player.trigger("CreateAnnotation.hide");
+    });
     this.$.find(".Ldt-CreateAnnotation-Close").click(function() {
         _this.close_after_send
         ? _this.hide()
@@ -270,6 +279,9 @@ IriSP.Widgets.CreateAnnotation.prototype.showScreen = function(_screenName) {
 IriSP.Widgets.CreateAnnotation.prototype.show = function() {
     if (!this.visible){
         this.visible = true;
+        if (this.pause_when_displaying){
+            this.media.pause();
+        }
         this.showScreen('Main');
         this.$.find(".Ldt-CreateAnnotation-Description").val("").css("border-color", "#666666").addClass("empty");
         if (this.show_title_field) {
