@@ -191,7 +191,7 @@ IriSP.Widgets.Quiz.prototype.globalScore = function() {
     // Return 2 variables to know how many right and wrong answers there are
     var values = _.values(this.correct);
     var ok = values.filter( function (s) { return s == 1; }).length;
-    var not_ok = values.length - ok;
+    var not_ok = values.filter( function (s) { return s == 0; }).length;
 	return [ok, not_ok];
 };
 
