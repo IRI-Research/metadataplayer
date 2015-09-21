@@ -348,7 +348,7 @@ IriSP.Widgets.MultipleChoiceQuestion = function(annotation) {
 IriSP.Widgets.MultipleChoiceQuestion.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.MultipleChoiceQuestion.prototype.renderQuizTemplate = function(answer, identifier) {
-	return '<input type="checkbox" class="quiz-question Ldt-Quiz-Question-Check-'+ identifier + '" name="question['+ identifier +']" data-question="'+ identifier +'" value="' + identifier + '" /> ';
+	return '<input type="checkbox" class="quiz-question Ldt-Quiz-Question-Check Ldt-Quiz-Question-Check-'+ identifier + '" name="question['+ identifier +']" data-question="'+ identifier +'" value="' + identifier + '" /> ';
 }
 
 IriSP.Widgets.MultipleChoiceQuestion.prototype.renderTemplate = function(answer, identifier) {
