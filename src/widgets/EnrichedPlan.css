@@ -4,6 +4,16 @@
     cursor: pointer;
 }
 
+.Ldt-EnrichedPlan-SlideItem {
+    max-height: 3000px;
+    transition: max-height .6s;
+}
+
+.Ldt-EnrichedPlan-SlideItem.filtered_out {
+    max-height: 0px;
+    overflow: hidden;
+}
+
 .Ldt-EnrichedPlan-SlideTimecode {
     display: inline-block;
     width: 24px;
@@ -32,9 +42,10 @@
 .Ldt-EnrichedPlan-SlideContent {
     display: inline-block;
     width: calc(100% - 220px);
+    transition: width .4s;
 }
 
-.Ldt-EnrichedPlan-SlideContent.wide {
+.Ldt-EnrichedPlan-SlideThumbnail.filtered_out + .Ldt-EnrichedPlan-SlideContent {
     width: calc(100% - 40px);
 }
 
