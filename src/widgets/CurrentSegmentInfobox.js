@@ -15,10 +15,12 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.defaults = {
     api_method: "PUT",
     api_endpoint_template: "",
     new_tag_button: true,
+    show_headers: false,
 };
 
 IriSP.Widgets.CurrentSegmentInfobox.prototype.template = 
       '<div class="Ldt-CurrentSegmentInfobox">'
+    +     '{{#editable_segments}}<div class="Ldt-CurrentSegmentInfobox-EditButton">{{edit}}</div>{{/editable_segments}}'
     +     '<div class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-Title">{{title}}</div>'
     +     '<div class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-Description">{{description}}</div>' 
     +     '<div class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-Tags">'
@@ -38,16 +40,19 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.template =
 
 IriSP.Widgets.CurrentSegmentInfobox.prototype.editTemplate = 
       '<div class="Ldt-CurrentSegmentInfobox">'
+    +     '{{#headers}}<div class="Ldt-CurrentSegmentInfobox-FieldsHeader">{{fields_header}}</div>{{/headers}}'
     +     '<input type="text" class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-TitleInput Ldt-CurrentSegmentInfobox-Title" value="{{title}}"></input>'   
     +     '<div class="Ldt-CurrentSegmentInfobox-CancelButton">{{cancel}}</div>'
     +     '<div class="Ldt-CurrentSegmentInfobox-SubmitButton">{{submit}}</div>'
     +     '<textarea class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-DescriptionInput Ldt-CurrentSegmentInfobox-Description">{{description}}</textarea>'
     +     '<div class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-Tags">'
+    +         '{{#headers}}<div class="Ldt-CurrentSegmentInfobox-TagsHeader">{{tags_header}}</div>{{/headers}}'
     +     '{{#new_tag_button}}'
     +         '<div class="Ldt-CurrentSegmentInfobox-CreateTagButton">{{new_tag}}</div>'
     +     '{{/new_tag_button}}'
     +     '{{^new_tag_button}}'
     +         '<input class="Ldt-CurrentSegmentInfobox-CreateTagInput" placeholder="{{new_tag}}"></input>'
+    +         '<div class="Ldt-CurrentSegmentInfobox-CreateTagInput-Add">+</div>'
     +     '{{/new_tag_button}}'
     +         '{{#tags.length}}'
     +         '<ul class="Ldt-CurrentSegmentInfobox-Tags-Ul">'
@@ -68,15 +73,21 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.messages = {
     fr : {
         submit : "Soumettre",
         cancel : "Annuler",
+        edit : "Editer",
         new_tag : "Nouveau tag",
         delete_tag : "Supprimer",
+        fields_header : "Contenu du segment courant",
+        tags_header : "Mots-clés du segment courant",
         empty : "Le player vidéo ne lit actuellement aucun segment"
     },
     en: {
         submit : "Submit",
         cancel : "Cancel",
+        edit : "Edit",
         new_tag : "New tag",
         delete_tag : "Delete tag",
+        fields_header : "Current segment content",
+        tags_header : "Current segment tags",
         empty : "The player currently doesn't read any segment"
     }
 }    
@@ -100,9 +111,11 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.draw = function() {
             if (_this.currentSegment.id != _list[0].id){
                 _this.currentSegment = _list[0];
                 _data = {
-                    title: _this.currentSegment.title,
-                    description : _this.currentSegment.description,
-                    tags : _this.currentSegment.getTagTexts()
+                        editable_segments: _this.editable_segments,
+                        edit: _this.l10n.edit,
+                        title: _this.currentSegment.title,
+                        description : _this.currentSegment.description,
+                        tags : _this.currentSegment.getTagTexts()
                 }
                 _this.$.html(Mustache.to_html(_this.template, _data))
                 if(_this.editable_segments&&_this.currentSegment){
@@ -126,6 +139,9 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.enableEditMode = function() {
             tags : this.currentSegment.getTagTexts(),
             submit : this.l10n.submit,
             cancel : this.l10n.cancel,
+            headers : this.show_headers,
+            tags_header : this.custom_tags_header ? this.custom_tags_header : this.l10n.tags_header,
+            fields_header : this.custom_fields_header ? this.custom_fields_header : this.l10n.fields_header,
             new_tag : this.l10n.new_tag,
             delete_tag : this.l10n.delete_tag,
             new_tag_button : this.new_tag_button,
@@ -136,7 +152,8 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.enableEditMode = function() {
         if (this.new_tag_button){
             this.$.find(".Ldt-CurrentSegmentInfobox-CreateTagButton").click(this.functionWrapper("insertTagInput"));            
         } else {
-            this.$.find(".Ldt-CurrentSegmentInfobox-CreateTagInput").keypress(this.functionWrapper("insertTagInputKeypress"));            
+            this.$.find(".Ldt-CurrentSegmentInfobox-CreateTagInput").keypress(this.functionWrapper("insertTagInputKeypress"));
+            this.$.find(".Ldt-CurrentSegmentInfobox-CreateTagInput-Add").click(this.functionWrapper("insertTagInputKeypress"));
         }
         this.$.find(".Ldt-CurrentSegmentInfobox-Tags-Li-DeleteTagButton").click(this.functionWrapper("deleteTagInput"));
         this.$.find(".Ldt-CurrentSegmentInfobox-SubmitButton").click(this.functionWrapper("onSubmit"))
@@ -145,11 +162,13 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.enableEditMode = function() {
 
 IriSP.Widgets.CurrentSegmentInfobox.prototype.disableEditMode = function() {
     if(this.currentSegment){
-        data = {
-            title: this.currentSegment.title,
-            description : this.currentSegment.description,
-            tags : this.currentSegment.getTagTexts()
-        }
+        _data = {
+                editable_segments: this.editable_segments,
+                edit: this.l10n.edit,
+                title: this.currentSegment.title,
+                description : this.currentSegment.description,
+                tags : this.currentSegment.getTagTexts()
+            }
         this.$.toggleClass("editing", false);
         this.$.html(Mustache.to_html(this.template, _data));
         this.$.find(".Ldt-CurrentSegmentInfobox").click(this.functionWrapper("enableEditMode")); 
@@ -170,7 +189,7 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.insertTagInput = function() {
 
 IriSP.Widgets.CurrentSegmentInfobox.prototype.insertTagInputKeypress = function(event) {
     var keycode = (event.keyCode ? event.keyCode : event.which);
-    if(keycode == '13'){
+    if(keycode == '13' || event.type == 'click'){
         if((!this.currentSegment.getTagTexts().length)&&(!this.$.find(".Ldt-CurrentSegmentInfobox-Tags-Ul").length)){
             this.$.find(".Ldt-CurrentSegmentInfobox-Tags").prepend('<ul class="Ldt-CurrentSegmentInfobox-Tags-Ul"></ul>')
         }
@@ -199,9 +218,9 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.onSubmit = function() {
     new_description = this.$.find(".Ldt-CurrentSegmentInfobox-DescriptionInput").val()
     
     var _this = this,
-        _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* Création d'une liste d'annotations contenant une annotation afin de l'envoyer au serveur */
-        _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}),
-        _annotation = new IriSP.Model.Annotation(this.currentSegment.id, _export); /* Création d'une annotation dans cette source avec un ID généré à la volée (param. false) */
+        _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* We create an Annotations List to send to the server */
+        _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}), /* We create a source object using a specific serializer for export */
+        _annotation = new IriSP.Model.Annotation(this.currentSegment.id, _export); /* We create an annotation in the source with a generated ID (param. false) */
     
     _annotation.setAnnotationType(this.currentSegment.getAnnotationType().id);
     _annotation.setMedia(this.currentSegment.getMedia().id);
@@ -209,8 +228,8 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.onSubmit = function() {
     _annotation.setEnd(this.currentSegment.end);
     _annotation.created = this.currentSegment.created;
     _annotation.creator = this.currentSegment.creator;
-    _annotation.title = new_title /* Champ titre */
-    _annotation.description = new_description /* Champ description */
+    _annotation.title = new_title /* Title field */
+    _annotation.description = new_description /* Description field */
     var _tagIds = IriSP._(new_tags_titles).map(function(_title) {
         var _tags = _this.source.getTags(true).searchByTitle(_title, true);
         if (_tags.length) {
@@ -226,8 +245,8 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.onSubmit = function() {
     _annotation.setTags(_tagIds);
     _annotation.project_id = this.project_id;
     
-    _exportedAnnotations.push(_annotation); /* Ajout de l'annotation à la liste à exporter */
-    _export.addList("annotation",_exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */    
+    _exportedAnnotations.push(_annotation); /* We add the annotation in the list to export */
+    _export.addList("annotation",_exportedAnnotations); /* We add the list to the source object */    
     
     _url = Mustache.to_html(this.api_endpoint_template, {annotation_id: this.currentSegment.id});
     
@@ -235,11 +254,11 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.onSubmit = function() {
         url: _url,
         type: this.api_method,
         contentType: 'application/json',
-        data: _export.serialize(), /* L'objet Source est sérialisé */
+        data: _export.serialize(), /* Source is serialized */
         success: function(_data) {
-            _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
-            _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
-            _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
+            _export.getAnnotations().removeElement(_annotation, true); /* We delete the sent annotation to avoid redundancy */
+            _export.deSerialize(_data); /* Data deserialization */
+            _this.source.merge(_export); /* We merge the deserialized data with the current source data */
             _this.segments.forEach(function(_segment){
                 if (_segment.id == _annotation.id){
                     _this.segments.removeElement(_segment)
@@ -248,16 +267,17 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.onSubmit = function() {
             _this.segments.push(_annotation)
             _this.currentSegment = _annotation
             _data = {
-                title: _this.currentSegment.title,
-                description : _this.currentSegment.description,
-                tags : _this.currentSegment.getTagTexts()
-            }
+                    editable_segments: _this.editable_segments,
+                    edit: _this.l10n.edit,
+                    title: _this.currentSegment.title,
+                    description : _this.currentSegment.description,
+                    tags : _this.currentSegment.getTagTexts()
+                }
             _this.$.html(Mustache.to_html(_this.template, _data))
             if(_this.editable_segments&&_this.currentSegment){
                 _this.$.find(".Ldt-CurrentSegmentInfobox").click(_this.functionWrapper("enableEditMode"));             
             }
             _this.$.toggleClass("editing", false);
-            _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
         },
         error: function(_xhr, _error, _thrown) {
             IriSP.log("Error when sending annotation", _thrown);
@@ -277,6 +297,8 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.refresh = function() {
             if (this.currentSegment.id != _list[0].id){
                 this.currentSegment = _list[0];
                 _data = {
+                    editable_segments: this.editable_segments,
+                    edit: this.l10n.edit,
                     title: this.currentSegment.title,
                     description : this.currentSegment.description,
                     tags : this.currentSegment.getTagTexts()

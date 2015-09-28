@@ -44,7 +44,8 @@
 }
 
 .Ldt-CreateAnnotation-Submit,
-.Ldt-CreateAnnotation-Cancel{
+.Ldt-CreateAnnotation-Cancel,
+.Ldt-CreateAnnotation-PreviewSubmit{
     position: absolute;
     bottom: 7px;
     right: 7px;

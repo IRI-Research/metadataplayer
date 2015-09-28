@@ -66,6 +66,11 @@
 	text-indent: 2px;
 }
 
+.Ldt-Markers-RoundButton.Ldt-Markers-PreviewDelete{
+	line-height: 23px;
+	text-indent: 2px;
+}
+
 .Ldt-Markers-Info{
 	height: 125px;
 	width: 90%;
@@ -146,7 +151,7 @@ a.Ldt-Markers-Screen-SubmitDelete:hover, a.Ldt-Markers-Screen-CancelDelete:hover
 	vertical-align: top;
 }
 
-.Ldt-Markers-MarkerSend, .Ldt-Markers-MarkerCancel{
+.Ldt-Markers-MarkerSend, .Ldt-Markers-MarkerPreviewSend, .Ldt-Markers-MarkerCancel{
 	display: inline-block;
     background-color: #d93c71;
     color: #ffffff;
@@ -169,7 +174,7 @@ a.Ldt-Markers-Screen-SubmitDelete:hover, a.Ldt-Markers-Screen-CancelDelete:hover
 	vertical-align: top;
 }
 
-.Ldt-Markers-RoundButton:hover, .Ldt-Markers-MarkerSend:hover, .Ldt-Markers-MarkerCancel:hover{
+.Ldt-Markers-RoundButton:hover, .Ldt-Markers-MarkerSend:hover, .Ldt-Markers-MarkerPreviewSend:hover, .Ldt-Markers-MarkerCancel:hover{
 	background-color: #e15581;
 	border-color: #222222 #e87d9f #f0adc3 #68273c;
 }

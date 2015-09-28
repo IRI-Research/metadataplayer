@@ -51,6 +51,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     annotations_count_header : true,
     show_creation_date : false,
     show_timecode : true,
+    project_id: "",
     /*
      * Only annotation in the current segment will be displayed. Designed to work with the Segments Widget.
      */
@@ -684,7 +685,7 @@ IriSP.Widgets.AnnotationsList.prototype.revertToMainScreen = function(){
 
 IriSP.Widgets.AnnotationsList.prototype.sendDelete = function(id){
     var _this = this,
-        _url = Mustache.to_html(this.api_delete_endpoint, {annotation_id: id})
+        _url = Mustache.to_html(this.api_delete_endpoint, {annotation_id: id, project_id: this.project_id})
     
     IriSP.jQuery.ajax({
         url: _url,
@@ -724,7 +725,17 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
             });
             this.userselect_$.html("<option selected value='false'>"+this.l10n.everyone+"</option>");
             this.usernames.forEach(function(_user){
-                _this.userselect_$.append("<option value='"+_user+"'>"+_user+"</option>");
+                var _users = _this.source.users_data.filter(function(_user_data){
+                    return _user_data.username == _user;
+                }),
+                    _user_data = {};
+                if (_users.length == 0){
+                    _user_data.username = _user;
+                }
+                else{
+                    _user_data = _users[0];
+                }
+                _this.userselect_$.append("<option value='"+_user+"'>"+_this.make_name_string_function(_user_data)+"</option>");
             });
         }
         if (this.keyword_filter){

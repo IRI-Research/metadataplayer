@@ -55,6 +55,7 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     pause_when_displaying: false,
     custom_send_button: false,
     custom_cancel_button: false,
+    preview_mode: false,
 };
 
 IriSP.Widgets.CreateAnnotation.prototype.messages = {
@@ -63,6 +64,7 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
         to_time: "to",
         at_time: "at",
         submit: "Submit",
+        preview_submit: "You cannot submit annotations in preview mode",
         cancel: "Cancel",
         add_keywords_: "Add keywords:",
         add_polemic_keywords_: "Add polemic attributes :",
@@ -85,6 +87,7 @@ IriSP.Widgets.CreateAnnotation.prototype.messages = {
         to_time: "à",
         at_time: "à",
         submit: "Envoyer",
+        preview_submit: "Vous ne pouvez pas envoyer d'annotation en mode aperçu",
         cancel: "Annuler",
         add_keywords_: "Ajouter des mots-clés\u00a0:",
         add_polemic_keywords_: "Ajouter des attributs polémiques\u00a0:",
@@ -116,7 +119,8 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '{{#show_creator_field}}{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator empty" value="{{creator_name}}" {{#creator_field_readonly}}readonly{{/creator_field_readonly}}/>{{/show_creator_field}}</h3>'
     + '<textarea class="Ldt-CreateAnnotation-Description empty" placeholder="{{l10n.type_description}}"></textarea>'
     + '<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>'
-    + '<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{#custom_send_button}}{{custom_send_button}}{{/custom_send_button}}{{^custom_send_button}}{{l10n.submit}}{{/custom_send_button}}" />'
+    + '{{#preview_mode}}<input type="button" class="Ldt-CreateAnnotation-PreviewSubmit" title="{{l10n.preview_submit}}" value="{{#custom_send_button}}{{custom_send_button}}{{/custom_send_button}}{{^custom_send_button}}{{l10n.submit}}{{/custom_send_button}}" />{{/preview_mode}}'
+    + '{{^preview_mode}}<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{#custom_send_button}}{{custom_send_button}}{{/custom_send_button}}{{^custom_send_button}}{{l10n.submit}}{{/custom_send_button}}" />{{/preview_mode}}'
     + '<input type="button" class="Ldt-CreateAnnotation-Cancel" value="{{#custom_cancel_button}}{{custom_cancel_button}}{{/custom_cancel_button}}{{^custom_cancel_button}}{{l10n.cancel}}{{/custom_cancel_button}}" />'
     + '{{#show_mic_record}}<div class="Ldt-CreateAnnotation-RecBlock"><div class="Ldt-CreateAnnotation-RecLabel">Add voice annotation</div>'
     + '    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="220" height="160">'
@@ -234,7 +238,7 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
     });
     this.$.find(".Ldt-CreateAnnotation-Close").click(function() {
         _this.close_after_send
-        ? _this.hide()
+        ? _this.player.trigger("CreateAnnotation.hide")
         : _this.showScreen("Main");
         return false;
     });
@@ -392,9 +396,8 @@ IriSP.Widgets.CreateAnnotation.prototype.onCreatorChange = function() {
     return !!_contents;
 };
 
-/* Fonction effectuant l'envoi des annotations */
 IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
-    /* Si les champs obligatoires sont vides, on annule l'envoi */
+    /* If mandatory fields are empty, we cancel the sending */
     if (!this.onDescriptionChange() || (this.show_title_field && !this.onTitleChange()) || (this.show_creator_field && !this.onCreatorChange())) {
         return false;
     }
@@ -404,26 +407,26 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
     }
     
     var _this = this,
-        _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* Création d'une liste d'annotations contenant une annotation afin de l'envoyer au serveur */
-        _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}), /* Création d'un objet source utilisant un sérialiseur spécifique pour l'export */
-        _annotation = new IriSP.Model.Annotation(false, _export), /* Création d'une annotation dans cette source avec un ID généré à la volée (param. false) */
-        _annotationTypes = this.source.getAnnotationTypes().searchByTitle(this.annotation_type, true), /* Récupération du type d'annotation dans lequel l'annotation doit être ajoutée */
-        _annotationType = (_annotationTypes.length ? _annotationTypes[0] : new IriSP.Model.AnnotationType(false, _export)), /* Si le Type d'Annotation n'existe pas, il est créé à la volée */
-        _url = Mustache.to_html(this.api_endpoint_template, {id: this.source.projectId}); /* Génération de l'URL à laquelle l'annotation doit être envoyée, qui doit inclure l'ID du projet */
+        _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* We create a List to send to the server that will contains the annotation */
+        _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}), /* We create a source object using a specific serializer for export */
+        _annotation = new IriSP.Model.Annotation(false, _export), /* We create an annotation in the source with a generated ID (param. false) */
+        _annotationTypes = this.source.getAnnotationTypes().searchByTitle(this.annotation_type, true), /* We get the AnnotationType in which the annotation will be added */
+        _annotationType = (_annotationTypes.length ? _annotationTypes[0] : new IriSP.Model.AnnotationType(false, _export)), /* If it doesn't already exists, we create it */
+        _url = Mustache.to_html(this.api_endpoint_template, {id: this.source.projectId}); /* We make the url to send the request to, must include project id */
     
-    /* Si nous avons dû générer un ID d'annotationType à la volée... */
+    /* If we created an AnnotationType on the spot ... */
     if (!_annotationTypes.length) {
-        /* Il ne faudra pas envoyer l'ID généré au serveur */
+        /* ... We must not send its id to the server ... */
         _annotationType.dont_send_id = true;
-        /* Il faut inclure le titre dans le type d'annotation */
+        /* ... And we must include its title. */
         _annotationType.title = this.annotation_type;
     }
     
     /*
-     * Nous remplissons les données de l'annotation générée à la volée
-     * ATTENTION: Si nous sommes sur un MASHUP, ces éléments doivent se référer AU MEDIA D'ORIGINE
+     * Will fill the generated annotation object's data
+     * WARNING: If we're on a MASHUP, these datas must refer the ORIGINAL MEDIA
      * */
-    _annotation.setMedia(this.source.currentMedia.id); /* Id du média annoté */
+    _annotation.setMedia(this.source.currentMedia.id); /* Annotated media ID */
     
     if (this.post_at_segment_time){
         var _currentTime = this.media.getCurrentTime() 
@@ -432,28 +435,28 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
             return (_currentTime >= _segment.begin && _currentTime <= _segment.end)
         });
         if (_currentSegments.length == 0){
-            _annotation.setBegin(this.begin); /* Timecode de début du widget */
-            _annotation.setEnd(this.end); /* Timecode de fin du widget */
+            _annotation.setBegin(this.begin); /* Widget starting timecode */
+            _annotation.setEnd(this.end); /* Widget end timecode */
         }
         else {
-            _annotation.setBegin(_currentSegments[0].begin); /* Timecode de début du segment */
-            _annotation.setEnd(_currentSegments[0].end); /* Timecode de fin du segment */
+            _annotation.setBegin(_currentSegments[0].begin); /* Segment starting timecode */
+            _annotation.setEnd(_currentSegments[0].end); /* Segment end timecode */
         }
     }
     else {
-        _annotation.setBegin(this.begin); /*Timecode de début du widget */
-        _annotation.setEnd(this.end); /* Timecode de fin du widget */
+        _annotation.setBegin(this.begin); /* Widget starting timecode */
+        _annotation.setEnd(this.end); /* Widget end timecode */
     }
-    _annotation.setAnnotationType(_annotationType.id); /* Id du type d'annotation */
+    _annotation.setAnnotationType(_annotationType.id); /* Annotation type ID */
     if (this.show_title_field) {
-        /* Champ titre, seulement s'il est visible */
+        /* Title field, only if it's visible */
         _annotation.title = this.$.find(".Ldt-CreateAnnotation-Title").val();
     }if (this.project_id != ""){
-    	/* Champ id projet, seulement si on l'a renseigné dans la config */
+    	/* Project id, only if it's been specifiec in the config */
     	_annotation.project_id = this.project_id;
     }
-    _annotation.created = new Date(); /* Date de création de l'annotation */
-    _annotation.description = this.$.find(".Ldt-CreateAnnotation-Description").val(); /* Champ description */
+    _annotation.created = new Date(); /* Annotation creation date */
+    _annotation.description = this.$.find(".Ldt-CreateAnnotation-Description").val(); /* Description field */
    
     var tagIds = Array.prototype.map.call(
         this.$.find(".Ldt-CreateAnnotation-TagLi.selected"),
@@ -477,7 +480,7 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
         
     })
    
-    _annotation.setTags(IriSP._(tagIds).uniq()); /*Liste des ids de tags */
+    _annotation.setTags(IriSP._(tagIds).uniq()); /* Tag ids list */
     if (this.audio_url) {
         _annotation.audio = {
             src: "mic",
@@ -490,34 +493,34 @@ IriSP.Widgets.CreateAnnotation.prototype.onSubmit = function() {
     } else {
         _annotation.creator = this.creator_name;
     }
-    _exportedAnnotations.push(_annotation); /* Ajout de l'annotation à la liste à exporter */
-    _export.addList("annotation",_exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
+    _exportedAnnotations.push(_annotation); /* We add the annotation in the list to export */
+    _export.addList("annotation",_exportedAnnotations); /* We add the list to the source object */ 
     var _this = this;
-    /* Envoi de l'annotation via AJAX au serveur ! */
+    /* We send the AJAX request to the server ! */
     IriSP.jQuery.ajax({
         url: _url,
         type: this.api_method,
         contentType: 'application/json',
-        data: _export.serialize(), /* L'objet Source est sérialisé */
+        data: _export.serialize(), /* Source is serialized */
         success: function(_data) {
-            _this.showScreen('Saved'); /* Si l'appel a fonctionné, on affiche l'écran "Annotation enregistrée" */
-            if (_this.after_send_timeout) { /* Selon les options de configuration, on revient à l'écran principal ou on ferme le widget, ou rien */
+            _this.showScreen('Saved'); 
+            if (_this.after_send_timeout) { 
                 window.setTimeout(
                     function() {
                         _this.close_after_send
-                        ? _this.hide()
-                        : _this.show();
+                        ? _this.player.trigger("CreateAnnotation.hide")
+                        : _this.player.trigger("CreateAnnotation.show");
                     },
                     _this.after_send_timeout
                 );
             }
-            _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
-            _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
-            _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
+            _export.getAnnotations().removeElement(_annotation, true); /* We delete the sent annotation to avoid redundancy */
+            _export.deSerialize(_data); /* Data deserialization */
+            _this.source.merge(_export); /* We merge the deserialized data with the current source data */
             if (_this.pause_on_write && _this.media.getPaused()) {
                 _this.media.play();
             }
-            _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+            _this.player.trigger("AnnotationsList.refresh"); 
         },
         error: function(_xhr, _error, _thrown) {
             IriSP.log("Error when sending annotation", _thrown);

@@ -31,6 +31,7 @@ IriSP.Widgets.Markers.prototype.defaults = {
     close_after_send: false,
     custom_send_button: false,
     custom_cancel_button: false,
+    preview_mode: false,
 };
 
 IriSP.Widgets.Markers.prototype.template = 
@@ -40,9 +41,10 @@ IriSP.Widgets.Markers.prototype.template =
     + '</div>'
     + '<div class="Ldt-Markers-Inputs">'
     +     '<div class="Ldt-Markers-Screen Ldt-Markers-ScreenMain">'
-    +         '<div class="Ldt-Markers-RoundButton Ldt-Markers-CannotCreate" title="{{l10n.cannot_create}}">+</div>'
+    +         '<div class="Ldt-Markers-RoundButton Ldt-Markers-CannotCreate" title="{{#preview_mode}}{{l10n.preview_mode_submit}}{{/preview_mode}}{{^preview_mode}}{{l10n.cannot_create}}{{/preview_mode}}">+</div>'
     +         '<div class="Ldt-Markers-RoundButton Ldt-Markers-Create">+</div>'
-    +         '<div class="Ldt-Markers-RoundButton Ldt-Markers-Delete">&#10006;</div>'
+    +         '{{^preview_mode}}<div class="Ldt-Markers-RoundButton Ldt-Markers-Delete">&#10006;</div>{{/preview_mode}}'
+    +         '{{#preview_mode}}<div class="Ldt-Markers-RoundButton Ldt-Markers-PreviewDelete" title="{{l10n.preview_mode_delete}}">&#10006;</div>{{/preview_mode}}'
     +         '<div class="Ldt-Markers-Info"></div>'
     +     '</div>'
     +     '<div class="Ldt-Markers-Screen Ldt-Markers-ScreenSending">'  
@@ -86,7 +88,8 @@ IriSP.Widgets.Markers.prototype.infoTemplate =
     '{{#edit}}<div class="Ldt-Markers-MarkerEdit">' + 
         '<textarea class="Ldt-Markers-MarkerTextArea" cols="60" rows="4">{{marker_info}}</textarea>' +
         '<div class="Ldt-Markers-Buttons">' +
-            '<div class="Ldt-Markers-MarkerSend">{{send}}</div>' +
+            '{{^preview_mode}}<div class="Ldt-Markers-MarkerSend">{{send}}</div>{{/preview_mode}}' +
+            '{{#preview_mode}}<div class="Ldt-Markers-MarkerPreviewSend" title="{{preview_mode_text}}">{{send}}</div>{{/preview_mode}}' +
             '<div class="Ldt-Markers-MarkerCancel">{{cancel}}</div>' +
         '</div>' +
     '</div>{{/edit}}'
@@ -96,6 +99,8 @@ IriSP.Widgets.Markers.prototype.messages = {
         send : "Send",
         submit_delete: "Delete",
         cancel : "Cancel",
+        preview_mode_submit: "You cannot submit a marker in preview mode.",
+        preview_mode_delete: "You cannot delete a marker in preview mode",
         wait_while_processing: "Please wait while your annotation is being processed...",
         delete_text: "The selected marker will be deleted. Continue?",
         error_while_contacting: "An error happened while contacting the server. Your annotation has not been saved.",
@@ -108,6 +113,8 @@ IriSP.Widgets.Markers.prototype.messages = {
         send : "Envoyer",
         submit_delete: "Supprimer",
         cancel : "Annuler",
+        preview_mode_submit: "Vous ne pouvez pas créer ou éditer de marqueur en mode aperçu",
+        preview_mode_delete: "Vous ne pouvez pas supprimer de marqueur en mode aperçu",
         wait_while_processing: "Veuillez patienter pendant le traitement de votre annotation...",
         delete_text: "Le marqueur sélectionné sera supprimé. Continuer?",
         error_while_contacting: "Une erreur s'est produite en contactant le serveur. Votre annotation n'a pas été enregistrée.",
@@ -165,17 +172,17 @@ IriSP.Widgets.Markers.prototype.updatePosition = function(_time) {
 
 IriSP.Widgets.Markers.prototype.updateCreateButtonState = function(_time){
     _this = this
-    var can_create = this.markers.every(function(_marker){   
+    var can_create = this.preview_mode? false : this.markers.every(function(_marker){   
         return ((_time < (_marker.begin-_this.markers_gap))||(_time > (_marker.begin+_this.markers_gap)))
     });
     if (can_create){
-        if ((this.$.find(".Ldt-Markers-Create").is(":hidden"))&&(this.$.find(".Ldt-Markers-Delete").is(":hidden"))){
+        if ((this.$.find(".Ldt-Markers-Create").is(":hidden"))&&(this.$.find(".Ldt-Markers-Delete").is(":hidden")||this.$.find(".Ldt-Markers-PreviewDelete").is(":hidden"))){
             this.$.find(".Ldt-Markers-RoundButton").hide();
             this.$.find(".Ldt-Markers-Create").show();
         }
     }
     else {
-        if ((this.$.find(".Ldt-Markers-CannotCreate").is(":hidden"))&&(this.$.find(".Ldt-Markers-Delete").is(":hidden"))){
+        if ((this.$.find(".Ldt-Markers-CannotCreate").is(":hidden"))&&(this.$.find(".Ldt-Markers-Delete").is(":hidden")||this.$.find(".Ldt-Markers-PreviewDelete").is(":hidden"))){
             this.$.find(".Ldt-Markers-RoundButton").hide();
             this.$.find(".Ldt-Markers-CannotCreate").show();
         }
@@ -198,7 +205,7 @@ IriSP.Widgets.Markers.prototype.onDeleteClick = function(){
         this.showScreen("ConfirmDelete");
     }
     else {
-        // Clic sur - sans marqueur sélectionné = retour à l'état initial
+        // Click on "x" without a selected marker: back to initial state
         this.cancelEdit();
     }
 }
@@ -207,6 +214,8 @@ IriSP.Widgets.Markers.prototype.startEdit = function(){
     if (this.selectedMarker){
         _divHtml = Mustache.to_html(this.infoTemplate, {
             edit: true,
+            preview_mode: this.preview_mode,
+            preview_mode_text: this.l10n.preview_mode_submit,
             marker_info: this.selectedMarker.description,
             send: this.custom_send_button? this.custom_send_button : this.l10n.send,
             cancel: this.custom_cancel_button? this.custom_cancel_button :this.l10n.cancel
@@ -216,6 +225,8 @@ IriSP.Widgets.Markers.prototype.startEdit = function(){
         _divHtml = Mustache.to_html(this.infoTemplate, {
             edit: true,
             marker_info: "",
+            preview_mode: this.preview_mode,
+            preview_mode_text: this.l10n.preview_mode_submit,
             send: this.custom_send_button? this.custom_send_button : this.l10n.send,
             cancel: this.custom_cancel_button? this.custom_cancel_button :this.l10n.cancel
         })
@@ -225,22 +236,29 @@ IriSP.Widgets.Markers.prototype.startEdit = function(){
     this.$.find(".Ldt-Markers-MarkerCancel").click(this.functionWrapper("cancelEdit"));
     this.$.find(".Ldt-Markers-MarkerTextArea").bind("change keyup input paste", this.functionWrapper("onDescriptionChange"));
     this.$.find(".Ldt-Markers-RoundButton").hide();
-    this.$.find(".Ldt-Markers-Delete").show();
+    if (this.preview_mode){
+        this.$.find(".Ldt-Markers-PreviewDelete").show(); 
+    }
+    else {
+        this.$.find(".Ldt-Markers-Delete").show();
+    }
     this.editing = true;
 }
 
 IriSP.Widgets.Markers.prototype.cancelEdit = function(){
     if (this.selectedMarker){
-        // Clic sur "cancel" pendant édition d'un marqueur = retour à l'état visualisation
+        // Click on "cancel" while editing a marker: back to visualization state
         _divHtml = Mustache.to_html(this.infoTemplate, {
             edit: false,
             marker_info: this.selectedMarker.description,
         })
         this.$.find(".Ldt-Markers-Info").html(_divHtml);
-        this.$.find(".Ldt-Markers-MarkerDescription").click(this.functionWrapper("startEdit"));
+        if (!this.preview_mode){
+            this.$.find(".Ldt-Markers-MarkerDescription").click(this.functionWrapper("startEdit"));
+        }
     }
     else {
-        // Clic sur "cancel" pendant la création d'un marqueur = retour à l'état initial
+        // Click on "cancel" while editing a marker: back to initial state
         this.hidePlaceholder();
         this.$.find(".Ldt-Markers-Info").html("");
         this.$.find(".Ldt-Markers-RoundButton").hide()
@@ -287,7 +305,12 @@ IriSP.Widgets.Markers.prototype.revertToMainScreen = function(){
         this.cancelEdit();
         if (this.selectedMarker){
             this.$.find(".Ldt-Markers-RoundButton").hide();
-            this.$.find(".Ldt-Markers-Delete").show();
+            if (this.preview_mode){
+                this.$.find(".Ldt-Markers-PreviewDelete").show(); 
+            }
+            else {
+                this.$.find(".Ldt-Markers-Delete").show();
+            }
         }
         else {
             this.$.find(".Ldt-Markers-RoundButton").hide();
@@ -386,9 +409,16 @@ IriSP.Widgets.Markers.prototype.drawMarkers = function(){
                   })
                   
                   _this.$.find(".Ldt-Markers-Info").html(_divHtml);
-                  _this.$.find(".Ldt-Markers-MarkerDescription").click(_this.functionWrapper("startEdit"));
+                  if (!_this.preview_mode){
+                      _this.$.find(".Ldt-Markers-MarkerDescription").click(_this.functionWrapper("startEdit"));
+                  }
                   _this.$.find(".Ldt-Markers-RoundButton").hide();
-                  _this.$.find(".Ldt-Markers-Delete").show();
+                  if (_this.preview_mode){
+                      _this.$.find(".Ldt-Markers-PreviewDelete").show(); 
+                  }
+                  else {
+                      _this.$.find(".Ldt-Markers-Delete").show();
+                  }
 
                }
                else {
@@ -410,85 +440,78 @@ IriSP.Widgets.Markers.prototype.drawMarkers = function(){
 
 IriSP.Widgets.Markers.prototype.onSubmit = function(){
     
-    /* Si les champs obligatoires sont vides, on annule l'envoi */
+    /* If mandatory fields are empty, we cancel the sending */
     if (!this.allow_empty_markers && !this.onDescriptionChange()){
         return false;
     }
     
-    /* On pause la vidéo si elle est encore en train de tourner */
+    /* We pause the video if it's still playing */
     if (!this.media.getPaused()){
         this.media.pause();
     }
     
     var _this = this,
-        _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager); /* Création d'une liste d'annotations contenant une annotation afin de l'envoyer au serveur */        
+        _exportedAnnotations = new IriSP.Model.List(this.player.sourceManager), /* We create a List to send to the server that will contains the annotation */
+        _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}), /* We create a source object using a specific serializer for export */
+        _annotationTypes = this.source.getAnnotationTypes().searchByTitle(this.annotation_type, true), /* We get the AnnotationType in which the annotation will be added */
+        _annotationType = (_annotationTypes.length ? _annotationTypes[0] : new IriSP.Model.AnnotationType(false, _export)); /* If it doesn't already exists, we create it */
     if (this.selectedMarker){
-        var _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]})
-            _annotation = this.selectedMarker,
+        var _annotation = this.selectedMarker,
             _url = Mustache.to_html(this.api_endpoint_template_edit, {annotation_id: this.selectedMarker ? this.selectedMarker.id : ""});
         _annotation.source = _export
-        _annotation.description = this.$.find(".Ldt-Markers-MarkerTextArea").val(), /* Champ description */
-        _annotationTypes = this.source.getAnnotationTypes().searchByTitle(this.annotation_type, true), /* Récupération du type d'annotation dans lequel l'annotation doit être ajoutée */
-        _annotationType = (_annotationTypes.length ? _annotationTypes[0] : new IriSP.Model.AnnotationType(false, _export)); /* Si le Type d'Annotation n'existe pas, il est créé à la volée */
+        _annotation.description = this.$.find(".Ldt-Markers-MarkerTextArea").val(), /* Description field */
     }
     else {
-        var _export = this.player.sourceManager.newLocalSource({serializer: IriSP.serializers[this.api_serializer]}), /* Création d'un objet source utilisant un sérialiseur spécifique pour l'export */
-            _annotation = new IriSP.Model.Annotation(false, _export); /* Création d'une annotation dans cette source avec un ID généré à la volée (param. false) */
-            _annotationTypes = this.source.getAnnotationTypes().searchByTitle(this.annotation_type, true), /* Récupération du type d'annotation dans lequel l'annotation doit être ajoutée */
-            _annotationType = (_annotationTypes.length ? _annotationTypes[0] : new IriSP.Model.AnnotationType(false, _export)), /* Si le Type d'Annotation n'existe pas, il est créé à la volée */
+        var _annotation = new IriSP.Model.Annotation(false, _export),
             _url = Mustache.to_html(this.api_endpoint_template_create);
-        /* Si nous avons dû générer un ID d'annotationType à la volée... */
+        
+        /* If we created an AnnotationType on the spot ... */
         if (!_annotationTypes.length) {
-            /* Il ne faudra pas envoyer l'ID généré au serveur */
+            /* ... We must not send its id to the server ... */
             _annotationType.dont_send_id = true;
-            /* Il faut inclure le titre dans le type d'annotation */
+            /* ... And we must include its title. */
             _annotationType.title = this.annotation_type;
         }
         
-        _annotation.setMedia(this.source.currentMedia.id); /* Id du média annoté */
+        _annotation.setMedia(this.source.currentMedia.id); /* Annotated media ID */
         if (!this.selectedMarker){
             _annotation.setBegin(this.newMarkerCurrentTime);
             _annotation.setEnd(this.newMarkerCurrentTime);
         }
-        _annotation.setAnnotationType(_annotationType.id); /* Id du type d'annotation */
+        _annotation.setAnnotationType(_annotationType.id); /* AnnotationType ID */
         if (this.project_id != ""){
-            /* Champ id projet, seulement si on l'a renseigné dans la config */
+            /* Project id, only if it's been specifiec in the config */
             _annotation.project_id = this.project_id;
         }
-        _annotation.created = new Date(); /* Date de création de l'annotation */
-        _annotation.description = this.$.find(".Ldt-Markers-MarkerTextArea").val(); /* Champ description */
+        _annotation.created = new Date(); /* Creation date */
+        _annotation.description = this.$.find(".Ldt-Markers-MarkerTextArea").val(); /* Description field */
         _annotation.creator = this.creator_name;
     }
     _annotation.project_id = this.project_id;
     
-    /*
-     * Nous remplissons les données de l'annotation générée à la volée
-     * ATTENTION: Si nous sommes sur un MASHUP, ces éléments doivent se référer AU MEDIA D'ORIGINE
-     * */
+    _exportedAnnotations.push(_annotation); /* We add the annotation in the list to export */
+    _export.addList("annotation",_exportedAnnotations); /* We add the list to the source object */ 
     
-    _exportedAnnotations.push(_annotation); /* Ajout de l'annotation à la liste à exporter */
-    _export.addList("annotation",_exportedAnnotations); /* Ajout de la liste à exporter à l'objet Source */
-    
-    /* Envoi de l'annotation via AJAX au serveur ! */
+    /* We send the AJAX request to the server ! */
     IriSP.jQuery.ajax({
         url: _url,
         type: this.selectedMarker ? this.api_method_edit : this.api_method_create,
         contentType: 'application/json',
-        data: _export.serialize(), /* L'objet Source est sérialisé */
+        data: _export.serialize(),
         success: function(_data) {
-            _this.showScreen('Success'); /* Si l'appel a fonctionné, on affiche l'écran "Annotation enregistrée" */
+            _this.showScreen('Success');
             window.setTimeout(_this.functionWrapper("revertToMainScreen"),(_this.after_send_timeout || 5000));
-            _export.getAnnotations().removeElement(_annotation, true); /* Pour éviter les doublons, on supprime l'annotation qui a été envoyée */
-            _export.deSerialize(_data); /* On désérialise les données reçues pour les réinjecter */
+            _export.getAnnotations().removeElement(_annotation, true); /* We delete the sent annotation to avoid redundancy */
+            _export.deSerialize(_data); /* Data deserialization */
             _annotation.id = _data.id;
-            _this.source.merge(_export); /* On récupère les données réimportées dans l'espace global des données */
+            _this.source.merge(_export); /* We merge the deserialized data with the current source data */
             if (_this.pause_on_write && _this.media.getPaused() && _this.play_on_submit) {
                 _this.media.play();
             }
             _this.markers.push(_annotation);
             _this.selectedMarker = _annotation;
             _this.drawMarkers();
-            _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+            _this.player.trigger("AnnotationsList.refresh");
             _this.player.trigger("Markers.refresh");
         },
         error: function(_xhr, _error, _thrown) {
@@ -505,20 +528,20 @@ IriSP.Widgets.Markers.prototype.onSubmit = function(){
 
 IriSP.Widgets.Markers.prototype.sendDelete = function(){
     _this = this;
-    _url = Mustache.to_html(this.api_endpoint_template_delete, {annotation_id: this.selectedMarker ? this.selectedMarker.id : ""});
+    _url = Mustache.to_html(this.api_endpoint_template_delete, {annotation_id: this.selectedMarker ? this.selectedMarker.id : "", project_id: this.selectedMarker.project_id? this.selectedMarker.project_id : this.project_id});
     IriSP.jQuery.ajax({
         url: _url,
         type: this.api_method_delete,
         contentType: 'application/json',
         success: function(_data) {
-            _this.showScreen('DeleteSuccess'); /* Si l'appel a fonctionné, on affiche l'écran "Annotation enregistrée" */
+            _this.showScreen('DeleteSuccess');
             window.setTimeout(_this.functionWrapper("revertToMainScreen"),(_this.after_send_timeout || 5000));
             if (_this.pause_on_write && _this.media.getPaused() && _this.play_on_submit) {
                 _this.media.play();
             }
             _this.markers.removeElement(_this.selectedMarker);
             _this.selectedMarker = false
-            _this.player.trigger("AnnotationsList.refresh"); /* On force le rafraîchissement du widget AnnotationsList */
+            _this.player.trigger("AnnotationsList.refresh");
             _this.player.trigger("Markers.refresh");
         },
         error: function(_xhr, _error, _thrown) {
