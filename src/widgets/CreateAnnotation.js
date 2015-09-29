@@ -132,7 +132,6 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '{{#show_time}}<span class="Ldt-CreateAnnotation-Times"> {{#show_slice}}{{l10n.from_time}} {{/show_slice}}{{^show_slice}}{{l10n.at_time}} {{/show_slice}} <span class="Ldt-CreateAnnotation-Begin">00:00</span>{{/show_time}}'
     + '{{#show_slice}} {{l10n.to_time}} <span class="Ldt-CreateAnnotation-End">{{end}}</span>{{/show_slice}}</span></span>'
     + '{{#show_creator_field}}{{l10n.your_name_}} <input class="Ldt-CreateAnnotation-Creator empty" value="{{creator_name}}" {{#creator_field_readonly}}readonly{{/creator_field_readonly}}/>{{/show_creator_field}}</h3>'
-<<<<<<< HEAD
     + '{{#show_controls}}<div class="Ldt-CreateAnnotation-Controls">'
     +   '<span title="{{l10n.in_tooltip}}" class="Ldt-CreateAnnotation-Control-In">In</span>'
     +   '<span title="{{l10n.out_tooltip}}" class="Ldt-CreateAnnotation-Control-Out">Out</span>'
@@ -141,17 +140,11 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '<textarea class="Ldt-CreateAnnotation-Description Ldt-TraceMe empty" placeholder="{{l10n.type_description}}"></textarea>'
     + '{{#show_creator_field}}<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>{{/show_creator_field}}'
     + '<div class="Ldt-CreateAnnotation-SubmitArea Ldt-TraceMe">'
-    +   '<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{#custom_send_button}}{{custom_send_button}}{{/custom_send_button}}{{^custom_send_button}}{{l10n.submit}}{{/custom_send_button}}" />'
-    +   '<input type="button" class="Ldt-CreateAnnotation-Cancel" value="{{#custom_cancel_button}}{{custom_cancel_button}}{{/custom_cancel_button}}{{^custom_cancel_button}}{{l10n.cancel}}{{/custom_cancel_button}}" />'
-    +   '<div class="Ldt-CreateAnnotation-Begin Ldt-CreateAnnotation-Times">00:00</div>'
-    + '</div>'
-=======
-    + '<textarea class="Ldt-CreateAnnotation-Description empty" placeholder="{{l10n.type_description}}"></textarea>'
-    + '<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>'
     + '{{#preview_mode}}<input type="button" class="Ldt-CreateAnnotation-PreviewSubmit" title="{{l10n.preview_submit}}" value="{{#custom_send_button}}{{custom_send_button}}{{/custom_send_button}}{{^custom_send_button}}{{l10n.submit}}{{/custom_send_button}}" />{{/preview_mode}}'
     + '{{^preview_mode}}<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{#custom_send_button}}{{custom_send_button}}{{/custom_send_button}}{{^custom_send_button}}{{l10n.submit}}{{/custom_send_button}}" />{{/preview_mode}}'
     + '<input type="button" class="Ldt-CreateAnnotation-Cancel" value="{{#custom_cancel_button}}{{custom_cancel_button}}{{/custom_cancel_button}}{{^custom_cancel_button}}{{l10n.cancel}}{{/custom_cancel_button}}" />'
->>>>>>> iri
+    +   '<div class="Ldt-CreateAnnotation-Begin Ldt-CreateAnnotation-Times">00:00</div>'
+    + '</div>'
     + '{{#show_mic_record}}<div class="Ldt-CreateAnnotation-RecBlock"><div class="Ldt-CreateAnnotation-RecLabel">Add voice annotation</div>'
     + '    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="220" height="160">'
     + '        <param name="movie" value="{{record_swf}}" />'
