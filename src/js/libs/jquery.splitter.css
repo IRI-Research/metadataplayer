@@ -7,23 +7,18 @@
 .splitter_panel {
   position: relative;
 }
-.splitter_panel .vsplitter, .splitter_panel .hsplitter {
-    background-color: white;
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-
-    width: 8px;
-}
-.splitter_panel .vsplitter:hover, .splitter_panel .hsplitter:hover {
-    background-color: #ddd;
-    border-left: 2px solid #ccc;
-    border-right: 2px solid #ccc;
-}
 .splitter_panel .vsplitter {
+    background-color: grey;
     cursor: col-resize;
+    z-index:900;
+    width: 7px;
 }
+
 .splitter_panel .hsplitter {
+    background-color: #5F5F5F;
     cursor: row-resize;
+    z-index: 800;
+    height: 7px;
 }
 .splitter_panel .vsplitter.splitter-invisible,
 .splitter_panel .hsplitter.splitter-invisible {
@@ -58,5 +53,5 @@
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: 100;
+  z-index: 1000;
 }

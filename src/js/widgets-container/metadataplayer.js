@@ -81,6 +81,7 @@ Metadataplayer.prototype.loadLibs = function() {
 
 Metadataplayer.prototype.onLibsLoaded = function() {
     ns.log("IriSP.Metadataplayer.prototype.onLibsLoaded");
+
     if (typeof ns.jQuery === "undefined" && typeof window.jQuery !== "undefined") {
         ns.jQuery = window.jQuery;
         if (former$ || formerJQuery) {
@@ -93,6 +94,7 @@ Metadataplayer.prototype.onLibsLoaded = function() {
             _.noConflict();
         }
     }
+    
     ns.loadCss(ns.getLib("cssjQueryUI"));
     ns.loadCss(this.config.css);
 

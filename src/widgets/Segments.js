@@ -108,7 +108,9 @@ IriSP.Widgets.Segments.prototype.do_draw = function (isRedraw) {
             .click(function() {
                 if(_this.use_timerange){
                     if(!_this.media.getTimeRange()){
-                        _this.media.setTimeRange(_annotation.begin, _annotation.end)              
+                        _this.media.setCurrentTime(_annotation.begin);
+                        _this.media.setTimeRange(_annotation.begin, _annotation.end);
+                        _this.media.play();
                         _this.$segments.each(function(){
                             var _segment = IriSP.jQuery(this);
                             _segment.css("background", lowcolor).removeClass("selected");
@@ -124,7 +126,9 @@ IriSP.Widgets.Segments.prototype.do_draw = function (isRedraw) {
                         })
                     }
                     else {
+                        _this.media.setCurrentTime(_annotation.begin);
                         _this.media.setTimeRange(_annotation.begin, _annotation.end);
+                        _this.media.play();
                         _this.$segments.each(function(){
                             var _segment = IriSP.jQuery(this);
                             _segment.css("background", lowcolor).removeClass("selected");

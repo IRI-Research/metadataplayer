@@ -112,6 +112,33 @@ textarea.Ldt-CurrentSegmentInfobox-DescriptionInput.Ldt-CurrentSegmentInfobox-De
 	width: 80px;
 }
 
+.Ldt-CurrentSegmentInfobox-EditButton{
+	float: right;
+	display: inline-block;
+    background-color: #d93c71;
+    color: #ffffff;
+    cursor: pointer;
+    height: 18px;
+    width: 95px;
+    font-size: 14px;
+    border: 1px solid;
+    border-color: #eca3bc #631e34 #36101c #e16e93;
+    cursor: pointer;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 4px;
+    text-align: center;
+	vertical-align: middle;
+	line-height: 18px;
+}
+
+.Ldt-CurrentSegmentInfobox-EditButton:hover, .Ldt-CurrentSegmentInfobox-CreateTagInput-Add:hover{
+	background-color: #e15581;
+	border-color: #222222 #e87d9f #f0adc3 #68273c;
+}
+
 .Ldt-CurrentSegmentInfobox-CreateTagButton:hover, .Ldt-CurrentSegmentInfobox-CancelButton:hover,
 .Ldt-CurrentSegmentInfobox-SubmitButton:hover{
 	background-color: #e15581;
@@ -127,8 +154,37 @@ textarea.Ldt-CurrentSegmentInfobox-DescriptionInput.Ldt-CurrentSegmentInfobox-De
 	color: #e16e93
 }
 
+.Ldt-CurrentSegmentInfobox-FieldsHeader{
+	margin: 5px;
+}
+
+.Ldt-CurrentSegmentInfobox-TagsHeader{
+	margin-top: 10px;
+	margin-left: 5px;
+}
+
 .Ldt-CurrentSegmentInfobox-CreateTagInput{
     border: 2px solid #848484;
     margin: 5px 0;
     padding: 4px;
+}
+
+.Ldt-CurrentSegmentInfobox-CreateTagInput-Add{
+    margin: 5px;
+    padding: 4px;
+	display: inline-block;
+    background-color: #d93c71;
+    color: #ffffff;
+    cursor: pointer;
+    height: 14px;
+    width: 14px;
+    font-size: 14px;
+    font-style: bold;
+    border: 1px solid;
+    border-color: #eca3bc #631e34 #36101c #e16e93;
+    cursor: pointer;
+    padding: 4px;
+    text-align: center;
+	vertical-align: middle;
+	line-height: 14px;
 }
