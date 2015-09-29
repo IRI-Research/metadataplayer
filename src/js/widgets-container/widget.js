@@ -80,8 +80,12 @@ IriSP.Widgets.Widget = function(player, config) {
                 };
                 _this.media = _this.source.getCurrentMedia(_mediaopts);
             }
-
-        _this.draw();
+        if (_this.pre_draw_callback){
+            IriSP.jQuery.when(_this.pre_draw_callback()).done(_this.draw());
+        }
+        else {
+            _this.draw();
+        }
         _this.player.trigger("widget-loaded");
     }
 

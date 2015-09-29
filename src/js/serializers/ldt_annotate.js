@@ -17,8 +17,10 @@ IriSP.serializers.ldt_annotate = {
                 title: _data.title,
                 audio: _data.audio
             },
+            id: _data.id ? _data.id : "", // If annotation is new, id will be undefined
             tags: _data.getTagTexts(),
             media: _data.getMedia().id,
+            project: _data.project_id,
             type_title: _annType.title,
             type: ( typeof _annType.dont_send_id !== "undefined" && _annType.dont_send_id ? "" : _annType.id ),
             meta: {

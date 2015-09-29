@@ -43,21 +43,11 @@
     color: #ff3b77
 }
 
-.Ldt-CreateAnnotation-SubmitArea {
-    display: inline-block;
-    float: right;
-    width: 50px;
-    text-align: center;
-}
-
-.Ldt-CreateAnnotation-SubmitArea .Ldt-CreateAnnotation-Begin {
-    display: none;
-    width: 100%;
-    text-align: center;
-}
-
-.Ldt-CreateAnnotation-Submit {
-    float: left;
+.Ldt-CreateAnnotation-Submit,
+.Ldt-CreateAnnotation-Cancel{
+    position: absolute;
+    bottom: 7px;
+    right: 7px;
     color: #ffffff;
     cursor: pointer;
     background: url('img/submit_annotation.png');
@@ -174,18 +164,4 @@ a.Ldt-CreateAnnotation-Close {
 
 a.Ldt-CreateAnnotation-Close:hover {
     background-position: -17px 0;
-}
-
-.Ldt-CreateAnnotation-Controls {
-    position: absolute;
-    top: 7px;
-    right: 7px;
-}
-
-span[class^='Ldt-CreateAnnotation-Control-'] {
-    background-color: #ddd;
-    padding: 2px;
-    margin: 4px;
-    border-radius: 3px;
-    border: 1px solid #888;
 }
