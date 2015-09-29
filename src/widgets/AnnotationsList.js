@@ -220,20 +220,20 @@ IriSP.Widgets.AnnotationsList.prototype.template =
     +         '</ul>'
     +     '</div>'    
     +     '{{#allow_annotations_deletion}}'
-    +     '<div id="{{id}}" class="Ldt-AnnotationsList-Screen Ldt-AnnotationsList-ScreenDelete">'
+    +     '<div data-annotation="{{id}}" class="Ldt-AnnotationsList-Screen Ldt-AnnotationsList-ScreenDelete">'
     +         '<a title="{{l10n.close_widget}}" class="Ldt-AnnotationsList-Close" href="#"></a>' 
     +         '<ul class="Ldt-AnnotationsList-ul-ToDelete"></ul>'
     +         '{{l10n.annotation_deletion_delete}} <a class="Ldt-AnnotationsList-ConfirmDelete">{{l10n.confirm}}</a> <a class="Ldt-AnnotationsList-CancelDelete">{{l10n.cancel}}</a>'
     +     '</div>'
-    +     '<div id="{{id}}" class="Ldt-AnnotationsList-Screen Ldt-AnnotationsList-ScreenSending">'
+    +     '<div data-annotation="{{id}}" class="Ldt-AnnotationsList-Screen Ldt-AnnotationsList-ScreenSending">'
     +         '<a title="{{l10n.close_widget}}" class="Ldt-AnnotationsList-Close" href="#"></a>'  
     +         '{{l10n.annotation_deletion_sending}}'
     +     '</div>'
-    +     '<div id="{{id}}" class="Ldt-AnnotationsList-Screen Ldt-AnnotationsList-ScreenSuccess">'
+    +     '<div data-annotation="{{id}}" class="Ldt-AnnotationsList-Screen Ldt-AnnotationsList-ScreenSuccess">'
     +         '<a title="{{l10n.close_widget}}" class="Ldt-AnnotationsList-Close" href="#"></a>'  
     +         '{{l10n.annotation_deletion_success}}'
     +     '</div>'
-    +     '<div id="{{id}}" class="Ldt-AnnotationsList-Screen Ldt-AnnotationsList-ScreenError">'
+    +     '<div data.annotation="{{id}}" class="Ldt-AnnotationsList-Screen Ldt-AnnotationsList-ScreenError">'
     +         '<a title="{{l10n.close_widget}}" class="Ldt-AnnotationsList-Close" href="#"></a>'  
     +         '{{l10n.annotation_deletion_error}}'
     +     '</div>'
@@ -903,7 +903,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
 
 IriSP.Widgets.AnnotationsList.prototype.onDeleteClick = function(event){
     
-    ann_id = event.target.id;
+    ann_id = event.target.dataset.annotation;
     delete_preview_$ = this.$.find(".Ldt-AnnotationsList-ul-ToDelete");
     delete_preview_$.html("");
     _list = this.getWidgetAnnotations()
