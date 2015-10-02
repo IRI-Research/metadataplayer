@@ -37,9 +37,9 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     refresh_interval : 0,
     limit_count : 20,
     newest_first : false,
-
+    show_title: true,
     show_audio: true,
-    show_creator: false,
+    show_creator: true,
     show_controls: false,
     show_end_time: true,
     show_publish: false,
@@ -253,7 +253,7 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     + '{{/allow_annotations_deletion}}'
     + '{{#show_timecode}}<div title="{{l10n.set_time}}" class="Ldt-AnnotationsList-Duration"><span class="Ldt-AnnotationsList-Begin Ldt-live-editable Ldt-AnnotationsList-TimeEdit" data-editable_value="{{begin}}" data-editable_id="{{id}}" data-editable_field="begin" data-editable_type="timestamp">{{begin}}</span>{{#show_end_time}} - <span class="Ldt-AnnotationsList-End Ldt-live-editable" data-editable_value="{{end}}" data-editable_id="{{id}}" data-editable_field="end" data-editable_type="timestamp">{{end}}</span>{{/show_end_time}}</div>{{/show_timecode}}'
     + '<h3 class="Ldt-AnnotationsList-Title Ldt-Annotation-Timecode" data-timecode="{{ begin_ms }}" draggable="true">'
-    +   '<span class="Ldt-AnnotationsList-TitleContent Ldt-live-editable" data-editable_value="{{title}}" data-editable_type="multiline" data-editable_id="{{id}}" data-editable_field="title">{{{htitle}}}</span>'
+    + '{{#show_title}}<span class="Ldt-AnnotationsList-TitleContent Ldt-live-editable" data-editable_value="{{title}}" data-editable_type="multiline" data-editable_id="{{id}}" data-editable_field="title">{{{htitle}}}</span>{{/show_title}}'
     + '{{#show_creator}}<span class="Ldt-AnnotationsList-Creator">{{ creator }}</span>{{/show_creator}}'
     + '</h3>'
     + '<p class="Ldt-AnnotationsList-Description Ldt-live-editable" data-editable_type="multiline" data-editable_value="{{description}}" data-editable_id="{{id}}" data-editable_field="description">{{{hdescription}}}</p>'
@@ -538,30 +538,27 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             var _title = "",
                 _description = _annotation.description,
                 _thumbnail = (typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail);
-            
-            // Update : display creator
-            if (_annotation.creator) {
-                var _users = [],
-                    _user = {};
-                if (_this.source.users_data) {
-                    _users = _this.source.users_data.filter(function(_user_data){
-                        return _user_data.username == _annotation.creator;
-                    });
+            if (_this.show_creator){
+                if (_annotation.creator) {
+                    var _users = [],
+                        _user = {},
+                        _creator = "";
+                    if (_this.source.users_data) {
+                        _users = _this.source.users_data.filter(function(_user_data){
+                            return _user_data.username == _annotation.creator;
+                        });
+                    }
+                    if (_users.length == 0){
+                        _user.username = _annotation.creator
+                    }
+                    else{
+                        _user = _users[0]
+                    }
+                    _creator = _this.make_name_string_function(_user);
                 }
-                if (_users.length == 0){
-                    _user.username = _annotation.creator
-                }
-                else{
-                    _user = _users[0]
-                }
-                _title = _this.make_name_string_function(_user);
             }
-            if (_annotation.title) {
-                var tempTitle = _annotation.title;
-                if( tempTitle.substr(0, _title.length + 1) == (_title + ":") ){
-                    _title = "";
-                }
-                _title = _title + ( (_title=="") ? "" : ": ") + _annotation.title;
+            if (_this.show_title && _annotation.title){
+                    var _title = _annotation.title;
             }
             var _bgcolor;
             IriSP._(_this.polemics).each(function(_polemic) {
@@ -585,7 +582,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 media_id : _annotation.getMedia().id,
                 htitle : IriSP.textFieldHtml(_title),
                 title: _title,
-                creator: _annotation.creator ? ' (' + _annotation.creator + ')' : "",
+                creator: _creator,
                 hdescription : IriSP.textFieldHtml(_description),
                 description: _description,
                 begin : _annotation.begin.toString(),

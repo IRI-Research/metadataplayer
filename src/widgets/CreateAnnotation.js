@@ -140,9 +140,9 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     + '<textarea class="Ldt-CreateAnnotation-Description Ldt-TraceMe empty" placeholder="{{l10n.type_description}}"></textarea>'
     + '{{#show_creator_field}}<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>{{/show_creator_field}}'
     + '<div class="Ldt-CreateAnnotation-SubmitArea Ldt-TraceMe">'
-    + '{{#preview_mode}}<input type="button" class="Ldt-CreateAnnotation-PreviewSubmit" title="{{l10n.preview_submit}}" value="{{#custom_send_button}}{{custom_send_button}}{{/custom_send_button}}{{^custom_send_button}}{{l10n.submit}}{{/custom_send_button}}" />{{/preview_mode}}'
-    + '{{^preview_mode}}<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{#custom_send_button}}{{custom_send_button}}{{/custom_send_button}}{{^custom_send_button}}{{l10n.submit}}{{/custom_send_button}}" />{{/preview_mode}}'
-    + '<input type="button" class="Ldt-CreateAnnotation-Cancel" value="{{#custom_cancel_button}}{{custom_cancel_button}}{{/custom_cancel_button}}{{^custom_cancel_button}}{{l10n.cancel}}{{/custom_cancel_button}}" />'
+    +  '{{#preview_mode}}<input type="button" class="Ldt-CreateAnnotation-PreviewSubmit" title="{{l10n.preview_submit}}" value="{{#custom_send_button}}{{custom_send_button}}{{/custom_send_button}}{{^custom_send_button}}{{l10n.submit}}{{/custom_send_button}}" />{{/preview_mode}}'
+    +  '{{^preview_mode}}<input type="submit" class="Ldt-CreateAnnotation-Submit" value="{{#custom_send_button}}{{custom_send_button}}{{/custom_send_button}}{{^custom_send_button}}{{l10n.submit}}{{/custom_send_button}}" />{{/preview_mode}}'
+    +   '<input type="button" class="Ldt-CreateAnnotation-Cancel" value="{{#custom_cancel_button}}{{custom_cancel_button}}{{/custom_cancel_button}}{{^custom_cancel_button}}{{l10n.cancel}}{{/custom_cancel_button}}" />'
     +   '<div class="Ldt-CreateAnnotation-Begin Ldt-CreateAnnotation-Times">00:00</div>'
     + '</div>'
     + '{{#show_mic_record}}<div class="Ldt-CreateAnnotation-RecBlock"><div class="Ldt-CreateAnnotation-RecLabel">Add voice annotation</div>'
@@ -235,7 +235,7 @@ IriSP.Widgets.CreateAnnotation.prototype.draw = function() {
                 show_arrow: this.show_arrow,
                 annotation_type: this.slice_annotation_type,
                 onBoundsChanged: function(_from, _to) {
-                    this.setBeginEnd(_from, _to);
+                    _this.setBeginEnd(_from, _to);
                 }
             },
             "slice"
@@ -380,13 +380,13 @@ IriSP.Widgets.CreateAnnotation.prototype.toggle = function() {
             this.hide();
         } else {
             var t = _this.media.getCurrentTime() || 0;
-            _this.setBeginEnd(t, t);
-            if (_this.slice_widget) {
-                _this.slice_widget.setBounds(_this.begin, _this.end);
+            this.setBeginEnd(t, t);
+            if (this.slice_widget) {
+                this.slice_widget.setBounds(this.begin, this.end);
             }
             this.show();
             // Set focus on textarea
-            _this.$.find(".Ldt-CreateAnnotation-Description").focus();
+            this.$.find(".Ldt-CreateAnnotation-Description").focus();
         }
     }
 };
