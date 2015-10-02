@@ -762,6 +762,19 @@ var Annotation = Model.Annotation = function(_id, _source) {
 
 extendPrototype(Annotation, BaseElement);
 
+/* Set begin and end in one go, to avoid undesired side-effects in
+ * setBegin/setEnd interaction */
+Annotation.prototype.setBeginEnd = function(_beginMs, _endMs) {
+    _beginMs = Math.max(0,_beginMs);
+    _endMs = Math.max(0,_endMs);
+    if (_endMs < _beginMs)
+        _endMs = _beginMs;
+    this.begin.setMilliseconds(_beginMs);
+    this.end.setMilliseconds(_endMs);
+    this.trigger("change-begin");
+    this.trigger("change-end");
+};
+
 Annotation.prototype.setBegin = function(_beginMs) {
     this.begin.setMilliseconds(Math.max(0,_beginMs));
     this.trigger("change-begin");

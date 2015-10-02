@@ -10,26 +10,19 @@ IriSP.Widgets.PopcornPlayer.prototype.defaults = {
 };
 
 IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
-
-    
     if (typeof this.video === "undefined") {
         this.video = this.media.video;
     }
-    
+
     if (this.url_transform) {
         this.video = this.url_transform(this.video);
     }
-    
+
     if (/^(https?:\/\/)?(www\.)?vimeo\.com/.test(this.video)) {
-        
         /* VIMEO */
-        
         var _popcorn = Popcorn.vimeo(this.container, this.video);
-        
     } else if (/^(https?:\/\/)?(www\.)?youtube\.com/.test(this.video)) {
-        
         /* YOUTUBE */
-       
         var _urlparts = this.video.split(/[?&]/),
             _params = {};
         for (var i = 1; i < _urlparts.length; i++) {
@@ -42,13 +35,11 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
             _params.autoplay = 1;
         }
         _url = _urlparts[0] + '?' + IriSP.jQuery.param(_params);
-        
+
         var _popcorn = Popcorn.youtube(this.container, _url);
-        
+
     } else {
-        
         /* DEFAULT HTML5 */
-        
         var _tmpId = IriSP._.uniqueId("popcorn"),
             _videoEl = IriSP.jQuery('<video>');
         _videoEl.attr({
@@ -74,33 +65,32 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
             _popcorn.autoplay(true);
         }
     }
-    
+
     var _media = this.media;
-    
+
     // Binding functions to Popcorn
-    
+
     _media.on("setcurrenttime", function(_milliseconds) {
         _popcorn.currentTime(_milliseconds / 1000);
     });
-    
+
     _media.on("setvolume", function(_vol) {
         _popcorn.volume(_vol);
         _media.volume = _vol;
     });
-    
+
     _media.on("setmuted", function(_muted) {
         _popcorn.muted(_muted);
         _media.muted = _muted;
     });
-    
+
     _media.on("setplay", function() {
         _popcorn.play();
     });
-    
+
     _media.on("setpause", function() {
         _popcorn.pause();
     });
-    
     _media.on("settimerange", function(_timeRange){
         _media.timeRange = _timeRange;
         try {
@@ -110,43 +100,41 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
         } catch (err) {
         }
     })
-    
     _media.on("resettimerange", function(){
         _media.timeRange = false;
     })
-    
     // Binding Popcorn events to media
-    
+
     function getVolume() {
         _media.muted = _popcorn.muted();
         _media.volume = _popcorn.volume();
     }
-    
+
     _popcorn.on("loadedmetadata", function() {
         getVolume();
         _media.trigger("loadedmetadata");
         _media.trigger("volumechange");
     });
-    
+
     _popcorn.on("timeupdate", function() {
         _media.trigger("timeupdate", new IriSP.Model.Time(1000*_popcorn.currentTime()));
     });
-    
+
     _popcorn.on("volumechange", function() {
         getVolume();
         _media.trigger("volumechange");
     });
-    
+
     _popcorn.on("play", function() {
         _media.trigger("play");
     });
-    
+
     _popcorn.on("pause", function() {
         _media.trigger("pause");
     });
-    
+
     _popcorn.on("seeked", function() {
         _media.trigger("seeked");
     });
-    
+
 };

@@ -179,6 +179,9 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
     this.onMdpEvent("Annotation.maximize","maximize");
     this.onMdpEvent("Annotation.getBounds","sendBounds");
     this.$.find(".Ldt-Annotation-MaxMinButton").click(this.functionWrapper("toggleSize"));
+    this.$.on("resize", function () { _this.width = _this.$.parent().width();
+                                      _this.$.css({ width: _this.width });
+                                    });
     this.getWidgetAnnotations().forEach(function(_a) {
         _a.on("enter", function() {
             drawAnnotation(_a);
@@ -194,7 +197,8 @@ IriSP.Widgets.Annotation.prototype.draw = function() {
 	    	image: currentAnnotation.thumbnail,
 	    	uri: (typeof currentAnnotation.url !== "undefined" 
 	            ? currentAnnotation.url
-	            : (document.location.href.replace(/#.*$/,'') + '#id='  + currentAnnotation.id))
+	            : (document.location.href.replace(/#.*$/,'') + '#id='  + currentAnnotation.id)),
+            text: '[' + currentAnnotation.begin.toString() + '] ' + currentAnnotation.title
 	    };
     });
 };

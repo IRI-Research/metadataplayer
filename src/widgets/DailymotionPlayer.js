@@ -9,96 +9,142 @@ IriSP.Widgets.DailymotionPlayer.prototype.defaults = {
 };
 
 IriSP.Widgets.DailymotionPlayer.prototype.draw = function() {
-    
+
     if (typeof this.video === "undefined") {
         this.video = this.media.video;
     }
 
     this.height = this.height || Math.floor(this.width / this.aspect_ratio);
-    
-    var _media = this.media,
-        _this = this,
-        _pauseState = true;
-    
-    /* Dailymotion utilise un système de fonctions référencées dans
-     * des variables globales pour la gestion des événements.
-     */
-    
-    window.onDailymotionPlayerReady = function() {
 
-        var _player = document.getElementById(_this.container);
-        
+    var _media = this.media,
+        videoid = null,
+        _this = this,
+        state = {
+            pause: true,
+            apiready: false,
+            volume: 0,
+            time: 0,
+            duration: 0
+        };
+
+    var m = this.video.match(/www.dailymotion.com\/video\/(.+)/);
+    if (m) {
+        videoid = m[1];
+    }
+
+    var player_url = Mustache.to_html('{{ protocol }}//www.dailymotion.com/embed/video/{{ videoid }}', {
+        protocol: document.location.protocol.search('http') == 0 ? document.location.protocol : 'http:',
+        videoid: videoid
+    });
+    var params = {
+        'api': 'postMessage',
+        'chromeless': 1,
+        'id': 'dm_player',
+        'related': 0,
+        'autoplay': 1
+    };
+
+    _this.$.html(Mustache.to_html('<iframe id="{{ id }}" src="{{ player_url }}?{{ params }}" width="{{ width }}" height="{{ height }}" frameborder="0"></iframe>', {
+        player_url: player_url,
+        params: Object.keys(params).reduce(function(a,k){a.push(k+'='+encodeURIComponent(params[k]));return a;},[]).join('&'),
+        width: this.width,
+        height: this.height,
+        id: params.id
+    }));
+
+    function setup_media_methods () {
+        var dest = _this.$.find("#" + params.id)[0].contentWindow;
+        var execute = function(c, v) {
+            if (v !== undefined)
+                c = c + "=" + v;
+            dest.postMessage(c, "*");
+        };
+
         _media.getCurrentTime = function() {
-            return new IriSP.Model.Time(1000*_player.getCurrentTime());
+            return state.time;
         };
         _media.getVolume = function() {
-            return _player.getVolume() / 100;
+            return state.volume;
         };
         _media.getPaused = function() {
-            return _pauseState;
+            return state.pause;
         };
         _media.getMuted = function() {
-            return _player.isMuted();
+            return state.muted;
         };
         _media.setCurrentTime = function(_milliseconds) {
-            _seekPause = _pauseState;
-            return _player.seekTo(_milliseconds / 1000);
+            execute("seek", _milliseconds / 1000);
         };
         _media.setVolume = function(_vol) {
-            return _player.setVolume(Math.floor(_vol*100));
+            execute("volume", _vol * 100);
         };
         _media.mute = function() {
-            return _player.mute();
+            execute("muted", 1);
         };
         _media.unmute = function() {
-            return _player.unMute();
+            execute("muted", 0);
         };
         _media.play = function() {
-            return _player.playVideo();
+            execute("play");
         };
         _media.pause = function() {
-            return _player.pauseVideo();
+            execute("pause");
         };
-        
-        _player.addEventListener("onStateChange", "onDailymotionStateChange");
-        _player.addEventListener("onVideoProgress", "onDailymotionVideoProgress");
-        
-        _player.cueVideoByUrl(_this.video);
-        
-        _media.trigger("loadedmetadata");
-    };
-    
-    window.onDailymotionStateChange = function(_state) {
-        switch(_state) {
-            case 1:
-                _media.trigger("play");
-                _pauseState = false;
-                break;
-    
-            case 2:
-                _media.trigger("pause");
-                _pauseState = true;
-                break;
-    
-            case 3:
-                _media.trigger("seeked");
-                break;
-        }
-    };
-    
-    window.onDailymotionVideoProgress = function(_progress) {
-        _media.trigger("timeupdate", new IriSP.Model.Time(_progress.mediaTime * 1000));
-    };
-    
-    var params = {
-        "allowScriptAccess" : "always",
-        "wmode": "opaque"
-    };
-    
-    var atts = {
-        id : this.container
     };
 
-    swfobject.embedSWF("http://www.dailymotion.com/swf?chromeless=1&enableApi=1", this.container, this.width, this.height, "8", null, null, params, atts);
-    
+    window.addEventListener("message", function (event) {
+        // Parse event.data (query-string for to object)
+
+        // Duck-checking if event.data is a string
+        if (event.data.split === undefined)
+            return;
+
+        var info = event.data.split("&").map( function(s) { return s.split("="); }).reduce( function(o, v) { o[v[0]] = decodeURIComponent(v[1]); return o; }, {});
+
+        switch (info.event) {
+        case "apiready":
+            state.apiready = true;
+            setup_media_methods();
+            break;
+        //case "canplay":
+        //    break;
+        case "durationchange":
+            if (info.duration.slice(-2) == "sc") {
+                state.duration = 1000 * Number(info.duration.slice(0, -2));
+                _media.setDuration(state.duration);
+            }
+            break;
+        case "ended":
+            state.pause = true;
+            break;
+        case "loadedmetadata":
+            _media.trigger("loadedmetadata");
+            break;
+        case "pause":
+            state.pause = true;
+            _media.trigger("pause");
+            break;
+        case "play":
+            state.pause = false;
+            _media.trigger("play");
+            break;
+            //case "playing":
+            //    break;
+            //case "progress":
+            //  Loading progress
+            //    break;
+        case "seeked":
+            state.time = new IriSP.Model.Time(1000 * Number(info.time));
+            _media.trigger("seeked");            
+            break;
+        case "timeupdate":
+            state.time = new IriSP.Model.Time(1000 * Number(info.time));
+            _media.trigger("timeupdate", state.time);
+            break;
+        case "volumechange":
+            state.muted = (info.muted == "true");
+            state.volume = Number(info.volume) / 100;
+            break;
+        }
+    }, false);
 };

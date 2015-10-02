@@ -8,9 +8,11 @@ IriSP.serializers.ldt_localstorage = {
     serializeAnnotation : function(_data, _source) {
         var _annType = _data.getAnnotationType();
         return {
+            id: _data.id,
             begin: _data.begin.milliseconds,
             end: _data.end.milliseconds,
             content: {
+                data: (_data.content ? _data.content.data || {} : {}),
                 description: _data.description,
                 title: _data.title,
                 audio: _data.audio
@@ -21,7 +23,9 @@ IriSP.serializers.ldt_localstorage = {
             type: ( typeof _annType.dont_send_id !== "undefined" && _annType.dont_send_id ? "" : _annType.id ),
             meta: {
                 created: _data.created,
-                creator: _data.creator
+                creator: _data.creator,
+                modified: _data.modified,
+                contributor: _data.contributor
             }
         };
     },
@@ -31,6 +35,8 @@ IriSP.serializers.ldt_localstorage = {
         _ann.title = _anndata.content.title || "";
         _ann.creator = _anndata.meta.creator || "";
         _ann.created = new Date(_anndata.meta.created);
+        _ann.contributor = _anndata.meta.contributor || "";
+        _ann.modified = new Date(_anndata.meta.modified);
         _ann.setMedia(_anndata.media, _source);
         var _anntype = _source.getElement(_anndata.type);
         if (!_anntype) {
@@ -52,11 +58,13 @@ IriSP.serializers.ldt_localstorage = {
             return _tag.id;
         });
         _ann.setTags(_tagIds);
-        _ann.setBegin(_anndata.begin);
-        _ann.setEnd(_anndata.end);
+        _ann.setBeginEnd(_anndata.begin, _anndata.end);
         if (typeof _anndata.content.audio !== "undefined" && _anndata.content.audio.href) {
             _ann.audio = _anndata.content.audio;
-        }
+        };
+        if (_anndata.content.data) {
+            _ann.content = { data: _anndata.content.data };
+        };
         _source.getAnnotations().push(_ann);
     },
     serialize : function(_source) {

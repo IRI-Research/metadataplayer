@@ -19,15 +19,15 @@ IriSP.Widgets.Slider.prototype.template =
     '<div class="Ldt-Slider"></div><div class="Ldt-Slider-Time">00:00</div>';
 
 IriSP.Widgets.Slider.prototype.draw = function() {
-    
+
     this.renderTemplate();
-    
+
     this.$time = this.$.find(".Ldt-Slider-Time");
-    
+
     this.$slider = this.$.find(".Ldt-Slider");
-    
+
     var _this = this;
-    
+
     this.$slider.slider({
         range: "min",
         value: 0,
@@ -38,22 +38,22 @@ IriSP.Widgets.Slider.prototype.draw = function() {
             _this.player.trigger("Mediafragment.setHashToTime");
         }
     });
-    
+
     this.$handle = this.$slider.find('.ui-slider-handle');
-    
+
     this.onMediaEvent("timeupdate","onTimeupdate");
     this.onMdpEvent("Player.MouseOver","onMouseover");
     this.onMdpEvent("Player.MouseOut","onMouseout");
-    
+
     if (this.minimize_timeout) {
         this.$slider.css(this.calculateSliderCss(this.minimized_height));
         this.$handle.css(this.calculateHandleCss(this.minimized_height));
-        
+
         this.maximized = false;
         this.timeoutId = false;
     }
-    
-    this.$
+
+    this.$slider
         .mouseover(function() {
             _this.$time.show();
             _this.onMouseover();
@@ -128,6 +128,6 @@ IriSP.Widgets.Slider.prototype.calculateHandleCss = function(_size) {
     return {
         height: (2 + _size) + "px",
         width: (2 + _size) + "px",
-        "margin-left": -Math.ceil(2 + _size / 2) + "px" 
+        "margin-left": -Math.ceil(2 + _size / 2) + "px"
     };
 };

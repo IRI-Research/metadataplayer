@@ -30,13 +30,15 @@ IriSP.Widgets.Segments.prototype.annotationTemplate =
     + 'style="top:{{top}}px; height:{{height}}px; left:{{left}}px; width:{{width}}px; background:{{medcolor}}" data-base-color="{{color}}" data-low-color="{{lowcolor}}" data-medium-color="{{medcolor}}"></div>';
 
 
-IriSP.Widgets.Segments.prototype.draw = function() {
-    this.onMediaEvent("timeupdate", "onTimeupdate");
-    this.renderTemplate();
-    
+IriSP.Widgets.Segments.prototype.do_draw = function (isRedraw) {
+    if (this.width != this.$.parent().width()) {
+        // Reset width
+        this.width = this.$.parent().width();
+        this.$.css({ width : this.width + "px" });
+    }
     var _list = this.getWidgetAnnotations().filter(function(_ann) {
-            return _ann.getDuration() > 0;
-        }),
+        return _ann.getDuration() > 0;
+    }),
         _this = this,
         _scale = this.width / this.source.getDuration(),
         list_$ = this.$.find('.Ldt-Segments-List'),
@@ -54,7 +56,11 @@ IriSP.Widgets.Segments.prototype.draw = function() {
         }
         return "#" + res;
     }
-    
+
+    if (isRedraw) {
+        // Remove all previous elements before recreating them. Not very efficient.
+        this.$.find('.Ldt-Segments-Segment').remove();
+    }
     _list.forEach(function(_annotation, _k) {
         var _left = _annotation.begin * _scale,
             _width = ( _annotation.getDuration() ) * _scale,
@@ -139,7 +145,8 @@ IriSP.Widgets.Segments.prototype.draw = function() {
         	uri: (typeof _annotation.url !== "undefined" 
                 ? _annotation.url
                 : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id)),
-            image: _annotation.thumbnail
+            image: _annotation.thumbnail,
+            text: '[' + _annotation.begin.toString() + '] ' + _annotation.title
         });
         _annotation.on("select", function() {
             _this.$segments.each(function() {
@@ -184,9 +191,17 @@ IriSP.Widgets.Segments.prototype.draw = function() {
         background : this.background,
         margin: "1px 0"
     });
-    if (!this.no_tooltip){
-        this.insertSubwidget(
-            this.$.find(".Ldt-Segments-Tooltip"),
+    this.$segments = this.$.find('.Ldt-Segments-Segment');
+};
+
+IriSP.Widgets.Segments.prototype.draw = function() {
+    var widget = this;
+    widget.onMediaEvent("timeupdate", "onTimeupdate");
+    widget.renderTemplate();
+    widget.do_draw();
+    if (!this.no_tooltip) {
+        widget.insertSubwidget(
+            widget.$.find(".Ldt-Segments-Tooltip"),
             {
                 type: "Tooltip",
                 min_x: 0,
@@ -194,18 +209,18 @@ IriSP.Widgets.Segments.prototype.draw = function() {
             },
             "tooltip"
         );
-    }
-    this.$segments = this.$.find('.Ldt-Segments-Segment');
-    this.source.getAnnotations().on("search", function() {
+    };
+    widget.source.getAnnotations().on("search", function() {
         searching = true;
     });
-    this.source.getAnnotations().on("search-cleared", function() {
+    widget.source.getAnnotations().on("search-cleared", function() {
         searching = false;
         _this.$segments.each(function() {
             var _segment = IriSP.jQuery(this);
             _segment.css("background", _segment.attr("data-medium-color")).removeClass("found");
         });
     });
+    this.$.on("resize", function () { widget.do_draw(true); });
 };
 
 IriSP.Widgets.Segments.prototype.onTimeupdate = function(_time) {    

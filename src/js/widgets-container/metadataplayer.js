@@ -44,23 +44,21 @@ Metadataplayer.prototype.loadLibs = function() {
     ns.log("IriSP.Metadataplayer.prototype.loadLibs");
     var $L = $LAB
         .queueScript(ns.getLib("Mustache"));
-    
     formerJQuery = !!window.jQuery;
     former$ = !!window.$;
     formerUnderscore = !!window._;
-    
+
     if (typeof ns.jQuery === "undefined") {
         $L.queueScript(ns.getLib("jQuery"));
     }
-    
+
     if (typeof ns._ === "undefined") {
         $L.queueScript(ns.getLib("underscore"));
     }
-    
+
     if (typeof window.JSON == "undefined") {
         $L.queueScript(ns.getLib("json"));
     }
-    
     $L.queueWait().queueScript(ns.getLib("jQueryUI")).queueWait();
 
     /* widget specific requirements */
@@ -72,9 +70,8 @@ Metadataplayer.prototype.loadLibs = function() {
             }
         }
     }
-    
+
     var _this = this;
-    
     $L.queueWait(function() {
         _this.onLibsLoaded();
     });
@@ -100,7 +97,7 @@ Metadataplayer.prototype.onLibsLoaded = function() {
     
     ns.loadCss(ns.getLib("cssjQueryUI"));
     ns.loadCss(this.config.css);
-    
+
     this.$ = ns.jQuery('#' + this.config.container);
     this.$.css({
         "width": this.config.width,
@@ -109,7 +106,7 @@ Metadataplayer.prototype.onLibsLoaded = function() {
     if (typeof this.config.height !== "undefined") {
         this.$.css("height", this.config.height);
     }
-      
+
     this.widgets = [];
     var _this = this;
     ns._(this.config.widgets).each(function(widgetconf, key) {
@@ -122,9 +119,9 @@ Metadataplayer.prototype.onLibsLoaded = function() {
         });
     });
     this.$.find('.Ldt-Loader').detach();
-    
+
     this.widgetsLoaded = false;
-    
+
     this.on("widget-loaded", function() {
         if (_this.widgetsLoaded) {
             return;
@@ -136,7 +133,44 @@ Metadataplayer.prototype.onLibsLoaded = function() {
             _this.widgetsLoaded = true;
             _this.trigger("widgets-loaded");
         }
-    });   
+    });
+};
+
+Metadataplayer.prototype.loadLocalAnnotations = function(localsourceidentifier) {
+    if (this.localSource === undefined)
+        this.localSource = this.sourceManager.newLocalSource({serializer: IriSP.serializers['ldt_localstorage']});
+    // Load current local annotations
+    if (localsourceidentifier) {
+        // Allow to override localsourceidentifier when necessary (usually at init time)
+        this.localSource.identifier = localsourceidentifier;
+    }
+    this.localSource.deSerialize(window.localStorage[this.localSource.identifier] || "[]");
+    return this.localSource;
+};
+
+Metadataplayer.prototype.saveLocalAnnotations = function() {
+    // Save annotations back to localstorage
+    window.localStorage[this.localSource.identifier] = this.localSource.serialize();
+    // Merge modifications into widget source
+    // this.source.merge(this.localSource);
+};
+
+Metadataplayer.prototype.addLocalAnnotation = function(a) {
+    this.loadLocalAnnotations();
+    this.localSource.getAnnotations().push(a);
+    this.saveLocalAnnotations();
+};
+
+Metadataplayer.prototype.deleteLocalAnnotation = function(ident) {
+    this.localSource.getAnnotations().removeId(ident, true);
+    this.saveLocalAnnotations();
+};
+
+Metadataplayer.prototype.getLocalAnnotation = function (ident) {
+    this.loadLocalAnnotations();
+    // We cannot use .getElement since it fetches
+    // elements from the global Directory
+    return IriSP._.first(IriSP._.filter(this.localSource.getAnnotations(), function (a) { return a.id == ident; }));
 };
 
 Metadataplayer.prototype.loadMetadata = function(_metadataInfo) {
@@ -159,9 +193,9 @@ Metadataplayer.prototype.loadWidget = function(_widgetConfig, _callback) {
         var _divs = this.layoutDivs(_widgetConfig.type);
         _widgetConfig.container = _divs[0];
     }
-    
+
     var _this = this;
-    
+
     if (typeof ns.Widgets[_widgetConfig.type] !== "undefined") {
         ns._.defer(function() {
             _callback(new ns.Widgets[_widgetConfig.type](_this, _widgetConfig));
@@ -206,7 +240,7 @@ Metadataplayer.prototype.layoutDivs = function(_name, _height) {
     if (typeof _height !== "undefined") {
         divHtml.css("height", _height);
     }
-            
+
     this.$.append(divHtml);
     this.$.append(spacerHtml);
 

@@ -11,7 +11,8 @@ IriSP.Widgets.Controller.prototype.defaults = {
     disable_annotate_btn: false,
     disable_search_btn: false,
     disable_ctrl_f: false,
-    always_show_search: false
+    always_show_search: false,
+    enable_quiz_toggle: undefined
 };
 
 IriSP.Widgets.Controller.prototype.template =
@@ -25,13 +26,15 @@ IriSP.Widgets.Controller.prototype.template =
     + '{{/disable_annotate_btn}}'
     + '{{^disable_search_btn}}'
     + '<div class="Ldt-Ctrl-button Ldt-Ctrl-SearchBtn Ldt-TraceMe" title="{{l10n.search}}"></div>'
-    + '<div class="Ldt-Ctrl-spacer"></div>'
     + '{{/disable_search_btn}}'
     + '<div class="Ldt-Ctrl-Search">'
     + '<input placeholder="{{ l10n.search }}" type="search" class="Ldt-Ctrl-SearchInput Ldt-TraceMe"></input>'
     + '</div>'
+    + '<div class="Ldt-Ctrl-Quiz-Enable Ldt-TraceMe" title="Activer/Désactiver le quiz"></div>'
+    + '<div class="Ldt-Ctrl-Quiz-Create Ldt-TraceMe" ></div>'
     + '</div>'
     + '<div class="Ldt-Ctrl-Right">'
+    + '<div class="Ldt-Ctrl-Fullscreen-Button Ldt-TraceMe" title="Passer le lecteur en plein-écran"></div>'
     + '<div class="Ldt-Ctrl-spacer"></div>'
     + '<div class="Ldt-Ctrl-Time">'
     + '<div class="Ldt-Ctrl-Time-Elapsed" title="{{l10n.elapsed_time}}">00:00</div>'
@@ -59,7 +62,8 @@ IriSP.Widgets.Controller.prototype.messages = {
         elapsed_time: "Elapsed time",
         total_time: "Total duration",
         volume: "Volume",
-        volume_control: "Volume control"
+        volume_control: "Volume control",
+        enable_quiz: "Enable quiz"
     },
     fr: {
         play_pause: "Lecture/Pause",
@@ -73,39 +77,75 @@ IriSP.Widgets.Controller.prototype.messages = {
         elapsed_time: "Temps écoulé",
         total_time: "Durée totale",
         volume: "Niveau sonore",
-        volume_control: "Réglage du niveau sonore"
+        volume_control: "Réglage du niveau sonore",
+        enable_quiz: "Activer le quiz"
     }
 };
 
 IriSP.Widgets.Controller.prototype.draw = function() {
     var _this = this;
     this.renderTemplate();
-    
+
     // Define blocks
     this.$playButton = this.$.find(".Ldt-Ctrl-Play");
     this.$searchBlock = this.$.find(".Ldt-Ctrl-Search");
     this.$searchInput = this.$.find(".Ldt-Ctrl-SearchInput");
     this.$volumeBar = this.$.find(".Ldt-Ctrl-Volume-Bar");
-    
+
     // handle events
     this.onMediaEvent("play","playButtonUpdater");
     this.onMediaEvent("pause","playButtonUpdater");
     this.onMediaEvent("volumechange","volumeUpdater");
     this.onMediaEvent("timeupdate","timeDisplayUpdater");
     this.onMediaEvent("loadedmetadata","volumeUpdater");
-    
+
     // handle clicks
     this.$playButton.click(this.functionWrapper("playHandler"));
-    
+
+    if (this.enable_quiz_toggle !== undefined) {
+        if (this.enable_quiz_toggle) {
+            $(".Ldt-Ctrl-Quiz-Enable").addClass("Ldt-Ctrl-Quiz-Toggle-Active");
+            $(".Ldt-Ctrl-Quiz-Create").addClass("Ldt-Ctrl-Quiz-Toggle-Active");
+            // this.player.trigger("QuizCreator.show");
+            $("#QuizEditContainer").show();
+        }
+        else
+        {
+            $(".Ldt-Ctrl-Quiz-Enable").removeClass("Ldt-Ctrl-Quiz-Toggle-Active");
+            $(".Ldt-Ctrl-Quiz-Create").removeClass("Ldt-Ctrl-Quiz-Toggle-Active");
+            this.player.trigger("QuizCreator.hide");
+            $("#QuizEditContainer").hide();
+        }
+    } else {
+            $(".Ldt-Ctrl-Quiz-Enable").hide();
+    }
+
     this.$.find(".Ldt-Ctrl-Annotate").click(function() {
         _this.player.trigger("CreateAnnotation.toggle");
     });
     this.$.find(".Ldt-Ctrl-SearchBtn").click(this.functionWrapper("searchButtonHandler"));
-    
+
     this.$searchInput.keyup(this.functionWrapper("searchHandler"));
     this.$searchInput.on("search", this.functionWrapper("searchHandler"));
-  
-	var _volctrl = this.$.find(".Ldt-Ctrl-Volume-Control");
+
+    // Fullscreen handling
+    this.$.find(".Ldt-Ctrl-Fullscreen-Button").click(this.functionWrapper("toggleFullscreen"));
+    var fullscreen_event_name = IriSP.getFullscreenEventname();
+    if (fullscreen_event_name) {
+        document.addEventListener(fullscreen_event_name, function() {
+            if (IriSP.isFullscreen() && IriSP.getFullscreenElement() == _this.$[0]) {
+                _this.$.addClass("Ldt-Fullscreen-Element");
+            } else {
+                _this.$.removeClass("Ldt-Fullscreen-Element");
+            }
+        });
+    };
+
+    // Quiz activation
+    this.$.find(".Ldt-Ctrl-Quiz-Enable").click(this.functionWrapper("toggleQuiz"));
+    this.$.find(".Ldt-Ctrl-Quiz-Create").click(this.functionWrapper("createQuiz"));
+
+    var _volctrl = this.$.find(".Ldt-Ctrl-Volume-Control");
     this.$.find('.Ldt-Ctrl-Sound')
         .click(this.functionWrapper("muteHandler"))
         .mouseover(function() {
@@ -119,7 +159,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     }).mouseout(function() {
         _volctrl.hide();
     });
-    
+
     // Handle CTRL-F
     if (!this.disable_ctrl_f) {
         var _fKey = "F".charCodeAt(0),
@@ -135,7 +175,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
             }
         });
     }
-    
+
     // Allow Volume Cursor Dragging
     this.$volumeBar.slider({
         slide: function(event, ui) {
@@ -149,13 +189,13 @@ IriSP.Widgets.Controller.prototype.draw = function() {
     this.$.hover(
         function() {
             _this.player.trigger("Player.MouseOver");
-        }, 
+        },
         function() {
             _this.player.trigger("Player.MouseOut");
         });
-    
+
     this.timeDisplayUpdater(new IriSP.Model.Time(0));
-    
+
     var annotations = this.source.getAnnotations();
     annotations.on("search", function(_text) {
         _this.$searchInput.val(_text);
@@ -177,7 +217,7 @@ IriSP.Widgets.Controller.prototype.draw = function() {
 
 /* Update the elasped time div */
 IriSP.Widgets.Controller.prototype.timeDisplayUpdater = function(_time) {
-  
+
     // we get it at each call because it may change.
     var _totalTime = this.media.duration;
     this.$.find(".Ldt-Ctrl-Time-Elapsed").html(_time.toString());
@@ -203,13 +243,44 @@ IriSP.Widgets.Controller.prototype.playButtonUpdater = function() {
     }
 };
 
+//FullScreen
+IriSP.Widgets.Controller.prototype.toggleFullscreen = function() {
+    if (IriSP.isFullscreen()) {
+        IriSP.setFullScreen(this.$[0], false);
+    } else {
+        IriSP.setFullScreen(this.$[0], true);
+    }
+};
+
+//Quiz
+IriSP.Widgets.Controller.prototype.createQuiz = function() {
+    this.player.trigger("Quiz.hide");
+    this.media.pause();
+    this.player.trigger("QuizCreator.create");
+};
+
+IriSP.Widgets.Controller.prototype.toggleQuiz = function() {
+    this.enable_quiz_toggle = !this.enable_quiz_toggle;
+    if (this.enable_quiz_toggle) {
+        $(".Ldt-Ctrl-Quiz-Enable").addClass("Ldt-Ctrl-Quiz-Toggle-Active");
+        $(".Ldt-Ctrl-Quiz-Create").addClass("Ldt-Ctrl-Quiz-Toggle-Active");
+        this.player.trigger("Quiz.activate");
+    }
+    else
+    {
+        $(".Ldt-Ctrl-Quiz-Enable").removeClass("Ldt-Ctrl-Quiz-Toggle-Active");
+        $(".Ldt-Ctrl-Quiz-Create").removeClass("Ldt-Ctrl-Quiz-Toggle-Active");
+        this.player.trigger("Quiz.deactivate");
+        this.player.trigger("QuizCreator.hide");
+    }
+};
 
 IriSP.Widgets.Controller.prototype.playHandler = function() {
-    if (this.media.getPaused()) {        
+    if (this.media.getPaused()) {
         this.media.play();
     } else {
         this.media.pause();
-    }  
+    }
 };
 
 IriSP.Widgets.Controller.prototype.muteHandler = function() {
@@ -224,9 +295,9 @@ IriSP.Widgets.Controller.prototype.volumeUpdater = function() {
     }
     var _soundCtl = this.$.find(".Ldt-Ctrl-Sound");
     _soundCtl.removeClass("Ldt-Ctrl-Sound-Mute Ldt-Ctrl-Sound-Half Ldt-Ctrl-Sound-Full");
-    if (_muted) {        
+    if (_muted) {
         _soundCtl.attr("title", this.l10n.unmute)
-            .addClass("Ldt-Ctrl-Sound-Mute");    
+            .addClass("Ldt-Ctrl-Sound-Mute");
     } else {
         _soundCtl.attr("title", this.l10n.mute)
             .addClass(_vol < .5 ? "Ldt-Ctrl-Sound-Half" : "Ldt-Ctrl-Sound-Full" );
@@ -268,7 +339,7 @@ IriSP.Widgets.Controller.prototype.searchHandler = function() {
     }
     var _val = this.$searchInput.val();
     this._positiveMatch = false;
-    
+
     // do nothing if the search field is empty, instead of highlighting everything.
     if (_val !== this.lastSearchValue) {
         if (_val) {
@@ -280,4 +351,3 @@ IriSP.Widgets.Controller.prototype.searchHandler = function() {
     }
     this.lastSearchValue = _val;
 };
-

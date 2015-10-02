@@ -68,6 +68,21 @@ IriSP.Widgets.Trace.prototype.draw = function() {
     
     
     this.tracer.trace("TraceWidgetInit", {});
+
+    // Configure annotation creation/update/delete/publish tracing
+    _this.player.on("Annotation.create", function (a) {
+        _this.tracer.trace("AnnotationCreated", { id: a.id, annotation_begin: a.begin.milliseconds, annotation_end: a.end.milliseconds, annotation_media: a.media.id, content_length: a.title.length, content_words: a.title.split(/\s+/).length });
+    });
+    _this.player.on("Annotation.delete", function (aid) {
+        _this.tracer.trace("AnnotationDeleted", { id: aid });
+    });
+    _this.player.on("Annotation.update", function (a) {
+        _this.tracer.trace("AnnotationUpdated", { id: a.id, annotation_begin: a.begin.milliseconds, annotation_end: a.end.milliseconds, annotation_media: a.media.id, content_length: a.title.length, content_words: a.title.split(/\s+/).length });
+    });
+    _this.player.on("Annotation.publish", function (a) {
+        _this.tracer.trace("AnnotationPublished", { id: a.id, annotation_begin: a.begin.milliseconds, annotation_end: a.end.milliseconds, annotation_media: a.media.id, content_length: a.title.length, content_words: a.title.split(/\s+/).length });
+    });
+
     _this.player.trigger("trace-ready");
     this.mouseLocation = '';
     IriSP.jQuery(".Ldt-Widget").on("mousedown mouseenter mouseleave", ".Ldt-TraceMe", function(_e) {

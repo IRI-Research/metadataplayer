@@ -23,7 +23,7 @@
 }
 
 .Ldt-CreateAnnotation-Main {
-    min-height: 150px;
+    min-height: 50px;
 }
 
 .Ldt-CreateAnnotation-Title, .Ldt-CreateAnnotation-Creator {
@@ -66,10 +66,10 @@
 }
 
 .Ldt-CreateAnnotation-Description {
-    height: 56px;
+    height: 3em;
     padding: 2px;
     resize: none;
-    width: 460px;
+    width: calc(100% - 62px);
     border: 1px solid #666666;
     border-radius: 2px;
 }

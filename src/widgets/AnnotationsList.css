@@ -8,7 +8,6 @@
 .Ldt-AnnotationsListWidget {
     border: none; margin: 0; padding: 0;
     overflow: auto;
-    max-height: 380px;
 }
 .Ldt-AnnotationsListWidget a {
     text-decoration: none;
@@ -56,7 +55,8 @@ li.Ldt-AnnotationsList-li {
     clear: both;
     margin: 2px 0;
     padding: 2px 0;
-    min-height: 60px;
+    min-height: 3em;
+    position: relative;
 }
 .Ldt-AnnotationsList-li.selected {
     background-image: url(img/pinstripe-grey.png);
@@ -66,7 +66,8 @@ li.Ldt-AnnotationsList-li {
     width: 80px;
     height: 50px;
     text-align: center;
-    margin: 2px 0;
+    margin: 10px 2px;
+    box-shadow: #808080 0px 0px 2px;
 }
 .Ldt-AnnotationsList-Thumbnail {
     border: none;
@@ -111,6 +112,10 @@ h3.Ldt-AnnotationsList-Title {
 
 .Ldt-AnnotationsList-Title a {
     color: #0068c4;
+}
+
+.Ldt-AnnotationsList-Creator {
+    color: #aaa;
 }
 
 p.Ldt-AnnotationsList-Description {
@@ -161,6 +166,50 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 .Ldt-AnnotationsList-Play:hover {
     background-position: 0 bottom;
 }
+
+.Ldt-AnnotationsList-EditControls {
+    opacity: 0;
+    position: absolute;
+    bottom: 2px;
+    right: 8px;
+}
+
+.Ldt-AnnotationsList-li:hover .Ldt-AnnotationsList-EditControls {
+    display: inline-block;
+    opacity: .8;
+    transition: opacity 1000ms ease-in-out;
+}
+
+.Ldt-AnnotationsList-EditControls > div {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.Ldt-AnnotationsList-Delete {
+    background: url(img/delete.png);
+}
+
+.Ldt-AnnotationsList-Edit {
+    background: url(img/edit.png);
+}
+
+.Ldt-AnnotationsList-PublishAnnotation {
+    background: url(img/publish_annotation.png);
+}
+
+.published .Ldt-AnnotationsList-PublishAnnotation {
+    background: url(img/published_annotation.png);
+}
+
+.editing {
+    display: none;
+}
+
+.editableInput {
+    width: 80%;
 
 .Ldt-AnnotationsList-ScreenMain{
 	margin: 0px;

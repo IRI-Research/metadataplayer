@@ -21,12 +21,19 @@
 window.tracemanager = (function($) {
      // If there are more than MAX_FAILURE_COUNT synchronisation
      // failures, then disable synchronisation
-     MAX_FAILURE_COUNT = 20;
+    var MAX_FAILURE_COUNT = 20;
 
      // If there are more than MAX_BUFFER_SIZE obsels in the buffer,
      // then "compress" them as a single "ktbsFullBuffer"
-     MAX_BUFFER_SIZE = 500;
+    var  MAX_BUFFER_SIZE = 500;
 
+    var _replacement = {
+         ';': '"',
+         '"': ';',
+         '#': '%23',
+         '&': '%26',
+         '?': '%3F'
+     };
      var BufferedService_prototype = {
          /*
           *  Buffered service for traces
@@ -60,7 +67,7 @@ window.tracemanager = (function($) {
                      // Swap " (very frequent, which will be
                      // serialized into %22) and ; (rather rare), this
                      // saves some bytes
-                     data = data.replace(/[;"#]/g, function(s){ return s == ';' ? '"' : ( s == '"' ? ';' : '%23'); });
+                     data = data.replace(/[;"#?&]/g, function(s){ return _replacement[s]; });
                      // FIXME: check data length (< 2K is safe)
                      var request=$('<img />').error( function() { this.failureCount += 1; })
                          .load( function() { this.failureCount = 0; })

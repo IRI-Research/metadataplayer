@@ -144,7 +144,8 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 	image: _annotation.thumbnail,
                 	uri: (typeof _annotation.url !== "undefined" 
 		                ? _annotation.url
-		                : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id))
+		                : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id)),
+                text: '[' + _annotation.begin.toString() + '] ' + _annotation.title
                 });
             	// test if annotation has several colors.
             	var colAr = [];
