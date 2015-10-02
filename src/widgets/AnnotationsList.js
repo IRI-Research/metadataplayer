@@ -244,8 +244,8 @@ IriSP.Widgets.AnnotationsList.prototype.template =
 IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     '<li class="Ldt-AnnotationsList-li Ldt-Highlighter-Annotation Ldt-TraceMe" data-annotation="{{ id }}" data-begin="{{ begin_ms }}" data-end="{{ end_ms }}" trace-info="annotation-id:{{id}}, media-id:{{media_id}}" style="{{specific_style}}">'
     + '<div data-annotation="{{ id }}" class="Ldt-AnnotationsList-ThumbContainer Ldt-AnnotationsList-Annotation-Screen Ldt-AnnotationsList-Annotation-ScreenMain">'
-    +   '<a href="{{url}}" draggable="true">'
-    +     '<img title="{{ begin }} - {{ title }}" class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
+    +   '<a {{#url}}href="{{url}}"{{/url}} draggable="true">'
+    +     '<img title="{{ begin }} - {{ end }}" class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
     +   '</a>'
     + '</div>'
     + '{{#allow_annotations_deletion}}'
