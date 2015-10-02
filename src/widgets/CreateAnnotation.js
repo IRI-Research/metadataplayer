@@ -379,7 +379,7 @@ IriSP.Widgets.CreateAnnotation.prototype.toggle = function() {
         if (this.visible) {
             this.hide();
         } else {
-            var t = _this.media.getCurrentTime() || 0;
+            var t = this.media.getCurrentTime() || 0;
             this.setBeginEnd(t, t);
             if (this.slice_widget) {
                 this.slice_widget.setBounds(this.begin, this.end);
