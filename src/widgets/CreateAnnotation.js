@@ -64,6 +64,7 @@ IriSP.Widgets.CreateAnnotation.prototype.defaults = {
     pause_when_displaying: false,
     custom_send_button: false,
     custom_cancel_button: false,
+    custom_description_placeholder: false,
     preview_mode: false,
 };
 
@@ -137,7 +138,7 @@ IriSP.Widgets.CreateAnnotation.prototype.template =
     +   '<span title="{{l10n.out_tooltip}}" class="Ldt-CreateAnnotation-Control-Out">Out</span>'
     +   '<span title="{{l10n.play_tooltip}}" class="Ldt-CreateAnnotation-Control-Play">Play</span>'
     + '</div>{{/show_controls}}'
-    + '<textarea class="Ldt-CreateAnnotation-Description Ldt-TraceMe empty" placeholder="{{l10n.type_description}}"></textarea>'
+    + '<textarea class="Ldt-CreateAnnotation-Description Ldt-TraceMe empty" placeholder="{{#custom_description_placeholder}}{{custom_description_placeholder}}{{/custom_description_placeholder}}{{^custom_description_placeholder}}{{l10n.type_description}}{{/custom_description_placeholder}}"></textarea>'
     + '{{#show_creator_field}}<div class="Ldt-CreateAnnotation-Avatar"><img src="{{creator_avatar}}" title="{{creator_name}}"></img></div>{{/show_creator_field}}'
     + '<div class="Ldt-CreateAnnotation-SubmitArea Ldt-TraceMe">'
     +  '{{#preview_mode}}<input type="button" class="Ldt-CreateAnnotation-PreviewSubmit" title="{{l10n.preview_submit}}" value="{{#custom_send_button}}{{custom_send_button}}{{/custom_send_button}}{{^custom_send_button}}{{l10n.submit}}{{/custom_send_button}}" />{{/preview_mode}}'
