@@ -18,6 +18,7 @@ IriSP.Widgets.Segments.prototype.defaults = {
     faded_selected_color: "#baf9b5",
     no_tooltip: false,
     use_timerange: false,
+    scale_to_parent: true
 };
 
 IriSP.Widgets.Segments.prototype.template =
@@ -31,7 +32,7 @@ IriSP.Widgets.Segments.prototype.annotationTemplate =
 
 
 IriSP.Widgets.Segments.prototype.do_draw = function (isRedraw) {
-    if (this.width != this.$.parent().width()) {
+    if (this.width != this.$.parent().width() && this.scale_to_parent) {
         // Reset width
         this.width = this.$.parent().width();
         this.$.css({ width : this.width + "px" });
