@@ -1,0 +1,75 @@
+.Ldt-QuizCreator-Ui {
+	width: 100%;
+	padding: 10px;
+}
+
+.Ldt-QuizCreator-Form {
+	width: 100%;
+}
+
+.Ldt-QuizCreator-Question-Type {
+}
+
+.Ldt-QuizCreator-Question-Area,
+.Ldt-QuizCreator-Resource-Area {
+    width: calc(100% - 20px);
+}
+
+.Ldt-QuizCreator-Questions-Block {
+	width: 100%;
+}
+
+.Ldt-QuizCreator-Questions-Answer {
+	margin-top: 5px;
+	border-top: 1px solid black;
+}
+
+.Ldt-QuizCreator-Questions-Answer div {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.Ldt-QuizCreator-Questions-Answer-Content {
+	width: calc(100% - 80px);
+}
+
+.Ldt-QuizCreator-Questions-Answer-Content input, .Ldt-QuizCreator-Questions-Answer-Content textarea {
+	width: calc(100% - 20px);
+}
+
+.Ldt-QuizCreator-Questions-Answer-Time input {
+	width: 60px;
+}
+
+.Ldt-QuizCreator-Questions-Answer-Delete {
+	width: 15px;
+	height: 15px;
+}
+
+.Ldt-QuizCreator-Remove {
+	width: 15px;
+	height: 15px;
+    margin-left: 8px;
+	cursor: pointer;
+    background: url(img/delete.png);
+}
+
+input.quiz-question-edition {
+    display: none;
+}
+
+input.quiz-question-edition[type='radio'] + label,
+input.quiz-question-edition[type='checkbox'] + label {
+	height: 12px;
+	width: 24px;
+	display: inline-block;
+	background: url(img/min_wrong_toggle.png);
+	cursor: pointer;
+    content: "Mauvaise";
+}
+
+input.quiz-question-edition[type='radio']:checked + label,
+input.quiz-question-edition[type='checkbox']:checked + label {
+	background: url(img/min_right_toggle.png);
+    content: "Bonne";
+}

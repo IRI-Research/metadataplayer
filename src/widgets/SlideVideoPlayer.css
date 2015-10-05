@@ -1,14 +1,8 @@
-/* Empty for now */
-
 .Ldt-SlideVideoPlayer-panel {
+    display: -webkit-flex;
     display: flex;
     width: 50%;
     float: left;
-}
-
-.Ldt-SlideVideoPlayer {
-    min-height: 400px;
-    max-height: 100%;
 }
 
 .Ldt-SlideVideoPlayer {
@@ -18,6 +12,45 @@
     max-height: 100%;
 }
 
+.Ldt-SlideVideoPlayer-pip-main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 1;
+}
+
+.Ldt-SlideVideoPlayer-pip-pip {
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    right: 2px;
+    bottom: 2px;
+    z-index: 3;
+}
+
 .Ldt-SlideVideoPlayer h2 {
     display: none;
+}
+.Ldt-SlideVideoPlayer-pip-menu {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: 10;
+    display: none;
+}
+.Ldt-SlideVideoPlayer-pip-pip:hover .Ldt-SlideVideoPlayer-pip-menu {
+    background-color: #000;
+    opacity: .5;
+    display: inline-block;
+}
+
+.Ldt-SlideVideoPlayer-pip-menu-toggle {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    background-image: url(img/pip_toggle.svg);
 }

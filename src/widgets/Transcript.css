@@ -1,0 +1,9 @@
+.Ldt-Transcript-Annotation {
+    margin-right: .5em;
+}
+.Ldt-Transcript-Annotation:hover {
+    background-color: #bbb;
+}
+.Ldt-Transcript-Annotation.active {
+    background-color: #ddd;
+}

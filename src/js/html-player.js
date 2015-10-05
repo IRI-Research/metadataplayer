@@ -30,7 +30,17 @@ IriSP.htmlPlayer = function(media, jqselector, options) {
             videoEl.append(_srcNode);
         }
     }
-    
+    if (opts.subtitle) {
+        var _trackNode = IriSP.jQuery('<track>');
+        _trackNode.attr({
+            label: "Subtitles",
+            kind: "subtitles",
+            srclang: "fr",
+            src: opts.subtitle,
+            default: ""
+        });
+        videoEl.append(_trackNode);
+    }
     jqselector.html(videoEl);
     
     var mediaEl = videoEl[0];
@@ -129,4 +139,11 @@ IriSP.htmlPlayer = function(media, jqselector, options) {
         media.trigger("seeked");
     });
     
+    videoEl.on("click", function() {
+        if (mediaEl.paused) {
+            media.play();
+        } else {
+            media.pause();
+        };
+    });
 };

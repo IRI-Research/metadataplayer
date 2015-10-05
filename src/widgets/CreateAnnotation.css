@@ -23,7 +23,7 @@
 }
 
 .Ldt-CreateAnnotation-Main {
-    min-height: 150px;
+    min-height: 50px;
 }
 
 .Ldt-CreateAnnotation-Title, .Ldt-CreateAnnotation-Creator {
@@ -48,10 +48,8 @@
 .Ldt-CreateAnnotation-PreviewSubmit{
     position: absolute;
     bottom: 7px;
-    right: 7px;
     color: #ffffff;
     cursor: pointer;
-    background: url('img/submit_annotation.png');
     height: 50px;
     width: 50px;
     padding: 28px 0 0;
@@ -61,15 +59,27 @@
     cursor: pointer;
 }
 
-.Ldt-CreateAnnotation-Submit:hover {
+
+.Ldt-CreateAnnotation-Cancel{
+    right: 7px;
+    background: url('img/cancel_annotation.png');
+}
+
+.Ldt-CreateAnnotation-Submit{
+	right: 67px; 
+	background: url('img/submit_annotation.png');
+}
+
+.Ldt-CreateAnnotation-Submit:hover,
+.Ldt-CreateAnnotation-Cancel:hover{
     background-position: -50px 0;
 }
 
 .Ldt-CreateAnnotation-Description {
-    height: 56px;
+    height: 3em;
     padding: 2px;
     resize: none;
-    width: 460px;
+    width: calc(100% - 122px);
     border: 1px solid #666666;
     border-radius: 2px;
 }
@@ -105,6 +115,8 @@
 
 .Ldt-CreateAnnotation-TagList, .Ldt-CreateAnnotation-PolemicList {
     list-style: none;
+    width: calc(100% - 122px);
+    padding-left: 0px;
 }
 
 li.Ldt-CreateAnnotation-TagLi {

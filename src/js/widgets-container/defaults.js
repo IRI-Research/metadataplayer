@@ -23,8 +23,8 @@ IriSP.libFiles = {
         backboneRelational: "backbone-relational.js",
         paper: "paper.js",
         jqueryMousewheel: "jquery.mousewheel.min.js",
-        splitter: "jquery.splitter.js",
-        cssSplitter: "jquery.splitter.css",
+        splitter: "jquery.touchsplitter.js",
+        cssSplitter: "jquery.touchsplitter.css",
         renkanPublish: "renkan.js",
         processing: "processing-1.3.6.min.js",
         recordMicSwf: "record_mic.swf",
@@ -114,7 +114,7 @@ IriSP.widgetsRequirements = {
 };
 
 IriSP.guiDefaults = {
-    width : 640,            
+    width : 640,
     container : 'LdtPlayer',
     spacer_div_height : 0,
     widgets: []
