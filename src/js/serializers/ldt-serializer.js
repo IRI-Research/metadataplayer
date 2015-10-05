@@ -140,7 +140,7 @@ IriSP.serializers.ldt = {
                 if (typeof _data.content.img !== "undefined" && _data.content.img.src !== "undefined") {
                     _res.thumbnail = _data.content.img.src;
                 }
-                _res.created = IriSP.Model.isoToDate(_data.created);
+                _res.created = IriSP.Model.isoToDate(_data.created ? _data.created : _data.meta["dc:created"]);
                 if (typeof _data.color !== "undefined") {
                     var _c = parseInt(_data.color).toString(16);
                     while (_c.length < 6) {
