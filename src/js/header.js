@@ -9,7 +9,7 @@
                                            |_|            |___/         
 
  *  Copyright 2010-2012 Institut de recherche et d'innovation 
- *	contributor(s) : Karim Hamidou, Samuel Huron, Raphael Velt, Thibaut Cavalie
+ *	contributor(s) : Karim Hamidou, Samuel Huron, Raphael Velt, Thibaut Cavalie, Yves-Marie Haussonne, Nicolas Durand, Olivier Aubert
  *	 
  *	contact@iri.centrepompidou.fr
  *	http://www.iri.centrepompidou.fr 

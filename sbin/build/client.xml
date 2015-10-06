@@ -18,8 +18,8 @@
 
     <target name="concatenate-core">
         <concat encoding="UTF-8" outputencoding="UTF-8" destfile="../../build/metadataplayer-core.js">
-            <filelist dir="../../src/js/" files="header.js" />
-            <!-- core files -->
+            <filelist dir="../../src/js/" files="header.js version.js" />
+        	<!-- core files -->
             <filelist dir="../../src/js" files="init.js utils.js model.js html-player.js" />
             <filterchain>
                 <deletecharacters chars="&#xFEFF;" />
@@ -75,7 +75,7 @@
         </jscomp>
         <concat destfile="../../build/LdtPlayer.min.js"
         append="false">
-            <filelist dir="../../src/js/" files="header.js" />
+            <filelist dir="../../src/js/" files="header.js version.js" />
             <filelist dir="../../build/" files="LdtPlayer.min.raw.js" />
         </concat>
         <delete file="../../build/LdtPlayer.min.raw.js" />
