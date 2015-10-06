@@ -459,7 +459,7 @@ IriSP.Widgets.Markers.prototype.onSubmit = function(){
         var _annotation = this.selectedMarker,
             _url = Mustache.to_html(this.api_endpoint_template_edit, {annotation_id: this.selectedMarker ? this.selectedMarker.id : ""});
         _annotation.source = _export
-        _annotation.description = this.$.find(".Ldt-Markers-MarkerTextArea").val(), /* Description field */
+        _annotation.description = this.$.find(".Ldt-Markers-MarkerTextArea").val(); /* Description field */
     }
     else {
         var _annotation = new IriSP.Model.Annotation(false, _export),
