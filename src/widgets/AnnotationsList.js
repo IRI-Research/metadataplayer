@@ -28,6 +28,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
      */
     ajax_granularity : 600000,
     default_thumbnail : "",
+    custom_external_icon : "",
     /*
      * URL when the annotation is not in the current project, e.g.
      * http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}
@@ -55,7 +56,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     editable: false,
     // Id that will be used as localStorage key
     editable_storage: "",
-
+    widget_max_height: 680,
     always_visible : false,
     start_visible: true,
     show_audio : true,
@@ -71,6 +72,7 @@ IriSP.Widgets.AnnotationsList.prototype.defaults = {
     annotations_count_header : true,
     show_creation_date : false,
     show_timecode : true,
+    show_end_time : true,
     project_id: "",
     /*
      * Only annotation in the current segment will be displayed. Designed to work with the Segments Widget.
@@ -160,6 +162,7 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         confirm_delete_message: "You are about to delete {{ annotation.title }}. Are you sure you want to delete it?",
         confirm_publish_message: "You are about to publish {{ annotation.title }}. Are you sure you want to make it public?",
         tweet_annotation: "Tweet annotation",
+        external_annotation: "This annotation was submitted to another project",
         everyone: "Everyone",
         header: "Annotations for this content",
         segment_filter: "All cuttings",
@@ -185,6 +188,7 @@ IriSP.Widgets.AnnotationsList.prototype.messages = {
         confirm_delete_message: "Vous allez supprimer {{ annotation.title }}. Êtes-vous certain(e) ?",
         confirm_publish_message: "Vous allez publier {{ annotation.title }}. Êtes-vous certain(e) ?",
         tweet_annotation: "Tweeter l'annotation",
+        external_annotation: "Cette annotation a été postée sur un autre projet",
         everyone: "Tous",
         header: "Annotations sur ce contenu",
         segment_filter: "Tous les segments",
@@ -245,7 +249,8 @@ IriSP.Widgets.AnnotationsList.prototype.annotationTemplate =
     '<li class="Ldt-AnnotationsList-li Ldt-Highlighter-Annotation Ldt-TraceMe" data-annotation="{{ id }}" data-begin="{{ begin_ms }}" data-end="{{ end_ms }}" trace-info="annotation-id:{{id}}, media-id:{{media_id}}" style="{{specific_style}}">'
     + '<div data-annotation="{{ id }}" class="Ldt-AnnotationsList-ThumbContainer Ldt-AnnotationsList-Annotation-Screen Ldt-AnnotationsList-Annotation-ScreenMain">'
     +   '<a {{#url}}href="{{url}}"{{/url}} draggable="true">'
-    +     '<img title="{{ begin }} - {{ end }}" class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
+    +     '<img title="{{^external}}{{ begin }} - {{ end }}{{/external}}{{#external}}{{l10n.external_annotation}}{{/external}}" class="Ldt-AnnotationsList-Thumbnail" src="{{thumbnail}}" />'
+    +     '{{#external}}<div title="{{l10n.external_annotation}}" class="Ldt-AnnotationsList-External-Icon"></div>{{/external}}'
     +   '</a>'
     + '</div>'
     + '{{#allow_annotations_deletion}}'
@@ -534,8 +539,9 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     )
                     : document.location.href.replace(/#.*$/,'') + '#id=' + _annotation.id + '&t=' + (_annotation.begin / 1000.0)
                     )
-            );
-            var _title = "",
+                ),
+                _external = _annotation.project != _this.source.projectId ? true : false,
+                _title = "",
                 _description = _annotation.description,
                 _thumbnail = (typeof _annotation.thumbnail !== "undefined" && _annotation.thumbnail ? _annotation.thumbnail : _this.default_thumbnail);
             if (_this.show_creator){
@@ -569,7 +575,7 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
             });
             var _created = false;
             if (_this.show_creation_date) {
-                _created = _annotation.created.toLocaleDateString()+", "+_annotation.created.toLocaleTimeString();
+                _created = _annotation.created.toLocaleDateString()+", "+_annotation.created.toLocaleTimeString().replace(/\u200E/g, '').replace(/^([^\d]*\d{1,2}:\d{1,2}):\d{1,2}([^\d]*)$/, '$1$2');;
             }
             if(this.tags == true){
                 var _tags = _annotation.getTagTexts();
@@ -589,12 +595,15 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                 end : _annotation.end.toString(),
                 created : _created,
                 show_timecode : _this.show_timecode,
+                show_end_time : _this.show_end_time,
+                show_title : _this.show_title && _title,
                 thumbnail : _thumbnail,
                 url : _url,
                 tags : _tags,
                 specific_style : (typeof _bgcolor !== "undefined" ? "background-color: " + _bgcolor : ""),
                 l10n: _this.l10n,
                 editable: _this.editable,
+                external: _external,
                 show_publish: _this.show_publish,
                 show_creator: _this.show_creator,
                 show_twitter: _this.show_twitter,
@@ -1038,6 +1047,10 @@ IriSP.Widgets.AnnotationsList.prototype.draw = function() {
     var _this = this;
     this.list_$ = this.$.find(".Ldt-AnnotationsList-ul");
     this.widget_$ = this.$.find(".Ldt-AnnotationsListWidget");
+    
+    if (this.widget_max_height){
+        this.widget_$.css("max-height", this.widget_max_height)
+    }
     
     if (this.show_filters){
         if (this.user_filter){
