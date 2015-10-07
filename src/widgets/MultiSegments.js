@@ -27,7 +27,7 @@ IriSP.Widgets.MultiSegments.prototype.draw = function() {
     });
     this.source.getAnnotationTypes().forEach(function(_anntype) {
         var segments = _anntype.getAnnotations().filter(function(_ann) {
-            return _ann.getDuration() > 0;
+            return _ann.getDuration() > 0 && _ann.getMedia().id == _this.media.id;
         });
         if (segments.length) {
             

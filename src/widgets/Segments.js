@@ -37,10 +37,10 @@ IriSP.Widgets.Segments.prototype.do_draw = function (isRedraw) {
         this.width = this.$.parent().width();
         this.$.css({ width : this.width + "px" });
     }
-    var _list = this.getWidgetAnnotations().filter(function(_ann) {
-        return _ann.getDuration() > 0;
-    }),
-        _this = this,
+    var _this = this,
+        _list = this.getWidgetAnnotations().filter(function(_ann) {
+            return _ann.getDuration() > 0 && _ann.getMedia().id == _this.media.id;
+        }),
         _scale = this.width / this.source.getDuration(),
         list_$ = this.$.find('.Ldt-Segments-List'),
         lines = [],
