@@ -13,8 +13,12 @@ IriSP.Widgets.AnnotationsController.prototype = new IriSP.Widgets.Widget();
 IriSP.Widgets.AnnotationsController.prototype.defaults = {
     // If true, displaying AnnotationList will hide CreateAnnotation and vice versa.
     display_or_write: false,
+    toggle_widgets: false,
     starts_hidden: false,
     hide_without_segment: false,
+    hide_when_writing: true,
+    starting_widget: false,
+    always_show_widget: false,
     segments_annotation_type: "chap",
 };
 
@@ -48,24 +52,37 @@ IriSP.Widgets.AnnotationsController.prototype.draw = function() {
     this.writeButton_$.click(function(){
         if (!_this.writeButton_$.hasClass("selected")){
             _this.player.trigger("CreateAnnotation.show")
+            if (_this.display_or_write){
+                _this.player.trigger("AnnotationsList.hide");
+            }
         }
         else {
             _this.player.trigger("CreateAnnotation.hide")
-        }
-        if (_this.display_or_write){
-            _this.player.trigger("AnnotationsList.hide");
+            if (_this.toggle_widgets){
+                _this.player.trigger("AnnotationsList.show")
+            }
+            else if (_this.display_or_write){
+                _this.player.trigger("AnnotationsList.hide");
+            }
         }
     });
     this.displayButton_$.click(function(){
         if (!_this.displayButton_$.hasClass("selected")){
             _this.player.trigger("AnnotationsList.show")
+            if (_this.display_or_write){
+                _this.player.trigger("CreateAnnotation.hide");
+            }
         }
         else {
             _this.player.trigger("AnnotationsList.hide")
+            if (_this.toggle_widgets){
+                _this.player.trigger("CreateAnnotation.show")
+            }
+            else if (_this.display_or_write){
+                _this.player.trigger("CreateAnnotation.hide");
+            }
         }
-        if (_this.display_or_write){
-            _this.player.trigger("CreateAnnotation.hide");
-        }
+        
     })
     
     if(this.hide_without_segment){
@@ -79,10 +96,20 @@ IriSP.Widgets.AnnotationsController.prototype.draw = function() {
         this.currentSegment = false
     }
     
+
+    this.createAnnotationEnabled = false;
     this.onMdpEvent("CreateAnnotation.hide", function(){
+        if (_this.hide_when_writing){
+            _this.show()
+        }
+        _this.createAnnotationEnabled = false;
         _this.writeButton_$.toggleClass("selected", false);
     })
     this.onMdpEvent("CreateAnnotation.show", function(){
+        if (_this.hide_when_writing){
+            _this.hide()
+        }
+        _this.createAnnotationEnabled = true;
         _this.writeButton_$.toggleClass("selected", true);
     })
     this.onMdpEvent("AnnotationsList.hide", function(){
@@ -99,6 +126,15 @@ IriSP.Widgets.AnnotationsController.prototype.draw = function() {
     else{
         this.visible = false
         this.show();
+    }
+    
+    if (this.starting_widget && this.visible){
+        if (this.starting_widget == "AnnotationsList"){
+            this.player.trigger("AnnotationsList.show")
+        }
+        else if (this.starting_widget == "CreateAnnotation"){
+            this.player.trigger("CreateAnnotation.show")
+        }
     }
     
 };
@@ -139,22 +175,29 @@ IriSP.Widgets.AnnotationsController.prototype.refresh = function(_timeRange){
             }
         }
         if (!currentSegment && _currentSegments.length == 0){
-            if (this.visible){
-                this.hide();
+            if (this.visible || this.hide_when_writing){
                 this.writeButton_$.toggleClass("selected", false);
                 this.displayButton_$.toggleClass("selected", false);
                 this.player.trigger("CreateAnnotation.hide");
                 this.player.trigger("AnnotationsList.hide");
+                this.hide();
             }
         }
         else {
             if (!this.visible){
-                this.show();
+                if (!this.createAnnotationEnabled){
+                    this.show();
+                }
                 this.writeButton_$.toggleClass("selected", false);
                 this.displayButton_$.toggleClass("selected", false);
-                this.player.trigger("CreateAnnotation.hide");
-                this.player.trigger("AnnotationsList.hide");
+                if (this.starting_widget == "AnnotationsList"){
+                    this.player.trigger("AnnotationsList.show")
+                }
+                if (this.starting_widget == "CreateAnnotation"){
+                    this.player.trigger("CreateAnnotation.show")
+                }
             }
+            
         }
     }
 }
@@ -162,13 +205,13 @@ IriSP.Widgets.AnnotationsController.prototype.refresh = function(_timeRange){
 IriSP.Widgets.AnnotationsController.prototype.hide = function() {
     if (this.visible){
         this.visible = false;
-        this.element_$.hide()
+        this.element_$.hide();
     }
 }
 
 IriSP.Widgets.AnnotationsController.prototype.show = function() {
     if(!this.visible){
         this.visible = true;
-        this.element_$.show()
+        this.element_$.show();
     }
 }
