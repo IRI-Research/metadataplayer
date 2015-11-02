@@ -223,12 +223,13 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
     background: url(img/published_annotation.png);
 }
 
-.editing {
+.Ldt-AnnotationsList .editing {
     display: none;
 }
 
-.editableInput {
+.Ldt-AnnotationsList .editableInput {
     width: 80%;
+}
 
 .Ldt-AnnotationsList-ScreenMain{
 	margin: 0px;
