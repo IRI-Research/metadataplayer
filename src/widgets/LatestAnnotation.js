@@ -23,6 +23,7 @@ IriSP.Widgets.LatestAnnotation.prototype.defaults = {
      * Displays a button that copy currently displayed annotation into CreateAnnotation input field
      */
     copy_and_edit_button: false,
+    hide_annotations_list: false,
     /*
      * Allows clicks on an annotation from Annotations to display the annotation content into this widget
      */
@@ -61,12 +62,12 @@ IriSP.Widgets.LatestAnnotation.prototype.template =
 
 IriSP.Widgets.LatestAnnotation.prototype.annotationTemplate =
     "<div class='Ldt-LatestAnnotation-Box'>"
+    + "{{#copy_and_edit_button}}<div class='Ldt-LatestAnnotation-CopyEditButton'>{{button_text}}</div>{{/copy_and_edit_button}}"
     +     "<div class='Ldt-LatestAnnotation-Element Ldt-LatestAnnotation-CreationDate'>{{{annotation_created}}}</div>" 
     +     "<div class='Ldt-LatestAnnotation-Element Ldt-LatestAnnotation-Title'>{{{annotation_creator}}}{{#annotation_title}}: {{{annotation_title}}}{{/annotation_title}}</div>" 
     +     "<div class='Ldt-LatestAnnotation-Element Ldt-LatestAnnotation-Content'>"
     +         "{{{annotation_content}}}"
     +     "</div>"
-    + "{{#copy_and_edit_button}}<div class='Ldt-LatestAnnotation-CopyEditButton'>{{button_text}}</div>{{/copy_and_edit_button}}"
     + "</div>"
 
 
@@ -276,7 +277,9 @@ IriSP.Widgets.LatestAnnotation.prototype.refresh = function(_timeRange){
 
 IriSP.Widgets.LatestAnnotation.prototype.copy_and_edit = function(){
     this.player.trigger("CreateAnnotation.show");
-    this.player.trigger("AnnotationsList.hide");
+    if (this.hide_annotations_list){
+        this.player.trigger("AnnotationsList.hide");
+    }
     annotationText = $('.Ldt-LatestAnnotation-Content').get(0).innerHTML;
     
     $('.Ldt-CreateAnnotation-Description').removeClass('empty');
