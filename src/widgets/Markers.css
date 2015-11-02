@@ -19,8 +19,7 @@
 
 .Ldt-Markers-Position {
     background: #fc00ff;
-    position: absolute;
-    top: -1px;
+    position: relative;
     left: 0;
     margin-left: -1px;
     width: 2px;
@@ -56,7 +55,8 @@
 	line-height: 20px;
 }
 
-.Ldt-Markers-RoundButton.Ldt-Markers-CannotCreate{
+.Ldt-Markers-RoundButton.Ldt-Markers-CannotCreate,
+.Ldt-Markers-RoundButton.Ldt-Markers-PreviewDelete{
 	background-color: #999999;
 	border-color: #797979 #444444 #222222 #696969;
 }
@@ -72,14 +72,12 @@
 }
 
 .Ldt-Markers-Info{
-	height: 125px;
 	width: 90%;
 	display: inline-block;
 	margin: 0px;
 }
 
 .Ldt-Markers-Screen{
-	height: 125px;
 	margin: 0px;
 }
 
@@ -101,7 +99,10 @@
 }
 
 a.Ldt-Markers-Close {
-    position: absolute; right: 2px;
+    position: relative; 
+    float: right;
+    right: 2px;
+    top: 2px;
     display: inline-block; width: 17px; height: 17px; margin: 4px;
     background: url(img/widget-control.png);
 }
@@ -116,12 +117,12 @@ a.Ldt-Markers-Screen-SubmitDelete:hover, a.Ldt-Markers-Screen-CancelDelete:hover
 }
 
 .Ldt-Markers-MarkerDescription{
-	height: 45%;
 	width: 90%;
 	border: 1px solid #68273c;
 	margin: 10px;
 	padding: 10px;
 	background: #ffffff;
+	overflow: scroll;
 }
 
 .Ldt-Markers-MarkerDescription:hover{
@@ -129,7 +130,6 @@ a.Ldt-Markers-Screen-SubmitDelete:hover, a.Ldt-Markers-Screen-CancelDelete:hover
 }
 
 .Ldt-Markers-MarkerEdit{
-	height: 70%;
 	width: 100%;
 	margin: 10px;
 }
@@ -179,7 +179,8 @@ a.Ldt-Markers-Screen-SubmitDelete:hover, a.Ldt-Markers-Screen-CancelDelete:hover
 	border-color: #222222 #e87d9f #f0adc3 #68273c;
 }
 
-.Ldt-Markers-RoundButton.Ldt-Markers-CannotCreate:hover{	
+.Ldt-Markers-RoundButton.Ldt-Markers-CannotCreate:hover, 
+.Ldt-Markers-RoundButton.Ldt-Markers-PreviewDelete:hover{	
 	background-color: #999999;
 	border-color: #797979 #444444 #222222 #696969;
 }

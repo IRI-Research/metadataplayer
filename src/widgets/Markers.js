@@ -6,6 +6,9 @@ IriSP.Widgets.Markers = function(player, config) {
 IriSP.Widgets.Markers.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Markers.prototype.defaults = {
+    pre_draw_callback: function(){
+        return this.importUsers();
+    },
     annotation_type: "markers",
     line_height: 8,
     background: "#e0e0e0",
@@ -32,12 +35,18 @@ IriSP.Widgets.Markers.prototype.defaults = {
     custom_send_button: false,
     custom_cancel_button: false,
     preview_mode: false,
+    filter_per_user: false,
+    api_users_endpoint: "",
+    make_username_string_function: function(params){
+        return params.username ? params.username : "Anonymous";
+    },
+    hide_if_empty: false,
 };
 
 IriSP.Widgets.Markers.prototype.template = 
     '<div class="Ldt-Markers-Display" style="height:{{line_height}}px;">'
     +     '<div class="Ldt-Markers-List" style="height:{{line_height}}px; position: relative;"></div>'
-    +     '<div class="Ldt-Markers-Position"></div>'
+    +     '<div class="Ldt-Markers-Position" style="height: {{line_height}}px; top: -{{line_height}};"></div>'
     + '</div>'
     + '<div class="Ldt-Markers-Inputs">'
     +     '<div class="Ldt-Markers-Screen Ldt-Markers-ScreenMain">'
@@ -45,6 +54,7 @@ IriSP.Widgets.Markers.prototype.template =
     +         '<div class="Ldt-Markers-RoundButton Ldt-Markers-Create">+</div>'
     +         '{{^preview_mode}}<div class="Ldt-Markers-RoundButton Ldt-Markers-Delete">&#10006;</div>{{/preview_mode}}'
     +         '{{#preview_mode}}<div class="Ldt-Markers-RoundButton Ldt-Markers-PreviewDelete" title="{{l10n.preview_mode_delete}}">&#10006;</div>{{/preview_mode}}'
+    +         '{{#filter_per_user}}{{#preview_mode}}<select class="Ldt-Markers-userFilter-dropdown" id="Ldt-Markers-userFilter"></select>{{/preview_mode}}{{/filter_per_user}}'
     +         '<div class="Ldt-Markers-Info"></div>'
     +     '</div>'
     +     '<div class="Ldt-Markers-Screen Ldt-Markers-ScreenSending">'  
@@ -125,41 +135,100 @@ IriSP.Widgets.Markers.prototype.messages = {
     }
 }
 
+IriSP.Widgets.Markers.prototype.importUsers = function(){
+    if (this.filter_per_user && this.preview_mode){
+        this.usernames = Array();
+        if (!this.source.users_data && this.api_users_endpoint){
+            var _this = this,
+                _list = this.getWidgetAnnotations(),
+                usernames_list_string = "";
+
+            _list.forEach(function(_annotation){
+                if(_this.usernames.indexOf(_annotation.creator) == -1){
+                    _this.usernames.push(_annotation.creator);
+                }
+            });
+            this.usernames.forEach(function(_username){
+                usernames_list_string+=_username+","
+            })
+            usernames_list_string = usernames_list_string.substring(0, usernames_list_string.length - 1);
+            _url = Mustache.to_html(this.api_users_endpoint, {usernames_list_string: encodeURIComponent(usernames_list_string), usernames_list_length: this.usernames.length});
+            return IriSP.jQuery.ajax({
+                async: false,
+                url: _url,
+                type: "GET",
+                success: function(_data) {
+                    _this.source.users_data = _data.objects
+                },
+                error: function(_xhr, _error, _thrown) {
+                    console.log(_xhr)
+                    console.log(_error)
+                    console.log(_thrown)
+                }
+            })
+        }
+    }
+}
+
 IriSP.Widgets.Markers.prototype.draw = function(){
     var _this = this;
-    
     this.renderTemplate();
+    if ((!this.filter_per_user) || (!this.preview_mode) || (this.usernames.length <= 1)){
+        this.$.find(".Ldt-Markers-userFilter-dropdown").hide();
+    }
+    else {
+        this.usernames.forEach(function(_user){
+            var _users = _this.source.users_data.filter(function(_user_data){
+                return _user_data.username == _user;
+            }),
+               _user_data = {};
+            if (_users.length == 0){
+                _user_data.username = _user;
+            }
+            else{
+                _user_data = _users[0];
+            }
+            _this.$.find(".Ldt-Markers-userFilter-dropdown").append("<option value='"+_user+"'>"+_this.make_name_string_function(_user_data)+"</option>")
+        }); 
+        this.$.find(".Ldt-Markers-userFilter-dropdown").change(this.functionWrapper("drawMarkers"))
+        this.$.find(".Ldt-Markers-userFilter-dropdown").change(this.functionWrapper("clearSelectedMarker"))
+        
+    }
     
     this.markers = this.getWidgetAnnotations().filter(function(_ann) {
         return ((_ann.getDuration() == 0) || (_ann.begin == _ann.end));
     });
-    this.drawMarkers();
-    
-    this.$.find(".Ldt-Markers-Create").click(this.functionWrapper("onCreateClick"));
-    this.$.find(".Ldt-Markers-Delete").click(this.functionWrapper("onDeleteClick"));
-    this.$.find(".Ldt-Markers-RoundButton").hide()
-    this.updateCreateButtonState(this.media.getCurrentTime())
-    this.$.find(".Ldt-Markers-Screen-SubmitDelete").click(this.functionWrapper("sendDelete"));
-    this.$.find(".Ldt-Markers-Screen-CancelDelete").click(function(){
-        _this.showScreen("Main");
-        _this.cancelEdit();
-    })
-    this.showScreen("Main");
-    this.$.css({
-        margin: "1px 0",
-        height: this.line_height,
-        background: this.background
-    });
-    
-    this.$.find(".Ldt-Markers-Close").click(this.functionWrapper("revertToMainScreen"));
-    
-    this.onMediaEvent("timeupdate", this.functionWrapper("updatePosition"));
-    this.onMediaEvent("timeupdate", this.functionWrapper("updateCreateButtonState"));
-    this.onMediaEvent("play", this.functionWrapper("clearSelectedMarker"));
-    this.onMdpEvent("Markers.refresh", this.functionWrapper("drawMarkers"));
-   
-    this.newMarkerTimeCode = 0;
-    this.selectedMarker = false;
+    if (this.hide_if_empty && this.markers.length <= 0){
+        this.$.hide();
+    } 
+    else {
+        this.drawMarkers();
+        
+        this.$.find(".Ldt-Markers-Create").click(this.functionWrapper("onCreateClick"));
+        this.$.find(".Ldt-Markers-Delete").click(this.functionWrapper("onDeleteClick"));
+        this.$.find(".Ldt-Markers-RoundButton").hide()
+        this.updateCreateButtonState(this.media.getCurrentTime())
+        this.$.find(".Ldt-Markers-Screen-SubmitDelete").click(this.functionWrapper("sendDelete"));
+        this.$.find(".Ldt-Markers-Screen-CancelDelete").click(function(){
+            _this.showScreen("Main");
+            _this.cancelEdit();
+        })
+        this.showScreen("Main");
+        this.$.css({
+            margin: "1px 0",
+            background: this.background
+        });
+        
+        this.$.find(".Ldt-Markers-Close").click(this.functionWrapper("revertToMainScreen"));
+        
+        this.onMediaEvent("timeupdate", this.functionWrapper("updatePosition"));
+        this.onMediaEvent("timeupdate", this.functionWrapper("updateCreateButtonState"));
+        this.onMediaEvent("play", this.functionWrapper("clearSelectedMarker"));
+        this.onMdpEvent("Markers.refresh", this.functionWrapper("drawMarkers"));
+       
+        this.newMarkerTimeCode = 0;
+        this.selectedMarker = false;
+    }
 }
 
 
@@ -359,11 +428,20 @@ IriSP.Widgets.Markers.prototype.clearSelectedMarker = function(){
 IriSP.Widgets.Markers.prototype.drawMarkers = function(){
     var _this = this,
         _scale = this.width / this.source.getDuration(),
-        list_$ = this.$.find('.Ldt-Markers-List');
+        list_$ = this.$.find('.Ldt-Markers-List'),
+        _displayed_markers = this.markers;
 
     this.$.remove("Ldt-Markers-Marker");
     list_$.html("");
-    this.markers.forEach(function(_marker){
+    
+    if (this.filter_per_user && this.usernames.length > 1){
+        var _username = this.$.find(".Ldt-Markers-userFilter-dropdown")[0].options[this.$.find(".Ldt-Markers-userFilter-dropdown")[0].selectedIndex].value;
+        _displayed_markers = _displayed_markers.filter(function(_marker){
+            return _marker.creator == _username;
+        })
+    }
+    
+    _displayed_markers.forEach(function(_marker){
         var _left = _marker.begin * _scale -1,
             _data = {
                 left: _left,
