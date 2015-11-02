@@ -20,6 +20,7 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.defaults = {
 
 IriSP.Widgets.CurrentSegmentInfobox.prototype.template = 
       '<div class="Ldt-CurrentSegmentInfobox">'
+    +   '<div class="Ldt-CurrentSegmentInfobox-SelectedSegment">'
     +     '{{#editable_segments}}<div class="Ldt-CurrentSegmentInfobox-EditButton">{{edit}}</div>{{/editable_segments}}'
     +     '<div class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-Title">{{title}}</div>'
     +     '<div class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-Description">{{description}}</div>' 
@@ -36,14 +37,14 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.template =
     +         '</ul>'
     +         '{{/tags.length}}'
     +     '</div>'
+    +   '</div>'
     + '</div>'
 
 IriSP.Widgets.CurrentSegmentInfobox.prototype.editTemplate = 
       '<div class="Ldt-CurrentSegmentInfobox">'
+    +   '<div class="Ldt-CurrentSegmentInfobox-SelectedSegment">'
     +     '{{#headers}}<div class="Ldt-CurrentSegmentInfobox-FieldsHeader">{{fields_header}}</div>{{/headers}}'
     +     '<input type="text" class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-TitleInput Ldt-CurrentSegmentInfobox-Title" value="{{title}}"></input>'   
-    +     '<div class="Ldt-CurrentSegmentInfobox-CancelButton">{{cancel}}</div>'
-    +     '<div class="Ldt-CurrentSegmentInfobox-SubmitButton">{{submit}}</div>'
     +     '<textarea class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-DescriptionInput Ldt-CurrentSegmentInfobox-Description">{{description}}</textarea>'
     +     '<div class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-Tags">'
     +         '{{#headers}}<div class="Ldt-CurrentSegmentInfobox-TagsHeader">{{tags_header}}</div>{{/headers}}'
@@ -54,7 +55,6 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.editTemplate =
     +         '<input class="Ldt-CurrentSegmentInfobox-CreateTagInput" placeholder="{{new_tag}}"></input>'
     +         '<div class="Ldt-CurrentSegmentInfobox-CreateTagInput-Add">+</div>'
     +     '{{/new_tag_button}}'
-    +         '{{#tags.length}}'
     +         '<ul class="Ldt-CurrentSegmentInfobox-Tags-Ul">'
     +         '{{#tags}}'
     +             '{{#.}}'
@@ -65,8 +65,10 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.editTemplate =
     +             '{{/.}}'
     +         '{{/tags}}'
     +         '</ul>'
-    +         '{{/tags.length}}'
     +     '</div>'
+    +     '<div class="Ldt-CurrentSegmentInfobox-SubmitButton">{{submit}}</div>'
+    +     '<div class="Ldt-CurrentSegmentInfobox-CancelButton">{{cancel}}</div>'
+    +   '</div>'
     + '</div>'
     
 IriSP.Widgets.CurrentSegmentInfobox.prototype.messages = {
@@ -76,8 +78,8 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.messages = {
         edit : "Editer",
         new_tag : "Nouveau tag",
         delete_tag : "Supprimer",
-        fields_header : "Contenu du segment courant",
-        tags_header : "Mots-clés du segment courant",
+        fields_header : "Commentaire associé à ce segment",
+        tags_header : "Mots-clés associés à ce segment",
         empty : "Le player vidéo ne lit actuellement aucun segment"
     },
     en: {
