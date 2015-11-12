@@ -186,6 +186,14 @@ IriSP.Widgets.Segments.prototype.do_draw = function (isRedraw) {
         });
     });
     
+    this.onMediaEvent("resettimerange", function(){
+        
+        _this.$segments.each(function(){
+            var _segment = IriSP.jQuery(this);
+            _segment.removeClass("selected");
+        })
+    });
+    
     this.$.css({
         width : this.width + "px",
         height : (((1 - this.overlap) * lines.length + this.overlap) * this.line_height) + "px",

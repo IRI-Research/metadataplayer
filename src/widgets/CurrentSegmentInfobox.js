@@ -16,6 +16,8 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.defaults = {
     api_endpoint_template: "",
     new_tag_button: true,
     show_headers: false,
+    custom_edit_text: false,
+    empty_description_placeholder: false,
 };
 
 IriSP.Widgets.CurrentSegmentInfobox.prototype.template = 
@@ -24,6 +26,7 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.template =
     +     '{{#editable_segments}}<div class="Ldt-CurrentSegmentInfobox-EditButton">{{edit}}</div>{{/editable_segments}}'
     +     '<div class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-Title">{{title}}</div>'
     +     '<div class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-Description">{{description}}</div>' 
+    +     '{{^description}}{{^tags.length}}{{#description_placeholder}}<div class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-Description-placeholder">{{description_placeholder}}</div>{{/description_placeholder}}{{/tags.length}}{{/description}}' 
     +     '<div class="Ldt-CurrentSegmentInfobox-Element Ldt-CurrentSegmentInfobox-Tags">'
     +         '{{#tags.length}}'
     +         '<ul class="Ldt-CurrentSegmentInfobox-Tags-Ul">'
@@ -114,9 +117,10 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.draw = function() {
                 _this.currentSegment = _list[0];
                 _data = {
                         editable_segments: _this.editable_segments,
-                        edit: _this.l10n.edit,
+                        edit: _this.custom_edit_text ? _this.custom_edit_text : _this.l10n.edit,
                         title: _this.currentSegment.title,
                         description : _this.currentSegment.description,
+                        description_placeholder : _this.empty_description_placeholder,
                         tags : _this.currentSegment.getTagTexts()
                 }
                 _this.$.html(Mustache.to_html(_this.template, _data))
@@ -166,9 +170,10 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.disableEditMode = function() {
     if(this.currentSegment){
         _data = {
                 editable_segments: this.editable_segments,
-                edit: this.l10n.edit,
+                edit: this.custom_edit_text ? this.custom_edit_text : this.l10n.edit,
                 title: this.currentSegment.title,
                 description : this.currentSegment.description,
+                description_placeholder : this.empty_description_placeholder,
                 tags : this.currentSegment.getTagTexts()
             }
         this.$.toggleClass("editing", false);
@@ -270,9 +275,10 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.onSubmit = function() {
             _this.currentSegment = _annotation
             _data = {
                     editable_segments: _this.editable_segments,
-                    edit: _this.l10n.edit,
+                    edit: _this.custom_edit_text ? _this.custom_edit_text : _this.l10n.edit,
                     title: _this.currentSegment.title,
                     description : _this.currentSegment.description,
+                    description_placeholder : _this.empty_description_placeholder,
                     tags : _this.currentSegment.getTagTexts()
                 }
             _this.$.html(Mustache.to_html(_this.template, _data))
@@ -300,9 +306,10 @@ IriSP.Widgets.CurrentSegmentInfobox.prototype.refresh = function() {
                 this.currentSegment = _list[0];
                 _data = {
                     editable_segments: this.editable_segments,
-                    edit: this.l10n.edit,
+                    edit: this.custom_edit_text ? this.custom_edit_text : this.l10n.edit,
                     title: this.currentSegment.title,
                     description : this.currentSegment.description,
+                    description_placeholder : this.empty_description_placeholder,
                     tags : this.currentSegment.getTagTexts()
                 }
                 this.$.html(Mustache.to_html(this.template, _data))
