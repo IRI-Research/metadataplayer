@@ -657,6 +657,12 @@ IriSP.Widgets.AnnotationsList.prototype.refresh = function(_forceRedraw) {
                     _annotation.trigger("unselect");
                 })
                 .click(function() {
+                    if (_this.filter_by_segments && _this.media.getTimeRange()){
+                        _ann_time = ( _annotation.begin + _annotation.end ) / 2;
+                        if ((_ann_time <= _this.media.getTimeRange()[0]) || (_ann_time >= _this.media.getTimeRange()[1])){
+                            _this.media.resetTimeRange()
+                        }
+                    }
                     _annotation.trigger("click");
                 })
                 .appendTo(_this.list_$);
