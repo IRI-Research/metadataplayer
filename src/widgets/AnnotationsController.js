@@ -20,13 +20,15 @@ IriSP.Widgets.AnnotationsController.prototype.defaults = {
     starting_widget: false,
     always_show_widget: false,
     segments_annotation_type: "chap",
+    custom_write_text: false,
+    custom_display_text: false,
 };
 
 IriSP.Widgets.AnnotationsController.prototype.template = 
     "<div class='Ldt-AnnotationsController'>"
     + "<div class='Ldt-AnnotationsController-ButtonsContainer'>"
-    + "    <div class='Ldt-AnnotationsController-Button Ldt-AnnotationsController-ShowCreateAnnotationButton'>{{l10n.write}}</div>"
-    + "    <div class='Ldt-AnnotationsController-Button Ldt-AnnotationsController-ShowAnnotationsListButton'>{{l10n.display}}</div>"
+    + "    <div class='Ldt-AnnotationsController-Button Ldt-AnnotationsController-ShowCreateAnnotationButton'>{{#custom_write_text}}{{/custom_write_text}}{{custom_write_text}}{{^custom_write_text}}{{l10n.write}}{{/custom_write_text}}</div>"
+    + "    <div class='Ldt-AnnotationsController-Button Ldt-AnnotationsController-ShowAnnotationsListButton'>{{#custom_display_text}}{{/custom_display_text}}{{custom_display_text}}{{^custom_display_text}}{{l10n.display}}{{/custom_display_text}}</div>"
     + "</div>"
     + "</div>"
 
