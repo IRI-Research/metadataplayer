@@ -24,37 +24,74 @@ IriSP.Widgets.Polemic.prototype.defaults = {
     annotation_type : "tweet",
     defaultcolor : "#585858",
     foundcolor : "#fc00ff",
-    polemics : [
-        {
-            "name" : "OK",
-            "keywords" : [ "++" ],
-            "color" : "#1D973D"
-        },
-        {
-            "name" : "KO",
-            "keywords" : [ "--" ],
-            "color" : "#CE0A15"
-        },
-        {
-            "name" : "REF",
-            "keywords" : [ "==", "http://" ],
-            "color" : "#C5A62D"  
-        },
-        {
-            "name" : "Q",
-            "keywords" : [ "?" ],
-            "color" : "#036AAE"
-        }
-    ]
+    defaut_version : "1",
+    polemics : {
+        "1" : [
+            {
+                "name" : "OK",
+                "keywords" : [ "++" ],
+                "color" : "#1D973D"
+            },
+            {
+                "name" : "KO",
+                "keywords" : [ "--" ],
+                "color" : "#CE0A15"
+            },
+            {
+                "name" : "REF",
+                "keywords" : [ "==", "http://" ],
+                "color" : "#C5A62D"
+            },
+            {
+                "name" : "Q",
+                "keywords" : [ "?" ],
+                "color" : "#036AAE"
+            }
+        ],
+        "2" : [
+            {
+                "name" : "OK",
+                "keywords" : [ "++" ],
+                "color" : "#1D973D"
+            },
+            {
+                "name" : "KO",
+                "keywords" : [ "!!" ],
+                "color" : "#CE0A15"
+            },
+            {
+                "name" : "REF",
+                "keywords" : [ "==", "http://" ],
+                "color" : "#C5A62D"
+            },
+            {
+                "name" : "Q",
+                "keywords" : [ "?" ],
+                "color" : "#036AAE"
+            }
+        ]
+    }
 };
 
+IriSP.Widgets.Polemic.prototype.getPolemics(version) {
+    if(typeof(version) === "undefined" || !version) {
+        version = this.defaut_version;
+    }
+    if(this.polemics.constructor === Array) {
+        return this.polemics;
+    }
+    else {
+        return this.polemics[version];
+    }
+}
+
 IriSP.Widgets.Polemic.prototype.draw = function() {
-    
+
     this.onMediaEvent("timeupdate", "onTimeupdate");
     this.$zone = IriSP.jQuery('<div>');
     this.$zone.addClass("Ldt-Polemic");
     this.$.append(this.$zone);
-    
+
     this.$elapsed = IriSP.jQuery('<div>')
         .css({
             background: '#cccccc',
@@ -64,9 +101,9 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             width: 0,
             height: "100%"
         });
-        
+
     this.$zone.append(this.$elapsed);
-    
+
     // we don't filter with null duration anymore
     var _slices = [],
         _slice_count = Math.floor( this.width / this.element_width ),
@@ -74,7 +111,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
         _max = 0,
         _list = this.getWidgetAnnotations(),
         _this = this;
-    
+
     for (var _i = 0; _i < _slice_count; _i++) {
         var _begin = new IriSP.Model.Time( _i * _duration / _slice_count ),
             _end = new IriSP.Model.Time( ( _i + 1 ) * _duration / _slice_count ),
@@ -87,13 +124,13 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 }),
                 polemicStacks : []
             };
-            
-        for (var _j = 0; _j < this.polemics.length; _j++) {
-            var _polemic = _res.annotations.searchByDescription(this.polemics[_j].keywords);
+
+        for (var _j = 0; _j < this.getPolemics().length; _j++) {
+            var _polemic = _res.annotations.searchByDescription(this.getPolemics()[_j].keywords);
             _count += _polemic.length;
             _res.polemicStacks.push(_polemic);
         }
-        for (var _j = 0; _j < this.polemics.length; _j++) {
+        for (var _j = 0; _j < this.getPolemics().length; _j++) {
             _res.annotations.removeElements(_res.polemicStacks[_j]);
         }
         _count += _res.annotations.length;
@@ -103,16 +140,16 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
     if (_max < this.max_elements) {
         this.is_stackgraph = false;
         if (_max) {
-                    
+
             this.height = (2 + _max) * this.element_height;
             this.$zone.css({
                 width: this.width + "px",
                 height: this.height + "px",
                 position: "relative"
             });
-            
+
             var _x = 0;
-            
+
             function displayAnnotation(_elx, _ely, _pol, _col, _annotation) {
                 var _html = Mustache.to_html(
                     '<div class="Ldt-Polemic-TweetDiv Ldt-TraceMe" trace-info="annotation-id:{{id}}, media-id:{{media_id}}, polemic:{{polemic}}, time:{{time}}" polemic-color="{{color}}"'
@@ -142,16 +179,16 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 	title: _annotation.title,
                 	description: _annotation.description,
                 	image: _annotation.thumbnail,
-                	uri: (typeof _annotation.url !== "undefined" 
+                	uri: (typeof _annotation.url !== "undefined"
 		                ? _annotation.url
 		                : (document.location.href.replace(/#.*$/,'') + '#id='  + _annotation.id)),
                 text: '[' + _annotation.begin.toString() + '] ' + _annotation.title
                 });
             	// test if annotation has several colors.
             	var colAr = [];
-            	for (var _j = 0; _j < _this.polemics.length; _j++) {
-            		if( IriSP.Model.regexpFromTextOrArray( _this.polemics[_j].keywords ).test( _annotation.title ) ){
-            			colAr.push(_this.polemics[_j].color);
+            	for (var _j = 0; _j < _this.getPolemics().length; _j++) {
+            		if( IriSP.Model.regexpFromTextOrArray( _this.getPolemics()[_j].keywords ).test( _annotation.title ) ){
+            			colAr.push(_this.getPolemics()[_j].color);
             		}
                 }
             	// display annotation
@@ -192,7 +229,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 });
                 _this.$zone.append(_el);
             }
-            
+
             IriSP._(_slices).forEach(function(_slice) {
                 var _y = _this.height;
                 _slice.annotations.forEach(function(_annotation) {
@@ -200,8 +237,8 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     displayAnnotation(_x, _y, "none", _this.defaultcolor, _annotation);
                 });
                 IriSP._(_slice.polemicStacks).forEach(function(_annotations, _j) {
-                    var _color = _this.polemics[_j].color,
-                        _polemic = _this.polemics[_j].name;
+                    var _color = _this.getPolemics()[_j].color,
+                        _polemic = _this.getPolemics()[_j].name;
                     _annotations.forEach(function(_annotation) {
                         _y -= _this.element_height;
                         displayAnnotation(_x, _y, _polemic, _color, _annotation);
@@ -209,11 +246,11 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 });
                 _x += _this.element_width;
             });
-            
+
             this.$zone.append(_html);
-            
+
             this.$tweets = this.$.find(".Ldt-Polemic-TweetDiv");
-            
+
             this.source.getAnnotations().on("search-cleared", function() {
                 _this.$tweets.each(function() {
                     var _el = IriSP.jQuery(this);
@@ -223,24 +260,24 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     });
                 });
             });
-            
+
         } else {
             this.$zone.hide();
         }
     } else {
         this.is_stackgraph = true;
-        
+
         this.height = (2 + this.max_elements) * this.element_height;
         this.$zone.css({
             width: this.width + "px",
             height: this.height + "px",
             position: "relative"
         });
-        
+
         var _x = 0,
             _html = '',
             _scale = this.max_elements * this.element_height / _max;
-            
+
         function displayStackElement(_x, _y, _h, _color, _nums, _begin, _end, _polemic) {
             _html += Mustache.to_html(
                 '<div class="Ldt-Polemic-TweetDiv Ldt-TraceMe" trace-info="annotation-block, media-id={{media_id}}, polemic={{polemic}}, time:{{begin}}" pos-x="{{posx}}" pos-y="{{top}}" annotation-counts="{{nums}}" begin-time="{{begin}}" end-time="{{end}}"'
@@ -259,7 +296,7 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                 end: _end
             });
         }
-        
+
         IriSP._(_slices).forEach(function(_slice) {
             var _y = _this.height,
                 _nums = _slice.annotations.length + "," + IriSP._(_slice.polemicStacks).map(function(_annotations) {
@@ -272,8 +309,8 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             }
             IriSP._(_slice.polemicStacks).forEach(function(_annotations, _j) {
                 if (_annotations.length) {
-                    var _color = _this.polemics[_j].color,
-                        _polemic = _this.polemics[_j].name,
+                    var _color = _this.getPolemics()[_j].color,
+                        _polemic = _this.getPolemics()[_j].name,
                         _h = Math.ceil(_scale * _annotations.length);
                     _y -= _h;
                     displayStackElement(_x, _y, _h, _color, _nums, _slice.begin, _slice.end, _polemic);
@@ -281,18 +318,18 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
             });
             _x += _this.element_width;
         });
-        
+
         this.$zone.append(_html);
-        
+
         this.$tweets = this.$.find(".Ldt-Polemic-TweetDiv");
-        
+
         this.$tweets
             .mouseover(function() {
                 var _el = IriSP.jQuery(this),
                     _nums = _el.attr("annotation-counts").split(","),
                     _html = '<p>' + _this.l10n.from_ + _el.attr("begin-time") + _this.l10n._to_ + _el.attr("end-time") + '</p>';
-                for (var _i = 0; _i <= _this.polemics.length; _i++) {
-                    var _color = _i ? _this.polemics[_i - 1].color : _this.defaultcolor;
+                for (var _i = 0; _i <= _this.getPolemics().length; _i++) {
+                    var _color = _i ? _this.getPolemics()[_i - 1].color : _this.defaultcolor;
                     _html += '<div class="Ldt-Tooltip-AltColor" style="background: ' + _color + '"></div><p>' + _nums[_i] + _this.l10n._annotations + '</p>';
                 }
                 if (_this.tooltip) {
@@ -304,20 +341,20 @@ IriSP.Widgets.Polemic.prototype.draw = function() {
                     _this.tooltip.hide();
                 }
             });
-            
+
     };
-    
+
     this.$position = IriSP.jQuery('<div>').addClass("Ldt-Polemic-Position");
-        
+
     this.$zone.append(this.$position);
-    
+
     this.$zone.click(function(_e) {
         var _x = _e.pageX - _this.$zone.offset().left;
         _this.media.setCurrentTime(_this.media.duration * _x / _this.width);
     });
-    
+
     this.$.append('<div class="Ldt-Polemic-Tooltip"></div>');
-    
+
     this.insertSubwidget(
         this.$.find(".Ldt-Polemic-Tooltip"),
         {
