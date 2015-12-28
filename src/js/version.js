@@ -1,1 +1,1 @@
-// Metadataplayer - version 0.1
+// Metadataplayer - version 0.2
