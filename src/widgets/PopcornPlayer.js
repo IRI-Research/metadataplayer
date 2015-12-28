@@ -18,10 +18,9 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
         this.video = this.url_transform(this.video);
     }
 
-    if (/^(https?:\/\/)?(www\.)?vimeo\.com/.test(this.video)) {
-        /* VIMEO */
-        var _popcorn = Popcorn.vimeo(this.container, this.video);
-    } else if (/^(https?:\/\/)?(www\.)?youtube\.com/.test(this.video)) {
+    var _url = this.video;
+
+    if (/^(https?:\/\/)?(www\.)?youtube\.com/.test(this.video)) {
         /* YOUTUBE */
         var _urlparts = this.video.split(/[?&]/),
             _params = {};
@@ -36,34 +35,34 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
         }
         _url = _urlparts[0] + '?' + IriSP.jQuery.param(_params);
 
-        var _popcorn = Popcorn.youtube(this.container, _url);
+    }// else {
+    //     /* DEFAULT HTML5 */
+    //     var _tmpId = IriSP._.uniqueId("popcorn"),
+    //         _videoEl = IriSP.jQuery('<video>');
+    //     _videoEl.attr({
+    //         id : _tmpId,
+    //         width : this.width,
+    //         height : this.height || undefined
+    //     });
+    //     if(typeof this.video === "string"){
+    //         _videoEl.attr("src",this.video);
+    //     } else {
+    //         for (var i = 0; i < this.video.length; i++) {
+    //             var _srcNode = IriSP.jQuery('<source>');
+    //             _srcNode.attr({
+    //                 src: this.video[i].src,
+    //                 type: this.video[i].type
+    //             });
+    //             _videoEl.append(_srcNode);
+    //         }
+    //     }
+    //     this.$.html(_videoEl);
+    // }
 
-    } else {
-        /* DEFAULT HTML5 */
-        var _tmpId = IriSP._.uniqueId("popcorn"),
-            _videoEl = IriSP.jQuery('<video>');
-        _videoEl.attr({
-            id : _tmpId,
-            width : this.width,
-            height : this.height || undefined
-        });
-        if(typeof this.video === "string"){
-            _videoEl.attr("src",this.video);
-        } else {
-            for (var i = 0; i < this.video.length; i++) {
-                var _srcNode = IriSP.jQuery('<source>');
-                _srcNode.attr({
-                    src: this.video[i].src,
-                    type: this.video[i].type
-                });
-                _videoEl.append(_srcNode);
-            }
-        }
-        this.$.html(_videoEl);
-        var _popcorn = Popcorn("#" + _tmpId);
-        if (this.autostart || this.autoplay) {
-            _popcorn.autoplay(true);
-        }
+    var _popcorn = Popcorn.smart("#"+this.container, _url);
+
+    if (this.autostart || this.autoplay) {
+        _popcorn.autoplay(true);
     }
 
     var _media = this.media;
@@ -125,7 +124,7 @@ IriSP.Widgets.PopcornPlayer.prototype.draw = function() {
         _media.trigger("volumechange");
     });
 
-    _popcorn.on("play", function() {
+    _popcorn.on("play", function(e) {
         _media.trigger("play");
     });
 

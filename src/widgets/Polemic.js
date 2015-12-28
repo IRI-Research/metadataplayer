@@ -73,17 +73,16 @@ IriSP.Widgets.Polemic.prototype.defaults = {
     }
 };
 
-IriSP.Widgets.Polemic.prototype.getPolemics(version) {
+IriSP.Widgets.Polemic.prototype.getPolemics = function(version) {
     if(typeof(version) === "undefined" || !version) {
         version = this.defaut_version;
     }
     if(this.polemics.constructor === Array) {
         return this.polemics;
-    }
-    else {
+    } else {
         return this.polemics[version];
     }
-}
+};
 
 IriSP.Widgets.Polemic.prototype.draw = function() {
 
