@@ -24,7 +24,7 @@ IriSP.Widgets.Polemic.prototype.defaults = {
     annotation_type : "tweet",
     defaultcolor : "#585858",
     foundcolor : "#fc00ff",
-    defaut_version : "1",
+    default_version : "1",
     polemics : {
         "1" : [
             {
@@ -75,7 +75,7 @@ IriSP.Widgets.Polemic.prototype.defaults = {
 
 IriSP.Widgets.Polemic.prototype.getPolemics = function(version) {
     if(typeof(version) === "undefined" || !version) {
-        version = this.defaut_version;
+        version = this.default_version;
     }
     if(this.polemics.constructor === Array) {
         return this.polemics;
