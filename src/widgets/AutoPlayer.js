@@ -22,7 +22,7 @@ IriSP.Widgets.AutoPlayer.prototype.draw = function() {
                 type: "JwpPlayer"
             },
             {
-                regexp: /\.(mp4|m4v)$/,
+                regexp: /\.(mp4|m4v|mp3)$/,
                 type: "AdaptivePlayer"
             },
             {
