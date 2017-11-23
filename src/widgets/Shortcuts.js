@@ -5,7 +5,7 @@ IriSP.Widgets.Shortcuts = function(player, config) {
 /**
  * Keyboard shortcuts widget
  * This widgets add global shortcuts for common actions.
- * The default shortcuts are: 
+ * The default shortcuts are:
  * - Control-space for play/pause
  * - Control-left for rewind (+shift to go faster)
  * - Control-right for forward (+shift to go faster)
@@ -15,15 +15,15 @@ IriSP.Widgets.Shortcuts.prototype = new IriSP.Widgets.Widget();
 IriSP.Widgets.Shortcuts.prototype.defaults =  {
     // Time increment, in ms, for backward/forward navigation
     time_increment: 2000
-}
+};
 
 IriSP.Widgets.Shortcuts.prototype.draw = function() {
     var  _this = this;
-    
+
     /* Standard shortcuts */
     Mousetrap.bindGlobal("ctrl+space", function (e) {
         e.preventDefault();
-        if (! _this.media.getPaused()) {
+        if (!_this.media.getPaused()) {
             _this.media.pause();
         } else {
             _this.media.play();
@@ -60,5 +60,4 @@ IriSP.Widgets.Shortcuts.prototype.draw = function() {
         _this.player.trigger("CreateAnnotation.toggle");
         return false;
     });
-
 };

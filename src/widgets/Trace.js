@@ -1,6 +1,5 @@
 IriSP.Widgets.Trace = function(player, config) {
-  IriSP.Widgets.Widget.call(this, player, config);
-    
+    IriSP.Widgets.Widget.call(this, player, config);
 };
 
 IriSP.Widgets.Trace.prototype = new IriSP.Widgets.Widget();
@@ -16,24 +15,24 @@ IriSP.Widgets.Trace.prototype.defaults = {
 };
 
 IriSP.Widgets.Trace.prototype.draw = function() {
-  if (typeof window.tracemanager === "undefined") {
-      console.log("Tracemanager not found");
-      return;
-  }
-  var _this = this,
-    _medialisteners = {
-        "play" : 0,
-        "pause" : 0,
-        "volumechange" : 0,
-        "seeked" : 0,
-        "play" : 0,
-        "pause" : 0,
-        "timeupdate" : 10000
-    },
-    _annlisteners = {
-        search: 0,
-        "search-cleared": 0
-    };
+    if (typeof window.tracemanager === "undefined") {
+        console.log("Tracemanager not found");
+        return;
+    }
+    var _this = this,
+        _medialisteners = {
+            "play" : 0,
+            "pause" : 0,
+            "volumechange" : 0,
+            "seeked" : 0,
+            "play" : 0,
+            "pause" : 0,
+            "timeupdate" : 10000
+        },
+        _annlisteners = {
+            search: 0,
+            "search-cleared": 0
+        };
     IriSP._(_medialisteners).each(function(_ms, _listener) {
         var _f = function(_arg) {
             _this.eventHandler(_listener, _arg);
@@ -53,20 +52,20 @@ IriSP.Widgets.Trace.prototype.draw = function() {
         }
         _annotations.on(_listener, _f);
     });
-    
+
     if (!this.tracer) {
-    
+
         this.tracer = window.tracemanager.init_trace("test", {
             url: this.url,
             requestmode: this.requestmode,
             syncmode: this.syncmode,
             default_subject: this.default_subject
         });
-    
+
     }
-    
-    
-    
+
+
+
     this.tracer.trace("TraceWidgetInit", {});
 
     // Configure annotation creation/update/delete/publish tracing
@@ -87,7 +86,7 @@ IriSP.Widgets.Trace.prototype.draw = function() {
     this.mouseLocation = '';
     IriSP.jQuery(".Ldt-Widget").on("mousedown mouseenter mouseleave", ".Ldt-TraceMe", function(_e) {
         var _target = IriSP.jQuery(this);
-        
+
         var _widget = _target.attr("widget-type") || _target.parents(".Ldt-Widget").attr("widget-type"),
             _data = {
                 "type": _e.type,
@@ -99,7 +98,7 @@ IriSP.Widgets.Trace.prototype.draw = function() {
             _id = _targetEl.id,
             _value = _target.val(),
             _traceInfo = _target.attr("trace-info");
-        _data.target = _name + (_id && _id.length ? '#' + IriSP.jqEscape(_id) : '') + (_class && _class.length ? ('.' + IriSP.jqEscape(_class).replace(/\s/g,'.')).replace(/\.Ldt-(Widget|TraceMe)/g,'') : '');
+        _data.target = _name + (_id && _id.length ? '#' + IriSP.jqEscape(_id) : '') + (_class && _class.length ? ('.' + IriSP.jqEscape(_class).replace(/\s/g, '.')).replace(/\.Ldt-(Widget|TraceMe)/g, '') : '');
         if (typeof _traceInfo == "string" && _traceInfo) {
             _data.traceInfo = _traceInfo;
         }
@@ -118,22 +117,22 @@ IriSP.Widgets.Trace.prototype.eventHandler = function(_listener, _arg) {
     if (typeof _arg == "undefined") {
         _arg = {};
     }
-    switch(_listener) {
-        case 'UIEvent':
-            _traceName += _arg.widget + '_' + _arg.type;
-            delete _arg.widget;
-            delete _arg.type;
+    switch (_listener) {
+    case 'UIEvent':
+        _traceName += _arg.widget + '_' + _arg.type;
+        delete _arg.widget;
+        delete _arg.type;
         break;
-        case 'play':
-        case 'pause':
-            _arg.milliseconds = this.media.getCurrentTime().milliseconds;
-        case 'timeupdate':
-        case 'seeked':
-        case 'volumechange':
-            _traceName += 'media_' + _listener;
+    case 'play':
+    case 'pause':
+        _arg.milliseconds = this.media.getCurrentTime().milliseconds;
+    case 'timeupdate':
+    case 'seeked':
+    case 'volumechange':
+        _traceName += 'media_' + _listener;
         break;
-        default:
-            _traceName += _listener.replace('.','_');
+    default:
+        _traceName += _listener.replace('.', '_');
     }
     if (typeof this.extend === "object" && this.extend) {
         IriSP._(_arg).extend(this.extend);

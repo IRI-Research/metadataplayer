@@ -16,9 +16,9 @@ if (typeof IriSP.Widgets === "undefined") {
  */
 
 
-IriSP.Widgets.Widget = function(player, config) {
+IriSP.Widgets.Widget = function (player, config) {
 
-    if( typeof player === "undefined") {
+    if (typeof player === "undefined") {
         /* Probably an abstract call of the class when
          * individual widgets set their prototype */
         return;
@@ -31,8 +31,8 @@ IriSP.Widgets.Widget = function(player, config) {
         _config = IriSP._.defaults({}, config, (player && player.config ? player.config.default_options : {}), this.defaults),
         _this = this;
 
-    IriSP._(_config).forEach(function(_value, _key) {
-       _this[_key] = _value;
+    IriSP._(_config).forEach(function (_value, _key) {
+        _this[_key] = _value;
     });
 
     this.$ = IriSP.jQuery('#' + this.container);
@@ -59,8 +59,8 @@ IriSP.Widgets.Widget = function(player, config) {
         typeof this.messages[IriSP.language] !== "undefined"
         ? this.messages[IriSP.language]
         : (
-            IriSP.language.length > 2 && typeof this.messages[IriSP.language.substr(0,2)] !== "undefined"
-            ? this.messages[IriSP.language.substr(0,2)]
+            IriSP.language.length > 2 && typeof this.messages[IriSP.language.substr(0, 2)] !== "undefined"
+            ? this.messages[IriSP.language.substr(0, 2)]
             : this.messages["en"]
         )
     );
@@ -73,17 +73,16 @@ IriSP.Widgets.Widget = function(player, config) {
             _this.source.merge(_this.localsource);
         }
         if (_this.media_id) {
-                _this.media = this.getElement(_this.media_id);
-            } else {
-                var _mediaopts = {
-                    is_mashup: _this.is_mashup || false
-                };
-                _this.media = _this.source.getCurrentMedia(_mediaopts);
-            }
-        if (_this.pre_draw_callback){
-            IriSP.jQuery.when(_this.pre_draw_callback()).done(_this.draw());
+            _this.media = this.getElement(_this.media_id);
+        } else {
+            var _mediaopts = {
+                is_mashup: _this.is_mashup || false
+            };
+            _this.media = _this.source.getCurrentMedia(_mediaopts);
         }
-        else {
+        if (_this.pre_draw_callback) {
+            IriSP.jQuery.when(_this.pre_draw_callback()).done(_this.draw());
+        } else {
             _this.draw();
         }
         _this.player.trigger("widget-loaded");
@@ -109,23 +108,23 @@ IriSP.Widgets.Widget.prototype.template = '';
 
 IriSP.Widgets.Widget.prototype.messages = {"en":{}};
 
-IriSP.Widgets.Widget.prototype.toString = function() {
+IriSP.Widgets.Widget.prototype.toString = function () {
     return "Widget " + this.type;
 };
 
-IriSP.Widgets.Widget.prototype.templateToHtml = function(_template) {
+IriSP.Widgets.Widget.prototype.templateToHtml = function (_template) {
     return Mustache.to_html(_template, this);
 };
 
-IriSP.Widgets.Widget.prototype.renderTemplate = function() {
+IriSP.Widgets.Widget.prototype.renderTemplate = function () {
     this.$.append(this.templateToHtml(this.template));
 };
 
-IriSP.Widgets.Widget.prototype.functionWrapper = function(_name) {
+IriSP.Widgets.Widget.prototype.functionWrapper = function (_name) {
     var _this = this,
         _function = this[_name];
     if (typeof _function !== "undefined") {
-        return function() {
+        return function () {
             return _function.apply(_this, Array.prototype.slice.call(arguments, 0));
         };
     } else {
@@ -133,7 +132,7 @@ IriSP.Widgets.Widget.prototype.functionWrapper = function(_name) {
     }
 };
 
-IriSP.Widgets.Widget.prototype.getFunctionOrName = function(_functionOrName) {
+IriSP.Widgets.Widget.prototype.getFunctionOrName = function (_functionOrName) {
     switch (typeof _functionOrName) {
         case "function":
             return _functionOrName;
@@ -144,15 +143,15 @@ IriSP.Widgets.Widget.prototype.getFunctionOrName = function(_functionOrName) {
     }
 };
 
-IriSP.Widgets.Widget.prototype.onMdpEvent = function(_eventName, _functionOrName) {
+IriSP.Widgets.Widget.prototype.onMdpEvent = function (_eventName, _functionOrName) {
     this.player.on(_eventName, this.getFunctionOrName(_functionOrName));
 };
 
-IriSP.Widgets.Widget.prototype.onMediaEvent = function(_eventName, _functionOrName) {
+IriSP.Widgets.Widget.prototype.onMediaEvent = function (_eventName, _functionOrName) {
     this.media.on(_eventName, this.getFunctionOrName(_functionOrName));
 };
 
-IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function() {
+IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function () {
     var result = null;
     if (typeof this.annotation_type === "undefined") {
         result = this.media.getAnnotations();
@@ -168,21 +167,21 @@ IriSP.Widgets.Widget.prototype.getWidgetAnnotations = function() {
     }
 };
 
-IriSP.Widgets.Widget.prototype.getWidgetAnnotationsAtTime = function() {
+IriSP.Widgets.Widget.prototype.getWidgetAnnotationsAtTime = function () {
     var _time = this.media.getCurrentTime();
-    return this.getWidgetAnnotations().filter(function(_annotation) {
+    return this.getWidgetAnnotations().filter(function (_annotation) {
         return _annotation.begin <= _time && _annotation.end > _time;
     });
 };
 
-IriSP.Widgets.Widget.prototype.isLoaded = function() {
-    var isloaded = !IriSP._(this.__subwidgets).any(function(w) {
+IriSP.Widgets.Widget.prototype.isLoaded = function () {
+    var isloaded = !IriSP._(this.__subwidgets).any(function (w) {
         return !(w && w.isLoaded());
     });
     return isloaded;
 };
 
-IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _widgetoptions, _propname) {
+IriSP.Widgets.Widget.prototype.insertSubwidget = function (_selector, _widgetoptions, _propname) {
     var _id = _selector.attr("id"),
         _this = this,
         _type = _widgetoptions.type,
@@ -194,13 +193,13 @@ IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _widgetopti
         _selector.attr("id", _id);
     }
     _widgetoptions.container = _id;
-    if (typeof IriSP.widgetsRequirements[_type] !== "undefined" && typeof IriSP.widgetsRequirements[_type].requires !== "undefined" ) {
+    if (typeof IriSP.widgetsRequirements[_type] !== "undefined" && typeof IriSP.widgetsRequirements[_type].requires !== "undefined") {
         for (var _j = 0; _j < IriSP.widgetsRequirements[_type].requires.length; _j++) {
             $L.script(IriSP.getLib(IriSP.widgetsRequirements[_type].requires[_j]));
         }
     }
-    $L.wait(function() {
-        _this.player.loadWidget(_widgetoptions, function(_widget) {
+    $L.wait(function () {
+        _this.player.loadWidget(_widgetoptions, function (_widget) {
             if (_propname) {
                 _this[_propname] = _widget;
             }
@@ -214,11 +213,11 @@ IriSP.Widgets.Widget.prototype.insertSubwidget = function(_selector, _widgetopti
  *
  * Parameter: offset: -1 for previous annotation, +1 for next annotation
  */
-IriSP.Widgets.Widget.prototype.navigate = function(offset) {
+IriSP.Widgets.Widget.prototype.navigate = function (offset) {
     // offset is normally either -1 (previous slide) or +1 (next slide)
     var _this = this;
     var currentTime = _this.media.getCurrentTime();
-    var annotations = _this.getWidgetAnnotations().sortBy(function(_annotation) {
+    var annotations = _this.getWidgetAnnotations().sortBy(function (_annotation) {
         return _annotation.begin;
     });
     for (var i = 0; i < annotations.length; i++) {
@@ -236,38 +235,39 @@ IriSP.Widgets.Widget.prototype.navigate = function(offset) {
  *
  * Parameter: a list of annotations. If not specified, the widget's annotations will be exported.
  */
-IriSP.Widgets.Widget.prototype.exportAnnotations = function(annotations) {
+IriSP.Widgets.Widget.prototype.exportAnnotations = function (annotations) {
     var widget = this;
-    if (annotations === undefined)
+    if (annotations === undefined) {
         annotations = this.getWidgetAnnotations();
+    }
     var $ = IriSP.jQuery;
 
     // FIXME: this should belong to a proper serialize/deserialize component?
-    var content = Mustache.to_html("[video:{{url}}]\n", {url: widget.media.url}) + annotations.map( function(a) { return Mustache.to_html("[{{ a.begin }}]{{ a.title }} {{ a.description }}[{{ a.end }}]", { a: a }); }).join("\n");
+    var content = Mustache.to_html("[video:{{url}}]\n", {url: widget.media.url}) + annotations.map(function (a) { return Mustache.to_html("[{{ a.begin }}]{{ a.title }} {{ a.description }}[{{ a.end }}]", { a: a }); }).join("\n");
 
     var el = $("<pre>")
             .addClass("exportContainer")
             .text(content)
             .dialog({
                 title: "Annotation export",
-                open: function( event, ui ) {
+                open: function (event, ui) {
                     // Select text
                     var range;
                     if (document.selection) {
-		                range = document.body.createTextRange();
+                        range = document.body.createTextRange();
                         range.moveToElementText(this[0]);
-		                range.select();
-		            } else if (window.getSelection) {
-		                range = document.createRange();
-		                range.selectNode(this[0]);
-		                window.getSelection().addRange(range);
-		            }
+                        range.select();
+                    } else if (window.getSelection) {
+                        range = document.createRange();
+                        range.selectNode(this[0]);
+                        window.getSelection().addRange(range);
+                    }
                 },
                 autoOpen: true,
                 width: '80%',
                 minHeight: '400',
                 height: 400,
-                buttons: [ { text: "Close", click: function() { $( this ).dialog( "close" ); } },
+                buttons: [ { text: "Close", click: function () { $(this).dialog("close"); } },
                            { text: "Download", click: function () {
                                a = document.createElement('a');
                                a.setAttribute('href', 'data:text/plain;base64,' + btoa(content));
@@ -280,6 +280,6 @@ IriSP.Widgets.Widget.prototype.exportAnnotations = function(annotations) {
 /**
  * This method responsible of drawing a widget on screen.
  */
-IriSP.Widgets.Widget.prototype.draw = function() {
+IriSP.Widgets.Widget.prototype.draw = function () {
     /* implemented by "sub-classes" */
 };

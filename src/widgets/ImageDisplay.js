@@ -2,14 +2,14 @@
 
 IriSP.Widgets.ImageDisplay = function(player, config) {
     IriSP.Widgets.Widget.call(this, player, config);
-}
+};
 
 IriSP.Widgets.ImageDisplay.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.ImageDisplay.prototype.defaults = {
     annotation_type: "Slides"
     // container: "imageContainer"
-}
+};
 
 IriSP.Widgets.ImageDisplay.prototype.template = '<div class="Ldt-ImageDisplay-Container"><div class="Ldt-ImageDisplay-Overlay Ldt-ImageDisplay-Overlay-Left"></div><div class="Ldt-ImageDisplay-Overlay Ldt-ImageDisplay-Overlay-Right"></div></div>';
 
@@ -31,12 +31,21 @@ IriSP.Widgets.ImageDisplay.prototype.draw = function() {
 
     _this.$.find(".Ldt-ImageDisplay-Overlay-Left").on("click", function () { _this.navigate(-1); });
     _this.$.find(".Ldt-ImageDisplay-Overlay-Right").on("click", function () { _this.navigate(+1); });
+    _this.$.find(".Ldt-ImageDisplay-Container").on("click", function () {
+        if (_this.media.getPaused()) {
+            _this.media.play();
+        } else {
+            _this.media.pause();
+        }
+    });
 
     _annotations.forEach(function(_a) {
         _a.on("enter", function() {
             _this.update(_a);
         });
     });
-    if (_annotations.length)
+    if (_annotations.length) {
         _this.update(_annotations[0]);
-}
+    }
+};
+

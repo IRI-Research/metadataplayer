@@ -14,14 +14,14 @@ IriSP.Widgets.Mediafragment = function(player, config) {
             }
         });
     };
-    this.onMdpEvent("Mediafragment.setHashToAnnotation","setHashToAnnotation");
+    this.onMdpEvent("Mediafragment.setHashToAnnotation", "setHashToAnnotation");
     this.blocked = false;
 };
 
 IriSP.Widgets.Mediafragment.prototype = new IriSP.Widgets.Widget();
 
 IriSP.Widgets.Mediafragment.prototype.draw = function() {
-    this.onMediaEvent("setpause","setHashToTime");
+    this.onMediaEvent("setpause", "setHashToTime");
     var _this = this;
     this.getWidgetAnnotations().forEach(function(_annotation) {
         _annotation.on("click", function() {
@@ -31,7 +31,7 @@ IriSP.Widgets.Mediafragment.prototype.draw = function() {
     if (this.media.loadedMetadata) {
         this.goToHash();
     } else {
-        this.onMediaEvent("loadedmetadata","goToHash");
+        this.onMediaEvent("loadedmetadata", "goToHash");
     }
 };
 
@@ -44,7 +44,7 @@ IriSP.Widgets.Mediafragment.prototype.setWindowHash = function(_hash) {
 };
 
 IriSP.Widgets.Mediafragment.prototype.getLastHash = function() {
-    var _tab = document.location.hash.replace(/^#/,'').split('&');
+    var _tab = document.location.hash.replace(/^#/, '').split('&');
     _tab = IriSP._(_tab).filter(function(_el) {
         return _el && !/^(id|t)=/.test(_el);
     });
@@ -59,7 +59,7 @@ IriSP.Widgets.Mediafragment.prototype.getLastHash = function() {
 
 IriSP.Widgets.Mediafragment.prototype.goToHash = function() {
     if (document.location.hash !== this.getLastHash()) {
-        var _tab = document.location.hash.replace(/^#/,'').split('&');
+        var _tab = document.location.hash.replace(/^#/, '').split('&');
         for (var _i = 0; _i < _tab.length; _i++) {
             var _subtab = _tab[_i].split("=");
             if (_subtab[0] == "id" || _subtab[0] == "t") {
@@ -69,26 +69,24 @@ IriSP.Widgets.Mediafragment.prototype.goToHash = function() {
                     var _annotation = this.source.getElement(this.last_hash_value);
                     if (typeof _annotation !== "undefined") {
                         this.media.setCurrentTime(_annotation.begin);
-                    } else {
-                        /* Proceed parsing elements, maybe a t was specified */
-                        continue;
+                        break;
                     }
                 }
                 if (this.last_hash_key == "t") {
                     this.media.setCurrentTime(1000 * this.last_hash_value);
+                    break;
                 }
-                break;
             }
         }
     }
 };
 
 IriSP.Widgets.Mediafragment.prototype.setHashToAnnotation = function(_annotation) {
-    this.setHash( 'id', _annotation.id, 't', _annotation.begin / 1000.0 );
+    this.setHash('id', _annotation.id, 't', _annotation.begin / 1000.0);
 };
 
 IriSP.Widgets.Mediafragment.prototype.setHashToTime = function() {
-    this.setHash( 't', this.media.getCurrentTime().getSeconds() );
+    this.setHash('t', this.media.getCurrentTime().getSeconds());
 };
 
 IriSP.Widgets.Mediafragment.prototype.setHash = function(_key, _value, _key2, _value2) {
@@ -101,7 +99,7 @@ IriSP.Widgets.Mediafragment.prototype.setHash = function(_key, _value, _key2, _v
         var _hash = this.getLastHash();
         this.setWindowHash(_hash);
         if (window.parent !== window) {
-            window.parent.postMessage(_hash,"*");
+            window.parent.postMessage(_hash, "*");
         }
         this.block();
     }

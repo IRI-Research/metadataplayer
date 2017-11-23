@@ -22,7 +22,8 @@ IriSP.serializers.ldt_annotate = {
             media: _data.getMedia().id,
             project: _data.project_id,
             type_title: _annType.title,
-            type: ( typeof _annType.dont_send_id !== "undefined" && _annType.dont_send_id ? "" : _annType.id ),
+            sharing: _data.sharing || "private",
+            type: (typeof _annType.dont_send_id !== "undefined" && _annType.dont_send_id ? "" : _annType.id),
             meta: {
                 created: _data.created,
                 creator: _data.creator,
@@ -44,14 +45,14 @@ IriSP.serializers.ldt_annotate = {
             _anntype.title = _anndata.type_title;
             _source.getAnnotationTypes().push(_anntype);
         }
+        _ann.meta = _anndata.meta;
         _ann.setAnnotationType(_anntype.id);
         var _tagIds = IriSP._(_anndata.tags).map(function(_title) {
             var _tags = _source.getTags(true).searchByTitle(_title, true);
             if (_tags.length) {
                 var _tag = _tags[0];
-            }
-            else {
-                _tag = new IriSP.Model.Tag(_title.replace(/\W/g,'_'),_source);
+            } else {
+                _tag = new IriSP.Model.Tag(_title.replace(/\W/g, '_'), _source);
                 _tag.title = _title;
                 _source.getTags().push(_tag);
             }

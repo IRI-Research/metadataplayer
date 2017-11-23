@@ -10,6 +10,13 @@
 	font-size: 18pt;
 }
 
+.Ldt-Fullscreen-Element .Ldt-Quiz-Container {
+    font-size: 40pt;
+    top: 40px;
+    height: calc(100% - 60px);
+    width: calc(100% - 60px);
+}
+
 .Ldt-Quiz-Title {
     line-height: 1;
     padding-top: 10px;
@@ -84,28 +91,8 @@
 	height: 100%;
 }
 
-.quiz-question-correct-feedback:before, .quiz-question-incorrect-feedback:before {
-		                                    content: '';
-		                                    vertical-align: middle;
-		                                    display: inline-block;
-		                                    width: 48px;
-		                                    height: 48px;
-                                        }
+.Ldt-Quiz-Questions-unique_choice .quiz-question-incorrect-feedback:before {
 
-.quiz-question-correct-feedback:before {
-	background: url(img/valid_sprites.png) left top no-repeat;
-}
-
-.quiz-question-incorrect-feedback:before {
-	background: url(img/valid_sprites.png) -49px top no-repeat;
-}
-
-.Ldt-Quiz-Correct-Answer:before {
-	background: url(img/min_valid_sprites.png) left top no-repeat;
-}
-
-.Ldt-Quiz-Incorrect-Answer:before {
-	background: url(img/min_valid_sprites.png) -13px top no-repeat;
 }
 
 .Ldt-Quiz-Correct-Answer:before, .Ldt-Quiz-Incorrect-Answer:before {
@@ -114,7 +101,25 @@
 		                              display: inline-block;
 		                              width: 12px;
 		                              height: 12px;
-                                  }
+                                 }
+
+.Ldt-Quiz-Correct-Answer:before,
+.Ldt-Quiz-Answer-Right:before {
+	background: url(img/min_valid_sprites.png) left top no-repeat;
+}
+
+.Ldt-Quiz-Incorrect-Answer:before,
+.Ldt-Quiz-Answer-Wrong:before {
+	background: url(img/min_valid_sprites.png) -13px top no-repeat;
+}
+
+.Ldt-Quiz-Answer-Wrong {
+    opacity: .6;
+    -webkit-transition: opacity 0.5s ease-in-out;
+	-moz-transition: opacity 0.5s ease-in-out;
+	-o-transition: opacity 0.5s ease-in-out;
+	transition: opacity 0.5s ease-in-out;
+}
 
 .Ldt-Quiz-Submit {
     margin: 10px;
@@ -192,18 +197,8 @@
 }
 
 .Ldt-Quiz-Result {
-    position: absolute;
-	height: 0px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #fde073;
     text-align: center;
-    line-height: 2.5;
-    overflow: hidden;
-    -webkit-box-shadow: 0 0 5px black;
-    -moz-box-shadow:    0 0 5px black;
-    box-shadow:         0 0 5px black;
+    display: none;
 }
 
 input[type="button"] {

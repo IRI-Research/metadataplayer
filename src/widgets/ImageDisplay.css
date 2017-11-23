@@ -5,6 +5,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
+    cursor: url(img/play_pause.svg) 20 20, pointer;
 }
 
 .Ldt-ImageDisplay-Image {

@@ -26,10 +26,11 @@ IriSP.serializers.ldt = {
                 _res.description = _data.meta["dc:description"];
                 _res.setDuration(_data.meta["dc:duration"]);
                 _res.url = _data.meta.url;
+                _res.meta = _data.meta;
                 if (typeof _data.meta.img !== "undefined" && _data.meta.img.src !== "undefined") {
                     _res.thumbnail = _data.meta.img.src;
                 }
-                return _res;        
+                return _res;
             },
             serializer : function(_data, _source, _dest) {
                 var _res = {
@@ -45,6 +46,7 @@ IriSP.serializers.ldt = {
                         "dc:duration" : _data.duration.milliseconds
                     }
                 };
+                IriSP._.defaults(_res.meta, _data.meta);
                 _dest.medias.push(_res);
                 var _list = {
                     id: IriSP.Model.getUID(),
@@ -115,7 +117,7 @@ IriSP.serializers.ldt = {
                 var _res = new IriSP.Model.AnnotationType(_data.id, _source);
                 _res.title = _data["dc:title"];
                 _res.description = _data["dc:description"];
-                return _res;        
+                return _res;
             },
             serializer : function(_data, _source, _dest) {
                 var _res = {
@@ -163,6 +165,7 @@ IriSP.serializers.ldt = {
                 if (typeof _data.content.audio !== "undefined" && _data.content.audio.href) {
                     _res.audio = _data.content.audio;
                 }
+                _res.meta = _data.meta;
                 return _res;
             },
             serializer : function(_data, _source, _dest) {
@@ -206,12 +209,13 @@ IriSP.serializers.ldt = {
                     });
                 } else {
                     _res.tags = IriSP._(_data.tag.id).map(function(_id) {
-                       return {
+                        return {
                            "id-ref" : _id
                        };
                     });
                 }
                 _res.content.title = _data.title || _res.content.title || "";
+                IriSP._.defaults(_res.meta, _data.meta);
                 _dest.annotations.push(_res);
             }
         },

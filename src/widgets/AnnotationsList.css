@@ -1,13 +1,12 @@
 /* AnnotationsListWidget */
 
-#ui-datepicker-div
-{
+#ui-datepicker-div {
     display: none;
 }
 
 .Ldt-AnnotationsListWidget {
-    border: none; 
-    margin: 0; 
+    border: none;
+    margin: 0;
     padding: 0;
     overflow: auto;
 }
@@ -25,7 +24,7 @@
 	height: 30px;
 	vertical-align: middle;
     text-align: center;
-	
+
 }
 
 .Ldt-AnnotationsList-filter-text {
@@ -48,8 +47,8 @@
 
 ul.Ldt-AnnotationsList-ul, ul.Ldt-AnnotationsList-ul-toDelete  {
     list-style: none;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
 }
 
 li.Ldt-AnnotationsList-li {
@@ -69,8 +68,8 @@ li.Ldt-AnnotationsList-li {
     width: 80px;
     height: 50px;
     text-align: center;
-    margin: 0px 2px 10px 2px;
-    box-shadow: #808080 0px 0px 2px;
+    margin: 0 2px 10px 2px;
+    box-shadow: #808080 0 0 2px;
 }
 .Ldt-AnnotationsList-Thumbnail {
     border: none;
@@ -90,7 +89,7 @@ li.Ldt-AnnotationsList-li {
 }
 
 .Ldt-AnnotationsList-DeleteButton {
-	margin: 0px;
+	margin: 0;
 	float: right;
 	font-size: 20px;
 	position: relative;
@@ -116,14 +115,14 @@ li.Ldt-AnnotationsList-li {
     font-size: 12px;
     margin: 2px 2px 2px 89px;
 }
-h3.Ldt-AnnotationsList-Title span.Ldt-AnnotationsList-TitleContent{
+h3.Ldt-AnnotationsList-Title span.Ldt-AnnotationsList-TitleContent {
     color: #0068c4;
     font-size: 13px;
     margin-left: 5px;
     font-weight: bold;
 }
 
-h3.Ldt-AnnotationsList-Title.Ldt-Annotation-Timecode{	
+h3.Ldt-AnnotationsList-Title.Ldt-Annotation-Timecode {
     font-size: 13px;
 }
 
@@ -158,13 +157,22 @@ ul.Ldt-AnnotationsList-Tags {
 }
 
 li.Ldt-AnnotationsList-Tag-Li {
-    display: inline-block; border: none; margin: 0 10px 5px 0; height: 23px; padding: 0 0 0 20px;
+    display: inline-block;
+    border: none;
+    margin: 0 10px 5px 0;
+    height: 23px;
+    padding: 0 0 0 20px;
     background: url(img/tag.png) left top no-repeat;
     cursor: pointer;
 }
 
 .Ldt-AnnotationsList-Tag-Li span {
-    display: inline-block; font-size: 12px; height: 19px; padding: 4px 5px 0 0; border: none; margin: 0;
+    display: inline-block;
+    font-size: 12px;
+    height: 19px;
+    padding: 4px 5px 0 0;
+    border: none;
+    margin: 0;
     background: url(img/tag.png) right top no-repeat;
 }
 
@@ -177,8 +185,13 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 }
 
 .Ldt-AnnotationsList-Play {
-    width: 125px; height: 20px; margin: 2px 0 2px 82px; text-align: center;
-    padding: 3px 5px 0 20px; font-size: 12px; cursor: pointer;
+    width: 125px;
+    height: 20px;
+    margin: 2px 0 2px 82px;
+    text-align: center;
+    padding: 3px 5px 0 20px;
+    font-size: 12px;
+    cursor: pointer;
     background: url(img/voiceannotation.png); color: #333333;
 }
 
@@ -227,19 +240,20 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
     display: none;
 }
 
-.Ldt-AnnotationsList .editableInput {
-    width: 80%;
+.editableInput {
+    width: 100%;
+    height: 100%;
 }
 
-.Ldt-AnnotationsList-ScreenMain{
-	margin: 0px;
-	padding: 0px;
+.Ldt-AnnotationsList-ScreenMain {
+	margin: 0;
+	padding: 0;
 }
 
-.Ldt-AnnotationsList-ScreenDelete, .Ldt-AnnotationsList-ScreenSending, 
-.Ldt-AnnotationsList-ScreenError, .Ldt-AnnotationsList-ScreenSuccess{
+.Ldt-AnnotationsList-ScreenDelete, .Ldt-AnnotationsList-ScreenSending,
+.Ldt-AnnotationsList-ScreenError, .Ldt-AnnotationsList-ScreenSuccess {
 	margin-top: 15px;
-	width: 100%
+	width: 100%;
 	text-align: center;
 	vertical-align: middle;
 	font-size: 14px;
@@ -248,7 +262,11 @@ li.Ldt-AnnotationsList-Tag-Li:hover {
 }
 
 a.Ldt-AnnotationsList-Close {
-    position: absolute; right: 2px;
-    display: inline-block; width: 17px; height: 17px; margin: 4px;
+    position: absolute;
+    right: 2px;
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    margin: 4px;
     background: url(img/widget-control.png);
 }

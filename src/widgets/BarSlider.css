@@ -1,0 +1,111 @@
+/* */
+/* Slider Widget */
+
+.Ldt-BarSlider {
+    width: 100%;
+    height: 36px;
+    padding: 0;
+    margin: 0;
+    background-color: black;
+    background-image: none;
+    border: none;
+    position: relative;
+    border-radius: 0;
+}
+
+.Ldt-BarSlider .ui-slider-handle {
+    display: none;
+}
+
+.Ldt-BarSlider .ui-slider-range {
+    background-color: #fff !important;
+    position: absolute !important;
+    top: 14px;
+    left: 4px;
+    height: 8px;
+    width: 0;
+}
+
+.Ldt-BarSlider-Time {
+    position: absolute;
+    bottom: 32px;
+    background: #fff;
+    color: #000000;
+    border-radius: 0;
+    z-index: 8;
+    font-size: 10px;
+    width: 5em;
+    border: 1px solid #999999;
+    padding: 1px;
+    margin-left: -20px;
+    display: none;
+    text-align: center;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.videoslider {
+    background-color: black;
+    height: 36px;
+    width: 100%;
+    border-bottom: 1px dashed #666;
+    position: relative;
+}
+.Ldt-BarSlider-sliderbar {
+    background-color: #999;
+    position: absolute;
+    top: 12px;
+    left: 4px;
+    right: 4px;
+    bottom: 11px;
+}
+.Ldt-BarSlider-currentbar {
+    background-color: #fff;
+    position: absolute;
+    top: 14px;
+    left: 4px;
+    width: 0;
+    height: 8px;
+}
+.Ldt-BarSlider .rightarrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent transparent transparent #ffffff;
+    border-width: 3px 0 3px 5px;
+}
+.Ldt-BarSlider .leftarrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent transparent transparent #ffffff;
+    border-width: 3px 5px 3px 0;
+}
+.Ldt-BarSlider-currentbarhead {
+    position: absolute;
+    top: 15px;
+    left: 4px;
+}
+.Ldt-BarSlider-barmark {
+    width: 1px;
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    background-color: #ccc;
+}
+
+.barmark:nth-of-type(4) {
+    left: 20px;
+}
+.barmark:nth-of-type(5) {
+    left: 50px;
+}
+.barmark:nth-of-type(6) {
+    left: 90px;
+}
+.barmark:nth-of-type(7) {
+    left: 140px;
+}
+.barmark:nth-of-type(8) {
+    left: 200px;
+}

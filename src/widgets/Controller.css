@@ -246,3 +246,7 @@ input.Ldt-Ctrl-SearchInput {
     width: 22px;
     border: none;
 }
+.Ldt-Fullscreen-Element {
+    width: 100%;
+    height: 100%;
+}

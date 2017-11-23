@@ -19,12 +19,12 @@
  */
 /* FIXME: properly use require.js feature. This will do for debugging in the meantime */
 window.tracemanager = (function($) {
-     // If there are more than MAX_FAILURE_COUNT synchronisation
-     // failures, then disable synchronisation
+    // If there are more than MAX_FAILURE_COUNT synchronisation
+    // failures, then disable synchronisation
     var MAX_FAILURE_COUNT = 20;
 
-     // If there are more than MAX_BUFFER_SIZE obsels in the buffer,
-     // then "compress" them as a single "ktbsFullBuffer"
+    // If there are more than MAX_BUFFER_SIZE obsels in the buffer,
+    // then "compress" them as a single "ktbsFullBuffer"
     var  MAX_BUFFER_SIZE = 500;
 
     var _replacement = {
@@ -34,7 +34,7 @@ window.tracemanager = (function($) {
          '&': '%26',
          '?': '%3F'
      };
-     var BufferedService_prototype = {
+    var BufferedService_prototype = {
          /*
           *  Buffered service for traces
           */
@@ -47,19 +47,16 @@ window.tracemanager = (function($) {
          /* Flush buffer */
          flush: function() {
              // FIXME: add mutex on this.buffer
-             if (! this.isReady)
-             {
-                 if (window.console) window.console.log("Sync service not ready");
-             } else if (this.failureCount > MAX_FAILURE_COUNT)
-             {
+             if (!this.isReady) {
+                 if (window.console) { window.console.log("Sync service not ready"); };
+             } else if (this.failureCount > MAX_FAILURE_COUNT) {
                  // Disable synchronisation
                  this.set_sync_mode('none');
              } else if (this.buffer.length) {
                  var temp = this.buffer;
                  this.buffer = [];
 
-                 if (this.mode == 'GET')
-                 {
+                 if (this.mode == 'GET') {
                      // GET mode: do some data mangline. We mark the
                      // "compressed" nature of the generated JSON by
                      // prefixing it with c
@@ -67,14 +64,12 @@ window.tracemanager = (function($) {
                      // Swap " (very frequent, which will be
                      // serialized into %22) and ; (rather rare), this
                      // saves some bytes
-                     data = data.replace(/[;"#?&]/g, function(s){ return _replacement[s]; });
+                     data = data.replace(/[;"#?&]/g, function(s) { return _replacement[s]; });
                      // FIXME: check data length (< 2K is safe)
-                     var request=$('<img />').error( function() { this.failureCount += 1; })
-                         .load( function() { this.failureCount = 0; })
+                     var request = $('<img />').error(function() { this.failureCount += 1; })
+                         .load(function() { this.failureCount = 0; })
                          .attr('src', this.url + 'trace/?data=' + data);
-                 }
-                 else
-                 {
+                 } else {
                      $.ajax({ url: this.url + 'trace/',
                               type: 'POST',
                               contentType: 'application/json',
@@ -83,7 +78,7 @@ window.tracemanager = (function($) {
                               // Type of the returned data.
                               dataType: "html",
                               error: function(jqXHR, textStatus, errorThrown) {
-                                  if (window.console) window.console.log("Error when sending buffer:", textStatus);
+                                  if (window.console) { window.console.log("Error when sending buffer:", textStatus); }
                                   this.failureCount += 1;
                               },
                               success: function(data, textStatus, jqXHR) {
@@ -111,8 +106,7 @@ window.tracemanager = (function($) {
 
          /* Enqueue an obsel */
          enqueue: function(obsel) {
-             if (this.buffer.length > MAX_BUFFER_SIZE)
-             {
+             if (this.buffer.length > MAX_BUFFER_SIZE) {
                  obsel = new Obsel('ktbsFullBuffer', this.buffer[0].begin,
                                    this.buffer[this.buffer.length - 1].end, this.buffer[0].subject);
                  obsel.trace = this.buffer[0].trace;
@@ -151,16 +145,13 @@ window.tracemanager = (function($) {
                  return;
              if (typeof default_subject === 'undefined')
                  default_subject = 'anonymous';
-             if (this.mode == 'GET')
-             {
+             if (this.mode == 'GET') {
                  var request=$('<img/>').attr('src', this.url + 'login?userinfo={"default_subject": "' + default_subject + '"}');
                  // Do not wait for the return, assume it is
                  // initialized. This assumption will not work anymore
                  // if login returns some necessary information
                  this.isReady = true;
-             }
-             else
-             {
+             } else {
                  $.ajax({ url: this.url + 'login',
                           type: 'POST',
                           data: 'userinfo={"default_subject":"' + default_subject + '"}',
